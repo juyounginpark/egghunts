@@ -123,7 +123,9 @@ export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{cons
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
-export function guardianSpeed(stage:number){return 2.3+stage*.2;}
+// Early guardians leave room to escape with an egg before movement upgrades.
+const EARLY_GUARDIAN_SPEEDS=[.75,.95,1.15,1.4,1.7,2.1,2.6,3.1,3.7];
+export function guardianSpeed(stage:number){return EARLY_GUARDIAN_SPEEDS[stage-1]??(2.3+stage*.2);}
 export function recommendedRouteSpeed(_depth:number,stage:number){return ROUTE.baseRecommendedSpeed*STAGE_DIFFICULTY.recommendedSpeedMultiplier**(stage-1);}
 export const GUARDIAN_ATTACKS=new Set(['hay','train','ink','lava-breath','tentacle','sweep','locker','book','drone','scorpion','stomp','raptor','wisps','club','lightning','medusa','ufo','nightmare','vine','mantis','magnet','void-hand','memory-tentacle','memory-lightning','memory-ufo','memory-meteor','creation-wave']);
 
