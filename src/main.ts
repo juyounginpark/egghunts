@@ -9,7 +9,7 @@ import {
   crackStage,
   type Upgrade,
 } from "./data";
-import { ROUTE } from "./stage-data";
+import { ROUTE, FINAL_GUARDIAN } from "./stage-data";
 import {eggName,eggIcon} from "./stage-eggs";
 import { GameState } from "./game";
 import { Platform } from "./platform";
@@ -60,7 +60,7 @@ topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="far
 $("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="플레이어 체력" aria-valuemin="0" hidden><span aria-hidden="true">♥</span><div class="health-track"><i id="hp-fill"></i></div></div>');
 $("shell").insertAdjacentHTML('beforeend','<div id="region-banner" role="status" aria-live="polite" hidden><small id="region-banner-number"></small><strong id="region-banner-name"></strong><span id="region-banner-speed"></span></div><div id="health-edge"></div><div id="ink-effect" hidden></div><div id="level-burst" hidden></div>');
 topHud.insertBefore($("region-banner"),$("hazard-cue"));
-$("shell").insertAdjacentHTML('beforeend','<div id="boss-pressure" aria-hidden="true" hidden></div><div id="boss-alert" role="status" aria-live="polite" hidden>보스가 화났어요</div>');
+$("shell").insertAdjacentHTML('beforeend','<div id="boss-pressure" aria-hidden="true" hidden></div><div id="boss-alert" role="status" aria-live="polite" hidden><strong id="boss-alert-title"></strong><small id="boss-alert-detail" aria-hidden="true"></small></div>');
 $("world").insertAdjacentHTML('beforeend','<div id="night-sky" aria-hidden="true"><span>☾</span></div>');
 const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
@@ -102,6 +102,7 @@ const audio=new GameAudio();
 let heardHazards=new Set<number>();
 let lastHeartbeat=0;
 let bossAlertUntil=0,wasPursued=false;
+let lastBossCount='',lastBossStep=0;
 let virtualAd:VirtualAd|null=null;
 let virtualAdPurpose:'currency'|'revive'='currency';
 let pendingSale:{kind:'egg'|'pet';id:string}|null=null;
@@ -553,7 +554,7 @@ function frame(now: number) {
   for (const event of game.events.splice(0)) {
     const cues:Partial<Record<string,GameSound>>={hatch_manual_hit:'tap',egg_pickup:'pickup',egg_drop:'drop',egg_saved:'return',mongle_obtained:'hatch',player_hit:'hit',player_death:'death',player_revive:'revive',night_refresh:'night',region_enter:'stage',level_up:'upgrade',upgrade_purchase:'upgrade',trail_purchase:'upgrade',collection_reward:'upgrade',boss_wake:'boss',egg_recovered:'drop'};
     const cue=cues[event.name];if(cue)playSound(cue,Number(event.params.stage??game.stage.id));
-    if(event.name==='boss_wake')bossAlertUntil=now+3000;
+    if(event.name==='boss_wake'){bossAlertUntil=now+3000;if(!paused&&!game.death&&tab==='explore')feedback(null);}
     if(event.name==='expedition_start'){$("toast").hidden=true;clearTimeout(toastTimer);}
     if(['level_up','player_hit','health_unlocked','player_death'].includes(event.name)){feedback(null);void save();}
     if(event.name.startsWith('expedition_fail_')){playSound('return');toast(game.message);void save();}
@@ -568,16 +569,32 @@ function frame(now: number) {
   }
   if (world.assetError) { toast(world.assetError); world.assetError = ""; }
   updateHud();
-  const pursued=tab==='explore'&&!game.isAtBase&&!game.death&&!!game.carried&&game.bosses.some(b=>b.mode==='chase');
+  const chaser=tab==='explore'&&!game.isAtBase&&!game.death&&game.carried?game.bosses.find(b=>b.mode==='chase'&&b.target===game.carried?.id):undefined;
+  const pursued=!!chaser;
   const waking=tab==='explore'&&!game.isAtBase&&!game.death?game.bosses.find(b=>b.mode==='waking'&&b.target===game.carried?.id):undefined;
   if(pursued&&!wasPursued)bossAlertUntil=now+3000;
   wasPursued=pursued;
   const presenting=!paused&&!game.death&&!game.returnReward&&$("modal").hidden&&!virtualAd;
-  $("boss-pressure").hidden=!(pursued&&presenting);
-  const bossAlert=waking?`보스가 깨어나기까지 ${Math.ceil(waking.wakeRemaining??ROUTE.bossWakeSeconds)}초`:'보스가 화났어요';
-  if($("boss-alert").textContent!==bossAlert)$("boss-alert").textContent=bossAlert;
-  $("boss-alert").hidden=!(presenting&&(!!waking||(pursued&&now<bossAlertUntil)));
-  audio.music(game.save.settings.sound&&presenting?(pursued?'chase':'calm'):'silent');
+  const wakeSeconds=waking?Math.ceil(waking.wakeRemaining??ROUTE.bossWakeSeconds):0;
+  const gap=chaser?Math.max(0,Math.hypot(chaser.x-game.x,chaser.z-game.z)-ROUTE.bossReach*ROUTE.bossAngryScale*(chaser.final?FINAL_GUARDIAN.scale:1)):Infinity;
+  const pressure=chaser?Math.max(0,1-gap/18):0,close=gap<5;
+  const bursting=pursued&&now>bossAlertUntil-3000&&now<bossAlertUntil-2100;
+  const pressureEl=$("boss-pressure"),alertEl=$("boss-alert");
+  pressureEl.hidden=!(presenting&&(pursued||wakeSeconds>0&&wakeSeconds<=2));
+  pressureEl.style.setProperty('--pursuit-strength',String(.35+pressure*.65));
+  pressureEl.style.setProperty('--pursuit-beat',`${1.3-pressure*.5}s`);
+  pressureEl.classList.toggle('awakening',bursting);
+  alertEl.dataset.phase=waking?'waking':now<bossAlertUntil?'awakened':close?'close':'chase';
+  const bossAlert=waking?`각성까지 ${wakeSeconds}`:now<bossAlertUntil?'보스 각성! 달리세요!':close?'바로 뒤에 있어요!':'보스 추격 중';
+  if($("boss-alert-title").textContent!==bossAlert)$("boss-alert-title").textContent=bossAlert;
+  const detail=waking?'알을 들고 먼저 도망가세요':close?'잡히기 전에 기지로!':chaser?`기지로 달리세요 · 보스 ${Math.ceil(gap)}m`:'';
+  if($("boss-alert-detail").textContent!==detail)$("boss-alert-detail").textContent=detail;
+  alertEl.hidden=!(presenting&&(!!waking||pursued));
+  const countKey=waking?`${waking.target}:${wakeSeconds}`:'';
+  if(presenting&&countKey&&countKey!==lastBossCount)playSound('boss-count',waking?.stageId);
+  if(presenting||!waking)lastBossCount=countKey;
+  if(presenting&&chaser&&gap<12&&now-lastBossStep>850-pressure*250){playSound('boss-step',chaser.stageId);lastBossStep=now;}
+  audio.music(game.save.settings.sound&&presenting?(pursued?'chase':'calm'):'silent',pressure);
   void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null);
   if(multiplayer.connected){
     game.world=game.world.filter(e=>!e.id.startsWith('net-')||multiplayer.drops.some(d=>d.id===e.id));

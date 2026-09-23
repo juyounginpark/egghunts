@@ -1,4 +1,4 @@
-export type GameSound='ui'|'swing'|'tap'|'pickup'|'drop'|'hit'|'hatch'|'night'|'return'|'death'|'revive'|'upgrade'|'stage'|'boss'|'heartbeat'|'water'|'fire'|'machine'|'magic';
+export type GameSound='ui'|'swing'|'tap'|'pickup'|'drop'|'hit'|'hatch'|'night'|'return'|'death'|'revive'|'upgrade'|'stage'|'boss'|'boss-count'|'boss-step'|'heartbeat'|'water'|'fire'|'machine'|'magic';
 type Note=[number,number,number,OscillatorType,number?];
 const sounds:Record<GameSound,Note[]>={
  ui:[[720,.07,0,'sine',540]],
@@ -14,7 +14,9 @@ const sounds:Record<GameSound,Note[]>={
  revive:[[262,.17,0,'sine'],[392,.17,.13,'sine'],[523,.2,.26,'sine'],[784,.4,.4,'triangle']],
  upgrade:[[600,.08,0,'triangle'],[750,.08,.08,'triangle'],[900,.17,.16,'sine']],
  stage:[[392,.13,0,'sine'],[523,.23,.13,'sine']],
- boss:[[75,.25,0,'sawtooth',130],[95,.3,.2,'triangle',55]],
+ boss:[[48,.55,0,'sine',28],[82,.65,0,'sawtooth',42],[123,.45,.08,'triangle',62],[185,.35,.18,'sawtooth',65]],
+ 'boss-count':[[220,.14,0,'triangle',110],[440,.09,.03,'sine',220]],
+ 'boss-step':[[70,.14,0,'sine',32],[110,.06,.02,'triangle',45]],
  heartbeat:[[65,.08,0,'sine',45],[65,.08,.15,'sine',45]],
  water:[[480,.12,0,'sine',180],[700,.15,.1,'sine',260]],
  fire:[[90,.2,0,'sawtooth',45],[170,.13,.08,'triangle',70]],
@@ -30,7 +32,7 @@ export class GameAudio{
  private musicBus:GainNode|undefined;
  private beat=0;
  private nextBeat=0;
- music(mode:'calm'|'chase'|'silent'){
+ music(mode:'calm'|'chase'|'silent',pressure=0){
   const ctx=this.context;if(!ctx||ctx.state!=='running')return;
   if(!this.musicBus){this.musicBus=ctx.createGain();this.musicBus.gain.value=0;this.musicBus.connect(ctx.destination);}
   if(mode!==this.musicMode){
@@ -40,14 +42,14 @@ export class GameAudio{
   }
   if(mode==='silent')return;
   if(this.nextBeat<ctx.currentTime-.3)this.nextBeat=ctx.currentTime+.02;
-  const urgent=mode==='chase',interval=urgent?.17:.32;
+  const urgent=mode==='chase',intensity=Math.max(0,Math.min(1,pressure)),interval=urgent?.18-intensity*.045:.32;
   const melody=urgent?[0,7,0,8,0,7,3,2,0,7,0,10,8,7,3,2]:[0,4,7,12,7,4,2,7,4,7,11,14,11,7,4,2];
   while(this.nextBeat<ctx.currentTime+.12){
    const beat=this.beat++,at=this.nextBeat;this.nextBeat+=interval;
    const root=urgent?146.83:261.63,degree=melody[beat%melody.length];
    this.musicNote(root*2**(degree/12),at,interval*.85,urgent?'triangle':'sine',.055);
    if(beat%4===0)this.musicNote(root/2*2**(([0,0,urgent?8:5,7][Math.floor(beat/8)%4])/12),at,interval*3,'triangle',.065);
-   if(urgent&&beat%2===0)this.musicNote(55,at,.07,'sine',.12);
+   if(urgent&&beat%2===0){this.musicNote(55,at,.09,'sine',.12+intensity*.04);if(intensity>.6)this.musicNote(110,at+interval*.55,.05,'triangle',.035);}
   }
  }
  private musicNote(frequency:number,at:number,duration:number,wave:OscillatorType,volume:number){

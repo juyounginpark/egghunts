@@ -8,10 +8,13 @@ export class RegionGuardian {
  group=new T.Group();
  private mesh=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshLambertMaterial(),1200);
  private outline=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:0xff263e,side:T.BackSide,depthWrite:false}),1200);
+ private effects=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({transparent:true,opacity:.65,depthWrite:false}),768);
+ private reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+ private modes=Array<string>(21).fill('idle');private wakeAt=Array<number>(21).fill(-Infinity);
  private recipes=new Map<number,Part[]>();
  private parts:Part[]=[];private stage=0;private dummy=new T.Object3D();private color=new T.Color();
  private headings=Array<number>(21).fill(NaN);private roots=Array.from({length:21},()=>({x:NaN,z:NaN}));private lastTime=0;
- constructor(){this.group.add(this.mesh,this.outline);this.mesh.castShadow=true;this.mesh.frustumCulled=this.outline.frustumCulled=false;this.mesh.count=this.outline.count=0;}
+ constructor(){this.group.add(this.mesh,this.outline,this.effects);this.mesh.castShadow=true;this.mesh.frustumCulled=this.outline.frustumCulled=this.effects.frustumCulled=false;this.mesh.count=this.outline.count=this.effects.count=0;}
  private build(stage:number){
   this.stage=stage;this.parts=[];const s=STAGES[stage-1],c=s.color,a=s.accent,cream=0xffefd0,dark=0x353347,gold=0xe8bc68;
   const b=(x:number,y:number,z:number,w:number,h:number,d:number,color=c,joint=0)=>this.parts.push({x,y,z,w,h,d,color,joint});
@@ -78,9 +81,12 @@ export class RegionGuardian {
  }
  render(game:GameState,time:number,visible:boolean){
   this.group.visible=visible;if(!visible)return;this.stage=game.stage.id;
-  let index=0,outlineIndex=0;const dt=Math.max(0,Math.min(.1,time-this.lastTime));this.lastTime=time;
+  let index=0,outlineIndex=0,effectIndex=0;const dt=Math.max(0,Math.min(.1,time-this.lastTime)),reduced=this.reducedMotion.matches;this.lastTime=time;
   for(let k=0;k<game.bosses.length;k++){
    const state=game.bosses[k],stage=state.stageId??game.stage.id,chasing=state.mode==='chase',sleeping=state.mode==='idle'||state.mode==='waking',root=this.roots[k];
+   if(chasing&&this.modes[k]!=='chase')this.wakeAt[k]=time;
+   this.modes[k]=state.mode;
+   const waking=state.mode==='waking',wakeTension=waking?Math.max(0,1-(state.wakeRemaining??ROUTE.bossWakeSeconds)/2):0;
    const scale=(state.final?FINAL_GUARDIAN.scale:1)*(chasing?ROUTE.bossAngryScale:1);
    const tx=state.x+(sleeping&&!state.final?-2.6:0),tz=state.z+(sleeping&&!state.final?-4:0);
    if(!Number.isFinite(root.x)||Math.hypot(root.x-tx,root.z-tz)>30){root.x=tx;root.z=tz;}
@@ -88,31 +94,49 @@ export class RegionGuardian {
    const z=root.z;if(Math.abs(z-game.z)>(state.final?40:23))continue;
    if(!this.recipes.has(stage))this.build(stage);
    this.parts=this.recipes.get(stage)!;
-   const x=root.x+Math.sin(time*.35+k)*.12,hover=[3,5,6,7,12,15,19,20].includes(stage);
+   const x=root.x+(reduced?0:Math.sin(time*.35+k)*.12+Math.sin(time*30)*wakeTension*.065),hover=[3,5,6,7,12,15,19,20].includes(stage);
    const u=chasing?Math.min(1,(state.windup??0)/ROUTE.bossWindup):0;
-   const charge=u*u*(3-2*u),breath=Math.sin(time*1.5+k)*.035;
+   const charge=u*u*(3-2*u),breath=reduced?0:Math.sin(time*1.5+k)*.035;
+   const stride=time*11+k,bounce=chasing&&!reduced?Math.abs(Math.sin(stride))*.13:0;
    const target=sleeping?0:Math.atan2(game.x-x,game.z-z);
    if(!Number.isFinite(this.headings[k]))this.headings[k]=target;
    const delta=Math.atan2(Math.sin(target-this.headings[k]),Math.cos(target-this.headings[k]));
    this.headings[k]+=delta*(1-Math.exp(-dt*4));
    const angle=this.headings[k],cs=Math.cos(angle),sn=Math.sin(angle);
    for(const p of this.parts){
-    const swing=p.joint?Math.sin(time*(sleeping?.7:stage===7?16:chasing?7:1.8)+p.joint*.85)*(chasing?.2:.11):0;
-    const px=p.x+ (p.joint?Math.sign(p.x)*charge*.15:0),py=p.y*(sleeping?.78:1)+breath+swing+(hover&&!sleeping?Math.sin(time*1.2+k)*.14:0),pz=p.z+(p.joint?Math.sin(time*1.5+p.joint)*.09:0)-charge*.15;
+    const swing=p.joint&&!reduced?Math.sin(time*(sleeping?.7:stage===7?16:chasing?11:1.8)+p.joint*.85)*(chasing?.3:.11):0;
+    const px=p.x+ (p.joint?Math.sign(p.x)*charge*.15:0),py=p.y*(sleeping?.78-wakeTension*.08:1)+breath+swing+bounce+(hover&&!sleeping&&!reduced?Math.sin(time*1.2+k)*.14:0),pz=p.z+(p.joint&&!reduced?Math.sin(time*1.5+p.joint)*.09:0)-charge*.15+(chasing?p.y*.14:0);
     const voidPart=stage===20&&z+(stage-game.progression.stage)*ROUTE.length>-35,partColor=voidPart?(p.color===0xe8bc68?0x9d86bd:0x3b344b):p.color;
-    this.dummy.position.set(x+(px*cs+pz*sn)*scale,py*scale,z+(-px*sn+pz*cs)*scale);this.dummy.rotation.set(p.joint?swing-charge*.18:0,angle,0);this.dummy.scale.set(p.w*scale,(sleeping&&p.eye?.04:p.h)*scale,p.d*scale);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(sleeping&&p.eye?0x353347:partColor));
-    if(chasing){this.dummy.scale.addScalar(.065*scale);this.dummy.updateMatrix();this.outline.setMatrixAt(outlineIndex++,this.dummy.matrix);}
+    this.dummy.position.set(x+(px*cs+pz*sn)*scale,py*scale,z+(-px*sn+pz*cs)*scale);this.dummy.rotation.set(p.joint?swing-charge*.18:0,angle,0);this.dummy.scale.set(p.w*scale,(sleeping&&p.eye?.04:p.h)*scale,p.d*scale);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(chasing&&p.eye?0xff392b:sleeping&&p.eye?0x353347:partColor));
+    if(chasing||wakeTension>0){this.dummy.scale.addScalar((chasing?.09:.025+wakeTension*.045)*scale);this.dummy.updateMatrix();this.outline.setMatrixAt(outlineIndex++,this.dummy.matrix);}
    }
    // Sleeping Zs become a red anger mark as the guardian wakes.
    const glyph=(xx:number,yy:number,w:number,h:number,c:number)=>{this.dummy.position.set(x+xx*scale,yy*scale,z);this.dummy.rotation.set(0,0,0);this.dummy.scale.set(w*scale,h*scale,.1*scale);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(c));};
    if(state.final){glyph(0,3.8,1.8,.18,0xffd36b);for(const xx of [-.7,0,.7])glyph(xx,4,.18,.45,0xffd36b);}
    if(sleeping){for(let j=0;j<2;j++){const xx=.7+j*.35,yy=2.9+j*.4+Math.sin(time+j)*.08;glyph(xx,yy,.3,.06,0xe9edd6);glyph(xx,yy+.22,.3,.06,0xe9edd6);for(let k=0;k<3;k++)glyph(xx-.1+k*.1,yy+.05+k*.06,.09,.07,0xe9edd6);}}
-   else if(chasing){glyph(0,3.5,.15,.45,0xff6658);glyph(0,3.13,.15,.12,0xff6658);}
+   else if(chasing){for(const xx of [-.32,0,.32]){glyph(xx,3.5,.16,.5,0xff6658);glyph(xx,3.1,.16,.13,0xff6658);}}
+   if(chasing&&!reduced){
+    const effect=(xx:number,yy:number,zz:number,w:number,h:number,d:number,color:number)=>{
+     this.dummy.position.set(xx,yy,zz);this.dummy.rotation.set(0,angle,0);this.dummy.scale.set(w,h,d);this.dummy.updateMatrix();
+     this.effects.setMatrixAt(effectIndex,this.dummy.matrix);this.effects.setColorAt(effectIndex++,this.color.setHex(color));
+    };
+    const age=time-this.wakeAt[k];
+    if(age>=0&&age<.85){
+     const radius=(.6+age*5)*scale;
+     for(let j=0;j<20;j++){const a=j*Math.PI/10;effect(x+Math.sin(a)*radius,.12,z+Math.cos(a)*radius,.38*scale,.12*scale,.38*scale,j%2?0xff643c:0xffca6a);}
+    }
+    const dustCount=game.save.settings.quality==='low'?4:10;
+    for(let j=0;j<dustCount;j++){
+     const phase=(time*1.7+j/dustCount)%1,back=(.8+phase*2.8)*scale,side=(j%2?1:-1)*(.5+phase*.6)*scale,size=(1-phase)*.3*scale;
+     effect(x-sn*back+cs*side,(.12+phase*.45)*scale,z-cs*back-sn*side,size,size*.7,size*(j%3===0?3:1),j%3===0?0xff9155:0xe4bd8a);
+    }
+   }
   }
   this.stage=game.stage.id;
   this.mesh.count=index;this.mesh.instanceMatrix.needsUpdate=true;if(this.mesh.instanceColor)this.mesh.instanceColor.needsUpdate=true;
   this.outline.count=outlineIndex;this.outline.instanceMatrix.needsUpdate=true;
+  this.effects.count=effectIndex;this.effects.instanceMatrix.needsUpdate=true;if(this.effects.instanceColor)this.effects.instanceColor.needsUpdate=true;
  }
  metrics(){return {stage:this.stage,parts:this.parts.length,visibleParts:this.mesh.count,pose:Array.from(this.mesh.instanceMatrix.array.slice(0,Math.min(this.mesh.count,12)*16))};}
- dispose(){for(const mesh of [this.mesh,this.outline]){mesh.geometry.dispose();(mesh.material as T.Material).dispose();}this.group.removeFromParent();}
+ dispose(){for(const mesh of [this.mesh,this.outline,this.effects]){mesh.geometry.dispose();(mesh.material as T.Material).dispose();}this.group.removeFromParent();}
 }

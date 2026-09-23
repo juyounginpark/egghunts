@@ -295,8 +295,18 @@ header .dust { margin-left:auto; margin-right:8px; }
 .night #controls{opacity:1}
 
 /* Chase overlays never participate in HUD layout or intercept controls. */
-#boss-pressure{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 42%,#ce173524 73%,#ae092f85 100%);box-shadow:inset 0 0 36px #fa24474d;animation:boss-pressure 1.2s ease-in-out infinite alternate}
-#boss-alert{position:absolute;top:calc(158px + var(--safe-top));left:50%;transform:translateX(-50%);z-index:5;pointer-events:none;max-width:calc(100% - 32px);box-sizing:border-box;padding:10px 18px;border:2px solid #ff6776;border-radius:10px;background:#581325ed;color:#fff1dd;font-size:17px;font-weight:900;text-align:center;white-space:nowrap;text-shadow:0 2px #6a091c;box-shadow:0 0 18px #f52b4940}
+#boss-pressure{position:absolute;inset:0;z-index:3;pointer-events:none;--pursuit-strength:.5;--pursuit-beat:1.1s;background:radial-gradient(ellipse at center,transparent 48%,#ce173532 73%,#a30029c9 100%);box-shadow:inset 0 0 60px #fa244780;animation:boss-pressure var(--pursuit-beat) ease-in-out infinite alternate}
+#boss-pressure::before{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from 12deg at 50% 45%,transparent 0deg 17deg,#ffd7b526 17.3deg 17.8deg,transparent 18deg 30deg);mask-image:radial-gradient(ellipse,transparent 48%,#000 100%);opacity:var(--pursuit-strength)}
+#boss-pressure.awakening::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 100px 12px #ff7139;animation:boss-awakening .9s ease-out both}
+#boss-alert{position:absolute;top:calc(158px + var(--safe-top));left:50%;transform:translateX(-50%);z-index:5;pointer-events:none;max-width:calc(100% - 32px);box-sizing:border-box;padding:9px 18px;border:2px solid #ff6776;border-radius:10px;background:#581325ed;color:#fff1dd;font-size:18px;font-weight:900;text-align:center;white-space:nowrap;text-shadow:0 2px #6a091c;box-shadow:0 4px 0 #38091c,0 0 24px #f52b4970}
+#boss-alert strong{display:block;font-size:inherit}
+#boss-alert small{display:block;margin-top:4px;font-size:11px;font-weight:700;color:#ffd3ad}
+#boss-alert[data-phase="waking"]{border-color:#ffcb6e;background:#493019ed;font-size:25px}
+#boss-alert[data-phase="awakened"]{font-size:23px;border-color:#ffd599;background:#9f182bed;animation:boss-alert-impact .4s ease-out both}
+#boss-alert[data-phase="close"]{border-color:#ffb89a;background:#971629ed}
 #boss-pressure[hidden],#boss-alert[hidden]{display:none}
-@keyframes boss-pressure{from{opacity:.5}to{opacity:.95}}
-@media(prefers-reduced-motion:reduce){#boss-pressure{animation:none;opacity:.65}}
+@keyframes boss-pressure{from{opacity:calc(var(--pursuit-strength) * .55)}to{opacity:var(--pursuit-strength)}}
+@keyframes boss-awakening{from{opacity:1}to{opacity:0}}
+@keyframes boss-alert-impact{from{transform:translateX(-50%) scale(1.15)}to{transform:translateX(-50%) scale(1)}}
+@media(max-width:380px){#boss-alert{font-size:16px;padding:8px 12px}#boss-alert[data-phase="awakened"]{font-size:20px}}
+@media(prefers-reduced-motion:reduce){#boss-pressure{animation:none;opacity:.65}#boss-pressure::before,#boss-pressure.awakening::after{display:none}#boss-alert[data-phase="awakened"]{animation:none}}
