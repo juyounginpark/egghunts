@@ -13,15 +13,21 @@ export class Input {
     pause: () => void,
   ) {
     this.surface=pad.closest<HTMLElement>('#shell')!;
-    pad.dataset.floating='true';pad.hidden=true;
     this.surface.addEventListener("pointerdown", (e) => {
       if(this.pointer!==null||e.button!==0||!['base','expedition'].includes(this.surface.dataset.mode??''))return;
       if((e.target as HTMLElement).closest('button,nav,#top-hud,#panel,#modal,#return-reward,#loading'))return;
       if(!document.getElementById('modal')!.hidden||!document.getElementById('return-reward')!.hidden)return;
       e.preventDefault();
       this.pointer = e.pointerId;
-      this.origin={x:e.clientX,y:e.clientY};
-      pad.style.left=`${e.clientX}px`;pad.style.top=`${e.clientY}px`;pad.hidden=false;
+      if(pad.contains(e.target as Node)){
+        const rect=pad.getBoundingClientRect();
+        this.origin={x:rect.left+rect.width/2,y:rect.top+rect.height/2};
+        this.update(e);
+      }else{
+        this.origin={x:e.clientX,y:e.clientY};
+        pad.dataset.floating='true';
+        pad.style.left=`${e.clientX}px`;pad.style.top=`${e.clientY}px`;
+      }
       this.surface.setPointerCapture(e.pointerId);
     });
     this.surface.addEventListener("pointermove", (e) => {
@@ -63,7 +69,9 @@ export class Input {
     const pointer=this.pointer;
     this.pointer = null;
     if(pointer!==null&&this.surface.hasPointerCapture(pointer))this.surface.releasePointerCapture(pointer);
-    this.pad.hidden=true;
+    delete this.pad.dataset.floating;
+    this.pad.style.removeProperty('left');
+    this.pad.style.removeProperty('top');
     this.x = this.y = 0;
     this.keys.clear();
     this.knob.style.transform = "";

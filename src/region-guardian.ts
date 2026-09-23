@@ -92,6 +92,7 @@ export class RegionGuardian {
    const scale=(state.final?FINAL_GUARDIAN.scale:1)*(1+(ROUTE.bossAngryScale-1)*rise);
    const tx=state.x,tz=state.z;
    if(!Number.isFinite(root.x)||Math.hypot(root.x-tx,root.z-tz)>30){root.x=tx;root.z=tz;}
+   const moveX=tx-root.x,moveZ=tz-root.z;
    root.x=tx;root.z=tz;
    const z=root.z;if(Math.abs(z-game.z)>(state.final?40:23))continue;
    if(!this.recipes.has(stage))this.build(stage);
@@ -101,10 +102,15 @@ export class RegionGuardian {
    const charge=u*u*(3-2*u),breath=reduced?0:Math.sin(time*1.5+k)*.035;
    this.gait[k]+=dt*(sleeping?.7+10.3*rise:chasing?11:1.8);
    const stride=this.gait[k]+k,bounce=!reduced?Math.abs(Math.sin(stride))*.13*rise:0;
-   const target=sleeping&&!waking?0:Math.atan2(game.x-x,game.z-z);
+   let target=sleeping&&!waking?0:Math.atan2(game.x-x,game.z-z);
+   if(state.mode==='return'){
+    const dx=state.loot?(state.loot.homeX??0)-x:moveX;
+    const dz=state.loot?(state.loot.homeZ??state.homeZ??-17)-z:moveZ;
+    target=Math.hypot(dx,dz)>.001?Math.atan2(dx,dz):Number.isFinite(this.headings[k])?this.headings[k]:0;
+   }
    if(!Number.isFinite(this.headings[k]))this.headings[k]=target;
    const delta=Math.atan2(Math.sin(target-this.headings[k]),Math.cos(target-this.headings[k]));
-   this.headings[k]+=delta*(1-Math.exp(-dt*(waking?rise*4:4)));
+   this.headings[k]+=delta*(1-Math.exp(-dt*(waking?rise*4:state.mode==='return'?12:4)));
    const angle=this.headings[k],cs=Math.cos(angle),sn=Math.sin(angle);
    for(const p of this.parts){
     const swing=p.joint&&!reduced?Math.sin(stride+p.joint*.85)*(.11+.19*rise):0;

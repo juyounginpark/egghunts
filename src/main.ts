@@ -132,7 +132,7 @@ function warnAboutBoss(){
   const egg=game.near;if(!egg||game.save.bossWarningSeen||!$("modal").hidden)return false;
   input.reset();paused=true;pickupPreparation=null;
   $("modal").hidden=false;$("modal").dataset.kind='boss-warning';
-  $("modal").innerHTML=`<section class="boss-warning-card" role="dialog" aria-modal="true" aria-labelledby="boss-warning-title"><div class="boss-warning-art" aria-hidden="true"><img src="${eggIcon(egg)}" alt=""/><span>➜</span><span class="warning-boss">👹</span></div><h1 id="boss-warning-title">알을 들면<br>보스가 쫓아와요!</h1><button id="boss-warning-ok" class="primary">알겠어요!</button></section>`;
+  $("modal").innerHTML=`<section class="boss-warning-card" role="dialog" aria-modal="true" aria-labelledby="boss-warning-title" aria-describedby="boss-warning-size"><div class="boss-warning-art" aria-hidden="true"><img src="${eggIcon(egg)}" alt=""/><span>➜</span><span class="warning-boss">👹</span></div><h1 id="boss-warning-title">알을 들면<br>보스가 쫓아와요!</h1><p id="boss-warning-size">큰 알일수록<br>이동 속도가 느려져요.</p><button id="boss-warning-ok" class="primary">알겠어요!</button></section>`;
   return true;
 }
 async function action(preparedId?:string) {
@@ -249,7 +249,7 @@ function updateHud() {
   if(game.training) $("speed-value").textContent += ` · +${num(game.effectiveTrainingRate,3)}/초`;
   const step=game.save.tutorial??0;
   $("tutorial").hidden=step>=5 || !!game.returnReward || game.result!==null;
-  $("tutorial-title").textContent = ["화면을 밀어 이동해요","알을 찾아요","기지로 돌아와요","알을 두드려요","펫과 함께 자라요"][step]??'';
+  $("tutorial-title").textContent = ["화면을 밀어 이동해요","알을 찾아요","큰 알일수록 느려져요","알을 두드려요","펫과 함께 자라요"][step]??'';
   $("tutorial-copy").textContent = ["왼쪽 조이스틱을 위로 밀어 농장문을 나가세요.","길 위의 알에 다가가 오른쪽 ‘들고가기’를 누르세요.","알을 들면 느려져요. 아래쪽 농장으로 돌아가세요. 보스 공격에 맞으면 알을 떨어뜨려요!","부화실을 열고 ‘두드리기’를 누르세요. 자동 장비도 도와줘요.","별가루로 강화하거나 트레일을 사세요. 농장 러닝머신에서도 속도가 올라요."][step]??"";
   $("return-reward").hidden = !game.returnReward;
   if(game.returnReward){
