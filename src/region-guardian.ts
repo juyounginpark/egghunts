@@ -80,7 +80,7 @@ export class RegionGuardian {
   this.group.visible=visible;if(!visible)return;this.stage=game.stage.id;
   let index=0,outlineIndex=0;const dt=Math.max(0,Math.min(.1,time-this.lastTime));this.lastTime=time;
   for(let k=0;k<game.bosses.length;k++){
-   const state=game.bosses[k],stage=state.stageId??game.stage.id,chasing=state.mode==='chase',sleeping=state.mode==='idle',root=this.roots[k];
+   const state=game.bosses[k],stage=state.stageId??game.stage.id,chasing=state.mode==='chase',sleeping=state.mode==='idle'||state.mode==='waking',root=this.roots[k];
    const scale=(state.final?FINAL_GUARDIAN.scale:1)*(chasing?ROUTE.bossAngryScale:1);
    const tx=state.x+(sleeping&&!state.final?-2.6:0),tz=state.z+(sleeping&&!state.final?-4:0);
    if(!Number.isFinite(root.x)||Math.hypot(root.x-tx,root.z-tz)>30){root.x=tx;root.z=tz;}

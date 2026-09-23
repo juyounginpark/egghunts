@@ -32,9 +32,10 @@ export type Boss = {
   stageId?:number;
   homeZ?:number;
   windup?: number;
+  wakeRemaining?: number;
   x: number;
   z: number;
-  mode: "idle" | "chase" | "return";
+  mode: "idle" | "waking" | "chase" | "return";
   target: string | null;
   loot: WorldEgg | null;
 };
@@ -425,7 +426,7 @@ export class GameState {
         (b) =>
           Number.isFinite(b.x) &&
           Number.isFinite(b.z) &&
-          ["idle", "chase", "return"].includes(b.mode),
+          ["idle", "waking", "chase", "return"].includes(b.mode),
       )
     ) {
       this.world = [...this.world.filter(e=>e.stageId!<oldEntrance||(e.special&&!save.bosses!.some(b=>b.final))),...save.world];
@@ -576,7 +577,18 @@ export class GameState {
   }
   tickBosses(dt:number){
     this.bosses.forEach((b,guardian)=>{
-      if(b.mode==='chase'&&this.carried?.id!==b.target){b.mode='return';b.target=null;}
+      if((b.mode==='chase'||b.mode==='waking')&&this.carried?.id!==b.target){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
+      let activeDt=dt;
+      if(b.mode==='waking'){
+        const remaining=Number.isFinite(b.wakeRemaining)?Math.max(0,Math.min(ROUTE.bossWakeSeconds,b.wakeRemaining!)):ROUTE.bossWakeSeconds;
+        b.wakeRemaining=Math.max(0,remaining-dt);
+        if(b.wakeRemaining>0)return;
+        activeDt=Math.max(0,dt-remaining);
+        b.mode='chase';b.wakeRemaining=undefined;
+        this.emit('boss_wake',{stage:b.stageId??1,final:b.final?1:0});
+        this.message='보스가 깨어났어요! 알을 들고 도망가세요.';
+        this.revision++;
+      }
       let recovery:WorldEgg|undefined;
       if(b.mode!=='chase'){
         b.loot=this.world.find(e=>e.id===b.loot?.id)??null;
@@ -585,7 +597,7 @@ export class GameState {
       }
       const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):0;
       const tz=b.mode==='chase'?this.z:recovery?(b.loot?recovery.homeZ??b.homeZ??-17:recovery.z):b.homeZ??-17;
-      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*dt);
+      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*activeDt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
@@ -742,10 +754,10 @@ export class GameState {
       if(!boss){this.revision++;return;}
       // Recovered eggs remain in the world and can be stolen during the return trip.
       boss.loot = null;
-      boss.mode = "chase";
+      boss.mode = "waking";
+      boss.wakeRemaining = ROUTE.bossWakeSeconds;
       boss.target = this.carried.id;
-      this.emit('boss_wake',{stage:boss.stageId??this.stage.id,final:boss.final?1:0});
-      this.message = `${boss.final?'최종 보스 · 창조의 수호자':STAGES[(boss.stageId??this.stage.id)-1].name+' 수호자'}가 깨어났어요! 알을 들고 도망가세요.`;
+      this.message = `보스가 ${ROUTE.bossWakeSeconds}초 후 깨어나요! 알을 들고 도망가세요.`;
     this.revision++;
   }
   tap() {

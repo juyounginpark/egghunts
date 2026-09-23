@@ -561,11 +561,14 @@ function frame(now: number) {
   if (world.assetError) { toast(world.assetError); world.assetError = ""; }
   updateHud();
   const pursued=tab==='explore'&&!game.isAtBase&&!game.death&&!!game.carried&&game.bosses.some(b=>b.mode==='chase');
+  const waking=tab==='explore'&&!game.isAtBase&&!game.death?game.bosses.find(b=>b.mode==='waking'&&b.target===game.carried?.id):undefined;
   if(pursued&&!wasPursued)bossAlertUntil=now+3000;
   wasPursued=pursued;
   const presenting=!paused&&!game.death&&!game.returnReward&&$("modal").hidden&&!virtualAd;
   $("boss-pressure").hidden=!(pursued&&presenting);
-  $("boss-alert").hidden=!(pursued&&presenting&&now<bossAlertUntil);
+  const bossAlert=waking?`보스가 깨어나기까지 ${Math.ceil(waking.wakeRemaining??ROUTE.bossWakeSeconds)}초`:'보스가 화났어요';
+  if($("boss-alert").textContent!==bossAlert)$("boss-alert").textContent=bossAlert;
+  $("boss-alert").hidden=!(presenting&&(!!waking||(pursued&&now<bossAlertUntil)));
   audio.music(game.save.settings.sound&&presenting?(pursued?'chase':'calm'):'silent');
   void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null);
   if(multiplayer.connected){
