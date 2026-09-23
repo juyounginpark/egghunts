@@ -50,6 +50,7 @@ export type Save = {
   trails?: number[];
   equippedTrail?: number;
   trainingSpeed?: number;
+  petIncome?: { elapsed:number; pending:number };
   tutorial?: number;
   claimedPets?: number[];
   claimedRegions?: number[];
@@ -114,6 +115,8 @@ export function parseSave(raw: string | null, now: number): Save {
   if (s.upgrades && s.upgrades.training === undefined) s.upgrades.training = 0;
   if (s.upgrades && s.upgrades.health === undefined) s.upgrades.health = 0;
   s.trainingSpeed ??= 0;
+  s.petIncome ??= {elapsed:0,pending:0};
+  if(!Number.isFinite(s.petIncome.elapsed)||s.petIncome.elapsed<0||s.petIncome.elapsed>=BALANCE.petIncomeSeconds||!Number.isFinite(s.petIncome.pending)||s.petIncome.pending<0)throw new Error('Invalid pet income');
   s.visitedStages ??= [];
   if(!Array.isArray(s.visitedStages)||!s.visitedStages.every(id=>Number.isInteger(id)&&id>=1&&id<=20))throw Error('Invalid visited stages');
   if(s.death&&(![s.death.x,s.death.z,s.death.at,s.death.remaining].every(Number.isFinite)||s.death.remaining<0||Math.abs(s.death.x)>BALANCE.mapX||s.death.z<BALANCE.mapFarZ||s.death.z>BALANCE.mapNearZ))throw new Error("Invalid death state");
@@ -349,6 +352,27 @@ export class GameState {
   returnReward: { type: number; distance: number; stageId?:number;variant?:number;special?:boolean } | null = null;
   get nearGym() { return Math.hypot(this.x-BALANCE.gymX,this.z-BALANCE.gymZ)<BALANCE.gymRadius; }
   get trainingRate() { return BALANCE.trainingPerSecond + BALANCE.trainingPerLevel*this.save.upgrades.training; }
+  toggleTraining(){
+    if(!this.isAtBase||this.carried||this.death||this.launch||this.knockback.remaining>0||this.now()<this.knockedUntil)return false;
+    this.training=!this.training;
+    this.trainingClock=this.trainingGain=0;
+    if(this.training){this.x=BALANCE.gymX;this.z=BALANCE.gymZ;this.velocity={x:0,z:0};this.facing={x:0,z:-1};}
+    this.message=this.training?'트레드밀에서 운동 중이에요. 스피드가 올라요!':'운동을 마쳤어요.';
+    this.revision++;return true;
+  }
+  petIncomeAmount(id:number){return BALANCE.petIncomeByTier[MONGLES[id].tier];}
+  get petIncomePerCycle(){return this.save.active.reduce((sum,id)=>sum+this.petIncomeAmount(id),0);}
+  private tickPetIncome(dt:number){
+    const income=this.save.petIncome??={elapsed:0,pending:0};
+    if(!this.save.active.length&&income.pending<1)return;
+    income.elapsed+=dt;
+    income.pending+=this.petIncomePerCycle*dt/BALANCE.petIncomeSeconds;
+    if(income.elapsed+1e-9<BALANCE.petIncomeSeconds)return;
+    income.elapsed=Math.max(0,income.elapsed-BALANCE.petIncomeSeconds);
+    const amount=Math.floor(income.pending+1e-9);
+    income.pending=Math.max(0,income.pending-amount);
+    if(amount){this.save.dust+=amount;this.revision++;this.emit('pet_income',{amount});}
+  }
   facing = { x: 0, z: -1 };
   events: { name: string; params: Record<string, string | number> }[] = [];
   emit(name: string, params: Record<string, string | number> = {}) { this.events.push({name, params}); }
@@ -657,6 +681,7 @@ export class GameState {
     for(let left=dt;left>1e-9&&!this.death;left-=PROGRESSION.simulationStep)this.tickStep(Math.min(left,PROGRESSION.simulationStep));
   }
   private tickStep(dt:number){
+    this.tickPetIncome(dt);
     this.syncStage();
     if(this.knockback.remaining>0){const step=Math.min(dt,this.knockback.remaining);this.push(this.knockback.x*step,this.knockback.z*step);this.knockback.remaining-=step;}
     this.hp=Math.min(this.hp,this.maxHp);
@@ -727,7 +752,7 @@ export class GameState {
   interact() {
     this.updateNight();
     if(this.death)return;
-    if (this.nearGym && !this.carried) { this.training = !this.training;if(this.training){this.x=BALANCE.gymX;this.z=BALANCE.gymZ;} this.revision++; return; }
+    if (this.nearGym && !this.carried) { this.toggleTraining(); return; }
     if (this.launch || this.now()<this.knockedUntil) return;
     if (this.carried) {
       this.carried.x = this.x;

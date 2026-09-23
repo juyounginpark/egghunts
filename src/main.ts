@@ -68,6 +68,7 @@ tutorial.innerHTML = '<div><b id="tutorial-title"></b><p id="tutorial-copy"></p>
 topHud.append(tutorial);
 $("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">10</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 10초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
+$("action").insertAdjacentHTML('beforebegin','<button id="train-now" class="secondary" hidden>운동하기</button>');
 bottomHud.id = "bottom-hud";
 $("shell").append(bottomHud);
 const inventory = document.createElement("section");
@@ -225,6 +226,8 @@ function updateHud() {
   $("cycle-clock").textContent=game.isNight?`☾ 밤 · 아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`☀ 낮 · 밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
+  $("train-now").hidden=tab!=='explore'||!game.isAtBase||!!game.carried||!!game.death||!!game.returnReward;
+  $("train-now").textContent=game.training?'운동 그만하기':'운동하기';
   if(game.training) $("speed-value").textContent += ` · +${num(game.effectiveTrainingRate,3)}/초`;
   const step=game.save.tutorial??0;
   $("tutorial").hidden=step>=5 || !!game.returnReward || game.result!==null;
@@ -352,6 +355,11 @@ function showSettings() {
 document.addEventListener("click", async (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("button");
   if (!b || !ready) return;
+  if(b.id==='train-now'){
+    if(tab!=='explore'||paused||!$("modal").hidden||game.returnReward||claiming)return;
+    if(game.toggleTraining()){input.reset();feedback(null);updateHud();void save();}
+    return;
+  }
   if((b.id==='virtual-ad'||b.id==='revive-ad')&&!virtualAd){
     if(b.id==='revive-ad'&&!game.beginReviveAd()){game.tick(0);updateHud();return;}
     virtualAdPurpose=b.id==='revive-ad'?'revive':'currency';

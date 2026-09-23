@@ -16,6 +16,8 @@ export const BALANCE = {
   virtualAdReward:30,
   eggSellRatio:.4,
   petSellPrices:[10,20,45,100,220,500,1500],
+  petIncomeSeconds:10,
+  petIncomeByTier:[1,2,4,8,16,32,64],
   storeX:-4.5,
   storeZ:4,
   storeRadius:1.3,
