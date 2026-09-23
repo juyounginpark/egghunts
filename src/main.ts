@@ -25,7 +25,7 @@ import type {TraitId} from "./progression";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
-app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header><div class="brand"><img class="brand-mark" src="${import.meta.env.BASE_URL}models/alkong.png" alt="" /><div><small>작은 발견, 커다란 모험</small><strong>알콩 원정대</strong></div></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></header><div class="status"><span id="level">LV. 01 <b>새싹 탐험가</b></span><span class="dust"><b id="dust">0</b><small>별가루</small></span></div><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
+app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header id="main-hud" aria-label="탐험가 정보"><div class="hud-player"><img class="hud-avatar" src="${import.meta.env.BASE_URL}models/alkong.png" alt="탐험가"/><div class="hud-level"><strong id="level">LV.1</strong><div id="xp-track" role="progressbar" aria-label="경험치" aria-valuemin="0"><i id="xp-fill"></i></div></div></div><div id="cycle-clock"><span id="cycle-phase"></span><span id="cycle-remaining"></span></div><div class="hud-wallet"><div class="dust"><span aria-hidden="true">${uiIcon('dust')}</span><b id="dust">0</b><small>별가루</small></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></div></header><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
   icons,
 )
   .map(
@@ -43,7 +43,6 @@ topHud.id = "top-hud";
 $("shell").append(topHud);
 for (const el of [
   document.querySelector("header")!,
-  document.querySelector(".status")!,
   $("expedition"),
   $("hatch-info"),
 ])
@@ -56,8 +55,13 @@ announcement.setAttribute("role", "status");
 topHud.append(announcement);
 const speedHud = document.createElement("div");
 speedHud.id = "speed-hud";
-speedHud.innerHTML = '<span id="speed-value"></span><span id="day-clock"></span><span id="cycle-clock"></span>';
-topHud.append(speedHud);
+speedHud.innerHTML = `<div class="speed-heading"><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><strong id="speed-value"></strong></div><span class="speed-label">이동 속도</span><small id="speed-help">운동으로 증가</small><span id="day-clock"></span>`;
+const hudContext=document.createElement('div');
+hudContext.id='hud-context';
+topHud.append(hudContext);
+const hudPlace=document.createElement('div');hudPlace.className='hud-place';
+hudPlace.append($('expedition'),$('carry-chip'));
+hudContext.append(speedHud,hudPlace);
 topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="farm-progress"><button data-tab="traits" id="trait-select"></button></div><div id="hazard-cue" role="status" hidden></div>');
 $("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="플레이어 체력" aria-valuemin="0" hidden><div class="health-track"><i id="hp-fill"></i></div></div>');
 $("shell").insertAdjacentHTML('beforeend','<div id="region-banner" role="status" aria-live="polite" hidden><small id="region-banner-number"></small><strong id="region-banner-name"></strong><span id="region-banner-speed"></span></div><div id="health-edge"></div><div id="ink-effect" hidden></div><div id="level-burst" hidden></div>');
@@ -79,12 +83,14 @@ inventory.innerHTML =
   '<div class="inventory-heading"><strong id="inventory-count">보관함 0 / 6</strong><span>알을 선택해 부화 준비</span></div><div id="egg-queue"></div><div id="pet-effects"></div>';
 for (const el of [$("hint"), inventory, $("controls"), $("risk")])
   bottomHud.append(el);
+$('controls').append($('farm-progress'));
+bottomHud.insertBefore(tutorial,$('controls'));
 let bannerStage=0,bannerUntil=0;
 let lastAnnouncement = 0,
   announcementTimer = 0;
 const platform = new Platform();
 const multiplayer=new Multiplayer(time=>{if(!qa)platform.offset=time-Date.now();},toast);
-document.querySelector("header")!.insertBefore(document.querySelector(".dust")!, $("settings"));
+
 const qa = import.meta.env.DEV && new URLSearchParams(location.search).get("qa") === "true" ? await import("./qa") : null;
 if (qa) { platform.now = qa.now; platform.key="alkong:v1:qa"; }
 let game: GameState,
@@ -101,6 +107,7 @@ let game: GameState,
   hiddenAt = 0,
   toastTimer = 0;
 const audio=new GameAudio();
+function applyAudioSettings(){audio.setVolume(game.save.settings.volume??1,!game.save.settings.sound);}
 let heardHazards=new Set<number>();
 let lastHeartbeat=0;
 let bossAlertUntil=0,wasPursued=false;
@@ -226,8 +233,14 @@ function updateHud() {
   $("health-hud").dataset.state=hpRatio<=PROGRESSION.lowHP?'danger':hpRatio<=PROGRESSION.warningHP?'warning':'safe';
   $("xp-value").textContent=`LV.${game.level} · ${num(game.progression.xp)} / ${num(game.progression.requiredXP)} XP · 귀환 +${num(game.progression.pendingXP)}`;
   $("xp-value").hidden=!outside;
+  $('level').textContent=`LV.${game.level}`;
+  $('xp-fill').style.width=`${Math.max(0,Math.min(100,game.progression.xp/game.progression.requiredXP*100))}%`;
+  $('xp-track').setAttribute('aria-valuenow',String(game.progression.xp));
+  $('xp-track').setAttribute('aria-valuemax',String(game.progression.requiredXP));
+  $('xp-track').setAttribute('aria-valuetext',$('xp-value').textContent??'');
+  $('xp-track').title=$('xp-value').textContent??'';
   $("farm-progress").hidden=!game.isAtBase||tab!=='explore';
-  $("trait-select").textContent=`LV.${game.level} · 특성 ${game.traitPoints}`;
+  $("trait-select").textContent=`특성 ${game.traitPoints}`;
   $("shell").classList.toggle('low-health',outside&&hpRatio<=PROGRESSION.lowHP);
   $("shell").classList.toggle('recent-hit',outside&&game.now()-game.hitAt<350);
   $("ink-effect").hidden=game.effects.ink<=0;
@@ -245,13 +258,14 @@ function updateHud() {
   if(game.death&&!virtualAd&&document.getElementById('death-count'))$('death-count').textContent=`${game.deathChoiceRemaining}초 후 자동 복귀`;
   $("night-curtain").hidden = true;
   $("night-count").textContent = String(Math.max(0, Math.ceil((game.nightUntil-game.now())/1000)));
-  $("speed-value").textContent = `속도 ${num(game.speed,2)}`;
+  $("speed-value").textContent = num(game.speed,2);
   $("day-clock").textContent = `권장 스피드 ${num(game.recommendedSpeed,1)}`;
-  $("cycle-clock").textContent=game.isNight?`☾ 밤 · 아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`☀ 낮 · 밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;
+  $('cycle-phase').textContent=game.isNight?'☾ 밤':'☀ 낮';
+  $('cycle-remaining').textContent=game.isNight?`아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.training||!!game.carried||!!game.death||!!game.returnReward;
-  if(game.training) $("speed-value").textContent += ` · +${num(game.effectiveTrainingRate,3)}/초`;
+  $('speed-help').textContent=game.training?`운동 중 +${num(game.effectiveTrainingRate,3)}/초`:'운동으로 증가';
   const step=game.save.tutorial??0;
   $("tutorial").hidden=step>=5 || !!game.returnReward || game.result!==null;
   $("tutorial-title").textContent = ["화면을 밀어 이동해요","알을 찾아요","큰 알일수록 느려져요","알을 두드려요","펫과 함께 자라요"][step]??'';
@@ -296,6 +310,8 @@ function updateHud() {
     );
   }
   $("dust").textContent = num(Math.floor(game.save.dust));
+  if(game.save.dust>=10000)$('dust').textContent=new Intl.NumberFormat('ko-KR',{notation:'compact',maximumFractionDigits:1}).format(Math.floor(game.save.dust));
+  $('dust').parentElement!.title=`별가루 ${num(Math.floor(game.save.dust))}`;
   $("timer").textContent = num(game.recommendedSpeed,1);
   $("timer-label").textContent = "권장 스피드";
   $("timer-fill").style.width = `${Math.min(100,game.speed/game.recommendedSpeed*100)}%`;
@@ -382,7 +398,7 @@ function showSettings() {
   void save();
   $("modal").hidden = false;
   $("modal").innerHTML =
-    `<div class="settings-card"><span class="tag">TAKE A LITTLE BREAK</span><h1>잠깐 쉬어가요</h1><p>진행 상황은 자동으로 저장돼요. 탐험 제한시간은 없어요.</p><label>BGM / 효과음 <input id="sound-setting" type="checkbox" ${game.save.settings.sound ? "checked" : ""}></label><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
+    `<div class="settings-card"><span class="tag">TAKE A LITTLE BREAK</span><h1>잠깐 쉬어가요</h1><p>진행 상황은 자동으로 저장돼요. 탐험 제한시간은 없어요.</p><fieldset class="sound-settings"><legend>사운드</legend><label for="volume-setting">전체 볼륨 <output id="volume-value" for="volume-setting">${Math.round((game.save.settings.volume??1)*100)}%</output></label><input id="volume-setting" type="range" min="0" max="100" step="1" value="${Math.round((game.save.settings.volume??1)*100)}" aria-label="배경음악과 효과음 볼륨"/><label for="sound-setting">음소거 <input id="sound-setting" type="checkbox" ${!game.save.settings.sound ? "checked" : ""}></label><small>배경음악 · 효과음에 함께 적용</small></fieldset><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
   $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label><p>${platform.native?"토스 게임 로그인 연결됨":"브라우저 · 기기 저장"}</p><button id="multiplayer-connect" class="secondary">${multiplayer.connected?"친구 연결 종료":"게스트 로그인 · 친구와 걷기"}</button><small>같은 서버에서 이동 공유 · 알과 수집은 각자 진행</small>`);
   ($("appearance-setting") as HTMLSelectElement).value=String(game.save.appearance??0);
 }
@@ -483,12 +499,14 @@ document.addEventListener("click", async (e) => {
       toast((err as Error).message);
       }
     game.save.settings = {
-      sound: ($("sound-setting") as HTMLInputElement).checked,
+      sound: !($("sound-setting") as HTMLInputElement).checked,
+      volume: Number(($("volume-setting") as HTMLInputElement).value)/100,
       haptic: ($("haptic-setting") as HTMLInputElement).checked,
       quality: ($("quality-setting") as HTMLSelectElement).value as
         "high" | "low",
     };
     world.quality(game.save.settings.quality === "low");
+    applyAudioSettings();
     if(!game.save.settings.sound)void audio.suspend();else audio.unlock();
     paused = false;
     $("modal").hidden = true;
@@ -505,6 +523,21 @@ document.addEventListener("click", async (e) => {
 });
 $("action").addEventListener("click", () => void action());
 $("settings").addEventListener("click", showSettings);
+document.addEventListener('input',e=>{
+  const control=e.target as HTMLInputElement;
+  if(!ready||!['sound-setting','volume-setting'].includes(control.id))return;
+  game.save.settings.sound=!($('sound-setting') as HTMLInputElement).checked;
+  game.save.settings.volume=Number(($('volume-setting') as HTMLInputElement).value)/100;
+  $('volume-value').textContent=`${Math.round(game.save.settings.volume*100)}%`;
+  applyAudioSettings();
+  if(game.save.settings.sound)audio.unlock();
+});
+document.addEventListener('change',e=>{
+  if(ready&&['sound-setting','volume-setting'].includes((e.target as HTMLElement).id)){
+    if(game.save.settings.sound)audio.play('ui');
+    void save();
+  }
+});
 $("world").addEventListener("pointerdown", () => {
   if (tab === "hatchery") action();
 });
@@ -540,6 +573,7 @@ async function start() {
     await platform.login();
     const state = await platform.load();
     game = new GameState(state, () => platform.now(), qa?.random);
+    applyAudioSettings();
     multiplayer.onHit=()=>{}; // Cooperative movement only; no PvP damage in expedition mode.
     game.offline((platform.now() - state.lastSavedAt) / 1000);
     world = new World($("world"));

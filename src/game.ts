@@ -81,7 +81,7 @@ export type Save = {
     hp?:number;
     sinceHit?:number;
   } | null;
-  settings: { sound: boolean; haptic: boolean; quality: "high" | "low" };
+  settings: { sound: boolean; volume?:number; haptic: boolean; quality: "high" | "low" };
 };
 export function freshSave(now: number): Save {
   return {
@@ -100,7 +100,7 @@ export function freshSave(now: number): Save {
     best: 0,
     lastSavedAt: now,
     expedition: null,
-    settings: { sound: true, haptic: true, quality: "high" },
+    settings: { sound: true, volume:1, haptic: true, quality: "high" },
   };
 }
 export function parseSave(raw: string | null, now: number): Save {
@@ -173,6 +173,7 @@ export function parseSave(raw: string | null, now: number): Save {
     !["high", "low"].includes(s.settings.quality)
   )
     throw new Error("저장 데이터를 읽을 수 없어요. 원본은 유지됩니다.");
+  s.settings.volume=typeof s.settings.volume==='number'&&Number.isFinite(s.settings.volume)?Math.max(0,Math.min(1,s.settings.volume)):1;
   if (
     s.expedition &&
     (!finite(s.expedition.deadline) ||

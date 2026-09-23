@@ -25,6 +25,15 @@ const sounds:Record<GameSound,Note[]>={
 /** Small synthesized cues: no downloaded audio, voices are bounded and disconnected. */
 export class GameAudio{
  private context:AudioContext|undefined;
+ private master:GainNode|undefined;
+ private volume=1;
+ setVolume(value:number,muted=false){
+  this.volume=muted?0:Math.max(0,Math.min(1,Number.isFinite(value)?value:1));
+  if(this.master&&this.context){
+   this.master.gain.cancelScheduledValues(this.context.currentTime);
+   this.master.gain.setTargetAtTime(this.volume,this.context.currentTime,.015);
+  }
+ }
  private last=new Map<GameSound,number>();
  private voices=0;
  private musicMode:'calm'|'chase'|'silent'='silent';
@@ -33,7 +42,7 @@ export class GameAudio{
  private nextBeat=0;
  music(mode:'calm'|'chase'|'silent',pressure=0){
   const ctx=this.context;if(!ctx||ctx.state!=='running')return;
-  if(!this.musicBus){this.musicBus=ctx.createGain();this.musicBus.gain.value=0;this.musicBus.connect(ctx.destination);}
+  if(!this.musicBus){this.musicBus=ctx.createGain();this.musicBus.gain.value=0;this.musicBus.connect(this.master!);}
   if(mode!==this.musicMode){
    this.musicMode=mode;this.beat=0;this.nextBeat=ctx.currentTime+.04;
    this.musicBus.gain.cancelScheduledValues(ctx.currentTime);
@@ -57,7 +66,11 @@ export class GameAudio{
   gain.gain.exponentialRampToValueAtTime(volume,at+.012);gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
   osc.connect(gain).connect(this.musicBus!);osc.onended=()=>{osc.disconnect();gain.disconnect();};osc.start(at);osc.stop(at+duration+.02);
  }
- unlock(){try{this.context??=new AudioContext();void this.context.resume().catch(()=>{});}catch{/* Sound is optional. */}}
+ unlock(){try{
+  this.context??=new AudioContext();
+  if(!this.master){this.master=this.context.createGain();this.master.gain.value=this.volume;this.master.connect(this.context.destination);}
+  void this.context.resume().catch(()=>{});
+ }catch{/* Sound is optional. */}}
  suspend(){return this.context?.suspend().catch(()=>{});}
  play(sound:GameSound,stage=1){
   const ctx=this.context;if(!ctx||ctx.state!=='running'||this.voices>18)return;
@@ -69,7 +82,7 @@ export class GameAudio{
    if(end)oscillator.frequency.exponentialRampToValueAtTime(end*pitch,at+duration);
    gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(wave==='sine'?.045:.018,at+.008);
    gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
-   oscillator.connect(gain).connect(ctx.destination);this.voices++;
+   oscillator.connect(gain).connect(this.master!);this.voices++;
    oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();this.voices--;};
    oscillator.start(at);oscillator.stop(at+duration+.02);
   }
