@@ -537,11 +537,14 @@ export class GameState {
   get distance() {
     return Math.hypot(this.x, this.z);
   }
+  canReachEgg(e:WorldEgg) {
+    return Math.hypot(e.x-this.x,e.z-this.z)<BALANCE.interaction+(e.id.startsWith('net-')?0:Math.max(0,RARITIES[EGGS[e.type].tier].scale*.3-.3));
+  }
   get near() {
     const behind = (e: WorldEgg) => (e.x-this.x)*this.facing.x + (e.z-this.z)*this.facing.z < -0.001 ? 1 : 0;
     return this.world
       .filter(
-        (e) => Math.hypot(e.x - this.x, e.z - this.z) < BALANCE.interaction + Math.max(0, RARITIES[EGGS[e.type].tier].scale * .3 - .3),
+        (e) => this.canReachEgg(e),
       )
       .sort(
         (a, b) =>
@@ -689,7 +692,7 @@ export class GameState {
     this.spawn();
     this.resetBosses();
     const secret=this.world.some(e=>EGGS[e.type].tier===6);
-    this.announcement=secret?'✦ SECRET · 아침에 희귀 알을 찾아보세요':'밤에는 농장에서 쉬어요 · 아침에 입구가 열려요';
+    this.announcement=secret?'SECRET · 아침에 희귀 알을 찾아보세요':'밤에는 농장에서 쉬어요 · 아침에 입구가 열려요';
     this.announcementId++;this.emit('night_refresh');this.revision++;
   }
   tick(dt:number){

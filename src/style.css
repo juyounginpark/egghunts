@@ -311,20 +311,25 @@ header .dust { margin-left:auto; margin-right:8px; }
 @media(max-width:380px){#boss-alert{font-size:16px;padding:8px 12px}#boss-alert[data-phase="awakened"]{font-size:20px}}
 @media(prefers-reduced-motion:reduce){#boss-pressure{animation:none;opacity:.65}#boss-pressure::before,#boss-pressure.awakening::after{display:none}#boss-alert[data-phase="awakened"]{animation:none}}
 
-/* Large, picture-first controls. Movement starts wherever the world is touched. */
+/* Compact controls keep their slots when the joystick floats or a button hides. */
 #world { touch-action:none; }
-#joystick[data-floating] { position:fixed; width:104px; height:104px; transform:translate(-50%,-50%); z-index:12; pointer-events:none; opacity:.9; }
-#joystick[data-floating] #knob { width:44px; height:44px; }
-.joystick-wrap { width:86px; height:86px; flex:0 0 86px; }
-#controls { min-height:100px; gap:12px; }
-#action { position:relative; width:96px; height:96px; flex:0 0 96px; border-radius:16px; gap:8px; }
-#action-icon { font-size:36px; }
-#action-icon img { width:44px; height:44px; object-fit:contain; image-rendering:pixelated; }
-#action-label { font-size:14px; font-weight:900; }
+#joystick[data-floating] { position:fixed; transform:translate(-50%,-50%); z-index:12; pointer-events:none; opacity:.9; }
+.joystick-wrap { grid-column:1; width:64px; height:64px; }
+#joystick { width:64px; height:64px; box-sizing:border-box; clip-path:none; border-radius:8px; box-shadow:3px 3px 0 #52664a; }
+#knob { width:30px; height:30px; }
+#controls { display:grid; grid-template-columns:64px minmax(64px,1fr) 64px; align-items:center; min-height:68px; gap:12px; }
+#controls > * { grid-row:1; }
+#action,#train-now { width:64px; height:64px; box-sizing:border-box; margin:0; padding:4px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; border-radius:8px; font-size:11px; line-height:1.2; box-shadow:3px 3px 0 #52664a; }
+#action { position:relative; grid-column:3; }
+#train-now { grid-column:2; justify-self:center; }
+#action-icon { display:flex; align-items:center; justify-content:center; width:28px; height:28px; }
+#action-icon img,#train-now img { width:28px; height:28px; object-fit:contain; image-rendering:pixelated; }
+#action-label { font-size:11px; font-weight:900; white-space:nowrap; }
 #action.preparing { background:conic-gradient(#ffc964 var(--pickup-progress),#f7efd9 0); border-color:#cf922c; }
-#action.preparing #action-icon { font-size:30px; }
-#train-now { width:76px; height:76px; flex-basis:76px; font-size:14px; }
-#train-now img { display:block; width:32px; height:32px; margin:0 auto 4px; image-rendering:pixelated; }
+.ui-icon { display:inline-block; width:24px; height:24px; vertical-align:middle; }
+#action-icon .ui-icon { width:28px; height:28px; }
+#settings { display:grid; place-items:center; }
+#train-now img { display:block; margin:0; }
 .brand > div,.brand small,#region-sub,#world-label,#risk,#hint,#xp-value,#day-clock,#tutorial-copy,#expedition .timer-top,#expedition .track { display:none!important; }
 #top-hud { gap:6px; }
 #expedition .region h1 { font-size:18px; margin:2px 0; }
@@ -339,14 +344,27 @@ nav button img { width:32px; height:32px; }
 .boss-warning-card { width:min(340px,90vw); padding:24px; border-radius:20px; background:#fff7dd; text-align:center; box-shadow:0 8px 0 #6b4934; }
 .boss-warning-art { display:flex; align-items:center; justify-content:center; gap:18px; font-size:36px; }
 .boss-warning-art img { width:84px; height:84px; object-fit:contain; image-rendering:pixelated; }
-.warning-boss { font-size:68px; }
+.warning-boss .ui-icon { width:68px; height:68px; color:#8a493e; }
 .boss-warning-card h1 { margin:18px 0; font-size:25px; line-height:1.4; }
 .boss-warning-card p { margin:0 0 20px; font-size:17px; line-height:1.5; }
 .boss-warning-card button { width:100%; min-height:58px; font-size:19px; }
 #return-reward.rare-reward { background:radial-gradient(ellipse at center,#30234d66,#171325c7); }
 #return-reward.rare-reward h1 { color:var(--rarity-color); text-shadow:0 2px 0 #28213c,0 0 18px var(--rarity-color); font-size:28px; }
 #return-reward.rare-reward #reward-name { color:#fff6d8; font-size:18px; }
-@media(max-height:650px){#controls{min-height:82px}#action{width:80px;height:80px;flex-basis:80px}#action-icon{font-size:28px}#train-now{width:64px;height:64px;flex-basis:64px}#tutorial-icon{width:32px;height:32px}#tutorial{padding:5px 8px}}
+@media(max-height:650px){#tutorial-icon{width:32px;height:32px}#tutorial{padding:5px 8px}}
 
 #shell[data-mode="base"],#shell[data-mode="expedition"] { touch-action:none; }
-@media(max-width:380px){.joystick-wrap{width:76px;height:76px;flex-basis:76px}#joystick:not([data-floating]){width:76px;height:76px}#controls{gap:8px}#train-now{width:64px;height:64px;flex-basis:64px;margin:0 4px}#action{width:80px;height:80px;flex-basis:80px}}
+@media(max-width:380px){#controls{gap:8px}}
+
+/* Shared silhouettes and sizing by role across HUD, menus and dialogs. */
+#shell button { border-radius:8px; }
+#action.available { box-shadow:3px 3px 0 #896c3b; }
+#knob { border-radius:8px; }
+nav { align-items:stretch; }
+nav button { flex:1 1 0; min-width:0; min-height:0; height:100%; padding:4px; gap:4px; font-size:11px; }
+nav button img { width:28px; height:28px; }
+#panel .small-btn,#panel .upgrade button,#panel > button,.settings-card button,.boss-warning-card button,.result-card button,#reward-ok { min-height:44px; padding:10px 14px; font-size:14px; line-height:1.4; }
+#settings,#tutorial-skip { width:44px; height:44px; min-width:44px; padding:0; }
+.friend,.upgrade,.trail-card { align-items:center; gap:12px; }
+.friend > div,.upgrade > div,.trail-card > div { flex:1; min-width:0; }
+.friend > button,.upgrade > button,.trail-card > button { flex:0 0 96px; width:96px; }

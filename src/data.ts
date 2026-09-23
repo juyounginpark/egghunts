@@ -275,9 +275,7 @@ const LEGACY_MONGLES = Array.from({ length: 100 }, (_, i) => {
     grid: [10, 16, 24, 32, 48, 64, 100][tier],
     scale: [0.45, 0.7, 1.05, 1.65, 2.4, 3.4, 4.5][tier],
     color: colors[variant],
-    icon: ["🌱", "🐰", "🐉", "🦊", "🐱", "🐻", "💧", "🍄", "🐝", "🐥"][
-      speciesId
-    ],
+    icon: `pet-${i}`,
   };
 });
 // Append stage-exclusive IDs; existing pets, equipment and rewards never change identity.
@@ -288,59 +286,59 @@ export const MONGLES = [...LEGACY_MONGLES, ...STAGE_PET_ROWS.map((pet,i)=>{
     ...pet,id:`mongle-${100+i}`,region:Math.floor((pet.stageId-1)/4),species:pet.slot,
     clickMultiplier:ability===0?bonus:1,autoMultiplier:ability===2?bonus:1,speedMultiplier:ability===1?bonus:1,
     effect:`${['클릭','스피드','오토'][ability]} ×${bonus.toFixed(1)}`,
-    grid:[10,16,24,32,48,64,100][pet.tier],scale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:'✦',
+    grid:[10,16,24,32,48,64,100][pet.tier],scale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
   };
 })];
 export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>100+(i+1)*50);
 export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id>=100?'svg':'png'}`;}
 export const UPGRADES = {
-  health: {name:"든든한 체력",description:"최대 HP +20",icon:"♥",cost:30,growth:1.6},
+  health: {name:"든든한 체력",description:"최대 HP +20",icon:"pack",cost:30,growth:1.6},
   training: {
     name: "러닝머신 모터",
     description: "운동 증가량 +0.01 /초",
-    icon: "↗",
+    icon: "gym",
     cost: 45,
     growth: 1.65,
   },
   speed: {
     name: "가벼운 발걸음",
     description: "이동속도 +12%",
-    icon: "↗",
+    icon: "alkong",
     cost: 25,
     growth: 1.6,
   },
   carry: {
     name: "튼튼한 배낭",
     description: "운반속도 +8%",
-    icon: "▣",
+    icon: "pack",
     cost: 35,
     growth: 1.7,
   },
   tap: {
     name: "통통 망치",
     description: "터치 피해 +2",
-    icon: "⚒",
+    icon: "hammer",
     cost: 20,
     growth: 1.5,
   },
   damage: {
     name: "병아리 부리",
     description: "자동 타격 피해 +2",
-    icon: "✦",
+    icon: "pet-9",
     cost: 30,
     growth: 1.65,
   },
   rate: {
     name: "태엽 감기",
     description: "초당 타격 +0.5회",
-    icon: "◷",
+    icon: "egg-3",
     cost: 50,
     growth: 1.8,
   },
   time: {
     name: "바람 나침반",
     description: "탐험 시간 +5초",
-    icon: "⌁",
+    icon: "compass",
     cost: 40,
     growth: 1.6,
   },

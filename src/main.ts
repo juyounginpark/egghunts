@@ -20,11 +20,12 @@ import { panelHTML } from "./panels";
 import { Multiplayer } from "./multiplayer";
 import { VirtualAd } from "./virtual-ad";
 import { formatNumber as num } from "./format";
+import { uiIcon } from './ui-icons';
 import type {TraitId} from "./progression";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
-app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header><div class="brand"><img class="brand-mark" src="${import.meta.env.BASE_URL}models/alkong.png" alt="" /><div><small>작은 발견, 커다란 모험</small><strong>알콩 원정대</strong></div></div><button id="settings" class="icon-btn" aria-label="설정">⚙</button></header><div class="status"><span id="level">LV. 01 <b>새싹 탐험가</b></span><span class="dust">✦ <b id="dust">0</b><small>별가루</small></span></div><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">⌕</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
+app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header><div class="brand"><img class="brand-mark" src="${import.meta.env.BASE_URL}models/alkong.png" alt="" /><div><small>작은 발견, 커다란 모험</small><strong>알콩 원정대</strong></div></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></header><div class="status"><span id="level">LV. 01 <b>새싹 탐험가</b></span><span class="dust"><b id="dust">0</b><small>별가루</small></span></div><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
   icons,
 )
   .map(
@@ -58,14 +59,14 @@ speedHud.id = "speed-hud";
 speedHud.innerHTML = '<span id="speed-value"></span><span id="day-clock"></span><span id="cycle-clock"></span>';
 topHud.append(speedHud);
 topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="farm-progress"><button data-tab="traits" id="trait-select"></button></div><div id="hazard-cue" role="status" hidden></div>');
-$("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="플레이어 체력" aria-valuemin="0" hidden><span aria-hidden="true">♥</span><div class="health-track"><i id="hp-fill"></i></div></div>');
+$("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="플레이어 체력" aria-valuemin="0" hidden><div class="health-track"><i id="hp-fill"></i></div></div>');
 $("shell").insertAdjacentHTML('beforeend','<div id="region-banner" role="status" aria-live="polite" hidden><small id="region-banner-number"></small><strong id="region-banner-name"></strong><span id="region-banner-speed"></span></div><div id="health-edge"></div><div id="ink-effect" hidden></div><div id="level-burst" hidden></div>');
 topHud.insertBefore($("region-banner"),$("hazard-cue"));
 $("shell").insertAdjacentHTML('beforeend','<div id="boss-pressure" aria-hidden="true" hidden></div><div id="boss-alert" role="status" aria-live="polite" hidden><strong id="boss-alert-title"></strong><small id="boss-alert-detail" aria-hidden="true"></small></div>');
 $("world").insertAdjacentHTML('beforeend','<div id="night-sky" aria-hidden="true"><span>☾</span></div>');
 const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
-tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">✕</button>`;
+tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">×</button>`;
 topHud.append(tutorial);
 $("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 15초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
@@ -132,12 +133,14 @@ function warnAboutBoss(){
   const egg=game.near;if(!egg||game.save.bossWarningSeen||!$("modal").hidden)return false;
   input.reset();paused=true;pickupPreparation=null;
   $("modal").hidden=false;$("modal").dataset.kind='boss-warning';
-  $("modal").innerHTML=`<section class="boss-warning-card" role="dialog" aria-modal="true" aria-labelledby="boss-warning-title" aria-describedby="boss-warning-size"><div class="boss-warning-art" aria-hidden="true"><img src="${eggIcon(egg)}" alt=""/><span>➜</span><span class="warning-boss">👹</span></div><h1 id="boss-warning-title">알을 들면<br>보스가 쫓아와요!</h1><p id="boss-warning-size">큰 알일수록<br>이동 속도가 느려져요.</p><button id="boss-warning-ok" class="primary">알겠어요!</button></section>`;
+  $("modal").innerHTML=`<section class="boss-warning-card" role="dialog" aria-modal="true" aria-labelledby="boss-warning-title" aria-describedby="boss-warning-size"><div class="boss-warning-art" aria-hidden="true"><img src="${eggIcon(egg)}" alt=""/><span>→</span><span class="warning-boss">${uiIcon('boss')}</span></div><h1 id="boss-warning-title">알을 들면<br>보스가 쫓아와요!</h1><p id="boss-warning-size">큰 알일수록<br>이동 속도가 느려져요.</p><button id="boss-warning-ok" class="primary">알겠어요!</button></section>`;
   return true;
 }
 async function action(preparedId?:string) {
   if (!ready || paused || !$("modal").hidden || game.returnReward || game.death) return;
   if(claiming||game.now()<game.knockedUntil)return;
+  const preparedEgg=preparedId?game.world.find(e=>e.id===preparedId):undefined;
+  if(preparedId&&(!preparedEgg||!game.canReachEgg(preparedEgg)||game.carried))return;
   if (tab === "hatchery") {
     if (game.tap()) {
       world.hitAt = performance.now();
@@ -145,23 +148,25 @@ async function action(preparedId?:string) {
       feedback(null);
     }
   } else if (tab === "explore") {
-    if(!game.carried&&game.near&&!game.isAtBase){
+    const targetEgg=preparedEgg??game.near;
+    if(!game.carried&&targetEgg&&!game.isAtBase){
       if(warnAboutBoss())return;
-      const egg=game.near,duration=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier];
+      const egg=targetEgg,duration=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier];
       if(duration>0&&preparedId!==egg.id){
-        if(pickupPreparation){pickupPreparation=null;return;}
+        if(pickupPreparation)return;
+        input.reset();
         pickupPreparation={id:egg.id,remaining:duration,duration,x:game.x,z:game.z,hitAt:game.hitAt};
         feedback('tap');return;
       }
     }
     if(!game.carried&&!game.near&&game.nearStore){setTab('store');return;}
-    if(!game.carried&&game.near?.id.startsWith('net-')){
+    if(!game.carried&&targetEgg?.id.startsWith('net-')){
       claiming=true;
-      try{const egg=await multiplayer.claim(game.near.id);game.pickup({...egg,hp:EGGS[egg.type].hp,distance:Math.abs(egg.z),expires:game.nightAt});}
+      try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:EGGS[egg.type].hp,distance:Math.abs(egg.z),expires:game.nightAt});}
       catch(err){toast(String(err));}finally{claiming=false;}return;
     }
     if(!game.carried&&!game.near&&!game.nearGym){world.swingBat(game.now());feedback('swing');return;}
-    game.interact();
+    if(preparedEgg)game.pickup(preparedEgg);else game.interact();
     feedback(null);
     platform.track("egg_interact", { carrying: game.carried ? 1 : 0 });
   }
@@ -228,7 +233,7 @@ function updateHud() {
   $("ink-effect").hidden=game.effects.ink<=0;
   $("hazard-cue").hidden=true;
   $("level-burst").hidden=game.now()-game.levelUpAt>1800;
-  $("level-burst").textContent=`✦ LEVEL UP · ${game.level} ✦`;
+  $("level-burst").textContent=`LEVEL UP · ${game.level}`;
   if(!game.death&&$("modal").dataset.kind==='death'){
     if(virtualAdPurpose==='revive')virtualAd=null;
     paused=false;$("modal").hidden=true;$("modal").dataset.kind='';
@@ -240,7 +245,7 @@ function updateHud() {
   if(game.death&&!virtualAd&&document.getElementById('death-count'))$('death-count').textContent=`${game.deathChoiceRemaining}초 후 자동 복귀`;
   $("night-curtain").hidden = true;
   $("night-count").textContent = String(Math.max(0, Math.ceil((game.nightUntil-game.now())/1000)));
-  $("speed-value").textContent = `⚡ ${num(game.speed,2)}`;
+  $("speed-value").textContent = `속도 ${num(game.speed,2)}`;
   $("day-clock").textContent = `권장 스피드 ${num(game.recommendedSpeed,1)}`;
   $("cycle-clock").textContent=game.isNight?`☾ 밤 · 아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`☀ 낮 · 밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
@@ -315,9 +320,10 @@ function updateHud() {
   $("action-label").textContent = pickupPreparation?'꺼내는 중':tab === "hatchery" ? "두드리기" : !game.carried&&game.near&&BALANCE.rareEggPickupSeconds[EGGS[game.near.type].tier]>0?'알 꺼내기':game.action;
   $("action").classList.toggle('preparing',!!pickupPreparation);
   $("action").style.setProperty('--pickup-progress',`${pickupPreparation?(1-pickupPreparation.remaining/pickupPreparation.duration)*100:0}%`);
-  $("action").setAttribute('aria-label',pickupPreparation?'희귀 알 꺼내는 중, 이동하거나 다시 누르면 취소':$("action-label").textContent??'행동');
-  const actionEgg=tab==='explore'?(game.carried??game.near):null;
-  const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:tab==='hatchery'?'⚒':game.nearStore?'✦':game.nearGym?'↗':'⚒';
+  $("action").setAttribute('aria-label',pickupPreparation?'희귀 알 꺼내는 중, 이동하면 취소':$("action-label").textContent??'행동');
+  const actionEgg=tab==='explore'?(game.carried??(pickupPreparation?game.world.find(e=>e.id===pickupPreparation.id):game.near)):null;
+  const actionModel=tab==='hatchery'?'hammer':game.nearStore?'shop':game.nearGym?'gym':null;
+  const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
   if($("action-icon").dataset.icon!==actionIcon){$("action-icon").dataset.icon=actionIcon;$("action-icon").innerHTML=actionIcon;}
   $("action").classList.toggle(
     "available",
@@ -343,7 +349,7 @@ function updateHud() {
     input.reset();
     const m = MONGLES[game.result];
     $("modal").innerHTML =
-      `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><div class="sparkles">✦ · ✧ · ✦</div><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit">${m.effect}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
+      `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit">${m.effect}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
     $("modal").hidden = false;
     platform.track("hatch_complete", { mongle: m.id });
     feedback(null);
@@ -396,7 +402,7 @@ document.addEventListener("click", async (e) => {
     virtualAdPurpose=b.id==='revive-ad'?'revive':'currency';
     virtualAd=new VirtualAd(()=>game.now());paused=true;input.reset();
     $("modal").hidden=false;
-    $("modal").innerHTML=`<section class="virtual-ad-card" role="dialog" aria-modal="true" aria-label="가상 광고"><button id="virtual-ad-close" aria-label="광고 닫고 보상 받기" hidden>닫기 ✕</button><span class="tag">TEST AD</span><h1>이것은 가상 광고입니다.</h1><p>실제 광고가 아닌 보상 흐름 테스트입니다.</p><strong id="ad-count">10</strong><p>잠시 후 오른쪽 위에 닫기 버튼이 나타나요.</p><small>${virtualAdPurpose==='revive'?'완료 보상 · HP 전부 회복하고 부활':`완료 보상 · 별가루 ${BALANCE.virtualAdReward}개`}</small></section>`;
+    $("modal").innerHTML=`<section class="virtual-ad-card" role="dialog" aria-modal="true" aria-label="가상 광고"><button id="virtual-ad-close" aria-label="광고 닫고 보상 받기" hidden>닫기 ×</button><span class="tag">TEST AD</span><h1>이것은 가상 광고입니다.</h1><p>실제 광고가 아닌 보상 흐름 테스트입니다.</p><strong id="ad-count">10</strong><p>잠시 후 오른쪽 위에 닫기 버튼이 나타나요.</p><small>${virtualAdPurpose==='revive'?'완료 보상 · HP 전부 회복하고 부활':`완료 보상 · 별가루 ${BALANCE.virtualAdReward}개`}</small></section>`;
     platform.track('virtual_ad_start');return;
   }
   if(b.id==='virtual-ad-close'&&virtualAd){
@@ -575,7 +581,8 @@ function frame(now: number) {
   if (!qa) game.tick(paused ? 0 : dt);
   if(pickupPreparation){
     const p=pickupPreparation;
-    if(paused||tab!=='explore'||game.death||game.carried||game.returnReward||game.near?.id!==p.id||game.hitAt!==p.hitAt||Math.hypot(game.x-p.x,game.z-p.z)>.05){pickupPreparation=null;}
+    const target=game.world.find(e=>e.id===p.id);
+    if(paused||tab!=='explore'||game.death||game.carried||game.returnReward||!target||!game.canReachEgg(target)||game.hitAt!==p.hitAt||Math.hypot(game.x-p.x,game.z-p.z)>.05){pickupPreparation=null;}
     else if(!qa){p.remaining=Math.max(0,p.remaining-dt);if(p.remaining===0){pickupPreparation=null;void action(p.id);}}
   }
   if(!paused&&tab==='explore'&&!game.isAtBase&&!game.carried&&!game.death&&!game.returnReward&&game.near&&!game.save.bossWarningSeen)warnAboutBoss();
@@ -614,19 +621,20 @@ function frame(now: number) {
   wasPursued=pursued;
   const presenting=!paused&&!game.death&&!game.returnReward&&$("modal").hidden&&!virtualAd;
   const gap=chaser?Math.max(0,Math.hypot(chaser.x-game.x,chaser.z-game.z)-ROUTE.bossReach*ROUTE.bossAngryScale*(chaser.final?FINAL_GUARDIAN.scale:1)):Infinity;
-  const pressure=chaser?Math.max(0,1-gap/18):0,close=gap<5;
+  const pressure=chaser?Math.max(0,1-gap/18):0;
   const bursting=pursued&&now>bossAlertUntil-3000&&now<bossAlertUntil-2100;
   const pressureEl=$("boss-pressure"),alertEl=$("boss-alert");
   pressureEl.hidden=!(presenting&&(pursued||!!waking));
-  pressureEl.style.setProperty('--pursuit-strength',String(.35+pressure*.65));
+  pressureEl.style.setProperty('--pursuit-strength',String(.45+pressure*.55));
+  world.chasePressure=presenting&&pursued?pressure:0;
   pressureEl.style.setProperty('--pursuit-beat',`${1.3-pressure*.5}s`);
   pressureEl.classList.toggle('awakening',bursting);
-  alertEl.dataset.phase=waking?'waking':close?'close':'chase';
-  const bossAlert=waking?'보스가 잠에서 깼어요!':close?'바로 뒤에 있어요!':'보스 추격 중';
+  alertEl.dataset.phase='waking';
+  const bossAlert=waking?'보스가 잠에서 깼어요!':'';
   if($("boss-alert-title").textContent!==bossAlert)$("boss-alert-title").textContent=bossAlert;
-  const detail=waking?'알을 들고 먼저 도망가세요':close?'잡히기 전에 기지로!':chaser?`기지로 달리세요 · 보스 ${Math.ceil(gap)}m`:'';
+  const detail='';
   if($("boss-alert-detail").textContent!==detail)$("boss-alert-detail").textContent=detail;
-  alertEl.hidden=!(presenting&&(!!waking||pursued));
+  alertEl.hidden=!(presenting&&!!waking);
   if(presenting&&chaser&&gap<12&&now-lastBossStep>850-pressure*250){playSound('boss-step',chaser.stageId);lastBossStep=now;}
   audio.music(game.save.settings.sound&&presenting?(pursued?'chase':'calm'):'silent',pressure);
   void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null);

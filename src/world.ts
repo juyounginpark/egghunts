@@ -9,6 +9,8 @@ import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
 import {HazardView} from "./hazard-view";
 export class World {
+  chasePressure=0;
+  private reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   readonly mapColliders:MapCollider[]=[];
   hazardsView=new HazardView();
   renderer: T.WebGLRenderer;
@@ -571,6 +573,11 @@ export class World {
     this.focus.lerp(target, 1 - Math.exp(-dt * 6));
     this.camera.position.copy(this.focus).add(new T.Vector3(8, 11, 12));
     this.camera.lookAt(this.focus);
+    if(!isHatch&&!this.reducedMotion.matches&&this.chasePressure>0){
+      const strength=.1*this.chasePressure*this.chasePressure;
+      this.camera.position.x+=Math.sin(time*39)*strength;
+      this.camera.position.y+=Math.sin(time*47+1)*strength*.65;
+    }
     // Picking up an egg or showing a contextual button must not zoom the map.
     this.camera.zoom = isHatch ? 1.4 : .78;
     this.camera.updateProjectionMatrix();
