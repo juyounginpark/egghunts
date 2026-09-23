@@ -60,6 +60,7 @@ topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="far
 $("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="플레이어 체력" aria-valuemin="0" hidden><span aria-hidden="true">♥</span><div class="health-track"><i id="hp-fill"></i></div></div>');
 $("shell").insertAdjacentHTML('beforeend','<div id="region-banner" role="status" aria-live="polite" hidden><small id="region-banner-number"></small><strong id="region-banner-name"></strong><span id="region-banner-speed"></span></div><div id="health-edge"></div><div id="ink-effect" hidden></div><div id="level-burst" hidden></div>');
 topHud.insertBefore($("region-banner"),$("hazard-cue"));
+$("shell").insertAdjacentHTML('beforeend','<div id="boss-pressure" aria-hidden="true" hidden></div><div id="boss-alert" role="status" aria-live="polite" hidden>보스가 화났어요</div>');
 $("world").insertAdjacentHTML('beforeend','<div id="night-sky" aria-hidden="true"><span>☾</span></div>');
 const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
@@ -99,6 +100,7 @@ let game: GameState,
 const audio=new GameAudio();
 let heardHazards=new Set<number>();
 let lastHeartbeat=0;
+let bossAlertUntil=0,wasPursued=false;
 let virtualAd:VirtualAd|null=null;
 let virtualAdPurpose:'currency'|'revive'='currency';
 let pendingSale:{kind:'egg'|'pet';id:string}|null=null;
@@ -343,7 +345,7 @@ function showSettings() {
   void save();
   $("modal").hidden = false;
   $("modal").innerHTML =
-    `<div class="settings-card"><span class="tag">TAKE A LITTLE BREAK</span><h1>잠깐 쉬어가요</h1><p>진행 상황은 자동으로 저장돼요. 탐험 제한시간은 없어요.</p><label>효과음 <input id="sound-setting" type="checkbox" ${game.save.settings.sound ? "checked" : ""}></label><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
+    `<div class="settings-card"><span class="tag">TAKE A LITTLE BREAK</span><h1>잠깐 쉬어가요</h1><p>진행 상황은 자동으로 저장돼요. 탐험 제한시간은 없어요.</p><label>BGM / 효과음 <input id="sound-setting" type="checkbox" ${game.save.settings.sound ? "checked" : ""}></label><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
   $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label><p>${platform.native?"토스 게임 로그인 연결됨":"브라우저 · 기기 저장"}</p><button id="multiplayer-connect" class="secondary">${multiplayer.connected?"친구 연결 종료":"게스트 로그인 · 친구와 걷기"}</button><small>같은 서버에서 이동 공유 · 알과 수집은 각자 진행</small>`);
   ($("appearance-setting") as HTMLSelectElement).value=String(game.save.appearance??0);
 }
@@ -442,7 +444,7 @@ document.addEventListener("click", async (e) => {
         "high" | "low",
     };
     world.quality(game.save.settings.quality === "low");
-    if(!game.save.settings.sound)void audio.suspend();
+    if(!game.save.settings.sound)void audio.suspend();else audio.unlock();
     paused = false;
     $("modal").hidden = true;
     void save();
@@ -543,6 +545,7 @@ function frame(now: number) {
   for (const event of game.events.splice(0)) {
     const cues:Partial<Record<string,GameSound>>={hatch_manual_hit:'tap',egg_pickup:'pickup',egg_drop:'drop',egg_saved:'return',mongle_obtained:'hatch',player_hit:'hit',player_death:'death',player_revive:'revive',night_refresh:'night',region_enter:'stage',level_up:'upgrade',upgrade_purchase:'upgrade',trail_purchase:'upgrade',collection_reward:'upgrade',boss_wake:'boss',egg_recovered:'drop'};
     const cue=cues[event.name];if(cue)playSound(cue,Number(event.params.stage??game.stage.id));
+    if(event.name==='boss_wake')bossAlertUntil=now+3000;
     if(event.name==='expedition_start'){$("toast").hidden=true;clearTimeout(toastTimer);}
     if(['level_up','player_hit','health_unlocked','player_death'].includes(event.name)){feedback(null);void save();}
     if(event.name.startsWith('expedition_fail_')){playSound('return');toast(game.message);void save();}
@@ -557,6 +560,13 @@ function frame(now: number) {
   }
   if (world.assetError) { toast(world.assetError); world.assetError = ""; }
   updateHud();
+  const pursued=tab==='explore'&&!game.isAtBase&&!game.death&&!!game.carried&&game.bosses.some(b=>b.mode==='chase');
+  if(pursued&&!wasPursued)bossAlertUntil=now+3000;
+  wasPursued=pursued;
+  const presenting=!paused&&!game.death&&!game.returnReward&&$("modal").hidden&&!virtualAd;
+  $("boss-pressure").hidden=!(pursued&&presenting);
+  $("boss-alert").hidden=!(pursued&&presenting&&now<bossAlertUntil);
+  audio.music(game.save.settings.sound&&presenting?(pursued?'chase':'calm'):'silent');
   void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null);
   if(multiplayer.connected){
     game.world=game.world.filter(e=>!e.id.startsWith('net-')||multiplayer.drops.some(d=>d.id===e.id));

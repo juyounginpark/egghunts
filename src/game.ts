@@ -588,7 +588,7 @@ export class GameState {
       const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*dt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
-      if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*(b.final?FINAL_GUARDIAN.scale:1)){
+      if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
         const d={damage:stageDamage(b.stageId??1,b.final?3:this.stageStep),damagePercent:0,knockback:guardianSpeed(b.stageId??1)*ROUTE.bossKnockbackPerSpeed,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
         this.applyHazard({definition:d,origin:{x:b.x,z:b.z}} as Hazard,true);
         b.mode='return';b.target=null;

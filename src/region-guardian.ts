@@ -7,10 +7,11 @@ type Part={x:number;y:number;z:number;w:number;h:number;d:number;color:number;jo
 export class RegionGuardian {
  group=new T.Group();
  private mesh=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshLambertMaterial(),1200);
+ private outline=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:0xff263e,side:T.BackSide,depthWrite:false}),1200);
  private recipes=new Map<number,Part[]>();
  private parts:Part[]=[];private stage=0;private dummy=new T.Object3D();private color=new T.Color();
  private headings=Array<number>(21).fill(NaN);private roots=Array.from({length:21},()=>({x:NaN,z:NaN}));private lastTime=0;
- constructor(){this.group.add(this.mesh);this.mesh.castShadow=true;this.mesh.frustumCulled=false;this.mesh.count=0;}
+ constructor(){this.group.add(this.mesh,this.outline);this.mesh.castShadow=true;this.mesh.frustumCulled=this.outline.frustumCulled=false;this.mesh.count=this.outline.count=0;}
  private build(stage:number){
   this.stage=stage;this.parts=[];const s=STAGES[stage-1],c=s.color,a=s.accent,cream=0xffefd0,dark=0x353347,gold=0xe8bc68;
   const b=(x:number,y:number,z:number,w:number,h:number,d:number,color=c,joint=0)=>this.parts.push({x,y,z,w,h,d,color,joint});
@@ -77,10 +78,10 @@ export class RegionGuardian {
  }
  render(game:GameState,time:number,visible:boolean){
   this.group.visible=visible;if(!visible)return;this.stage=game.stage.id;
-  let index=0;const dt=Math.max(0,Math.min(.1,time-this.lastTime));this.lastTime=time;
+  let index=0,outlineIndex=0;const dt=Math.max(0,Math.min(.1,time-this.lastTime));this.lastTime=time;
   for(let k=0;k<game.bosses.length;k++){
    const state=game.bosses[k],stage=state.stageId??game.stage.id,chasing=state.mode==='chase',sleeping=state.mode==='idle',root=this.roots[k];
-   const scale=state.final?FINAL_GUARDIAN.scale:1;
+   const scale=(state.final?FINAL_GUARDIAN.scale:1)*(chasing?ROUTE.bossAngryScale:1);
    const tx=state.x+(sleeping&&!state.final?-2.6:0),tz=state.z+(sleeping&&!state.final?-4:0);
    if(!Number.isFinite(root.x)||Math.hypot(root.x-tx,root.z-tz)>30){root.x=tx;root.z=tz;}
    root.x=tx;root.z=tz;
@@ -100,6 +101,7 @@ export class RegionGuardian {
     const px=p.x+ (p.joint?Math.sign(p.x)*charge*.15:0),py=p.y*(sleeping?.78:1)+breath+swing+(hover&&!sleeping?Math.sin(time*1.2+k)*.14:0),pz=p.z+(p.joint?Math.sin(time*1.5+p.joint)*.09:0)-charge*.15;
     const voidPart=stage===20&&z+(stage-game.progression.stage)*ROUTE.length>-35,partColor=voidPart?(p.color===0xe8bc68?0x9d86bd:0x3b344b):p.color;
     this.dummy.position.set(x+(px*cs+pz*sn)*scale,py*scale,z+(-px*sn+pz*cs)*scale);this.dummy.rotation.set(p.joint?swing-charge*.18:0,angle,0);this.dummy.scale.set(p.w*scale,(sleeping&&p.eye?.04:p.h)*scale,p.d*scale);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(sleeping&&p.eye?0x353347:partColor));
+    if(chasing){this.dummy.scale.addScalar(.065*scale);this.dummy.updateMatrix();this.outline.setMatrixAt(outlineIndex++,this.dummy.matrix);}
    }
    // Sleeping Zs become a red anger mark as the guardian wakes.
    const glyph=(xx:number,yy:number,w:number,h:number,c:number)=>{this.dummy.position.set(x+xx*scale,yy*scale,z);this.dummy.rotation.set(0,0,0);this.dummy.scale.set(w*scale,h*scale,.1*scale);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(c));};
@@ -109,7 +111,8 @@ export class RegionGuardian {
   }
   this.stage=game.stage.id;
   this.mesh.count=index;this.mesh.instanceMatrix.needsUpdate=true;if(this.mesh.instanceColor)this.mesh.instanceColor.needsUpdate=true;
+  this.outline.count=outlineIndex;this.outline.instanceMatrix.needsUpdate=true;
  }
  metrics(){return {stage:this.stage,parts:this.parts.length,visibleParts:this.mesh.count,pose:Array.from(this.mesh.instanceMatrix.array.slice(0,Math.min(this.mesh.count,12)*16))};}
- dispose(){this.mesh.geometry.dispose();(this.mesh.material as T.Material).dispose();this.group.removeFromParent();}
+ dispose(){for(const mesh of [this.mesh,this.outline]){mesh.geometry.dispose();(mesh.material as T.Material).dispose();}this.group.removeFromParent();}
 }

@@ -26,6 +26,36 @@ export class GameAudio{
  private context:AudioContext|undefined;
  private last=new Map<GameSound,number>();
  private voices=0;
+ private musicMode:'calm'|'chase'|'silent'='silent';
+ private musicBus:GainNode|undefined;
+ private beat=0;
+ private nextBeat=0;
+ music(mode:'calm'|'chase'|'silent'){
+  const ctx=this.context;if(!ctx||ctx.state!=='running')return;
+  if(!this.musicBus){this.musicBus=ctx.createGain();this.musicBus.gain.value=0;this.musicBus.connect(ctx.destination);}
+  if(mode!==this.musicMode){
+   this.musicMode=mode;this.beat=0;this.nextBeat=ctx.currentTime+.04;
+   this.musicBus.gain.cancelScheduledValues(ctx.currentTime);
+   this.musicBus.gain.setTargetAtTime(mode==='silent'?0:.3,ctx.currentTime,.15);
+  }
+  if(mode==='silent')return;
+  if(this.nextBeat<ctx.currentTime-.3)this.nextBeat=ctx.currentTime+.02;
+  const urgent=mode==='chase',interval=urgent?.17:.32;
+  const melody=urgent?[0,7,0,8,0,7,3,2,0,7,0,10,8,7,3,2]:[0,4,7,12,7,4,2,7,4,7,11,14,11,7,4,2];
+  while(this.nextBeat<ctx.currentTime+.12){
+   const beat=this.beat++,at=this.nextBeat;this.nextBeat+=interval;
+   const root=urgent?146.83:261.63,degree=melody[beat%melody.length];
+   this.musicNote(root*2**(degree/12),at,interval*.85,urgent?'triangle':'sine',.055);
+   if(beat%4===0)this.musicNote(root/2*2**(([0,0,urgent?8:5,7][Math.floor(beat/8)%4])/12),at,interval*3,'triangle',.065);
+   if(urgent&&beat%2===0)this.musicNote(55,at,.07,'sine',.12);
+  }
+ }
+ private musicNote(frequency:number,at:number,duration:number,wave:OscillatorType,volume:number){
+  const ctx=this.context!,osc=ctx.createOscillator(),gain=ctx.createGain();
+  osc.type=wave;osc.frequency.value=frequency;gain.gain.setValueAtTime(.0001,at);
+  gain.gain.exponentialRampToValueAtTime(volume,at+.012);gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
+  osc.connect(gain).connect(this.musicBus!);osc.onended=()=>{osc.disconnect();gain.disconnect();};osc.start(at);osc.stop(at+duration+.02);
+ }
  unlock(){try{this.context??=new AudioContext();void this.context.resume().catch(()=>{});}catch{/* Sound is optional. */}}
  suspend(){return this.context?.suspend().catch(()=>{});}
  play(sound:GameSound,stage=1){
