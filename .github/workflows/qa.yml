@@ -1,5 +1,7 @@
 name: Game QA
-on: [push, pull_request]
+# QA remains available on explicit request; pushes only build and deploy Pages.
+on:
+  workflow_dispatch:
 jobs:
   qa:
     runs-on: ubuntu-latest
