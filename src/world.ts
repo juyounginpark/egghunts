@@ -393,6 +393,12 @@ export class World {
       }
     }
     this.eggs.children.forEach((m) => {
+      const egg=game.world.find(e=>e.id===m.userData.id);
+      if(egg){
+        const held=game.bosses.some(b=>b.loot?.id===egg.id);
+        const atNest=egg.x===egg.homeX&&egg.z===egg.homeZ;
+        m.position.set(egg.x,held?1.2:atNest?.02+2.5/18*m.scale.x*1.45:.03,egg.z);
+      }
       m.getObjectByName("selection-outline")!.visible=!game.carried&&game.near?.id===m.userData.id;
       m.visible = Math.abs(m.position.z - game.z) < 22;
       if (m.visible) animateEgg(m, time, this.low);

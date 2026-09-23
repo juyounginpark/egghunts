@@ -80,9 +80,9 @@ export class RegionGuardian {
   let index=0;const dt=Math.max(0,Math.min(.1,time-this.lastTime));this.lastTime=time;
   for(let k=0;k<game.bosses.length;k++){
    const state=game.bosses[k],stage=state.stageId??game.stage.id,chasing=state.mode==='chase',sleeping=state.mode==='idle',root=this.roots[k];
-   const tx=state.x+(chasing?0:-2.6),tz=state.z+(chasing?0:-4);
+   const tx=state.x+(sleeping?-2.6:0),tz=state.z+(sleeping?-4:0);
    if(!Number.isFinite(root.x)||Math.hypot(root.x-tx,root.z-tz)>30){root.x=tx;root.z=tz;}
-   const follow=1-Math.exp(-dt*7);root.x+=(tx-root.x)*follow;root.z+=(tz-root.z)*follow;
+   root.x=tx;root.z=tz;
    const z=root.z;if(Math.abs(z-game.z)>23)continue;
    if(!this.recipes.has(stage))this.build(stage);
    this.parts=this.recipes.get(stage)!;

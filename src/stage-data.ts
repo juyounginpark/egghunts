@@ -85,7 +85,7 @@ export type Cover={x:number;z:number;radius:number};
 export const STAGE_COVERS:Cover[]=Array.from({length:12},(_,i)=>({x:(i%2?1:-1)*HAZARD_BALANCE.coverX,z:-12-i*HAZARD_BALANCE.coverSpacing,radius:HAZARD_BALANCE.coverRadius}));
 
 // Connected expedition: selected stage is the entrance, not a repeated full map.
-export const ROUTE={entrance:6,length:32,finalLength:150,bossKnockback:2.4,bossKnockbackSeconds:.28,bossReach:2,bossWindup:.65,bossDamage:10,bossDamagePerStage:1,bannerSeconds:3,recommendedCarryRatio:.65,targetTravelSeconds:20,baseRecommendedSpeed:3.2};
+export const ROUTE={entrance:6,length:32,finalLength:150,bossKnockback:2.4,bossKnockbackPerSpeed:2.4,bossKnockbackSeconds:.28,bossReach:2,bossWindup:.65,bossDamage:10,bossDamagePerStage:1,bannerSeconds:3,recommendedCarryRatio:.65,targetTravelSeconds:20,baseRecommendedSpeed:3.2};
 export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{const offset=(s.id-start)*ROUTE.length;return {stage:s.id,offset,start:ROUTE.entrance+offset,end:ROUTE.entrance+offset+(s.id===20?ROUTE.finalLength:ROUTE.length),home:14+offset};});}
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);

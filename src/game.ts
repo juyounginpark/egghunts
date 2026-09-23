@@ -216,6 +216,7 @@ export class GameState {
   knockback={x:0,z:0,remaining:0};
   private announcedStage=0;
   private syncStage(){
+    if(this.carried&&!this.inEggStage(this.carried,this.z))this.carried.secured=true;
     if(this.isAtBase){this.announcedStage=0;return;}
     const id=this.stage.id;
     if(this.announcedStage===id)return;
@@ -246,19 +247,19 @@ export class GameState {
     this.message=`바람을 타고 농장으로 돌아왔어요 · 경험치 ${xp} 유지`;
     this.emit(`expedition_fail_${reason}`,{xp});this.revision++;return true;
   }
-  applyHazard(h:Hazard){
-    const d=h.definition;if(this.immunity>0||this.isAtBase)return false;
+  applyHazard(h:Hazard,bossContact=false){
+    const d=h.definition;if((this.immunity>0&&!bossContact)||this.isAtBase)return false;
     const reduction=this.defense('damageReduction')+this.defenses.reduce((n,p)=>n+(p.environmentReduction?.[d.id]??0),0)+(!this.progression.firstHitUsed?this.trait('shield')+this.defense('firstHitReduction'):0);
-    const damage=reducedDamage(d.damage,d.damagePercent,this.maxHp,reduction);
+    const damage=this.immunity>0?0:reducedDamage(d.damage,d.damagePercent,this.maxHp,reduction);
     this.progression.firstHitUsed=true;this.hp=Math.max(0,this.hp-damage);this.sinceHit=0;this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();
     const overlap=Math.hypot(this.x-h.origin.x,this.z-h.origin.z)<.001;
     const dx=overlap?-this.facing.x:this.x-h.origin.x,dz=overlap?-this.facing.z:this.z-h.origin.z,l=Math.hypot(dx,dz)||1;
-    const impact=damage>0&&d.effect!=='dot';
+    const impact=bossContact||damage>0&&d.effect!=='dot';
     if(impact){
       const amount=Math.max(ROUTE.bossKnockback,d.knockback);
       this.knockback={x:dx/l*amount/ROUTE.bossKnockbackSeconds,z:dz/l*amount/ROUTE.bossKnockbackSeconds,remaining:ROUTE.bossKnockbackSeconds};
-      // Fatal hits retain the existing flyaway/failure settlement path.
-      if(this.hp>0&&this.carried){const egg=this.carried;egg.x=this.x;egg.z=this.z;egg.secured=false;this.world.push(egg);this.carried=null;this.emit('egg_drop',{type:egg.type,reason:'boss_hit'});this.message='공격에 밀려 알을 놓쳤어요! 떨어진 알을 다시 주울 수 있어요.';}
+      // Boss contact drops the egg even when the damage also ends the expedition.
+      if((this.hp>0||bossContact)&&this.carried){const egg=this.carried;egg.x=this.x;egg.z=this.z;this.world.push(egg);this.carried=null;this.emit('egg_drop',{type:egg.type,reason:'boss_hit'});this.message='공격에 밀려 알을 놓쳤어요! 떨어진 알을 다시 주울 수 있어요.';}
     }else this.push(dx/l*d.knockback,dz/l*d.knockback);
     this.slowRemaining=d.slowDuration;this.slowMultiplier=d.slowMultiplier;
     this.slowRemaining*=1-Math.min(PROGRESSION.damageReductionCap,this.defense('statusReduction'));
@@ -526,20 +527,35 @@ export class GameState {
     );
     this.world.push(egg);
   }
+  private inEggStage(egg:WorldEgg,z:number){
+    const segment=this.route.find(r=>r.stage===egg.stageId);
+    return !!segment&&-z>=segment.start&&-z<segment.end;
+  }
   tickBosses(dt:number){
-    this.bosses.forEach((b)=>{
+    this.bosses.forEach((b,guardian)=>{
       if(b.mode==='chase'&&this.carried?.id!==b.target){b.mode='return';b.target=null;}
-      const tx=b.mode==='chase'?this.x:0,tz=b.mode==='chase'?this.z:b.homeZ??-17;
+      let recovery:WorldEgg|undefined;
+      if(b.mode!=='chase'){
+        b.loot=this.world.find(e=>e.id===b.loot?.id)??null;
+        recovery=b.loot??this.world.find(e=>e.guardian===guardian&&!e.secured&&this.inEggStage(e,e.z)&&(e.x!==e.homeX||e.z!==e.homeZ));
+        if(recovery)b.mode='return';
+      }
+      const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):0;
+      const tz=b.mode==='chase'?this.z:recovery?(b.loot?recovery.homeZ??b.homeZ??-17:recovery.z):b.homeZ??-17;
       const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*dt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
-      if(b.mode==='chase'&&!this.isAtBase&&l<=ROUTE.bossReach){
-        b.windup=(b.windup??0)+dt;
-        if(b.windup>=ROUTE.bossWindup){
-          const d={damage:ROUTE.bossDamage+(b.stageId??1)*ROUTE.bossDamagePerStage,damagePercent:0,knockback:ROUTE.bossKnockback,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
-          this.applyHazard({definition:d,origin:{x:b.x,z:b.z}} as Hazard);b.windup=0;
-        }
-      }else b.windup=undefined;
-      if(b.mode==='return'&&l<.2)b.mode='idle';
+      b.windup=undefined;
+      if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach){
+        const d={damage:ROUTE.bossDamage+(b.stageId??1)*ROUTE.bossDamagePerStage,damagePercent:0,knockback:guardianSpeed(b.stageId??1)*ROUTE.bossKnockbackPerSpeed,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
+        this.applyHazard({definition:d,origin:{x:b.x,z:b.z}} as Hazard,true);
+        b.mode='return';b.target=null;
+      }
+      if(recovery){
+        if(b.loot){
+          recovery.x=b.x;recovery.z=b.z;
+          if(l-step<.2){this.restoreEgg(recovery,recovery.region??0);b.loot=null;this.revision++;}
+        }else if(l-step<.2){b.loot=recovery;recovery.x=b.x;recovery.z=b.z;}
+      }else if(b.mode==='return'&&l-step<.2)b.mode='idle';
     });
   }
   move(dx: number, dz: number, dt: number) {
@@ -679,10 +695,8 @@ export class GameState {
       this.carried.guardian??=Math.max(0,this.carried.stageId-this.progression.stage);
       const boss = this.bosses[this.carried.guardian];
       if(!boss){this.revision++;return;}
-      if (boss.loot) {
-        this.restoreEgg(boss.loot, region);
-        boss.loot = null;
-      }
+      // Recovered eggs remain in the world and can be stolen during the return trip.
+      boss.loot = null;
       boss.mode = "chase";
       boss.target = this.carried.id;
       this.message = `${STAGES[(boss.stageId??this.stage.id)-1].name} 수호자가 깨어났어요! 알을 들고 도망가세요.`;
