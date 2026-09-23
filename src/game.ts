@@ -622,7 +622,8 @@ export class GameState {
       }
       const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):0;
       const tz=b.mode==='chase'?this.z:recovery?(b.loot?recovery.homeZ??b.homeZ??-17:recovery.z):b.homeZ??-17;
-      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*activeDt);
+      const recoveryMultiplier=recovery?ROUTE.bossRecoverySpeedMultiplier:1;
+      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*recoveryMultiplier*activeDt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
