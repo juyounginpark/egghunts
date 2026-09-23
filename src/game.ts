@@ -360,7 +360,8 @@ export class GameState {
     this.message=this.training?'트레드밀에서 운동 중이에요. 스피드가 올라요!':'운동을 마쳤어요.';
     this.revision++;return true;
   }
-  petIncomeAmount(id:number){return BALANCE.petIncomeByTier[MONGLES[id].tier];}
+  petIncomeStageMultiplier(id:number){const pet=MONGLES[id];return pet.stageId||BALANCE.petIncomeLegacyStageMultipliers[pet.region];}
+  petIncomeAmount(id:number){return BALANCE.petIncomeByTier[MONGLES[id].tier]*this.petIncomeStageMultiplier(id);}
   get petIncomePerCycle(){return this.save.active.reduce((sum,id)=>sum+this.petIncomeAmount(id),0);}
   private tickPetIncome(dt:number){
     const income=this.save.petIncome??={elapsed:0,pending:0};
