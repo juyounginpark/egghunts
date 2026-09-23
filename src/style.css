@@ -228,6 +228,12 @@ header { background: #fff9e8ed; padding: 5px 8px; border-radius: 12px; }
 .shop-speed,.training-stats { background: #e1ebc5; padding: 12px; font-size: 12px; border-radius: 8px; }
 .unknown { font-size: 28px; font-weight: 900; color: #929a86; }
 .region-tabs { display: flex; gap: 4px; margin: 14px 0; }.region-tabs button { flex:1; padding: 8px 3px; min-height:44px; font-size:10px; background: #dce6c3; border-radius:6px; }.region-tabs .active { background:#617e4b;color:#fff9e8; }
+.stage-categories { margin:14px 0; padding:12px; border-radius:10px; background:#e8edd9; }
+.stage-categories summary { cursor:pointer; min-height:32px; font-weight:700; }
+.stage-category-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; margin-top:10px; }
+.stage-category-grid button { min-height:52px; padding:8px; border-radius:6px; background:#dce6c3; text-align:left; font-size:12px; }
+.stage-category-grid small { display:block; margin-top:4px; }
+.stage-category-grid .active { background:#617e4b; color:#fff9e8; }
 .collection-reward { display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px;font-size:12px; }
 .claim-pet { position:relative; min-height:68px; border:1px solid #a5b58c; border-radius:6px; }.claim-pet small { position:absolute;bottom:1px;background:#f5d780;padding:2px 4px;color:#433b21; }
 .rarity-guide { overflow-x:auto; }.rarity-guide table { min-width:410px; }

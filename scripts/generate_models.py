@@ -85,7 +85,8 @@ for tier in range(7):
         designs[f'egg-{tier*5+region}']=d
 
 def prop(name,ops): designs[name]={'size':[20]*3,'palette':palette.copy(),'operations':ops}
-prop('nest',[box([2,0,2],[17,1,17],'brown'),box([2,2,2],[4,3,17],'gold'),box([15,2,2],[17,3,17],'brown'),box([5,2,2],[14,3,4],'brown'),box([5,2,15],[14,3,17],'gold'),box([5,2,5],[14,2,14],'cream')])
+from nest_design import nest_design
+designs['nest']=nest_design()
 prop('camp',[box([0,0,0],[19,1,19],'brown'),box([1,2,1],[2,14,2],'brown'),box([17,2,1],[18,14,2],'brown'),box([1,2,16],[2,14,17],'brown'),box([17,2,16],[18,14,17],'brown'),box([0,14,0],[19,15,19],'green'),box([2,16,1],[17,17,18],'green'),box([5,18,2],[14,19,17],'light'),box([3,2,5],[16,5,14],'brown'),box([3,6,5],[16,6,14],'gold'),box([16,10,17],[18,12,19],'gold'),box([17,13,18],[17,14,18],'dark')])
 prop('crystal',[box([2,0,3],[17,2,16],'dark'),box([4,3,6],[8,12,10],'green'),box([5,13,7],[7,16,9],'light'),box([10,3,9],[14,16,13],'light'),box([11,17,10],[13,19,12],'white')])
 designs['crystal']['palette'].update(green='#5AA6C0',light='#A5E8EB')

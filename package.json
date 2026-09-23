@@ -8,6 +8,8 @@
     "build": "tsc --noEmit && vite build",
     "build:toss": "npm run build && ait build",
     "models": "python scripts/generate_models.py",
+    "models:stage-pets": "python scripts/generate_stage_pets.py",
+    "models:nest": "python scripts/nest_design.py",
     "qa:lint": "eslint src scripts *.ts",
     "qa:typecheck": "tsc --noEmit",
     "qa:unit": "node scripts/test-game.mjs && node scripts/qa/unit.mjs && node scripts/qa/progression.mjs && node scripts/qa/balance.mjs && node scripts/qa/multiplayer.mjs",

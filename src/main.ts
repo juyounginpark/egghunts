@@ -4,6 +4,7 @@ import {
   PROGRESSION,
   EGGS,
   MONGLES,
+  petIcon,
   crackStage,
   type Upgrade,
 } from "./data";
@@ -320,7 +321,7 @@ function updateHud() {
     input.reset();
     const m = MONGLES[game.result];
     $("modal").innerHTML =
-      `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="${import.meta.env.BASE_URL}models/pet-${game.result}.png" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><div class="sparkles">✦ · ✧ · ✦</div><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit">${m.effect}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
+      `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><div class="sparkles">✦ · ✧ · ✦</div><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit">${m.effect}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
     $("modal").hidden = false;
     platform.track("hatch_complete", { mongle: m.id });
     feedback();
@@ -394,6 +395,9 @@ document.addEventListener("click", async (e) => {
   }
   if (b.dataset.tab) setTab(b.dataset.tab);
   if (b.dataset.region) { $("panel").dataset.region=b.dataset.region;renderPanel(); }
+  if (b.dataset.collectionStage) { $("panel").dataset.collectionStage=b.dataset.collectionStage;renderPanel(); }
+  if (b.dataset.claimStage) { const reward=game.claimStage(Number(b.dataset.claimStage));if(reward){feedback();toast(`+${num(reward)}`);renderPanel();void save();} }
+  if (b.id==='claim-stage-all') { const reward=game.claimStageCollection();if(reward){feedback();toast(`+${num(reward)}`);renderPanel();void save();} }
   if (b.dataset.claimPet) { const reward=game.claimPet(Number(b.dataset.claimPet));if(reward){feedback();toast(`+${num(reward)}`);renderPanel();void save();} }
   if (b.dataset.claimRegion) { const reward=game.claimRegion(Number(b.dataset.claimRegion));if(reward){feedback();toast(`+${num(reward)}`);renderPanel();void save();} }
   if (b.id==="claim-all") { const reward=game.claimCollection();if(reward){feedback();toast(`+${num(reward)}`);renderPanel();void save();} }

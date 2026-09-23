@@ -1,5 +1,6 @@
 import {
   BALANCE,
+  STAGE_COLLECTION_REWARDS,
   PROGRESSION,
   TRAITS,
   PET_DEFENSE,
@@ -51,6 +52,8 @@ export type Save = {
   claimedPets?: number[];
   claimedRegions?: number[];
   claimedCollection?: boolean;
+  claimedStages?: number[];
+  claimedStageCollection?: boolean;
   nightAt?: number;
   nightUntil?: number;
   world?: WorldEgg[];
@@ -116,6 +119,8 @@ export function parseSave(raw: string | null, now: number): Save {
   if(![0,1,2].includes(s.appearance))throw new Error("Invalid appearance");
   s.tutorial ??= s.mongles?.some(Boolean) ? 5 : 0;
   s.claimedPets ??= []; s.claimedRegions ??= []; s.claimedCollection ??= false;
+  s.claimedStages ??= [];s.claimedStageCollection ??= false;
+  if(!Array.isArray(s.claimedStages)||!s.claimedStages.every(id=>Number.isInteger(id)&&id>=1&&id<=20)||typeof s.claimedStageCollection!=='boolean')throw Error('Invalid stage collection rewards');
   if (!Array.isArray(s.claimedPets) || !s.claimedPets.every(i=>Number.isInteger(i)&&!!MONGLES[i]) || !Array.isArray(s.claimedRegions) || !s.claimedRegions.every(i=>Number.isInteger(i)&&!!REGIONS[i]) || typeof s.claimedCollection!=="boolean") throw new Error("Invalid collection rewards");
   if (s.version !== 1) throw new Error("지원하지 않는 저장 버전이에요.");
   const finite = (v: unknown) =>
@@ -144,7 +149,7 @@ export function parseSave(raw: string | null, now: number): Save {
     ) ||
     new Set(s.eggs.map(e => e.id)).size !== s.eggs.length ||
     !Array.isArray(s.mongles) ||
-    ![3, MONGLES.length].includes(s.mongles.length) ||
+    ![3, 100, MONGLES.length].includes(s.mongles.length) ||
     !s.mongles.every((v) => Number.isInteger(v) && v >= 0) ||
     !Array.isArray(s.active) ||
     s.active.length > 3 ||
@@ -715,7 +720,7 @@ export class GameState {
     e.hp = Math.max(0, e.hp - amount);
     if (e.hp === 0) {
       const pool = MONGLES.map((m, i) => ({ ...m, index: i })).filter(
-        (m) => m.region === EGGS[e.type].region && m.tier === EGGS[e.type].tier,
+        (m) => m.tier === EGGS[e.type].tier && (e.stageId?m.stageId===e.stageId:m.stageId===0&&m.region===EGGS[e.type].region),
       );
       const m =
         pool[Math.min(pool.length - 1, Math.floor(this.random() * pool.length))]
@@ -759,13 +764,22 @@ export class GameState {
     this.emit("collection_reward",{pet:id,reward});return reward;
   }
   claimRegion(region: number) {
-    if (!REGIONS[region] || this.save.claimedRegions?.includes(region) || MONGLES.some((m,i)=>m.region===region&&!this.hasDiscoveredPet(i))) return 0;
+    if (!REGIONS[region] || this.save.claimedRegions?.includes(region) || MONGLES.some((m,i)=>m.stageId===0&&m.region===region&&!this.hasDiscoveredPet(i))) return 0;
     const reward=BALANCE.regionCollectionRewards[region];
     (this.save.claimedRegions??=[]).push(region);this.save.dust+=reward;this.revision++;return reward;
   }
   claimCollection() {
-    if (this.save.claimedCollection || MONGLES.some((_,i)=>!this.hasDiscoveredPet(i))) return 0;
+    if (this.save.claimedCollection || MONGLES.some((m,i)=>m.stageId===0&&!this.hasDiscoveredPet(i))) return 0;
     this.save.claimedCollection=true;this.save.dust+=BALANCE.fullCollectionReward;this.revision++;return BALANCE.fullCollectionReward;
+  }
+  claimStage(stage:number){
+    if(!Number.isInteger(stage)||!STAGES[stage-1]||this.save.claimedStages?.includes(stage)||MONGLES.some((m,i)=>m.stageId===stage&&!this.hasDiscoveredPet(i)))return 0;
+    const reward=STAGE_COLLECTION_REWARDS[stage-1];
+    (this.save.claimedStages??=[]).push(stage);this.save.dust+=reward;this.revision++;return reward;
+  }
+  claimStageCollection(){
+    if(this.save.claimedStageCollection||MONGLES.some((m,i)=>m.stageId>0&&!this.hasDiscoveredPet(i)))return 0;
+    this.save.claimedStageCollection=true;this.save.dust+=BALANCE.fullCollectionReward;this.revision++;return BALANCE.fullCollectionReward;
   }
   cost(k: Upgrade) {
     return Math.floor(

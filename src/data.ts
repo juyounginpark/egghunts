@@ -1,3 +1,4 @@
+import {STAGE_PET_ROWS} from './stage-pet-catalog';
 export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,traitInterval:5,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:.9,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
 export const TRAITS={
   sturdy:{name:'튼튼한 탐험가',description:'최대 체력 +10',value:10,max:5},
@@ -103,7 +104,7 @@ export const REGIONS = [
 export const RARITIES = [
   {
     name: "C",
-    chance: 45,
+    chance: 47.5,
     color: "#a8c393",
     size: 5,
     scale: 0.22,
@@ -139,7 +140,7 @@ export const RARITIES = [
   },
   {
     name: "SS",
-    chance: 3.5,
+    chance: 1.75,
     color: "#ffc761",
     size: 55,
     scale: 2.42,
@@ -148,7 +149,7 @@ export const RARITIES = [
   },
   {
     name: "SSS",
-    chance: 1.3,
+    chance: 0.65,
     color: "#ff87bc",
     size: 75,
     scale: 3.3,
@@ -157,7 +158,7 @@ export const RARITIES = [
   },
   {
     name: "Secret",
-    chance: 0.2,
+    chance: 0.1,
     color: "#b5ffff",
     size: 100,
     scale: 4.4,
@@ -241,7 +242,7 @@ const colors = [
   "#9385dc",
   "#b0eee7",
 ];
-export const MONGLES = Array.from({ length: 100 }, (_, i) => {
+const LEGACY_MONGLES = Array.from({ length: 100 }, (_, i) => {
   const variant = Math.floor(i / 10),
     speciesId = i % 10;
   const tier = [0, 0, 0, 1, 1, 2, 2, 3, 4, 5, 0, 1, 2, 3, 3, 4, 4, 5, 5, 6][
@@ -254,6 +255,7 @@ export const MONGLES = Array.from({ length: 100 }, (_, i) => {
   const speedMultiplier = speciesId % 3 === 1 ? bonus : 1;
   return {
     id: `mongle-${i}`,
+    stageId: 0,
     name: `${variants[variant]} ${species[speciesId]}`,
     description: `${REGIONS[Math.floor(i / 20)].name}에서 태어난 ${RARITIES[tier].name} 등급 친구`,
     effect: `${["클릭", "스피드", "오토"][speciesId % 3]} ×${bonus.toFixed(1)}`,
@@ -271,6 +273,19 @@ export const MONGLES = Array.from({ length: 100 }, (_, i) => {
     ],
   };
 });
+// Append stage-exclusive IDs; existing pets, equipment and rewards never change identity.
+export const MONGLES = [...LEGACY_MONGLES, ...STAGE_PET_ROWS.map((pet,i)=>{
+  const bonus=Math.round((1+(pet.tier+1)*.1)*10)/10;
+  const ability=pet.slot%3;
+  return {
+    ...pet,id:`mongle-${100+i}`,region:Math.floor((pet.stageId-1)/4),species:pet.slot,
+    clickMultiplier:ability===0?bonus:1,autoMultiplier:ability===2?bonus:1,speedMultiplier:ability===1?bonus:1,
+    effect:`${['클릭','스피드','오토'][ability]} ×${bonus.toFixed(1)}`,
+    grid:[10,16,24,32,48,64,100][pet.tier],scale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:'✦',
+  };
+})];
+export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>100+(i+1)*50);
+export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id>=100?'svg':'png'}`;}
 export const UPGRADES = {
   health: {name:"든든한 체력",description:"최대 HP +20",icon:"♥",cost:30,growth:1.6},
   training: {
