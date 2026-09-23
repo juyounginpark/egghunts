@@ -3,11 +3,13 @@ import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { EGGS, REGIONS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage } from "./data";
 import { eggVisual, petVisual, animateEgg } from "./visuals";
 import type { Egg, GameState } from "./game";
-import { voxelModel as model, loadVoxels } from "./voxel";
+import { voxelModel as model, loadVoxels,voxelColliders } from "./voxel";
+import type {MapCollider} from './map-collision';
 import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
 import {HazardView} from "./hazard-view";
 export class World {
+  readonly mapColliders:MapCollider[]=[];
   hazardsView=new HazardView();
   renderer: T.WebGLRenderer;
   scene = new T.Scene();
@@ -240,6 +242,7 @@ export class World {
     mesh.receiveShadow = true;
     this.terrain.add(mesh);
     const prop = (name:string,x:number,z:number,scale=1,rotation=0,parent:T.Group=this.terrain) => {
+      if(!['flower','carrots','cabbage'].includes(name))this.mapColliders.push(...voxelColliders(name,x,z,scale,rotation));
       const g=model(name);g.position.set(x,0,z);g.scale.setScalar(scale);g.rotation.y=rotation;parent.add(g);return g;
     };
     prop("barn",-4,-.5,3,0,this.farm);
@@ -253,6 +256,7 @@ export class World {
     const gym = new T.Group();gym.name="gym";gym.position.set(BALANCE.gymX,0,BALANCE.gymZ);
     const gymPart=(w:number,h:number,d:number,x:number,y:number,z:number,color:number)=>{
       const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshLambertMaterial({color}));m.position.set(x,y,z);gym.add(m);
+      if(y+h/2>.3)this.mapColliders.push({minX:BALANCE.gymX+x-w/2,maxX:BALANCE.gymX+x+w/2,minZ:BALANCE.gymZ+z-d/2,maxZ:BALANCE.gymZ+z+d/2});
     };
     gymPart(1.2,.15,1.6,0,.08,0,0x51696b);gymPart(.85,.04,1.35,0,.18,0,0x293e38);
     gymPart(.12,1,.12,-.5,.6,-.7,0xefc575);gymPart(.12,1,.12,.5,.6,-.7,0xefc575);gymPart(1.1,.12,.12,0,1.05,-.7,0xefc575);

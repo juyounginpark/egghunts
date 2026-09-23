@@ -1,4 +1,4 @@
-export type GameSound='ui'|'swing'|'tap'|'pickup'|'drop'|'hit'|'hatch'|'night'|'return'|'death'|'revive'|'upgrade'|'stage'|'boss'|'boss-count'|'boss-step'|'heartbeat'|'water'|'fire'|'machine'|'magic';
+export type GameSound='ui'|'swing'|'tap'|'pickup'|'drop'|'hit'|'hatch'|'night'|'return'|'death'|'revive'|'upgrade'|'stage'|'boss'|'boss-step'|'heartbeat'|'water'|'fire'|'machine'|'magic';
 type Note=[number,number,number,OscillatorType,number?];
 const sounds:Record<GameSound,Note[]>={
  ui:[[720,.07,0,'sine',540]],
@@ -15,7 +15,6 @@ const sounds:Record<GameSound,Note[]>={
  upgrade:[[600,.08,0,'triangle'],[750,.08,.08,'triangle'],[900,.17,.16,'sine']],
  stage:[[392,.13,0,'sine'],[523,.23,.13,'sine']],
  boss:[[48,.55,0,'sine',28],[82,.65,0,'sawtooth',42],[123,.45,.08,'triangle',62],[185,.35,.18,'sawtooth',65]],
- 'boss-count':[[220,.14,0,'triangle',110],[440,.09,.03,'sine',220]],
  'boss-step':[[70,.14,0,'sine',32],[110,.06,.02,'triangle',45]],
  heartbeat:[[65,.08,0,'sine',45],[65,.08,.15,'sine',45]],
  water:[[480,.12,0,'sine',180],[700,.15,.1,'sine',260]],

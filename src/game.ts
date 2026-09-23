@@ -15,6 +15,7 @@ import {
 } from "./data";
 import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,chooseTrait,traitPoints,reducedDamage,type Progression,type TraitId} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
+import {MapCollision} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,stageDamage,type HazardDefinition} from "./stage-data";
 export type Egg = { id: string; type: number; hp: number; distance: number; stageId?:number; variant?:number; special?:boolean };
 export type WorldEgg = Egg & {
@@ -31,6 +32,7 @@ export type Boss = {
   final?:boolean;
   stageId?:number;
   homeZ?:number;
+  homeX?:number;
   windup?: number;
   wakeRemaining?: number;
   x: number;
@@ -52,6 +54,7 @@ export type Save = {
   trainingSpeed?: number;
   petIncome?: { elapsed:number; pending:number };
   tutorial?: number;
+  bossWarningSeen?:boolean;
   claimedPets?: number[];
   claimedRegions?: number[];
   claimedCollection?: boolean;
@@ -115,6 +118,8 @@ export function parseSave(raw: string | null, now: number): Save {
   if (s.upgrades && s.upgrades.training === undefined) s.upgrades.training = 0;
   if (s.upgrades && s.upgrades.health === undefined) s.upgrades.health = 0;
   s.trainingSpeed ??= 0;
+  s.bossWarningSeen??=false;
+  if(typeof s.bossWarningSeen!=='boolean')throw new Error('Invalid boss warning state');
   s.petIncome ??= {elapsed:0,pending:0};
   if(!Number.isFinite(s.petIncome.elapsed)||s.petIncome.elapsed<0||s.petIncome.elapsed>=BALANCE.petIncomeSeconds||!Number.isFinite(s.petIncome.pending)||s.petIncome.pending<0)throw new Error('Invalid pet income');
   s.visitedStages ??= [];
@@ -283,7 +288,12 @@ export class GameState {
     if(this.hp<=0&&this.defenses.some(d=>d.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}
     if(this.hp<=0)this.die();return true;
   }
-  push(x:number,z:number){this.x=Math.max(-BALANCE.mapX,Math.min(BALANCE.mapX,this.x+x));this.z=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,this.z+z));this.syncStage();}
+  readonly mapCollision=new MapCollision();
+  push(x:number,z:number){
+    const targetX=Math.max(-BALANCE.mapX,Math.min(BALANCE.mapX,this.x+x)),targetZ=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,this.z+z));
+    const position=this.mapCollision.move(this.x,this.z,targetX-this.x,targetZ-this.z,this.progression.stage);
+    this.x=Math.max(-BALANCE.mapX,Math.min(BALANCE.mapX,position.x));this.z=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,position.z));this.syncStage();
+  }
   get nearStore(){return Math.hypot(this.x-BALANCE.storeX,this.z-BALANCE.storeZ)<BALANCE.storeRadius;}
   hasDiscoveredPet(id:number){return !!this.save.mongles[id]||!!this.save.obtainedPets?.includes(id);}
   eggSellPrice(type:number){return EGGS[type]?Math.floor(EGGS[type].reward*BALANCE.eggSellRatio):0;}
@@ -391,9 +401,9 @@ export class GameState {
   immunity = 0;
   bosses: Boss[] = [];
   private resetBosses(){
-    this.bosses=this.route.map(r=>({x:0,z:-r.home-3,homeZ:-r.home-3,stageId:r.stage,mode:'idle',target:null,loot:null}));
+    this.bosses=this.route.map(r=>({x:-2.6,z:-r.home-7,homeX:-2.6,homeZ:-r.home-7,stageId:r.stage,mode:'idle',target:null,loot:null}));
     const z=-this.route.at(-1)!.end+FINAL_GUARDIAN.bossEndOffset;
-    this.bosses.push({x:0,z,homeZ:z,stageId:20,final:true,mode:'idle',target:null,loot:null});
+    this.bosses.push({x:0,z,homeX:0,homeZ:z,stageId:20,final:true,mode:'idle',target:null,loot:null});
   }
   x = 0;
   z = 0;
@@ -456,6 +466,14 @@ export class GameState {
     ) {
       this.world = [...this.world.filter(e=>e.stageId!<oldEntrance||(e.special&&!save.bosses!.some(b=>b.final))),...save.world];
       this.bosses.splice(oldEntrance-1,save.bosses.length,...save.bosses);
+    }
+    // Older saves applied the sleeping offset only in the renderer.
+    for(const boss of this.bosses){
+      if(boss.homeX===undefined){
+        boss.homeX=boss.final?0:-2.6;
+        if(!boss.final){boss.homeZ=(boss.homeZ??boss.z)-4;if(boss.mode==='idle'||boss.mode==='waking'){boss.x-=2.6;boss.z-=4;}}
+      }
+      if(boss.mode==='waking')boss.wakeRemaining=Math.min(ROUTE.bossWakeSeconds,boss.wakeRemaining??ROUTE.bossWakeSeconds);
     }
     if (save.expedition) {
       this.x = save.expedition.x;
@@ -620,7 +638,7 @@ export class GameState {
         recovery=b.loot??this.world.find(e=>e.guardian===guardian&&!e.secured&&this.inEggStage(e,e.z)&&(e.x!==e.homeX||e.z!==e.homeZ));
         if(recovery)b.mode='return';
       }
-      const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):0;
+      const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):b.homeX??0;
       const tz=b.mode==='chase'?this.z:recovery?(b.loot?recovery.homeZ??b.homeZ??-17:recovery.z):b.homeZ??-17;
       const recoveryMultiplier=recovery?ROUTE.bossRecoverySpeedMultiplier:1;
       const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*recoveryMultiplier*activeDt);
@@ -651,12 +669,9 @@ export class GameState {
     if(this.training)this.toggleTraining();
     this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*this.speed,z:dz/Math.max(1,l)*this.speed};
     const scale = l > 1 ? 1 / l : 1;
-    this.x = Math.max(
-      -BALANCE.mapX,
-      Math.min(BALANCE.mapX, this.x + dx * scale * this.speed * dt),
-    );
-    this.z = Math.max(this.isNight?BALANCE.baseMinZ:this.farZ, Math.min(BALANCE.mapNearZ, this.z + dz * scale * this.speed * dt));
-    this.syncStage();
+    const beforeX=this.x,beforeZ=this.z;
+    this.push(dx*scale*this.speed*dt,dz*scale*this.speed*dt);
+    if(dt>0)this.velocity={x:(this.x-beforeX)/dt,z:(this.z-beforeZ)/dt};
     if (!this.deadline && !this.isAtBase) {
       this.deadline = this.now() + this.duration * 1000;
       this.progression.firstHitUsed=false;this.progression.lastStandUsed=false;
@@ -785,7 +800,7 @@ export class GameState {
       boss.mode = "waking";
       boss.wakeRemaining = ROUTE.bossWakeSeconds;
       boss.target = this.carried.id;
-      this.message = `보스가 ${ROUTE.bossWakeSeconds}초 후 깨어나요! 알을 들고 도망가세요.`;
+      this.message = '보스가 잠에서 깼어요!';
     this.revision++;
   }
   tap() {

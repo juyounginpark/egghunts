@@ -4,6 +4,7 @@ import {
   BALANCE,
   PROGRESSION,
   EGGS,
+  RARITIES,
   MONGLES,
   petIcon,
   crackStage,
@@ -64,11 +65,11 @@ $("shell").insertAdjacentHTML('beforeend','<div id="boss-pressure" aria-hidden="
 $("world").insertAdjacentHTML('beforeend','<div id="night-sky" aria-hidden="true"><span>☾</span></div>');
 const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
-tutorial.innerHTML = '<div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">건너뛰기</button>';
+tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">✕</button>`;
 topHud.append(tutorial);
 $("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 15초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
-$("action").insertAdjacentHTML('beforebegin','<button id="train-now" class="secondary" hidden>운동하기</button>');
+$("action").insertAdjacentHTML('beforebegin',`<button id="train-now" class="secondary" hidden><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><span>운동하기</span></button>`);
 bottomHud.id = "bottom-hud";
 $("shell").append(bottomHud);
 const inventory = document.createElement("section");
@@ -102,7 +103,7 @@ const audio=new GameAudio();
 let heardHazards=new Set<number>();
 let lastHeartbeat=0;
 let bossAlertUntil=0,wasPursued=false;
-let lastBossCount='',lastBossStep=0;
+let lastBossStep=0;
 let virtualAd:VirtualAd|null=null;
 let virtualAdPurpose:'currency'|'revive'='currency';
 let pendingSale:{kind:'egg'|'pet';id:string}|null=null;
@@ -126,7 +127,15 @@ async function save() {
   }
 }
 let claiming=false;
-async function action() {
+let pickupPreparation:{id:string;remaining:number;duration:number;x:number;z:number;hitAt:number}|null=null;
+function warnAboutBoss(){
+  const egg=game.near;if(!egg||game.save.bossWarningSeen||!$("modal").hidden)return false;
+  input.reset();paused=true;pickupPreparation=null;
+  $("modal").hidden=false;$("modal").dataset.kind='boss-warning';
+  $("modal").innerHTML=`<section class="boss-warning-card" role="dialog" aria-modal="true" aria-labelledby="boss-warning-title"><div class="boss-warning-art" aria-hidden="true"><img src="${eggIcon(egg)}" alt=""/><span>➜</span><span class="warning-boss">👹</span></div><h1 id="boss-warning-title">알을 들면<br>보스가 쫓아와요!</h1><button id="boss-warning-ok" class="primary">알겠어요!</button></section>`;
+  return true;
+}
+async function action(preparedId?:string) {
   if (!ready || paused || !$("modal").hidden || game.returnReward || game.death) return;
   if(claiming||game.now()<game.knockedUntil)return;
   if (tab === "hatchery") {
@@ -136,6 +145,15 @@ async function action() {
       feedback(null);
     }
   } else if (tab === "explore") {
+    if(!game.carried&&game.near&&!game.isAtBase){
+      if(warnAboutBoss())return;
+      const egg=game.near,duration=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier];
+      if(duration>0&&preparedId!==egg.id){
+        if(pickupPreparation){pickupPreparation=null;return;}
+        pickupPreparation={id:egg.id,remaining:duration,duration,x:game.x,z:game.z,hitAt:game.hitAt};
+        feedback('tap');return;
+      }
+    }
     if(!game.carried&&!game.near&&game.nearStore){setTab('store');return;}
     if(!game.carried&&game.near?.id.startsWith('net-')){
       claiming=true;
@@ -158,6 +176,7 @@ function setTab(next: string) {
     return;
   }
   input.reset();
+  pickupPreparation=null;
   tab = next;
   document
     .querySelectorAll<HTMLButtonElement>("nav [data-tab]")
@@ -221,8 +240,7 @@ function updateHud() {
   if(game.death&&!virtualAd&&document.getElementById('death-count'))$('death-count').textContent=`${game.deathChoiceRemaining}초 후 자동 복귀`;
   $("night-curtain").hidden = true;
   $("night-count").textContent = String(Math.max(0, Math.ceil((game.nightUntil-game.now())/1000)));
-  $("speed-value").textContent = `스피드 ${num(game.speed,2)}${game.carried?" · 운반 중":""}`;
-  if(!game.isAtBase)$("speed-value").textContent=`스피드 ${num(game.speed,2)}`;
+  $("speed-value").textContent = `⚡ ${num(game.speed,2)}`;
   $("day-clock").textContent = `권장 스피드 ${num(game.recommendedSpeed,1)}`;
   $("cycle-clock").textContent=game.isNight?`☾ 밤 · 아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`☀ 낮 · 밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
@@ -231,10 +249,16 @@ function updateHud() {
   if(game.training) $("speed-value").textContent += ` · +${num(game.effectiveTrainingRate,3)}/초`;
   const step=game.save.tutorial??0;
   $("tutorial").hidden=step>=5 || !!game.returnReward || game.result!==null;
-  $("tutorial-title").textContent = `${step+1}/5 · ${["첫 모험을 떠나요","작은 알을 찾아요","농장으로 돌아와요","알을 두드려 보세요","더 빠르게 자라나요"][step]??""}`;
+  $("tutorial-title").textContent = ["화면을 밀어 이동해요","알을 찾아요","기지로 돌아와요","알을 두드려요","펫과 함께 자라요"][step]??'';
   $("tutorial-copy").textContent = ["왼쪽 조이스틱을 위로 밀어 농장문을 나가세요.","길 위의 알에 다가가 오른쪽 ‘들고가기’를 누르세요.","알을 들면 느려져요. 아래쪽 농장으로 돌아가세요. 보스 공격에 맞으면 알을 떨어뜨려요!","부화실을 열고 ‘두드리기’를 누르세요. 자동 장비도 도와줘요.","별가루로 강화하거나 트레일을 사세요. 농장 러닝머신에서도 속도가 올라요."][step]??"";
   $("return-reward").hidden = !game.returnReward;
-  if(game.returnReward) $("reward-name").textContent = `${EGGS[game.returnReward.type].rarity} · ${eggName(game.returnReward)} · ${Math.round(game.returnReward.distance)}m 탐험`;
+  if(game.returnReward){
+    const rarity=RARITIES[EGGS[game.returnReward.type].tier];
+    $("reward-name").textContent = `${rarity.name} · ${eggName(game.returnReward)}`;
+    $("return-reward").classList.toggle('rare-reward',EGGS[game.returnReward.type].tier>=3);
+    $("return-reward").style.setProperty('--rarity-color',rarity.color);
+    $("return-reward").querySelector('h1')!.textContent=EGGS[game.returnReward.type].tier>=4?'귀한 알을 지켜냈어요!':'알을 얻었어요!';
+  }
   $("shell").classList.toggle("reward-open", !!game.returnReward);
   const exploring = tab === "explore" && !game.isAtBase;
   $("shell").dataset.mode = exploring ? "expedition" : tab === "explore" ? "base" : tab;
@@ -278,19 +302,23 @@ function updateHud() {
   $("carry-chip").hidden = (!game.carried && !game.near) || tab !== "explore";
   if (game.carried)
     $("carry-chip").textContent =
-      `[${EGGS[game.carried.type].rarity}] ${eggName(game.carried)} · 운반 중`;
+      `${EGGS[game.carried.type].rarity} · 운반 중`;
   else if (game.near)
     $("carry-chip").textContent =
-      `[${EGGS[game.near.type].rarity}] ${eggName(game.near)} · 줍기`;
+      `${EGGS[game.near.type].rarity} · 알 발견`;
   $("risk").className = game.risk;
   $("risk").querySelector("span")!.textContent = !game.isAtBase
     ? `기지 ${Math.round(game.distance)}m · ${game.risk==='safe'?'스피드 충분':game.risk==='warning'?'스피드 강화 추천':'먼 지역 · 스피드를 더 키워요'}`
     : "기지 · 시간 제한 없이 탐험해요";
   $("world-label").style.opacity = game.distance < 4 ? "1" : "0";
   $("action").hidden = tab!=='hatchery'&&(!game.action||game.training);
-  $("action-label").textContent = tab === "hatchery" ? "두드리기" : game.action;
-  $("action-icon").textContent =
-    tab === "hatchery" ? "⚒" : game.carried ? "↓" : game.near ? "↑" : game.nearStore ? "✦" : game.nearGym ? "↗" : "⚒";
+  $("action-label").textContent = pickupPreparation?'꺼내는 중':tab === "hatchery" ? "두드리기" : !game.carried&&game.near&&BALANCE.rareEggPickupSeconds[EGGS[game.near.type].tier]>0?'알 꺼내기':game.action;
+  $("action").classList.toggle('preparing',!!pickupPreparation);
+  $("action").style.setProperty('--pickup-progress',`${pickupPreparation?(1-pickupPreparation.remaining/pickupPreparation.duration)*100:0}%`);
+  $("action").setAttribute('aria-label',pickupPreparation?'희귀 알 꺼내는 중, 이동하거나 다시 누르면 취소':$("action-label").textContent??'행동');
+  const actionEgg=tab==='explore'?(game.carried??game.near):null;
+  const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:tab==='hatchery'?'⚒':game.nearStore?'✦':game.nearGym?'↗':'⚒';
+  if($("action-icon").dataset.icon!==actionIcon){$("action-icon").dataset.icon=actionIcon;$("action-icon").innerHTML=actionIcon;}
   $("action").classList.toggle(
     "available",
     tab === "hatchery" || !!game.near || !!game.carried || game.nearGym || game.nearStore,
@@ -355,6 +383,9 @@ function showSettings() {
 document.addEventListener("click", async (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("button");
   if (!b || !ready) return;
+  if(b.id==='boss-warning-ok'){
+    game.save.bossWarningSeen=true;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();void save();return;
+  }
   if(b.id==='train-now'){
     if(tab!=='explore'||paused||!$("modal").hidden||game.returnReward||claiming)return;
     if(game.toggleTraining()){input.reset();feedback(null);updateHud();void save();}
@@ -466,7 +497,7 @@ document.addEventListener("click", async (e) => {
     }
   }
 });
-$("action").addEventListener("click", action);
+$("action").addEventListener("click", () => void action());
 $("settings").addEventListener("click", showSettings);
 $("world").addEventListener("pointerdown", () => {
   if (tab === "hatchery") action();
@@ -474,6 +505,7 @@ $("world").addEventListener("pointerdown", () => {
 document.addEventListener("visibilitychange", async () => {
   if (!ready) return;
   if (document.hidden) {
+    pickupPreparation=null;
     hiddenAt = platform.now();
     input.reset();
     void save();
@@ -506,6 +538,7 @@ async function start() {
     game.offline((platform.now() - state.lastSavedAt) / 1000);
     world = new World($("world"));
     await world.init();
+    game.mapCollision.setFarm(world.mapColliders);game.push(0,0);
     world.quality(state.settings.quality === "low");
     input = new Input($("joystick"), $("knob"), action, showSettings);
     ready = true;
@@ -540,6 +573,12 @@ function frame(now: number) {
       );
   } else world.player.userData.moving = false;
   if (!qa) game.tick(paused ? 0 : dt);
+  if(pickupPreparation){
+    const p=pickupPreparation;
+    if(paused||tab!=='explore'||game.death||game.carried||game.returnReward||game.near?.id!==p.id||game.hitAt!==p.hitAt||Math.hypot(game.x-p.x,game.z-p.z)>.05){pickupPreparation=null;}
+    else if(!qa){p.remaining=Math.max(0,p.remaining-dt);if(p.remaining===0){pickupPreparation=null;void action(p.id);}}
+  }
+  if(!paused&&tab==='explore'&&!game.isAtBase&&!game.carried&&!game.death&&!game.returnReward&&game.near&&!game.save.bossWarningSeen)warnAboutBoss();
   if(!paused&&!game.death&&!game.isAtBase&&game.hp/game.maxHp<=PROGRESSION.lowHP&&now-lastHeartbeat>1000){lastHeartbeat=now;feedback('heartbeat');}
   const audible=new Set<number>();
   for(const hazard of game.hazards.attacks){
@@ -574,24 +613,20 @@ function frame(now: number) {
   if(pursued&&!wasPursued)bossAlertUntil=now+3000;
   wasPursued=pursued;
   const presenting=!paused&&!game.death&&!game.returnReward&&$("modal").hidden&&!virtualAd;
-  const wakeSeconds=waking?Math.ceil(waking.wakeRemaining??ROUTE.bossWakeSeconds):0;
   const gap=chaser?Math.max(0,Math.hypot(chaser.x-game.x,chaser.z-game.z)-ROUTE.bossReach*ROUTE.bossAngryScale*(chaser.final?FINAL_GUARDIAN.scale:1)):Infinity;
   const pressure=chaser?Math.max(0,1-gap/18):0,close=gap<5;
   const bursting=pursued&&now>bossAlertUntil-3000&&now<bossAlertUntil-2100;
   const pressureEl=$("boss-pressure"),alertEl=$("boss-alert");
-  pressureEl.hidden=!(presenting&&(pursued||wakeSeconds>0&&wakeSeconds<=2));
+  pressureEl.hidden=!(presenting&&(pursued||!!waking));
   pressureEl.style.setProperty('--pursuit-strength',String(.35+pressure*.65));
   pressureEl.style.setProperty('--pursuit-beat',`${1.3-pressure*.5}s`);
   pressureEl.classList.toggle('awakening',bursting);
-  alertEl.dataset.phase=waking?'waking':now<bossAlertUntil?'awakened':close?'close':'chase';
-  const bossAlert=waking?`각성까지 ${wakeSeconds}`:now<bossAlertUntil?'보스 각성! 달리세요!':close?'바로 뒤에 있어요!':'보스 추격 중';
+  alertEl.dataset.phase=waking?'waking':close?'close':'chase';
+  const bossAlert=waking?'보스가 잠에서 깼어요!':close?'바로 뒤에 있어요!':'보스 추격 중';
   if($("boss-alert-title").textContent!==bossAlert)$("boss-alert-title").textContent=bossAlert;
   const detail=waking?'알을 들고 먼저 도망가세요':close?'잡히기 전에 기지로!':chaser?`기지로 달리세요 · 보스 ${Math.ceil(gap)}m`:'';
   if($("boss-alert-detail").textContent!==detail)$("boss-alert-detail").textContent=detail;
   alertEl.hidden=!(presenting&&(!!waking||pursued));
-  const countKey=waking?`${waking.target}:${wakeSeconds}`:'';
-  if(presenting&&countKey&&countKey!==lastBossCount)playSound('boss-count',waking?.stageId);
-  if(presenting||!waking)lastBossCount=countKey;
   if(presenting&&chaser&&gap<12&&now-lastBossStep>850-pressure*250){playSound('boss-step',chaser.stageId);lastBossStep=now;}
   audio.music(game.save.settings.sound&&presenting?(pursued?'chase':'calm'):'silent',pressure);
   void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null);

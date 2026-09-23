@@ -4,27 +4,35 @@ export class Input {
   y = 0;
   keys = new Set<string>();
   pointer: number | null = null;
+  private surface:HTMLElement;
+  private origin={x:0,y:0};
   constructor(
     private pad: HTMLElement,
     private knob: HTMLElement,
     action: () => void,
     pause: () => void,
   ) {
-    pad.addEventListener("pointerdown", (e) => {
-      if (this.pointer !== null) return;
+    this.surface=pad.closest<HTMLElement>('#shell')!;
+    pad.dataset.floating='true';pad.hidden=true;
+    this.surface.addEventListener("pointerdown", (e) => {
+      if(this.pointer!==null||e.button!==0||!['base','expedition'].includes(this.surface.dataset.mode??''))return;
+      if((e.target as HTMLElement).closest('button,nav,#top-hud,#panel,#modal,#return-reward,#loading'))return;
+      if(!document.getElementById('modal')!.hidden||!document.getElementById('return-reward')!.hidden)return;
+      e.preventDefault();
       this.pointer = e.pointerId;
-      pad.setPointerCapture(e.pointerId);
-      this.update(e);
+      this.origin={x:e.clientX,y:e.clientY};
+      pad.style.left=`${e.clientX}px`;pad.style.top=`${e.clientY}px`;pad.hidden=false;
+      this.surface.setPointerCapture(e.pointerId);
     });
-    pad.addEventListener("pointermove", (e) => {
+    this.surface.addEventListener("pointermove", (e) => {
       if (e.pointerId === this.pointer) this.update(e);
     });
     const release = (e: PointerEvent) => {
       if (e.pointerId === this.pointer) this.reset();
     };
-    pad.addEventListener("pointerup", release);
-    pad.addEventListener("pointercancel", release);
-    pad.addEventListener("lostpointercapture", release);
+    this.surface.addEventListener("pointerup", release);
+    this.surface.addEventListener("pointercancel", release);
+    this.surface.addEventListener("lostpointercapture", release);
     window.addEventListener("keydown", (e) => {
       if ((e.target as HTMLElement).matches("input,button,select")) return;
       if (
@@ -42,8 +50,8 @@ export class Input {
   }
   update(e: PointerEvent) {
     const r = this.pad.getBoundingClientRect(),
-      dx = e.clientX - r.left - r.width / 2,
-      dy = e.clientY - r.top - r.height / 2;
+      dx = e.clientX - this.origin.x,
+      dy = e.clientY - this.origin.y;
     const len = Math.hypot(dx, dy),
       limit = r.width * 0.3,
       scale = len > limit ? limit / len : 1;
@@ -52,7 +60,10 @@ export class Input {
     this.knob.style.transform = `translate(${dx * scale}px,${dy * scale}px)`;
   }
   reset() {
+    const pointer=this.pointer;
     this.pointer = null;
+    if(pointer!==null&&this.surface.hasPointerCapture(pointer))this.surface.releasePointerCapture(pointer);
+    this.pad.hidden=true;
     this.x = this.y = 0;
     this.keys.clear();
     this.knob.style.transform = "";

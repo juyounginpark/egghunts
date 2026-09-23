@@ -1,4 +1,5 @@
 import * as T from "three";
+import type {MapCollider} from './map-collision';
 type Voxel = [number, number, number, number];
 type Model = {
   colors: string[];
@@ -103,6 +104,27 @@ export async function loadVoxels(names: string[]) {
     if (!pending.has(name)) pending.set(name, data(name).then(() => {}).finally(() => pending.delete(name)));
     return pending.get(name)!;
   }));
+}
+
+/** Merge occupied body-height voxel columns into footprint strips, leaving doorways open. */
+export function voxelColliders(name:string,x:number,z:number,scale:number,rotation:number):MapCollider[]{
+ const d=dataCache.get(name)!,unit=d.size[1]*.9,rows=new Map<number,Set<number>>();
+ for(const [vx,vy,vz] of d.voxels){
+  const y=(vy-d.pivot[1])*scale/unit;
+  if(y<.3||y>1.1)continue;
+  if(!rows.has(vz))rows.set(vz,new Set());rows.get(vz)!.add(vx);
+ }
+ const boxes:MapCollider[]=[],cs=Math.cos(rotation),sn=Math.sin(rotation);
+ for(const [vz,row] of rows)for(const vx of [...row].sort((a,b)=>a-b)){
+  if(!row.has(vx))continue;let end=vx;while(row.has(end+1))end++;
+  for(let k=vx;k<=end;k++)row.delete(k);
+  const corners=[vx-.5,end+.5].flatMap(xx=>[vz-.5,vz+.5].map(zz=>{
+   const px=(xx-d.pivot[0])*scale/unit,pz=(zz-d.pivot[2])*scale/unit;
+   return {x:x+px*cs+pz*sn,z:z-px*sn+pz*cs};
+  }));
+  boxes.push({minX:Math.min(...corners.map(p=>p.x)),maxX:Math.max(...corners.map(p=>p.x)),minZ:Math.min(...corners.map(p=>p.z)),maxZ:Math.max(...corners.map(p=>p.z))});
+ }
+ return boxes;
 }
 
 export function proceduralVoxelModel(key:string,voxels:Voxel[],colors:string[]){

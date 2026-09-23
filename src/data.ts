@@ -47,6 +47,7 @@ export const BALANCE = {
   carryPerLevel: 0.08,
   carrySlowByTier: [.1,.2,.3,.4,.5,.6,.7],
   maxCarrySlow: .7,
+  rareEggPickupSeconds: [0,0,0,1.5,3,5,7],
   timePerLevel: 5,
   baseTap: 1,
   tapPerLevel: 2,
