@@ -227,8 +227,7 @@ function updateHud() {
   $("cycle-clock").textContent=game.isNight?`☾ 밤 · 아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`☀ 낮 · 밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
-  $("train-now").hidden=tab!=='explore'||!game.isAtBase||!!game.carried||!!game.death||!!game.returnReward;
-  $("train-now").textContent=game.training?'운동 그만하기':'운동하기';
+  $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.training||!!game.carried||!!game.death||!!game.returnReward;
   if(game.training) $("speed-value").textContent += ` · +${num(game.effectiveTrainingRate,3)}/초`;
   const step=game.save.tutorial??0;
   $("tutorial").hidden=step>=5 || !!game.returnReward || game.result!==null;
@@ -288,7 +287,7 @@ function updateHud() {
     ? `기지 ${Math.round(game.distance)}m · ${game.risk==='safe'?'스피드 충분':game.risk==='warning'?'스피드 강화 추천':'먼 지역 · 스피드를 더 키워요'}`
     : "기지 · 시간 제한 없이 탐험해요";
   $("world-label").style.opacity = game.distance < 4 ? "1" : "0";
-  $("action").hidden = tab!=='hatchery'&&!game.action;
+  $("action").hidden = tab!=='hatchery'&&(!game.action||game.training);
   $("action-label").textContent = tab === "hatchery" ? "두드리기" : game.action;
   $("action-icon").textContent =
     tab === "hatchery" ? "⚒" : game.carried ? "↓" : game.near ? "↑" : game.nearStore ? "✦" : game.nearGym ? "↗" : "⚒";

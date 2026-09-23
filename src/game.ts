@@ -357,7 +357,7 @@ export class GameState {
     this.training=!this.training;
     this.trainingClock=this.trainingGain=0;
     if(this.training){this.x=BALANCE.gymX;this.z=BALANCE.gymZ;this.velocity={x:0,z:0};this.facing={x:0,z:-1};}
-    this.message=this.training?'트레드밀에서 운동 중이에요. 스피드가 올라요!':'운동을 마쳤어요.';
+    this.message=this.training?'운동 중 · 조이스틱으로 이동하면 운동을 마쳐요.':'운동을 마쳤어요.';
     this.revision++;return true;
   }
   petIncomeStageMultiplier(id:number){const pet=MONGLES[id];return pet.stageId||BALANCE.petIncomeLegacyStageMultipliers[pet.region];}
@@ -646,7 +646,8 @@ export class GameState {
     if(this.effects.grab>0&&l)this.effects.grab=Math.max(0,this.effects.grab-dt*HAZARD_BALANCE.escapeInputBonus);
     if(this.effects.grab>0||this.effects.stone>0)return;
     this.updateNight();
-    if (!l || this.knockback.remaining>0 || this.launch || this.death || this.training || this.now()<this.knockedUntil) return;
+    if (!l || this.knockback.remaining>0 || this.launch || this.death || this.now()<this.knockedUntil) return;
+    if(this.training)this.toggleTraining();
     this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*this.speed,z:dz/Math.max(1,l)*this.speed};
     const scale = l > 1 ? 1 / l : 1;
     this.x = Math.max(
