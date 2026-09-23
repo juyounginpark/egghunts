@@ -1,4 +1,5 @@
 import "./style.css";
+import {GameAudio,type GameSound} from './audio';
 import {
   BALANCE,
   PROGRESSION,
@@ -95,35 +96,18 @@ let game: GameState,
   lastNow = 0,
   hiddenAt = 0,
   toastTimer = 0;
-let audio: AudioContext | undefined;
+const audio=new GameAudio();
+let heardHazards=new Set<number>();
 let lastHeartbeat=0;
 let virtualAd:VirtualAd|null=null;
 let virtualAdPurpose:'currency'|'revive'='currency';
 let pendingSale:{kind:'egg'|'pet';id:string}|null=null;
-function feedback() {
+function playSound(sound:GameSound,stage=game.stage.id){if(game.save.settings.sound)audio.play(sound,stage);}
+function feedback(sound:GameSound|null='ui') {
   if (game.save.settings.haptic) platform.haptic();
-  if (!game.save.settings.sound) return;
-  try {
-    audio ??= new AudioContext();
-    void audio.resume();
-    const oscillator = audio.createOscillator(),
-      gain = audio.createGain();
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(650, audio.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(
-      340,
-      audio.currentTime + 0.07,
-    );
-    gain.gain.setValueAtTime(0.035, audio.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.1);
-    oscillator.connect(gain).connect(audio.destination);
-    oscillator.start();
-    oscillator.stop(audio.currentTime + 0.1);
-    oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();};
-  } catch {
-    /* Audio is optional. */
-  }
+  if(sound)playSound(sound);
 }
+for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>{if(ready&&game.save.settings.sound)audio.unlock();},{capture:true});
 function toast(text: string) {
   $("toast").textContent = text;
   $("toast").hidden = false;
@@ -145,7 +129,7 @@ async function action() {
     if (game.tap()) {
       world.hitAt = performance.now();
       $("action").dataset.hit = String(game.lastTap);
-      feedback();
+      feedback(null);
     }
   } else if (tab === "explore") {
     if(!game.carried&&!game.near&&game.nearStore){setTab('store');return;}
@@ -154,9 +138,9 @@ async function action() {
       try{const egg=await multiplayer.claim(game.near.id);game.pickup({...egg,hp:EGGS[egg.type].hp,distance:Math.abs(egg.z),expires:game.nightAt});}
       catch(err){toast(String(err));}finally{claiming=false;}return;
     }
-    if(!game.carried&&!game.near&&!game.nearGym){world.swingBat(game.now());feedback();return;}
+    if(!game.carried&&!game.near&&!game.nearGym){world.swingBat(game.now());feedback('swing');return;}
     game.interact();
-    feedback();
+    feedback(null);
     platform.track("egg_interact", { carrying: game.carried ? 1 : 0 });
   }
 }
@@ -222,10 +206,15 @@ function updateHud() {
   $("hazard-cue").hidden=true;
   $("level-burst").hidden=game.now()-game.levelUpAt>1800;
   $("level-burst").textContent=`✦ LEVEL UP · ${game.level} ✦`;
-  if(game.death&&!virtualAd&&game.now()-game.death.at>=BALANCE.deathChoiceDelay&&$("modal").dataset.kind!=='death'){
-    input.reset();paused=true;$("modal").hidden=false;$("modal").dataset.kind='death';
-    $("modal").innerHTML='<section class="death-card"><span class="tag">A LITTLE REST</span><h1>잠시 쓰러졌어요</h1><p>떨어뜨린 알은 현장에 남아 있어요.</p><button id="revive-ad" class="primary">가상 광고 보고 제자리 부활</button><small>10초 · HP 전부 회복 · 잠깐 무적<br>밤에는 농장에서 부활해요</small><button id="respawn-base" class="secondary">광고 없이 농장으로 돌아가기</button></section>';
+  if(!game.death&&$("modal").dataset.kind==='death'){
+    if(virtualAdPurpose==='revive')virtualAd=null;
+    paused=false;$("modal").hidden=true;$("modal").dataset.kind='';
   }
+  if(game.death&&!virtualAd&&$("modal").dataset.kind!=='death'){
+    input.reset();paused=true;$("modal").hidden=false;$("modal").dataset.kind='death';
+    $("modal").innerHTML='<section class="death-card" role="dialog" aria-modal="true" aria-labelledby="death-title"><span class="tag">A LITTLE REST</span><h1 id="death-title">잠시 쓰러졌어요</h1><p>떨어뜨린 알은 현장에 남아 있어요.</p><strong id="death-count"></strong><button id="revive-ad" class="primary">가상광고 보고 부활</button><small>10초 시청 · 제자리 HP 전부 회복 · 3초 무적<br>밤이 되면 농장으로 돌아가요</small><button id="respawn-base" class="secondary">그냥 복귀</button><small>복귀 시 원정 경험치 70% 유지</small></section>';
+  }
+  if(game.death&&!virtualAd&&document.getElementById('death-count'))$('death-count').textContent=`${game.deathChoiceRemaining}초 후 자동 복귀`;
   $("night-curtain").hidden = true;
   $("night-count").textContent = String(Math.max(0, Math.ceil((game.nightUntil-game.now())/1000)));
   $("speed-value").textContent = `스피드 ${num(game.speed,2)}${game.carried?" · 운반 중":""}`;
@@ -324,7 +313,7 @@ function updateHud() {
       `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><div class="sparkles">✦ · ✧ · ✦</div><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit">${m.effect}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
     $("modal").hidden = false;
     platform.track("hatch_complete", { mongle: m.id });
-    feedback();
+    feedback(null);
   }
 }
 function renderEggQueue() {
@@ -362,15 +351,16 @@ document.addEventListener("click", async (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("button");
   if (!b || !ready) return;
   if((b.id==='virtual-ad'||b.id==='revive-ad')&&!virtualAd){
+    if(b.id==='revive-ad'&&!game.beginReviveAd()){game.tick(0);updateHud();return;}
     virtualAdPurpose=b.id==='revive-ad'?'revive':'currency';
-    virtualAd=new VirtualAd();paused=true;input.reset();
+    virtualAd=new VirtualAd(()=>game.now());paused=true;input.reset();
     $("modal").hidden=false;
     $("modal").innerHTML=`<section class="virtual-ad-card" role="dialog" aria-modal="true" aria-label="가상 광고"><button id="virtual-ad-close" aria-label="광고 닫고 보상 받기" hidden>닫기 ✕</button><span class="tag">TEST AD</span><h1>이것은 가상 광고입니다.</h1><p>실제 광고가 아닌 보상 흐름 테스트입니다.</p><strong id="ad-count">10</strong><p>잠시 후 오른쪽 위에 닫기 버튼이 나타나요.</p><small>${virtualAdPurpose==='revive'?'완료 보상 · HP 전부 회복하고 부활':`완료 보상 · 별가루 ${BALANCE.virtualAdReward}개`}</small></section>`;
     platform.track('virtual_ad_start');return;
   }
   if(b.id==='virtual-ad-close'&&virtualAd){
     const reward=virtualAd.claim();if(!reward)return;
-    if(virtualAdPurpose==='revive'){game.revive(true);toast('다시 일어났어요! HP가 전부 회복됐어요.');}else{game.save.dust+=reward;toast(`별가루 ${num(reward)}개를 받았어요!`);}
+    if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'밤이 되어 농장으로 돌아왔어요.');}else{game.save.dust+=reward;playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
     game.revision++;virtualAd=null;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';renderPanel();void save();
     platform.track('virtual_ad_reward',{purpose:virtualAdPurpose,amount:virtualAdPurpose==='currency'?reward:0});return;
   }
@@ -452,6 +442,7 @@ document.addEventListener("click", async (e) => {
         "high" | "low",
     };
     world.quality(game.save.settings.quality === "low");
+    if(!game.save.settings.sound)void audio.suspend();
     paused = false;
     $("modal").hidden = true;
     void save();
@@ -539,11 +530,22 @@ function frame(now: number) {
       );
   } else world.player.userData.moving = false;
   if (!qa) game.tick(paused ? 0 : dt);
-  if(!paused&&!game.isAtBase&&game.hp/game.maxHp<=PROGRESSION.lowHP&&now-lastHeartbeat>1000){lastHeartbeat=now;feedback();}
+  if(!paused&&!game.death&&!game.isAtBase&&game.hp/game.maxHp<=PROGRESSION.lowHP&&now-lastHeartbeat>1000){lastHeartbeat=now;feedback('heartbeat');}
+  const audible=new Set<number>();
+  for(const hazard of game.hazards.attacks){
+    if(hazard.phase!=='Active'||Math.abs(hazard.target.z-game.z)>18)continue;
+    audible.add(hazard.serial);
+    if(heardHazards.has(hazard.serial)||paused)continue;
+    const v=hazard.definition.visual;
+    playSound(['ink','coral','puddle','ice','icicle'].includes(v)?'water':['steam','flame','meteor'].includes(v)?'fire':['train','gear','laser','drone','magnet','crusher'].includes(v)?'machine':'magic',hazard.definition.stageId);
+  }
+  heardHazards=audible;
   for (const event of game.events.splice(0)) {
+    const cues:Partial<Record<string,GameSound>>={hatch_manual_hit:'tap',egg_pickup:'pickup',egg_drop:'drop',egg_saved:'return',mongle_obtained:'hatch',player_hit:'hit',player_death:'death',player_revive:'revive',night_refresh:'night',region_enter:'stage',level_up:'upgrade',upgrade_purchase:'upgrade',trail_purchase:'upgrade',collection_reward:'upgrade',boss_wake:'boss',egg_recovered:'drop'};
+    const cue=cues[event.name];if(cue)playSound(cue,Number(event.params.stage??game.stage.id));
     if(event.name==='expedition_start'){$("toast").hidden=true;clearTimeout(toastTimer);}
-    if(['level_up','player_hit','health_unlocked'].includes(event.name)){feedback();void save();}
-    if(event.name.startsWith('expedition_fail_')){toast(game.message);void save();}
+    if(['level_up','player_hit','health_unlocked','player_death'].includes(event.name)){feedback(null);void save();}
+    if(event.name.startsWith('expedition_fail_')){playSound('return');toast(game.message);void save();}
     if(event.name==='training_gain'){world.showTrainingGain(Number(event.params.amount),game.now());continue;}
     const steps:Record<string,number>={expedition_start:1,egg_pickup:2,egg_saved:3,mongle_obtained:4,upgrade_purchase:5,trail_purchase:5};
     if(steps[event.name] && (game.save.tutorial??0)<steps[event.name]){

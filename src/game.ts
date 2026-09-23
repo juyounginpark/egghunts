@@ -245,7 +245,8 @@ export class GameState {
   gainXP(amount:number){const gained=awardXP(this.progression,amount);if(gained){this.hp=this.maxHp;this.levelUpAt=this.now();this.revivedAt=this.now();this.emit('level_up',{level:this.level,count:gained});}this.revision++;return gained;}
   settleXP(success:boolean){const xp=Math.floor(this.progression.pendingXP*(success?1+this.defense('returnXPBonus'):PROGRESSION.failureKeep));this.progression.pendingXP=0;this.gainXP(xp);this.emit('xp_settled',{xp,success:success?1:0});return xp;}
   failExpedition(reason:string){
-    if(!this.deadline&&!this.carried&&this.isAtBase)return false;
+    if(!this.deadline&&!this.carried&&!this.death&&this.isAtBase)return false;
+    this.reviveAdUntil=null;
     if(this.carried)this.flyaway={stageId:this.carried.stageId,variant:this.carried.variant,type:this.carried.type,x:this.x,z:this.z,at:this.now()};
     this.carried=null;this.deadline=0;this.x=this.z=0;this.training=false;this.launch=null;this.death=null;
     this.revivedAt=this.now();
@@ -255,7 +256,7 @@ export class GameState {
     this.emit(`expedition_fail_${reason}`,{xp});this.revision++;return true;
   }
   applyHazard(h:Hazard,bossContact=false){
-    const d=h.definition;if((this.immunity>0&&!bossContact)||this.isAtBase)return false;
+    const d=h.definition;if(this.death||(this.immunity>0&&!bossContact)||this.isAtBase)return false;
     const reduction=this.defense('damageReduction')+this.defenses.reduce((n,p)=>n+(p.environmentReduction?.[d.id]??0),0)+(!this.progression.firstHitUsed?this.trait('shield')+this.defense('firstHitReduction'):0);
     const damage=this.immunity>0?0:reducedDamage(d.damage,d.damagePercent,this.maxHp,reduction);
     this.progression.firstHitUsed=true;this.hp=Math.max(0,this.hp-damage);this.sinceHit=0;this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();
@@ -276,7 +277,7 @@ export class GameState {
     if(d.effect==='dust'){const amount=Math.min(this.save.dust,HAZARD_BALANCE.dustDrop);this.save.dust-=amount;if(amount)this.dustDrops.push({x:this.x+.8,z:this.z,amount});}
     this.emit('player_hit',{damage,hp:this.hp,stage:this.stage.id});this.revision++;
     if(this.hp<=0&&this.defenses.some(d=>d.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}
-    if(this.hp<=0)this.failExpedition('hp');return true;
+    if(this.hp<=0)this.die();return true;
   }
   push(x:number,z:number){this.x=Math.max(-BALANCE.mapX,Math.min(BALANCE.mapX,this.x+x));this.z=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,this.z+z));this.syncStage();}
   get nearStore(){return Math.hypot(this.x-BALANCE.storeX,this.z-BALANCE.storeZ)<BALANCE.storeRadius;}
@@ -297,14 +298,30 @@ export class GameState {
     const price=this.petSellPrice(id);this.save.dust+=price;this.revision++;this.emit('pet_sold',{pet:id,price});return price;
   }
   death:NonNullable<Save['death']>|null=null;
+  private reviveAdUntil:number|null=null;
+  get deathChoiceRemaining(){return this.death?Math.max(0,Math.ceil((this.death.at+BALANCE.deathChoiceDuration-this.now())/1000)):0;}
+  private die(){
+    if(this.death)return;
+    if(this.carried){const egg=this.carried;egg.x=this.x;egg.z=this.z;this.world.push(egg);this.carried=null;this.emit('egg_drop',{type:egg.type,reason:'death'});}
+    this.death={x:this.x,z:this.z,at:this.now(),remaining:Math.max(0,(this.deadline-this.now())/1000)};
+    this.knockback.remaining=0;this.launch=null;this.training=false;this.reviveAdUntil=null;
+    this.emit('player_death');this.revision++;
+  }
+  beginReviveAd(){
+    if(!this.death||this.deathChoiceRemaining<=0||this.reviveAdUntil!==null)return false;
+    this.reviveAdUntil=this.now()+BALANCE.virtualAdDuration;return true;
+  }
   revivedAt=-Infinity;
   revive(inPlace:boolean){
     if(!this.death)return false;
+    if(!inPlace)return this.failExpedition('hp');
+    if(this.reviveAdUntil===null||this.now()<this.reviveAdUntil)return false;
+    this.updateNight();if(!this.death)return false;
     const here=inPlace&&!this.isNight;
     this.x=here?this.death.x:0;this.z=here?this.death.z:0;
     this.deadline=here&&!this.isAtBase?this.now()+Math.max(BALANCE.reviveMinimumTime,this.death.remaining)*1000:0;
     this.hp=this.maxHp;this.sinceHit=0;this.immunity=BALANCE.reviveImmunity;this.knockedUntil=0;this.launch=null;
-    this.death=null;this.revivedAt=this.now();this.revision++;this.emit('player_revive',{inPlace:here?1:0});return true;
+    this.death=null;this.reviveAdUntil=null;this.knockback.remaining=0;this.slowRemaining=0;this.effects={ink:0,stone:0,grab:0,delay:0,magnet:0};this.revivedAt=this.now();this.revision++;this.emit('player_revive',{inPlace:here?1:0});return true;
   }
   get isAtBase(){return this.z>=BALANCE.baseMinZ&&this.z<=BALANCE.mapNearZ&&Math.abs(this.x)<=BALANCE.mapX;}
   knockedUntil=0;
@@ -430,7 +447,7 @@ export class GameState {
     for(const egg of [...this.world,...save.eggs,...(this.carried?[this.carried]:[])]){
       if(egg.stageId&&egg.variant===undefined){const slot=Number(egg.id.split('-')[1]);egg.variant=Number.isInteger(slot)&&slot>=0&&slot<5?slot:egg.type%5;}
     }
-    if(save.death){this.x=this.z=this.deadline=0;this.hp=this.maxHp;save.death=null;}
+    if(save.death){this.death=save.death;this.x=save.death.x;this.z=save.death.z;this.hp=0;if(this.deathChoiceRemaining<=0)this.failExpedition('hp');}
     if(this.isNight&&save.nightAt!==this.nightAt){this.nightAt=cycle;this.updateNight();}
     if(Math.floor(save.lastSavedAt/BALANCE.nightInterval)<Math.floor(this.now()/BALANCE.nightInterval)){this.nightAt=cycle;this.updateNight();}
     if(this.isNight&&!this.isAtBase)this.failExpedition('night');
@@ -579,7 +596,7 @@ export class GameState {
       if(recovery){
         if(b.loot){
           recovery.x=b.x;recovery.z=b.z;
-          if(l-step<.2){this.restoreEgg(recovery,recovery.region??0);b.loot=null;this.revision++;}
+          if(l-step<.2){this.restoreEgg(recovery,recovery.region??0);b.loot=null;this.emit('egg_recovered',{stage:b.stageId??1});this.revision++;}
         }else if(l-step<.2){b.loot=recovery;recovery.x=b.x;recovery.z=b.z;}
       }else if(b.mode==='return'&&l-step<.2)b.mode='idle';
     });
@@ -622,8 +639,10 @@ export class GameState {
     this.announcementId++;this.emit('night_refresh');this.revision++;
   }
   tick(dt:number){
-    this.updateNight();if(dt<=0)return;
-    for(let left=dt;left>1e-9;left-=PROGRESSION.simulationStep)this.tickStep(Math.min(left,PROGRESSION.simulationStep));
+    this.updateNight();
+    if(this.death){if(this.reviveAdUntil===null&&this.deathChoiceRemaining<=0)this.failExpedition('hp');return;}
+    if(dt<=0)return;
+    for(let left=dt;left>1e-9&&!this.death;left-=PROGRESSION.simulationStep)this.tickStep(Math.min(left,PROGRESSION.simulationStep));
   }
   private tickStep(dt:number){
     this.syncStage();
@@ -725,6 +744,7 @@ export class GameState {
       boss.loot = null;
       boss.mode = "chase";
       boss.target = this.carried.id;
+      this.emit('boss_wake',{stage:boss.stageId??this.stage.id,final:boss.final?1:0});
       this.message = `${boss.final?'최종 보스 · 창조의 수호자':STAGES[(boss.stageId??this.stage.id)-1].name+' 수호자'}가 깨어났어요! 알을 들고 도망가세요.`;
     this.revision++;
   }
@@ -819,7 +839,7 @@ export class GameState {
   snapshot(): Save {
     this.progression.hp=this.hp;this.progression.maxHP=this.maxHp;this.progression.immunity=this.immunity;this.progression.slowRemaining=this.slowRemaining;this.progression.slowMultiplier=this.slowMultiplier;
     this.save.routeVersion=2;
-    this.save.death=null;
+    this.save.death=this.death;
     this.save.nightAt = this.nightAt;
     this.save.nightUntil = this.nightUntil;
     this.save.world = this.world;
