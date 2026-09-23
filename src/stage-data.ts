@@ -27,8 +27,15 @@ const rows:StageRow[]=[
  ['공허와 창조주의 정원',0x393145,0xf9da87,'공허의 길 → 기억의 정원 → 창조자의 문','creation',60,60],
 ];
 export const STAGES=rows.map(([name,color,accent,description,kit,minLevel,maxLevel],i)=>({id:i+1,name,color,accent,description,kit,minLevel,maxLevel,safe:i<4}));
+export const STAGE_DIFFICULTY={minimumDamage:40,damagePerStage:20,recommendedSpeedMultiplier:2};
+export const STAGE_STEPS=[{damage:1,cooldown:1,density:1,tint:1.08},{damage:1.25,cooldown:.85,density:1.2,tint:1},{damage:1.5,cooldown:.7,density:1.4,tint:.88}];
+export const FINAL_GUARDIAN={stage:20,scale:3,bossEndOffset:12,eggEndOffset:23,minimumEggTier:4};
+export function stageDamage(stage:number,step=1){return Math.round((STAGE_DIFFICULTY.minimumDamage+(stage-1)*STAGE_DIFFICULTY.damagePerStage)*STAGE_STEPS[step-1].damage);}
+export function routeStep(z:number,offset:number,length:number){return Math.min(3,Math.max(1,Math.floor((-z-offset-ROUTE.entrance)/(length/3))+1));}
 function attack(stageId:number,id:string,displayName:string,damage:number,telegraphDuration:number,shape:Shape,extra:Partial<HazardDefinition>={}):HazardDefinition{
- return {id,displayName,stageId,damage,damagePercent:stageId>=13?.08:stageId>=9?.05:stageId>=5?.03:0,telegraphDuration,activeDuration:.35,cooldown:6,knockback:.5,slowMultiplier:.8,slowDuration:.5,shape,targetingType:'predict',carryTelegraphBonus:.2,radius:1.2,width:.55,length:10,blockable:false,effect:'hit',count:1,freezeBefore:.3,visual:STAGES[stageId-1].kit,minTelegraph:shape==='line'?1:1.2,...extra};
+ const definition:HazardDefinition={id,displayName,stageId,damage,damagePercent:stageId>=13?.08:stageId>=9?.05:stageId>=5?.03:0,telegraphDuration,activeDuration:.35,cooldown:6,knockback:.5,slowMultiplier:.8,slowDuration:.5,shape,targetingType:'predict',carryTelegraphBonus:.2,radius:1.2,width:.55,length:10,blockable:false,effect:'hit',count:1,freezeBefore:.3,visual:STAGES[stageId-1].kit,minTelegraph:shape==='line'?1:1.2,...extra};
+ if(definition.damage>0||definition.damagePercent>0)definition.damage=Math.max(definition.damage,stageDamage(stageId));
+ return definition;
 }
 export const HAZARDS:HazardDefinition[]=[
  attack(1,'hay','굴러오는 건초',10,1.5,'ellipse',{targetingType:'sweep',knockback:.35,damagePercent:0,visual:'hay'}),
@@ -73,24 +80,50 @@ export const HAZARDS:HazardDefinition[]=[
  attack(20,'memory-ufo','기억의 견인',20,1.5,'ellipse',{targetingType:'fixed',effect:'pull',radius:2.2,activeDuration:3,visual:'ufo'}),
  attack(20,'memory-meteor','기억의 유성',15,2,'ellipse',{count:3,minTelegraph:2,visual:'meteor'}),
  attack(20,'creation-wave','창조의 황금 파동',0,2,'ring',{damagePercent:.2,targetingType:'fixed',activeDuration:3,radius:4,minTelegraph:2,visual:'creation'}),
+ attack(9,'tar-pool','공룡섬 타르 늪',40,1.5,'ellipse',{effect:'dot',activeDuration:3,visual:'puddle'}),
+ attack(10,'moon-bell','달마을 종의 충격',40,1.4,'ring',{visual:'clock',radius:2}),
+ attack(11,'fallen-column','무너지는 대리석 기둥',50,1.6,'ellipse',{visual:'crusher'}),
+ attack(12,'alien-acid','외계 배양액 분출',40,1.4,'ellipse',{effect:'dot',activeDuration:3,visual:'puddle'}),
+ attack(13,'pressure-piston','증기 피스톤',50,1.5,'ellipse',{visual:'crusher'}),
+ attack(13,'boiler-coil','과열 보일러 코일',40,1.2,'ellipse',{visual:'lightning'}),
+ attack(14,'blizzard-vent','빙하 눈보라 틈',0,1.5,'ellipse',{damagePercent:0,effect:'wind',activeDuration:3,visual:'steam'}),
+ attack(14,'ice-boulder','굴러오는 얼음 바위',50,1.8,'ellipse',{visual:'orb'}),
+ attack(15,'dream-spindle','꿈실 물레',40,1.2,'ellipse',{visual:'gear'}),
+ attack(15,'falling-bed','떨어지는 꿈 침대',50,1.8,'ellipse',{visual:'crusher'}),
+ attack(16,'spore-burst','변이 포자 분출',40,1.3,'ellipse',{effect:'dot',activeDuration:3,visual:'steam'}),
+ attack(16,'toxic-drum','굴러오는 폐기물 통',50,1.6,'ellipse',{visual:'orb'}),
+ attack(17,'wasp-patrol','말벌 순찰길',40,1.2,'ellipse',{visual:'drone'}),
+ attack(17,'falling-dew','떨어지는 거대 이슬',40,1.7,'ellipse',{effect:'ice',visual:'icicle'}),
+ attack(17,'thorn-snap','가시풀 덫',50,1.1,'ellipse',{effect:'grab',visual:'vine'}),
+ attack(18,'scrap-gear','고철 절단 톱니',50,1.3,'ellipse',{visual:'gear'}),
+ attack(18,'scrap-cart','폐부품 운반차',40,1.6,'ellipse',{visual:'train'}),
+ attack(18,'arc-coil','방전 코일',40,1.2,'ellipse',{visual:'lightning'}),
+ attack(19,'gravity-well','중력 우물',40,1.6,'ellipse',{effect:'pull',visual:'ufo'}),
+ attack(19,'comet-crossing','혜성 횡단로',50,1.5,'ellipse',{visual:'orb'}),
+ attack(19,'constellation-ray','별자리 광선',40,1.4,'line',{visual:'laser'}),
 ];
-export function stagePatterns(stage:number,z:number){
- const defs=HAZARDS.filter(d=>d.stageId===stage);
- if(stage!==20)return defs;
- if(-z<HAZARD_BALANCE.phaseDistances[0])return defs.slice(0,1);
- if(-z<HAZARD_BALANCE.phaseDistances[1])return [defs[1+Math.floor(-z/12)%4],defs[1+(Math.floor(-z/12)+1)%4]];
- return defs.slice(-1);
+export const STAGE_ENVIRONMENT_IDS=[
+ ['hay'],['train'],['ink'],['lava-breath'],
+ ['tentacle','sweep'],['locker','book'],['laser','drone'],['scorpion','sandstorm'],
+ ['stomp','raptor','tar-pool'],['wisps','club','moon-bell'],['lightning','medusa','fallen-column'],['ufo','turret','alien-acid'],
+ ['steam','gear','pressure-piston','boiler-coil'],['icicle','thin-ice','blizzard-vent','ice-boulder'],['nightmare','clock','dream-spindle','falling-bed'],['vine','puddle','spore-burst','toxic-drum'],
+ ['mantis','web','wasp-patrol','falling-dew','thorn-snap'],['magnet','crusher','scrap-gear','scrap-cart','arc-coil'],['meteors','solar','gravity-well','comet-crossing','constellation-ray'],['void-hand','memory-tentacle','memory-lightning','memory-meteor','creation-wave'],
+];
+export function stagePatterns(stage:number,_z=0){return STAGE_ENVIRONMENT_IDS[stage-1].map(id=>HAZARDS.find(d=>d.stageId===stage&&d.id===id)!);}
+export function environmentPlacement(stage:number,lane:number,offset=0){
+ const count=STAGE_ENVIRONMENT_IDS[stage-1].length,length=stage===20?ROUTE.finalLength:ROUTE.length;
+ return {x:lane%3===2?0:(lane%2?-1:1)*HAZARD_BALANCE.environmentX,z:-offset-ROUTE.entrance-length*(lane+1)/(count+1)};
 }
 export type Cover={x:number;z:number;radius:number};
 export const STAGE_COVERS:Cover[]=Array.from({length:12},(_,i)=>({x:(i%2?1:-1)*HAZARD_BALANCE.coverX,z:-12-i*HAZARD_BALANCE.coverSpacing,radius:HAZARD_BALANCE.coverRadius}));
 
 // Connected expedition: selected stage is the entrance, not a repeated full map.
-export const ROUTE={entrance:6,length:32,finalLength:150,bossKnockback:2.4,bossKnockbackPerSpeed:2.4,bossKnockbackSeconds:.28,bossReach:2,bossWindup:.65,bossDamage:10,bossDamagePerStage:1,bannerSeconds:3,recommendedCarryRatio:.65,targetTravelSeconds:20,baseRecommendedSpeed:3.2};
-export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{const offset=(s.id-start)*ROUTE.length;return {stage:s.id,offset,start:ROUTE.entrance+offset,end:ROUTE.entrance+offset+(s.id===20?ROUTE.finalLength:ROUTE.length),home:14+offset};});}
+export const ROUTE={entrance:6,length:96,finalLength:450,bossKnockback:2.4,bossKnockbackPerSpeed:2.4,bossKnockbackSeconds:.28,bossReach:2,bossWindup:.65,bossDamage:STAGE_DIFFICULTY.minimumDamage,bossDamagePerStage:STAGE_DIFFICULTY.damagePerStage,bannerSeconds:3,recommendedCarryRatio:.65,targetTravelSeconds:20,baseRecommendedSpeed:3.2};
+export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{const offset=(s.id-start)*ROUTE.length;return {stage:s.id,offset,start:ROUTE.entrance+offset,end:ROUTE.entrance+offset+(s.id===20?ROUTE.finalLength:ROUTE.length),home:30+offset};});}
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
 export function guardianSpeed(stage:number){return 2.3+stage*.2;}
-export function recommendedRouteSpeed(depth:number,stage:number){return Math.ceil(Math.max(ROUTE.baseRecommendedSpeed,depth/ROUTE.targetTravelSeconds,stage>4?guardianSpeed(stage)/ROUTE.recommendedCarryRatio+.5:0)*10)/10;}
+export function recommendedRouteSpeed(_depth:number,stage:number){return ROUTE.baseRecommendedSpeed*STAGE_DIFFICULTY.recommendedSpeedMultiplier**(stage-1);}
 export const GUARDIAN_ATTACKS=new Set(['hay','train','ink','lava-breath','tentacle','sweep','locker','book','drone','scorpion','stomp','raptor','wisps','club','lightning','medusa','ufo','nightmare','vine','mantis','magnet','void-hand','memory-tentacle','memory-lightning','memory-ufo','memory-meteor','creation-wave']);
 

@@ -256,7 +256,7 @@ function updateHud() {
   $("region-sub").textContent =
     !exploring ? "앞으로 걸으면 20개 지역이 이어져요" : game.stage.description;
   $("expedition").querySelector(".tag")!.textContent =
-    exploring ? `STAGE ${String(game.stage.id).padStart(2, "0")}` : "BASE CAMP";
+    exploring ? `STAGE ${String(game.stage.id).padStart(2, "0")} · STEP ${game.stageStep}/3` : "BASE CAMP";
   $("shell").classList.toggle("night", game.isNight);
   if (game.announcementId !== lastAnnouncement) {
     lastAnnouncement = game.announcementId;

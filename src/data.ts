@@ -1,5 +1,5 @@
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
-export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,traitInterval:5,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:.9,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
+export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,traitInterval:5,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:1,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
 export const TRAITS={
   sturdy:{name:'튼튼한 탐험가',description:'최대 체력 +10',value:10,max:5},
   light:{name:'가벼운 발걸음',description:'이동속도 +2%',value:.02,max:5},
@@ -51,7 +51,7 @@ export const BALANCE = {
   mapX: 6.5,
   mapNearZ: 6.5,
   baseMinZ:-4.4,
-  mapFarZ: -761,
+  mapFarZ: -2277,
   nightInterval: 180000,
   nightDuration: 45000,
   warningSeconds: 10,
@@ -67,7 +67,7 @@ export const BALANCE = {
   discoveryRewards: [5, 10, 20, 45, 100, 250, 1000],
   regionCollectionRewards: [100, 250, 600, 1200, 2500],
   fullCollectionReward: 5000,
-  speed: 3.2,
+  speed: 1.6,
   interaction: 1.4,
   returnRadius: 2.2,
   inventory: 6,

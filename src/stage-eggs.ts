@@ -1,6 +1,6 @@
 import {STAGES} from "./stage-data";
 import {EGGS} from "./data";
-export type EggAppearance={type:number;stageId?:number;variant?:number};
+export type EggAppearance={type:number;stageId?:number;variant?:number;special?:boolean};
 export type EggCell=[number,number,number,number];
 export const STAGE_EGG_NAMES=[
  ['도토리','꽃봉오리','딸기','새싹','벌집'],['주사위','블록 성','팽이','태엽 로봇','장난감 기차'],
@@ -15,7 +15,7 @@ export const STAGE_EGG_NAMES=[
  ['고리 행성','혜성','별','망원경','은하 나선'],['공허 결정','차원문','기억의 책','황금 날개','세계수'],
 ];
 export function appearanceOf(e:EggAppearance){return e.stageId&&e.stageId>=1&&e.stageId<=20&&e.variant!==undefined&&e.variant>=0&&e.variant<5?{stage:e.stageId,variant:e.variant}:null;}
-export function eggName(e:EggAppearance){const a=appearanceOf(e);return a?`${STAGE_EGG_NAMES[a.stage-1][a.variant]} 알`:EGGS[e.type].name;}
+export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${STAGE_EGG_NAMES[a.stage-1][a.variant]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
 const cache=new Map<string,{cells:EggCell[];colors:string[]}>();
 /** All sculptures live on a 20³ integer grid. Shape, silhouette and appendages vary, not just paint. */
 export function stageEggCells(stage:number,v:number){

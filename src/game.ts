@@ -15,8 +15,8 @@ import {
 } from "./data";
 import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,chooseTrait,traitPoints,reducedDamage,type Progression,type TraitId} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
-import {STAGES,HAZARD_BALANCE,ROUTE,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,type HazardDefinition} from "./stage-data";
-export type Egg = { id: string; type: number; hp: number; distance: number; stageId?:number; variant?:number };
+import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,stageDamage,type HazardDefinition} from "./stage-data";
+export type Egg = { id: string; type: number; hp: number; distance: number; stageId?:number; variant?:number; special?:boolean };
 export type WorldEgg = Egg & {
   x: number;
   z: number;
@@ -28,6 +28,7 @@ export type WorldEgg = Egg & {
   guardian?: number;
 };
 export type Boss = {
+  final?:boolean;
   stageId?:number;
   homeZ?:number;
   windup?: number;
@@ -39,7 +40,7 @@ export type Boss = {
 };
 export type Save = {
   visitedStages?:number[];
-  routeVersion?:1;
+  routeVersion?:1|2;
   progression?:Progression;
   death?:{x:number;z:number;at:number;remaining:number}|null;
   version: 1;
@@ -217,6 +218,7 @@ export class GameState {
   get stage(){return STAGES[routeStage(this.progression.stage,this.z)-1];}
   get recommendedSpeed(){return recommendedRouteSpeed(this.route.find(r=>r.stage===this.stage.id)!.home,this.stage.id);}
   get stageOffset(){return (this.stage.id-this.progression.stage)*ROUTE.length;}
+  get stageStep(){return routeStep(this.z,this.stageOffset,this.stage.id===20?ROUTE.finalLength:ROUTE.length);}
   get farZ(){return -(this.route.at(-1)!.end-3);}
   knockback={x:0,z:0,remaining:0};
   private announcedStage=0;
@@ -315,7 +317,7 @@ export class GameState {
   hp=BALANCE.baseHp;
   sinceHit=0;
   get maxHp(){return levelHP(this.level)+this.save.upgrades.health*BALANCE.hpPerLevel+this.trait('sturdy')+this.defense('maxHP');}
-  bossDamage(region:number){return BALANCE.bossFixedDamage[region]+this.maxHp*BALANCE.bossRatioDamage[region];}
+  bossDamage(region:number){return stageDamage(this.bosses[region]?.stageId??this.stage.id,this.stageStep);}
   receiveHit(region:number){
     const d={damage:this.bossDamage(region),damagePercent:0,knockback:PROGRESSION.hitKnockback,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
     return this.applyHazard({definition:d,origin:{x:this.x,z:this.z-1}} as Hazard);
@@ -326,7 +328,7 @@ export class GameState {
   get movementMultiplier(){return TRAILS[this.save.equippedTrail??0].multiplier*this.speedMultiplier;}
   get effectiveTrainingRate(){return this.trainingRate*this.movementMultiplier*levelSpeed(this.level)*(1+this.trait('light'));}
   get trainingSpeedBonus(){return (this.save.trainingSpeed??0)*this.movementMultiplier;}
-  returnReward: { type: number; distance: number; stageId?:number;variant?:number } | null = null;
+  returnReward: { type: number; distance: number; stageId?:number;variant?:number;special?:boolean } | null = null;
   get nearGym() { return Math.hypot(this.x-BALANCE.gymX,this.z-BALANCE.gymZ)<BALANCE.gymRadius; }
   get trainingRate() { return BALANCE.trainingPerSecond + BALANCE.trainingPerLevel*this.save.upgrades.training; }
   facing = { x: 0, z: -1 };
@@ -345,7 +347,11 @@ export class GameState {
   } | null = null;
   immunity = 0;
   bosses: Boss[] = [];
-  private resetBosses(){this.bosses=this.route.map(r=>({x:0,z:-r.home-3,homeZ:-r.home-3,stageId:r.stage,mode:'idle',target:null,loot:null}));}
+  private resetBosses(){
+    this.bosses=this.route.map(r=>({x:0,z:-r.home-3,homeZ:-r.home-3,stageId:r.stage,mode:'idle',target:null,loot:null}));
+    const z=-this.route.at(-1)!.end+FINAL_GUARDIAN.bossEndOffset;
+    this.bosses.push({x:0,z,homeZ:z,stageId:20,final:true,mode:'idle',target:null,loot:null});
+  }
   x = 0;
   z = 0;
   deadline = 0;
@@ -364,10 +370,20 @@ export class GameState {
   ) {
     if(!save.progression){save.progression=newProgression();save.progression.seenEggs=[...save.discovered];save.progression.hatchedPets=save.mongles.flatMap((n,i)=>n?[i]:[]);save.progression.distanceRecord=save.best;}
     validateProgression(save.progression);
+    if(save.routeVersion===1){
+      const stretch=(z:number)=>z<-ROUTE.entrance?-ROUTE.entrance+(z+ROUTE.entrance)*3:z;
+      const eggs=new Set([...(save.world??[]),...(save.expedition?.carried?[save.expedition.carried]:[]),...(save.bosses??[]).flatMap(b=>b.loot?[b.loot]:[])]);
+      for(const egg of eggs){egg.z=stretch(egg.z);if(egg.homeZ!==undefined)egg.homeZ=stretch(egg.homeZ);}
+      for(const boss of save.bosses??[]){boss.z=stretch(boss.z);if(boss.homeZ!==undefined)boss.homeZ=stretch(boss.homeZ);}
+      if(save.expedition)save.expedition.z=stretch(save.expedition.z);
+      // Stretch the distance record with the route so migration grants no distance XP.
+      save.progression.distanceRecord=-stretch(-save.progression.distanceRecord);
+      save.routeVersion=2;
+    }
     const oldEntrance=save.progression.stage;
     if(oldEntrance!==1){
       const offset=(oldEntrance-1)*ROUTE.length;save.progression.stage=1;
-      for(const egg of [...(save.world??[]),...(save.expedition?.carried?[save.expedition.carried]:[])]){egg.z-=offset;if(egg.homeZ!==undefined)egg.homeZ-=offset;egg.guardian=(egg.stageId??oldEntrance)-1;egg.stageId??=oldEntrance;}
+      for(const egg of [...(save.world??[]),...(save.expedition?.carried?[save.expedition.carried]:[])]){egg.z-=offset;if(egg.homeZ!==undefined)egg.homeZ-=offset;egg.guardian=egg.special?20:(egg.stageId??oldEntrance)-1;egg.stageId??=oldEntrance;}
       for(const b of save.bosses??[]){b.z-=offset;if(b.homeZ!==undefined)b.homeZ-=offset;}
       if(save.expedition&&save.expedition.z<BALANCE.baseMinZ)save.expedition.z-=offset;
     }
@@ -384,7 +400,7 @@ export class GameState {
     if (
       save.world &&
       save.bosses &&
-      save.routeVersion === 1 && save.bosses.length === 21-oldEntrance &&
+      save.routeVersion === 2 && [21-oldEntrance,22-oldEntrance].includes(save.bosses.length) &&
       save.world.every(
         (e) => EGGS[e.type] && Number.isFinite(e.x) && Number.isFinite(e.z),
       ) &&
@@ -395,7 +411,7 @@ export class GameState {
           ["idle", "chase", "return"].includes(b.mode),
       )
     ) {
-      this.world = [...this.world.filter(e=>e.stageId!<oldEntrance),...save.world];
+      this.world = [...this.world.filter(e=>e.stageId!<oldEntrance||(e.special&&!save.bosses!.some(b=>b.final))),...save.world];
       this.bosses.splice(oldEntrance-1,save.bosses.length,...save.bosses);
     }
     if (save.expedition) {
@@ -407,7 +423,7 @@ export class GameState {
       this.hp=Number.isFinite(save.expedition.hp)?Math.max(0,Math.min(this.maxHp,save.expedition.hp!)):this.maxHp;
       this.sinceHit=Number.isFinite(save.expedition.sinceHit)?Math.max(0,save.expedition.sinceHit!):0;
     }
-    if(save.routeVersion!==1&&this.carried){
+    if(save.routeVersion!==2&&this.carried){
       this.carried.stageId??=this.progression.stage;this.carried.guardian=this.carried.stageId-this.progression.stage;
       const boss=this.bosses[this.carried.guardian];if(boss){boss.mode='chase';boss.target=this.carried.id;}
     }
@@ -506,6 +522,11 @@ export class GameState {
         };
       }),
     );
+    const rare=RARITIES.slice(FINAL_GUARDIAN.minimumEggTier);
+    let roll=this.random()*rare.reduce((sum,r)=>sum+r.chance,0);
+    const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
+    const type=tier*REGIONS.length+REGIONS.length-1,z=-this.route.at(-1)!.end+FINAL_GUARDIAN.eggEndOffset;
+    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:EGGS[type].hp,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
   }
   get nightRemaining() {
     return Math.max(0, Math.ceil((this.nightAt - this.now()) / 1000));
@@ -550,8 +571,8 @@ export class GameState {
       const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*dt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
-      if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach){
-        const d={damage:ROUTE.bossDamage+(b.stageId??1)*ROUTE.bossDamagePerStage,damagePercent:0,knockback:guardianSpeed(b.stageId??1)*ROUTE.bossKnockbackPerSpeed,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
+      if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*(b.final?FINAL_GUARDIAN.scale:1)){
+        const d={damage:stageDamage(b.stageId??1,b.final?3:this.stageStep),damagePercent:0,knockback:guardianSpeed(b.stageId??1)*ROUTE.bossKnockbackPerSpeed,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
         this.applyHazard({definition:d,origin:{x:b.x,z:b.z}} as Hazard,true);
         b.mode='return';b.target=null;
       }
@@ -639,7 +660,7 @@ export class GameState {
           this.emit("egg_saved", {type: e.type});
           this.emit("expedition_success", {distance: Math.floor(e.distance)});
           this.save.eggs.push({
-            id: e.id,stageId:e.stageId,variant:e.variant,
+            id: e.id,stageId:e.stageId,variant:e.variant,special:e.special,
             type: e.type,
             hp: e.hp,
             distance: e.distance,
@@ -652,7 +673,7 @@ export class GameState {
           const completed=e.stageId??this.progression.stage;
           if(!this.progression.completedStages.includes(completed))this.progression.completedStages.push(completed);
           if(completed>=PROGRESSION.unlockStage)this.unlockHealth();
-          this.returnReward = {type:e.type, distance:e.distance,stageId:e.stageId,variant:e.variant};
+          this.returnReward = {type:e.type, distance:e.distance,stageId:e.stageId,variant:e.variant,special:e.special};
           this.message = `${EGGS[e.type].name} 보관 완료! 부화실에서 만나봐요`;
           this.carried = null;
           this.revision++;
@@ -704,7 +725,7 @@ export class GameState {
       boss.loot = null;
       boss.mode = "chase";
       boss.target = this.carried.id;
-      this.message = `${STAGES[(boss.stageId??this.stage.id)-1].name} 수호자가 깨어났어요! 알을 들고 도망가세요.`;
+      this.message = `${boss.final?'최종 보스 · 창조의 수호자':STAGES[(boss.stageId??this.stage.id)-1].name+' 수호자'}가 깨어났어요! 알을 들고 도망가세요.`;
     this.revision++;
   }
   tap() {
@@ -797,7 +818,7 @@ export class GameState {
   }
   snapshot(): Save {
     this.progression.hp=this.hp;this.progression.maxHP=this.maxHp;this.progression.immunity=this.immunity;this.progression.slowRemaining=this.slowRemaining;this.progression.slowMultiplier=this.slowMultiplier;
-    this.save.routeVersion=1;
+    this.save.routeVersion=2;
     this.save.death=null;
     this.save.nightAt = this.nightAt;
     this.save.nightUntil = this.nightUntil;

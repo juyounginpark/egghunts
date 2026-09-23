@@ -1,5 +1,5 @@
 import * as T from 'three';
-import { STAGES, ROUTE } from './stage-data';
+import { STAGES, ROUTE,FINAL_GUARDIAN } from './stage-data';
 import type { GameState } from './game';
 
 type Part={x:number;y:number;z:number;w:number;h:number;d:number;color:number;joint:number;eye?:boolean};
@@ -9,7 +9,7 @@ export class RegionGuardian {
  private mesh=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshLambertMaterial(),1200);
  private recipes=new Map<number,Part[]>();
  private parts:Part[]=[];private stage=0;private dummy=new T.Object3D();private color=new T.Color();
- private headings=Array<number>(20).fill(NaN);private roots=Array.from({length:20},()=>({x:NaN,z:NaN}));private lastTime=0;
+ private headings=Array<number>(21).fill(NaN);private roots=Array.from({length:21},()=>({x:NaN,z:NaN}));private lastTime=0;
  constructor(){this.group.add(this.mesh);this.mesh.castShadow=true;this.mesh.frustumCulled=false;this.mesh.count=0;}
  private build(stage:number){
   this.stage=stage;this.parts=[];const s=STAGES[stage-1],c=s.color,a=s.accent,cream=0xffefd0,dark=0x353347,gold=0xe8bc68;
@@ -80,10 +80,11 @@ export class RegionGuardian {
   let index=0;const dt=Math.max(0,Math.min(.1,time-this.lastTime));this.lastTime=time;
   for(let k=0;k<game.bosses.length;k++){
    const state=game.bosses[k],stage=state.stageId??game.stage.id,chasing=state.mode==='chase',sleeping=state.mode==='idle',root=this.roots[k];
-   const tx=state.x+(sleeping?-2.6:0),tz=state.z+(sleeping?-4:0);
+   const scale=state.final?FINAL_GUARDIAN.scale:1;
+   const tx=state.x+(sleeping&&!state.final?-2.6:0),tz=state.z+(sleeping&&!state.final?-4:0);
    if(!Number.isFinite(root.x)||Math.hypot(root.x-tx,root.z-tz)>30){root.x=tx;root.z=tz;}
    root.x=tx;root.z=tz;
-   const z=root.z;if(Math.abs(z-game.z)>23)continue;
+   const z=root.z;if(Math.abs(z-game.z)>(state.final?40:23))continue;
    if(!this.recipes.has(stage))this.build(stage);
    this.parts=this.recipes.get(stage)!;
    const x=root.x+Math.sin(time*.35+k)*.12,hover=[3,5,6,7,12,15,19,20].includes(stage);
@@ -98,10 +99,11 @@ export class RegionGuardian {
     const swing=p.joint?Math.sin(time*(sleeping?.7:stage===7?16:chasing?7:1.8)+p.joint*.85)*(chasing?.2:.11):0;
     const px=p.x+ (p.joint?Math.sign(p.x)*charge*.15:0),py=p.y*(sleeping?.78:1)+breath+swing+(hover&&!sleeping?Math.sin(time*1.2+k)*.14:0),pz=p.z+(p.joint?Math.sin(time*1.5+p.joint)*.09:0)-charge*.15;
     const voidPart=stage===20&&z+(stage-game.progression.stage)*ROUTE.length>-35,partColor=voidPart?(p.color===0xe8bc68?0x9d86bd:0x3b344b):p.color;
-    this.dummy.position.set(x+px*cs+pz*sn,py,z-px*sn+pz*cs);this.dummy.rotation.set(p.joint?swing-charge*.18:0,angle,0);this.dummy.scale.set(p.w,sleeping&&p.eye?.04:p.h,p.d);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(sleeping&&p.eye?0x353347:partColor));
+    this.dummy.position.set(x+(px*cs+pz*sn)*scale,py*scale,z+(-px*sn+pz*cs)*scale);this.dummy.rotation.set(p.joint?swing-charge*.18:0,angle,0);this.dummy.scale.set(p.w*scale,(sleeping&&p.eye?.04:p.h)*scale,p.d*scale);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(sleeping&&p.eye?0x353347:partColor));
    }
    // Sleeping Zs become a red anger mark as the guardian wakes.
-   const glyph=(xx:number,yy:number,w:number,h:number,c:number)=>{this.dummy.position.set(x+xx,yy,z);this.dummy.rotation.set(0,0,0);this.dummy.scale.set(w,h,.1);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(c));};
+   const glyph=(xx:number,yy:number,w:number,h:number,c:number)=>{this.dummy.position.set(x+xx*scale,yy*scale,z);this.dummy.rotation.set(0,0,0);this.dummy.scale.set(w*scale,h*scale,.1*scale);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(c));};
+   if(state.final){glyph(0,3.8,1.8,.18,0xffd36b);for(const xx of [-.7,0,.7])glyph(xx,4,.18,.45,0xffd36b);}
    if(sleeping){for(let j=0;j<2;j++){const xx=.7+j*.35,yy=2.9+j*.4+Math.sin(time+j)*.08;glyph(xx,yy,.3,.06,0xe9edd6);glyph(xx,yy+.22,.3,.06,0xe9edd6);for(let k=0;k<3;k++)glyph(xx-.1+k*.1,yy+.05+k*.06,.09,.07,0xe9edd6);}}
    else if(chasing){glyph(0,3.5,.15,.45,0xff6658);glyph(0,3.13,.15,.12,0xff6658);}
   }

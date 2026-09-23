@@ -1,4 +1,4 @@
-import { STAGES,stagePatterns,HAZARD_BALANCE as B } from "./stage-data";
+import { STAGES,stagePatterns,environmentPlacement,HAZARD_BALANCE as B } from "./stage-data";
 import * as T from "three";
 import { ConnectedRegionArt } from "./region-art";
 import { RegionGuardian } from "./region-guardian";
@@ -19,15 +19,20 @@ export class HazardView{
   this.group.visible=visible;if(!visible)return;this.regions.render(game,time,true);this.guardians.render(game,time,true);
   this.warningCount=this.actorCount=0;
   if(!game.isAtBase){
-   const phase=game.stage.id===20?Math.floor(Math.max(0,-game.z-game.stageOffset)/B.environmentSection)*B.environmentSection:0;
    for(const [lane,d] of stagePatterns(game.stage.id,game.z+game.stageOffset).entries()){
-    const z=-game.stageOffset-phase-B.environmentStart-lane*B.environmentSpacing;
+    const {x,z}=environmentPlacement(game.stage.id,lane,game.stageOffset);
+    if(Math.abs(z-game.z)>36)continue;
     if(['hay','train','book','raptor','gear','orb'].includes(d.visual)){
      for(const side of [-1,1])this.put(this.actors,this.actorCount++,0,.03,z+side*.65,B.laneHalfWidth*2,.06,.12,0x887b62);
     }else{
-     const x=(lane%2?-1:1)*B.environmentX;
-     this.put(this.actors,this.actorCount++,x,.12,z,1.4,.24,1.4,STAGES[d.stageId-1].accent);
-     this.put(this.actors,this.actorCount++,x,.26,z,.8,.08,.8,0x454c50);
+     const biome=STAGES[d.stageId-1],mechanical=[2,6,7,12,13,18].includes(d.stageId);
+     if(mechanical){
+      this.put(this.actors,this.actorCount++,x,.12,z,1.4,.24,1.4,biome.color);
+      for(const side of [-1,1]){this.put(this.actors,this.actorCount++,x+side*.55,.45,z,.2,.65,.7,biome.accent);this.put(this.actors,this.actorCount++,x+side*.55,.82,z,.12,.12,.15,0xffefd0);}
+     }else{
+      for(let j=0;j<9;j++){const a=j*Math.PI*2/9;this.put(this.actors,this.actorCount++,x+Math.cos(a)*.8,.12+(j%3)*.08,z+Math.sin(a)*.8,.35,.25,.4,j%2?biome.accent:biome.color,a);}
+      this.put(this.actors,this.actorCount++,x,.02,z,1,.04,1,biome.accent);
+     }
     }
    }
   }
@@ -73,7 +78,12 @@ export class HazardView{
     const x=h.target.x,z=h.target.z;
     if(d.visual==='ice'){for(let j=0;j<6;j++)piece(x+Math.sin(j*2)*.65,.1,z+Math.cos(j*2)*.5,.6,.12,.5,0xbfe8f2);}
     else if(d.visual==='icicle'){for(let j=0;j<6;j++)piece(x,y+.2+j*.22,z,.15+j*.09,.25,.15+j*.09,0xbdebf2);}
-    else if(d.visual==='crusher'){piece(x,y+.5,z,2,.7,1.3,0x6d7a80);for(let j=0;j<5;j++)piece(x+(j-2)*.35,y+.9,z,.18,.1,1.35,j%2?0xe9bb68:0x424659);}
+    else if(d.visual==='crusher'){
+     if(d.id==='falling-bed'){piece(x,y+.5,z,1.9,.35,1.4,0xe3b4da);piece(x-.6,y+.75,z,.5,.2,1.1,0xffefd0);for(const dx of [-.8,.8])for(const dz of [-.5,.5])piece(x+dx,y+.1,z+dz,.15,.6,.15,0x987fa8);}
+     else if(d.id==='fallen-column'){for(let j=0;j<4;j++)piece(x,y+.2+j*.4,z,.7,.38,.7,0xdedbcd);piece(x,y+1.9,z,1,.25,1,0xeac66c);}
+     else if(d.id==='pressure-piston'){piece(x,y+.2,z,1.3,.4,1.3,0xd8ab69);piece(x,y+1,z,.4,1.4,.4,0x7c8c92);piece(x,y+1.8,z,1.1,.3,1.1,0xd8ab69);}
+     else {piece(x,y+.5,z,2,.7,1.3,0x6d7a80);for(let j=0;j<5;j++)piece(x+(j-2)*.35,y+.9,z,.18,.1,1.35,j%2?0xe9bb68:0x424659);}
+    }
     else if(d.visual==='dinosaur'){piece(x,y+.3,z,1.1,.7,1.3,0x7c9971);for(let j=0;j<3;j++)piece(x+(j-1)*.35,y,z+.7,.22,.2,.4,0xffe8bb);}
     else if(d.visual==='club'){piece(x,y+.6,z,.6,1.6,.6,0x9a7a61);for(let j=0;j<4;j++)piece(x+.35,y+.2+j*.35,z,.18,.15,.3,0xf1d394);}
     else {piece(x,y+.35,z,.85,.9,.85,0xa698bf);piece(x-.18,y+.8,z,.5,.25,.6,0xd9c1e3);}
@@ -89,7 +99,7 @@ export class HazardView{
     const bob=Math.sin(time*3+h.member)*.13;for(let j=0;j<5;j++)piece(h.target.x+Math.sin(time*2+j)*j*.05,1+bob+j*.17,h.target.z,.6-j*.09,.2,.6-j*.09,j<2?0xffcf82:0x83c7c1);
     for(const side of [-1,1])piece(h.target.x+side*.15,1.2+bob,h.target.z+.31,.1,.1,.06,0xfff0d2);
    }else if(['web','puddle','sand','ink'].includes(d.visual)){
-    for(let j=0;j<24;j++){const r=(j%4+1)*.23,t=j*2.4;piece(h.target.x+Math.cos(t)*r,.12,h.target.z+Math.sin(t)*r,.28,.035,.28,d.visual==='web'?0xeee3c7:d.visual==='puddle'?0xa9cd63:d.visual==='ink'?0x51496b:0xd5be8b);}
+    for(let j=0;j<24;j++){const r=(j%4+1)*.23,t=j*2.4;piece(h.target.x+Math.cos(t)*r,.12,h.target.z+Math.sin(t)*r,.28,.035,.28,d.visual==='web'?0xeee3c7:d.id==='tar-pool'?0x51473e:d.visual==='puddle'?STAGES[d.stageId-1].accent:d.visual==='ink'?0x51496b:0xd5be8b);}
    }else if(d.visual==='creation'){
     if(active)for(let j=0;j<24;j++){const angle=j/24*Math.PI*2;piece(h.target.x+Math.cos(angle)*d.radius,.3,h.target.z+Math.sin(angle)*d.radius*.75,.3,.5,.3,color);}
    }else {piece(h.target.x,y,h.target.z,.7,.7,.7);piece(h.target.x-.22,y+.35,h.target.z+.35,.15,.15,.1,0xffffff);piece(h.target.x+.22,y+.35,h.target.z+.35,.15,.15,.1,0xffffff);}
