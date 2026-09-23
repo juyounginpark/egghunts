@@ -59,7 +59,7 @@ export const BALANCE = {
   baseMinZ:-4.4,
   mapFarZ: -2277,
   nightInterval: 180000,
-  nightDuration: 45000,
+  nightDuration: 15000,
   warningSeconds: 10,
   windSeconds: 5,
   deadzone: 8,

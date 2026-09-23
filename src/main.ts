@@ -66,7 +66,7 @@ const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
 tutorial.innerHTML = '<div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">건너뛰기</button>';
 topHud.append(tutorial);
-$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">10</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 10초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
+$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 15초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
 $("action").insertAdjacentHTML('beforebegin','<button id="train-now" class="secondary" hidden>운동하기</button>');
 bottomHud.id = "bottom-hud";
