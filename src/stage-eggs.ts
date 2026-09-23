@@ -159,7 +159,7 @@ export function stageEggCells(stage:number,v:number){
 }
 const icons=new Map<string,string>();
 export function eggIcon(e:EggAppearance){
- const a=appearanceOf(e);if(!a)return `/models/egg-${e.type}.png`;
+ const a=appearanceOf(e);if(!a)return `${import.meta.env.BASE_URL}models/egg-${e.type}.png`;
  const key=`${a.stage}:${a.variant}`;if(icons.has(key))return icons.get(key)!;
  const {cells,colors}=stageEggCells(a.stage,a.variant),canvas=document.createElement('canvas');canvas.width=canvas.height=96;const ctx=canvas.getContext('2d')!;
  const occupied=new Set(cells.map(([x,y,z])=>`${x},${y},${z}`));

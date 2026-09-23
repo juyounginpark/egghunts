@@ -21,16 +21,16 @@ import type {TraitId} from "./progression";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
-app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header><div class="brand"><img class="brand-mark" src="/models/alkong.png" alt="" /><div><small>작은 발견, 커다란 모험</small><strong>알콩 원정대</strong></div></div><button id="settings" class="icon-btn" aria-label="설정">⚙</button></header><div class="status"><span id="level">LV. 01 <b>새싹 탐험가</b></span><span class="dust">✦ <b id="dust">0</b><small>별가루</small></span></div><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">⌕</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
+app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header><div class="brand"><img class="brand-mark" src="${import.meta.env.BASE_URL}models/alkong.png" alt="" /><div><small>작은 발견, 커다란 모험</small><strong>알콩 원정대</strong></div></div><button id="settings" class="icon-btn" aria-label="설정">⚙</button></header><div class="status"><span id="level">LV. 01 <b>새싹 탐험가</b></span><span class="dust">✦ <b id="dust">0</b><small>별가루</small></span></div><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">⌕</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
   icons,
 )
   .map(
     ([k, v], i) =>
-      `<button data-tab="${k}" class="${i === 0 ? "active" : ""}"><img src="/models/${v}.png" alt="" />${["농장", "부화실", "펫", "강화", "상점"][i]}</button>`,
+      `<button data-tab="${k}" class="${i === 0 ? "active" : ""}"><img src="${import.meta.env.BASE_URL}models/${v}.png" alt="" />${["농장", "부화실", "펫", "강화", "상점"][i]}</button>`,
   )
   .join(
     "",
-  )}</nav><section id="panel" hidden></section><div id="modal" hidden></div><div id="toast" role="status" hidden></div><div id="loading"><img class="loading-egg" src="/models/egg-0.png" alt="" /><h1>알콩 원정대</h1><p>작은 모험을 준비하는 중…</p></div></main>`;
+  )}</nav><section id="panel" hidden></section><div id="modal" hidden></div><div id="toast" role="status" hidden></div><div id="loading"><img class="loading-egg" src="${import.meta.env.BASE_URL}models/egg-0.png" alt="" /><h1>알콩 원정대</h1><p>작은 모험을 준비하는 중…</p></div></main>`;
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 // Keep HUD rows in normal flow inside two anchored stacks.
@@ -318,7 +318,7 @@ function updateHud() {
     input.reset();
     const m = MONGLES[game.result];
     $("modal").innerHTML =
-      `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="/models/pet-${game.result}.png" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><div class="sparkles">✦ · ✧ · ✦</div><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit">${m.effect}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
+      `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="${import.meta.env.BASE_URL}models/pet-${game.result}.png" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><div class="sparkles">✦ · ✧ · ✦</div><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit">${m.effect}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
     $("modal").hidden = false;
     platform.track("hatch_complete", { mongle: m.id });
     feedback();

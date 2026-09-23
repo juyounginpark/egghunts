@@ -50,3 +50,20 @@ npm run build:toss
 SDK 3.5.0, `apps-in-toss.config.ts`, 산출물 `alkong-expedition.ait`를 사용합니다. 콘솔의 실제 appName·브랜드 설정과 일치시켜야 합니다. 네이티브 식별·저장·Safe Area·서버 시각·행동 로그·리더보드 호출은 `src/platform.ts`에 격리합니다.
 
 실제 토스 앱 로그인/순위 반영/안전영역, 공개 HTTPS 멀티플레이 호스팅, 서버 권위 경제·클라우드 저장, 실기기 장시간 FPS는 별도 검증·구축이 필요합니다. 브라우저나 SDK mock 성공을 실기기 출시 승인으로 간주하지 않습니다. 자세한 결과는 `docs/qa/final-report.md`를 확인하세요.
+
+## GitHub Pages
+
+플레이 주소: https://juyounginpark.github.io/egghunts/
+
+`main`에 푸시하면 `Deploy GitHub Pages` Actions가 검사 → `/egghunts/` 전용 빌드 → 프로덕션 브라우저 검사 → Pages 배포를 수행합니다. Actions 화면에서 수동 실행도 가능합니다. 저장소 Settings → Pages의 Source는 **GitHub Actions**입니다.
+
+로컬 Pages 경로 검증:
+
+```powershell
+npm run build:pages
+$env:QA_BASE_PATH='/egghunts/'
+node scripts/qa/e2e.mjs --production
+Remove-Item Env:QA_BASE_PATH
+```
+
+일반 `npm run build`와 `npm run build:toss`는 기존 루트 경로 빌드를 유지합니다. Pages는 정적 웹 게임이며 공개 멀티플레이 서버를 포함하지 않습니다.

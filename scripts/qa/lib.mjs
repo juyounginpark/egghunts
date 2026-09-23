@@ -19,10 +19,11 @@ export async function modules() {
 }
 export async function report(name,data,folder='test-results') {await mkdir(`artifacts/${folder}`,{recursive:true});await writeFile(`artifacts/${folder}/${name}.json`,JSON.stringify(data,null,2));}
 export async function browserSession(production=false) {
-  const server=production?await preview({preview:{port:4321,strictPort:true,host:'127.0.0.1'}}):await createServer({server:{port:4320,strictPort:true,host:'127.0.0.1'}});
+  const base=process.env.QA_BASE_PATH??'/';
+  const server=production?await preview({base,preview:{port:4321,strictPort:true,host:'127.0.0.1'}}):await createServer({server:{port:4320,strictPort:true,host:'127.0.0.1'}});
   if(!production)await server.listen();
   const browser=await chromium.launch({channel:process.env.CI?undefined:'msedge',headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
-  return {browser,url:`http://127.0.0.1:${production?4321:4320}`,close:async()=>{await browser.close();await new Promise(resolve=>production?server.httpServer.close(resolve):server.close().then(resolve));}};
+  return {browser,url:process.env.QA_SITE_URL??`http://127.0.0.1:${production?4321:4320}${production?base.replace(/\/$/,''):''}`,close:async()=>{await browser.close();await new Promise(resolve=>production?server.httpServer.close(resolve):server.close().then(resolve));}};
 }
 export async function ready(page,url,scene='base') {
   await page.goto(`${url}/?qa=true&seed=1001&scene=${scene}`);

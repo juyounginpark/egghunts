@@ -2,17 +2,19 @@ import assert from 'node:assert/strict';
 import {browserSession,ready,report} from './lib.mjs';
 const session=await browserSession(process.argv.includes('--production'));
 const page=await session.browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
-const errors=[];page.on('pageerror',e=>errors.push(e.message));const results=[];
+const errors=[],failedResources=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)failedResources.push(`${r.status()} ${r.url()}`);});const results=[];
 const state=()=>page.evaluate(()=>window.__qa.state());
 const scene=async s=>{await ready(page,session.url,s);};
 try {
  if(process.argv.includes('--production')) {
-   await page.goto(session.url+'/?qa=true&scene=egg-carry');await page.locator('#loading').waitFor({state:'hidden',timeout:60000});
+   await page.goto(session.url+'/?qa=true&scene=egg-carry');await page.locator('#shell').waitFor({state:'visible'});await page.locator('#loading').waitFor({state:'hidden',timeout:60000});
    assert.equal(await page.evaluate(()=>typeof window.__qa),'undefined');
    assert.equal(await page.locator('#inventory').isVisible(),false);
    await page.click('[data-tab="hatchery"]');await page.locator('#inventory').waitFor({state:'visible'});assert.ok(await page.locator('#inventory').isVisible());
    await page.click('[data-tab="pets"]');await page.click('[data-tab="collection"]');assert.equal(await page.locator('.friend.locked').count(),20);
    await page.click('[data-tab="shop"]');assert.equal(await page.locator('.trail-card').count(),4);
+   await page.waitForFunction(()=>[...document.querySelectorAll('.trail-card img')].every(i=>i.complete&&i.naturalWidth>0));
+   assert.deepEqual(failedResources,[],'All production models, scripts and images must load');
    await page.screenshot({path:'artifacts/screenshots/production-shop.png'});
    results.push('production bundle boots, QA hook stripped, hatchery/unknown collection/shop operate');
    await page.click('[data-tab="explore"]');

@@ -84,3 +84,10 @@
 | 22 QA | 결정적 장면·기준 이미지 | full/verify/prod E2E | 12상태×뷰포트 | 픽셀 편차 | scripts/qa |
 
 자동 QA는 Node assert, TypeScript, ESLint, Playwright를 사용한다. 시각 기준은 첫 생성 후 직접 검토하고 고정한다. 이후 비교는 동일 seed/time/animation/camera와 작은 허용 오차를 사용한다. A 신규 획득, B 유실, C 부화와 재시작, D 강화 전 실패/후 성공은 삭제하지 않는다. QA hook은 Vite DEV에서만 동적 로드하며 production에서 전역·쿼리 효과가 없는지 검증한다. 네이티브 인증·안전영역·점수 반영은 실기기 보류 항목이다.
+
+## GitHub Pages 배포 추가
+
+- `main` push / 수동 실행 Actions에서 Pages를 배포한다.
+- Pages 빌드는 `/egghunts/`, 일반/토스 빌드는 `/`를 사용한다. JSON 모델과 모든 아이콘은 Vite BASE_URL을 따른다.
+- 배포 전 qa:fast와 Pages 경로 프로덕션 E2E를 통과해야 한다. 프로덕션 QA 훅 제거, 모델/아이콘 HTTP 오류 없음, 메뉴 동작과 새로고침을 확인한다.
+- 실제 Pages 공개 URL에서도 동일한 브라우저 검사를 실행한다.

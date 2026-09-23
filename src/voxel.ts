@@ -16,7 +16,7 @@ const dataCache = new Map<string, Model>();
 const pending = new Map<string, Promise<void>>();
 async function data(name: string) {
   if (!dataCache.has(name)) {
-    const r = await fetch(`/models/${name}.json`);
+    const r = await fetch(`${import.meta.env.BASE_URL}models/${name}.json`);
     if (!r.ok) throw new Error(`모델을 불러오지 못했어요: ${name}`);
     dataCache.set(name, await r.json());
   }
