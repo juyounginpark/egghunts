@@ -1,0 +1,159 @@
+{
+  "size": [
+    20,
+    20,
+    20
+  ],
+  "palette": {
+    "cream": "#FFF0CA",
+    "green": "#789851",
+    "dark": "#384A36",
+    "brown": "#986D48",
+    "pink": "#F5AC99",
+    "light": "#CEE291",
+    "white": "#FFFFFF",
+    "gold": "#E8B855"
+  },
+  "operations": [
+    {
+      "type": "box",
+      "from": [
+        1,
+        0,
+        2
+      ],
+      "to": [
+        18,
+        1,
+        17
+      ],
+      "color": "brown"
+    },
+    {
+      "type": "box",
+      "from": [
+        2,
+        2,
+        3
+      ],
+      "to": [
+        17,
+        12,
+        16
+      ],
+      "color": "pink"
+    },
+    {
+      "type": "box",
+      "from": [
+        8,
+        2,
+        17
+      ],
+      "to": [
+        12,
+        9,
+        17
+      ],
+      "color": "dark"
+    },
+    {
+      "type": "box",
+      "from": [
+        3,
+        5,
+        17
+      ],
+      "to": [
+        6,
+        8,
+        17
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        14,
+        5,
+        17
+      ],
+      "to": [
+        16,
+        8,
+        17
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        0,
+        12,
+        1
+      ],
+      "to": [
+        19,
+        13,
+        18
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        2,
+        14,
+        2
+      ],
+      "to": [
+        17,
+        15,
+        17
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        4,
+        16,
+        3
+      ],
+      "to": [
+        15,
+        17,
+        16
+      ],
+      "color": "light"
+    },
+    {
+      "type": "box",
+      "from": [
+        6,
+        18,
+        4
+      ],
+      "to": [
+        13,
+        19,
+        15
+      ],
+      "color": "light"
+    },
+    {
+      "type": "box",
+      "from": [
+        8,
+        13,
+        19
+      ],
+      "to": [
+        11,
+        16,
+        19
+      ],
+      "color": "gold"
+    }
+  ]
+}

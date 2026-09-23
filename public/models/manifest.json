@@ -1,0 +1,4254 @@
+{
+  "generator": "AIvoxel/voxel.py",
+  "sourceSha256": "83e3a198922b1218bf401143809fb8f575b494d9c04f41dad12fdd5590199f8b",
+  "models": [
+    {
+      "name": "alkong",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1376,
+      "bounds": [
+        [
+          3,
+          16
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          5,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "sprout",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1058,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          5,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "bunny",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1102,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          5,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "dragon",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1184,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          2,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "egg-0",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1818,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "egg-1",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2792,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-2",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2085,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "egg-3",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2007,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          4,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-4",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2055,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "tree",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1600,
+      "bounds": [
+        [
+          3,
+          16
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          3,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "mushroom",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1327,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          3,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "pet-0",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-1",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 198,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-2",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 206,
+      "bounds": [
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-3",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-4",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-5",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3948,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          1,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-6",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3284,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          23
+        ],
+        [
+          6,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-7",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 8316,
+      "bounds": [
+        [
+          3,
+          28
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          6,
+          27
+        ]
+      ]
+    },
+    {
+      "name": "pet-8",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 21890,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-9",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 60768,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "pet-10",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-11",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 786,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          4,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "pet-12",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2596,
+      "bounds": [
+        [
+          1,
+          22
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          2,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-13",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-14",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-15",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 30472,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          2,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-16",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 27088,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-17",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 69636,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          12,
+          54
+        ]
+      ]
+    },
+    {
+      "name": "pet-18",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 51290,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          51
+        ]
+      ]
+    },
+    {
+      "name": "pet-19",
+      "grid": [
+        100,
+        100,
+        100
+      ],
+      "paletteCount": 8,
+      "voxelCount": 223518,
+      "bounds": [
+        [
+          0,
+          99
+        ],
+        [
+          0,
+          99
+        ],
+        [
+          19,
+          94
+        ]
+      ]
+    },
+    {
+      "name": "pet-20",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-21",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 198,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-22",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 206,
+      "bounds": [
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-23",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-24",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-25",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3948,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          1,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-26",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3284,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          23
+        ],
+        [
+          6,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-27",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 8316,
+      "bounds": [
+        [
+          3,
+          28
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          6,
+          27
+        ]
+      ]
+    },
+    {
+      "name": "pet-28",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 21890,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-29",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 60768,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "pet-30",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-31",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 786,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          4,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "pet-32",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2596,
+      "bounds": [
+        [
+          1,
+          22
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          2,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-33",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-34",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-35",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 30472,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          2,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-36",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 27088,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-37",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 69636,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          12,
+          54
+        ]
+      ]
+    },
+    {
+      "name": "pet-38",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 51290,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          51
+        ]
+      ]
+    },
+    {
+      "name": "pet-39",
+      "grid": [
+        100,
+        100,
+        100
+      ],
+      "paletteCount": 8,
+      "voxelCount": 223518,
+      "bounds": [
+        [
+          0,
+          99
+        ],
+        [
+          0,
+          99
+        ],
+        [
+          19,
+          94
+        ]
+      ]
+    },
+    {
+      "name": "pet-40",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-41",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 198,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-42",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 206,
+      "bounds": [
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-43",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-44",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-45",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3948,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          1,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-46",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3284,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          23
+        ],
+        [
+          6,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-47",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 8316,
+      "bounds": [
+        [
+          3,
+          28
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          6,
+          27
+        ]
+      ]
+    },
+    {
+      "name": "pet-48",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 21890,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-49",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 60768,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "pet-50",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-51",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 786,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          4,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "pet-52",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2596,
+      "bounds": [
+        [
+          1,
+          22
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          2,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-53",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-54",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-55",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 30472,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          2,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-56",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 27088,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-57",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 69636,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          12,
+          54
+        ]
+      ]
+    },
+    {
+      "name": "pet-58",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 51290,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          51
+        ]
+      ]
+    },
+    {
+      "name": "pet-59",
+      "grid": [
+        100,
+        100,
+        100
+      ],
+      "paletteCount": 8,
+      "voxelCount": 223518,
+      "bounds": [
+        [
+          0,
+          99
+        ],
+        [
+          0,
+          99
+        ],
+        [
+          19,
+          94
+        ]
+      ]
+    },
+    {
+      "name": "pet-60",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-61",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 198,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-62",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 206,
+      "bounds": [
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-63",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-64",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-65",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3948,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          1,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-66",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3284,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          23
+        ],
+        [
+          6,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-67",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 8316,
+      "bounds": [
+        [
+          3,
+          28
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          6,
+          27
+        ]
+      ]
+    },
+    {
+      "name": "pet-68",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 21890,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-69",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 60768,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "pet-70",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-71",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 786,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          4,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "pet-72",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2596,
+      "bounds": [
+        [
+          1,
+          22
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          2,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-73",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-74",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-75",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 30472,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          2,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-76",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 27088,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-77",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 69636,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          12,
+          54
+        ]
+      ]
+    },
+    {
+      "name": "pet-78",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 51290,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          51
+        ]
+      ]
+    },
+    {
+      "name": "pet-79",
+      "grid": [
+        100,
+        100,
+        100
+      ],
+      "paletteCount": 8,
+      "voxelCount": 223518,
+      "bounds": [
+        [
+          0,
+          99
+        ],
+        [
+          0,
+          99
+        ],
+        [
+          19,
+          94
+        ]
+      ]
+    },
+    {
+      "name": "pet-80",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-81",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 198,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-82",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 206,
+      "bounds": [
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-83",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-84",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 910,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pet-85",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3948,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          1,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-86",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3284,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          0,
+          23
+        ],
+        [
+          6,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-87",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 8316,
+      "bounds": [
+        [
+          3,
+          28
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          6,
+          27
+        ]
+      ]
+    },
+    {
+      "name": "pet-88",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 21890,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-89",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 60768,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "pet-90",
+      "grid": [
+        10,
+        10,
+        10
+      ],
+      "paletteCount": 8,
+      "voxelCount": 196,
+      "bounds": [
+        [
+          2,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "name": "pet-91",
+      "grid": [
+        16,
+        16,
+        16
+      ],
+      "paletteCount": 8,
+      "voxelCount": 786,
+      "bounds": [
+        [
+          3,
+          12
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          4,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "pet-92",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2596,
+      "bounds": [
+        [
+          1,
+          22
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          2,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "pet-93",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-94",
+      "grid": [
+        32,
+        32,
+        32
+      ],
+      "paletteCount": 8,
+      "voxelCount": 6684,
+      "bounds": [
+        [
+          6,
+          25
+        ],
+        [
+          0,
+          31
+        ],
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "name": "pet-95",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 30472,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          2,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-96",
+      "grid": [
+        48,
+        48,
+        48
+      ],
+      "paletteCount": 8,
+      "voxelCount": 27088,
+      "bounds": [
+        [
+          0,
+          47
+        ],
+        [
+          0,
+          47
+        ],
+        [
+          12,
+          38
+        ]
+      ]
+    },
+    {
+      "name": "pet-97",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 69636,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          12,
+          54
+        ]
+      ]
+    },
+    {
+      "name": "pet-98",
+      "grid": [
+        64,
+        64,
+        64
+      ],
+      "paletteCount": 8,
+      "voxelCount": 51290,
+      "bounds": [
+        [
+          0,
+          63
+        ],
+        [
+          0,
+          63
+        ],
+        [
+          16,
+          51
+        ]
+      ]
+    },
+    {
+      "name": "pet-99",
+      "grid": [
+        100,
+        100,
+        100
+      ],
+      "paletteCount": 8,
+      "voxelCount": 223518,
+      "bounds": [
+        [
+          0,
+          99
+        ],
+        [
+          0,
+          99
+        ],
+        [
+          19,
+          94
+        ]
+      ]
+    },
+    {
+      "name": "boss-0",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1320,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          1,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "boss-1",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1740,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "boss-2",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1236,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          5,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "boss-3",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1368,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          2,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "boss-4",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1368,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          2,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "egg-5",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1818,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "egg-6",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2792,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-7",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2085,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "egg-8",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2007,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          4,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-9",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2055,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "egg-10",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1818,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "egg-11",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2792,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-12",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2085,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "egg-13",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2007,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          4,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-14",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2055,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "egg-15",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1859,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "egg-16",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2800,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-17",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2085,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "egg-18",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2071,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-19",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2119,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "egg-20",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1891,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "egg-21",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2820,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-22",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2117,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "egg-23",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2103,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-24",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2151,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "egg-25",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1891,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "egg-26",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2820,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-27",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2117,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "egg-28",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2103,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-29",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2151,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "egg-30",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1891,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "egg-31",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2820,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-32",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2117,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "egg-33",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2103,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          4,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "egg-34",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2151,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "nest",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 924,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "camp",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 3410,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "crystal",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1335,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          3,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "ruin",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2296,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "meteor",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1908,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "pedestal",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1644,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "hammer",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 838,
+      "bounds": [
+        [
+          3,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          6,
+          14
+        ]
+      ]
+    },
+    {
+      "name": "pack",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1856,
+      "bounds": [
+        [
+          4,
+          15
+        ],
+        [
+          1,
+          16
+        ],
+        [
+          5,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "compass",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 816,
+      "bounds": [
+        [
+          3,
+          16
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "barn",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 4660,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          1,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "fence",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 330,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          12
+        ],
+        [
+          8,
+          10
+        ]
+      ]
+    },
+    {
+      "name": "gate",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 732,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          6,
+          11
+        ]
+      ]
+    },
+    {
+      "name": "well",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2036,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          1,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "carrots",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 918,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "cabbage",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1120,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "hay",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2352,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          10
+        ],
+        [
+          3,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "flower",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 304,
+      "bounds": [
+        [
+          5,
+          14
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          6,
+          13
+        ]
+      ]
+    },
+    {
+      "name": "lantern",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 716,
+      "bounds": [
+        [
+          5,
+          14
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          5,
+          14
+        ]
+      ]
+    },
+    {
+      "name": "feed",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 832,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          5,
+          14
+        ]
+      ]
+    },
+    {
+      "name": "shop",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2357,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "appletree",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1789,
+      "bounds": [
+        [
+          1,
+          17
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          3,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "beehive",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1564,
+      "bounds": [
+        [
+          3,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          3,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "teapot",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2298,
+      "bounds": [
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          3,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "log",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1060,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          5,
+          14
+        ]
+      ]
+    },
+    {
+      "name": "cart",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2220,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          3,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "stalagmite",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1469,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          3,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "statue",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2216,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "column",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 2396,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          2,
+          17
+        ]
+      ]
+    },
+    {
+      "name": "antenna",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1072,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          3,
+          16
+        ]
+      ]
+    },
+    {
+      "name": "starflower",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 560,
+      "bounds": [
+        [
+          2,
+          17
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "gym",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "paletteCount": 8,
+      "voxelCount": 1404,
+      "bounds": [
+        [
+          1,
+          18
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          1,
+          18
+        ]
+      ]
+    }
+  ]
+}

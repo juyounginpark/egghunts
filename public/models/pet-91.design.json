@@ -1,0 +1,375 @@
+{
+  "size": [
+    16,
+    16,
+    16
+  ],
+  "palette": {
+    "cream": "#b0eee7",
+    "green": "#b0eee7",
+    "dark": "#384A36",
+    "brown": "#986D48",
+    "pink": "#F5AC99",
+    "light": "#CEE291",
+    "white": "#FFFFFF",
+    "gold": "#E8B855"
+  },
+  "parts": {
+    "body": {
+      "pivot": [
+        7.6000000000000005,
+        4.0,
+        7.2
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            4,
+            3,
+            5
+          ],
+          "to": [
+            11,
+            7,
+            10
+          ],
+          "color": "green"
+        },
+        {
+          "type": "box",
+          "from": [
+            5,
+            4,
+            4
+          ],
+          "to": [
+            10,
+            7,
+            5
+          ],
+          "color": "brown"
+        }
+      ]
+    },
+    "head": {
+      "pivot": [
+        7.6000000000000005,
+        8.0,
+        8.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            4,
+            8,
+            5
+          ],
+          "to": [
+            11,
+            12,
+            11
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "box",
+          "from": [
+            4,
+            9,
+            12
+          ],
+          "to": [
+            6,
+            11,
+            12
+          ],
+          "color": "dark"
+        },
+        {
+          "type": "box",
+          "from": [
+            9,
+            9,
+            12
+          ],
+          "to": [
+            11,
+            11,
+            12
+          ],
+          "color": "dark"
+        },
+        {
+          "type": "box",
+          "from": [
+            4,
+            8,
+            12
+          ],
+          "to": [
+            5,
+            9,
+            12
+          ],
+          "color": "pink"
+        },
+        {
+          "type": "box",
+          "from": [
+            10,
+            8,
+            12
+          ],
+          "to": [
+            11,
+            9,
+            12
+          ],
+          "color": "pink"
+        },
+        {
+          "type": "box",
+          "from": [
+            4,
+            12,
+            6
+          ],
+          "to": [
+            6,
+            15,
+            9
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "box",
+          "from": [
+            9,
+            12,
+            6
+          ],
+          "to": [
+            11,
+            15,
+            9
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "box",
+          "from": [
+            4,
+            13,
+            9
+          ],
+          "to": [
+            5,
+            15,
+            10
+          ],
+          "color": "pink"
+        },
+        {
+          "type": "box",
+          "from": [
+            10,
+            13,
+            9
+          ],
+          "to": [
+            11,
+            15,
+            10
+          ],
+          "color": "pink"
+        }
+      ]
+    },
+    "left_arm": {
+      "pivot": [
+        3.2,
+        7.2,
+        8.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            3,
+            5,
+            6
+          ],
+          "to": [
+            4,
+            7,
+            9
+          ],
+          "color": "green"
+        }
+      ]
+    },
+    "left_hand": {
+      "pivot": [
+        3.2,
+        5.2,
+        8.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            3,
+            4,
+            6
+          ],
+          "to": [
+            4,
+            5,
+            9
+          ],
+          "color": "cream"
+        }
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        11.200000000000001,
+        7.2,
+        8.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            11,
+            5,
+            6
+          ],
+          "to": [
+            12,
+            7,
+            9
+          ],
+          "color": "green"
+        }
+      ]
+    },
+    "right_hand": {
+      "pivot": [
+        11.200000000000001,
+        5.2,
+        8.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            11,
+            4,
+            6
+          ],
+          "to": [
+            12,
+            5,
+            9
+          ],
+          "color": "cream"
+        }
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        5.6000000000000005,
+        3.2,
+        7.2
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            4,
+            1,
+            6
+          ],
+          "to": [
+            7,
+            3,
+            8
+          ],
+          "color": "brown"
+        }
+      ]
+    },
+    "left_foot": {
+      "pivot": [
+        5.6000000000000005,
+        1.2000000000000002,
+        7.2
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            4,
+            0,
+            6
+          ],
+          "to": [
+            7,
+            1,
+            10
+          ],
+          "color": "dark"
+        }
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        9.600000000000001,
+        3.2,
+        7.2
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            8,
+            1,
+            6
+          ],
+          "to": [
+            11,
+            3,
+            8
+          ],
+          "color": "brown"
+        }
+      ]
+    },
+    "right_foot": {
+      "pivot": [
+        9.600000000000001,
+        1.2000000000000002,
+        7.2
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            8,
+            0,
+            6
+          ],
+          "to": [
+            11,
+            1,
+            10
+          ],
+          "color": "dark"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"size":[50,50,50],"palette":{"cream":"#bbdcec","green":"#bbdcec","dark":"#384A36","brown":"#986D48","pink":"#F5AC99","light":"#CEE291","white":"#FFFFFF","gold":"#E8B855"},"operations":[{"type":"box","from":[20,0,25],"to":[49,34,49],"color":"cream"},{"type":"box","from":[25,30,30],"to":[34,49,39],"color":"gold"},{"type":"box","from":[15,20,25],"to":[24,39,34],"color":"light"}]}

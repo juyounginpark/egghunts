@@ -1,0 +1,27 @@
+name: Game QA
+on: [push, pull_request]
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run qa:fast
+      - run: npm run qa:e2e
+      # Linux fonts differ from approved Windows/Edge pixel baselines.
+      # Still enforce geometry, safe-area, controls and runtime-error assertions.
+      - run: npm run qa:visual -- --capture
+      - run: npm run qa:hazards
+      - run: npm run build
+      - run: npm run qa:performance
+      - run: node scripts/qa/e2e.mjs --production
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: game-qa
+          path: artifacts/

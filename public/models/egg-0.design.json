@@ -1,0 +1,215 @@
+{
+  "size": [
+    20,
+    20,
+    20
+  ],
+  "palette": {
+    "cream": "#e5efd3",
+    "green": "#a8c393",
+    "dark": "#384A36",
+    "brown": "#986D48",
+    "pink": "#F5AC99",
+    "light": "#CEE291",
+    "white": "#FFFFFF",
+    "gold": "#E8B855"
+  },
+  "operations": [
+    {
+      "type": "box",
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        12,
+        1,
+        12
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        5,
+        2,
+        5
+      ],
+      "to": [
+        14,
+        3,
+        14
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        4,
+        4,
+        4
+      ],
+      "to": [
+        15,
+        10,
+        15
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        5,
+        11,
+        5
+      ],
+      "to": [
+        14,
+        13,
+        14
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        6,
+        14,
+        6
+      ],
+      "to": [
+        13,
+        15,
+        13
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        8,
+        16,
+        8
+      ],
+      "to": [
+        11,
+        17,
+        11
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        5,
+        5,
+        15
+      ],
+      "to": [
+        7,
+        6,
+        15
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        11,
+        9,
+        15
+      ],
+      "to": [
+        13,
+        10,
+        15
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        8,
+        13,
+        14
+      ],
+      "to": [
+        10,
+        14,
+        14
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        9,
+        7,
+        16
+      ],
+      "to": [
+        10,
+        11,
+        16
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        7,
+        9,
+        16
+      ],
+      "to": [
+        8,
+        10,
+        16
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        9,
+        15,
+        9
+      ],
+      "to": [
+        10,
+        18,
+        10
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        4,
+        17,
+        9
+      ],
+      "to": [
+        8,
+        18,
+        11
+      ],
+      "color": "light"
+    },
+    {
+      "type": "box",
+      "from": [
+        11,
+        18,
+        8
+      ],
+      "to": [
+        15,
+        19,
+        10
+      ],
+      "color": "green"
+    }
+  ]
+}

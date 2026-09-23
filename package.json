@@ -1,0 +1,39 @@
+{
+  "name": "alkong-expedition",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "build:toss": "npm run build && ait build",
+    "models": "python scripts/generate_models.py",
+    "qa:lint": "eslint src scripts *.ts",
+    "qa:typecheck": "tsc --noEmit",
+    "qa:unit": "node scripts/test-game.mjs && node scripts/qa/unit.mjs && node scripts/qa/progression.mjs && node scripts/qa/balance.mjs && node scripts/qa/multiplayer.mjs",
+    "qa:e2e": "node scripts/qa/e2e.mjs && node scripts/qa/progression-e2e.mjs && node scripts/qa/multiplayer-e2e.mjs && node scripts/qa/connected-e2e.mjs && node scripts/qa/appearance-e2e.mjs",
+    "qa:visual": "node scripts/qa/visual.mjs",
+    "qa:hazards": "node scripts/qa/hazard-visual.mjs",
+    "qa:regions": "node scripts/qa/regions.mjs",
+    "qa:performance": "node scripts/qa/performance.mjs",
+    "qa:fast": "npm run qa:lint && npm run qa:typecheck && npm run qa:unit",
+    "qa:full": "npm run qa:fast && npm run qa:e2e && npm run qa:visual && npm run qa:hazards && npm run qa:regions && npm run build && npm run qa:performance",
+    "verify": "npm run qa:full && npm run build && node scripts/qa/e2e.mjs --production",
+    "server:multiplayer": "node scripts/multiplayer-server.mjs"
+  },
+  "dependencies": {
+    "@apps-in-toss/web-framework": "3.5.0",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/three": "^0.180.0",
+    "eslint": "^10.11.0",
+    "playwright": "^1.63.0",
+    "pngjs": "^7.0.0",
+    "prettier": "^3.9.8",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.70.1",
+    "vite": "^7.1.0"
+  }
+}

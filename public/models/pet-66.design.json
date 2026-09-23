@@ -1,0 +1,347 @@
+{
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "palette": {
+    "cream": "#efddac",
+    "green": "#efddac",
+    "dark": "#384A36",
+    "brown": "#986D48",
+    "pink": "#F5AC99",
+    "light": "#CEE291",
+    "white": "#FFFFFF",
+    "gold": "#E8B855"
+  },
+  "parts": {
+    "body": {
+      "pivot": [
+        11.4,
+        6.0,
+        10.799999999999999
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            4,
+            3,
+            6
+          ],
+          "to": [
+            19,
+            13,
+            17
+          ],
+          "color": "green"
+        },
+        {
+          "type": "box",
+          "from": [
+            8,
+            6,
+            6
+          ],
+          "to": [
+            15,
+            11,
+            8
+          ],
+          "color": "brown"
+        }
+      ]
+    },
+    "head": {
+      "pivot": [
+        11.4,
+        12.0,
+        12.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            6,
+            12,
+            8
+          ],
+          "to": [
+            17,
+            19,
+            17
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "box",
+          "from": [
+            7,
+            14,
+            18
+          ],
+          "to": [
+            9,
+            16,
+            19
+          ],
+          "color": "dark"
+        },
+        {
+          "type": "box",
+          "from": [
+            14,
+            14,
+            18
+          ],
+          "to": [
+            16,
+            16,
+            19
+          ],
+          "color": "dark"
+        },
+        {
+          "type": "box",
+          "from": [
+            6,
+            13,
+            18
+          ],
+          "to": [
+            8,
+            14,
+            19
+          ],
+          "color": "pink"
+        },
+        {
+          "type": "box",
+          "from": [
+            15,
+            13,
+            18
+          ],
+          "to": [
+            17,
+            14,
+            19
+          ],
+          "color": "pink"
+        },
+        {
+          "type": "box",
+          "from": [
+            7,
+            19,
+            9
+          ],
+          "to": [
+            16,
+            21,
+            16
+          ],
+          "color": "light"
+        },
+        {
+          "type": "box",
+          "from": [
+            9,
+            21,
+            10
+          ],
+          "to": [
+            14,
+            23,
+            15
+          ],
+          "color": "light"
+        }
+      ]
+    },
+    "left_arm": {
+      "pivot": [
+        4.8,
+        10.799999999999999,
+        12.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            4,
+            8,
+            9
+          ],
+          "to": [
+            7,
+            11,
+            14
+          ],
+          "color": "green"
+        }
+      ]
+    },
+    "left_hand": {
+      "pivot": [
+        4.8,
+        7.8,
+        12.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            4,
+            7,
+            9
+          ],
+          "to": [
+            7,
+            8,
+            14
+          ],
+          "color": "cream"
+        }
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        16.8,
+        10.799999999999999,
+        12.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            16,
+            8,
+            9
+          ],
+          "to": [
+            19,
+            11,
+            14
+          ],
+          "color": "green"
+        }
+      ]
+    },
+    "right_hand": {
+      "pivot": [
+        16.8,
+        7.8,
+        12.0
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            16,
+            7,
+            9
+          ],
+          "to": [
+            19,
+            8,
+            14
+          ],
+          "color": "cream"
+        }
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        8.4,
+        4.8,
+        10.799999999999999
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            7,
+            2,
+            9
+          ],
+          "to": [
+            10,
+            5,
+            13
+          ],
+          "color": "brown"
+        }
+      ]
+    },
+    "left_foot": {
+      "pivot": [
+        8.4,
+        1.7999999999999998,
+        10.799999999999999
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            7,
+            0,
+            9
+          ],
+          "to": [
+            10,
+            2,
+            15
+          ],
+          "color": "dark"
+        }
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        14.399999999999999,
+        4.8,
+        10.799999999999999
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            13,
+            2,
+            9
+          ],
+          "to": [
+            16,
+            5,
+            13
+          ],
+          "color": "brown"
+        }
+      ]
+    },
+    "right_foot": {
+      "pivot": [
+        14.399999999999999,
+        1.7999999999999998,
+        10.799999999999999
+      ],
+      "operations": [
+        {
+          "type": "box",
+          "from": [
+            13,
+            0,
+            9
+          ],
+          "to": [
+            16,
+            2,
+            15
+          ],
+          "color": "dark"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+*.ait
+test-results/
+playwright-report/
+.env*
+!.env.example
+__pycache__/
+
+artifacts/screenshots/
+artifacts/test-results/
+artifacts/performance/
+artifacts/coverage/

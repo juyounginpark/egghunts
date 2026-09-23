@@ -1,0 +1,173 @@
+{
+  "size": [
+    20,
+    20,
+    20
+  ],
+  "palette": {
+    "cream": "#FFF0CA",
+    "green": "#789851",
+    "dark": "#384A36",
+    "brown": "#986D48",
+    "pink": "#F5AC99",
+    "light": "#CEE291",
+    "white": "#FFFFFF",
+    "gold": "#E8B855"
+  },
+  "operations": [
+    {
+      "type": "box",
+      "from": [
+        1,
+        0,
+        2
+      ],
+      "to": [
+        18,
+        1,
+        18
+      ],
+      "color": "brown"
+    },
+    {
+      "type": "box",
+      "from": [
+        2,
+        2,
+        3
+      ],
+      "to": [
+        3,
+        14,
+        4
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        16,
+        2,
+        3
+      ],
+      "to": [
+        17,
+        14,
+        4
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        1,
+        14,
+        1
+      ],
+      "to": [
+        18,
+        16,
+        18
+      ],
+      "color": "pink"
+    },
+    {
+      "type": "box",
+      "from": [
+        4,
+        14,
+        1
+      ],
+      "to": [
+        6,
+        16,
+        18
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        10,
+        14,
+        1
+      ],
+      "to": [
+        12,
+        16,
+        18
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        15,
+        14,
+        1
+      ],
+      "to": [
+        17,
+        16,
+        18
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        3,
+        2,
+        9
+      ],
+      "to": [
+        16,
+        6,
+        16
+      ],
+      "color": "brown"
+    },
+    {
+      "type": "box",
+      "from": [
+        4,
+        7,
+        11
+      ],
+      "to": [
+        6,
+        10,
+        13
+      ],
+      "color": "light"
+    },
+    {
+      "type": "box",
+      "from": [
+        9,
+        7,
+        11
+      ],
+      "to": [
+        11,
+        11,
+        13
+      ],
+      "color": "gold"
+    },
+    {
+      "type": "box",
+      "from": [
+        14,
+        7,
+        11
+      ],
+      "to": [
+        16,
+        10,
+        13
+      ],
+      "color": "pink"
+    }
+  ]
+}

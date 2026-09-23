@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {browserSession,ready,report} from './lib.mjs';
+const session=await browserSession(),results=[],errors=[];
+try{
+ const page=await session.browser.newPage({viewport:{width:360,height:800}});page.on('pageerror',e=>errors.push(e.message));
+ await ready(page,session.url,'base');const state=()=>page.evaluate(()=>window.__qa.state());
+ assert.equal(await page.locator('#health-hud').isVisible(),false);
+ assert.equal(await page.locator('#stage-select,[data-stage]').count(),0);await page.evaluate(()=>window.__qa.selectStage(4));await page.evaluate(()=>window.__qa.travel(0,-13));await page.click('#action');await page.evaluate(()=>window.__qa.travel(0,0));
+ assert.ok((await state()).progression.completedStages.includes(4));assert.ok((await state()).progression.healthUnlocked);await page.click('#reward-ok');
+ await page.evaluate(()=>window.__qa.grant(10000));await page.click('[data-tab="upgrade"]');for(let i=0;i<10;i++)await page.click('[data-upgrade="speed"]');await page.click('[data-tab="explore"]');
+ await page.evaluate(()=>window.__qa.selectStage(5));await page.evaluate(()=>window.__qa.travel(0,-13));
+ assert.equal((await state()).bosses[0].mode,'idle');await page.screenshot({path:'artifacts/screenshots/guardian-sleeping-360.png'});
+ await page.click('#action');const stolen=(await state()).carried.id;assert.equal((await state()).bosses[0].mode,'chase');
+ await page.evaluate(()=>window.__qa.spawnHazard('tentacle'));await page.waitForTimeout(100);assert.match(await page.locator('#hazard-cue').textContent(),/촉수/);
+ await page.screenshot({path:'artifacts/screenshots/guardian-angry-360.png'});
+ const hp=(await state()).hp;await page.evaluate(()=>window.__qa.step(.7,{x:1,z:0}));await page.evaluate(()=>window.__qa.step(1.2,{x:0,z:0}));assert.equal((await state()).hp,hp);
+ results.push('stage four completion unlocks health; sleeping guardian wakes on theft; telegraph can be dodged');
+ await page.evaluate(()=>window.__qa.spawnHazard('tentacle'));await page.evaluate(()=>window.__qa.step(2.2,{x:0,z:0}));
+ let s=await state();assert.ok(s.hp<hp&&s.hp>0);assert.equal(s.carried,null);const drop=s.world.find(e=>e.id===stolen);assert.ok(drop);assert.ok(Math.hypot(s.x-drop.x,s.z-drop.z)>1);
+ await page.locator('#health-hud').waitFor({state:'visible'});await page.screenshot({path:'artifacts/screenshots/guardian-hit-360.png'});
+ const bar=await page.locator('#health-hud').boundingBox(),player=await page.evaluate(()=>window.__qa.metrics().player);assert.ok(bar.y+bar.height<(1-player[1])/2*800);assert.ok(Math.abs(bar.x+bar.width/2-(player[0]+1)/2*360)<3);
+ await page.evaluate(p=>window.__qa.travel(p.x,p.z),drop);await page.click('#action');assert.equal((await state()).carried.id,stolen);assert.equal((await state()).bosses[0].mode,'chase');
+ await page.evaluate(()=>window.__qa.travel(0,0));s=await state();assert.equal(s.eggs.length,2);assert.equal(s.hp,s.maxHp);assert.ok(s.progression.completedStages.includes(5));assert.ok(s.progression.level>=2);
+ await page.waitForTimeout(100);assert.equal(await page.locator('#health-hud').isVisible(),false);results.push('boss hit damages, knocks back, drops exactly one egg; repick wakes boss and return records source stage');
+ await page.evaluate(()=>window.__qa.save());await page.goto(session.url+'/?qa=true&restore=true');await page.locator('#loading').waitFor({state:'hidden'});assert.ok((await state()).progression.completedStages.includes(5));
+ await page.evaluate(()=>window.__qa.scene('death-choice'));s=await state();assert.equal(s.carried,null);assert.ok(s.flyaway);assert.equal(s.z,0);assert.equal(s.hp,s.maxHp);assert.equal(await page.locator('#revive-ad').count(),0);
+ results.push('HP zero still auto returns without revival ad; progression survives reload');
+ const layout=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth>window.innerWidth,buttons:[...document.querySelectorAll('button')].filter(b=>b.textContent.trim()==='공격').length}));assert.equal(layout.overflow,false);assert.equal(layout.buttons,0);assert.deepEqual(errors,[]);
+ await report('progression-e2e',{passed:results.length,scenarios:results,errors});console.log(results.join('\n'));
+}finally{await session.close();}

@@ -1,0 +1,89 @@
+{
+  "size": [
+    20,
+    20,
+    20
+  ],
+  "palette": {
+    "cream": "#FFF0CA",
+    "green": "#789851",
+    "dark": "#384A36",
+    "brown": "#986D48",
+    "pink": "#F5AC99",
+    "light": "#CEE291",
+    "white": "#FFFFFF",
+    "gold": "#E8B855"
+  },
+  "operations": [
+    {
+      "type": "box",
+      "from": [
+        9,
+        0,
+        9
+      ],
+      "to": [
+        10,
+        11,
+        10
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        5,
+        4,
+        9
+      ],
+      "to": [
+        8,
+        5,
+        10
+      ],
+      "color": "light"
+    },
+    {
+      "type": "box",
+      "from": [
+        11,
+        6,
+        9
+      ],
+      "to": [
+        14,
+        7,
+        10
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        6,
+        12,
+        6
+      ],
+      "to": [
+        13,
+        14,
+        13
+      ],
+      "color": "pink"
+    },
+    {
+      "type": "box",
+      "from": [
+        8,
+        15,
+        8
+      ],
+      "to": [
+        11,
+        16,
+        11
+      ],
+      "color": "gold"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "size": [
+    20,
+    20,
+    20
+  ],
+  "palette": {
+    "cream": "#FFF0CA",
+    "green": "#789851",
+    "dark": "#384A36",
+    "brown": "#986D48",
+    "pink": "#F5AC99",
+    "light": "#CEE291",
+    "white": "#FFFFFF",
+    "gold": "#E8B855"
+  },
+  "operations": [
+    {
+      "type": "box",
+      "from": [
+        5,
+        0,
+        5
+      ],
+      "to": [
+        14,
+        2,
+        14
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        3,
+        3,
+        3
+      ],
+      "to": [
+        16,
+        10,
+        16
+      ],
+      "color": "pink"
+    },
+    {
+      "type": "box",
+      "from": [
+        5,
+        11,
+        5
+      ],
+      "to": [
+        14,
+        12,
+        14
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        8,
+        13,
+        8
+      ],
+      "to": [
+        11,
+        14,
+        11
+      ],
+      "color": "gold"
+    },
+    {
+      "type": "box",
+      "from": [
+        0,
+        6,
+        6
+      ],
+      "to": [
+        2,
+        10,
+        10
+      ],
+      "color": "pink"
+    },
+    {
+      "type": "box",
+      "from": [
+        0,
+        10,
+        7
+      ],
+      "to": [
+        1,
+        13,
+        9
+      ],
+      "color": "pink"
+    },
+    {
+      "type": "box",
+      "from": [
+        17,
+        4,
+        6
+      ],
+      "to": [
+        19,
+        10,
+        10
+      ],
+      "color": "cream"
+    },
+    {
+      "type": "box",
+      "from": [
+        17,
+        5,
+        7
+      ],
+      "to": [
+        18,
+        9,
+        9
+      ],
+      "color": "pink"
+    }
+  ]
+}

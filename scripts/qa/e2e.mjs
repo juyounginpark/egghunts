@@ -1,0 +1,62 @@
+import assert from 'node:assert/strict';
+import {browserSession,ready,report} from './lib.mjs';
+const session=await browserSession(process.argv.includes('--production'));
+const page=await session.browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));const results=[];
+const state=()=>page.evaluate(()=>window.__qa.state());
+const scene=async s=>{await ready(page,session.url,s);};
+try {
+ if(process.argv.includes('--production')) {
+   await page.goto(session.url+'/?qa=true&scene=egg-carry');await page.locator('#loading').waitFor({state:'hidden',timeout:60000});
+   assert.equal(await page.evaluate(()=>typeof window.__qa),'undefined');
+   assert.equal(await page.locator('#inventory').isVisible(),false);
+   await page.click('[data-tab="hatchery"]');await page.locator('#inventory').waitFor({state:'visible'});assert.ok(await page.locator('#inventory').isVisible());
+   await page.click('[data-tab="pets"]');await page.click('[data-tab="collection"]');assert.equal(await page.locator('.friend.locked').count(),20);
+   await page.click('[data-tab="shop"]');assert.equal(await page.locator('.trail-card').count(),4);
+   await page.screenshot({path:'artifacts/screenshots/production-shop.png'});
+   results.push('production bundle boots, QA hook stripped, hatchery/unknown collection/shop operate');
+   await page.click('[data-tab="explore"]');
+   assert.equal(await page.locator('#stage-select,[data-stage],[data-tab="stages"]').count(),0);
+   await page.reload();await page.locator('#loading').waitFor({state:'hidden',timeout:60000});assert.equal(await page.locator('#stage-select,[data-stage]').count(),0);
+   results.push('production has no stage selection before or after reload');
+ } else {
+   await scene('tutorial');assert.ok(await page.locator('#tutorial').isVisible());assert.equal(await page.locator('#action').isVisible(),false);
+   const pad=await page.locator('#joystick').boundingBox();
+   await page.mouse.move(pad.x+pad.width/2,pad.y+pad.height/2);await page.mouse.down();await page.mouse.move(pad.x+pad.width/2+pad.width*.1665,pad.y+pad.height/2-pad.width*.2496);
+   const v=await state();assert.ok(v.input.y<0&&v.input.x>0);await page.mouse.up();assert.deepEqual((await state()).input,{x:0,y:0});
+   await page.evaluate(()=>window.__qa.travel(0,-13));await page.waitForTimeout(100);
+   assert.equal(await page.locator('#action-label').textContent(),'들고가기');const speed=(await state()).speed;
+   const selected=await page.evaluate(()=>window.__qa.metrics());assert.deepEqual(selected.selection,[selected.near]);
+   await page.click('#action');assert.ok((await state()).carried);assert.ok((await state()).speed<speed);
+   await page.evaluate(()=>window.__qa.travel(0,0));await page.waitForTimeout(150);
+   assert.equal((await state()).eggs.length,1);assert.ok(await page.locator('#return-reward').isVisible());
+   await page.click('#reward-ok');await page.evaluate(()=>window.__qa.step(.1));assert.equal((await state()).eggs.length,1);results.push('A first egg through movement, pickup, penalty, return and one reward');
+   await scene('egg-carry');const held=(await state()).carried.id;await page.evaluate(()=>{window.__qa.wait(46);window.__qa.step(.02,{x:0,z:0});});
+   assert.equal((await state()).carried.id,held);assert.equal((await state()).flyaway,null);assert.ok((await state()).z<0);results.push('B elapsed legacy timer preserves expedition and carried egg');
+   await scene('hatch-whole');const hp=(await state()).eggs[0].hp;await page.click('#action');assert.equal((await state()).eggs[0].hp,hp-1);
+   await page.evaluate(()=>window.__qa.step(17,{x:0,z:0}));await page.waitForTimeout(100);assert.equal((await state()).eggs[0].hp,12);
+   assert.match(await page.locator('#egg-health').textContent(),/큰 균열/);
+   await page.evaluate(()=>window.__qa.step(12,{x:0,z:0}));await page.locator('#modal').waitFor({state:'visible'});assert.equal((await state()).mongles.reduce((a,b)=>a+b,0),1);
+   await page.evaluate(()=>window.__qa.save());await page.goto(session.url+'/?qa=true&restore=true');await page.locator('#loading').waitFor({state:'hidden'});assert.equal((await state()).mongles.reduce((a,b)=>a+b,0),1);assert.equal((await state()).eggs.length,0);results.push('C manual/auto hatch, cracks, single pet, save/reload');
+   await scene('base');const initialSpeed=(await state()).speed;await page.evaluate(()=>window.__qa.grant(10000));await page.click('[data-tab="upgrade"]');for(let i=0;i<10;i++)await page.click('[data-upgrade="speed"]');await page.click('[data-tab="explore"]');
+   assert.ok((await state()).speed>initialSpeed);await page.evaluate(()=>window.__qa.travel(0,-109));await page.click('#action');await page.evaluate(()=>window.__qa.travel(0,0));assert.equal((await state()).eggs.length,1);results.push('D speed upgrades shorten connected-region travel and return works without timer');
+   await scene('egg-carry');const nightEgg=(await state()).carried.id;await page.evaluate(()=>{window.__qa.wait(180);window.__qa.step(.01,{x:0,z:0});});assert.equal((await state()).carried.id,nightEgg);assert.ok((await state()).z<0);assert.equal(await page.locator('#night-curtain').isVisible(),false);results.push('night refresh keeps held egg and route open');
+   await scene('base');await page.evaluate(()=>window.__qa.travel(2.1,.6));await page.click('#action');assert.ok((await state()).training);const before=(await state()).speed;await page.evaluate(()=>window.__qa.step(10,{x:0,z:0}));assert.ok((await state()).speed>before);results.push('gym interaction and training accumulation');
+   await scene('collection');await page.click('[data-claim-pet="0"]');const dust=(await state()).dust;await page.click('[data-claim-pet="0"]');assert.equal((await state()).dust,dust);await page.click('[data-claim-region="0"]');assert.ok((await state()).dust>dust);await page.click('[data-region="4"]');assert.equal(await page.locator('.friend').count(),20);results.push('regional collection and one-time reward');
+   await scene('base');await page.click('[data-tab="shop"]');const beforeAd=(await state()).dust;const adStarted=await page.evaluate(()=>performance.now());await page.click('#virtual-ad');
+   assert.match(await page.locator('.virtual-ad-card').textContent(),/이것은 가상 광고입니다/);assert.equal(await page.locator('#virtual-ad-close').isVisible(),false);
+   assert.equal((await state()).dust,beforeAd);await page.screenshot({path:'artifacts/screenshots/virtual-ad-countdown.png'});
+   await page.locator('#virtual-ad-close').waitFor({state:'visible',timeout:12000});assert.ok(await page.evaluate(()=>performance.now())-adStarted>=10000);assert.equal((await state()).dust,beforeAd);
+   await page.screenshot({path:'artifacts/screenshots/virtual-ad-ready.png'});await page.click('#virtual-ad-close');assert.equal((await state()).dust,beforeAd+30);results.push('virtual ad hides close for ten seconds and rewards once on close');
+   await scene('training');const position=await state();assert.match(await page.locator('#action-label').textContent(),/운동 내리기/);assert.doesNotMatch(await page.locator('#speed-value').textContent(),/m\/s/);
+   await page.evaluate(()=>window.__qa.step(1,{x:1,z:0}));assert.equal((await state()).x,position.x);await page.click('#action');await page.evaluate(()=>window.__qa.step(.2,{x:1,z:0}));assert.ok((await state()).x>position.x);results.push('treadmill locks movement until explicit dismount and speed has no unit');
+   await scene('death-choice');assert.equal((await state()).death,null);assert.equal((await state()).hp,(await state()).maxHp);assert.equal((await state()).z,0);assert.equal(await page.locator('#revive-ad').count(),0);assert.ok((await state()).flyaway);await page.screenshot({path:'artifacts/screenshots/hp-auto-return.png'});results.push('HP zero auto returns with egg flyaway, no revival ad');
+   await scene('pets');await page.click('[data-unequip="0"]');assert.equal((await state()).active.length,2);await page.click('[data-companion="19"]');assert.ok((await state()).active.includes(19));assert.equal((await state()).active.length,3);results.push('farm pet management equips and removes companions');
+   await scene('store');assert.doesNotMatch(await page.locator('#panel').textContent(),/880\.0/);const wallet=(await state()).dust;
+   await page.click('[data-sell-egg="sale-egg"]');await page.click('#cancel-sale');assert.equal((await state()).eggs.length,1);
+   await page.click('[data-sell-egg="sale-egg"]');await page.click('#confirm-sale');assert.equal((await state()).eggs.length,0);assert.ok((await state()).dust>wallet);
+   await page.click('[data-sell-pet="0"]');await page.click('#confirm-sale');assert.equal((await state()).mongles[0],0);assert.ok(!(await state()).active.includes(0));
+   await page.click('[data-tab="pets"]');await page.click('[data-tab="collection"]');assert.ok(await page.locator('[data-claim-pet="0"]').isVisible());results.push('store cancel/sale and sold pet discovery preservation');
+ }
+ assert.deepEqual(errors,[]);await report(process.argv.includes('--production')?'production-e2e':'e2e',{passed:results.length,scenarios:results,errors});console.log(results.join('\n'));
+}finally{await session.close();}

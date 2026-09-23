@@ -1,0 +1,117 @@
+{
+  "size": [
+    20,
+    20,
+    20
+  ],
+  "palette": {
+    "cream": "#FFF0CA",
+    "green": "#5AA6C0",
+    "dark": "#384A36",
+    "brown": "#986D48",
+    "pink": "#F5AC99",
+    "light": "#A5E8EB",
+    "white": "#FFFFFF",
+    "gold": "#E8B855"
+  },
+  "operations": [
+    {
+      "type": "box",
+      "from": [
+        2,
+        3,
+        3
+      ],
+      "to": [
+        17,
+        9,
+        16
+      ],
+      "color": "brown"
+    },
+    {
+      "type": "box",
+      "from": [
+        4,
+        10,
+        5
+      ],
+      "to": [
+        9,
+        16,
+        11
+      ],
+      "color": "light"
+    },
+    {
+      "type": "box",
+      "from": [
+        11,
+        10,
+        8
+      ],
+      "to": [
+        15,
+        14,
+        13
+      ],
+      "color": "green"
+    },
+    {
+      "type": "box",
+      "from": [
+        1,
+        0,
+        4
+      ],
+      "to": [
+        4,
+        3,
+        7
+      ],
+      "color": "dark"
+    },
+    {
+      "type": "box",
+      "from": [
+        15,
+        0,
+        4
+      ],
+      "to": [
+        18,
+        3,
+        7
+      ],
+      "color": "dark"
+    },
+    {
+      "type": "box",
+      "from": [
+        1,
+        0,
+        12
+      ],
+      "to": [
+        4,
+        3,
+        15
+      ],
+      "color": "dark"
+    },
+    {
+      "type": "box",
+      "from": [
+        15,
+        0,
+        12
+      ],
+      "to": [
+        18,
+        3,
+        15
+      ],
+      "color": "dark"
+    }
+  ]
+}
