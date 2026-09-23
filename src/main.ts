@@ -505,6 +505,7 @@ async function start() {
     qa?.attach(game, world, input, setTab, save);
     if (platform.warning) toast(platform.warning);
     renderEggQueue();
+    updateHud();
     $("loading").hidden = true;
     platform.track("game_start");
     lastNow = performance.now();
