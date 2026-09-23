@@ -3,7 +3,7 @@ import { STAGES, ROUTE } from './stage-data';
 import type { GameState } from './game';
 
 type Part={x:number;y:number;z:number;w:number;h:number;d:number;color:number;joint:number;eye?:boolean};
-/** Articulated environmental guardians. Damage remains exclusively in HazardManager. */
+/** Articulated guardians; melee timing comes from the same state as collision. */
 export class RegionGuardian {
  group=new T.Group();
  private mesh=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshLambertMaterial(),1200);
@@ -87,8 +87,7 @@ export class RegionGuardian {
    if(!this.recipes.has(stage))this.build(stage);
    this.parts=this.recipes.get(stage)!;
    const x=root.x+Math.sin(time*.35+k)*.12,hover=[3,5,6,7,12,15,19,20].includes(stage);
-   const attack=game.hazards.attacks.find(h=>chasing&&h.definition.stageId===stage&&h.elapsed>=0&&['Telegraph','Active','Recovery'].includes(h.phase)&&Math.abs(h.target.z-z)<19);
-   const u=attack?attack.phase==='Telegraph'?Math.min(1,attack.elapsed/attack.warning):attack.phase==='Active'?1:Math.max(0,1-attack.elapsed/.4):0;
+   const u=chasing?Math.min(1,(state.windup??0)/ROUTE.bossWindup):0;
    const charge=u*u*(3-2*u),breath=Math.sin(time*1.5+k)*.035;
    const target=sleeping?0:Math.atan2(game.x-x,game.z-z);
    if(!Number.isFinite(this.headings[k]))this.headings[k]=target;

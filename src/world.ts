@@ -85,7 +85,7 @@ export class World {
   private lastWorld = "";
   private nests = new Map<string,T.Group>();
   private nestGroup=new T.Group();
-  private nightBarrier = new T.Mesh(new T.BoxGeometry(18,7,154),new T.MeshBasicMaterial({color:0x000000}));
+  private nightBarrier = new T.Mesh(new T.BoxGeometry(BALANCE.mapX*2,.8,.3),new T.MeshLambertMaterial({color:0xa9875c}));
   private selectionMaterial = new T.MeshBasicMaterial({color:0xff2525,side:T.BackSide});
   private hatchKey = "";
   private carry = new T.Group();
@@ -119,7 +119,7 @@ export class World {
     this.scene.add(this.farm,this.farmPets,this.footTrail);
     this.scene.add(this.hazardsView.group);
     this.scene.add(this.nestGroup);
-    this.nightBarrier.position.set(0,3.5,-82);
+    this.nightBarrier.position.set(0,.65,BALANCE.baseMinZ-.25);
     this.scene.add(this.nightBarrier,this.lifeEffects);
     this.lifeEffects.frustumCulled=false;
     this.footTrail.frustumCulled=false;
@@ -315,14 +315,14 @@ export class World {
     if (time - this.hudMeasureAt > 0.3 || this.hudMeasureAt < 0) {
       this.hudMeasureAt = time;
       const host = this.host.getBoundingClientRect();
-      const top =
-        document.getElementById("top-hud")!.getBoundingClientRect().bottom -
-        host.top;
-      const bottom = document.getElementById("bottom-hud")!;
-      const end = bottom.hidden
-        ? host.height * 0.8
-        : bottom.getBoundingClientRect().top - host.top;
-      this.viewportOffset = host.height / 2 - (top + end) / 2;
+      // Exploration overlays never change framing; the hatchery has its own layout.
+      const hatchLayout=mode==='hatchery'||game.result!==null||!!game.returnReward;
+      if(hatchLayout){
+        const top=document.getElementById('top-hud')!.getBoundingClientRect().bottom-host.top;
+        const bottom=document.getElementById('bottom-hud')!;
+        const end=bottom.hidden?host.height*.8:bottom.getBoundingClientRect().top-host.top;
+        this.viewportOffset=host.height/2-(top+end)/2;
+      }else this.viewportOffset = -host.height * .05;
       this.camera.setViewOffset(
         host.width,
         host.height,
@@ -367,7 +367,7 @@ export class World {
       }
       this.lifeEffects.instanceMatrix.needsUpdate=true;
     }
-    this.nightBarrier.visible=false;
+    this.nightBarrier.visible=game.isNight&&!isHatch;
     const visibleEggs=game.world.filter(e=>Math.abs(e.z-game.z)<24);
     const worldKey = visibleEggs.map((e) => e.id).join("|");
     if (worldKey !== this.lastWorld) {
@@ -561,9 +561,8 @@ export class World {
     this.focus.lerp(target, 1 - Math.exp(-dt * 6));
     this.camera.position.copy(this.focus).add(new T.Vector3(8, 11, 12));
     this.camera.lookAt(this.focus);
-    const largest=Math.max(1,...game.save.active.map(i=>MONGLES[i].scale),game.carried?RARITIES[EGGS[game.carried.type].tier].scale:1,game.near?RARITIES[EGGS[game.near.type].tier].scale:1);
-    const zoom = isHatch ? 1.4 : game.training?.85:game.isAtBase ? .67 : Math.max(.58,1-largest*.07);
-    this.camera.zoom += (zoom - this.camera.zoom) * (1 - Math.exp(-dt * 5));
+    // Picking up an egg or showing a contextual button must not zoom the map.
+    this.camera.zoom = isHatch ? 1.4 : .78;
     this.camera.updateProjectionMatrix();
     this.sun.position.set(game.x - 8, 18, game.z + 10);
     for(const gain of [...this.trainingGains]){

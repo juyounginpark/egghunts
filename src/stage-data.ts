@@ -2,7 +2,7 @@ export type Shape='ellipse'|'line'|'cone'|'ring';
 export type Targeting='predict'|'fixed'|'track'|'sweep';
 export type Effect='hit'|'wind'|'ink'|'pull'|'stone'|'grab'|'delay'|'dot'|'ice'|'dust'|'web';
 export type HazardDefinition={id:string;displayName:string;stageId:number;damage:number;damagePercent:number;telegraphDuration:number;activeDuration:number;cooldown:number;knockback:number;slowMultiplier:number;slowDuration:number;shape:Shape;targetingType:Targeting;carryTelegraphBonus:number;radius:number;width:number;length:number;blockable:boolean;effect:Effect;count:number;freezeBefore:number;visual:string;minTelegraph:number};
-export const HAZARD_BALANCE={step:1/60,maxActive:2,recovery:.4,spawnDelay:.8,spawnGap:1.1,trackFreeze:.3,prediction:.3,windSpeed:1.5,pullSpeed:1.4,metalPull:1.6,centerRadius:.65,dotInterval:1,stoneSeconds:1.5,stoneDuration:1.5,grabDuration:1,escapeInputBonus:2,inputDelay:.5,inkDuration:1.2,iceCarryRate:1.4,dustDrop:5,projectileSpeed:2.2,finalSecretCooldown:.9,phaseDistances:[35,80],waveGap:.8,coverRadius:.85,coverX:3.5,coverSpacing:12};
+export const HAZARD_BALANCE={environmentSection:32,environmentX:2.8,environmentStart:21,environmentSpacing:8,movingRadius:1.1,crossingSeconds:4,laneHalfWidth:6,step:1/60,maxActive:2,recovery:.4,spawnDelay:.8,spawnGap:1.1,trackFreeze:.3,prediction:.3,windSpeed:1.5,pullSpeed:1.4,metalPull:1.6,centerRadius:.65,dotInterval:1,stoneSeconds:1.5,stoneDuration:1.5,grabDuration:1,escapeInputBonus:2,inputDelay:.5,inkDuration:1.2,iceCarryRate:1.4,dustDrop:5,projectileSpeed:2.2,finalSecretCooldown:.9,phaseDistances:[35,80],waveGap:.8,coverRadius:.85,coverX:3.5,coverSpacing:12};
 type StageRow=[string,number,number,string,string,number,number];
 const rows:StageRow[]=[
  ['몽글 초원',0xc9dda0,0xf2d482,'꽃밭 · 풍차 · 건초','hay',1,10],
@@ -85,12 +85,12 @@ export type Cover={x:number;z:number;radius:number};
 export const STAGE_COVERS:Cover[]=Array.from({length:12},(_,i)=>({x:(i%2?1:-1)*HAZARD_BALANCE.coverX,z:-12-i*HAZARD_BALANCE.coverSpacing,radius:HAZARD_BALANCE.coverRadius}));
 
 // Connected expedition: selected stage is the entrance, not a repeated full map.
-export const ROUTE={entrance:6,length:32,finalLength:150,bossKnockback:2.4,bossKnockbackSeconds:.28,bannerSeconds:3,recommendedCarryRatio:.65,targetTravelSeconds:20,baseRecommendedSpeed:3.2};
+export const ROUTE={entrance:6,length:32,finalLength:150,bossKnockback:2.4,bossKnockbackSeconds:.28,bossReach:2,bossWindup:.65,bossDamage:10,bossDamagePerStage:1,bannerSeconds:3,recommendedCarryRatio:.65,targetTravelSeconds:20,baseRecommendedSpeed:3.2};
 export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{const offset=(s.id-start)*ROUTE.length;return {stage:s.id,offset,start:ROUTE.entrance+offset,end:ROUTE.entrance+offset+(s.id===20?ROUTE.finalLength:ROUTE.length),home:14+offset};});}
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
-export function guardianSpeed(stage:number){return stage<=4?2.5:3+stage*.1;}
+export function guardianSpeed(stage:number){return 2.3+stage*.2;}
 export function recommendedRouteSpeed(depth:number,stage:number){return Math.ceil(Math.max(ROUTE.baseRecommendedSpeed,depth/ROUTE.targetTravelSeconds,stage>4?guardianSpeed(stage)/ROUTE.recommendedCarryRatio+.5:0)*10)/10;}
 export const GUARDIAN_ATTACKS=new Set(['hay','train','ink','lava-breath','tentacle','sweep','locker','book','drone','scorpion','stomp','raptor','wisps','club','lightning','medusa','ufo','nightmare','vine','mantis','magnet','void-hand','memory-tentacle','memory-lightning','memory-ufo','memory-meteor','creation-wave']);
 

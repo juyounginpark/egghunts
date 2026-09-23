@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {browserSession,ready,report} from './lib.mjs';
+const session=await browserSession(),errors=[];
+try{
+ const page=await session.browser.newPage({viewport:{width:360,height:800}});page.on('pageerror',e=>errors.push(e.message));
+ await ready(page,session.url,'base');
+ const state=()=>page.evaluate(()=>window.__qa.state());
+ const frame=()=>page.evaluate(()=>{const c=document.querySelector('#world canvas');return {projection:window.__qa.metrics().projection,width:c.width,height:c.height};});
+ const initial=await frame();
+ assert.equal(await page.locator('#action-label').textContent(),'배트 스윙');await page.click('#action');
+ await page.waitForFunction(()=>window.__qa.metrics().bat===true);await page.screenshot({path:'artifacts/screenshots/bat-swing-360.png'});
+ await page.evaluate(()=>window.__qa.travel(0,-13));await page.locator('#region-banner').waitFor({state:'visible'});
+ assert.deepEqual(await frame(),initial);assert.equal(await page.locator('#action-label').textContent(),'들고가기');
+ await page.screenshot({path:'artifacts/screenshots/exploration-first-360.png'});
+ await page.locator('#region-banner').waitFor({state:'hidden',timeout:4500});assert.deepEqual(await frame(),initial);
+ await page.click('#action');await page.waitForFunction(()=>document.getElementById('action-label').textContent==='내려놓기');assert.deepEqual(await frame(),initial);
+ const egg=(await state()).carried.id;await page.evaluate(()=>window.__qa.cycle(true));await page.waitForTimeout(100);
+ assert.equal((await state()).carried,null);assert.equal((await state()).z,0);assert.ok(!(await state()).world.some(e=>e.id===egg));
+ await page.evaluate(()=>window.__qa.step(3,{x:0,z:-1}));assert.equal((await state()).z,-4.4);
+ await page.evaluate(()=>window.__qa.step(.2,{x:1,z:0}));assert.ok((await state()).x>0);assert.deepEqual(await frame(),initial);
+ await page.waitForTimeout(1600);await page.screenshot({path:'artifacts/screenshots/night-gate-360.png'});
+ await page.evaluate(()=>window.__qa.cycle(false));await page.evaluate(()=>window.__qa.travel(0,-13));await page.waitForTimeout(100);
+ assert.ok((await state()).z<-4.4);assert.equal(await page.locator('#region-banner').isVisible(),false);
+ await page.evaluate(()=>window.__qa.save());await page.goto(session.url+'/?qa=true&restore=true');await page.locator('#loading').waitFor({state:'hidden'});
+ await page.waitForFunction(()=>window.__qa?.metrics().frame>0);
+ assert.equal(await page.locator('#region-banner').isVisible(),false);assert.deepEqual(await frame(),initial);
+ await page.screenshot({path:'artifacts/screenshots/exploration-return-360.png'});
+ await page.evaluate(()=>{window.__qa.region(5,-21);window.__qa.step(1,{x:0,z:0});});await page.waitForTimeout(250);
+ const terrainHazard=await page.evaluate(()=>window.__qa.hazards()[0]);assert.equal(terrainHazard.id,'tentacle');assert.deepEqual(terrainHazard.target,{x:2.8,z:-21});assert.equal((await state()).bosses[0].mode,'idle');
+ await page.locator('#region-banner').waitFor({state:'hidden',timeout:4500});await page.screenshot({path:'artifacts/screenshots/environment-obstacle-360.png'});
+ await page.evaluate(()=>window.__qa.step(.2,{x:1,z:0}));assert.deepEqual((await page.evaluate(()=>window.__qa.hazards()[0])).target,terrainHazard.target);
+ assert.equal(await page.locator('#hazard-cue').isVisible(),false);
+ assert.deepEqual(errors,[]);await report('exploration-e2e',{bat:true,nightGate:true,firstVisitOnly:true,stableProjection:true,mapObstacles:true,errors});
+ console.log('PASS bat/context action, night loss and gate, morning opening, one-time saved banner, stable camera and resolution');
+}finally{await session.close();}

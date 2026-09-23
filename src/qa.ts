@@ -15,6 +15,7 @@ export const random = () => {
 };
 export const enabled = new URLSearchParams(location.search).get("qa") === "true";
 export function prepare(game: GameState, scene: string) {
+  clock=Math.floor(clock/BALANCE.nightInterval)*BALANCE.nightInterval+60000;
   seed=Number(new URLSearchParams(location.search).get("seed")??1001);
   const state = freshSave(clock);
   const revision=game.revision;
@@ -87,6 +88,7 @@ export function attach(game: GameState, world: World, input: Input, setTab: (tab
     region:(id:number,z=-17)=>{prepare(game,`region-${id}`);game.z=z;setTab('explore');},
     eggGallery:(id:number)=>{prepare(game,`region-${id}`);game.world=game.world.filter(e=>e.stageId===id);for(const e of game.world){e.type=0;e.hp=30;}setTab('explore');},
     cycle:(night:boolean)=>{clock=night?game.nightAt:game.nightUntil+1000;game.tick(.01);},
+    daylight:()=>{clock=Math.floor(clock/BALANCE.nightInterval)*BALANCE.nightInterval+60000;game.nightUntil=0;},
     followMetrics:()=>world.followerMetrics(),
     followStep:(seconds:number,x:number,z:number)=>{for(let t=0;t<seconds;t+=1/60){step(1/60,{x,z});world.render(game,'explore',1/60,visualTime+=1/60);}},
     regionArt:()=>({terrain:world.hazardsView.regions.metrics(),guardian:world.hazardsView.guardians.metrics()}),
@@ -104,7 +106,7 @@ export function attach(game: GameState, world: World, input: Input, setTab: (tab
     },
     state, step, save,
     scene: (name: string) => { prepare(game, name); setTab(name.startsWith("hatch") || name === "result" ? "hatchery" : ["upgrade", "collection", "pets", "store", "shop", "stages", "traits"].includes(name) ? name : "explore"); },
-    metrics: () => ({...world.renderer.info.render, memory: {...world.renderer.info.memory}, objects: world.scene.children.length, camera: world.camera.position.toArray(), player: world.player.position.clone().project(world.camera).toArray(), fallen:Math.abs(world.player.rotation.z)>1,selection:world.eggs.children.filter(m=>m.getObjectByName('selection-outline')?.visible).map(m=>m.userData.id), near:game.near?.id}),
+    metrics: () => ({...world.renderer.info.render, memory: {...world.renderer.info.memory}, objects: world.scene.children.length, bat:world.player.getObjectByName("bat")?.visible, projection:world.camera.projectionMatrix.toArray(), camera: world.camera.position.toArray(), player: world.player.position.clone().project(world.camera).toArray(), fallen:Math.abs(world.player.rotation.z)>1,selection:world.eggs.children.filter(m=>m.getObjectByName('selection-outline')?.visible).map(m=>m.userData.id), near:game.near?.id}),
     wait: (seconds: number) => { clock += seconds * 1000; },
     // Real game movement and economy remain under test; only clock/input are controlled.
     travel: (x: number, z: number) => {

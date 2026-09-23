@@ -153,7 +153,7 @@ async function action() {
       try{const egg=await multiplayer.claim(game.near.id);game.pickup({...egg,hp:EGGS[egg.type].hp,distance:Math.abs(egg.z),expires:game.nightAt});}
       catch(err){toast(String(err));}finally{claiming=false;}return;
     }
-    if(!game.carried&&!game.near&&!game.nearGym)return;
+    if(!game.carried&&!game.near&&!game.nearGym){world.swingBat(game.now());feedback();return;}
     game.interact();
     feedback();
     platform.track("egg_interact", { carrying: game.carried ? 1 : 0 });
@@ -194,7 +194,11 @@ function updateHud() {
   const outside=tab==='explore'&&!game.isAtBase;
   if(!outside){bannerStage=0;bannerUntil=0;}
   else if(bannerStage!==game.stage.id){
-    bannerStage=game.stage.id;bannerUntil=performance.now()+ROUTE.bannerSeconds*1000;
+    bannerStage=game.stage.id;
+    game.save.visitedStages??=[];
+    const first=!game.save.visitedStages.includes(bannerStage);
+    bannerUntil=first?performance.now()+ROUTE.bannerSeconds*1000:0;
+    if(first){game.save.visitedStages.push(bannerStage);game.revision++;}
     $("region-banner-number").textContent=`STAGE ${String(game.stage.id).padStart(2,'0')} / 20 · 지역 진입`;
     $("region-banner-name").textContent=game.stage.name;
     $("region-banner-speed").textContent=`권장 스피드 ${num(game.recommendedSpeed,1)} · 운반 전 기준`;
@@ -214,9 +218,7 @@ function updateHud() {
   $("shell").classList.toggle('low-health',outside&&hpRatio<=PROGRESSION.lowHP);
   $("shell").classList.toggle('recent-hit',outside&&game.now()-game.hitAt<350);
   $("ink-effect").hidden=game.effects.ink<=0;
-  const threats=game.hazards.attacks.filter(h=>h.phase==='Telegraph'&&h.elapsed>=0);
-  $("hazard-cue").hidden=!outside||!threats.length;
-  $("hazard-cue").textContent=threats.slice(0,2).map(h=>`${h.origin.x<game.x?'←':'→'} ${h.definition.displayName} · ${Math.max(0,h.warning-h.elapsed).toFixed(1)}초`).join(' / ');
+  $("hazard-cue").hidden=true;
   $("level-burst").hidden=game.now()-game.levelUpAt>1800;
   $("level-burst").textContent=`✦ LEVEL UP · ${game.level} ✦`;
   if(game.death&&!virtualAd&&game.now()-game.death.at>=BALANCE.deathChoiceDelay&&$("modal").dataset.kind!=='death'){
@@ -276,7 +278,7 @@ function updateHud() {
   $("expedition").classList.remove("urgent");
   $("hint").textContent =
     game.pursuing >= 0
-      ? "알을 들고 귀환하세요 · 바닥의 공격 신호를 피하세요"
+      ? "알을 들고 귀환하세요 · ! 표시의 장애물을 피하세요"
       : game.message;
   $("carry-chip").hidden = (!game.carried && !game.near) || tab !== "explore";
   if (game.carried)
@@ -537,7 +539,6 @@ function frame(now: number) {
   for (const event of game.events.splice(0)) {
     if(event.name==='expedition_start'){$("toast").hidden=true;clearTimeout(toastTimer);}
     if(['level_up','player_hit','health_unlocked'].includes(event.name)){feedback();void save();}
-    if(event.name==='health_unlocked')toast('다음 차원부터 위험한 생명체가 등장해요. 공격 신호를 보고 움직여 피하세요!');
     if(event.name.startsWith('expedition_fail_')){toast(game.message);void save();}
     if(event.name==='training_gain'){world.showTrainingGain(Number(event.params.amount),game.now());continue;}
     const steps:Record<string,number>={expedition_start:1,egg_pickup:2,egg_saved:3,mongle_obtained:4,upgrade_purchase:5,trail_purchase:5};

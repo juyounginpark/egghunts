@@ -78,7 +78,7 @@ try {
   });
   // Latest design supersedes immediate boss egg theft and combat buttons.
   check("theft wakes guardian; contact during attack telegraph keeps HP and egg",()=>{
-    const g=make(),egg=steal(g);g.deadline=clock+45000;g.bosses[0].x=g.x;g.bosses[0].z=g.z;g.tick(.7);
+    const g=make(),egg=steal(g);g.deadline=clock+45000;g.bosses[0].x=g.x;g.bosses[0].z=g.z;g.tick(.3);
     assert.equal(g.bosses[0].mode,'chase');assert.equal(g.carried.id,egg.id);assert.equal(g.hp,g.maxHp);
   });
   check("boss hit drops carried egg even across old secured boundary",()=>{
@@ -131,11 +131,11 @@ try {
     g.tick(0.01);
     assert.ok(!g.announcement.includes("SECRET"));
   });
-  check("night refresh preserves carried egg, position and open route",()=>{
-    const g=make();const e=steal(g,3);const position=[g.x,g.z];
+  check("night loses carried egg, settles XP and blocks exploration",()=>{
+    const g=make();const e=steal(g,3);g.progression.pendingXP=50;
     const onset=g.nightAt;clock=onset;g.tick(.01);assert.equal(g.nightAt-onset,180000);
-    assert.equal(g.carried.id,e.id);assert.deepEqual([g.x,g.z],position);assert.equal(g.world.length,99);
-    assert.ok(!g.world.some(v=>v.id===e.id));g.move(0,-1,1);assert.ok(g.z<position[1]);
+    assert.equal(g.carried,null);assert.deepEqual([g.x,g.z],[0,0]);assert.equal(g.world.length,100);assert.equal(g.progression.xp,35);
+    assert.ok(!g.world.some(v=>v.id===e.id));g.move(0,-1,10);assert.ok(g.isAtBase);g.push(0,-100);assert.ok(g.isAtBase);clock=g.nightUntil;g.move(0,-1,1);assert.ok(!g.isAtBase);
   });
   check("all egg tiers hatch a matching biome and rarity pet", () => {
     EGGS.forEach((e, type) => {
@@ -148,9 +148,9 @@ try {
       assert.equal(MONGLES[g.result].tier, e.tier);
     });
   });
-  check("night refresh preserves dropped egg for recovery",()=>{
+  check("night refresh removes dropped field egg",()=>{
     const g=make();const e=steal(g,1);g.z=-27;g.interact();clock=g.nightAt;g.tick(.01);
-    assert.ok(g.world.some(v=>v.id===e.id));assert.equal(g.world.length,100);
+    assert.ok(!g.world.some(v=>v.id===e.id));assert.equal(g.world.length,100);
   });
   check(
     "old-night recovered egg replaces its nest without creating a sixth egg",

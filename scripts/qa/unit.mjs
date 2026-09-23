@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {modules,report} from './lib.mjs';
 const m=await modules();const {GameState,freshSave,parseSave,EGGS,MONGLES,RARITIES,BALANCE,Input,Platform}=m;
-let now=1800000010000;const make=()=>new GameState(freshSave(now),()=>now,()=>.1);
+let now=1800000060000;const make=()=>new GameState(freshSave(now),()=>now,()=>.1);
 const results=[];const test=async(name,fn)=>{await fn();results.push(name);console.log('PASS',name);};
 try {
  await test('ten-million alphabet units, Z to AA, stable fractional display',()=>{
@@ -36,7 +36,7 @@ try {
  });
  await test('global night unaffected by login time or pet loadout',()=>{
    const a=make();now+=1000;const b=make();assert.equal(a.nightAt,b.nightAt);b.save.active=[1,2,3];assert.equal(a.nightAt,b.nightAt);
-   const clock=now;now=a.nightAt+5000;const c=make();assert.ok(c.isNight);c.move(1,0,.1);assert.ok(c.x>0);c.move(0,-1,5);assert.ok(c.z<BALANCE.baseMinZ);assert.ok(!c.isAtBase);now=clock;
+   const clock=now;now=a.nightAt+5000;const c=make();assert.ok(c.isNight);c.move(1,0,.1);assert.ok(c.x>0);c.move(0,-1,5);assert.equal(c.z,BALANCE.baseMinZ);assert.ok(c.isAtBase);now=clock;
  });
  await test('normalized diagonal, map bounds, carry penalty',()=>{
    const a=make(),b=make();a.move(0,-1,1);b.move(1,-1,1);assert.ok(Math.abs(a.distance-b.distance)<1e-9);

@@ -11,9 +11,9 @@ try{
  await page.evaluate(()=>window.__qa.selectStage(5));await page.evaluate(()=>window.__qa.travel(0,-13));
  assert.equal((await state()).bosses[0].mode,'idle');await page.screenshot({path:'artifacts/screenshots/guardian-sleeping-360.png'});
  await page.click('#action');const stolen=(await state()).carried.id;assert.equal((await state()).bosses[0].mode,'chase');
- await page.evaluate(()=>window.__qa.spawnHazard('tentacle'));await page.waitForTimeout(100);assert.match(await page.locator('#hazard-cue').textContent(),/촉수/);
+ await page.evaluate(()=>window.__qa.spawnHazard('tentacle'));await page.waitForTimeout(100);assert.equal(await page.locator('#hazard-cue').isVisible(),false);
  await page.screenshot({path:'artifacts/screenshots/guardian-angry-360.png'});
- const hp=(await state()).hp;await page.evaluate(()=>window.__qa.step(.7,{x:1,z:0}));await page.evaluate(()=>window.__qa.step(1.2,{x:0,z:0}));assert.equal((await state()).hp,hp);
+ const hp=(await state()).hp;await page.evaluate(()=>window.__qa.step(.7,{x:1,z:0}));await page.evaluate(()=>window.__qa.step(1.2,{x:0,z:1}));assert.equal((await state()).hp,hp);
  results.push('stage four completion unlocks health; sleeping guardian wakes on theft; telegraph can be dodged');
  await page.evaluate(()=>window.__qa.spawnHazard('tentacle'));await page.evaluate(()=>window.__qa.step(2.2,{x:0,z:0}));
  let s=await state();assert.ok(s.hp<hp&&s.hp>0);assert.equal(s.carried,null);const drop=s.world.find(e=>e.id===stolen);assert.ok(drop);assert.ok(Math.hypot(s.x-drop.x,s.z-drop.z)>1);

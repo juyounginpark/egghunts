@@ -272,3 +272,17 @@ header .dust { margin-left:auto; margin-right:8px; }
 #night-sky{position:absolute;inset:0 0 55%;pointer-events:none;opacity:0;transition:opacity 1.5s;z-index:1;background:radial-gradient(circle at 15% 40%,#e4eeff 0 1px,transparent 2px),radial-gradient(circle at 48% 24%,#e4eeff 0 1px,transparent 2px),radial-gradient(circle at 84% 70%,#e4eeff 0 1px,transparent 2px),radial-gradient(circle at 66% 60%,#e4eeff 0 1px,transparent 2px)}
 #night-sky.visible{opacity:.8}#night-sky span{position:absolute;right:16px;top:32%;font-size:44px;color:#e0ebff;text-shadow:0 0 16px #a8c6ff}
 .night #cycle-clock{color:#bfd3ff}.night #speed-hud{background:#1c2941e8;color:#e7efff}.night #announcement{display:block}
+
+/* Fixed overlay slots keep transient UI out of the camera and control layout. */
+[data-mode="expedition"] #top-hud{gap:6px}
+[data-mode="expedition"] header .brand,[data-mode="expedition"] #expedition,
+[data-mode="expedition"] #day-clock,[data-mode="expedition"] #xp-value,
+[data-mode="expedition"] #tutorial,[data-mode="expedition"] #hint,
+[data-mode="expedition"] #risk,[data-mode="expedition"] #announcement{display:none}
+[data-mode="expedition"] header{position:absolute;right:12px;top:calc(12px + var(--safe-top))}
+[data-mode="expedition"] #speed-hud{margin-right:48px;flex-wrap:nowrap;font-size:10px}
+[data-mode="expedition"] #cycle-clock{flex-basis:auto}
+[data-mode="expedition"] #carry-chip{position:absolute;top:calc(53px + var(--safe-top));left:12px;max-width:calc(100% - 72px);padding:4px 7px;border-width:1px;box-shadow:none;font-size:10px}
+#region-banner{position:absolute;top:calc(92px + var(--safe-top));left:50%;transform:translateX(-50%);width:calc(100% - 40px);padding:8px 12px}
+#region-banner strong{font-size:15px;margin:2px 0}#region-banner span{font-size:10px}
+.night #controls{opacity:1}

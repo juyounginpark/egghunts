@@ -37,6 +37,7 @@ export type Boss = {
   loot: WorldEgg | null;
 };
 export type Save = {
+  visitedStages?:number[];
   routeVersion?:1;
   progression?:Progression;
   death?:{x:number;z:number;at:number;remaining:number}|null;
@@ -108,6 +109,8 @@ export function parseSave(raw: string | null, now: number): Save {
   if (s.upgrades && s.upgrades.training === undefined) s.upgrades.training = 0;
   if (s.upgrades && s.upgrades.health === undefined) s.upgrades.health = 0;
   s.trainingSpeed ??= 0;
+  s.visitedStages ??= [];
+  if(!Array.isArray(s.visitedStages)||!s.visitedStages.every(id=>Number.isInteger(id)&&id>=1&&id<=20))throw Error('Invalid visited stages');
   if(s.death&&(![s.death.x,s.death.z,s.death.at,s.death.remaining].every(Number.isFinite)||s.death.remaining<0||Math.abs(s.death.x)>BALANCE.mapX||s.death.z<BALANCE.mapFarZ||s.death.z>BALANCE.mapNearZ))throw new Error("Invalid death state");
   s.appearance ??= 0;
   if(![0,1,2].includes(s.appearance))throw new Error("Invalid appearance");
@@ -234,7 +237,7 @@ export class GameState {
   gainXP(amount:number){const gained=awardXP(this.progression,amount);if(gained){this.hp=this.maxHp;this.levelUpAt=this.now();this.revivedAt=this.now();this.emit('level_up',{level:this.level,count:gained});}this.revision++;return gained;}
   settleXP(success:boolean){const xp=Math.floor(this.progression.pendingXP*(success?1+this.defense('returnXPBonus'):PROGRESSION.failureKeep));this.progression.pendingXP=0;this.gainXP(xp);this.emit('xp_settled',{xp,success:success?1:0});return xp;}
   failExpedition(reason:string){
-    if(!this.deadline&&!this.carried)return false;
+    if(!this.deadline&&!this.carried&&this.isAtBase)return false;
     if(this.carried)this.flyaway={stageId:this.carried.stageId,variant:this.carried.variant,type:this.carried.type,x:this.x,z:this.z,at:this.now()};
     this.carried=null;this.deadline=0;this.x=this.z=0;this.training=false;this.launch=null;this.death=null;
     this.revivedAt=this.now();
@@ -248,7 +251,8 @@ export class GameState {
     const reduction=this.defense('damageReduction')+this.defenses.reduce((n,p)=>n+(p.environmentReduction?.[d.id]??0),0)+(!this.progression.firstHitUsed?this.trait('shield')+this.defense('firstHitReduction'):0);
     const damage=reducedDamage(d.damage,d.damagePercent,this.maxHp,reduction);
     this.progression.firstHitUsed=true;this.hp=Math.max(0,this.hp-damage);this.sinceHit=0;this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();
-    const dx=this.x-h.origin.x,dz=this.z-h.origin.z,l=Math.hypot(dx,dz)||1;
+    const overlap=Math.hypot(this.x-h.origin.x,this.z-h.origin.z)<.001;
+    const dx=overlap?-this.facing.x:this.x-h.origin.x,dz=overlap?-this.facing.z:this.z-h.origin.z,l=Math.hypot(dx,dz)||1;
     const impact=damage>0&&d.effect!=='dot';
     if(impact){
       const amount=Math.max(ROUTE.bossKnockback,d.knockback);
@@ -266,7 +270,7 @@ export class GameState {
     if(this.hp<=0&&this.defenses.some(d=>d.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}
     if(this.hp<=0)this.failExpedition('hp');return true;
   }
-  push(x:number,z:number){this.x=Math.max(-BALANCE.mapX,Math.min(BALANCE.mapX,this.x+x));this.z=Math.max(this.farZ,Math.min(BALANCE.mapNearZ,this.z+z));this.syncStage();}
+  push(x:number,z:number){this.x=Math.max(-BALANCE.mapX,Math.min(BALANCE.mapX,this.x+x));this.z=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,this.z+z));this.syncStage();}
   get nearStore(){return Math.hypot(this.x-BALANCE.storeX,this.z-BALANCE.storeZ)<BALANCE.storeRadius;}
   hasDiscoveredPet(id:number){return !!this.save.mongles[id]||!!this.save.obtainedPets?.includes(id);}
   eggSellPrice(type:number){return EGGS[type]?Math.floor(EGGS[type].reward*BALANCE.eggSellRatio):0;}
@@ -406,6 +410,8 @@ export class GameState {
     }
     if(save.death){this.x=this.z=this.deadline=0;this.hp=this.maxHp;save.death=null;}
     if(this.isNight&&save.nightAt!==this.nightAt){this.nightAt=cycle;this.updateNight();}
+    if(Math.floor(save.lastSavedAt/BALANCE.nightInterval)<Math.floor(this.now()/BALANCE.nightInterval)){this.nightAt=cycle;this.updateNight();}
+    if(this.isNight&&!this.isAtBase)this.failExpedition('night');
   }
   get selected() {
     return this.save.eggs.find((e) => e.id === this.save.selected);
@@ -470,7 +476,7 @@ export class GameState {
   get action() {
     if(this.nearStore&&!this.carried&&!this.near&&!this.training)return "판매하기";
     if (this.nearGym && !this.carried) return this.training ? "운동 내리기" : "운동 시작";
-    return this.carried ? "내려놓기" : this.near ? "들고가기" : "";
+    return this.carried ? "내려놓기" : this.near ? "들고가기" : "배트 스윙";
   }
   spawn() {
     this.world = this.route.flatMap((boss, guardian) =>
@@ -522,11 +528,17 @@ export class GameState {
   }
   tickBosses(dt:number){
     this.bosses.forEach((b)=>{
-      b.windup=undefined;
       if(b.mode==='chase'&&this.carried?.id!==b.target){b.mode='return';b.target=null;}
       const tx=b.mode==='chase'?this.x:0,tz=b.mode==='chase'?this.z:b.homeZ??-17;
       const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*dt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
+      if(b.mode==='chase'&&!this.isAtBase&&l<=ROUTE.bossReach){
+        b.windup=(b.windup??0)+dt;
+        if(b.windup>=ROUTE.bossWindup){
+          const d={damage:ROUTE.bossDamage+(b.stageId??1)*ROUTE.bossDamagePerStage,damagePercent:0,knockback:ROUTE.bossKnockback,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
+          this.applyHazard({definition:d,origin:{x:b.x,z:b.z}} as Hazard);b.windup=0;
+        }
+      }else b.windup=undefined;
       if(b.mode==='return'&&l<.2)b.mode='idle';
     });
   }
@@ -545,7 +557,7 @@ export class GameState {
       -BALANCE.mapX,
       Math.min(BALANCE.mapX, this.x + dx * scale * this.speed * dt),
     );
-    this.z = Math.max(this.farZ, Math.min(BALANCE.mapNearZ, this.z + dz * scale * this.speed * dt));
+    this.z = Math.max(this.isNight?BALANCE.baseMinZ:this.farZ, Math.min(BALANCE.mapNearZ, this.z + dz * scale * this.speed * dt));
     this.syncStage();
     if (!this.deadline && !this.isAtBase) {
       this.deadline = this.now() + this.duration * 1000;
@@ -559,14 +571,12 @@ export class GameState {
     const onset = this.nightAt + Math.floor((this.now()-this.nightAt)/BALANCE.nightInterval)*BALANCE.nightInterval;
     this.nightAt = onset + BALANCE.nightInterval;
     this.nightUntil = onset + BALANCE.nightDuration;
-    // Night refreshes unclaimed nests; it never ends an expedition or steals a carried egg.
-    const held=this.carried;
-    const dropped=this.world.filter(e=>e.x!==e.homeX||e.z!==e.homeZ);
+    // Night closes the expedition, including dropped field eggs.
+    if(!this.isAtBase||this.carried)this.failExpedition('night');
     this.spawn();
-    for(const egg of [...dropped,...(held?[held]:[])])this.world=this.world.filter(e=>!(e.guardian===egg.guardian&&e.homeX===egg.homeX));
-    this.world.push(...dropped);
+    this.resetBosses();
     const secret=this.world.some(e=>EGGS[e.type].tier===6);
-    this.announcement=secret?'✦ SECRET · 새로운 희귀 알이 나타났어요':'달빛 아래 새로운 알이 나타났어요 · 탐험은 계속할 수 있어요';
+    this.announcement=secret?'✦ SECRET · 아침에 희귀 알을 찾아보세요':'밤에는 농장에서 쉬어요 · 아침에 입구가 열려요';
     this.announcementId++;this.emit('night_refresh');this.revision++;
   }
   tick(dt:number){

@@ -1,4 +1,4 @@
-import { STAGES } from "./stage-data";
+import { STAGES,stagePatterns,HAZARD_BALANCE as B } from "./stage-data";
 import * as T from "three";
 import { ConnectedRegionArt } from "./region-art";
 import { RegionGuardian } from "./region-guardian";
@@ -18,14 +18,27 @@ export class HazardView{
  render(game:GameState,visible:boolean,time:number){
   this.group.visible=visible;if(!visible)return;this.regions.render(game,time,true);this.guardians.render(game,time,true);
   this.warningCount=this.actorCount=0;
+  if(!game.isAtBase){
+   const phase=game.stage.id===20?Math.floor(Math.max(0,-game.z-game.stageOffset)/B.environmentSection)*B.environmentSection:0;
+   for(const [lane,d] of stagePatterns(game.stage.id,game.z+game.stageOffset).entries()){
+    const z=-game.stageOffset-phase-B.environmentStart-lane*B.environmentSpacing;
+    if(['hay','train','book','raptor','gear','orb'].includes(d.visual)){
+     for(const side of [-1,1])this.put(this.actors,this.actorCount++,0,.03,z+side*.65,B.laneHalfWidth*2,.06,.12,0x887b62);
+    }else{
+     const x=(lane%2?-1:1)*B.environmentX;
+     this.put(this.actors,this.actorCount++,x,.12,z,1.4,.24,1.4,STAGES[d.stageId-1].accent);
+     this.put(this.actors,this.actorCount++,x,.26,z,.8,.08,.8,0x454c50);
+    }
+   }
+  }
   for(const h of game.hazards.attacks){
    if(!['Telegraph','Active','Recovery'].includes(h.phase)||h.elapsed<0)continue;
    const d=h.definition,active=h.phase==='Active',recover=h.phase==='Recovery',color=d.damage+d.damagePercent===0?0x7bcfe3:d.visual==='creation'?0xffd454:active?0xff654c:0xffbd65;
-   const cube=(x:number,z:number,w=.15,depth=.15)=>{if(!recover)this.put(this.warnings,this.warningCount++,x,.07,z,w,.06,depth,color);};
-   if(d.shape==='ellipse'||d.shape==='ring')for(let i=0;i<40;i++){const a=i/40*Math.PI*2;if(d.shape==='ring'&&Math.abs(Math.atan2(Math.sin(a-h.angle),Math.cos(a-h.angle)))<.8)continue;const r=d.shape==='ring'&&active?d.radius*h.elapsed/d.activeDuration:d.radius;cube(h.target.x+Math.cos(a)*r,h.target.z+Math.sin(a)*r*(d.shape==='ellipse'?.75:1));}
-   if(d.shape==='line')for(let i=-20;i<=20;i++){for(const side of [-1,1]){const along=i/20*d.length/2;cube(h.target.x+Math.cos(h.angle)*along-Math.sin(h.angle)*d.width*side,h.target.z+Math.sin(h.angle)*along+Math.cos(h.angle)*d.width*side);}}
-   if(d.shape==='cone')for(let i=0;i<=30;i++){const a=h.angle-Math.PI/3+i/30*Math.PI*2/3;cube(h.origin.x+Math.cos(a)*d.radius,h.origin.z+Math.sin(a)*d.radius);}
-   if(!active&&!recover){const left=Math.max(0,1-h.elapsed/h.warning);this.put(this.actors,this.actorCount++,h.target.x,2.6,h.target.z,.15,left*.7+.05,.15,color);}
+   // Compact world-space exclamation mark instead of projected attack outlines.
+   if(!recover){
+    this.put(this.warnings,this.warningCount++,h.target.x,3.7,h.target.z,.16,.55,.16,color);
+    this.put(this.warnings,this.warningCount++,h.target.x,3.28,h.target.z,.16,.14,.16,color);
+   }
    const progress=Math.min(1,h.elapsed/h.warning),fall=T.MathUtils.smoothstep(progress,.65,1),a=active||recover?1:Math.max(.15,progress),y=active||recover?.3:1.8*(1-fall)+.3;
    const fade=recover?Math.max(0,1-h.elapsed/.4):1;
    const piece=(x:number,yy:number,z:number,w:number,hh:number,dd:number,c=STAGES[d.stageId-1].accent)=>this.put(this.actors,this.actorCount++,x,yy,z,w*fade,hh*fade,dd*fade,c);
@@ -77,7 +90,9 @@ export class HazardView{
     for(const side of [-1,1])piece(h.target.x+side*.15,1.2+bob,h.target.z+.31,.1,.1,.06,0xfff0d2);
    }else if(['web','puddle','sand','ink'].includes(d.visual)){
     for(let j=0;j<24;j++){const r=(j%4+1)*.23,t=j*2.4;piece(h.target.x+Math.cos(t)*r,.12,h.target.z+Math.sin(t)*r,.28,.035,.28,d.visual==='web'?0xeee3c7:d.visual==='puddle'?0xa9cd63:d.visual==='ink'?0x51496b:0xd5be8b);}
-   }else if(d.visual!=='creation'){piece(h.target.x,y,h.target.z,.7,.7,.7);piece(h.target.x-.22,y+.35,h.target.z+.35,.15,.15,.1,0xffffff);piece(h.target.x+.22,y+.35,h.target.z+.35,.15,.15,.1,0xffffff);}
+   }else if(d.visual==='creation'){
+    if(active)for(let j=0;j<24;j++){const angle=j/24*Math.PI*2;piece(h.target.x+Math.cos(angle)*d.radius,.3,h.target.z+Math.sin(angle)*d.radius*.75,.3,.5,.3,color);}
+   }else {piece(h.target.x,y,h.target.z,.7,.7,.7);piece(h.target.x-.22,y+.35,h.target.z+.35,.15,.15,.1,0xffffff);piece(h.target.x+.22,y+.35,h.target.z+.35,.15,.15,.1,0xffffff);}
   }
   for(const d of game.dustDrops)this.put(this.actors,this.actorCount++,d.x,.3,d.z,.2,.2,.2,0xffda58);
   const age=(game.now()-game.hitAt)/1000;if(age>=0&&age<.6)for(let i=0;i<12;i++){const a=i/12*Math.PI*2;this.put(this.actors,this.actorCount++,game.x+Math.cos(a)*age*2,.6+Math.sin(age*5),game.z+Math.sin(a)*age*2,.12,.12,.12,0xffea9c);}

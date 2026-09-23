@@ -11,7 +11,7 @@
     "qa:lint": "eslint src scripts *.ts",
     "qa:typecheck": "tsc --noEmit",
     "qa:unit": "node scripts/test-game.mjs && node scripts/qa/unit.mjs && node scripts/qa/progression.mjs && node scripts/qa/balance.mjs && node scripts/qa/multiplayer.mjs",
-    "qa:e2e": "node scripts/qa/e2e.mjs && node scripts/qa/progression-e2e.mjs && node scripts/qa/multiplayer-e2e.mjs && node scripts/qa/connected-e2e.mjs && node scripts/qa/appearance-e2e.mjs",
+    "qa:e2e": "node scripts/qa/e2e.mjs && node scripts/qa/progression-e2e.mjs && node scripts/qa/multiplayer-e2e.mjs && node scripts/qa/connected-e2e.mjs && node scripts/qa/appearance-e2e.mjs && node scripts/qa/exploration-e2e.mjs",
     "qa:visual": "node scripts/qa/visual.mjs",
     "qa:hazards": "node scripts/qa/hazard-visual.mjs",
     "qa:regions": "node scripts/qa/regions.mjs",

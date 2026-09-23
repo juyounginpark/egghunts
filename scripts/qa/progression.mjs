@@ -1,14 +1,14 @@
 import assert from 'node:assert/strict';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {modules,report} from './lib.mjs';
-const m=await modules();let now=1800000010000;
+const m=await modules();let now=1800000060000;
 const make=()=>new m.GameState(m.freshSave(now),()=>now,()=>.1);
 const results=[];const test=(name,fn)=>{fn();results.push(name);console.log('PASS',name);};
 const player={x:0,z:-14,vx:0,vz:0,facing:{x:0,z:-1},carrying:false,metal:false,moving:false};
 const def=id=>m.HAZARDS.find(d=>d.id===id);
 try{
  test('same-night reload does not reroll saved nests',()=>{
-  const g=make();assert.equal(g.isNight,true);const saved=m.parseSave(JSON.stringify(g.snapshot()),now);const h=new m.GameState(saved,()=>now,()=>.9);assert.deepEqual(h.world,g.world);
+  const previous=now;now=Math.floor(now/m.BALANCE.nightInterval)*m.BALANCE.nightInterval+1000;const g=make();assert.equal(g.isNight,true);const saved=m.parseSave(JSON.stringify(g.snapshot()),now);const h=new m.GameState(saved,()=>now,()=>.9);assert.deepEqual(h.world,g.world);now=previous;
  });
  test('HP level table and capped level speed match specification',()=>{
   assert.deepEqual([1,10,20,30,40,50,60].map(m.levelHP),[100,145,215,285,355,425,495]);assert.equal(m.levelSpeed(60),1.6);assert.equal(m.levelSpeed(1000),1.6);
@@ -103,12 +103,12 @@ try{
   assert.ok(g.progression.healthUnlocked);assert.ok(g.events.filter(e=>e.name==='region_enter').length>=39);
  });
  test('sleeping guardian wakes on theft, attacks, drops egg, returns and wakes on repick',()=>{
-  const g=make();g.selectStage(5);g.z=-14;g.deadline=now+1;g.tick(6);assert.equal(g.bosses[0].mode,'idle');assert.equal(g.hazards.attacks.length,0);
+  const g=make();g.selectStage(5);g.z=-14;g.deadline=now+1;g.tick(6);assert.equal(g.bosses[0].mode,'idle');assert.ok(g.hazards.attacks.every(h=>h.environment));
   const egg=g.world[2];g.pickup(egg);assert.equal(g.bosses[0].mode,'chase');g.tick(4);assert.ok(g.hp<g.maxHp);assert.equal(g.carried,null);assert.equal(g.world.filter(e=>e.id===egg.id).length,1);assert.ok(Math.hypot(g.x-egg.x,g.z-egg.z)>1);
   assert.notEqual(g.bosses[0].mode,'chase');g.x=egg.x;g.z=egg.z;g.interact();assert.equal(g.carried.id,egg.id);assert.equal(g.bosses[0].mode,'chase');
  });
  test('distant guardian cannot land remote attacks; stages keep source completion on return',()=>{
-  const g=make();g.selectStage(5);g.z=-14;g.pickup(g.world[2]);g.bosses[0].z=-100;g.tick(2);assert.equal(g.hp,g.maxHp);assert.equal(g.hazards.attacks.length,0);
+  const g=make();g.selectStage(5);g.z=-14;g.pickup(g.world[2]);g.bosses[0].z=-100;g.tick(2);assert.equal(g.hp,g.maxHp);assert.ok(g.hazards.attacks.every(h=>h.environment));
   const h=make(),egg=h.world.find(e=>e.stageId===4);h.z=egg.z;h.pickup(egg);h.deadline=now+1;h.x=h.z=0;h.tick(.01);assert.ok(h.progression.completedStages.includes(4));assert.ok(!h.progression.completedStages.includes(1));
  });
  test('final wall blocks forward movement and knockback for default and shortcut entrances',()=>{
@@ -116,6 +116,29 @@ try{
  });
  test('late final-stage patterns use local depth, not total route distance',()=>{
   const g=make();g.z=-(19*m.ROUTE.length+14);assert.equal(g.stage.id,20);assert.equal(m.stagePatterns(20,g.z+g.stageOffset)[0].id,'void-hand');g.z-=90;assert.equal(m.stagePatterns(20,g.z+g.stageOffset)[0].id,'creation-wave');
+ });
+ test('speed upgrades and training increase measured movement, including carrying',()=>{
+  for(const carrying of [false,true]){
+   const distance=(upgrades,training)=>{const g=make();g.z=-8;g.save.upgrades.speed=upgrades;g.save.trainingSpeed=training;if(carrying)g.carried=g.world[2];const speed=g.speed;g.move(0,-1,1);assert.ok(Math.abs(-g.z-8-speed)<1e-9);return speed;};
+   assert.ok(distance(5,0)>distance(0,0));assert.ok(distance(5,2)>distance(5,0));
+  }
+ });
+ test('every stage increases guardian speed and uses the same close-range shove',()=>{
+  for(let stage=1;stage<=20;stage++){
+   if(stage>1)assert.ok(m.guardianSpeed(stage)>m.guardianSpeed(stage-1));
+   const g=make();g.selectStage(stage);g.z=-14;g.deadline=now+45000;g.pickup(g.world[2]);const egg=g.carried.id,b=g.bosses[0];b.x=g.x;b.z=g.z-1;
+   g.tickBosses(m.ROUTE.bossWindup-.01);assert.equal(g.hp,g.maxHp);g.tickBosses(.02);
+   assert.equal(g.carried,null);assert.equal(g.world.filter(e=>e.id===egg).length,1);assert.ok(g.hp<g.maxHp);assert.equal(g.knockback.remaining,m.ROUTE.bossKnockbackSeconds);
+  }
+ });
+ test('environmental hazards use map coordinates even when player and guardian move',()=>{
+  const run=(x,z,awake)=>{const manager=new m.HazardManager();manager.tick(1,5,{...player,x,z,guardianAwake:awake},()=>{},()=>{},()=>{});return manager.attacks.map(h=>({id:h.definition.id,target:h.target,origin:h.origin,environment:h.environment}));};
+  assert.deepEqual(run(-5,-12,false),run(5,-30,true));assert.ok(run(0,-14,false).every(h=>h.environment));
+ });
+ test('offline night crossing loses egg and settles pending XP only once',()=>{
+  const g=make();g.z=-14;g.deadline=now+45000;g.pickup(g.world[2]);g.progression.pendingXP=50;const saved=JSON.stringify(g.snapshot()),before=now;
+  now=g.nightAt+m.BALANCE.nightDuration+1000;const h=new m.GameState(m.parseSave(saved,now),()=>now);assert.equal(h.carried,null);assert.ok(h.isAtBase);assert.equal(h.progression.xp,35);
+  const reload=new m.GameState(m.parseSave(JSON.stringify(h.snapshot()),now),()=>now);assert.equal(reload.progression.xp,35);now=before;
  });
  const rows=m.HAZARDS.filter(d=>d.damage||d.damagePercent).map(d=>{const stage=m.STAGES[d.stageId-1],hp=m.levelHP(stage.minLevel),damage=m.reducedDamage(d.damage,d.damagePercent,hp);return `| ${d.stageId} | ${d.displayName} | ${stage.minLevel} | ${hp} | ${damage.toFixed(1)} | ${Math.ceil(hp/damage)} |`;});
  await mkdir('artifacts/qa-summary',{recursive:true});await writeFile('artifacts/qa-summary/health-balance-report.md',`# Health damage audit\n\nNo traits, legacy purchases or pet defense. Hits until failure at recommended minimum level. Explicit attack damage takes precedence over approximate survival targets; late stages remain more forgiving than the requested 3–5 hits and need playtest calibration.\n\n| Stage | Attack | Level | HP | Damage | Hits to failure |\n|---|---|---:|---:|---:|---:|\n${rows.join('\n')}\n`);

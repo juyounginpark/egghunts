@@ -22,7 +22,7 @@ try {
    await page.reload();await page.locator('#loading').waitFor({state:'hidden',timeout:60000});assert.equal(await page.locator('#stage-select,[data-stage]').count(),0);
    results.push('production has no stage selection before or after reload');
  } else {
-   await scene('tutorial');assert.ok(await page.locator('#tutorial').isVisible());assert.equal(await page.locator('#action').isVisible(),false);
+   await scene('tutorial');assert.ok(await page.locator('#tutorial').isVisible());assert.equal(await page.locator('#action-label').textContent(),'배트 스윙');
    const pad=await page.locator('#joystick').boundingBox();
    await page.mouse.move(pad.x+pad.width/2,pad.y+pad.height/2);await page.mouse.down();await page.mouse.move(pad.x+pad.width/2+pad.width*.1665,pad.y+pad.height/2-pad.width*.2496);
    const v=await state();assert.ok(v.input.y<0&&v.input.x>0);await page.mouse.up();assert.deepEqual((await state()).input,{x:0,y:0});
@@ -42,7 +42,7 @@ try {
    await page.evaluate(()=>window.__qa.save());await page.goto(session.url+'/?qa=true&restore=true');await page.locator('#loading').waitFor({state:'hidden'});assert.equal((await state()).mongles.reduce((a,b)=>a+b,0),1);assert.equal((await state()).eggs.length,0);results.push('C manual/auto hatch, cracks, single pet, save/reload');
    await scene('base');const initialSpeed=(await state()).speed;await page.evaluate(()=>window.__qa.grant(10000));await page.click('[data-tab="upgrade"]');for(let i=0;i<10;i++)await page.click('[data-upgrade="speed"]');await page.click('[data-tab="explore"]');
    assert.ok((await state()).speed>initialSpeed);await page.evaluate(()=>window.__qa.travel(0,-109));await page.click('#action');await page.evaluate(()=>window.__qa.travel(0,0));assert.equal((await state()).eggs.length,1);results.push('D speed upgrades shorten connected-region travel and return works without timer');
-   await scene('egg-carry');const nightEgg=(await state()).carried.id;await page.evaluate(()=>{window.__qa.wait(180);window.__qa.step(.01,{x:0,z:0});});assert.equal((await state()).carried.id,nightEgg);assert.ok((await state()).z<0);assert.equal(await page.locator('#night-curtain').isVisible(),false);results.push('night refresh keeps held egg and route open');
+   await scene('egg-carry');const nightEgg=(await state()).carried.id;await page.evaluate(()=>{window.__qa.cycle(true);});assert.equal((await state()).carried,null);assert.equal((await state()).z,0);assert.ok(!(await state()).world.some(e=>e.id===nightEgg));assert.equal(await page.locator('#night-curtain').isVisible(),false);results.push('night loses egg and returns to farm');
    await scene('base');await page.evaluate(()=>window.__qa.travel(2.1,.6));await page.click('#action');assert.ok((await state()).training);const before=(await state()).speed;await page.evaluate(()=>window.__qa.step(10,{x:0,z:0}));assert.ok((await state()).speed>before);results.push('gym interaction and training accumulation');
    await scene('collection');await page.click('[data-claim-pet="0"]');const dust=(await state()).dust;await page.click('[data-claim-pet="0"]');assert.equal((await state()).dust,dust);await page.click('[data-claim-region="0"]');assert.ok((await state()).dust>dust);await page.click('[data-region="4"]');assert.equal(await page.locator('.friend').count(),20);results.push('regional collection and one-time reward');
    await scene('base');await page.click('[data-tab="shop"]');const beforeAd=(await state()).dust;const adStarted=await page.evaluate(()=>performance.now());await page.click('#virtual-ad');

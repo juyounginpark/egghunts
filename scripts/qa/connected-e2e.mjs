@@ -5,6 +5,7 @@ try{
  const page=await session.browser.newPage({viewport:{width:360,height:800}});page.on('pageerror',e=>errors.push(e.message));await ready(page,session.url,'base');
  await page.evaluate(()=>window.__qa.routeWalk(0));
  for(let id=1;id<=20;id++){
+  await page.evaluate(()=>window.__qa.daylight());
   const target=14+(id-1)*32;
   await page.evaluate(target=>{const s=window.__qa.state();window.__qa.routeWalk((target+s.z)/s.speed);},target);
   await page.waitForFunction(id=>window.__qa.regionArt().terrain.stage===id,id);
@@ -19,7 +20,7 @@ try{
  assert.equal((await page.evaluate(()=>window.__qa.regionArt())).terrain.endWall,true);await page.screenshot({path:'artifacts/screenshots/final-wall-360.png'});
  await page.locator('#region-banner').waitFor({state:'hidden',timeout:4500});
  await page.evaluate(()=>window.__qa.save());await page.goto(session.url+'/?qa=true&restore=true');await page.locator('#loading').waitFor({state:'hidden'});assert.equal((await page.evaluate(()=>window.__qa.state())).stageId,20);
- for(let id=19;id>=1;id--){await page.evaluate(target=>{const s=window.__qa.state();window.__qa.routeWalk((-s.z-target)/s.speed,1);},14+(id-1)*32);assert.equal((await page.evaluate(()=>window.__qa.state())).stageId,id);}
+ for(let id=19;id>=1;id--){await page.evaluate(()=>window.__qa.daylight());await page.evaluate(target=>{const s=window.__qa.state();window.__qa.routeWalk((-s.z-target)/s.speed,1);},14+(id-1)*32);assert.equal((await page.evaluate(()=>window.__qa.state())).stageId,id);}
  await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth),false);assert.deepEqual(errors,[]);
  await report('connected-e2e',{visited,returnStages:19,errors});console.log('PASS actual movement through 20 regions and back, banners, speed targets, reload and render budgets');
 }finally{await session.close();}

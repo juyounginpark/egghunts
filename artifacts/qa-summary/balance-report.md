@@ -1,6 +1,6 @@
 # Balance simulation
 
-Deterministic active play model, 50ms simulation steps, general-tier rolls; not a prediction of every player's behavior. No ads/payments. First egg 53.6s, first hatch 56.1s, base automatic hit available at 0s. 28 hatches, 14 purchases in ten minutes. Boss avoidance/input mistakes change outcomes. Equal rarity odds by latest requirement; later stages pay higher rewards but take longer to hatch. Discovery/trail/gym gains are not counted in this conservative loop.
+Deterministic active play model, 50ms simulation steps, general-tier rolls; not a prediction of every player's behavior. No ads/payments. First egg 53.6s, first hatch 56.1s, base automatic hit available at 0s. 20 hatches, 12 purchases in ten minutes. Boss avoidance/input mistakes change outcomes. Equal rarity odds by latest requirement; later stages pay higher rewards but take longer to hatch. Discovery/trail/gym gains are not counted in this conservative loop.
 
 ## First ten minutes
 
@@ -9,14 +9,14 @@ Deterministic active play model, 50ms simulation steps, general-tier rolls; not 
 |0|0|1|3.24|3|
 |1|5|2|3.63|3|
 |2|20|6|3.63|4.5|
-|3|35|8|3.63|4.5|
-|4|6|10|4.02|7.5|
-|5|7|15|4.06|10|
-|6|37|17|4.06|10|
-|7|53|20|4.06|10|
-|8|28|24|4.46|14|
-|9|88|26|4.46|14|
-|10|148|28|4.46|14|
+|3|20|6|3.63|4.5|
+|4|35|8|3.63|4.5|
+|5|36|11|4.06|7.5|
+|6|66|12|4.06|7.5|
+|7|7|15|4.06|10|
+|8|37|17|4.06|10|
+|9|67|18|4.06|10|
+|10|53|20|4.06|10|
 
 ## Upgrade purchases
 
@@ -53,58 +53,46 @@ Deterministic active play model, 50ms simulation steps, general-tier rolls; not 
     "dust": 20
   },
   {
-    "second": 148,
+    "second": 233,
     "upgrade": "training",
     "level": 1,
     "dust": 5
   },
   {
-    "second": 232,
+    "second": 250,
     "upgrade": "damage",
     "level": 2,
     "dust": 16
   },
   {
-    "second": 240,
+    "second": 258,
     "upgrade": "speed",
     "level": 2,
     "dust": 6
   },
   {
-    "second": 262,
+    "second": 411,
     "upgrade": "rate",
     "level": 2,
     "dust": 6
   },
   {
-    "second": 308,
+    "second": 426,
     "upgrade": "carry",
     "level": 2,
     "dust": 7
   },
   {
-    "second": 331,
+    "second": 433,
     "upgrade": "tap",
     "level": 2,
     "dust": 7
   },
   {
-    "second": 419,
+    "second": 592,
     "upgrade": "training",
     "level": 2,
     "dust": 23
-  },
-  {
-    "second": 433,
-    "upgrade": "damage",
-    "level": 3,
-    "dust": 2
-  },
-  {
-    "second": 485,
-    "upgrade": "speed",
-    "level": 3,
-    "dust": 28
   }
 ]
 ```

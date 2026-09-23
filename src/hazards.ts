@@ -1,7 +1,7 @@
-import { HAZARD_BALANCE as B, STAGE_COVERS, stagePatterns, GUARDIAN_ATTACKS, type HazardDefinition, type Cover } from "./stage-data";
+import { HAZARD_BALANCE as B, STAGE_COVERS, stagePatterns, type HazardDefinition, type Cover } from "./stage-data";
 export type Point={x:number;z:number};
 export type HazardPhase='Idle'|'Telegraph'|'Active'|'Recovery'|'Cooldown';
-export type Hazard={serial:number;definition:HazardDefinition;phase:HazardPhase;elapsed:number;origin:Point;target:Point;angle:number;warning:number;hit:boolean;dotClock:number;gaze:number;member:number;blocked:boolean};
+export type Hazard={serial:number;definition:HazardDefinition;phase:HazardPhase;elapsed:number;origin:Point;target:Point;angle:number;warning:number;hit:boolean;dotClock:number;gaze:number;member:number;blocked:boolean;environment?:boolean};
 export type HazardPlayer=Point&{vx:number;vz:number;facing:Point;carrying:boolean;metal:boolean;moving:boolean;stageOffset?:number;guardianAwake?:boolean;guardianStage?:number;guardianOffset?:number};
 export function blockedByCover(from:Point,to:Point,covers:Cover[]=STAGE_COVERS){
  const dx=to.x-from.x,dz=to.z-from.z,len=dx*dx+dz*dz;if(!len)return false;
@@ -36,13 +36,21 @@ export class HazardManager{
   this.time+=dt;
   if(this.time>=this.next&&this.attacks.filter(h=>h.phase==='Telegraph'||h.phase==='Active').length<B.maxActive){
    const local=stagePatterns(stage,p.z+(p.stageOffset??0));
-   const defs=p.guardianAwake===undefined?local:[...local.filter(d=>!GUARDIAN_ATTACKS.has(d.id)),...(p.guardianAwake?stagePatterns(p.guardianStage??stage,p.z+(p.guardianOffset??0)).filter(d=>GUARDIAN_ATTACKS.has(d.id)):[])];
+   const defs=local;
    const d=defs[this.cursor++%defs.length];
-   if(d){for(let i=0;i<d.count;i++)this.spawn(d,p,i);this.next=this.time+d.cooldown*(secret&&stage===20?B.finalSecretCooldown:1);}
+   if(d){for(let i=0;i<d.count;i++){
+     // Each pattern belongs to a fixed map lane, independent of the player or guardian.
+     const lane=defs.indexOf(d),offset=p.stageOffset??0;
+     const phase=stage===20?Math.floor(Math.max(0,-p.z-offset)/B.environmentSection)*B.environmentSection:0;
+     const moving=['hay','train','book','raptor','gear','orb'].includes(d.visual);
+     const definition={...d,targetingType:'fixed' as const,shape:('laser solar'.split(' ').includes(d.visual)?'line':'ellipse') as HazardDefinition['shape'],radius:Math.min(2.2,d.radius),...(moving?{radius:B.movingRadius,activeDuration:B.crossingSeconds}:{})};
+     const h=this.spawn(definition,{...p,x:(lane%2?-1:1)*B.environmentX,z:-offset-phase-B.environmentStart-lane*B.environmentSpacing,vx:0,vz:0},i);
+     h.environment=true;h.angle=0;h.origin={x:-B.laneHalfWidth,z:h.target.z};
+     if(moving)h.target.x=-B.laneHalfWidth;
+   }this.next=this.time+d.cooldown*(secret&&stage===20?B.finalSecretCooldown:1);}
   }
   for(const h of this.attacks){
    const d=h.definition;h.elapsed+=dt;
-   if(p.guardianAwake===false&&h.phase!=='Recovery'&&h.phase!=='Cooldown'&&GUARDIAN_ATTACKS.has(h.definition.id)){h.phase='Recovery';h.elapsed=B.recovery;continue;}
    if(h.elapsed<0)continue;
    if(h.phase==='Telegraph'){
     if(d.targetingType==='track'&&h.elapsed<h.warning-d.freezeBefore){h.target.x=p.x+(h.member-1)*(d.count>1?1.6:0);h.target.z=p.z;}
@@ -56,7 +64,10 @@ export class HazardManager{
    if(h.phase!=='Active')continue;
    if(h.elapsed>d.activeDuration){h.phase='Recovery';h.elapsed=0;continue;}
    if(d.targetingType==='sweep')h.target.x=Math.sin(h.elapsed*2)*4;
-   if(d.visual==='orb'){
+   if(h.environment&&['hay','train','book','raptor','gear','orb'].includes(d.visual)){
+    h.target.x=-B.laneHalfWidth+h.elapsed/d.activeDuration*B.laneHalfWidth*2;h.origin={...h.target};
+   }
+   if(d.visual==='orb'&&!h.environment){
     const dx=p.x-h.origin.x,dz=p.z-h.origin.z,l=Math.hypot(dx,dz)||1;
     h.origin.x+=dx/l*B.projectileSpeed*dt;h.origin.z+=dz/l*B.projectileSpeed*dt;
     if(blockedByCover({x:h.origin.x-dx/l*.5,z:h.origin.z-dz/l*.5+(p.stageOffset??0)},{x:h.origin.x,z:h.origin.z+(p.stageOffset??0)})){h.blocked=true;h.phase='Recovery';continue;}
