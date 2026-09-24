@@ -389,6 +389,7 @@ nav button img { width:32px; height:32px; }
 .hatch-sequence { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--paper); gap:16px; }
 .hatch-sequence p { font-size:24px; font-weight:800; margin:0; }
 .hatch-egg,.hatch-pet { width:min(260px,65vw,42dvh); aspect-ratio:1; position:relative; }
+.hatch-egg { width:min(200px,50vw,32dvh); }
 .hatch-egg img,.hatch-pet img { width:100%; height:100%; object-fit:contain; }
 .hatch-egg { animation:hatch-heartbeat .65s ease-in-out infinite; }
 .hatch-egg svg { display:none; position:absolute; inset:0; width:100%; height:100%; fill:none; stroke:#fff9dc; stroke-width:4; filter:drop-shadow(2px 2px 0 #665438); }

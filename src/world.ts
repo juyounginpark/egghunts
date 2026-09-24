@@ -334,7 +334,7 @@ export class World {
     const pedestal = model("pedestal");
     pedestal.scale.set(2.5, 1, 2.5);
     pedestal.position.y = -0.2;
-    this.crack.scale.setScalar(BALANCE.eggVisualScale);
+    this.crack.scale.setScalar(BALANCE.eggPresentationScale);
     this.hatch.add(pedestal, this.crack);
     this.hatch.visible = false;
   }
@@ -375,7 +375,7 @@ export class World {
     if (this.hatchModel) {this.clearPetInstances(this.hatchModel);this.hatch.remove(this.hatchModel);}
     this.hatchModel = m ?? null;
     if (m) {
-      m.scale.setScalar(result !== null ? 2 : 2.5*BALANCE.eggVisualScale);
+      m.scale.setScalar(result !== null ? 2 : 2.5*BALANCE.eggPresentationScale);
       this.hatch.add(m);
     }
   }
@@ -515,8 +515,8 @@ export class World {
       this.clearPetInstances(this.storage);
       game.save.eggs.forEach((e, i) => {
         const m = this.eggModel(e);
-        m.scale.setScalar(0.55*BALANCE.eggVisualScale);
-        m.position.set(-4 + (i % 3) * 0.7*BALANCE.eggVisualScale, 0.8, 0.3 + Math.floor(i / 3) * 0.65*BALANCE.eggVisualScale);
+        m.scale.setScalar(0.55*BALANCE.eggPresentationScale);
+        m.position.set(-4 + (i % 3) * 0.7*BALANCE.eggPresentationScale, 0.8, 0.3 + Math.floor(i / 3) * 0.65*BALANCE.eggPresentationScale);
         this.storage.add(m);
       });
     }

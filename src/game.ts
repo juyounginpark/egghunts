@@ -597,7 +597,7 @@ export class GameState {
         const dragon = this.random()<BALANCE.secretDragonEggChance;
         const type = dragon?6*REGIONS.length+region:rollEgg(region, this.random);
         const x = (slot - 2) * BALANCE.eggNestSpacing,
-          z = -boss.home + Math.abs(slot - 2) * BALANCE.eggNestDepthSpacing;
+          z = -boss.home + ((slot - 2) / 2) ** 2 * BALANCE.eggNestArcDepth;
         return {
           id: `${boss.stage}-${slot}-${this.now()}-${this.random()}`,
           type,

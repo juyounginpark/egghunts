@@ -7,8 +7,9 @@ export type DefensePassive={maxHP?:number;damageReduction?:number;firstHitReduct
 export const PET_DEFENSE:Partial<Record<number,DefensePassive>>={};
 export const BALANCE = {
   eggVisualScale:3,
-  eggNestSpacing:3.2,
-  eggNestDepthSpacing:3,
+  eggPresentationScale:1.5,
+  eggNestSpacing:2.4,
+  eggNestArcDepth:2.2,
   eggApproachSeconds:.12,
   roomVisualOffsetMax:.45,
   slowWalkSpeed:2,

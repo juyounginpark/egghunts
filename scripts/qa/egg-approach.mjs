@@ -31,6 +31,9 @@ try{
  }
  const fresh=new GameState(freshSave(now),()=>now,()=>.5);
  assert.equal(Math.abs(fresh.world[1].x-fresh.world[0].x),BALANCE.eggNestSpacing);
- assert.equal(Math.abs(fresh.world[1].z-fresh.world[2].z),BALANCE.eggNestDepthSpacing);
+ assert.ok(Math.abs(fresh.world[1].z-fresh.world[2].z-BALANCE.eggNestArcDepth/4)<1e-9);
+ assert.ok(Math.abs(fresh.world[0].z-fresh.world[2].z-BALANCE.eggNestArcDepth)<1e-9);
+ assert.equal(fresh.world[0].z,fresh.world[4].z);
+ assert.equal(fresh.world[1].z,fresh.world[3].z);
  console.log(JSON.stringify({rows,eggScale:BALANCE.eggVisualScale,nestSpacing:BALANCE.eggNestSpacing}));
 }finally{await vite.close();}
