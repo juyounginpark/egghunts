@@ -2,12 +2,13 @@ import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
 import {BALANCE,EGGS,MONGLES,UPGRADES} from '../src/data';
 import {exportRuntime,restoreRuntime,type RuntimeState} from '../src/online-state';
 import {playerName} from '../src/player-identity';
+import type {EggNotice} from '../src/egg-notices';
 
 type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
 type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
 type Player={runtime:RuntimeState;input:{x:number;z:number};seen:number;receipts:string[];guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
-export type Room={at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>};
+export type Room={at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
 export type RequestInput={id:string;input?:{x:number;z:number};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
 export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number,identity?:{guest:boolean}){
@@ -121,14 +122,21 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  room.world=self.world;
  const tutorialSteps:Record<string,number>={expedition_start:1,egg_pickup:2,egg_saved:3,mongle_obtained:4,upgrade_purchase:5,trail_purchase:5};
  for(const g of games.values())for(const event of g.events)g.save.tutorial=Math.max(g.save.tutorial??0,tutorialSteps[event.name]??0);
+ room.eggNotices=(room.eggNotices??[]).filter(n=>now-n.at<60000);
+ for(const [id,g] of games)for(const event of g.events)if(event.name==='egg_saved'){
+  const p=event.params,noticeId=`${id}:${p.id}`;
+  if(!room.eggNotices.some(n=>n.id===noticeId))room.eggNotices.push({id:noticeId,at:now,name:g.save.playerName??`농장 ${g.farmSlot+1}`,guest:!!room.players[id].guest,egg:{type:Number(p.type),stageId:Number(p.stageId),variant:Number(p.variant),special:p.special===1}});
+ }
+ room.eggNotices=room.eggNotices.slice(-30);
  const events=self.events.splice(0);
  for(const [id,g] of games){g.world=room.world;g.bosses=room.bosses;room.players[id].runtime=exportRuntime(g);}
  const peers=[...games].filter(([id])=>id!==user).map(([id,g])=>({
-  id,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
-  downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,
-  pets:g.save.mongles.flatMap((n,i)=>n?[i]:[]).slice(0,6),
+  id,at:now,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
+  speed:g.speed,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,
+  activePets:g.save.active.filter(id=>g.save.mongles[id]>0).slice(0,BALANCE.maxCompanions),
+  pets:g.save.mongles.flatMap((n,i)=>n&&!g.save.active.includes(i)?[i]:[]).slice(0,6),
  }));
- return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
+ return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,eggNotices:room.eggNotices,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
 }
 function applyCommand(g:GameState,p:Player,c:Command,now:number){
  const integer=()=>{if(!Number.isSafeInteger(c.value)||Number(c.value)<0)throw Error('INVALID_ID');return Number(c.value);};
@@ -144,10 +152,11 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number){
   case 'drop':if(g.carried)g.interact();break;
   case 'train':atBase();g.toggleTraining();break;
   case 'tap':atBase();g.tap();break;
-  case 'select':atBase();if(!g.save.eggs.some(e=>e.id===text()))throw Error('NOT_OWNED');g.save.selected=text();break;
+  case 'claimHatch':atBase();if(!g.claimHatch(text()))throw Error('EGG_NOT_READY');break;
+  case 'select':atBase();if(!g.save.eggs.some(e=>e.id===text()))throw Error('NOT_OWNED');g.save.selected=text();g.revision++;break;
   case 'equip':{atBase();const id=integer();if(!g.save.mongles[id])throw Error('NOT_OWNED');
    if(g.save.active.includes(id))g.save.active=g.save.active.filter(i=>i!==id);
-   else if(g.save.active.length<BALANCE.maxCompanions)g.save.active.push(id);break;}
+   else if(g.save.active.length<BALANCE.maxCompanions)g.save.active.push(id);g.revision++;break;}
   case 'upgrade':atBase();if(!Object.hasOwn(UPGRADES,text()))throw Error('INVALID_UPGRADE');g.upgrade(text() as keyof typeof UPGRADES);break;
   case 'name':g.save.playerName=playerName(c.value);break;
   case 'trail':atBase();g.buyTrail(integer());break;

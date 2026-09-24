@@ -1,4 +1,5 @@
 // Manual only: npm run server:bundle && node scripts/qa/rooms.mjs
+/* global structuredClone, crypto */
 import assert from 'node:assert/strict';
 import {runRoom} from '../../supabase/functions/_shared/room-engine.js';
 const start=1800000030000;
@@ -28,6 +29,11 @@ assert.equal(Object.values(room.players).filter(p=>p.runtime.fields.carried?.id=
 Object.assign(room.players['user-0'].runtime.fields,{x:0,z:0});
 call('user-0');
 assert.equal(room.players['user-0'].runtime.save.eggs.filter(e=>e.id===egg.id).length,1);
+const notice=call('user-1').eggNotices;
+assert.equal(notice.length,1);assert.equal(notice[0].egg.type,egg.type);assert.equal(notice[0].egg.stageId,egg.stageId);
+assert.equal(call('user-1').eggNotices.length,1,'polling does not repeat room announcements');
+Object.assign(room.players['user-1'].runtime.fields,{x:0,z:0});
+assert.ok(call('user-1',[['claimHatch',egg.id]]).errors.includes('EGG_NOT_READY'));
 const id=crypto.randomUUID(),request=crypto.randomUUID();
 call('user-0',[],{id:request,commands:[{id,kind:'sellEgg',value:egg.id}]});
 const sold=room.players['user-0'].runtime.save.dust;
@@ -39,6 +45,19 @@ assert.ok(call('user-0',[['equip',319]]).errors.includes('NOT_OWNED'));
 const other=runRoom(null,members,profiles,'user-0',{id:crypto.randomUUID(),commands:[]},now).room;
 assert.notEqual(other.world[0].id,room.world[0].id);
 console.log('PASS: shared egg claim, replay, private inventory, forged save/position rejection, farm slots, room RNG');
+
+room.players['user-0'].runtime.save.eggs=[{id:'ready-claim',type:0,hp:0,distance:10}];
+room.players['user-0'].runtime.save.selected='ready-claim';
+const readySave=room.players['user-0'].runtime.save;
+const beforePets=readySave.mongles.reduce((a,b)=>a+b,0),beforeDust=readySave.dust;
+const claimed=call('user-0',[['claimHatch','ready-claim']]);
+assert.equal(claimed.runtime.save.mongles.reduce((a,b)=>a+b,0),beforePets+1);
+assert.ok(claimed.runtime.save.dust>beforeDust);const claimDust=claimed.runtime.save.dust;
+assert.ok(call('user-0',[['claimHatch','ready-claim']]).errors.includes('EGG_NOT_READY'));
+assert.equal(room.players['user-0'].runtime.save.dust,claimDust);
+room.players['user-0'].runtime.save.trainingSpeed=3;
+assert.ok(call('user-1').peers.find(p=>p.id==='user-0').speed>4,'trained base speed is published');
+console.log('PASS: room acquisition notices, explicit hatch claim, ownership, no duplicate rewards, trained base speed');
 
 // Manual regression: room-authoritative moving melee and exactly-once egg drop.
 let combat=JSON.parse(JSON.stringify(other));

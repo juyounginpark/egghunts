@@ -12,6 +12,9 @@ import {HazardView} from "./hazard-view";
 import {FARM_PLOTS,farmPlot,farmGym,farmLocal} from './village';
 import {villageArt} from './world-art';
 import {animatePet,greetPet} from './pet-animation';
+import {followPets} from './pet-followers';
+import {GuardianMotion} from './guardian-motion';
+
 export class World {
   networkOffset={x:0,z:0};
   chasePressure=0;
@@ -23,6 +26,25 @@ export class World {
   camera = new T.OrthographicCamera();
   player = new T.Group();
   private peers = new Map<string,T.Group>();
+  private peerPets=new Map<string,{group:T.Group;trail:T.Vector3[];key:string|null;request:number;retryAt:number}>();
+  private clearPetInstances(group:T.Group){
+    group.traverse(o=>{if(o instanceof T.InstancedMesh)o.dispose();});group.clear();
+  }
+  private syncPeerPets(peer:Peer,avatar:T.Group,visible:boolean,dt:number,time:number){
+    let entry=this.peerPets.get(peer.id);
+    if(!entry){entry={group:new T.Group(),trail:[],key:null,request:0,retryAt:0};this.peerPets.set(peer.id,entry);this.scene.add(entry.group);}
+    entry.group.visible=visible;
+    const ids=(peer.activePets??[]).filter(id=>Number.isInteger(id)&&!!MONGLES[id]).slice(0,BALANCE.maxCompanions),key=ids.join(',');
+    if(entry.key!==key&&time>=entry.retryAt){
+      entry.key=key;const request=++entry.request,current=entry;
+      this.clearPetInstances(current.group);
+      void loadVoxels(ids.map(id=>`pet-${id}`)).then(()=>{
+        if(this.peerPets.get(peer.id)!==current||current.request!==request)return;
+        for(const id of ids){const pet=petVisual(id);pet.scale.setScalar(MONGLES[id].scale);pet.position.copy(avatar.position);current.group.add(pet);}
+      }).catch(err=>{if(this.peerPets.get(peer.id)===current&&current.request===request){current.key=null;current.retryAt=time+2;this.assetError=String(err);}});
+    }
+    entry.trail=followPets(entry.group,entry.trail,avatar.position,{x:Math.sin(avatar.rotation.y),z:Math.cos(avatar.rotation.y)},dt,time,this.low,this.reducedMotion.matches);
+  }
   playerAnchor(id?:string){
     const avatar=id?this.peers.get(id):this.player;if(!avatar||!avatar.visible)return null;
     const p=avatar.position.clone();p.y+=1.85;p.project(this.camera);
@@ -61,31 +83,50 @@ export class World {
     for(const [id,avatar] of this.peers)if(!players.some(p=>p.id===id)){
       const accessory=avatar.getObjectByName('avatar-accessory') as T.Mesh;
       if(accessory){accessory.geometry.dispose();(accessory.material as T.Material).dispose();}
-      this.scene.remove(avatar);this.peers.delete(id);
+      this.clearPetInstances(avatar);this.scene.remove(avatar);this.peers.delete(id);
+      const pets=this.peerPets.get(id);if(pets){this.clearPetInstances(pets.group);this.scene.remove(pets.group);this.peerPets.delete(id);}
     }
     for(const peer of players){
-      if(!this.peers.has(peer.id)){const avatar=model('alkong');avatar.position.set(peer.x,0,peer.z);avatar.userData.appearance=-1;this.peers.set(peer.id,avatar);this.scene.add(avatar);}
+      if(!this.peers.has(peer.id)){const avatar=new T.Group(),rig=model('alkong',true);rig.name='peer-rig';avatar.add(rig);avatar.position.set(peer.x,0,peer.z);avatar.userData.appearance=-1;avatar.userData.motion=new GuardianMotion();this.peers.set(peer.id,avatar);this.scene.add(avatar);}
       const avatar=this.peers.get(peer.id)!;
+      const motion=avatar.userData.motion as GuardianMotion;
+      const down=now<peer.downUntil;
       if(avatar.userData.snapshot!==peer){
+        if(Math.hypot(peer.x-avatar.position.x,peer.z-avatar.position.z)>12||down!==avatar.userData.down)motion.reset();
+        motion.sample(peer.x,peer.z,(peer.at??frameAt)/1000,frameAt/1000);avatar.userData.down=down;
         if(peer.attackAt!==avatar.userData.attackAt&&now-peer.attackAt<1500)avatar.userData.swingReceived=frameAt;
         if(peer.hitAt!==avatar.userData.hitAt&&now<peer.downUntil)avatar.userData.hitReceived=frameAt;
         avatar.userData.snapshot=peer;avatar.userData.receivedAt=frameAt;avatar.userData.attackAt=peer.attackAt;avatar.userData.hitAt=peer.hitAt;
       }
-      const lead=Math.min(.2,(frameAt-avatar.userData.receivedAt)/1000),down=now<peer.downUntil;
-      const tx=peer.x+(down?0:(peer.velocity?.x??0)*lead),tz=peer.z+(down?0:(peer.velocity?.z??0)*lead);
-      const snap=Math.hypot(tx-avatar.position.x,tz-avatar.position.z)>12;
-      avatar.visible=visible;avatar.position.x+=(tx-avatar.position.x)*(snap?1:blend);avatar.position.z+=(tz-avatar.position.z)*(snap?1:blend);
+      const position=motion.position(dt,frameAt/1000);
+      const snap=Math.hypot(position.x-avatar.position.x,position.z-avatar.position.z)>12;
+      const beforeX=avatar.position.x,beforeZ=avatar.position.z;
+      avatar.visible=visible;avatar.position.x=position.x;avatar.position.z=position.z;
+      const fresh=frameAt-avatar.userData.receivedAt<1200;
+      const speed=dt>0&&!snap?Math.hypot(avatar.position.x-beforeX,avatar.position.z-beforeZ)/dt:0;
+      const walking=!down&&fresh&&speed>.08;
+      avatar.userData.walkBlend=(avatar.userData.walkBlend??0)+((walking?1:0)-(avatar.userData.walkBlend??0))*(1-Math.exp(-dt*16));
+      avatar.userData.walkPhase=(avatar.userData.walkPhase??0)+dt*9*Math.min(1.6,Math.max(.6,speed/1.6));
+      const rig=avatar.getObjectByName('peer-rig')!,stride=Math.sin(avatar.userData.walkPhase)*avatar.userData.walkBlend;
+      rig.position.y=down?0:Math.abs(stride)*.07;
+      for(const side of ['left','right']){
+        const sign=side==='left'?1:-1,leg=rig.getObjectByName(`${side}_leg`),arm=rig.getObjectByName(`${side}_arm`);
+        if(leg)leg.rotation.x=down?.2:stride*.4*sign;
+        if(arm)arm.rotation.x=down?-.35:peer.carried!==null?-2.4:-stride*.3*sign;
+      }
       const flight=(frameAt-(avatar.userData.hitReceived??-Infinity))/(BALANCE.batFlightSeconds*1000);
       avatar.position.y=down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0;
       avatar.rotation.y+=Math.atan2(Math.sin(peer.rotation-avatar.rotation.y),Math.cos(peer.rotation-avatar.rotation.y))*blend;
       avatar.rotation.z+=( (down?Math.PI/2:0)-avatar.rotation.z)*blend;
       this.animateBat(avatar,frameAt-(avatar.userData.swingReceived??-Infinity));
-      const eggKey=peer.egg?.id??peer.carried;
+      const eggKey=peer.carried===null?null:`${peer.egg?.id??''}:${peer.carried}:${peer.egg?.stageId??''}:${peer.egg?.variant??''}`;
       if(avatar.userData.egg!==eggKey){
-        const old=avatar.getObjectByName('peer-egg');if(old)avatar.remove(old);
+        const old=avatar.getObjectByName('peer-egg');if(old){old.traverse(o=>{if(o instanceof T.InstancedMesh)o.dispose();});avatar.remove(old);}
         if(peer.carried!==null){const egg=this.eggModel(peer.egg??{type:peer.carried});egg.name='peer-egg';egg.position.y=1.12;egg.scale.setScalar(RARITIES[EGGS[peer.carried].tier].scale*.85);avatar.add(egg);}
         avatar.userData.egg=eggKey;
       }
+      const held=avatar.getObjectByName('peer-egg');if(held)animateEgg(held,frameAt/1000,this.low);
+      this.syncPeerPets(peer,avatar,visible,dt,frameAt/1000);
       if(avatar.userData.appearance!==peer.appearance){this.decorateAvatar(avatar,peer.appearance);avatar.userData.appearance=peer.appearance;}
     }
   }
@@ -449,55 +490,7 @@ export class World {
       game.death ? .4*fall : game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
       game.z+this.networkOffset.z,
     );
-    const here = new T.Vector3(this.player.position.x, 0, this.player.position.z);
-    if (!this.trail.length || this.trail[0].distanceTo(here) > 10) {
-      this.trail = Array.from({ length: 500 }, (_, i) =>
-        here.clone().add(new T.Vector3(-game.facing.x*i*.1,0,-game.facing.z*i*.1)),
-      );
-    }
-    if (this.trail[0].distanceTo(here) > 0.08) {
-      this.trail.unshift(here);
-      this.trail.length = Math.min(700, this.trail.length);
-    }
-    let followerDistance=0;
-    this.companions.children.forEach((pet, i) => {
-      followerDistance+=Math.max(1.2,pet.scale.x*.6)+(i?Math.max(.4,this.companions.children[i-1].scale.x*.35):.3);
-      let length = 0,
-        target = this.trail.at(-1)!;
-      for (let j = 1; j < this.trail.length; j++) {
-        length += this.trail[j].distanceTo(this.trail[j - 1]);
-        if (length >= followerDistance) {
-          const segment=this.trail[j].distanceTo(this.trail[j-1]);
-          target = this.trail[j-1].clone().lerp(this.trail[j],1-(length-followerDistance)/(segment||1));
-          break;
-        }
-      }
-      target = target.clone();
-
-      const delta = target.clone().sub(pet.position);
-      delta.y = 0;
-      const walking = delta.length() > 0.08;
-      if (walking){const angle=Math.atan2(delta.x,delta.z),diff=Math.atan2(Math.sin(angle-pet.rotation.y),Math.cos(angle-pet.rotation.y));pet.rotation.y+=diff*(1-Math.exp(-dt*10));}
-      if(pet.position.distanceTo(target)>15)pet.position.copy(target);
-      pet.position.lerp(target, 1 - Math.exp(-dt * 12));
-      pet.position.y = walking ? Math.abs(Math.sin(time * 11 - i)) * 0.13 : 0;
-      for (const [j, name] of ["left_leg", "right_leg"].entries()) {
-        const leg = pet.getObjectByName(name);
-        if (leg)
-          leg.rotation.x = walking
-            ? Math.sin(time * 11 - i) * (j ? -0.55 : 0.55)
-            : 0;
-      }
-      pet.children
-        .filter((c) => c.name === "wing")
-        .forEach(
-          (w, k) => (w.rotation.z = Math.sin(time * 10) * (k ? -0.3 : 0.3)),
-        );
-      animateEgg(pet,time,this.low);
-      animatePet(pet,pet.userData.petId,time,walking,this.reducedMotion.matches);
-      const aura = pet.getObjectByName("aura");
-      if (aura) aura.scale.setScalar(0.45 + Math.sin(time * 2 + i) * 0.025);
-    });
+    this.trail=followPets(this.companions,this.trail,this.player.position,game.facing,dt,time,this.low,this.reducedMotion.matches);
     const storageKey = game.save.eggs.map((e) => e.id).join("|");
     if (storageKey !== this.storageKey) {
       this.storageKey = storageKey;

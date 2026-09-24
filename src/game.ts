@@ -532,7 +532,6 @@ export class GameState {
   get autoMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].autoMultiplier,1); }
   get speedMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].speedMultiplier,1); }
   get speed() {
-    if(this.isAtBase)return BALANCE.speed;
     return (
       this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
       (BALANCE.speed *
@@ -769,7 +768,7 @@ export class GameState {
         if (this.save.eggs.length < BALANCE.inventory) {
           const e = this.carried;
           if(e.stageId){const clue=this.save.dragonClues![e.stageId]??=newDragonClue();if(DRAGON_RULES[e.stageId-1].avoid.every(id=>clue.avoided.includes(id)))clue.returned=true;}
-          this.emit("egg_saved", {type: e.type});
+          this.emit("egg_saved", {id:e.id,type:e.type,stageId:e.stageId??0,variant:e.variant??-1,special:e.special?1:0});
           this.emit("expedition_success", {distance: Math.floor(e.distance)});
           this.save.eggs.push({
             id: e.id,stageId:e.stageId,variant:e.variant,special:e.special,
@@ -843,7 +842,7 @@ export class GameState {
     this.revision++;
   }
   tap() {
-    if (!this.selected || this.result !== null || this.now() - this.lastTap < BALANCE.tapInterval) return false;
+    if (!this.selected || this.selected.hp === 0 || this.result !== null || this.now() - this.lastTap < BALANCE.tapInterval) return false;
     this.lastTap = this.now();
     this.emit("hatch_manual_hit");
     this.damage((BALANCE.baseTap + BALANCE.tapPerLevel * this.save.upgrades.tap)*this.clickMultiplier);
@@ -851,8 +850,13 @@ export class GameState {
   }
   damage(amount: number) {
     const e = this.selected;
-    if (!e || this.result !== null) return;
+    if (!e || e.hp === 0 || this.result !== null) return;
     e.hp = Math.max(0, e.hp - amount);
+    if (e.hp === 0) { this.message = '부화 준비 완료! 보관소에서 획득하세요.'; this.revision++; }
+  }
+  claimHatch(id: string) {
+    const e = this.save.eggs.find(egg => egg.id === id);
+    if (!this.isAtBase || this.death || this.result !== null || !e || e.hp !== 0) return false;
     if (e.hp === 0) {
       const pool = MONGLES.map((m, i) => ({ ...m, index: i })).filter(
         (m) => m.tier === EGGS[e.type].tier && (e.stageId?m.stageId===e.stageId&&(e.variant===5?m.species===10:m.species!==10):m.stageId===0&&m.region===EGGS[e.type].region),
@@ -873,6 +877,7 @@ export class GameState {
       this.message = `${MONGLES[m].name} 탄생! 별가루 +${EGGS[e.type].reward}`;
       this.revision++;
     }
+    return true;
   }
   offline(seconds: number) {
     this.damage(Math.min(BALANCE.offlineCap, Math.max(0, seconds)) * this.dps);

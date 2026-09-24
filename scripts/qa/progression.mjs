@@ -44,7 +44,7 @@ try{
   for(let tier=0;tier<7;tier++){const g=make();g.selectStage(4);g.carried={...g.world[2],type:tier*5};g.deadline=now+45000;g.tick(.01);const total=g.progression.xp+Array.from({length:g.level-1},(_,i)=>m.requiredXP(i+1)).reduce((a,b)=>a+b,0);assert.equal(total,m.PROGRESSION.returnXP[tier]);assert.ok(g.progression.healthUnlocked);assert.ok(g.progression.completedStages.includes(4));}
  });
  test('first hatch XP never repeats after pet sale/reload',()=>{
-  const g=make();const hatch=()=>{g.result=null;g.save.eggs=[{id:'egg',type:0,hp:1,distance:14}];g.save.selected='egg';g.damage(1);};hatch();assert.equal(g.level,2);g.sellPet(g.result);const xp=g.progression.xp;hatch();assert.equal(g.level,2);assert.equal(g.progression.xp,xp);
+  const g=make();const hatch=()=>{g.result=null;g.save.eggs=[{id:'egg',type:0,hp:1,distance:14}];g.save.selected='egg';g.damage(1);g.claimHatch('egg');};hatch();assert.equal(g.level,2);g.sellPet(g.result);const xp=g.progression.xp;hatch();assert.equal(g.level,2);assert.equal(g.progression.xp,xp);
  });
  test('retired player traits are removed without resetting level or inventory',()=>{
   const g=make();g.progression.level=5;g.progression.requiredXP=m.requiredXP(5);const saved=g.snapshot();saved.progression.traits={sturdy:5,light:5,porter:5,escape:1,shield:1,clock:5};saved.mongles[0]=2;

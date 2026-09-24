@@ -53,7 +53,7 @@ try{
    }
    c.depth=true;c.sides=3;c.quiet=2;c.returned=true;
    assert.equal(dragonReady(stage,c),true,`stage ${stage}`);completed[stage]=c;
-   const g=make();g.save.dragonClues[stage]=structuredClone(c);assert.equal(g.claimDragon(stage),true);assert.equal(g.claimDragon(stage),false);g.damage(1e9);assert.equal(g.result,299+stage);
+   const g=make();g.save.dragonClues[stage]=structuredClone(c);assert.equal(g.claimDragon(stage),true);assert.equal(g.claimDragon(stage),false);g.damage(1e9);g.claimHatch(g.save.selected);assert.equal(g.result,299+stage);
   }
   validateDragonClues(completed);
  });
@@ -72,8 +72,8 @@ try{
  test('all seven tiers hatch from correct stage; existing random dragon eggs still hatch',()=>{
   for(let stage=1;stage<=20;stage++)for(let tier=0;tier<7;tier++){
    const g=make(),type=EGGS.findIndex(e=>e.region===Math.floor((stage-1)/4)&&e.tier===tier);
-   g.save.eggs=[{id:'old',type,hp:1,distance:10,stageId:stage,variant:0}];g.save.selected='old';g.damage(1);assert.equal(MONGLES[g.result].stageId,stage);assert.equal(MONGLES[g.result].tier,tier);assert.notEqual(MONGLES[g.result].species,10);
-   if(tier===6){g.result=null;g.save.eggs=[{id:'old-secret',type,hp:1,distance:10,stageId:stage,variant:5}];g.save.selected='old-secret';g.damage(1);assert.equal(g.result,299+stage);}
+   g.save.eggs=[{id:'old',type,hp:1,distance:10,stageId:stage,variant:0}];g.save.selected='old';g.damage(1);g.claimHatch(g.save.selected);assert.equal(MONGLES[g.result].stageId,stage);assert.equal(MONGLES[g.result].tier,tier);assert.notEqual(MONGLES[g.result].species,10);
+   if(tier===6){g.result=null;g.save.eggs=[{id:'old-secret',type,hp:1,distance:10,stageId:stage,variant:5}];g.save.selected='old-secret';g.damage(1);g.claimHatch(g.save.selected);assert.equal(g.result,299+stage);}
    assert.ok(g.world.every(e=>Number.isInteger(e.variant)&&e.variant>=0&&e.variant<=5));
   }
  });

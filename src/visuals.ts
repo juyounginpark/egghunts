@@ -17,6 +17,9 @@ function aura(g:T.Group,tier:number,seed:number,family:number) {
     if(tier===6&&i%5===0)tint.setHSL((i*.13+seed*.07)%1,.85,.72);
     sparks.setColorAt(i,tint);
   }
+  // InstancedMesh starts with identity transforms: initialize before its first
+  // render so an unanimated aura never covers the model with unit-sized cubes.
+  animateEgg(g,0);
   return g;
 }
 export function eggVisual(type:number,appearance?:EggAppearance){

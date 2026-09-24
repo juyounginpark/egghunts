@@ -4,10 +4,11 @@ import {restoreRuntime,type RuntimeState} from './online-state';
 import type {Peer} from './multiplayer';
 import {BALANCE} from './data';
 import {playerName} from './player-identity';
+import type {EggNotice} from './egg-notices';
 
 export const SUPABASE_URL=import.meta.env.VITE_SUPABASE_URL||'https://leblcdiqsyxqzwlsnkio.supabase.co';
 const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_2KTon_WzPAci5G4dLyZ5Ww_bPgwmiig';
-type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
+type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
 export class OnlineGame{
@@ -122,7 +123,7 @@ export class OnlineGame{
   // A late packet must not briefly accelerate or reverse an otherwise steady walk.
   // Keep the released position while an older walking request is still in flight.
   // Once the stop is acknowledged, finish correction in finite time (no idle drift).
-  const amount=moving?Math.min(distance,this.game.speed*BALANCE.roomMovingCorrectionRatio*dt):this.awaitingStop?0:distance*Math.min(1,dt/Math.max(dt,this.stopCorrectionRemaining));
+  const amount=moving?Math.min(distance*(1-Math.exp(-dt*3)),this.game.speed*BALANCE.roomMovingCorrectionRatio*dt):this.awaitingStop?0:distance*Math.min(1,dt/Math.max(dt,this.stopCorrectionRemaining));
   if(!moving&&!this.awaitingStop)this.stopCorrectionRemaining=Math.max(0,this.stopCorrectionRemaining-dt);
   const decay=distance>0?1-amount/distance:0;this.visualOffset.x*=decay;this.visualOffset.z*=decay;
   // Only predict knockback motion here; rewards, damage and drops stay on the server.

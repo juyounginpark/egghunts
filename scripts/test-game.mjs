@@ -143,6 +143,7 @@ try {
       g.save.eggs = [{ id: "hatch", type, hp: e.hp, distance: 10 }];
       g.save.selected = "hatch";
       g.damage(e.hp);
+      assert.equal(g.result,null);assert.ok(g.claimHatch("hatch"));
       assert.notEqual(g.result, null);
       assert.equal(MONGLES[g.result].region, e.region);
       assert.equal(MONGLES[g.result].tier, e.tier);
