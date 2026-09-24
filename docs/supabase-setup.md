@@ -1,5 +1,17 @@
 # Supabase 연결
 
+## 로그인 링크 복구 (2026-09-24)
+
+SMTP 미설정 상태에서는 기본 이메일 로그인 링크를 사용한다. 코드 전용 안내를 제거하고 SDK URL 세션 감지를 활성화했다. Site URL·허용 리다이렉트·메일 요청의 redirect는 모두 `https://juyounginpark.github.io/egghunts/`로 통일한다. 코드 템플릿 설정은 기본 config에서 빼서 무료 발송기 정책으로 URL 변경까지 함께 거부되지 않게 한다. 코드 입력은 메일에 실제 코드가 있을 때만 펼쳐 사용한다. 기존 메일은 이미 사용됐거나 오래된 주소가 담겼을 수 있으므로 수정 후 새 메일을 받는다. 실제 메일 발송과 브라우저 로그인은 자동 테스트하지 않았다.
+
+SMTP 연결 후 코드 방식으로 전환할 때는 아래를 config에 추가하고 `supabase config diff`로 검토한 뒤 push한다.
+
+```toml
+[auth.email.template.magic_link]
+subject = "알콩 원정대 로그인 인증 코드"
+content_path = "./supabase/templates/magic_link.html"
+```
+
 프로젝트: `leblcdiqsyxqzwlsnkio` · 웹 주소: `https://juyounginpark.github.io/egghunts/`
 
 공개 URL과 Publishable key는 앱에 연결했다. 공개 키는 관리자 권한이 없으므로 아래 서버 적용이 완료되어야 방 찾기가 동작한다. 서버 비밀키를 Vite 환경변수나 Git에 넣지 않는다.

@@ -2,10 +2,9 @@ project_id = "leblcdiqsyxqzwlsnkio"
 
 [auth]
 site_url = "https://juyounginpark.github.io/egghunts/"
-
-[auth.email.template.magic_link]
-subject = "알콩 원정대 로그인 인증 코드"
-content_path = "./supabase/templates/magic_link.html"
+additional_redirect_urls = ["https://juyounginpark.github.io/egghunts/"]
+# The default mail provider sends a magic link. Enable the code template only
+# after configuring SMTP; otherwise Supabase rejects the entire Auth update.
 
 [functions.game]
 # Auth is verified with Auth /user in the function (publishable keys are not JWTs).

@@ -26,23 +26,31 @@ export class OnlineGame{
  constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){}
  async enter(host:HTMLElement){
   const {createClient}=await import('@supabase/supabase-js');
-  this.client=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
-  const {data}=await this.client.auth.getSession();
-  host.innerHTML=`<section class="login-card"><img src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><h1>알콩 원정대</h1><form id="room-login"><label for="login-email">이메일</label><input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com"/><div id="otp-fields" hidden><label for="login-code">인증 코드</label><input id="login-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]{6,8}"/></div><button id="login-submit" class="primary" type="submit">인증 코드 받기</button></form><button id="find-room" class="primary" ${data.session?'':'hidden'}>방 찾기</button><p id="login-status" role="status">최대 5명 · 함께 탐험해요</p><button id="switch-account" class="secondary" ${data.session?'':'hidden'}>다른 계정</button></section>`;
+  this.client=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
+  const {data,error:sessionError}=await this.client.auth.getSession();
+  host.innerHTML=`<section class="login-card"><img src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><h1>알콩 원정대</h1><form id="room-login"><label for="login-email">이메일</label><input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com"/><details id="otp-fields" hidden><summary>CODE</summary><label for="login-code">인증 코드</label><input id="login-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]{6,8}"/></details><button id="login-submit" class="primary" type="submit">인증 코드 받기</button></form><button id="find-room" class="primary" ${data.session?'':'hidden'}>방 찾기</button><p id="login-status" role="status">최대 5명 · 함께 탐험해요</p><button id="switch-account" class="secondary" ${data.session?'':'hidden'}>다른 계정</button></section>`;
   const form=host.querySelector<HTMLFormElement>('#room-login')!,email=host.querySelector<HTMLInputElement>('#login-email')!,code=host.querySelector<HTMLInputElement>('#login-code')!,submit=host.querySelector<HTMLButtonElement>('#login-submit')!,find=host.querySelector<HTMLButtonElement>('#find-room')!,status=host.querySelector<HTMLElement>('#login-status')!,switchAccount=host.querySelector<HTMLButtonElement>('#switch-account')!;
   form.hidden=!!data.session;let sent=false;
+  submit.textContent='로그인 메일 받기';
+  host.querySelector('summary')!.textContent='코드로 인증';
+  code.oninput=()=>{submit.textContent=code.value.trim()?'코드 확인':sent?'메일 다시 받기':'로그인 메일 받기';};
+  if(sessionError)status.textContent='로그인 링크가 만료됐거나 유효하지 않아요. 메일을 다시 받아주세요.';
   await new Promise<void>(resolve=>{
+   const {data:listener}=this.client.auth.onAuthStateChange((_event,session)=>{
+    if(!session)return;
+    form.hidden=true;find.hidden=false;switchAccount.hidden=false;status.textContent='로그인 완료';
+   });
    form.onsubmit=async event=>{
     event.preventDefault();submit.disabled=true;
     try{
-     if(!sent){const {error}=await this.client.auth.signInWithOtp({email:email.value.trim()});if(error)throw error;sent=true;email.readOnly=true;host.querySelector<HTMLElement>('#otp-fields')!.hidden=false;code.required=true;submit.textContent='인증하기';status.textContent='이메일로 받은 코드를 입력해 주세요.';code.focus();}
+     if(!sent||!code.value.trim()){const {error}=await this.client.auth.signInWithOtp({email:email.value.trim(),options:{emailRedirectTo:'https://juyounginpark.github.io/egghunts/'}});if(error)throw error;sent=true;email.readOnly=true;host.querySelector<HTMLElement>('#otp-fields')!.hidden=false;code.required=false;submit.textContent='메일 다시 받기';switchAccount.hidden=false;status.textContent='이메일의 로그인 링크를 눌러주세요.';}
      else{const {error}=await this.client.auth.verifyOtp({email:email.value.trim(),token:code.value.trim(),type:'email'});if(error)throw error;form.hidden=true;find.hidden=false;switchAccount.hidden=false;status.textContent='로그인 완료';}
     }catch(err){status.textContent=err instanceof Error?err.message:'인증하지 못했어요.';}finally{submit.disabled=false;}
    };
-   switchAccount.onclick=async()=>{await this.client.auth.signOut();form.hidden=false;find.hidden=true;switchAccount.hidden=true;sent=false;email.readOnly=false;code.required=false;host.querySelector<HTMLElement>('#otp-fields')!.hidden=true;submit.textContent='인증 코드 받기';};
+   switchAccount.onclick=async()=>{await this.client.auth.signOut();form.hidden=false;find.hidden=true;switchAccount.hidden=true;sent=false;email.readOnly=false;code.value='';code.required=false;host.querySelector<HTMLElement>('#otp-fields')!.hidden=true;submit.textContent='로그인 메일 받기';};
    find.onclick=async()=>{
     find.disabled=true;status.textContent='빈자리를 찾고 있어요…';
-    try{this.pending={operation:'join',id:crypto.randomUUID(),input:{x:0,z:0},commands:[]};await this.flush();this.active=true;resolve();}
+    try{this.pending={operation:'join',id:crypto.randomUUID(),input:{x:0,z:0},commands:[]};await this.flush();this.active=true;listener.subscription.unsubscribe();resolve();}
     catch(err){status.textContent=err instanceof Error?err.message:'방을 찾지 못했어요.';}finally{find.disabled=false;}
    };
   });
