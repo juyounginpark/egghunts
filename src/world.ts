@@ -620,11 +620,15 @@ export class World {
       label.hidden=p.z>1||Math.abs(p.x)>.95||Math.abs(p.y)>.85;
       if(label.hidden)return;
       const halfWidth=label.offsetWidth/2+4;
-      let lx=Math.max(halfWidth,Math.min(this.host.clientWidth-halfWidth,(p.x+1)/2*this.host.clientWidth));
-      let ly=(1-p.y)/2*this.host.clientHeight;
-      // Prefer a small sideways nudge; never detach labels far above their pet.
-      for(const box of labelBoxes)if(Math.abs(box.x-lx)<halfWidth+box.width&&Math.abs(box.y-ly)<box.height+3){lx=Math.max(halfWidth,Math.min(this.host.clientWidth-halfWidth,lx+(lx<box.x?-24:24)));ly=box.y-box.height-4;}
-      labelBoxes.push({x:lx,y:ly,height:label.offsetHeight,width:halfWidth});label.style.left=`${lx}px`;label.style.top=`${ly}px`;
+      const lx=Math.max(halfWidth,Math.min(this.host.clientWidth-halfWidth,(p.x+1)/2*this.host.clientWidth));
+      const ly=(1-p.y)/2*this.host.clientHeight,height=label.offsetHeight;
+      // Keep the label attached to its pet. Crowded labels yield in stable order
+      // instead of pushing each other around; extra release space prevents flicker.
+      const gap=label.dataset.occluded==='true'?8:2;
+      const occluded=labelBoxes.some(box=>Math.abs(box.x-lx)<halfWidth+box.width+gap&&ly-height<box.y+gap&&ly>box.y-box.height-gap);
+      label.dataset.occluded=String(occluded);label.hidden=occluded;
+      if(!occluded)labelBoxes.push({x:lx,y:ly,height,width:halfWidth});
+      label.style.left=`${lx}px`;label.style.top=`${ly}px`;
     };
     this.companions.children.forEach((pet,i)=>{
       const label=this.petLabels.children[i] as HTMLElement|undefined;if(label)positionPetLabel(pet,label);
