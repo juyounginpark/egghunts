@@ -1,6 +1,6 @@
 import * as T from 'three';
 import { ROUTE,FINAL_GUARDIAN } from './stage-data';
-import type { GameState } from './game';
+import type { GameState, Boss } from './game';
 import { voxelModel } from './voxel';
 
 
@@ -16,6 +16,7 @@ export class RegionGuardian {
  private characters=new Map<number,T.Group>();
  private stage=0;private dummy=new T.Object3D();private color=new T.Color();
  private headings=Array<number>(21).fill(NaN);private roots=Array.from({length:21},()=>({x:NaN,z:NaN}));private lastTime=0;
+ private samples=new Map<number,{state:Boss;stage:number;at:number;duration:number;x:number;z:number}>();
  constructor(){this.group.add(this.mesh,this.effects);this.mesh.castShadow=true;this.mesh.frustumCulled=this.effects.frustumCulled=false;this.mesh.count=this.effects.count=0;}
  render(game:GameState,time:number,visible:boolean){
   this.group.visible=visible;if(!visible)return;this.stage=game.stage.id;
@@ -25,14 +26,24 @@ export class RegionGuardian {
    const state=game.bosses[k],stage=state.stageId??game.stage.id,chasing=state.mode==='chase',sleeping=state.mode==='idle'||state.mode==='waking',root=this.roots[k];
    if(chasing&&this.modes[k]!=='chase')this.wakeAt[k]=time;
    this.modes[k]=state.mode;
-   const waking=state.mode==='waking',wakeProgress=waking?Math.max(0,Math.min(1,1-(state.wakeRemaining??ROUTE.bossWakeSeconds)/ROUTE.bossWakeSeconds)):chasing?1:0;
+   let sample=this.samples.get(k);
+   const reset=!Number.isFinite(root.x)||sample?.stage!==stage||Math.hypot(root.x-state.x,root.z-state.z)>30;
+   if(reset){root.x=state.x;root.z=state.z;this.headings[k]=NaN;}
+   if(!sample||sample.state!==state||reset){
+    sample={state,stage,at:time,duration:reset?0:Math.max(.05,Math.min(.5,time-(sample?.at??time))),x:root.x,z:root.z};
+    this.samples.set(k,sample);
+   }
+   const sampleAge=Math.max(0,time-sample.at);
+   const waking=state.mode==='waking',wakeRemaining=Math.max(0,(state.wakeRemaining??ROUTE.bossWakeSeconds)-(game.roomManaged?Math.min(sampleAge,.5):0));
+   const wakeProgress=waking?Math.max(0,Math.min(1,1-wakeRemaining/ROUTE.bossWakeSeconds)):chasing?1:0;
    const rise=wakeProgress*wakeProgress*(3-2*wakeProgress);
    const scale=ROUTE.bossBaseScale*(state.final?FINAL_GUARDIAN.scale:1)*(1+(ROUTE.bossAngryScale-1)*rise);
    const tx=state.x,tz=state.z;
-   if(!Number.isFinite(root.x)||Math.hypot(root.x-tx,root.z-tz)>30){root.x=tx;root.z=tz;}
    const moveX=tx-root.x,moveZ=tz-root.z;
-   const follow=game.roomManaged?1-Math.exp(-dt*14):1;
-   root.x+=moveX*follow;root.z+=moveZ*follow;
+   // Render between received snapshots at a steady rate instead of accelerating
+   // toward each packet and nearly stopping before the next one arrives.
+   const progress=game.roomManaged&&sample.duration>0?Math.min(1,sampleAge/sample.duration):1;
+   root.x=sample.x+(tx-sample.x)*progress;root.z=sample.z+(tz-sample.z)*progress;
    const z=root.z;if(Math.abs(z-game.z)>(state.final?40:23))continue;
 
 

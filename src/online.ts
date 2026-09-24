@@ -28,6 +28,8 @@ export class OnlineGame{
  private syncTimer:number|undefined;
  private roundTrip=0;
  private predictionLead=0;
+ private awaitingStop=false;
+ private stopCorrectionRemaining=0;
  constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){
   document.addEventListener('visibilitychange',()=>{if(document.hidden)this.halt();});
  }
@@ -75,7 +77,7 @@ export class OnlineGame{
   // Network cadence is independent of animation frames and input handlers.
   this.syncTimer??=window.setInterval(()=>this.pump(),50);
  }
- private apply(state:Snapshot){
+ private apply(state:Snapshot,acknowledgedInput?:{x:number;z:number}){
   this.latest=state;this.peers=state.peers;this.syncClock(state.serverTime+this.roundTrip/2);
   if(this.game){
    const g=this.game,settings=g.save.settings,old={x:g.x+this.visualOffset.x,z:g.z+this.visualOffset.z,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot,facing:g.facing,velocity:g.velocity};
@@ -88,6 +90,10 @@ export class OnlineGame{
    }
    // Correct the simulation once; ease only the drawn position, never the input velocity.
    this.visualOffset=stable&&Math.hypot(old.x-g.x,old.z-g.z)<Math.max(6,g.speed*2)?{x:old.x-g.x,z:old.z-g.z}:{x:0,z:0};
+   if(!stable){this.awaitingStop=false;this.stopCorrectionRemaining=0;}
+   else if(this.awaitingStop&&acknowledgedInput&&Math.hypot(acknowledgedInput.x,acknowledgedInput.z)<.01){
+    this.awaitingStop=false;this.stopCorrectionRemaining=.12;
+   }
   }
   for(const error of state.errors)this.notify(errorText[error]??'지금은 사용할 수 없어요.');
  }
@@ -102,7 +108,10 @@ export class OnlineGame{
   if(!this.game)return;
   const distance=Math.hypot(this.visualOffset.x,this.visualOffset.z),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
   // A late packet must not briefly accelerate or reverse an otherwise steady walk.
-  const amount=moving?Math.min(distance,this.game.speed*BALANCE.roomMovingCorrectionRatio*dt):distance*(1-Math.exp(-dt*8));
+  // Keep the released position while an older walking request is still in flight.
+  // Once the stop is acknowledged, finish correction in finite time (no idle drift).
+  const amount=moving?Math.min(distance,this.game.speed*BALANCE.roomMovingCorrectionRatio*dt):this.awaitingStop?0:distance*Math.min(1,dt/Math.max(dt,this.stopCorrectionRemaining));
+  if(!moving&&!this.awaitingStop)this.stopCorrectionRemaining=Math.max(0,this.stopCorrectionRemaining-dt);
   const decay=distance>0?1-amount/distance:0;this.visualOffset.x*=decay;this.visualOffset.z*=decay;
   // Only predict knockback motion here; rewards, damage and drops stay on the server.
   if(this.game.knockback.remaining>0){const k=this.game.knockback,step=Math.min(dt,k.remaining);this.game.push(k.x*step,k.z*step);k.remaining=Math.max(0,k.remaining-step);return;}
@@ -110,7 +119,11 @@ export class OnlineGame{
  update(x:number,z:number){
   const wasStopped=Math.hypot(this.vector.x,this.vector.z)<.01,stopped=Math.hypot(x,z)<.01;
   const length=Math.max(1,Math.hypot(x,z));this.vector={x:x/length,z:z/length};
-  if(wasStopped!==stopped)this.lastSent=Math.min(this.lastSent,performance.now()-BALANCE.roomSyncMs);
+  if(wasStopped!==stopped){
+   this.awaitingStop=stopped;this.stopCorrectionRemaining=0;
+   this.lastSent=Math.min(this.lastSent,performance.now()-BALANCE.roomSyncMs);
+   this.pump();
+  }
  }
  private pump(){
   if(!this.active||this.busy||performance.now()<this.retryAt)return;
@@ -131,8 +144,9 @@ export class OnlineGame{
     if(response.ok){
      this.roundTrip=performance.now()-started;
      const lead=Math.min(.5,this.roundTrip/2000);this.predictionLead=this.predictionLead?this.predictionLead+(lead-this.predictionLead)*.15:lead;
-     const commands=this.pending!.commands;
-     this.pending=null;this.connected=true;this.lastError='';this.apply(state);
+     const commands=this.pending!.commands,acknowledgedInput=this.pending!.input;
+     this.pending=null;this.connected=true;this.lastError='';this.apply(state,acknowledgedInput);
+     if(acknowledgedInput.x!==this.vector.x||acknowledgedInput.z!==this.vector.z)this.lastSent=performance.now()-BALANCE.roomSyncMs;
      for(const command of commands){
       const result=state.commandResults?.find((r:{id:string;error:string|null})=>r.id===command.id);
       this.completions.get(command.id)?.(result?!result.error:!state.errors.length);this.completions.delete(command.id);
@@ -148,7 +162,7 @@ export class OnlineGame{
     throw Error(errorText[state.error]??(['RETRY','RATE_LIMIT'].includes(state.error)?'방 동기화가 지연되고 있어요. 다시 연결할게요.':`서버 응답 오류 (${response.status}). 다시 연결할게요.`));
    }
   };
-  this.busy=work().catch(error=>{this.connected=false;this.retryAt=performance.now()+1500;const message=error instanceof Error?error.message:'연결이 끊겼어요.';if(this.active&&this.lastError!==message){this.notify(message);this.lastError=message;}throw error;}).finally(()=>{this.busy=null;});
+  this.busy=work().catch(error=>{this.connected=false;this.retryAt=performance.now()+1500;const message=error instanceof Error?error.message:'연결이 끊겼어요.';if(this.active&&this.lastError!==message){this.notify(message);this.lastError=message;}throw error;}).finally(()=>{this.busy=null;this.pump();});
   return this.busy;
  }
 }
