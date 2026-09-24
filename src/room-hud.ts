@@ -2,7 +2,7 @@ import type {GameState} from './game';
 import type {Peer,ChatMessage} from './multiplayer';
 import {BALANCE} from './data';
 import type {World} from './world';
-import {ROUTE_FAR_Z,routeStage} from './stage-data';
+import {ROUTE_FAR_Z,routeStage,STAGES} from './stage-data';
 import {playerLabel} from './player-identity';
 import {uiIcon} from './ui-icons';
 import {formatNumber} from './format';
@@ -24,6 +24,7 @@ export class RoomHUD{
    let entry=this.rows.get(p.id);
    if(!entry){
     const row=document.createElement('div'),name=document.createElement('span'),distance=document.createElement('b'),label=document.createElement('div');
+    distance.className='room-location';
     const speed=document.createElement('b');speed.className='room-speed';speed.innerHTML=uiIcon('speed')+'<span></span>';
     const caption=document.createElement('span'),bubble=document.createElement('div');
     caption.className='player-caption';bubble.className='player-chat';bubble.hidden=true;label.append(bubble,caption);
@@ -31,7 +32,7 @@ export class RoomHUD{
    }
    const label=playerLabel(p.name,p.isGuest,p.level??1),meters=Math.max(0,Math.floor(-p.z));
    const stage=routeStage(1,p.z);
-   const text=meters<=4?'기지':`${stage} · ${meters}m`;
+   const text=meters<=4?'기지':`${STAGES[stage-1].name} · ${meters}m`;
    if(entry.name.textContent!==p.name)entry.name.textContent=p.name;
    if(entry.caption.textContent!==label){entry.caption.textContent=label;entry.row.title=label;entry.row.setAttribute('aria-label',label);}
    entry.bubble.hidden=!p.chat||game.now()-p.chat.at>=BALANCE.chatDurationMs;
