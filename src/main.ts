@@ -46,6 +46,10 @@ app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const eggNotices=new EggNotices($("shell"));
+const buildVersion=document.createElement('small');
+buildVersion.id='build-version';buildVersion.textContent=import.meta.env.VITE_BUILD_VERSION;
+buildVersion.setAttribute('aria-label',`게임 버전 ${import.meta.env.VITE_BUILD_VERSION}`);
+$("shell").append(buildVersion);
 // Keep HUD rows in normal flow inside two anchored stacks.
 const topHud = document.createElement("div");
 topHud.id = "top-hud";
