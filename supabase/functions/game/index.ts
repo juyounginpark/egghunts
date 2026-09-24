@@ -1,14 +1,16 @@
 import {runRoom} from '../_shared/room-engine.js';
+import postgres from 'npm:postgres@3.4.7';
 
 const url=Deno.env.get('SUPABASE_URL')!;
 const service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const sql=postgres(Deno.env.get('SUPABASE_DB_URL')!,{prepare:false,max:1,idle_timeout:20,connect_timeout:5});
 const verified=new Map<string,{user:string;until:number;guest:boolean}>();
 const allowed=(Deno.env.get('GAME_ALLOWED_ORIGINS')??'https://juyounginpark.github.io,http://localhost:4317,http://127.0.0.1:4317,http://localhost:4320,http://127.0.0.1:4320').split(',');
-async function db(path:string,method='GET',body?:unknown){
- const response=await fetch(`${url}/rest/v1/${path}`,{method,headers:{apikey:service,Authorization:`Bearer ${service}`,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
- if(!response.ok)throw Error('DATABASE_ERROR');return response.status===204?null:response.json();
+async function rpc(name:string,body:unknown){
+ const response=await fetch(`${url}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:service,Authorization:`Bearer ${service}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+ if(!response.ok)throw Error('DATABASE_ERROR');return response.json();
 }
-Deno.serve(async req=>{
+async function handle(req:Request,stream=false){
  const timing:string[]=[];
  const mark=(name:string,start:number)=>timing.push(`${name};dur=${(performance.now()-start).toFixed(1)}`);
  const origin=req.headers.get('origin')??'';
@@ -34,25 +36,70 @@ Deno.serve(async req=>{
   mark('auth',authStart);const user=identity.user;
   const raw=await req.text();if(raw.length>8192)return send(413,{error:'REQUEST_TOO_LARGE'});
   const request=JSON.parse(raw);
-  if(request.operation==='leave'){await db('rpc/game_leave','POST',{p_user:user});return send(200,{});}
+  if(request.operation==='leave'){await rpc('game_leave',{p_user:user});return send(200,{});}
   if(request.operation==='join'){
-   await db('rpc/game_join','POST',{p_user:user});
+   await rpc('game_join',{p_user:user});
   }else if(request.operation!=='update')return send(400,{error:'INVALID_OPERATION'});
-  for(let attempt=0;attempt<5;attempt++){
+  // HTTP remains the compatibility/reconnect path. A new DB connection on
+  // every short-lived HTTP worker measured slower than the existing RPC path.
+  if(!stream){
+   for(let attempt=0;attempt<5;attempt++){
+    const readStart=performance.now(),record=await rpc('game_read',{p_user:user});mark('read',readStart);
+    if(!record)throw Error('ROOM_EXPIRED');
+    const simulationStart=performance.now(),result=runRoom(record.state,record.members,record.profiles,user,request,Date.now(),{guest:identity.guest});mark('simulation',simulationStart);
+    const commitStart=performance.now(),committed=await rpc('game_commit',{p_room:record.id,p_revision:record.revision,p_state:result.room,p_user:user});mark('commit',commitStart);
+    if(committed)return send(200,result.response);
+   }
+   throw Error('RETRY');
+  }
+  const transactionStart=performance.now();
+  const response=await sql.begin(async transaction=>{
+   await transaction`set local statement_timeout = '5s'`;
    const readStart=performance.now();
-   const record=await db('rpc/game_read','POST',{p_user:user});
+   const [{record}]=await transaction`select public.game_read(${user}::uuid) as record`;
    mark('read',readStart);
-   if(!record)return send(409,{error:'ROOM_EXPIRED'});
+   if(!record)throw Error('ROOM_EXPIRED');
    const simulationStart=performance.now();const result=runRoom(record.state,record.members,record.profiles,user,request,Date.now(),{guest:identity.guest});
    mark('simulation',simulationStart);const commitStart=performance.now();
-   const committed=await db('rpc/game_commit','POST',{p_room:record.id,p_revision:record.revision,p_state:result.room,p_user:user});
+   const [{committed}]=await transaction`select public.game_commit(${record.id}::uuid,${record.revision}::bigint,${transaction.json(result.room)},${user}::uuid) as committed`;
    mark('commit',commitStart);
-   if(committed)return send(200,result.response);
-  }
-  return send(409,{error:'RETRY'});
+   if(!committed)throw Error('RETRY');
+   return result.response;
+  });
+  mark('transaction',transactionStart);
+  return send(200,response);
  }catch(error){
   const message=error instanceof Error?error.message:'INVALID_REQUEST';
-  console.error(message);
-  return send(message==='DATABASE_ERROR'?503:400,{error:message==='DATABASE_ERROR'?'SERVER_NOT_READY':message});
+  const known=['ROOM_EXPIRED','RETRY','RATE_LIMIT','INVALID_REQUEST','INVALID_INPUT','INVALID_COMMAND'];
+  if(!known.includes(message))console.error('Game transaction failed',error instanceof Error?error.name:'UNKNOWN');
+  return send(known.includes(message)?409:503,{error:known.includes(message)?message:'SERVER_NOT_READY'});
  }
+}
+
+Deno.serve(req=>{
+ if(req.headers.get('upgrade')?.toLowerCase()!=='websocket')return handle(req);
+ const origin=req.headers.get('origin')??'';
+ if(origin&&!allowed.includes(origin))return new Response('Forbidden',{status:403});
+ const {socket,response}=Deno.upgradeWebSocket(req);
+ let busy=false;
+ // Reconnect before the hosted worker lifetime expires. Requests retain IDs.
+ const lifetime=setTimeout(()=>socket.close(1000,'Reconnect'),110000);
+ const authenticationDeadline=setTimeout(()=>socket.close(1008,'Authentication required'),5000);
+ socket.onclose=()=>{clearTimeout(lifetime);clearTimeout(authenticationDeadline);};
+ socket.onmessage=async event=>{
+  if(busy){socket.close(1008,'One request at a time');return;}
+  if(typeof event.data!=='string'||event.data.length>12000){socket.close(1009,'Too large');return;}
+  busy=true;
+  try{
+   const packet=JSON.parse(event.data);
+   if(typeof packet.token!=='string'||!packet.request||packet.request.operation!=='update'){socket.close(1008,'Invalid message');return;}
+   const result=await handle(new Request(req.url,{method:'POST',headers:{origin,authorization:`Bearer ${packet.token}`},body:JSON.stringify(packet.request)}),true);
+   const body=await result.json();
+   clearTimeout(authenticationDeadline);
+   if(socket.readyState===WebSocket.OPEN)socket.send(JSON.stringify({id:packet.request.id,status:result.status,body,timing:result.headers.get('Server-Timing')}));
+   if(result.status===401)socket.close(1008,'Authentication required');
+  }catch{if(socket.readyState===WebSocket.OPEN)socket.close(1011,'Request failed');}
+  finally{busy=false;}
+ };
+ return response;
 });

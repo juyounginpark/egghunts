@@ -36,6 +36,41 @@ export class OnlineGame{
  private stopCorrectionRemaining=0;
  private accessToken='';
  private leaving=false;
+ private socket:WebSocket|null=null;
+ private socketRetryAt=0;
+ private socketRequest:{id:string;resolve:(value:Response)=>void;reject:()=>void;timer:number}|null=null;
+ private connectSocket(){
+  if(this.leaving||this.socket||performance.now()<this.socketRetryAt)return;
+  const socket=new WebSocket(`${SUPABASE_URL.replace(/^http/,'ws')}/functions/v1/game`);this.socket=socket;
+  const opened=window.setTimeout(()=>{if(socket.readyState===WebSocket.CONNECTING)socket.close();},5000);
+  socket.onopen=()=>clearTimeout(opened);
+  socket.onmessage=event=>{
+   try{const message=JSON.parse(event.data),request=this.socketRequest;if(!request||request.id!==message.id)return;
+    clearTimeout(request.timer);this.socketRequest=null;
+    request.resolve(new Response(JSON.stringify(message.body),{status:message.status,headers:{'Content-Type':'application/json','Server-Timing':message.timing??''}}));
+   }catch{socket.close();}
+  };
+  socket.onerror=()=>socket.close();
+  socket.onclose=()=>{
+   clearTimeout(opened);if(this.socket===socket)this.socket=null;
+   this.socketRetryAt=performance.now()+1000;
+   const request=this.socketRequest;this.socketRequest=null;if(request){clearTimeout(request.timer);request.reject();}
+  };
+ }
+ private async requestState(request:NonNullable<OnlineGame['pending']>,token:string):Promise<Response>{
+  if(request.operation==='update'&&!this.leaving){
+   this.connectSocket();
+   if(this.socket?.readyState===WebSocket.OPEN){
+    try{return await new Promise<Response>((resolve,reject)=>{
+     const timer=window.setTimeout(()=>{this.socket?.close();reject(Error('STREAM_TIMEOUT'));},5000);
+     this.socketRequest={id:request.id,resolve,reject:()=>reject(Error('STREAM_CLOSED')),timer};
+     this.socket!.send(JSON.stringify({token,request}));
+    });}catch{/* Replay the same request ID through HTTP; rewards remain idempotent. */}
+   }
+  }
+  if(this.leaving)throw Error('LEFT_ROOM');
+  return fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(request),signal:AbortSignal.timeout(10000)});
+ }
  constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){
   document.addEventListener('visibilitychange',()=>{if(document.hidden)this.halt();});
   window.addEventListener('pagehide',()=>{void this.leave();});
@@ -44,6 +79,7 @@ export class OnlineGame{
  async leave(){
   if(this.leaving)return;
   this.leaving=true;this.active=false;this.connected=false;this.peers=[];this.latest=null;
+  this.socket?.close();
   clearInterval(this.syncTimer);this.syncTimer=undefined;this.vector={x:0,z:0};this.queue=[];this.pending=null;
   for(const complete of this.completions.values())complete(false);this.completions.clear();
   if(!this.accessToken)return;
@@ -170,7 +206,7 @@ export class OnlineGame{
    for(let attempt=0;attempt<4;attempt++){
     if(this.leaving)return;
     const started=performance.now();
-    const response=await fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify(this.pending),signal:AbortSignal.timeout(10000)});
+    const response=await this.requestState(this.pending!,session.access_token);
     const state=await response.json();
     if(this.leaving)return;
     if(response.ok){

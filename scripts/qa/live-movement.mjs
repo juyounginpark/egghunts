@@ -28,6 +28,18 @@ const errors=[];page.on('pageerror',e=>errors.push(e.message));
 try{
  await page.addInitScript(jitter=>{
   window.__trace={frames:[],network:[],phase:'loading',longTasks:[]};
+  const NativeWebSocket=window.WebSocket;
+  window.WebSocket=class extends NativeWebSocket{
+   constructor(...args){
+    super(...args);this.pendingMeasures=new Map();
+    this.addEventListener('message',event=>{
+     try{const packet=JSON.parse(event.data),started=this.pendingMeasures.get(packet.id);if(started===undefined)return;this.pendingMeasures.delete(packet.id);
+      const data=packet.body;window.__trace.network.push({transport:'websocket',at:performance.now(),ms:performance.now()-started,status:packet.status,error:data.error,timing:packet.timing,phase:window.__trace.phase,x:data.runtime?.fields.x,z:data.runtime?.fields.z});
+     }catch{/* Other sockets are unrelated to game measurements. */}
+    });
+   }
+   send(data){try{const packet=JSON.parse(data);if(packet.request?.id)this.pendingMeasures.set(packet.request.id,performance.now());}catch{/* Non-game traffic. */}super.send(data);}
+  };
   const original=window.fetch.bind(window);
   window.fetch=async(...args)=>{
    const measured=String(args[0]).includes('/functions/v1/game'),start=performance.now();
