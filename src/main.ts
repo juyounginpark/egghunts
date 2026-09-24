@@ -21,6 +21,7 @@ import { Multiplayer } from "./multiplayer";
 import { VirtualAd } from "./virtual-ad";
 import { formatNumber as num } from "./format";
 import { uiIcon } from './ui-icons';
+import {petAbilities} from './pet-stats';
 import type {TraitId} from "./progression";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
@@ -55,7 +56,7 @@ announcement.setAttribute("role", "status");
 topHud.append(announcement);
 const speedHud = document.createElement("div");
 speedHud.id = "speed-hud";
-speedHud.innerHTML = `<div class="speed-heading"><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><strong id="speed-value"></strong></div><span class="speed-label">이동 속도</span><small id="speed-help">운동으로 증가</small><span id="day-clock"></span>`;
+speedHud.innerHTML = `<div class="speed-heading">${uiIcon('speed')}<strong id="speed-value"></strong></div><small id="speed-help">운동으로 증가</small><span id="day-clock"></span>`;
 const hudContext=document.createElement('div');
 hudContext.id='hud-context';
 topHud.append(hudContext);
@@ -259,13 +260,30 @@ function updateHud() {
   $("night-curtain").hidden = true;
   $("night-count").textContent = String(Math.max(0, Math.ceil((game.nightUntil-game.now())/1000)));
   $("speed-value").textContent = num(game.speed,2);
+  $('speed-hud').setAttribute('aria-label',`이동 속도 ${num(game.speed,2)} · 운동으로 증가`);
+  $('speed-hud').title=`이동 속도 ${num(game.speed,2)} · 운동으로 증가`;
   $("day-clock").textContent = `권장 스피드 ${num(game.recommendedSpeed,1)}`;
   $('cycle-phase').textContent=game.isNight?'☾ 밤':'☀ 낮';
   $('cycle-remaining').textContent=game.isNight?`아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;
+  const nightCountdown=!game.isNight&&game.nightRemaining>0&&game.nightRemaining<=BALANCE.warningSeconds;
+  const countdownKey=nightCountdown?String(game.nightRemaining):'';
+  const clock=$('cycle-clock');
+  if(clock.dataset.countdown!==countdownKey){
+    clock.dataset.countdown=countdownKey;
+    $('cycle-remaining').getAnimations().forEach(animation=>animation.cancel());
+    if(nightCountdown&&game.nightRemaining<=3&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      $('cycle-remaining').animate([{transform:'scale(1.2)'},{transform:'scale(1)'}],{duration:350,easing:'ease-out'});
+    }
+  }
+  clock.classList.toggle('night-warning',nightCountdown);
+  clock.classList.toggle('night-imminent',nightCountdown&&game.nightRemaining<=3);
+  if(nightCountdown){$('cycle-phase').textContent='☾ 밤까지';$('cycle-remaining').textContent=`${game.nightRemaining}`;}
+  clock.setAttribute('aria-label',nightCountdown?`밤까지 ${game.nightRemaining}초`: `${$('cycle-phase').textContent} · ${$('cycle-remaining').textContent}`);
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.training||!!game.carried||!!game.death||!!game.returnReward;
-  $('speed-help').textContent=game.training?`운동 중 +${num(game.effectiveTrainingRate,3)}/초`:'운동으로 증가';
+  $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:'';
+  $('speed-help').hidden=!game.training;
   const step=game.save.tutorial??0;
   $("tutorial").hidden=step>=5 || !!game.returnReward || game.result!==null;
   $("tutorial-title").textContent = ["화면을 밀어 이동해요","알을 찾아요","큰 알일수록 느려져요","알을 두드려요","펫과 함께 자라요"][step]??'';
@@ -366,7 +384,7 @@ function updateHud() {
     input.reset();
     const m = MONGLES[game.result];
     $("modal").innerHTML =
-      `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit">${m.effect}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
+      `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit stat-badges">${petAbilities(m)}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
     $("modal").hidden = false;
     platform.track("hatch_complete", { mongle: m.id });
     feedback(null);
@@ -388,9 +406,9 @@ function renderEggQueue() {
     const def = EGGS[e.type];
     return `<button data-egg="${e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""} ${def.tier >= 4 ? "rare" : ""}" style="--egg:${def.color}"><b>${def.rarity}</b><img class="egg-icon" src="${eggIcon(e)}" alt="" /><small>${eggName(e)}</small></button>`;
   }).join("");
-  $("pet-effects").textContent = game.save.active.length
-    ? `동행 ${game.save.active.length}/3 · 클릭 ×${game.clickMultiplier.toFixed(2)} · 오토 ×${game.autoMultiplier.toFixed(2)} · 스피드 ×${game.speedMultiplier.toFixed(2)}`
-    : "동행 0/3 · 알을 부화하면 펫이 함께 걸어요";
+  $("pet-effects").innerHTML = game.save.active.length
+    ? `<div class="stat-badges"><span>${game.save.active.length}/${BALANCE.maxCompanions}</span>${petAbilities(game,true)}</div>`
+    : "알을 부화하면 펫이 함께 걸어요";
 }
 function showSettings() {
   if (!ready || game.result !== null || virtualAd || game.death) return;

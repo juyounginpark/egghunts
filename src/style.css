@@ -425,3 +425,24 @@ nav button img { width:28px; height:28px; }
 .sound-settings small { font-size:11px; color:#637061; }
 @media(min-width:440px){#main-hud #cycle-clock{flex-direction:row;gap:5px}#cycle-phase::after{content:' ·'}#main-hud .dust b{font-size:18px}}
 @media(max-width:359px){#top-hud #main-hud{gap:4px;padding:4px;grid-template-columns:minmax(72px,1fr) minmax(78px,1fr) minmax(110px,1.15fr)}.hud-avatar{width:28px}.hud-player{gap:3px}#main-hud #level{font-size:13px}#main-hud .dust b{font-size:14px}#main-hud #cycle-clock{font-size:10px}#cycle-phase{font-size:12px}}
+
+.speed-heading > .ui-icon { width:26px; height:26px; flex-shrink:0; color:#67763e; }
+.stat-badges { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.stat-badge { display:inline-flex; align-items:center; gap:5px; padding:5px 7px; border:1px solid #b2b78a; border-radius:6px; background:#f3edcd; color:#465534; }
+.stat-badge .ui-icon { width:22px; height:22px; flex-shrink:0; }
+.stat-badge strong { font-size:13px; font-variant-numeric:tabular-nums; }
+.stat-badge strong small { font-size:10px; margin-left:3px; }
+.pet-summary { margin:12px 0; }
+.pet-help,.pet-details { color:#637061; font-size:11px; }
+.pet-help summary,.pet-details summary { cursor:pointer; min-height:44px; display:flex; align-items:center; }
+.stat-legend { display:grid; grid-template-columns:24px 1fr 24px 1fr; align-items:center; gap:8px; }
+.benefit.stat-badges { justify-content:center; }
+.pet-label .stat-badges { justify-content:center; }
+.pet-label .stat-badge { border:0; background:none; padding:1px 0; gap:3px; }
+.pet-label .stat-badge .ui-icon { width:14px; height:14px; }
+.pet-label .stat-badge strong { font-size:10px; }
+#main-hud #cycle-clock.night-warning { flex-direction:column; gap:0; background:#f5e6b7; border-radius:6px; padding:3px 0; }
+#cycle-clock.night-warning #cycle-phase::after { content:none; }
+#cycle-clock.night-warning #cycle-remaining { display:block; font-size:23px; line-height:1.15; font-weight:900; color:#8a612c; }
+#cycle-clock.night-imminent #cycle-remaining { font-size:32px; color:#a23926; }
+#main-hud #cycle-clock.night-imminent { background:#ffe0b2; box-shadow:inset 0 0 0 2px #bf7042; }

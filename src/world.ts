@@ -7,6 +7,7 @@ import { voxelModel as model, loadVoxels,voxelColliders } from "./voxel";
 import type {MapCollider} from './map-collision';
 import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
+import {petAbilities} from './pet-stats';
 import {HazardView} from "./hazard-view";
 export class World {
   chasePressure=0;
@@ -593,7 +594,7 @@ export class World {
     const labelIds=game.save.active.join(',');
     if(this.petLabels.dataset.ids!==labelIds){
       this.petLabels.dataset.ids=labelIds;
-      this.petLabels.innerHTML=game.save.active.map(id=>`<div class="pet-label"><b><span style="color:${RARITIES[MONGLES[id].tier].color}">[${RARITIES[MONGLES[id].tier].name}]</span> ${MONGLES[id].name}</b><small>${MONGLES[id].effect}</small></div>`).join('');
+      this.petLabels.innerHTML=game.save.active.map(id=>`<div class="pet-label"><b><span style="color:${RARITIES[MONGLES[id].tier].color}">[${RARITIES[MONGLES[id].tier].name}]</span> ${MONGLES[id].name}</b><div class="stat-badges">${petAbilities(MONGLES[id])}</div></div>`).join('');
     }
     this.petLabels.hidden=isHatch;
     const labelBoxes:{x:number;y:number;height:number;width:number}[]=[];

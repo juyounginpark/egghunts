@@ -649,7 +649,7 @@ export class GameState {
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
-        const d={damage:stageDamage(b.stageId??1,b.final?3:this.stageStep),damagePercent:0,knockback:guardianSpeed(b.stageId??1)*ROUTE.bossKnockbackPerSpeed,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
+        const d={damage:stageDamage(b.stageId??1,b.final?3:this.stageStep),damagePercent:0,knockback:Math.min(ROUTE.bossMaxKnockback,guardianSpeed(b.stageId??1)*ROUTE.bossKnockbackPerSpeed),slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
         this.applyHazard({definition:d,origin:{x:b.x,z:b.z}} as Hazard,true);
         b.mode='return';b.target=null;
       }
@@ -801,10 +801,11 @@ export class GameState {
       if(!boss){this.revision++;return;}
       // Recovered eggs remain in the world and can be stolen during the return trip.
       boss.loot = null;
-      boss.mode = "waking";
-      boss.wakeRemaining = ROUTE.bossWakeSeconds;
+      const sleeping=boss.mode==='idle';
+      if(sleeping){boss.mode='waking';boss.wakeRemaining=ROUTE.bossWakeSeconds;}
+      else if(boss.mode!=='waking'){boss.mode='chase';boss.wakeRemaining=undefined;}
       boss.target = this.carried.id;
-      this.message = '보스가 잠에서 깼어요!';
+      this.message = sleeping?'보스가 잠에서 깼어요!':'알을 들었어요. 기지로 돌아가세요!';
     this.revision++;
   }
   tap() {
