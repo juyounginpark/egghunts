@@ -1,4 +1,5 @@
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
+import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,traitInterval:5,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:1,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
 export const TRAITS={
   sturdy:{name:'튼튼한 탐험가',description:'최대 체력 +10',value:10,max:5},
@@ -22,7 +23,10 @@ export const BALANCE = {
   storeX:-4.5,
   storeZ:4,
   storeRadius:1.3,
-  multiplayerMaxPlayers:8,
+  multiplayerMaxPlayers:5,
+  secretDragonEggShare:.5,
+  secretDragonScale:6.5,
+  baseMapX:14,
   deathChoiceDelay:5000,
   deathChoiceDuration:5000,
   reviveImmunity:3,
@@ -56,7 +60,7 @@ export const BALANCE = {
   baseAutoRate: 1,
   autoRatePerLevel: 0.5,
   mapX: 6.5,
-  mapNearZ: 6.5,
+  mapNearZ: 22,
   baseMinZ:-4.4,
   mapFarZ: -2277,
   nightInterval: 180000,
@@ -279,14 +283,14 @@ const LEGACY_MONGLES = Array.from({ length: 100 }, (_, i) => {
   };
 });
 // Append stage-exclusive IDs; existing pets, equipment and rewards never change identity.
-export const MONGLES = [...LEGACY_MONGLES, ...STAGE_PET_ROWS.map((pet,i)=>{
+export const MONGLES = [...LEGACY_MONGLES, ...[...STAGE_PET_ROWS,...SECRET_DRAGON_ROWS].map((pet,i)=>{
   const bonus=Math.round((1+(pet.tier+1)*.1)*10)/10;
   const ability=pet.slot%3;
   return {
     ...pet,id:`mongle-${100+i}`,region:Math.floor((pet.stageId-1)/4),species:pet.slot,
     clickMultiplier:ability===0?bonus:1,autoMultiplier:ability===2?bonus:1,speedMultiplier:ability===1?bonus:1,
     effect:`${['클릭','스피드','오토'][ability]} ×${bonus.toFixed(1)}`,
-    grid:50,scale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
+    grid:50,scale:pet.slot===10?BALANCE.secretDragonScale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
   };
 })];
 export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>100+(i+1)*50);

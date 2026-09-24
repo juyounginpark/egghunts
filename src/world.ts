@@ -9,6 +9,7 @@ import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
 import {petAbilities} from './pet-stats';
 import {HazardView} from "./hazard-view";
+import {FARM_PLOTS,farmPlot,farmGym,villageColliders} from './village';
 export class World {
   chasePressure=0;
   private reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -19,6 +20,15 @@ export class World {
   camera = new T.OrthographicCamera();
   player = new T.Group();
   private peers = new Map<string,T.Group>();
+  private roomFarmKey='';
+  private roomFarmPets=new T.Group();
+  private async showRoomFarms(players:Peer[]){
+    const entries=players.filter(p=>p.slot!==undefined).flatMap(p=>(p.pets??[]).slice(0,3).map((id,i)=>({id,i,slot:p.slot!})));
+    const key=JSON.stringify(entries);if(key===this.roomFarmKey)return;this.roomFarmKey=key;
+    await loadVoxels(entries.map(p=>`pet-${p.id}`));if(key!==this.roomFarmKey)return;
+    this.roomFarmPets.clear();
+    for(const p of entries){const pet=petVisual(p.id,false),plot=farmPlot(p.slot);pet.scale.setScalar(Math.min(1.5,MONGLES[p.id].scale));pet.position.set(plot.x-1+p.i,0,plot.z+1.8);this.roomFarmPets.add(pet);}
+  }
   private appearance=-1;
   private batGeometry=new T.BoxGeometry(.13,.13,1.25);
   private batMaterial=new T.MeshLambertMaterial({color:0xc48c55});
@@ -37,6 +47,7 @@ export class World {
     if(old instanceof T.Mesh){old.geometry.dispose();(old.material as T.Material).dispose();}
   }
   updatePeers(players:Peer[],visible:boolean,now:number){
+    this.roomFarmPets.visible=visible;void this.showRoomFarms(players).catch(err=>{this.assetError=String(err);});
     for(const [id,avatar] of this.peers)if(!players.some(p=>p.id===id)){
       const accessory=avatar.getObjectByName('avatar-accessory') as T.Mesh;
       if(accessory){accessory.geometry.dispose();(accessory.material as T.Material).dispose();}
@@ -48,10 +59,11 @@ export class World {
       avatar.visible=visible;avatar.position.lerp(new T.Vector3(peer.x,0,peer.z),.3);avatar.rotation.y=peer.rotation;
       avatar.rotation.z=now<peer.downUntil?Math.PI/2:0;
       this.animateBat(avatar,now-peer.attackAt);
-      if(avatar.userData.egg!==peer.carried){
+      const eggKey=peer.egg?.id??peer.carried;
+      if(avatar.userData.egg!==eggKey){
         const old=avatar.getObjectByName('peer-egg');if(old)avatar.remove(old);
-        if(peer.carried!==null&&this.eggModels[peer.carried]){const egg=this.eggModels[peer.carried].clone();egg.name='peer-egg';egg.position.y=1.12;egg.scale.setScalar(RARITIES[EGGS[peer.carried].tier].scale*.85);avatar.add(egg);}
-        avatar.userData.egg=peer.carried;
+        if(peer.carried!==null){const egg=this.eggModel(peer.egg??{type:peer.carried});egg.name='peer-egg';egg.position.y=1.12;egg.scale.setScalar(RARITIES[EGGS[peer.carried].tier].scale*.85);avatar.add(egg);}
+        avatar.userData.egg=eggKey;
       }
       if(avatar.userData.appearance!==peer.appearance){this.decorateAvatar(avatar,peer.appearance);avatar.userData.appearance=peer.appearance;}
     }
@@ -121,7 +133,7 @@ export class World {
     this.renderer.setClearColor(0xe9f0d8);
     host.append(this.renderer.domElement);
     this.petLabels.id="pet-labels";host.append(this.petLabels);
-    this.scene.add(this.farm,this.farmPets,this.footTrail);
+    this.scene.add(this.farm,this.farmPets,this.roomFarmPets,this.footTrail);
     this.scene.add(this.hazardsView.group);
     this.scene.add(this.nestGroup);
     this.nightBarrier.position.set(0,.65,BALANCE.baseMinZ-.25);
@@ -223,9 +235,9 @@ export class World {
       );
       chunks.push(g);
     };
-    for (let z = 10; z >= -4; z -= 2) {
+    for (let z = 24; z >= -4; z -= 2) {
       const region = REGIONS.filter((r) => -z >= r.start).at(-1) ?? REGIONS[0];
-      for (let x = z >= -4 ? -12 : -8; x <= (z >= -4 ? 12 : 8); x += 2) {
+      for (let x = z >= -4 ? -16 : -8; x <= (z >= -4 ? 16 : 8); x += 2) {
         const path = Math.abs(x) < 2;
         block(x, -0.5, z, 2, 0.9, 2, path ? (REGIONS.indexOf(region)%2 ? 0xb0afb4 : 0xd8d0a5) : region.color);
         const scatter=Math.abs(Math.sin(x*41.7+z*17.3)*43758.5453)%1;
@@ -244,25 +256,27 @@ export class World {
       if(!['flower','carrots','cabbage'].includes(name))this.mapColliders.push(...voxelColliders(name,x,z,scale,rotation));
       const g=model(name);g.position.set(x,0,z);g.scale.setScalar(scale);g.rotation.y=rotation;parent.add(g);return g;
     };
-    prop("barn",-4,-.5,3,0,this.farm);
-    prop("shop",-4.5,4,2,0,this.farm);
-    prop("well",4,4.2,1.7,0,this.farm);
+    prop("shop",BALANCE.storeX,4,2,0,this.farm);
+    prop("well",0,10,1.7,0,this.farm);
     prop("gate",0,-4.8,2.4,0,this.farm);
-    prop("carrots",5,-1.2,2,0,this.farm);prop("cabbage",7,-1.2,2,0,this.farm);
-    prop("feed",-1.8,4.6,1.4,0,this.farm);prop("hay",-6,2.5,1.3,0,this.farm);
-    prop("lantern",-2.2,-4.8,1.4,0,this.farm);prop("lantern",2.2,-4.8,1.4,0,this.farm);
-    // A clearly marked treadmill assembled from voxel-sized blocks.
-    const gym = new T.Group();gym.name="gym";gym.position.set(BALANCE.gymX,0,BALANCE.gymZ);
-    const gymPart=(w:number,h:number,d:number,x:number,y:number,z:number,color:number)=>{
-      const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshLambertMaterial({color}));m.position.set(x,y,z);gym.add(m);
-      if(y+h/2>.3)this.mapColliders.push({minX:BALANCE.gymX+x-w/2,maxX:BALANCE.gymX+x+w/2,minZ:BALANCE.gymZ+z-d/2,maxZ:BALANCE.gymZ+z+d/2});
-    };
-    gymPart(1.2,.15,1.6,0,.08,0,0x51696b);gymPart(.85,.04,1.35,0,.18,0,0x293e38);
-    gymPart(.12,1,.12,-.5,.6,-.7,0xefc575);gymPart(.12,1,.12,.5,.6,-.7,0xefc575);gymPart(1.1,.12,.12,0,1.05,-.7,0xefc575);
-    this.farm.add(gym);
-    for(let x=-8;x<=8;x+=1.8) if(Math.abs(x)>2){prop("fence",x,-4.6,1.8,0,this.farm);prop("fence",x,7,1.8,0,this.farm);}
-    for(let z=-2;z<7;z+=1.8){prop("fence",-8,z,1.8,Math.PI/2,this.farm);prop("fence",8,z,1.8,Math.PI/2,this.farm);}
-    for(let i=0;i<12;i++)prop(i%2?"flower":"appletree",(i%2?-1:1)*(9+i%3),-3+Math.floor(i/2)*2, i%2?.6:1.6, i*.7,this.farm);
+    for(const [slot,plot] of FARM_PLOTS.entries()){
+      prop("barn",plot.x-2.5,plot.z-.6,2,0,this.farm);
+      prop("carrots",plot.x,plot.z+2.5,1,0,this.farm);
+      prop("feed",plot.x-2,plot.z+2.5,1,0,this.farm);
+      for(const dx of [-3.5,0,3.5])prop("fence",plot.x+dx,plot.z+3.5,1.4,0,this.farm);
+      const position=farmGym(slot),gym=new T.Group();gym.name=`gym-${slot}`;gym.position.set(position.x,0,position.z);
+      const material=new T.MeshLambertMaterial({color:[0x859e5d,0xc59566,0x7ca3ad,0xac8ab2,0xb8a35a][slot]});
+      for(const [w,h,d,x,y,z] of [[1.2,.15,1.6,0,.08,0],[.85,.04,1.35,0,.18,0],[.12,1,.12,-.5,.6,-.7],[.12,1,.12,.5,.6,-.7],[1.1,.12,.12,0,1.05,-.7]]){
+        const part=new T.Mesh(new T.BoxGeometry(w,h,d),material);part.position.set(x,y,z);gym.add(part);
+      }
+      this.farm.add(gym);
+      // A numbered tile marks each assigned plot without a text-heavy panel.
+      const canvas=document.createElement('canvas');canvas.width=canvas.height=64;const ctx=canvas.getContext('2d')!;
+      ctx.fillStyle='#fff4d7';ctx.fillRect(0,0,64,64);ctx.strokeStyle='#68724d';ctx.lineWidth=6;ctx.strokeRect(3,3,58,58);ctx.fillStyle='#465334';ctx.font='bold 40px sans-serif';ctx.textAlign='center';ctx.fillText(String(slot+1),32,46);
+      const tile=new T.Mesh(new T.PlaneGeometry(.8,.8),new T.MeshBasicMaterial({map:new T.CanvasTexture(canvas)}));tile.rotation.x=-Math.PI/2;tile.position.set(plot.x,.025,plot.z);this.farm.add(tile);
+    }
+    // Collision geometry is identical in the client and the authoritative server.
+    this.mapColliders.splice(0,this.mapColliders.length,...villageColliders());
     const pedestal = model("pedestal");
     pedestal.scale.set(2.5, 1, 2.5);
     pedestal.position.y = -0.2;
@@ -295,7 +309,7 @@ export class World {
     const ids=all.length<=BALANCE.farmPetsVisible?all:Array.from({length:BALANCE.farmPetsVisible},(_,i)=>all[(page*BALANCE.farmPetsVisible+i)%all.length]);
     const key=ids.join(',');if(key===this.farmKey)return;this.farmKey=key;
     await loadVoxels(ids.map(i=>`pet-${i}`));if(key!==this.farmKey)return;
-    this.farmPets.clear();ids.forEach((id,i)=>{const m=petVisual(id,false);m.scale.setScalar(MONGLES[id].scale);m.userData.slot=i;this.farmPets.add(m);});
+    this.farmPets.clear();ids.forEach((id,i)=>{const m=petVisual(id,false);m.scale.setScalar(Math.min(1.5,MONGLES[id].scale));m.userData.slot=i;this.farmPets.add(m);});
   }
   async updateHatch(key: string, type: number, result: number | null, appearance?:Pick<Egg,'type'|'stageId'|'variant'>) {
     this.hatchKey = key;
@@ -338,11 +352,11 @@ export class World {
     const isHatch = mode === "hatchery" || game.result !== null || isReward;
     this.hazardsView.render(game,!isHatch,time);
     this.nestGroup.visible=!isHatch;
-    this.farm.visible=this.farmPets.visible=!isHatch && game.distance<22;
+    this.farm.visible=this.farmPets.visible=!isHatch && game.z>-22;
     if(this.farm.visible)void this.showFarmPets(game).catch(err=>{this.assetError=String(err);});
     this.farmPets.children.forEach((pet,i)=>{
-      const big=pet.scale.x>2;
-      pet.position.set((big?6:3.5)*Math.sin(i*2.4+time*.12),0,3+Math.cos(i*2.4+time*.12)*2);
+      const plot=farmPlot(game.farmSlot);
+      pet.position.set(plot.x+2*Math.sin(i*2.4+time*.12),0,plot.z+1+Math.cos(i*2.4+time*.12));
       pet.rotation.y=-i*2.4-time*.12;pet.position.y=Math.abs(Math.sin(time*2+i))*.05;animateEgg(pet,time,this.low);
     });
     this.terrain.visible =

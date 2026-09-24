@@ -1,5 +1,6 @@
 import {STAGES} from "./stage-data";
 import {EGGS} from "./data";
+import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 export type EggAppearance={type:number;stageId?:number;variant?:number;special?:boolean};
 export type EggCell=[number,number,number,number];
 export const STAGE_EGG_NAMES=[
@@ -14,8 +15,8 @@ export const STAGE_EGG_NAMES=[
  ['나뭇잎','무당벌레','고치','나비','육각 벌집'],['볼트 상자','자석','무한궤도','기계 집게','고철 가시'],
  ['고리 행성','혜성','별','망원경','은하 나선'],['공허 결정','차원문','기억의 책','황금 날개','세계수'],
 ];
-export function appearanceOf(e:EggAppearance){return e.stageId&&e.stageId>=1&&e.stageId<=20&&e.variant!==undefined&&e.variant>=0&&e.variant<5?{stage:e.stageId,variant:e.variant}:null;}
-export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${STAGE_EGG_NAMES[a.stage-1][a.variant]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
+export function appearanceOf(e:EggAppearance){return e.stageId&&e.stageId>=1&&e.stageId<=20&&e.variant!==undefined&&e.variant>=0&&e.variant<=5?{stage:e.stageId,variant:e.variant}:null;}
+export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${a.variant===5?SECRET_DRAGON_ROWS[a.stage-1].eggName:STAGE_EGG_NAMES[a.stage-1][a.variant]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
 const cache=new Map<string,{cells:EggCell[];colors:string[]}>();
 /** All sculptures live on a 20³ integer grid. Shape, silhouette and appendages vary, not just paint. */
 export function stageEggCells(stage:number,v:number){
@@ -30,6 +31,35 @@ export function stageEggCells(stage:number,v:number){
  const wings=(c=3)=>{for(const side of [-1,1])for(let j=0;j<5;j++)box(10+side*(5+j),9+j,10,2,7-j,3,c);};
  const feet=(n=4,c=4)=>{for(let j=0;j<n;j++)box(j%2?15:5,2,6+Math.floor(j/2)*7,3,3,4,c);};
  const eye=(x=10,y=10,z=15)=>{orb(x,y,z,2,2,1,3);box(x,y,z+1,1,2,1,4);};
+ if(v===5){
+  // A sealed stage relic: its outer structure foreshadows the dragon inside.
+  switch(stage){
+   case 1: orb(10,6,10,5,5,5);box(10,12,10,2,10,2,5);for(const [x,y,w,h] of [[6,14,7,2],[14,14,7,2],[10,10,2,7],[10,17,2,5]])box(x,y,13,w,h,2,6);break;
+   case 2: box(10,7,10,10,10,12,5);box(10,14,7,8,6,7,2);for(const x of [4,16])for(const z of [6,14])orb(x,3,z,2,3,3,4);box(10,16,15,3,5,3,5);break;
+   case 3: orb(10,4,10,8,3,7,3);for(const x of [4,10,16]){box(x,10,10,3,10,4,2);orb(x,16-Math.abs(x-10)/2,10,3,3,3,2);}orb(10,8,15,3,3,2,3);break;
+   case 4: for(let y=1;y<16;y++)box(10,y,10,18-y*.6,1,18-y*.6,4);ring(10,15,10,5,2);orb(10,16,10,3,3,3,2);break;
+   case 5: orb(10,12,10,6,6,6,4);for(const x of [3,6,14,17]){box(x,5,10,2,8,3,2);box(x,2,13,2,2,6,2);}ring(10,12,10,7,5,true);break;
+   case 6: box(10,9,10,13,16,8,4);box(10,9,15,9,12,2,3);for(const y of [4,14])box(10,y,16,13,2,2,5);box(10,9,17,3,4,2,5);break;
+   case 7: box(10,8,10,9,13,9,4);for(const x of [3,17]){box(x,10,10,2,16,2,2);box(x,17,10,4,2,4,2);}for(const y of [4,8,12])box(10,y,15,7,1,2,2);break;
+   case 8: for(let y=1;y<15;y++)box(10,y,10,19-y,1,19-y,5);ring(10,15,10,4,5,true);orb(10,15,10,2,2,2,2);break;
+   case 9: box(10,7,10,4,12,4,5);for(const z of [5,10,15])ring(10,6,z,6,3,true);orb(10,15,10,8,4,7,6);break;
+   case 10: box(10,7,10,9,10,9,3);for(let y=11;y<16;y++)box(10,y,10,25-y,1,14,4);for(const x of [3,17])box(x,15,10,2,3,14,2);ring(10,17,10,2,5,true);break;
+   case 11: box(10,2,10,16,2,14,3);for(const x of [4,16])box(x,8,10,3,12,8,3);for(let y=14;y<19;y++)box(10,y,10,19-(y-14)*3,1,12,5);orb(10,8,10,3,4,3,2);break;
+   case 12: orb(10,9,10,9,2,9,4);orb(10,12,10,5,5,5,2);for(const x of [4,16])box(x,4,10,2,7,2,5);ring(10,9,10,8,2);break;
+   case 13: orb(10,12,10,6,5,8,5);box(10,5,10,7,5,9,4);for(const x of [2,18]){box(x,10,10,2,9,2,2);box(x,10,10,2,2,10,2);}break;
+   case 14: for(const x of [4,10,16]){box(x,8,10,4,10+x%3,6,2);for(let y=12;y<19;y++)box(x,y,10,Math.max(1,6-(y-12)),1,Math.max(1,6-(y-12)),3);}break;
+   case 15: box(10,5,10,15,5,12,3);orb(10,10,10,6,5,5,2);for(const x of [3,17])orb(x,5,10,2,3,6,3);ring(10,16,10,3,5,true);break;
+   case 16: orb(10,8,10,5,7,5,6);for(const x of [3,17])for(const z of [5,15]){box(x,8,z,3,13,3,4);box(x,15,z,4,2,4,5);}ring(10,9,10,6,2);break;
+   case 17: orb(10,9,10,7,8,6,5);for(const y of [3,6,9,12,15])ring(10,y,10,7-Math.abs(y-9)*.4,4);for(const x of [4,16])box(x,17,10,3,3,3,2);break;
+   case 18: box(10,7,10,10,10,10,4);for(const x of [3,17]){box(x,4,10,4,6,15,5);box(x,13,10,3,10,3,2);}box(10,17,10,14,3,4,5);break;
+   case 19: orb(10,9,10,4,4,4,2);ring(10,9,10,8,5);ring(10,9,10,8,5,true);box(10,17,10,3,4,3,3);break;
+   case 20: ring(10,10,10,8,4,true);ring(10,10,10,6,5,true);orb(10,10,10,3,4,3,2);box(10,3,10,2,8,2,5);for(const x of [2,18])box(x,10,10,2,11,5,3);break;
+  }
+  // Reflect around X=9.5 exactly, including the palette, before caching.
+  const symmetric=new Map<number,EggCell>();
+  for(const [x,y,z,c] of cells.values())if(x<=9)for(const mx of [x,19-x])symmetric.set(mx+y*20+z*400,[mx,y,z,c]);
+  const result={cells:[...symmetric.values()],colors};cache.set(key,result);return result;
+ }
  // Different proportions give the five eggs a distinct outline even at icon size.
  if([2,6,7,18].includes(stage)&&v%2===0)box(10,8,10,11-v,11,10+v,1);
  else orb(10,7,10,[5.5,6.5,4.5,6,5][v],[7,5,8,6,6.5][v],[5,5.5,4,6,4.5][v],1);

@@ -3001,6 +3001,206 @@
       "gzipBytes": 46846
     },
     {
+      "key": "pet-300",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        13094
+      ],
+      "eyes": 42,
+      "gzipBytes": 65228
+    },
+    {
+      "key": "pet-301",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        15602
+      ],
+      "eyes": 42,
+      "gzipBytes": 76727
+    },
+    {
+      "key": "pet-302",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        10176
+      ],
+      "eyes": 40,
+      "gzipBytes": 49529
+    },
+    {
+      "key": "pet-303",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        14380
+      ],
+      "eyes": 44,
+      "gzipBytes": 71435
+    },
+    {
+      "key": "pet-304",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        10856
+      ],
+      "eyes": 46,
+      "gzipBytes": 53500
+    },
+    {
+      "key": "pet-305",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        10250
+      ],
+      "eyes": 42,
+      "gzipBytes": 51755
+    },
+    {
+      "key": "pet-306",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        12112
+      ],
+      "eyes": 42,
+      "gzipBytes": 59578
+    },
+    {
+      "key": "pet-307",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        15282
+      ],
+      "eyes": 42,
+      "gzipBytes": 74883
+    },
+    {
+      "key": "pet-308",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        15848
+      ],
+      "eyes": 42,
+      "gzipBytes": 78309
+    },
+    {
+      "key": "pet-309",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        12690
+      ],
+      "eyes": 42,
+      "gzipBytes": 62579
+    },
+    {
+      "key": "pet-310",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        13278
+      ],
+      "eyes": 42,
+      "gzipBytes": 63743
+    },
+    {
+      "key": "pet-311",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        8088
+      ],
+      "eyes": 42,
+      "gzipBytes": 40590
+    },
+    {
+      "key": "pet-312",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        16148
+      ],
+      "eyes": 42,
+      "gzipBytes": 80197
+    },
+    {
+      "key": "pet-313",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        15046
+      ],
+      "eyes": 42,
+      "gzipBytes": 74021
+    },
+    {
+      "key": "pet-314",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        12360
+      ],
+      "eyes": 42,
+      "gzipBytes": 60798
+    },
+    {
+      "key": "pet-315",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        14322
+      ],
+      "eyes": 42,
+      "gzipBytes": 70913
+    },
+    {
+      "key": "pet-316",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        11102
+      ],
+      "eyes": 42,
+      "gzipBytes": 55964
+    },
+    {
+      "key": "pet-317",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        14084
+      ],
+      "eyes": 42,
+      "gzipBytes": 69088
+    },
+    {
+      "key": "pet-318",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        9990
+      ],
+      "eyes": 46,
+      "gzipBytes": 49231
+    },
+    {
+      "key": "pet-319",
+      "symmetric": true,
+      "partitionExact": true,
+      "components": [
+        7014
+      ],
+      "eyes": 38,
+      "gzipBytes": 35135
+    },
+    {
       "key": "guardian-1",
       "symmetric": true,
       "partitionExact": true,

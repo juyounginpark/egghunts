@@ -18,6 +18,7 @@ import { Input } from "./input";
 import { World } from "./world";
 import { panelHTML } from "./panels";
 import { Multiplayer } from "./multiplayer";
+import {OnlineGame} from './online';
 import { VirtualAd } from "./virtual-ad";
 import { formatNumber as num } from "./format";
 import { uiIcon } from './ui-icons';
@@ -92,6 +93,8 @@ let lastAnnouncement = 0,
   announcementTimer = 0;
 const platform = new Platform();
 const multiplayer=new Multiplayer(time=>{if(!qa)platform.offset=time-Date.now();},toast);
+const online=new OnlineGame(toast,time=>{platform.offset=time-Date.now();});
+async function remote(kind:string,value?:unknown){try{await online.send(kind,value);return !online.latest?.errors.length;}catch(err){toast(err instanceof Error?err.message:'연결을 확인해 주세요.');return false;}}
 
 const qa = import.meta.env.DEV && new URLSearchParams(location.search).get("qa") === "true" ? await import("./qa") : null;
 if (qa) { platform.now = qa.now; platform.key="alkong:v1:qa"; }
@@ -131,6 +134,7 @@ function toast(text: string) {
 }
 async function save() {
   try {
+    if(online.active){localStorage.setItem('alkong:preferences',JSON.stringify(game.save.settings));return;}
     await platform.save(game.snapshot());
   } catch {
     toast("저장하지 못했어요. 저장 공간과 연결을 확인해 주세요.");
@@ -151,6 +155,7 @@ async function action(preparedId?:string) {
   const preparedEgg=preparedId?game.world.find(e=>e.id===preparedId):undefined;
   if(preparedId&&(!preparedEgg||!game.canReachEgg(preparedEgg)||game.carried))return;
   if (tab === "hatchery") {
+    if(online.active){await remote('tap');world.hitAt=performance.now();feedback(null);return;}
     if (game.tap()) {
       world.hitAt = performance.now();
       $("action").dataset.hit = String(game.lastTap);
@@ -164,11 +169,20 @@ async function action(preparedId?:string) {
       if(duration>0&&preparedId!==egg.id){
         if(pickupPreparation)return;
         input.reset();
+        online.halt();
+        if(online.active&&!await remote('prepare',egg.id))return;
         pickupPreparation={id:egg.id,remaining:duration,duration,x:game.x,z:game.z,hitAt:game.hitAt};
         feedback('tap');return;
       }
     }
     if(!game.carried&&!game.near&&game.nearStore){setTab('store');return;}
+    if(online.active){
+      if(game.carried)await remote('drop');
+      else if(targetEgg)await remote('pickup',targetEgg.id);
+      else if(game.nearGym)await remote('train');
+      else{world.swingBat(game.now());feedback('swing');}
+      return;
+    }
     if(!game.carried&&targetEgg?.id.startsWith('net-')){
       claiming=true;
       try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:EGGS[egg.type].hp,distance:Math.abs(egg.z),expires:game.nightAt});}
@@ -414,6 +428,24 @@ function renderEggQueue() {
     ? `<div class="stat-badges"><span>${game.save.active.length}/${BALANCE.maxCompanions}</span>${petAbilities(game,true)}</div>`
     : "알을 부화하면 펫이 함께 걸어요";
 }
+async function onlineButton(b:HTMLElement):Promise<boolean>{
+  const bindings:Record<string,string>={trait:'trait',claimStage:'claimStage',claimPet:'claimPet',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'equip'};
+  for(const [attribute,kind] of Object.entries(bindings))if(b.dataset[attribute]!==undefined){
+    const raw=b.dataset[attribute]!;await remote(kind,['trait','upgrade','select'].includes(kind)?raw:Number(raw));return true;
+  }
+  if(b.id==='train-now'){
+    if(tab==='explore'&&!paused&&$("modal").hidden&&!game.returnReward){input.reset();online.halt();await remote('train');}return true;
+  }
+  if(b.id==='confirm-sale'&&pendingSale){await remote(pendingSale.kind==='egg'?'sellEgg':'sellPet',pendingSale.kind==='egg'?pendingSale.id:Number(pendingSale.id));pendingSale=null;paused=false;$("modal").hidden=true;return true;}
+  if(b.id==='boss-warning-ok'){await remote('warning');paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();return true;}
+  if(b.id==='respawn-base'){await remote('return');paused=false;$("modal").hidden=true;$("modal").dataset.kind='';return true;}
+  if(b.id==='result-ok'){await remote('result');lastResult=null;$("modal").hidden=true;setTab('hatchery');return true;}
+  if(b.id==='reward-ok'){await remote('reward');$("return-reward").hidden=true;return true;}
+  const commands:Record<string,string>={'tutorial-skip':'tutorial','claim-stage-all':'claimStageCollection','claim-all':'claimCollection'};
+  if(commands[b.id]){await remote(commands[b.id]);return true;}
+  if(b.id==='multiplayer-connect'){toast(`농장 ${game.farmSlot+1} · ${online.latest?.count??1}/5`);return true;}
+  return false;
+}
 function showSettings() {
   if (!ready || game.result !== null || virtualAd || game.death) return;
   paused = true;
@@ -423,11 +455,17 @@ function showSettings() {
   $("modal").innerHTML =
     `<div class="settings-card"><span class="tag">TAKE A LITTLE BREAK</span><h1>잠깐 쉬어가요</h1><p>진행 상황은 자동으로 저장돼요. 탐험 제한시간은 없어요.</p><fieldset class="sound-settings"><legend>사운드</legend><label for="volume-setting">전체 볼륨 <output id="volume-value" for="volume-setting">${Math.round((game.save.settings.volume??1)*100)}%</output></label><input id="volume-setting" type="range" min="0" max="100" step="1" value="${Math.round((game.save.settings.volume??1)*100)}" aria-label="배경음악과 효과음 볼륨"/><label for="sound-setting">음소거 <input id="sound-setting" type="checkbox" ${!game.save.settings.sound ? "checked" : ""}></label><small>배경음악 · 효과음에 함께 적용</small></fieldset><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
   $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label><p>${platform.native?"토스 게임 로그인 연결됨":"브라우저 · 기기 저장"}</p><button id="multiplayer-connect" class="secondary">${multiplayer.connected?"친구 연결 종료":"게스트 로그인 · 친구와 걷기"}</button><small>같은 서버에서 이동 공유 · 알과 수집은 각자 진행</small>`);
+  if(online.active){
+    const button=$("multiplayer-connect");button.textContent=`${online.latest?.count??1} / 5`;
+    const note=button.nextElementSibling;if(note)note.textContent='';
+    const label=button.previousElementSibling;if(label)label.textContent='Supabase';
+  }
   ($("appearance-setting") as HTMLSelectElement).value=String(game.save.appearance??0);
 }
 document.addEventListener("click", async (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("button");
   if (!b || !ready) return;
+  if(online.active&&await onlineButton(b))return;
   if(b.id==='boss-warning-ok'){
     game.save.bossWarningSeen=true;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();void save();return;
   }
@@ -437,7 +475,8 @@ document.addEventListener("click", async (e) => {
     return;
   }
   if((b.id==='virtual-ad'||b.id==='revive-ad')&&!virtualAd){
-    if(b.id==='revive-ad'&&!game.beginReviveAd()){game.tick(0);updateHud();return;}
+    if(online.active&&!await remote(b.id==='revive-ad'?'reviveAd':'adStart'))return;
+    if(!online.active&&b.id==='revive-ad'&&!game.beginReviveAd()){game.tick(0);updateHud();return;}
     virtualAdPurpose=b.id==='revive-ad'?'revive':'currency';
     virtualAd=new VirtualAd(()=>game.now());paused=true;input.reset();
     $("modal").hidden=false;
@@ -446,7 +485,8 @@ document.addEventListener("click", async (e) => {
   }
   if(b.id==='virtual-ad-close'&&virtualAd){
     const reward=virtualAd.claim();if(!reward)return;
-    if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'밤이 되어 농장으로 돌아왔어요.');}else{game.save.dust+=reward;playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
+    if(online.active){await remote(virtualAdPurpose==='revive'?'revive':'adClaim');}
+    else if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'밤이 되어 농장으로 돌아왔어요.');}else{game.save.dust+=reward;playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
     game.revision++;virtualAd=null;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';renderPanel();void save();
     platform.track('virtual_ad_reward',{purpose:virtualAdPurpose,amount:virtualAdPurpose==='currency'?reward:0});return;
   }
@@ -512,9 +552,10 @@ document.addEventListener("click", async (e) => {
   }
   if (b.id === "resume") {
     game.save.appearance=Number(($("appearance-setting") as HTMLSelectElement).value);
+    if(online.active)await remote("appearance",game.save.appearance);
     try {
       await platform.syncTime();
-      if (hiddenAt) {
+      if (hiddenAt && !online.active) {
         game.offline((platform.now() - hiddenAt) / 1000);
         hiddenAt = 0;
       }
@@ -576,7 +617,7 @@ document.addEventListener("visibilitychange", async () => {
     syncing = true;
     try {
       await platform.syncTime();
-      if (hiddenAt) {
+      if (hiddenAt && !online.active) {
         game.offline((platform.now() - hiddenAt) / 1000);
         hiddenAt = 0;
       }
@@ -594,14 +635,21 @@ window.addEventListener("pagehide", () => {
 async function start() {
   try {
     await platform.login();
-    const state = await platform.load();
+    const localState = await platform.load();
+    if(!qa)await online.enter($("loading"));
+    const state = online.latest?.runtime.save??localState;
     game = new GameState(state, () => platform.now(), qa?.random);
+    if(online.active){
+      online.attach(game);
+      try{const preferences=JSON.parse(localStorage.getItem("alkong:preferences")??"null");if(preferences&&typeof preferences.sound==="boolean")game.save.settings={...game.save.settings,...preferences};}catch{/* Ignore invalid device preferences. */}
+      online.onState=()=>{if(ready)updateHud();};
+    }
     applyAudioSettings();
     multiplayer.onHit=()=>{}; // Cooperative movement only; no PvP damage in expedition mode.
-    game.offline((platform.now() - state.lastSavedAt) / 1000);
+    if(!online.active)game.offline((platform.now() - state.lastSavedAt) / 1000);
     world = new World($("world"));
     await world.init();
-    game.mapCollision.setFarm(world.mapColliders);game.push(0,0);
+    game.mapCollision.setFarm(world.mapColliders);if(!online.active)game.push(0,0);
     world.quality(state.settings.quality === "low");
     input = new Input($("joystick"), $("knob"), action, showSettings);
     ready = true;
@@ -625,8 +673,9 @@ function frame(now: number) {
   const dt = Math.min(0.05, (now - lastNow) / 1000);
   lastNow = now;
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}
-  if (!qa && !paused && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
+  if (!qa && (!online.active||online.connected) && !paused && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
     const v = input.vector();
+    if(online.active)online.update(v.x*.832+v.y*.555,-v.x*.555+v.y*.832);
     game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt);
     world.player.userData.moving = Math.hypot(v.x, v.y) > 0.1;
     if (world.player.userData.moving)
@@ -634,8 +683,8 @@ function frame(now: number) {
         v.x * 0.832 + v.y * 0.555,
         -v.x * 0.555 + v.y * 0.832,
       );
-  } else world.player.userData.moving = false;
-  if (!qa) game.tick(paused ? 0 : dt);
+  } else {world.player.userData.moving = false;if(online.active)online.update(0,0);}
+  if (!qa && !online.active) game.tick(paused ? 0 : dt);
   if(pickupPreparation){
     const p=pickupPreparation;
     const target=game.world.find(e=>e.id===p.id);
@@ -699,7 +748,7 @@ function frame(now: number) {
     game.world=game.world.filter(e=>!e.id.startsWith('net-')||multiplayer.drops.some(d=>d.id===e.id));
     for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:EGGS[egg.type].hp,distance:Math.abs(egg.z),expires:game.nightAt});
   }
-  world.updatePeers(multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
+  world.updatePeers(online.active?online.peers:multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
   world.render(game, tab, qa ? 1 : dt, qa ? qa.visualTime : now / 1000);
   if (now - savedAt > 5000) {
     savedAt = now;

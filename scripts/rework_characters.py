@@ -10,6 +10,7 @@ import json
 import math
 import struct
 from pathlib import Path
+from secret_dragon_designs import DRAGON_BRIEFS,sculpt_secret_dragon
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'public/models'
@@ -148,12 +149,18 @@ def concepts():
     for i,row in enumerate(rows):
         stage,slot = row['stageId'],row['slot']
         entry(f'pet-{i+100}',row['name'],stage,slot,LAYOUTS[stage-1].split()[slot])
+    dragon_rows=[]
+    for i,(name,egg,outline,personality,ecology) in enumerate(DRAGON_BRIEFS):
+        entry(f'pet-{300+i}',name,i+1,10,'dragon')
+        result[-1].update(secretDragon=True,concept=f'거대한 드래곤 × {egg}',silhouette=outline.split('·'),personality=personality,ecology=ecology)
+        dragon_rows.append({'name':name,'eggName':egg,'description':ecology,'stageId':i+1,'slot':10,'tier':6,'color':THEMES[i][3],'shape':'dragon'})
+    (ROOT/'src/secret-dragon-catalog.ts').write_text('// Generated from scripts/secret_dragon_designs.py. Append-only pet IDs 300–319.\nexport const SECRET_DRAGON_ROWS = '+json.dumps(dragon_rows,ensure_ascii=False,indent=2)+';\n',encoding='utf-8')
     for stage,shape in enumerate(BOSSES,1):
         entry(f'guardian-{stage}',f'{THEMES[stage-1][0]} 둥지 수호자',stage,10,shape,True)
     entry('guardian-final','첫빛 정원의 문지기',20,11,'angel',True)
     BRIEF.parent.mkdir(parents=True,exist_ok=True)
     BRIEF.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    lines=['# 50³ 캐릭터 제작 콘셉트','', '플레이어 제외. 펫 300종, 스테이지 보스 20종, 최종 보스 1종. 기존 ID·이름·능력·저장은 유지한다.',
+    lines=['# 50³ 캐릭터 제작 콘셉트','', '플레이어 제외. 펫 320종(시크릿 거대 드래곤 20종 포함), 스테이지 보스 20종, 최종 보스 1종. 기존 ID·이름·능력·저장은 유지한다.',
            '','정면 -Z, 중심 X=24.5. 모든 쌍 기관은 색과 두께까지 대칭이다. 하단 여백 2칸, 외곽 여백 최소 1칸.','',
            '각 모델의 편집 가능한 원본은 `public/models/*.design.json`이며 `scripts/rework_characters.py`로 재생성한다.','']
     for r in result:
@@ -267,6 +274,7 @@ class Sculpt:
 
 
 def sculpt(r):
+    if r.get('secretDragon'):return sculpt_secret_dragon(r,Sculpt())
     g=Sculpt();e,b,t,f=g.ell,g.box,g.tube,g.fin
     p=r['profile'];w,h,d=p['width'],p['height'],p['depth'];s=r['anatomy'];stage=r['stage'];slot=r['slot']
     cx=24.5;head=(27,13);spread=4;facewide=False
@@ -522,13 +530,14 @@ def export(r,g):
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--concepts-only',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--concepts-only',action='store_true');parser.add_argument('--secrets-only',action='store_true');args=parser.parse_args()
     if args.concepts_only:
         print('Concepts:',len(concepts()));return
     if not BRIEF.exists():raise SystemExit('Write and review concepts first: --concepts-only')
     rows=json.loads(BRIEF.read_text(encoding='utf-8'));manifest=json.loads((OUT/'manifest.json').read_text(encoding='utf-8'))
     records=[];audits=[]
     for r in rows:
+        if args.secrets_only and not r.get('secretDragon'):continue
         g=sculpt(r)
         records.append(export(r,g))
         symmetry=all(g.cells.get((49-x,y,z),(None,))[0]==c for (x,y,z),(c,_) in g.cells.items())
@@ -538,13 +547,18 @@ def main():
         if len(records)%25==0:print('Authored',len(records),flush=True)
     # Old bossVisual callers still resolve to redesigned regional representatives.
     for old,stage in enumerate([1,5,9,13,17]):
+        if args.secrets_only:continue
         for ext in ['json','design.json','vox']:(OUT/f'boss-{old}.{ext}').write_bytes((OUT/f'guardian-{stage}.{ext}').read_bytes())
-        records.append(dict(records[300+stage-1],name=f'boss-{old}'))
+        records.append(dict(next(v for v in records if v['name']==f'guardian-{stage}'),name=f'boss-{old}'))
     keys={r['name'] for r in records}
     manifest['models']=[r for r in manifest['models'] if r['name'] not in keys]+records
     manifest['characterGenerator']='scripts/rework_characters.py'
     (OUT/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
-    (BRIEF.parent/'character-geometry-audit.json').write_text(json.dumps(audits,indent=2)+'\n',encoding='utf-8')
+    audit_path=BRIEF.parent/'character-geometry-audit.json'
+    if args.secrets_only:
+        previous=json.loads(audit_path.read_text(encoding='utf-8'));replaced={a['key'] for a in audits}
+        audits=[a for a in previous if a['key'] not in replaced]+audits
+    audit_path.write_text(json.dumps(audits,indent=2)+'\n',encoding='utf-8')
     catalog_path=ROOT/'src/stage-pet-catalog.ts'
     source=catalog_path.read_text(encoding='utf-8')
     catalog=json.loads(source[source.index('['):source.rindex(']')+1])
@@ -552,7 +566,7 @@ def main():
         art=rows[100+i]
         pet.update(description=art['concept']+'. '+art['personality']+'.',color=art['colors']['primary'])
     catalog_path.write_text('// Stable gameplay IDs; visual descriptions follow docs/art/character-concepts.json.\nexport const STAGE_PET_ROWS = '+json.dumps(catalog,ensure_ascii=False,indent=2)+';\n',encoding='utf-8')
-    print('Authored',len(rows),'characters; player and save IDs preserved.')
+    print('Authored',len(records),'models; player and save IDs preserved.')
 
 
 if __name__=='__main__':main()

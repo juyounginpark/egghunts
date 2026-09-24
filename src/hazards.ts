@@ -18,6 +18,8 @@ export function contains(h:Hazard,p:Point){
 }
 export class HazardManager{
  attacks:Hazard[]=[];time=0;private next=new Map<string,number>();private serial=0;stage=0;
+ snapshot(){return {attacks:this.attacks,time:this.time,next:[...this.next],serial:this.serial,stage:this.stage};}
+ restore(s:ReturnType<HazardManager['snapshot']>){this.attacks=s.attacks;this.time=s.time;this.next=new Map(s.next);this.serial=s.serial;this.stage=s.stage;}
  reset(stage=0){this.attacks=[];this.time=0;this.next.clear();this.stage=stage;}
  spawn(d:HazardDefinition,p:HazardPlayer,member=0){
   const lead=d.targetingType==='predict'?B.prediction:0;

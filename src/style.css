@@ -452,3 +452,10 @@ nav button img { width:28px; height:28px; }
 #action-icon,#action-icon img,#action-icon .ui-icon,#train-now img,nav button img { width:32px; height:32px; }
 #farm-progress #trait-select { display:flex; align-items:center; justify-content:center; gap:4px; }
 #trait-count { font-size:14px; font-variant-numeric:tabular-nums; }
+/* The account gate uses the same cream cards and olive controls as the HUD. */
+.login-card{width:min(360px,calc(100vw - 32px));padding:24px;background:#fff8e7;color:#465334;border:2px solid #68724d;border-radius:8px;box-shadow:0 5px 0 #b9aa78;text-align:center}
+.login-card>img{width:72px;height:72px;object-fit:contain}
+.login-card h1{margin:8px 0 20px}.login-card form{text-align:left}
+.login-card label{display:block;margin:12px 0 6px;font-weight:700}
+.login-card input{box-sizing:border-box;width:100%;min-height:48px;border:2px solid #aaa880;border-radius:8px;background:#fffdf6;padding:10px;font:inherit;color:#354329}
+.login-card button{width:100%;min-height:48px;margin-top:14px}.login-card p{line-height:1.5;overflow-wrap:anywhere;font-size:14px}

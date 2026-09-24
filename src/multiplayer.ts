@@ -1,4 +1,4 @@
-export type Peer={id:string;name:string;x:number;z:number;rotation:number;appearance:number;downUntil:number;attackAt:number;carried:number|null};
+export type Peer={id:string;name:string;x:number;z:number;rotation:number;appearance:number;downUntil:number;attackAt:number;carried:number|null;slot?:number;pets?:number[];egg?:import('./game').WorldEgg|null};
 export type NetworkEgg={id:string;type:number;x:number;z:number};
 export class Multiplayer {
   peers:Peer[]=[];

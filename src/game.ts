@@ -15,6 +15,7 @@ import {
 } from "./data";
 import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,chooseTrait,traitPoints,reducedDamage,type Progression,type TraitId} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
+import {farmGym,villageColliders} from './village';
 import {MapCollision} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,stageDamage,type HazardDefinition} from "./stage-data";
 export type Egg = { id: string; type: number; hp: number; distance: number; stageId?:number; variant?:number; special?:boolean };
@@ -124,7 +125,7 @@ export function parseSave(raw: string | null, now: number): Save {
   if(!Number.isFinite(s.petIncome.elapsed)||s.petIncome.elapsed<0||s.petIncome.elapsed>=BALANCE.petIncomeSeconds||!Number.isFinite(s.petIncome.pending)||s.petIncome.pending<0)throw new Error('Invalid pet income');
   s.visitedStages ??= [];
   if(!Array.isArray(s.visitedStages)||!s.visitedStages.every(id=>Number.isInteger(id)&&id>=1&&id<=20))throw Error('Invalid visited stages');
-  if(s.death&&(![s.death.x,s.death.z,s.death.at,s.death.remaining].every(Number.isFinite)||s.death.remaining<0||Math.abs(s.death.x)>BALANCE.mapX||s.death.z<BALANCE.mapFarZ||s.death.z>BALANCE.mapNearZ))throw new Error("Invalid death state");
+  if(s.death&&(![s.death.x,s.death.z,s.death.at,s.death.remaining].every(Number.isFinite)||s.death.remaining<0||Math.abs(s.death.x)>BALANCE.baseMapX||s.death.z<BALANCE.mapFarZ||s.death.z>BALANCE.mapNearZ))throw new Error("Invalid death state");
   s.appearance ??= 0;
   if(![0,1,2].includes(s.appearance))throw new Error("Invalid appearance");
   s.tutorial ??= s.mongles?.some(Boolean) ? 5 : 0;
@@ -159,7 +160,7 @@ export function parseSave(raw: string | null, now: number): Save {
     ) ||
     new Set(s.eggs.map(e => e.id)).size !== s.eggs.length ||
     !Array.isArray(s.mongles) ||
-    ![3, 100, MONGLES.length].includes(s.mongles.length) ||
+    ![3, 100, 300, MONGLES.length].includes(s.mongles.length) ||
     !s.mongles.every((v) => Number.isInteger(v) && v >= 0) ||
     !Array.isArray(s.active) ||
     s.active.length > 3 ||
@@ -181,7 +182,7 @@ export function parseSave(raw: string | null, now: number): Save {
       !Number.isFinite(s.expedition.z) ||
       s.expedition.z > BALANCE.mapNearZ ||
       s.expedition.z < BALANCE.mapFarZ ||
-      Math.abs(s.expedition.x) > 7)
+      Math.abs(s.expedition.x) > BALANCE.baseMapX)
   )
     throw new Error("원정 저장 데이터가 올바르지 않아요.");
   if (s.expedition?.carried) {
@@ -209,7 +210,7 @@ export function parseSave(raw: string | null, now: number): Save {
   );
   for(const e of [...s.eggs,...(s.world??[]),...(s.expedition?.carried?[s.expedition.carried]:[])]){
     if(e.stageId!==undefined&&(!Number.isInteger(e.stageId)||e.stageId<1||e.stageId>20))throw Error('Invalid egg stage');
-    if(e.variant!==undefined&&(!Number.isInteger(e.variant)||e.variant<0||e.variant>4))throw Error('Invalid egg variation');
+    if(e.variant!==undefined&&(!Number.isInteger(e.variant)||e.variant<0||e.variant>5||(e.variant===5&&(!e.stageId||EGGS[e.type].tier!==6))))throw Error('Invalid egg variation');
   }
   if(s.progression)validateProgression(s.progression);
   return s;
@@ -261,7 +262,7 @@ export class GameState {
     this.carried=null;this.deadline=0;this.x=this.z=0;this.training=false;this.launch=null;this.death=null;
     this.revivedAt=this.now();
     const xp=this.settleXP(false);this.hp=this.maxHp;this.slowRemaining=0;this.effects={ink:0,stone:0,grab:0,delay:0,magnet:0};this.knockback.remaining=0;this.hazards.reset();
-    this.bosses.forEach(b=>{b.mode='return';b.target=null;});
+    if(!this.roomManaged)this.bosses.forEach(b=>{b.mode='return';b.target=null;});
     this.message=`바람을 타고 농장으로 돌아왔어요 · 경험치 ${xp} 유지`;
     this.emit(`expedition_fail_${reason}`,{xp});this.revision++;return true;
   }
@@ -289,11 +290,15 @@ export class GameState {
     if(this.hp<=0&&this.defenses.some(d=>d.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}
     if(this.hp<=0)this.die();return true;
   }
+  roomManaged=false;
+  farmSlot=0;
+  get gym(){return farmGym(this.farmSlot);}
   readonly mapCollision=new MapCollision();
   push(x:number,z:number){
-    const targetX=Math.max(-BALANCE.mapX,Math.min(BALANCE.mapX,this.x+x)),targetZ=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,this.z+z));
+    const width=this.z+z>=BALANCE.baseMinZ?BALANCE.baseMapX:BALANCE.mapX;
+    const targetX=Math.max(-width,Math.min(width,this.x+x)),targetZ=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,this.z+z));
     const position=this.mapCollision.move(this.x,this.z,targetX-this.x,targetZ-this.z,this.progression.stage);
-    this.x=Math.max(-BALANCE.mapX,Math.min(BALANCE.mapX,position.x));this.z=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,position.z));this.syncStage();
+    this.x=Math.max(-width,Math.min(width,position.x));this.z=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,position.z));this.syncStage();
   }
   get nearStore(){return Math.hypot(this.x-BALANCE.storeX,this.z-BALANCE.storeZ)<BALANCE.storeRadius;}
   hasDiscoveredPet(id:number){return !!this.save.mongles[id]||!!this.save.obtainedPets?.includes(id);}
@@ -339,7 +344,7 @@ export class GameState {
     this.hp=this.maxHp;this.sinceHit=0;this.immunity=BALANCE.reviveImmunity;this.knockedUntil=0;this.launch=null;
     this.death=null;this.reviveAdUntil=null;this.knockback.remaining=0;this.slowRemaining=0;this.effects={ink:0,stone:0,grab:0,delay:0,magnet:0};this.revivedAt=this.now();this.revision++;this.emit('player_revive',{inPlace:here?1:0});return true;
   }
-  get isAtBase(){return this.z>=BALANCE.baseMinZ&&this.z<=BALANCE.mapNearZ&&Math.abs(this.x)<=BALANCE.mapX;}
+  get isAtBase(){return this.z>=BALANCE.baseMinZ&&this.z<=BALANCE.mapNearZ&&Math.abs(this.x)<=BALANCE.baseMapX;}
   knockedUntil=0;
   pvpHit(hit:{x:number;z:number;until:number}){
     if(this.death)return;
@@ -362,13 +367,13 @@ export class GameState {
   get effectiveTrainingRate(){return this.trainingRate*this.movementMultiplier*levelSpeed(this.level)*(1+this.trait('light'));}
   get trainingSpeedBonus(){return (this.save.trainingSpeed??0)*this.movementMultiplier;}
   returnReward: { type: number; distance: number; stageId?:number;variant?:number;special?:boolean } | null = null;
-  get nearGym() { return Math.hypot(this.x-BALANCE.gymX,this.z-BALANCE.gymZ)<BALANCE.gymRadius; }
+  get nearGym() { return Math.hypot(this.x-this.gym.x,this.z-this.gym.z)<BALANCE.gymRadius; }
   get trainingRate() { return BALANCE.trainingPerSecond + BALANCE.trainingPerLevel*this.save.upgrades.training; }
   toggleTraining(){
     if(!this.isAtBase||this.carried||this.death||this.launch||this.knockback.remaining>0||this.now()<this.knockedUntil)return false;
     this.training=!this.training;
     this.trainingClock=this.trainingGain=0;
-    if(this.training){this.x=BALANCE.gymX;this.z=BALANCE.gymZ;this.velocity={x:0,z:0};this.facing={x:0,z:-1};}
+    if(this.training){this.x=this.gym.x;this.z=this.gym.z;this.velocity={x:0,z:0};this.facing={x:0,z:-1};}
     this.message=this.training?'운동 중 · 조이스틱으로 이동하면 운동을 마쳐요.':'운동을 마쳤어요.';
     this.revision++;return true;
   }
@@ -423,6 +428,7 @@ export class GameState {
     public now: () => number,
     public random: () => number = Math.random,
   ) {
+    this.mapCollision.setFarm(villageColliders());
     if(!save.progression){save.progression=newProgression();save.progression.seenEggs=[...save.discovered];save.progression.hatchedPets=save.mongles.flatMap((n,i)=>n?[i]:[]);save.progression.distanceRecord=save.best;}
     validateProgression(save.progression);
     if(save.routeVersion===1){
@@ -505,6 +511,7 @@ export class GameState {
   get autoMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].autoMultiplier,1); }
   get speedMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].speedMultiplier,1); }
   get speed() {
+    if(this.isAtBase)return BALANCE.speed;
     return (
       this.movementMultiplier * levelSpeed(this.level) * (1+this.trait('light')) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.trait('escape')+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
       (BALANCE.speed *
@@ -582,7 +589,7 @@ export class GameState {
           z,
           homeX: x,
           homeZ: z,
-          region,stageId:boss.stage,variant:slot,guardian,
+          region,stageId:boss.stage,variant:EGGS[type].tier===6&&this.random()<BALANCE.secretDragonEggShare?5:slot,guardian,
           secured: false,
           expires: this.now() + BALANCE.nightInterval,
         };
@@ -592,7 +599,7 @@ export class GameState {
     let roll=this.random()*rare.reduce((sum,r)=>sum+r.chance,0);
     const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
     const type=tier*REGIONS.length+REGIONS.length-1,z=-this.route.at(-1)!.end+FINAL_GUARDIAN.eggEndOffset;
-    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:EGGS[type].hp,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
+    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:EGGS[type].hp,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:tier===6&&this.random()<BALANCE.secretDragonEggShare?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
   }
   get nightRemaining() {
     return Math.max(0, Math.ceil((this.nightAt - this.now()) / 1000));
@@ -623,8 +630,9 @@ export class GameState {
     const segment=this.route.find(r=>r.stage===egg.stageId);
     return !!segment&&-z>=segment.start&&-z<segment.end;
   }
-  tickBosses(dt:number){
+  tickBosses(dt:number,only?:number){
     this.bosses.forEach((b,guardian)=>{
+      if(only!==undefined&&guardian!==only)return;
       if((b.mode==='chase'||b.mode==='waking')&&this.carried?.id!==b.target){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
       let activeDt=dt;
       if(b.mode==='waking'){
@@ -685,6 +693,7 @@ export class GameState {
     }
   }
   updateNight() {
+    if(this.roomManaged)return;
     if (this.now() < this.nightAt) return;
     const onset = this.nightAt + Math.floor((this.now()-this.nightAt)/BALANCE.nightInterval)*BALANCE.nightInterval;
     this.nightAt = onset + BALANCE.nightInterval;
@@ -728,7 +737,7 @@ export class GameState {
     }else{
       this.trainingClock=this.trainingGain=0;
     }
-    this.tickBosses(dt);
+    if(!this.roomManaged)this.tickBosses(dt);
     if(this.isAtBase&&!this.death)this.hp=this.maxHp;
 
 
@@ -822,7 +831,7 @@ export class GameState {
     e.hp = Math.max(0, e.hp - amount);
     if (e.hp === 0) {
       const pool = MONGLES.map((m, i) => ({ ...m, index: i })).filter(
-        (m) => m.tier === EGGS[e.type].tier && (e.stageId?m.stageId===e.stageId:m.stageId===0&&m.region===EGGS[e.type].region),
+        (m) => m.tier === EGGS[e.type].tier && (e.stageId?m.stageId===e.stageId&&(e.variant===5?m.species===10:m.species!==10):m.stageId===0&&m.region===EGGS[e.type].region),
       );
       const m =
         pool[Math.min(pool.length - 1, Math.floor(this.random() * pool.length))]

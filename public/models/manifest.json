@@ -9879,6 +9879,506 @@
         ]
       ],
       "anatomy": "mantis"
+    },
+    {
+      "name": "pet-300",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 13094,
+      "bounds": [
+        [
+          1,
+          48
+        ],
+        [
+          2,
+          44
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-301",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 15602,
+      "bounds": [
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          42
+        ],
+        [
+          2,
+          48
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-302",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 10176,
+      "bounds": [
+        [
+          1,
+          48
+        ],
+        [
+          14,
+          44
+        ],
+        [
+          1,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-303",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 14380,
+      "bounds": [
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-304",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 10856,
+      "bounds": [
+        [
+          5,
+          44
+        ],
+        [
+          3,
+          46
+        ],
+        [
+          6,
+          43
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-305",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 10250,
+      "bounds": [
+        [
+          2,
+          47
+        ],
+        [
+          3,
+          46
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-306",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 12112,
+      "bounds": [
+        [
+          1,
+          48
+        ],
+        [
+          2,
+          45
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-307",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 15282,
+      "bounds": [
+        [
+          4,
+          45
+        ],
+        [
+          2,
+          45
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-308",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 15848,
+      "bounds": [
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-309",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 12690,
+      "bounds": [
+        [
+          6,
+          43
+        ],
+        [
+          2,
+          46
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-310",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 13278,
+      "bounds": [
+        [
+          2,
+          47
+        ],
+        [
+          3,
+          47
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-311",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 8088,
+      "bounds": [
+        [
+          6,
+          43
+        ],
+        [
+          6,
+          47
+        ],
+        [
+          2,
+          46
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-312",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 16148,
+      "bounds": [
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          46
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-313",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 15046,
+      "bounds": [
+        [
+          1,
+          48
+        ],
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-314",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 12360,
+      "bounds": [
+        [
+          3,
+          46
+        ],
+        [
+          2,
+          42
+        ],
+        [
+          2,
+          46
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-315",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 14322,
+      "bounds": [
+        [
+          3,
+          46
+        ],
+        [
+          2,
+          45
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-316",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 11102,
+      "bounds": [
+        [
+          3,
+          46
+        ],
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          42
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-317",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 14084,
+      "bounds": [
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          46
+        ],
+        [
+          2,
+          47
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-318",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 9990,
+      "bounds": [
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          47
+        ],
+        [
+          2,
+          46
+        ]
+      ],
+      "anatomy": "dragon"
+    },
+    {
+      "name": "pet-319",
+      "grid": [
+        50,
+        50,
+        50
+      ],
+      "paletteCount": 5,
+      "voxelCount": 7014,
+      "bounds": [
+        [
+          2,
+          47
+        ],
+        [
+          3,
+          47
+        ],
+        [
+          2,
+          46
+        ]
+      ],
+      "anatomy": "dragon"
     }
   ],
   "characterGenerator": "scripts/rework_characters.py"

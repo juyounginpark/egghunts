@@ -8800,6 +8800,625 @@
     "front": "-Z"
   },
   {
+    "key": "pet-300",
+    "name": "풍차정원 고룡",
+    "stage": 1,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 풍차 씨앗",
+    "silhouette": [
+      "풍차처럼 펼친 잎 날개",
+      "뿌리로 뻗은 네 다리"
+    ],
+    "personality": "느긋한 정원지기",
+    "ecology": "등의 풍차 잎으로 바람을 모아 초원에 씨앗을 뿌린다.",
+    "colors": {
+      "primary": "#97b971",
+      "accent": "#f2c66d"
+    },
+    "profile": {
+      "width": 11,
+      "height": 9,
+      "depth": 8,
+      "ear": 12,
+      "tail": 14,
+      "stance": 8
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-301",
+    "name": "태엽기관 거룡",
+    "stage": 2,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 황금 기관실",
+    "silhouette": [
+      "기관차 가슴",
+      "바퀴 발",
+      "기차 객차 꼬리"
+    ],
+    "personality": "성실하고 우렁찬",
+    "ecology": "장난감 왕국의 멈춘 태엽을 가슴 속 기관으로 되감는다.",
+    "colors": {
+      "primary": "#c99579",
+      "accent": "#72b7ca"
+    },
+    "profile": {
+      "width": 9,
+      "height": 10,
+      "depth": 10,
+      "ear": 7,
+      "tail": 9,
+      "stance": 9
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-302",
+    "name": "산호궁 해룡",
+    "stage": 3,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 산호 왕궁",
+    "silhouette": [
+      "납작한 유영 몸",
+      "산호 궁전 등",
+      "쌍지느러미"
+    ],
+    "personality": "고요하고 위엄 있는",
+    "ecology": "산호 가지를 등에 기르고 넓은 지느러미로 산란장을 지킨다.",
+    "colors": {
+      "primary": "#df9998",
+      "accent": "#75cbbc"
+    },
+    "profile": {
+      "width": 12,
+      "height": 11,
+      "depth": 12,
+      "ear": 8,
+      "tail": 12,
+      "stance": 10
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-303",
+    "name": "분화심장 화산룡",
+    "stage": 4,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 분화구 심장",
+    "silhouette": [
+      "화산 분화구 가슴",
+      "굵은 바위 앞발",
+      "갈라진 용암 날개"
+    ],
+    "personality": "폭발적이지만 인내하는",
+    "ecology": "등의 분화구로 열을 배출해 화산의 압력을 다스린다.",
+    "colors": {
+      "primary": "#655966",
+      "accent": "#ff9852"
+    },
+    "profile": {
+      "width": 10,
+      "height": 12,
+      "depth": 8,
+      "ear": 9,
+      "tail": 15,
+      "stance": 7
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-304",
+    "name": "해구왕 크라켄룡",
+    "stage": 5,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 심해 봉인구",
+    "silhouette": [
+      "긴 세로 맨틀",
+      "크라켄 촉수 갈기",
+      "갈고리 꼬리"
+    ],
+    "personality": "말 없고 위압적인",
+    "ecology": "심해 해구를 촉수로 더듬고 머리 위 등불로 길 잃은 생물을 이끈다.",
+    "colors": {
+      "primary": "#625b97",
+      "accent": "#8ae4ca"
+    },
+    "profile": {
+      "width": 8,
+      "height": 13,
+      "depth": 10,
+      "ear": 10,
+      "tail": 10,
+      "stance": 8
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-305",
+    "name": "자정서고 유령룡",
+    "stage": 6,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 잠긴 마도서",
+    "silhouette": [
+      "펼친 책 날개",
+      "종탑 목",
+      "갈라진 망토 꼬리"
+    ],
+    "personality": "엄격하지만 호기심 많은",
+    "ecology": "유령 학교의 잊힌 이야기를 날개 속 책장에 보관한다.",
+    "colors": {
+      "primary": "#928097",
+      "accent": "#d6dab3"
+    },
+    "profile": {
+      "width": 11,
+      "height": 8,
+      "depth": 12,
+      "ear": 11,
+      "tail": 13,
+      "stance": 9
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-306",
+    "name": "네온코어 회로룡",
+    "stage": 7,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 네온 서버핵",
+    "silhouette": [
+      "각진 광선 날개",
+      "서버탑 등뼈",
+      "안테나 뿔"
+    ],
+    "personality": "차갑고 정확한",
+    "ecology": "도시의 신호를 등쪽 서버탑에 모아 네온 회로로 내보낸다.",
+    "colors": {
+      "primary": "#566587",
+      "accent": "#e386d2"
+    },
+    "profile": {
+      "width": 9,
+      "height": 9,
+      "depth": 8,
+      "ear": 12,
+      "tail": 16,
+      "stance": 10
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-307",
+    "name": "태양릉 사막룡",
+    "stage": 8,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 태양 피라미드",
+    "silhouette": [
+      "피라미드 등",
+      "낮은 사자형 앞몸",
+      "부채 목장식"
+    ],
+    "personality": "오만하고 느긋한",
+    "ecology": "피라미드형 저장실에 밤의 냉기를 모으고 낮에는 긴 그림자를 만든다.",
+    "colors": {
+      "primary": "#d1ac6e",
+      "accent": "#76b8ba"
+    },
+    "profile": {
+      "width": 12,
+      "height": 10,
+      "depth": 10,
+      "ear": 7,
+      "tail": 11,
+      "stance": 7
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-308",
+    "name": "세계수 원시룡",
+    "stage": 9,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 세계수 화석",
+    "silhouette": [
+      "긴 목",
+      "거대한 나무 수관",
+      "뿌리 꼬리"
+    ],
+    "personality": "오래 참고 기억하는",
+    "ecology": "공룡섬의 씨앗을 등에 기르며 발자국마다 어린 숲이 자란다.",
+    "colors": {
+      "primary": "#7c9e73",
+      "accent": "#e0be87"
+    },
+    "profile": {
+      "width": 10,
+      "height": 11,
+      "depth": 12,
+      "ear": 8,
+      "tail": 14,
+      "stance": 8
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-309",
+    "name": "월궁기와 도깨비룡",
+    "stage": 10,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 달기와 봉인",
+    "silhouette": [
+      "처마형 갈비",
+      "기와 등",
+      "굽은 도깨비 뿔"
+    ],
+    "personality": "호탕하고 짓궂은",
+    "ecology": "달마을 지붕 위를 건너며 뿔에 모은 달빛으로 소원을 비춘다.",
+    "colors": {
+      "primary": "#758f8d",
+      "accent": "#f4a47d"
+    },
+    "profile": {
+      "width": 8,
+      "height": 12,
+      "depth": 8,
+      "ear": 9,
+      "tail": 9,
+      "stance": 9
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-310",
+    "name": "천뢰신전 성룡",
+    "stage": 11,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 천둥 신전",
+    "silhouette": [
+      "신전 기둥 다리",
+      "큰 삼각 지붕 날개",
+      "번개 뿔"
+    ],
+    "personality": "엄숙하고 자비로운",
+    "ecology": "올림포스의 무너진 기둥을 몸으로 받치며 구름 사이의 번개를 모은다.",
+    "colors": {
+      "primary": "#d3d3de",
+      "accent": "#dcb963"
+    },
+    "profile": {
+      "width": 11,
+      "height": 13,
+      "depth": 10,
+      "ear": 10,
+      "tail": 12,
+      "stance": 10
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-311",
+    "name": "모선핵 성운룡",
+    "stage": 12,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 외계 모선핵",
+    "silhouette": [
+      "비행접시 몸",
+      "가느다란 긴 목",
+      "원반 꼬리"
+    ],
+    "personality": "관찰을 좋아하는",
+    "ecology": "외계 구역의 중력을 조절하는 접시형 기관으로 무거운 몸을 띄운다.",
+    "colors": {
+      "primary": "#9ba5bd",
+      "accent": "#a3e59c"
+    },
+    "profile": {
+      "width": 9,
+      "height": 8,
+      "depth": 12,
+      "ear": 11,
+      "tail": 15,
+      "stance": 7
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-312",
+    "name": "공중요새 증기룡",
+    "stage": 13,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 황동 비행선",
+    "silhouette": [
+      "비행선 등",
+      "쌍굴뚝",
+      "프로펠러 날개"
+    ],
+    "personality": "부지런하고 덜렁대는",
+    "ecology": "공중도시의 증기와 바람을 모아 거대한 용골 안에 저장한다.",
+    "colors": {
+      "primary": "#b7916c",
+      "accent": "#8ec7c4"
+    },
+    "profile": {
+      "width": 12,
+      "height": 9,
+      "depth": 8,
+      "ear": 12,
+      "tail": 10,
+      "stance": 8
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-313",
+    "name": "영겁빙하 결정룡",
+    "stage": 14,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 빙하 왕관",
+    "silhouette": [
+      "방패 같은 얼음 날개",
+      "긴 쌍엄니",
+      "빙산 등"
+    ],
+    "personality": "과묵하고 완고한",
+    "ecology": "빙하의 틈을 얼음 날개로 막고 몸 안에 태초의 냉기를 보존한다.",
+    "colors": {
+      "primary": "#adcfdc",
+      "accent": "#d9b8dd"
+    },
+    "profile": {
+      "width": 10,
+      "height": 10,
+      "depth": 10,
+      "ear": 7,
+      "tail": 13,
+      "stance": 9
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-314",
+    "name": "꿈베개 몽환룡",
+    "stage": 15,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 별이불 요람",
+    "silhouette": [
+      "쿠션처럼 넓은 몸",
+      "이불 날개",
+      "나선 리본 꼬리"
+    ],
+    "personality": "졸리지만 다정한",
+    "ecology": "꿈나라를 떠다니며 이불 날개 아래에 길 잃은 꿈을 재운다.",
+    "colors": {
+      "primary": "#bf9fc3",
+      "accent": "#f2d29d"
+    },
+    "profile": {
+      "width": 8,
+      "height": 11,
+      "depth": 12,
+      "ear": 8,
+      "tail": 16,
+      "stance": 10
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-315",
+    "name": "정화로 재생룡",
+    "stage": 16,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 격리 여과로",
+    "silhouette": [
+      "원자로 가슴",
+      "네 여과 굴뚝",
+      "덩굴 뿌리 다리"
+    ],
+    "personality": "묵묵하고 희생적인",
+    "ecology": "폐허의 독을 가슴의 여과로에 가두고 뿌리로 맑은 물을 돌려준다.",
+    "colors": {
+      "primary": "#82915e",
+      "accent": "#c3e57c"
+    },
+    "profile": {
+      "width": 11,
+      "height": 12,
+      "depth": 8,
+      "ear": 9,
+      "tail": 11,
+      "stance": 7
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-316",
+    "name": "왕벌집 갑충룡",
+    "stage": 17,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 왕벌집 고치",
+    "silhouette": [
+      "층진 벌집 배",
+      "네 장의 겹날개",
+      "낫 앞발"
+    ],
+    "personality": "질서정연한 수호자",
+    "ecology": "소인국의 이슬과 꽃가루를 거대한 벌집 배에 저장한다.",
+    "colors": {
+      "primary": "#94ae69",
+      "accent": "#e1bb72"
+    },
+    "profile": {
+      "width": 9,
+      "height": 13,
+      "depth": 10,
+      "ear": 10,
+      "tail": 14,
+      "stance": 8
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-317",
+    "name": "행성용광 고철룡",
+    "stage": 18,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 행성 조립핵",
+    "silhouette": [
+      "무한궤도 뒷발",
+      "트러스 목",
+      "자석 집게 꼬리"
+    ],
+    "personality": "거칠지만 꼼꼼한",
+    "ecology": "로봇행성의 고철을 몸에 잇고 집게 꼬리로 고장 난 구조물을 조립한다.",
+    "colors": {
+      "primary": "#869099",
+      "accent": "#dca365"
+    },
+    "profile": {
+      "width": 12,
+      "height": 8,
+      "depth": 12,
+      "ear": 11,
+      "tail": 9,
+      "stance": 9
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-318",
+    "name": "성좌천문 은하룡",
+    "stage": 19,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 성좌 관측구",
+    "silhouette": [
+      "천구의 고리 몸",
+      "망원경 뿔",
+      "혜성 꼬리"
+    ],
+    "personality": "침착하고 멀리 보는",
+    "ecology": "천문대의 별빛을 고리 기관에 모아 아직 보이지 않는 별길을 찾는다.",
+    "colors": {
+      "primary": "#8383bb",
+      "accent": "#acd6e5"
+    },
+    "profile": {
+      "width": 10,
+      "height": 9,
+      "depth": 8,
+      "ear": 12,
+      "tail": 12,
+      "stance": 10
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
+    "key": "pet-319",
+    "name": "첫빛차원 창세룡",
+    "stage": 20,
+    "slot": 10,
+    "boss": false,
+    "anatomy": "dragon",
+    "concept": "거대한 드래곤 × 첫빛 차원문",
+    "silhouette": [
+      "열린 차원문 몸통",
+      "여섯 장의 날개",
+      "씨앗 심장"
+    ],
+    "personality": "온화하지만 헤아릴 수 없는",
+    "ecology": "공허 정원의 첫 씨앗을 몸속 문에 품고 새 세계로 통하는 빛을 지킨다.",
+    "colors": {
+      "primary": "#6e6685",
+      "accent": "#ebcb80"
+    },
+    "profile": {
+      "width": 8,
+      "height": 10,
+      "depth": 10,
+      "ear": 7,
+      "tail": 15,
+      "stance": 7
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "secretDragon": true
+  },
+  {
     "key": "guardian-1",
     "name": "초원 둥지 수호자",
     "stage": 1,
