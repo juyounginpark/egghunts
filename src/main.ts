@@ -195,7 +195,7 @@ async function action(preparedId?:string) {
     if(!game.carried&&!game.near&&game.nearStore){setTab('store');return;}
     if(online.active){
       if(game.carried)await remote('drop');
-      else if(targetEgg)await remote('pickup',targetEgg.id);
+      else if(targetEgg){input.reset();online.halt();await remote('pickup',targetEgg.id);}
       else if(game.nearGym)await remote('train');
       else if(!game.knockback.remaining&&world.swingBat(game.now())){feedback('swing');void remote('attack');}
       return;

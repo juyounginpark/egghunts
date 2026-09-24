@@ -562,7 +562,9 @@ export class GameState {
     return Math.hypot(this.x, this.z);
   }
   canReachEgg(e:WorldEgg) {
-    return Math.hypot(e.x-this.x,e.z-this.z)<BALANCE.interaction+(e.id.startsWith('net-')?0:Math.max(0,RARITIES[EGGS[e.type].tier].scale*.3-.3));
+    const shell=e.id.startsWith('net-')?0:Math.max(0,RARITIES[EGGS[e.type].tier].scale*BALANCE.eggVisualScale*.3-.3);
+    const approach=this.movementSpeed*BALANCE.eggApproachSeconds;
+    return Math.hypot(e.x-this.x,e.z-this.z)<BALANCE.interaction+shell+approach+BALANCE.roomVisualOffsetMax;
   }
   get near() {
     const behind = (e: WorldEgg) => (e.x-this.x)*this.facing.x + (e.z-this.z)*this.facing.z < -0.001 ? 1 : 0;
@@ -594,8 +596,8 @@ export class GameState {
         const region=Math.floor((boss.stage-1)/4);
         const dragon = this.random()<BALANCE.secretDragonEggChance;
         const type = dragon?6*REGIONS.length+region:rollEgg(region, this.random);
-        const x = (slot - 2) * 1.6,
-          z = -boss.home + Math.abs(slot - 2) * 0.45;
+        const x = (slot - 2) * BALANCE.eggNestSpacing,
+          z = -boss.home + Math.abs(slot - 2) * BALANCE.eggNestDepthSpacing;
         return {
           id: `${boss.stage}-${slot}-${this.now()}-${this.random()}`,
           type,

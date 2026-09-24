@@ -218,7 +218,17 @@ function createRegionLayout(stage:number,length:number){
    if([3,5,9,17].includes(stage))for(let j=0;j<5;j++)b(x+(rand()-.5)*2,.12,z+(rand()-.5)*2,.1,.3,.1,s.accent);
    z-=(2.6+rand()*2.8)/STAGE_STEPS[routeStep(z,0,length)-1].density;
   }
-  // Three set pieces per expedition, intentionally not identical on both sides.
+  // Extra biome-specific clusters stay outside the central nest/escape lanes.
+  // Reuse the batched sculptures and distance buckets instead of adding meshes.
+  for(let patch=0;patch<Math.ceil(length/12);patch++){
+   const side=patch%2?1:-1,z=-12-patch*12,x=side*(7+rand()*.5);
+   stamp(sculpture(stage,patch%3),x,z,1.05+rand()*.35);
+   stamp(sculpture(stage,(patch+1)%3),x-side*.65,z+2.5,.55+rand()*.2);
+   stamp(sculpture(stage,(patch+2)%3),-x,z-3,.7+rand()*.25);
+   // Low themed footing ties each cluster to its terrain without hiding players.
+   for(let j=0;j<3;j++)b(x+side*j*.25,.035,z+1+j*.35,.45,.07,.35,j%2?s.accent:s.color);
+  }
+  // Four set pieces per expedition, intentionally not identical on both sides.
   for(const [i,depth] of [.15,.37,.63,.88].map(t=>ROUTE.entrance+t*length).entries()){
    const side=i%2?1:-1,v=i*4;
    stamp(sculpture(stage,v),side*5.8,-depth,1.8);

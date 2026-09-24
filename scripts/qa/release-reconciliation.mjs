@@ -24,20 +24,22 @@ try{
   // Older walking reply arrives after release, followed by the stop reply.
   remote.z=release+gap;online.apply(packet(),{x:0,z:-1},walking);
   for(let i=0;i<30;i++)online.reconcile(1/60);
-  assert.equal(drawn(),release,'old walking reply must not move a released player');
+  if(before)assert.equal(drawn(),release,'previous implementation keeps the entire release offset');
+  else assert.ok(Math.hypot(online.visualOffset.x,online.visualOffset.z)<=.45000001,'display must stay within pickup tolerance');
+  const correctedRelease=drawn();
   online.apply(packet(),{x:0,z:0},stopped);
   const frames=[];
   for(let i=0;i<120;i++){online.reconcile(1/60);frames.push(drawn());if(i%15===0)online.apply(packet(),{x:0,z:0},stopped);}
-  const drift=Math.max(...frames.map(z=>Math.abs(z-release)));
-  results.push({gap,postReleaseDrift:drift});
+  const drift=Math.max(...frames.map(z=>Math.abs(z-(before?release:correctedRelease))));
+  results.push({gap,initialPositionCorrection:Math.abs(correctedRelease-release),postReleaseDrift:drift});
   if(before)continue;
   assert.ok(drift<1e-8,'stop reply and repeated idle replies must not create a second walk');
   assert.equal(game.z,remote.z,'simulation still uses authoritative coordinates');
   remote.z-=.25;online.apply(packet(),{x:0,z:0},stopped);
-  assert.ok(Math.abs(drawn()-(release-.25))<1e-8,'server-driven idle motion remains visible');
+  assert.ok(Math.abs(drawn()-(correctedRelease-.25))<1e-8,'server-driven idle motion remains visible');
   // Rapid stop/start/stop: the previous stop reply cannot acknowledge the new release.
   online.update(0,-1);online.update(0,0);const secondStop=online.inputRevision;
-  remote.z+=.5;const secondRelease=drawn();online.apply(packet(),{x:0,z:0},stopped);
+  remote.z-=.1;const secondRelease=drawn();online.apply(packet(),{x:0,z:0},stopped);
   assert.notEqual(online.idleAcknowledgedRevision,secondStop);
   online.reconcile(.2);assert.ok(Math.abs(drawn()-secondRelease)<1e-8);
   online.apply(packet(),{x:0,z:0},secondStop);assert.equal(online.idleAcknowledgedRevision,secondStop);

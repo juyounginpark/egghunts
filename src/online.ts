@@ -198,6 +198,13 @@ export class OnlineGame{
     if(this.idleAcknowledgedRevision===this.inputRevision)this.visualOffset=offset;
     this.idleAcknowledgedRevision=this.inputRevision;
    }
+   // Presentation must stay inside the shared interaction tolerance. Keeping a
+   // large release offset indefinitely made nearby eggs unreachable on the server.
+   const offsetLength=Math.hypot(this.visualOffset.x,this.visualOffset.z);
+   if(offsetLength>BALANCE.roomVisualOffsetMax){
+    const scale=BALANCE.roomVisualOffsetMax/offsetLength;
+    this.visualOffset.x*=scale;this.visualOffset.z*=scale;
+   }
   }
   for(const error of state.errors)this.notify(error==='CHAT_COOLDOWN'?'잠깐 기다렸다 보내주세요.':error==='INVALID_CHAT'?`메시지는 ${BALANCE.chatMaxLength}자 이내로 입력해 주세요.`:errorText[error]??'지금은 사용할 수 없어요.');
  }
