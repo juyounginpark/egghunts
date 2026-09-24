@@ -6,6 +6,7 @@ export type DefensePassive={maxHP?:number;damageReduction?:number;firstHitReduct
 // Existing companions keep their click/auto/speed abilities; future rows opt in.
 export const PET_DEFENSE:Partial<Record<number,DefensePassive>>={};
 export const BALANCE = {
+  eggVisualScale:1.5,
   roomStopRewindMs:500,
   virtualAdDuration:10000,
   virtualAdReward:30,

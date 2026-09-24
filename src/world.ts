@@ -122,7 +122,7 @@ export class World {
       const eggKey=peer.carried===null?null:`${peer.egg?.id??''}:${peer.carried}:${peer.egg?.stageId??''}:${peer.egg?.variant??''}`;
       if(avatar.userData.egg!==eggKey){
         const old=avatar.getObjectByName('peer-egg');if(old){old.traverse(o=>{if(o instanceof T.InstancedMesh)o.dispose();});avatar.remove(old);}
-        if(peer.carried!==null){const egg=this.eggModel(peer.egg??{type:peer.carried});egg.name='peer-egg';egg.position.y=1.12;egg.scale.setScalar(RARITIES[EGGS[peer.carried].tier].scale*.85);avatar.add(egg);}
+        if(peer.carried!==null){const egg=this.eggModel(peer.egg??{type:peer.carried});egg.name='peer-egg';egg.position.y=1.12;egg.scale.setScalar(RARITIES[EGGS[peer.carried].tier].scale*.85*BALANCE.eggVisualScale);avatar.add(egg);}
         avatar.userData.egg=eggKey;
       }
       const held=avatar.getObjectByName('peer-egg');if(held)animateEgg(held,frameAt/1000,this.low);
@@ -329,6 +329,7 @@ export class World {
     const pedestal = model("pedestal");
     pedestal.scale.set(2.5, 1, 2.5);
     pedestal.position.y = -0.2;
+    this.crack.scale.setScalar(BALANCE.eggVisualScale);
     this.hatch.add(pedestal, this.crack);
     this.hatch.visible = false;
   }
@@ -369,7 +370,7 @@ export class World {
     if (this.hatchModel) this.hatch.remove(this.hatchModel);
     this.hatchModel = m ?? null;
     if (m) {
-      m.scale.setScalar(result !== null ? 2 : 2.5);
+      m.scale.setScalar(result !== null ? 2 : 2.5*BALANCE.eggVisualScale);
       this.hatch.add(m);
     }
   }
@@ -446,7 +447,7 @@ export class World {
       for (const e of visibleEggs) {
         const m = this.eggModel(e);
         m.position.set(e.x, 0.06, e.z);
-        m.scale.setScalar(RARITIES[EGGS[e.type].tier].scale);
+        m.scale.setScalar(RARITIES[EGGS[e.type].tier].scale*BALANCE.eggVisualScale);
         m.userData.id = e.id;
         const nestScale=m.scale.x*1.45;
         const nestKey=`${e.region}:${e.homeX}:${e.homeZ}`;
@@ -480,7 +481,9 @@ export class World {
     if (game.flyaway && game.flyaway.at !== this.flyAt) {
       this.flyAt = game.flyaway.at;
       this.flying.clear();
-      this.flying.add(this.eggModel(game.flyaway));
+      const egg=this.eggModel(game.flyaway);
+      egg.scale.setScalar(BALANCE.eggVisualScale);
+      this.flying.add(egg);
     }
     const flyAge = game.flyaway ? (game.now() - game.flyaway.at) / 1000 : 10;
     this.flying.visible = flyAge < 2.5 && !isHatch;
@@ -500,8 +503,8 @@ export class World {
       this.storage.clear();
       game.save.eggs.forEach((e, i) => {
         const m = this.eggModel(e);
-        m.scale.setScalar(0.55);
-        m.position.set(-4 + (i % 3) * 0.7, 0.8, 0.3 + Math.floor(i / 3) * 0.65);
+        m.scale.setScalar(0.55*BALANCE.eggVisualScale);
+        m.position.set(-4 + (i % 3) * 0.7*BALANCE.eggVisualScale, 0.8, 0.3 + Math.floor(i / 3) * 0.65*BALANCE.eggVisualScale);
         this.storage.add(m);
       });
     }
@@ -542,7 +545,7 @@ export class World {
       this.carry.userData.id = carryId;
       if (game.carried) {
         const m = this.eggModel(game.carried);
-        m.scale.setScalar(RARITIES[EGGS[game.carried.type].tier].scale * 0.85);
+        m.scale.setScalar(RARITIES[EGGS[game.carried.type].tier].scale * 0.85*BALANCE.eggVisualScale);
         m.position.y = 1.12;
         this.carry.add(m);
       }
