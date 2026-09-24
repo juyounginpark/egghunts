@@ -346,6 +346,14 @@ export class GameState {
   }
   get isAtBase(){return this.z>=BALANCE.baseMinZ&&this.z<=BALANCE.mapNearZ&&Math.abs(this.x)<=BALANCE.baseMapX;}
   knockedUntil=0;
+  batAt=0;
+  receiveBat(dx:number,dz:number){
+    const now=this.now();if(this.death||now<this.knockedUntil)return false;
+    if(this.carried){const egg=this.carried;egg.x=this.x;egg.z=this.z;this.world.push(egg);this.carried=null;this.emit('egg_drop',{type:egg.type,reason:'player_hit'});}
+    const length=Math.hypot(dx,dz)||1;
+    this.knockback={x:dx/length*BALANCE.knockback/BALANCE.batFlightSeconds,z:dz/length*BALANCE.knockback/BALANCE.batFlightSeconds,remaining:BALANCE.batFlightSeconds};
+    this.knockedUntil=now+BALANCE.knockdownMs;this.hitAt=now;this.training=false;this.launch=null;this.revision++;return true;
+  }
   pvpHit(hit:{x:number;z:number;until:number}){
     if(this.death)return;
     if(this.carried)this.emit('egg_drop',{type:this.carried.type,reason:'player_hit'});

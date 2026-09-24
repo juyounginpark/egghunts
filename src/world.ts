@@ -34,7 +34,8 @@ export class World {
   private batGeometry=new T.BoxGeometry(.13,.13,1.25);
   private batMaterial=new T.MeshLambertMaterial({color:0xc48c55});
   private swungAt=-Infinity;
-  swingBat(now:number){if(now-this.swungAt>=BALANCE.batCooldown)this.swungAt=now;}
+  private peerFrameAt=0;
+  swingBat(now:number){if(now-this.swungAt<BALANCE.batCooldown)return false;this.swungAt=now;return true;}
   private animateBat(avatar:T.Group,age:number){
     let bat=avatar.getObjectByName('bat') as T.Mesh|undefined;
     if(!bat){bat=new T.Mesh(this.batGeometry,this.batMaterial);bat.name='bat';avatar.add(bat);}
@@ -48,6 +49,7 @@ export class World {
     if(old instanceof T.Mesh){old.geometry.dispose();(old.material as T.Material).dispose();}
   }
   updatePeers(players:Peer[],visible:boolean,now:number){
+    const frameAt=performance.now(),dt=Math.min(.1,Math.max(0,(frameAt-this.peerFrameAt)/1000)),blend=1-Math.exp(-dt*12);this.peerFrameAt=frameAt;
     this.roomFarmPets.visible=visible;void this.showRoomFarms(players).catch(err=>{this.assetError=String(err);});
     for(const [id,avatar] of this.peers)if(!players.some(p=>p.id===id)){
       const accessory=avatar.getObjectByName('avatar-accessory') as T.Mesh;
@@ -55,11 +57,22 @@ export class World {
       this.scene.remove(avatar);this.peers.delete(id);
     }
     for(const peer of players){
-      if(!this.peers.has(peer.id)){const avatar=model('alkong');avatar.userData.appearance=-1;this.peers.set(peer.id,avatar);this.scene.add(avatar);}
+      if(!this.peers.has(peer.id)){const avatar=model('alkong');avatar.position.set(peer.x,0,peer.z);avatar.userData.appearance=-1;this.peers.set(peer.id,avatar);this.scene.add(avatar);}
       const avatar=this.peers.get(peer.id)!;
-      avatar.visible=visible;avatar.position.lerp(new T.Vector3(peer.x,0,peer.z),.3);avatar.rotation.y=peer.rotation;
-      avatar.rotation.z=now<peer.downUntil?Math.PI/2:0;
-      this.animateBat(avatar,now-peer.attackAt);
+      if(avatar.userData.snapshot!==peer){
+        if(peer.attackAt!==avatar.userData.attackAt&&now-peer.attackAt<1500)avatar.userData.swingReceived=frameAt;
+        if(peer.hitAt!==avatar.userData.hitAt&&now<peer.downUntil)avatar.userData.hitReceived=frameAt;
+        avatar.userData.snapshot=peer;avatar.userData.receivedAt=frameAt;avatar.userData.attackAt=peer.attackAt;avatar.userData.hitAt=peer.hitAt;
+      }
+      const lead=Math.min(.2,(frameAt-avatar.userData.receivedAt)/1000),down=now<peer.downUntil;
+      const tx=peer.x+(down?0:(peer.velocity?.x??0)*lead),tz=peer.z+(down?0:(peer.velocity?.z??0)*lead);
+      const snap=Math.hypot(tx-avatar.position.x,tz-avatar.position.z)>12;
+      avatar.visible=visible;avatar.position.x+=(tx-avatar.position.x)*(snap?1:blend);avatar.position.z+=(tz-avatar.position.z)*(snap?1:blend);
+      const flight=(frameAt-(avatar.userData.hitReceived??-Infinity))/(BALANCE.batFlightSeconds*1000);
+      avatar.position.y=down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0;
+      avatar.rotation.y+=Math.atan2(Math.sin(peer.rotation-avatar.rotation.y),Math.cos(peer.rotation-avatar.rotation.y))*blend;
+      avatar.rotation.z+=( (down?Math.PI/2:0)-avatar.rotation.z)*blend;
+      this.animateBat(avatar,frameAt-(avatar.userData.swingReceived??-Infinity));
       const eggKey=peer.egg?.id??peer.carried;
       if(avatar.userData.egg!==eggKey){
         const old=avatar.getObjectByName('peer-egg');if(old)avatar.remove(old);

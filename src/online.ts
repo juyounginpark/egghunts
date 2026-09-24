@@ -2,6 +2,7 @@ import type {SupabaseClient} from '@supabase/supabase-js';
 import type {GameState,WorldEgg,Boss} from './game';
 import {restoreRuntime,type RuntimeState} from './online-state';
 import type {Peer} from './multiplayer';
+import {BALANCE} from './data';
 
 export const SUPABASE_URL=import.meta.env.VITE_SUPABASE_URL||'https://leblcdiqsyxqzwlsnkio.supabase.co';
 const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_2KTon_WzPAci5G4dLyZ5Ww_bPgwmiig';
@@ -25,6 +26,8 @@ export class OnlineGame{
  private lastError='';
  private correction={x:0,z:0};
  private roundTrip=0;
+ private receivedAt=0;
+ get canPredict(){return performance.now()-this.receivedAt<BALANCE.roomPredictionMs;}
  constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){}
  async enter(host:HTMLElement){
   const {createClient}=await import('@supabase/supabase-js');
@@ -67,6 +70,7 @@ export class OnlineGame{
  }
  attach(game:GameState){this.game=game;if(this.latest)this.apply(this.latest);}
  private apply(state:Snapshot){
+  this.receivedAt=performance.now();
   this.latest=state;this.peers=state.peers;this.syncClock(state.serverTime);
   if(this.game){
    const g=this.game,settings=g.save.settings,old={x:g.x,z:g.z,carried:g.carried?.id,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot};
@@ -74,7 +78,7 @@ export class OnlineGame{
    const stable=old.carried===g.carried?.id&&old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
    const gap=Math.hypot(old.x-g.x,old.z-g.z);
    if(stable&&gap<Math.max(2,g.speed*.5)){
-    const lead=Math.min(.15,this.roundTrip/2000),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
+    const lead=Math.min(.5,this.roundTrip/2000),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
     this.correction={x:g.x+(moving?this.vector.x*g.speed*lead:0)-old.x,z:g.z+(moving?this.vector.z*g.speed*lead:0)-old.z};g.x=old.x;g.z=old.z;
    }else this.correction={x:0,z:0};
   }
@@ -89,12 +93,15 @@ export class OnlineGame{
  halt(){this.vector={x:0,z:0};}
  reconcile(dt:number){
   if(!this.game)return;
+  // Only predict knockback motion here; rewards, damage and drops stay on the server.
+  if(this.game.knockback.remaining>0){const k=this.game.knockback,step=Math.min(dt,k.remaining);this.game.push(k.x*step,k.z*step);k.remaining=Math.max(0,k.remaining-step);return;}
   const blend=1-Math.exp(-dt*10),dx=this.correction.x*blend,dz=this.correction.z*blend;
+  if(Math.hypot(this.correction.x,this.correction.z)<.01){this.correction={x:0,z:0};return;}
   this.game.push(dx,dz);this.correction.x-=dx;this.correction.z-=dz;
  }
  update(x:number,z:number){
   const wasStopped=Math.hypot(this.vector.x,this.vector.z)<.01,stopped=Math.hypot(x,z)<.01;
-  this.vector={x,z};
+  const length=Math.max(1,Math.hypot(x,z));this.vector={x:x/length,z:z/length};
   if(!this.active||this.busy||performance.now()<this.retryAt||performance.now()-this.lastSent<(wasStopped!==stopped?50:200))return;
   void this.flush().catch(()=>{});
  }

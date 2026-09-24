@@ -50,14 +50,14 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   g.nightUntil=now-cycle*BALANCE.nightInterval<BALANCE.nightDuration?cycle*BALANCE.nightInterval+BALANCE.nightDuration:0;
  }
  // Never accept client coordinates, speed, dt, balances, ownership or RNG.
- // Unobserved time is capped; stale inputs stop after 500 ms.
- const duration=Math.min(.5,Math.max(0,(now-room.at)/1000));
+ // Bounded grace covers an ordinary round trip without losing movement time.
+ const duration=Math.min(BALANCE.roomInputGraceMs/1000,Math.max(0,(now-room.at)/1000));
  for(let elapsed=0;elapsed<duration-1e-9;){
   const dt=Math.min(1/30,duration-elapsed);elapsed+=dt;simTime=now-(duration-elapsed)*1000;
   for(const [id,g] of games){
    const p=room.players[id];g.world=room.world;g.bosses=room.bosses;
-   const active=now-p.seen<1000;
-   if(active){const v=simTime-p.seen<=500?p.input:{x:0,z:0};g.move(v.x,v.z,dt);g.tick(dt);}
+   const active=id===user||simTime-p.seen<BALANCE.roomInputGraceMs;
+   if(active){const v=simTime-p.seen<=BALANCE.roomInputGraceMs?p.input:{x:0,z:0};g.move(v.x,v.z,dt);g.tick(dt);}
    else if(g.death&&g.deathChoiceRemaining<=0)g.revive(false);
    room.world=g.world;
    if(p.preparation&&(Math.hypot(g.x-p.preparation.x,g.z-p.preparation.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(p.preparation.hit??0)||g.death||g.carried))delete p.preparation;
@@ -77,7 +77,20 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    if(!command||typeof command.id!=='string'||command.id.length>80||typeof command.kind!=='string')throw Error('INVALID_COMMAND');
    if(player.receipts.includes(command.id))continue;
    player.receipts.push(command.id);
-   try{applyCommand(self,player,command,now);}catch(e){errors.push(e instanceof Error?e.message:'ACTION_FAILED');}
+   try{
+    if(command.kind==='attack'){
+     if(now-self.batAt>=BALANCE.batCooldown&&!self.death&&!self.carried&&!self.training&&!self.launch&&self.knockback.remaining<=0&&now>=self.knockedUntil){
+      self.batAt=now;
+      const length=Math.hypot(vector.x,vector.z);if(length>.01)self.facing={x:vector.x/length,z:vector.z/length};
+      for(const [id,target] of games){
+       const dx=target.x-self.x,dz=target.z-self.z,distance=Math.hypot(dx,dz);
+       if(id===user||now-room.players[id].seen>BALANCE.roomInputGraceMs||distance>BALANCE.batRange||(distance>.01&&(dx*self.facing.x+dz*self.facing.z)/distance<BALANCE.batFacingThreshold))continue;
+       target.world=self.world;
+       if(target.receiveBat(distance>.01?dx:self.facing.x,distance>.01?dz:self.facing.z))delete room.players[id].preparation;
+      }
+     }
+    }else applyCommand(self,player,command,now);
+   }catch(e){errors.push(e instanceof Error?e.message:'ACTION_FAILED');}
   }
   player.receipts.push(`request:${request.id}`);player.receipts=player.receipts.slice(-128);
   player.input=vector;player.seen=now;
@@ -89,7 +102,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  for(const [id,g] of games){g.world=room.world;g.bosses=room.bosses;room.players[id].runtime=exportRuntime(g);}
  const peers=[...games].filter(([id])=>id!==user).map(([id,g])=>({
   id,name:`농장 ${g.farmSlot+1}`,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
-  downUntil:g.knockedUntil,attackAt:0,carried:g.carried?.type??null,egg:g.carried,
+  downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,
   pets:g.save.mongles.flatMap((n,i)=>n?[i]:[]).slice(0,6),
  }));
  return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,slot:self.farmSlot,count:members.length,events,errors}};

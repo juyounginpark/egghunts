@@ -180,7 +180,7 @@ async function action(preparedId?:string) {
       if(game.carried)await remote('drop');
       else if(targetEgg)await remote('pickup',targetEgg.id);
       else if(game.nearGym)await remote('train');
-      else{world.swingBat(game.now());feedback('swing');}
+      else if(!game.knockback.remaining&&world.swingBat(game.now())){feedback('swing');await remote('attack');}
       return;
     }
     if(!game.carried&&targetEgg?.id.startsWith('net-')){
@@ -585,7 +585,9 @@ document.addEventListener("click", async (e) => {
     }
   }
 });
-$("action").addEventListener("click", () => void action());
+// A second finger acts immediately without releasing the joystick's pointer.
+$("action").addEventListener("pointerdown", e=>{if(e.button!==0)return;e.preventDefault();void action();});
+$("action").addEventListener("click", e=>{if(e.detail===0)void action();});
 $("settings").addEventListener("click", showSettings);
 document.addEventListener('input',e=>{
   const control=e.target as HTMLInputElement;
@@ -674,10 +676,10 @@ function frame(now: number) {
   lastNow = now;
   if(online.active)online.reconcile(dt);
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}
-  if (!qa && (!online.active||online.connected) && !paused && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
+  if (!qa && !paused && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
     const v = input.vector();
     if(online.active)online.update(v.x*.832+v.y*.555,-v.x*.555+v.y*.832);
-    game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt);
+    if(!online.active||online.canPredict)game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt);
     world.player.userData.moving = Math.hypot(v.x, v.y) > 0.1;
     if (world.player.userData.moving)
       world.player.rotation.y = Math.atan2(
