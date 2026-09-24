@@ -21,7 +21,7 @@ try{
  await page.locator('.first-six-showcase [data-pet-view="1"]').click();await page.locator('.pet-viewport canvas').waitFor();
  const box=await page.locator('.pet-viewer').boundingBox();assert.ok(box.x>=0&&box.x+box.width<=320);await page.keyboard.press('Escape');await page.locator('.pet-viewer').waitFor({state:'detached'});
  // Static gallery images must finish decoding before the view screenshot is taken.
- await page.goto(`${session.url}/docs/art/character-gallery.html`);await page.setViewportSize({width:1440,height:960});
+ await page.goto(`${session.url}/docs/art/legacy-character-gallery.html`);await page.setViewportSize({width:1440,height:960});
  await page.locator('[data-pet="2"]').click();await page.locator('[data-angle="2"]').click();await page.locator('#large').evaluate(img=>img.decode());await page.screenshot({path:'docs/art/previews/first-six-viewer.png'});
  await page.locator('[data-angle="5"]').click();await page.waitForTimeout(700);assert.equal(await page.locator('#idle').isVisible(),true);
  assert.deepEqual(errors,[]);console.log('PASS in-game six viewers, four angles, pause, Escape cleanup, 320/390px layout; no browser errors.');

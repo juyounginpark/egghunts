@@ -2,6 +2,8 @@
 
 ## 결과물
 
+- 기존 `character-gallery.html` 주소는 최신 `stage-gallery.html`로 이동한다. 이전 100종을 포함한 과거 검토 화면은 `legacy-character-gallery.html`에 보관하며 현재 220종 도감에 섞지 않는다. 기존 펫 ID·보유 기록은 그대로 유지한다.
+
 - [220종 스테이지 도감](stage-gallery.html): 스테이지별 일반 10종과 드래곤 1종. 이미지 선택 시 3/4·정면·측면·후면·실루엣·회색·대기 동작 확인.
 - [대표 12펫 + 3드래곤 전후 비교](previews/stages/before-after.html): 왼쪽은 이번 컬러·오브제 개정 직전 보관한 모델, 오른쪽은 최종 모델. 320px 원본, 같은 조명·각도·카드 크기. 출시 전 50³ 모델과의 비교는 아니다.
 - [대표 펫 20종, 회색](previews/stages/mascots-gray.png) / [컬러](previews/stages/mascots-color.png)
