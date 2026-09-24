@@ -31,7 +31,7 @@ app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></
 )
   .map(
     ([k, v], i) =>
-      `<button data-tab="${k}" class="${i === 0 ? "active" : ""}"><img src="${import.meta.env.BASE_URL}models/${v}.png" alt="" />${["농장", "부화실", "펫", "강화", "상점"][i]}</button>`,
+      `<button data-tab="${k}" aria-label="${["농장", "부화실", "펫", "강화", "상점"][i]}" title="${["농장", "부화실", "펫", "강화", "상점"][i]}" class="${i === 0 ? "active" : ""}"><img src="${import.meta.env.BASE_URL}models/${v}.png" alt="" /><span class="sr-only">${["농장", "부화실", "펫", "강화", "상점"][i]}</span></button>`,
   )
   .join(
     "",
@@ -75,7 +75,7 @@ tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}mo
 topHud.append(tutorial);
 $("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 15초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
-$("action").insertAdjacentHTML('beforebegin',`<button id="train-now" class="secondary" hidden><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><span>운동하기</span></button>`);
+$("action").insertAdjacentHTML('beforebegin',`<button id="train-now" class="secondary" aria-label="운동하기" title="운동하기" hidden><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><span class="sr-only">운동하기</span></button>`);
 bottomHud.id = "bottom-hud";
 $("shell").append(bottomHud);
 const inventory = document.createElement("section");
@@ -85,6 +85,7 @@ inventory.innerHTML =
 for (const el of [$("hint"), inventory, $("controls"), $("risk")])
   bottomHud.append(el);
 $('controls').append($('farm-progress'));
+$('trait-select').innerHTML=`${uiIcon('traits')}<b id="trait-count"></b>`;
 bottomHud.insertBefore(tutorial,$('controls'));
 let bannerStage=0,bannerUntil=0;
 let lastAnnouncement = 0,
@@ -241,7 +242,9 @@ function updateHud() {
   $('xp-track').setAttribute('aria-valuetext',$('xp-value').textContent??'');
   $('xp-track').title=$('xp-value').textContent??'';
   $("farm-progress").hidden=!game.isAtBase||tab!=='explore';
-  $("trait-select").textContent=`특성 ${game.traitPoints}`;
+  $('trait-count').textContent=String(game.traitPoints);
+  $('trait-select').setAttribute('aria-label',`특성 선택 · 남은 선택권 ${game.traitPoints}`);
+  $('trait-select').title=`특성 선택 · 남은 선택권 ${game.traitPoints}`;
   $("shell").classList.toggle('low-health',outside&&hpRatio<=PROGRESSION.lowHP);
   $("shell").classList.toggle('recent-hit',outside&&game.now()-game.hitAt<350);
   $("ink-effect").hidden=game.effects.ink<=0;
@@ -355,6 +358,7 @@ function updateHud() {
   $("action").classList.toggle('preparing',!!pickupPreparation);
   $("action").style.setProperty('--pickup-progress',`${pickupPreparation?(1-pickupPreparation.remaining/pickupPreparation.duration)*100:0}%`);
   $("action").setAttribute('aria-label',pickupPreparation?'희귀 알 꺼내는 중, 이동하면 취소':$("action-label").textContent??'행동');
+  $('action').title=$('action-label').textContent??'행동';
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
   const actionModel=tab==='hatchery'?'hammer':game.nearStore?'shop':game.nearGym?'gym':null;

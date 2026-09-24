@@ -24,7 +24,7 @@ try {
        const rect=id=>{const el=document.getElementById(id),r=el.getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,visible:!!(r.width&&r.height)&&getComputedStyle(el).visibility!=='hidden'};};
        const c=document.querySelector('#world canvas');return {top:rect('top-hud'),bottom:rect('bottom-hud'),action:rect('action'),pad:rect('joystick'),shell:rect('shell'),ratio:parseFloat(c.style.width)/c.width,filter:getComputedStyle(c).imageRendering,overflow:document.documentElement.scrollWidth>window.innerWidth};
      });
-     assert.equal(layout.ratio,2);assert.equal(layout.filter,'pixelated');assert.equal(layout.overflow,false);
+     assert.equal(layout.ratio,1);assert.equal(layout.filter,'auto');assert.equal(layout.overflow,false);
      if(layout.bottom.visible&&!['result','hatch-burst'].includes(scene))assert.ok(layout.top.bottom<layout.bottom.y,`${device}/${scene}: HUD overlap ${layout.top.bottom} / ${layout.bottom.y}`);
      if(layout.action.visible)assert.ok(layout.action.right<=layout.shell.right&&layout.action.x>=layout.shell.x&&layout.action.bottom<=height-bottom&&layout.action.bottom-layout.action.y>=44);
      assert.ok(layout.top.y>=0);

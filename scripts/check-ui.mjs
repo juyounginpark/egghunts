@@ -63,9 +63,9 @@ try {
     });
     assert.equal(layout.slots, 6);
     const pixels=await page.locator('#world canvas').evaluate(c=>({w:c.width,h:c.height,cssW:parseFloat(c.style.width),cssH:parseFloat(c.style.height),filter:getComputedStyle(c).imageRendering}));
-    assert.equal(pixels.cssW/pixels.w,2);
-    assert.equal(pixels.cssH/pixels.h,2);
-    assert.equal(pixels.filter,'pixelated');
+    assert.equal(pixels.cssW/pixels.w,1);
+    assert.equal(pixels.cssH/pixels.h,1);
+    assert.equal(pixels.filter,'auto');
     assert.ok(
       layout.top.bottom < layout.bottom.y,
       `HUD overlap ${width}x${height}`,

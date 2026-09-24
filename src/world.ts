@@ -109,7 +109,7 @@ export class World {
   assetError = "";
   constructor(public host: HTMLElement) {
     this.renderer = new T.WebGLRenderer({
-      antialias: false,
+      antialias: true,
       alpha: false,
       powerPreference: "high-performance",
     });
@@ -179,13 +179,9 @@ export class World {
   resize() {
     const w = this.host.clientWidth,
       h = this.host.clientHeight;
-    // Render at an integer CSS-pixel scale, independent of device DPR.
-    // Round the canvas outward so odd viewport sizes never stretch its pixels.
-    const pixelScale = this.low ? 3 : 2;
-    const rw = Math.ceil(w / pixelScale), rh = Math.ceil(h / pixelScale);
-    this.renderer.setSize(rw, rh, false);
-    this.renderer.domElement.style.width = `${rw * pixelScale}px`;
-    this.renderer.domElement.style.height = `${rh * pixelScale}px`;
+    // Render directly at display size instead of enlarging a low-resolution image.
+    this.renderer.setPixelRatio(this.low?1:Math.min(window.devicePixelRatio||1,1.5));
+    this.renderer.setSize(w,h);
     const span = 17;
     this.camera.left = (-span * w) / h / 2;
     this.camera.right = (span * w) / h / 2;
