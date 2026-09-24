@@ -23,6 +23,11 @@ export class World {
   camera = new T.OrthographicCamera();
   player = new T.Group();
   private peers = new Map<string,T.Group>();
+  playerAnchor(id?:string){
+    const avatar=id?this.peers.get(id):this.player;if(!avatar||!avatar.visible)return null;
+    const p=avatar.position.clone();p.y+=1.85;p.project(this.camera);
+    return Math.abs(p.x)<.95&&Math.abs(p.y)<.95&&p.z<1?{x:(p.x+1)/2*this.host.clientWidth,y:(1-p.y)/2*this.host.clientHeight}:null;
+  }
   private roomFarmKey='';
   private roomFarmPets=new T.Group();
   private async showRoomFarms(players:Peer[]){

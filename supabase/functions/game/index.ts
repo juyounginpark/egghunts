@@ -2,7 +2,7 @@ import {runRoom} from '../_shared/room-engine.js';
 
 const url=Deno.env.get('SUPABASE_URL')!;
 const service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-const verified=new Map<string,{user:string;until:number}>();
+const verified=new Map<string,{user:string;until:number;guest:boolean}>();
 const allowed=(Deno.env.get('GAME_ALLOWED_ORIGINS')??'https://juyounginpark.github.io,http://localhost:4317,http://127.0.0.1:4317,http://localhost:4320,http://127.0.0.1:4320').split(',');
 async function db(path:string,method='GET',body?:unknown){
  const response=await fetch(`${url}/rest/v1/${path}`,{method,headers:{apikey:service,Authorization:`Bearer ${service}`,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
@@ -25,9 +25,9 @@ Deno.serve(async req=>{
   if(!identity||identity.until<=Date.now()){
    const auth=await fetch(`${url}/auth/v1/user`,{headers:{apikey:service,Authorization:authorization}});
    if(!auth.ok)return send(401,{error:'SIGN_IN'});
-   const user=(await auth.json()).id;
+   const account=await auth.json(),user=account.id;
    const payload=JSON.parse(atob(authorization.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
-   identity={user,until:Math.min(Date.now()+10000,Number(payload.exp)*1000)};
+   identity={user,guest:account.is_anonymous===true,until:Math.min(Date.now()+10000,Number(payload.exp)*1000)};
    if(!Number.isFinite(identity.until)||identity.until<=Date.now())return send(401,{error:'SIGN_IN'});
    verified.set(authorization,identity);if(verified.size>256)verified.delete(verified.keys().next().value!);
   }
@@ -43,7 +43,7 @@ Deno.serve(async req=>{
    const record=await db('rpc/game_read','POST',{p_user:user});
    mark('read',readStart);
    if(!record)return send(409,{error:'ROOM_EXPIRED'});
-   const simulationStart=performance.now();const result=runRoom(record.state,record.members,record.profiles,user,request,Date.now());
+   const simulationStart=performance.now();const result=runRoom(record.state,record.members,record.profiles,user,request,Date.now(),{guest:identity.guest});
    mark('simulation',simulationStart);const commitStart=performance.now();
    const committed=await db('rpc/game_commit','POST',{p_room:record.id,p_revision:record.revision,p_state:result.room,p_user:user});
    mark('commit',commitStart);

@@ -9,7 +9,7 @@ if(process.env.QA_SKIP_IMAGE_COMPARE==='1'&&!capture&&!update){console.log('SKIP
 const session=await browserSession();
 await mkdir('artifacts/screenshots',{recursive:true});await mkdir('tests/visual-baselines',{recursive:true});
 const views=[['android',360,800,0,0],['mobile',390,844,0,0],['large',412,915,0,0],['design',1080,1920,0,0],['ios',390,844,59,34],['small',320,568,0,0]];
-const scenes=['base','egg-near','rare-near','egg-carry','urgent','egg-loss','hatch-whole','hatch-cracked','hatch-burst','result','upgrade','collection','night','shop','farm-pets','tutorial','stage-1','stage-2','stage-3','stage-4','training','death','death-choice','revive','pets','store','hazard-5','low-health','stages','traits'];
+const scenes=['base','egg-near','rare-near','egg-carry','urgent','egg-loss','hatch-whole','hatch-cracked','hatch-burst','result','upgrade','collection','night','shop','farm-pets','tutorial','stage-1','stage-2','stage-3','stage-4','training','death','death-choice','revive','pets','store','hazard-5','low-health','stages'];
 const results=[];const errors=[];
 try {
  for(const [device,width,height,top,bottom] of views){

@@ -1,18 +1,11 @@
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
-export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,traitInterval:5,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:1,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
-export const TRAITS={
-  sturdy:{name:'튼튼한 탐험가',description:'최대 체력 +10',value:10,max:5},
-  light:{name:'가벼운 발걸음',description:'이동속도 +2%',value:.02,max:5},
-  porter:{name:'운반 전문가',description:'무게 페널티 3% 감소',value:.03,max:5},
-  escape:{name:'위기 탈출',description:'HP 30% 이하 스피드 +10%',value:.1,max:1},
-  shield:{name:'보호 장비',description:'원정 첫 피해 30% 감소',value:.3,max:1},
-  clock:{name:'시간 감각',description:'원정 시간 +2초',value:2,max:5},
-};
+export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:1,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
 export type DefensePassive={maxHP?:number;damageReduction?:number;firstHitReduction?:number;environmentReduction?:Partial<Record<string,number>>;statusReduction?:number;lowHPSpeed?:number;returnXPBonus?:number;lastStand?:boolean};
 // Existing companions keep their click/auto/speed abilities; future rows opt in.
 export const PET_DEFENSE:Partial<Record<number,DefensePassive>>={};
 export const BALANCE = {
+  roomStopRewindMs:500,
   virtualAdDuration:10000,
   virtualAdReward:30,
   eggSellRatio:.4,

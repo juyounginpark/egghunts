@@ -11,6 +11,28 @@ export function circularVillageArt(){
  for(let i=0;i<56;i++){const a=i*Math.PI/28,x=Math.sin(a)*5.8,z=9+Math.cos(a)*5.8;b(x,.015,z,1.6,.06,.85,0xdacfad,a);}
  for(let slot=0;slot<5;slot++)for(let d=2;d<5.8;d+=.6){const p=farmLocal(slot,0,d);b(p.x,.022,p.z,2,.07,.65,0xdfd2ac,FARM_PLOTS[slot].rotation);}
  for(let i=0;i<64;i++){const a=i*Math.PI/32,x=Math.sin(a)*13.7,z=9+Math.cos(a)*13.7;if(z<-3&&Math.abs(x)<3.5)continue;b(x,.4,z,1.28,.9,.4,stone,a);b(x,.9,z,1.32,.12,.5,cream,a);}
+ // Layered rocky ridges frame the village; the northern pass stays open.
+ // Near-camera peaks are lower so the five farms remain readable in play.
+ for(let i=0;i<30;i++){
+  const a=i*Math.PI/15,r=17.8+(i%3)*.65,x=Math.sin(a)*r,z=VILLAGE.z+Math.cos(a)*r;
+  if(z<-3&&Math.abs(x)<5.5)continue;
+  const height=z>12?2.8+(i%3)*.5:4.6+(i%4)*.65;
+  for(let tier=0;tier<5;tier++){
+   const width=6.2-tier*.95,y=-.35+height*(tier+.5)/5;
+   b(x+Math.sin(a)*tier*.15,y,z+Math.cos(a)*tier*.15,width,height/5+.12,width*.83,[0x879579,0x99a385,0xaeb197,0xc2c2a5,0xd9d1b4][tier],a);
+  }
+  b(x-.8,.35,z-1.1,1.6,1,1.2,0x758569,a);
+ }
+ // Timber gateway and open leaves, with a clear 3.4-wide walking corridor.
+ for(const side of [-1,1]){
+  b(side*2.25,1.35,-4.7,.5,2.7,.65,wood);b(side*2.25,.2,-4.7,.85,.4,.95,stone);
+  b(side*2.25,2.8,-4.7,.8,.2,.95,gold);
+  b(side*2.58,1,-4.05,.16,1.9,1.5,wood,side*.32);
+  for(const z of [-6,-5.1,-3.3]){b(side*2.65,.65,z,.18,1.3,.18,wood);b(side*2.65,.86,z,.16,.14,.95,cream);b(side*2.65,.42,z,.16,.13,.95,wood);}
+  b(side*3.15,.65,-3.3,1.1,.15,.18,cream);
+ }
+ b(0,3,-4.7,5.5,.38,.9,wood);b(0,3.24,-4.7,5.9,.16,1.15,0x6f845c);
+ b(0,2.8,-4.15,1.1,.58,.12,gold);b(0,2.82,-4.05,.5,.3,.1,cream);
  const roofs=[0x78915c,0xb77f62,0x809daa,0x9b84a6,0xb0a05b];
  for(const [slot,plot]of FARM_PLOTS.entries()){
   const local=(x:number,y:number,z:number,w:number,h:number,d:number,c:number)=>{const p=farmLocal(slot,x,z);b(p.x,y,p.z,w,h,d,c,plot.rotation);};

@@ -2,7 +2,6 @@ import {
   BALANCE,
   STAGE_COLLECTION_REWARDS,
   PROGRESSION,
-  TRAITS,
   PET_DEFENSE,
   TRAILS,
   RARITIES,
@@ -13,7 +12,7 @@ import {
   rollEgg,
   type Upgrade,
 } from "./data";
-import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,chooseTrait,traitPoints,reducedDamage,type Progression,type TraitId} from "./progression";
+import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,reducedDamage,type Progression} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
 import {farmGym} from './village';
 import {DRAGON_RULES,newDragonClue,dragonReady,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
@@ -44,6 +43,7 @@ export type Boss = {
   loot: WorldEgg | null;
 };
 export type Save = {
+  playerName?:string;
   dragonClues?:Record<string,DragonClue>;
   visitedStages?:number[];
   routeVersion?:1|2;
@@ -219,6 +219,7 @@ export function parseSave(raw: string | null, now: number): Save {
   return s;
 }
 export class GameState {
+  roomSnapshotTime=0;
   hazards=new HazardManager();
   slowRemaining=0;slowMultiplier=1;hitAt=-Infinity;levelUpAt=-Infinity;
   effects={ink:0,stone:0,grab:0,delay:0,magnet:0};
@@ -245,11 +246,8 @@ export class GameState {
     if(!this.isAtBase){this.emit('region_enter',{stage:id});if(id>4)this.unlockHealth();}
   }
   get level(){return this.progression.level;}
-  get traitPoints(){return traitPoints(this.progression);}
   get defenses(){return this.save.active.map(id=>PET_DEFENSE[id]??{});}
   defense(key:'maxHP'|'damageReduction'|'firstHitReduction'|'statusReduction'|'lowHPSpeed'|'returnXPBonus'){return this.defenses.reduce((n,d)=>n+(d[key]??0),0);}
-  trait(id:TraitId){return (this.progression.traits[id]??0)*TRAITS[id].value;}
-  chooseTrait(id:TraitId){if(!this.isAtBase||!chooseTrait(this.progression,id))return false;this.hp=Math.min(this.maxHp,this.hp+(id==='sturdy'?TRAITS.sturdy.value:0));this.revision++;this.emit('trait_selected',{id});return true;}
   selectStage(id:number){
     if(!this.isAtBase||this.carried||!STAGES[id-1]||!Number.isInteger(id))return false;
     this.progression.stage=id;this.hazards.reset(id);this.resetBosses();this.spawn();this.revision++;
@@ -271,7 +269,7 @@ export class GameState {
   }
   applyHazard(h:Hazard,bossContact=false){
     const d=h.definition;if(this.death||(this.immunity>0&&!bossContact)||this.isAtBase)return false;
-    const reduction=this.defense('damageReduction')+this.defenses.reduce((n,p)=>n+(p.environmentReduction?.[d.id]??0),0)+(!this.progression.firstHitUsed?this.trait('shield')+this.defense('firstHitReduction'):0);
+    const reduction=this.defense('damageReduction')+this.defenses.reduce((n,p)=>n+(p.environmentReduction?.[d.id]??0),0)+(!this.progression.firstHitUsed?this.defense('firstHitReduction'):0);
     const damage=this.immunity>0?0:reducedDamage(d.damage,d.damagePercent,this.maxHp,reduction);
     this.progression.firstHitUsed=true;this.hp=Math.max(0,this.hp-damage);this.sinceHit=0;this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();
     const overlap=Math.hypot(this.x-h.origin.x,this.z-h.origin.z)<.001;
@@ -374,7 +372,7 @@ export class GameState {
   }
   hp=BALANCE.baseHp;
   sinceHit=0;
-  get maxHp(){return levelHP(this.level)+this.save.upgrades.health*BALANCE.hpPerLevel+this.trait('sturdy')+this.defense('maxHP');}
+  get maxHp(){return levelHP(this.level)+this.save.upgrades.health*BALANCE.hpPerLevel+this.defense('maxHP');}
   bossDamage(region:number){return stageDamage(this.bosses[region]?.stageId??this.stage.id,this.stageStep);}
   receiveHit(region:number){
     const d={damage:this.bossDamage(region),damagePercent:0,knockback:PROGRESSION.hitKnockback,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
@@ -384,7 +382,7 @@ export class GameState {
   private trainingClock=0;
   private trainingGain=0;
   get movementMultiplier(){return TRAILS[this.save.equippedTrail??0].multiplier*this.speedMultiplier;}
-  get effectiveTrainingRate(){return this.trainingRate*this.movementMultiplier*levelSpeed(this.level)*(1+this.trait('light'));}
+  get effectiveTrainingRate(){return this.trainingRate*this.movementMultiplier*levelSpeed(this.level);}
   get trainingSpeedBonus(){return (this.save.trainingSpeed??0)*this.movementMultiplier;}
   returnReward: { type: number; distance: number; stageId?:number;variant?:number;special?:boolean } | null = null;
   get nearGym() { return Math.hypot(this.x-this.gym.x,this.z-this.gym.z)<BALANCE.gymRadius; }
@@ -536,14 +534,14 @@ export class GameState {
   get speed() {
     if(this.isAtBase)return BALANCE.speed;
     return (
-      this.movementMultiplier * levelSpeed(this.level) * (1+this.trait('light')) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.trait('escape')+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
+      this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
       (BALANCE.speed *
       (1 +
         BALANCE.speedPerLevel * this.save.upgrades.speed) + (this.save.trainingSpeed ?? 0)) *
       (this.carried
         ? Math.min(
             1,
-            (1-(1-EGGS[this.carried.type].weight)*(1-this.trait('porter'))) *
+            EGGS[this.carried.type].weight *
               (1 + BALANCE.carryPerLevel * this.save.upgrades.carry),
           )
         : 1)
@@ -552,7 +550,7 @@ export class GameState {
   get duration() {
     return (
       BALANCE.duration +
-      BALANCE.timePerLevel * this.save.upgrades.time + this.trait('clock')
+      BALANCE.timePerLevel * this.save.upgrades.time
     );
   }
   get dps() {

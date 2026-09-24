@@ -20,11 +20,11 @@ import { World } from "./world";
 import { panelHTML } from "./panels";
 import { Multiplayer } from "./multiplayer";
 import {OnlineGame} from './online';
+import {RoomHUD} from './room-hud';
 import { VirtualAd } from "./virtual-ad";
 import { formatNumber as num } from "./format";
 import { uiIcon } from './ui-icons';
 import {petAbilities} from './pet-stats';
-import type {TraitId} from "./progression";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
@@ -65,7 +65,8 @@ topHud.append(hudContext);
 const hudPlace=document.createElement('div');hudPlace.className='hud-place';
 hudPlace.append($('expedition'),$('carry-chip'));
 hudContext.append(speedHud,hudPlace);
-topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="farm-progress"><button data-tab="traits" id="trait-select"></button></div><div id="hazard-cue" role="status" hidden></div>');
+const roomHUD=new RoomHUD(hudPlace,$('world'));
+topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="hazard-cue" role="status" hidden></div>');
 $("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="플레이어 체력" aria-valuemin="0" hidden><div class="health-track"><i id="hp-fill"></i></div></div>');
 $("shell").insertAdjacentHTML('beforeend','<div id="region-banner" role="status" aria-live="polite" hidden><small id="region-banner-number"></small><strong id="region-banner-name"></strong><span id="region-banner-speed"></span></div><div id="health-edge"></div><div id="ink-effect" hidden></div><div id="level-burst" hidden></div>');
 topHud.insertBefore($("region-banner"),$("hazard-cue"));
@@ -86,8 +87,6 @@ inventory.innerHTML =
   '<div class="inventory-heading"><strong id="inventory-count">보관함 0 / 6</strong><span>알을 선택해 부화 준비</span></div><div id="egg-queue"></div><div id="pet-effects"></div>';
 for (const el of [$("hint"), inventory, $("controls"), $("risk")])
   bottomHud.append(el);
-$('controls').append($('farm-progress'));
-$('trait-select').innerHTML=`${uiIcon('traits')}<b id="trait-count"></b>`;
 bottomHud.insertBefore(tutorial,$('controls'));
 let bannerStage=0,bannerUntil=0;
 let lastAnnouncement = 0,
@@ -258,10 +257,6 @@ function updateHud() {
   $('xp-track').setAttribute('aria-valuemax',String(game.progression.requiredXP));
   $('xp-track').setAttribute('aria-valuetext',$('xp-value').textContent??'');
   $('xp-track').title=$('xp-value').textContent??'';
-  $("farm-progress").hidden=!game.isAtBase||tab!=='explore';
-  $('trait-count').textContent=String(game.traitPoints);
-  $('trait-select').setAttribute('aria-label',`특성 선택 · 남은 선택권 ${game.traitPoints}`);
-  $('trait-select').title=`특성 선택 · 남은 선택권 ${game.traitPoints}`;
   $("shell").classList.toggle('low-health',outside&&hpRatio<=PROGRESSION.lowHP);
   $("shell").classList.toggle('recent-hit',outside&&game.now()-game.hitAt<350);
   $("ink-effect").hidden=game.effects.ink<=0;
@@ -432,9 +427,9 @@ function renderEggQueue() {
     : "알을 부화하면 펫이 함께 걸어요";
 }
 async function onlineButton(b:HTMLElement):Promise<boolean>{
-  const bindings:Record<string,string>={trait:'trait',claimStage:'claimStage',claimPet:'claimPet',claimDragon:'claimDragon',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'equip'};
+  const bindings:Record<string,string>={claimStage:'claimStage',claimPet:'claimPet',claimDragon:'claimDragon',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'equip'};
   for(const [attribute,kind] of Object.entries(bindings))if(b.dataset[attribute]!==undefined){
-    const raw=b.dataset[attribute]!;await remote(kind,['trait','upgrade','select'].includes(kind)?raw:Number(raw));return true;
+    const raw=b.dataset[attribute]!;await remote(kind,['upgrade','select'].includes(kind)?raw:Number(raw));return true;
   }
   if(b.id==='train-now'){
     if(tab==='explore'&&!paused&&$("modal").hidden&&!game.returnReward){input.reset();online.halt();await remote('train');}return true;
@@ -496,7 +491,6 @@ document.addEventListener("click", async (e) => {
     platform.track('virtual_ad_reward',{purpose:virtualAdPurpose,amount:virtualAdPurpose==='currency'?reward:0});return;
   }
   if(virtualAd)return;
-  if(b.dataset.trait){if(game.chooseTrait(b.dataset.trait as TraitId)){feedback();renderPanel();void save();}return;}
   if(b.dataset.sellEgg||b.dataset.sellPet){
     const kind=b.dataset.sellEgg?'egg':'pet',id=b.dataset.sellEgg??b.dataset.sellPet!;
     const egg=kind==='egg'?game.save.eggs.find(e=>e.id===id):null;
@@ -758,6 +752,7 @@ function frame(now: number) {
   world.updatePeers(online.active?online.peers:multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
   world.networkOffset=online.active?online.visualOffset:{x:0,z:0};
   world.render(game, tab, qa ? 1 : dt, qa ? qa.visualTime : now / 1000);
+  roomHUD.update(game,online.active?online.peers:multiplayer.peers,world,online.latest?.isGuest??false,tab==='explore'&&!game.returnReward);
   if (now - savedAt > 5000) {
     savedAt = now;
     void save();

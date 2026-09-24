@@ -1,5 +1,4 @@
 const paths = {
-  traits: '<path d="M12 20v-9M12 15l-6-5m6 2 6-6"/><circle cx="12" cy="5" r="3"/><circle cx="4" cy="8" r="2"/><circle cx="20" cy="4" r="2"/><path d="M8 20h8"/>',
   speed: '<path d="M3 16a9 9 0 0 1 18 0M5 20h14M12 16l5-7M5 12l2 1m3-7 1 2m7 5 2-1"/><circle cx="12" cy="16" r="1"/>',
   tap: '<path d="M9 12V5a2 2 0 0 1 4 0v7l2-3 5 3-2 8H9l-5-6 2-2 3 3"/>',
   auto: '<path d="M4 9a8 8 0 0 1 14-3l2 3M20 4v5h-5M20 15A8 8 0 0 1 6 18l-2-3M4 20v-5h5"/><path d="m10 9 5 3-5 3z"/>',

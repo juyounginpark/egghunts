@@ -15,9 +15,7 @@
 .low-health #health-edge{box-shadow:inset 0 0 25px #e3535380;animation:heartbeat 1s infinite}
 @keyframes heartbeat{50%{box-shadow:inset 0 0 42px #e3535399}}
 .recent-hit #health-hud .health-track{outline:2px solid #fff4bf}
-#farm-progress{display:flex;gap:6px;pointer-events:auto}
-#farm-progress button{background:#fff4d5;padding:9px 8px;border:1px solid #9b9d72;border-radius:6px;min-height:44px;font-size:11px}
-#stage-select{flex:1}#trait-select{white-space:nowrap}
+#stage-select{flex:1}
 #hazard-cue{font-size:11px;color:#533713;background:#ffe8adf0;padding:5px 8px;border-radius:6px}
 #ink-effect{position:absolute;inset:25% 10%;border-radius:35%;background:#28293b66;pointer-events:none;z-index:2}
 #level-burst{position:absolute;top:40%;width:100%;text-align:center;font-size:23px;font-weight:900;color:#ffe08b;text-shadow:2px 2px #4d5141;pointer-events:none;z-index:6}
@@ -438,8 +436,6 @@ nav button img { width:28px; height:28px; }
 #bottom-hud #tutorial-icon { width:24px; height:24px; }
 #bottom-hud #tutorial b { font-size:11px; line-height:1.4; }
 #bottom-hud #tutorial-skip { width:44px; height:44px; margin-left:auto; }
-#controls #farm-progress { grid-column:2; justify-self:center; min-width:0; }
-#farm-progress #trait-select { padding:4px 6px; min-height:44px; border:var(--hud-border); border-radius:var(--hud-radius); box-shadow:var(--hud-shadow); font-size:11px; }
 #train-now { background:#ecedc4; border-color:#b08c3c; }
 #level-burst { top:calc(100px + var(--safe-top)); font-size:18px; }
 .sound-settings { margin:16px 0 0; padding:12px; border:var(--hud-border); border-radius:var(--hud-radius); text-align:left; }
@@ -475,8 +471,6 @@ nav button img { width:28px; height:28px; }
 .sr-only,#action-label { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
 #action,#train-now,nav button { gap:0; }
 #action-icon,#action-icon img,#action-icon .ui-icon,#train-now img,nav button img { width:32px; height:32px; }
-#farm-progress #trait-select { display:flex; align-items:center; justify-content:center; gap:4px; }
-#trait-count { font-size:14px; font-variant-numeric:tabular-nums; }
 /* The account gate uses the same cream cards and olive controls as the HUD. */
 .login-card{width:min(360px,calc(100vw - 32px));padding:24px;background:#fff8e7;color:#465334;border:2px solid #68724d;border-radius:8px;box-shadow:0 5px 0 #b9aa78;text-align:center}
 .login-card>img{width:72px;height:72px;object-fit:contain}
@@ -489,3 +483,14 @@ nav button img { width:28px; height:28px; }
 @keyframes pet-idle-strip{to{background-position:100% 0}}@keyframes pet-reveal{0%{opacity:0;translate:0 40px;scale:.3}25%{opacity:1;scale:1.2}70%{opacity:.8}100%{opacity:0;translate:0 -25px;scale:1}}
 @media(prefers-reduced-motion:reduce){.result-idle,.pet-reveal svg{animation:none}.pet-reveal{display:none}}
 .result-pet-motion{position:relative;width:min(240px,60vw);margin:auto;aspect-ratio:1}.result-pet-motion .result-idle{animation-delay:2.4s}.result-greeting{position:absolute;inset:0;background-size:2400% 100%;background-color:var(--paper);animation:pet-greeting 2.4s steps(23) forwards}@keyframes pet-greeting{0%{background-position:0 0;visibility:visible}99.9%{visibility:visible}100%{background-position:100% 0;visibility:hidden}}@media(prefers-reduced-motion:reduce){.result-greeting{display:none}}
+.login-card #name-fields { display:flex; flex-direction:column; gap:6px; margin:12px 0; text-align:left; }
+.login-card #name-fields[hidden] { display:none; }
+#name-fields small { font-size:11px; color:#637053; }
+#room-progress { width:168px; max-width:100%; padding:5px 6px; background:#fff9e8ed; border:var(--hud-border); border-radius:var(--hud-radius); box-shadow:var(--hud-shadow); }
+.room-progress-row { display:flex; align-items:center; justify-content:space-between; gap:6px; min-height:19px; border-left:3px solid var(--player-color); padding:2px 4px; font-size:10px; background:linear-gradient(90deg,#e4dca8 var(--progress),transparent var(--progress)); }
+.room-progress-row span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.room-progress-row b { flex-shrink:0; font-size:10px; font-variant-numeric:tabular-nums; }
+.room-progress-row.self { font-weight:800; }
+#player-labels { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.player-nameplate { position:absolute; transform:translate(-50%,-100%); padding:3px 6px; max-width:210px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#39482d; background:#fff9e8e8; border:1px solid var(--player-color); border-radius:4px; font-size:11px; line-height:16px; font-weight:700; }
+.player-nameplate.self { background:#f8edcce8; }

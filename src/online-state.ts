@@ -2,7 +2,7 @@ import {GameState,type Save,type WorldEgg,type Boss} from './game';
 import type {HazardManager} from './hazards';
 
 export type RuntimeState={save:Save;fields:Record<string,unknown>;hazards:ReturnType<HazardManager['snapshot']>};
-const omitted=new Set(['save','world','bosses','hazards','mapCollision','now','random','events','routeCache','routeStart']);
+const omitted=new Set(['save','world','bosses','hazards','roomSnapshotTime','mapCollision','now','random','events','routeCache','routeStart']);
 // Only the trusted server produces this format. Clients never upload a save.
 export function exportRuntime(game:GameState):RuntimeState{
  const save=game.snapshot();delete save.world;delete save.bosses;
@@ -17,5 +17,7 @@ export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[
   known[key]=value===null&&typeof known[key]==='number'&&!Number.isFinite(known[key])?known[key]:value;
  }
  game.save=structuredClone(state.save);game.save.dragonClues??={};game.world=world;game.bosses=bosses;game.hazards.restore(state.hazards);
+ if(game.save.progression)delete game.save.progression.traits;
+ game.hp=Math.min(game.hp,game.maxHp);
  game.roomManaged=true;
 }

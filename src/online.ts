@@ -3,10 +3,11 @@ import type {GameState,WorldEgg,Boss} from './game';
 import {restoreRuntime,type RuntimeState} from './online-state';
 import type {Peer} from './multiplayer';
 import {BALANCE} from './data';
+import {playerName} from './player-identity';
 
 export const SUPABASE_URL=import.meta.env.VITE_SUPABASE_URL||'https://leblcdiqsyxqzwlsnkio.supabase.co';
 const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_2KTon_WzPAci5G4dLyZ5Ww_bPgwmiig';
-type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
+type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
 export class OnlineGame{
@@ -18,8 +19,10 @@ export class OnlineGame{
  private game:GameState|null=null;
  private busy:Promise<void>|null=null;
  private queue:Command[]=[];
- private pending:{operation:string;id:string;input:{x:number;z:number};commands:Command[]}|null=null;
+ private pending:{operation:string;id:string;input:{x:number;z:number};inputAt?:number;commands:Command[]}|null=null;
  private vector={x:0,z:0};
+ private inputAt=0;
+ private receivedAt=0;
  private lastSent=0;
  private retryAt=0;
  private lastError='';
@@ -40,6 +43,10 @@ export class OnlineGame{
   host.innerHTML=`<section class="login-card"><img src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><h1>알콩 원정대</h1><form id="room-login"><label for="login-email">이메일</label><input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com"/><details id="otp-fields" hidden><summary>CODE</summary><label for="login-code">인증 코드</label><input id="login-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]{6,8}"/></details><button id="login-submit" class="primary" type="submit">인증 코드 받기</button></form><button id="find-room" class="primary" ${data.session?'':'hidden'}>방 찾기</button><p id="login-status" role="status">최대 5명 · 함께 탐험해요</p><button id="switch-account" class="secondary" ${data.session?'':'hidden'}>다른 계정</button></section>`;
   const form=host.querySelector<HTMLFormElement>('#room-login')!,email=host.querySelector<HTMLInputElement>('#login-email')!,code=host.querySelector<HTMLInputElement>('#login-code')!,submit=host.querySelector<HTMLButtonElement>('#login-submit')!,find=host.querySelector<HTMLButtonElement>('#find-room')!,status=host.querySelector<HTMLElement>('#login-status')!,switchAccount=host.querySelector<HTMLButtonElement>('#switch-account')!;
   form.hidden=!!data.session;let sent=false;
+  find.insertAdjacentHTML('beforebegin','<div id="name-fields"><label for="player-name">탐험가 이름</label><input id="player-name" autocomplete="nickname" maxlength="10" minlength="1" placeholder="한글·영어 최대 10자"/><small>공백·숫자·특수문자 불가</small></div>');
+  const nameFields=host.querySelector<HTMLElement>('#name-fields')!,nameInput=host.querySelector<HTMLInputElement>('#player-name')!;
+  let accountId=data.session?.user.id??'';
+  nameFields.hidden=!data.session;nameInput.value=localStorage.getItem(`alkong:name:${accountId}`)??'';
   form.insertAdjacentHTML('afterend',`<button id="guest-login" class="secondary" ${data.session?'hidden':''}>게스트로 시작</button><small id="guest-note" ${data.session&&!data.session.user.is_anonymous?'hidden':''}>게스트 기록은 이 브라우저에서 이어집니다. 로그아웃·브라우저 데이터 삭제 시 복구할 수 없어요.</small>`);
   const guest=host.querySelector<HTMLButtonElement>('#guest-login')!,guestNote=host.querySelector<HTMLElement>('#guest-note')!;
   submit.textContent='로그인 메일 받기';
@@ -49,6 +56,7 @@ export class OnlineGame{
   await new Promise<void>(resolve=>{
    const {data:listener}=this.client.auth.onAuthStateChange((_event,session)=>{
     if(!session)return;
+    accountId=session.user.id;nameInput.value=localStorage.getItem(`alkong:name:${accountId}`)??'';nameFields.hidden=false;
     form.hidden=true;guest.hidden=true;guestNote.hidden=!session.user.is_anonymous;find.hidden=false;switchAccount.hidden=false;status.textContent=session.user.is_anonymous?'게스트 로그인 완료':'로그인 완료';
    });
    form.onsubmit=async event=>{
@@ -64,10 +72,12 @@ export class OnlineGame{
     catch(err){status.textContent=err instanceof Error?err.message:'게스트 로그인에 실패했어요.';}
     finally{guest.disabled=submit.disabled=false;}
    };
-   switchAccount.onclick=async()=>{const {error}=await this.client.auth.signOut();if(error){status.textContent=error.message;return;}this.pending=null;form.hidden=false;guest.hidden=false;guestNote.hidden=false;find.hidden=true;switchAccount.hidden=true;sent=false;email.readOnly=false;code.value='';code.required=false;host.querySelector<HTMLElement>('#otp-fields')!.hidden=true;submit.textContent='로그인 메일 받기';};
+   switchAccount.onclick=async()=>{const {error}=await this.client.auth.signOut();if(error){status.textContent=error.message;return;}this.pending=null;nameFields.hidden=true;nameInput.value="";form.hidden=false;guest.hidden=false;guestNote.hidden=false;find.hidden=true;switchAccount.hidden=true;sent=false;email.readOnly=false;code.value='';code.required=false;host.querySelector<HTMLElement>('#otp-fields')!.hidden=true;submit.textContent='로그인 메일 받기';};
    find.onclick=async()=>{
+    let name:string;
+    try{name=playerName(nameInput.value);}catch{status.textContent='닉네임은 한글·영어만 최대 10자로 입력해 주세요.';nameInput.focus();return;}
     find.disabled=true;status.textContent='빈자리를 찾고 있어요…';
-    try{this.pending={operation:'join',id:crypto.randomUUID(),input:{x:0,z:0},commands:[]};await this.flush();this.active=true;listener.subscription.unsubscribe();resolve();}
+    try{this.pending={operation:'join',id:crypto.randomUUID(),input:{x:0,z:0},commands:[{id:crypto.randomUUID(),kind:'name',value:name}]};await this.flush();if(this.latest?.errors.length)throw Error('이름을 저장하지 못했어요. 다시 시도해 주세요.');localStorage.setItem(`alkong:name:${accountId}`,name);this.active=true;listener.subscription.unsubscribe();resolve();}
     catch(err){status.textContent=err instanceof Error?err.message:'방을 찾지 못했어요.';}finally{find.disabled=false;}
    };
   });
@@ -79,9 +89,11 @@ export class OnlineGame{
  }
  private apply(state:Snapshot,acknowledgedInput?:{x:number;z:number}){
   this.latest=state;this.peers=state.peers;this.syncClock(state.serverTime+this.roundTrip/2);
+  this.receivedAt=performance.now();
   if(this.game){
    const g=this.game,settings=g.save.settings,old={x:g.x+this.visualOffset.x,z:g.z+this.visualOffset.z,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot,facing:g.facing,velocity:g.velocity};
    restoreRuntime(g,state.runtime,state.world,state.bosses);g.save.settings=settings;g.events.push(...state.events);
+   g.roomSnapshotTime=state.serverTime/1000;
    const stable=old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
    if(stable&&!g.death&&!g.training&&g.now()>=g.knockedUntil){
     const lead=this.predictionLead;
@@ -120,6 +132,9 @@ export class OnlineGame{
   const wasStopped=Math.hypot(this.vector.x,this.vector.z)<.01,stopped=Math.hypot(x,z)<.01;
   const length=Math.max(1,Math.hypot(x,z));this.vector={x:x/length,z:z/length};
   if(wasStopped!==stopped){
+   // Gameplay clock is deliberately slewed after login; input timestamps need
+   // the latest network anchor instead of that potentially stale offset.
+   this.inputAt=this.latest?this.latest.serverTime+this.roundTrip/2+performance.now()-this.receivedAt:0;
    this.awaitingStop=stopped;this.stopCorrectionRemaining=0;
    this.lastSent=Math.min(this.lastSent,performance.now()-BALANCE.roomSyncMs);
    this.pump();
@@ -134,7 +149,7 @@ export class OnlineGame{
   if(this.busy)return this.busy;
   const work=async()=>{
    this.lastSent=performance.now();
-   this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,commands:this.queue.splice(0,16)};
+   this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,inputAt:this.inputAt,commands:this.queue.splice(0,16)};
    const {data,error}=await this.client.auth.getSession();if(error||!data.session)throw Error('다시 로그인해 주세요.');
    let session=data.session;
    for(let attempt=0;attempt<4;attempt++){

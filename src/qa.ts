@@ -64,7 +64,7 @@ export function prepare(game: GameState, scene: string) {
 export function attach(game: GameState, world: World, input: Input, setTab: (tab: string) => void, save: () => Promise<void>) {
   const scene = new URLSearchParams(location.search).get("scene") ?? "base";
   if (new URLSearchParams(location.search).get("restore") !== "true") prepare(game, scene);
-  setTab(scene.startsWith("hatch") || scene === "result" ? "hatchery" : ["upgrade", "collection", "pets", "store", "shop", "stages", "traits"].includes(scene) ? scene : "explore");
+  setTab(scene.startsWith("hatch") || scene === "result" ? "hatchery" : ["upgrade", "collection", "pets", "store", "shop", "stages"].includes(scene) ? scene : "explore");
   const step = (seconds: number, vector?: {x: number; z: number}) => {
     for (let t = 0; t < seconds - 1e-8; t += 1 / 60) {
       const dt = Math.min(1 / 60, seconds - t);
@@ -108,7 +108,7 @@ export function attach(game: GameState, world: World, input: Input, setTab: (tab
       world.player.rotation.y=rotation;game.revision++;
     },
     state, step, save,
-    scene: (name: string) => { prepare(game, name); setTab(name.startsWith("hatch") || name === "result" ? "hatchery" : ["upgrade", "collection", "pets", "store", "shop", "stages", "traits"].includes(name) ? name : "explore"); },
+    scene: (name: string) => { prepare(game, name); setTab(name.startsWith("hatch") || name === "result" ? "hatchery" : ["upgrade", "collection", "pets", "store", "shop", "stages"].includes(name) ? name : "explore"); },
     metrics: () => ({...world.renderer.info.render, memory: {...world.renderer.info.memory}, objects: world.scene.children.length, bat:world.player.getObjectByName("bat")?.visible, projection:world.camera.projectionMatrix.toArray(), camera: world.camera.position.toArray(), player: world.player.position.clone().project(world.camera).toArray(), fallen:Math.abs(world.player.rotation.z)>1,selection:world.eggs.children.filter(m=>m.getObjectByName('selection-outline')?.visible).map(m=>m.userData.id), near:game.near?.id}),
     wait: (seconds: number) => { clock += seconds * 1000; },
     // Real game movement and economy remain under test; only clock/input are controlled.

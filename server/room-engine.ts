@@ -1,14 +1,16 @@
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
-import {BALANCE,EGGS,MONGLES,UPGRADES,TRAITS} from '../src/data';
+import {BALANCE,EGGS,MONGLES,UPGRADES} from '../src/data';
 import {exportRuntime,restoreRuntime,type RuntimeState} from '../src/online-state';
+import {playerName} from '../src/player-identity';
 
 type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
-type Player={runtime:RuntimeState;input:{x:number;z:number};seen:number;receipts:string[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
+type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
+type Player={runtime:RuntimeState;input:{x:number;z:number};seen:number;receipts:string[];guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
 export type Room={at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>};
-export type RequestInput={id:string;input?:{x:number;z:number};commands?:Command[]};
+export type RequestInput={id:string;input?:{x:number;z:number};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
-export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number){
+export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number,identity?:{guest:boolean}){
  if(!members.some(m=>m.user_id===user))throw Error('ROOM_EXPIRED');
  if(!request||typeof request.id!=='string'||request.id.length>80||!Array.isArray(request.commands??[])||(request.commands?.length??0)>16)throw Error('INVALID_REQUEST');
  const vector=request.input??{x:0,z:0};
@@ -40,6 +42,18 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   games.set(m.user_id,g);
  }
  const self=games.get(user)!,player=room.players[user];
+ if(identity)player.guest=identity.guest;
+ const stopAt=Number.isFinite(request.inputAt)&&Math.hypot(vector.x,vector.z)<.01&&Math.hypot(player.input.x,player.input.z)>.01
+  ? Math.max(player.motionStart??0,now-BALANCE.roomStopRewindMs,Math.min(now,request.inputAt!)):null;
+ // Release latency compensation uses only positions already simulated by the server.
+ // It cannot restore an egg, health, rewards, or move through a new collision.
+ if(stopAt!==null&&!player.receipts.includes(`request:${request.id}`)&&!self.death&&!self.training&&!self.launch&&!self.knockback.remaining){
+  const history=player.motion??[],before=history.findLast(p=>p.at<=stopAt),after=history.find(p=>p.at>=stopAt);
+   if(before&&after&&before.hit===(Number.isFinite(self.hitAt)?self.hitAt:0)&&after.hit===before.hit&&before.egg===(self.carried?.id??null)&&after.egg===before.egg&&before.base===self.isAtBase&&after.base===before.base){
+   const t=after.at===before.at?0:(stopAt-before.at)/(after.at-before.at);
+   self.push(before.x+(after.x-before.x)*t-self.x,before.z+(after.z-before.z)*t-self.z);
+  }
+ }
  if(!joinedNow&&now-player.seen<10&&!player.receipts.includes(`request:${request.id}`))throw Error('RATE_LIMIT');
  if(cycle!==room.cycle){
   room.world=fresh!.world;room.bosses=fresh!.bosses;room.cycle=cycle;
@@ -57,7 +71,12 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   for(const [id,g] of games){
    const p=room.players[id];g.world=room.world;g.bosses=room.bosses;
    const active=id===user||simTime-p.seen<BALANCE.roomInputGraceMs;
-   if(active){const v=simTime-p.seen<=BALANCE.roomInputGraceMs?p.input:{x:0,z:0};g.move(v.x,v.z,dt);g.tick(dt);}
+   if(active){const v=simTime-p.seen<=BALANCE.roomInputGraceMs?p.input:{x:0,z:0};
+    const moveDt=id===user&&stopAt!==null?Math.max(0,Math.min(dt,(stopAt-(simTime-dt*1000))/1000)):dt;
+    g.move(v.x,v.z,moveDt);g.tick(dt);
+    (p.motion??=[]).push({at:simTime,x:g.x,z:g.z,hit:Number.isFinite(g.hitAt)?g.hitAt:0,egg:g.carried?.id??null,base:g.isAtBase});
+    p.motion=p.motion.filter(point=>point.at>=now-BALANCE.roomStopRewindMs-50);
+   }
    else if(g.death&&g.deathChoiceRemaining<=0)g.revive(false);
    room.world=g.world;
    if(p.preparation&&(Math.hypot(g.x-p.preparation.x,g.z-p.preparation.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(p.preparation.hit??0)||g.death||g.carried))delete p.preparation;
@@ -94,6 +113,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   }
   player.receipts.push(`request:${request.id}`);player.receipts=player.receipts.slice(-128);
   if(player.commandErrors)player.commandErrors=player.commandErrors.filter(c=>player.receipts.includes(c.id));
+  if(vector.x!==player.input.x||vector.z!==player.input.z){player.motionStart=now;player.motion=[];}
   player.input=vector;player.seen=now;
  }
  const commandResults=(request.commands??[]).map(c=>({id:c.id,error:player.commandErrors?.find(e=>e.id===c.id)?.error??null}));
@@ -104,11 +124,11 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const events=self.events.splice(0);
  for(const [id,g] of games){g.world=room.world;g.bosses=room.bosses;room.players[id].runtime=exportRuntime(g);}
  const peers=[...games].filter(([id])=>id!==user).map(([id,g])=>({
-  id,name:`농장 ${g.farmSlot+1}`,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
+  id,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
   downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,
   pets:g.save.mongles.flatMap((n,i)=>n?[i]:[]).slice(0,6),
  }));
- return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
+ return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
 }
 function applyCommand(g:GameState,p:Player,c:Command,now:number){
  const integer=()=>{if(!Number.isSafeInteger(c.value)||Number(c.value)<0)throw Error('INVALID_ID');return Number(c.value);};
@@ -129,7 +149,7 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number){
    if(g.save.active.includes(id))g.save.active=g.save.active.filter(i=>i!==id);
    else if(g.save.active.length<BALANCE.maxCompanions)g.save.active.push(id);break;}
   case 'upgrade':atBase();if(!Object.hasOwn(UPGRADES,text()))throw Error('INVALID_UPGRADE');g.upgrade(text() as keyof typeof UPGRADES);break;
-  case 'trait':atBase();if(!Object.hasOwn(TRAITS,text()))throw Error('INVALID_TRAIT');g.chooseTrait(text() as keyof typeof TRAITS);break;
+  case 'name':g.save.playerName=playerName(c.value);break;
   case 'trail':atBase();g.buyTrail(integer());break;
   case 'sellEgg':atBase();g.sellEgg(text());break;
   case 'sellPet':atBase();if(!MONGLES[integer()])throw Error('INVALID_PET');g.sellPet(integer());break;

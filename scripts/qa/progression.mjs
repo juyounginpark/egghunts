@@ -46,8 +46,9 @@ try{
  test('first hatch XP never repeats after pet sale/reload',()=>{
   const g=make();const hatch=()=>{g.result=null;g.save.eggs=[{id:'egg',type:0,hp:1,distance:14}];g.save.selected='egg';g.damage(1);};hatch();assert.equal(g.level,2);g.sellPet(g.result);const xp=g.progression.xp;hatch();assert.equal(g.level,2);assert.equal(g.progression.xp,xp);
  });
- test('trait points and each concrete modifier apply once within limits',()=>{
-  for(const id of Object.keys(m.TRAITS)){const g=make();g.progression.level=5;g.progression.requiredXP=m.requiredXP(5);const hp=g.maxHp,speed=g.speed,duration=g.duration;assert.ok(g.chooseTrait(id));assert.equal(g.chooseTrait(id),false);assert.equal(g.traitPoints,0);if(id==='sturdy')assert.equal(g.maxHp,hp+10);if(id==='light')assert.ok(g.speed>speed);if(id==='clock')assert.equal(g.duration,duration+2);if(id==='escape'){g.hp=1;assert.ok(g.speed>speed);}}
+ test('retired player traits are removed without resetting level or inventory',()=>{
+  const g=make();g.progression.level=5;g.progression.requiredXP=m.requiredXP(5);const saved=g.snapshot();saved.progression.traits={sturdy:5,light:5,porter:5,escape:1,shield:1,clock:5};saved.mongles[0]=2;
+  const h=new m.GameState(m.parseSave(JSON.stringify(saved),now),()=>now);assert.equal(h.level,5);assert.equal(h.maxHp,g.maxHp);assert.equal(h.speed,g.speed);assert.equal(h.duration,g.duration);assert.equal(h.progression.traits,undefined);assert.equal(h.save.mongles[0],2);
  });
  test('defense cap and full-health single-hit survival',()=>{assert.equal(m.reducedDamage(100,0,100,.9),50);assert.equal(m.reducedDamage(1000,1,100),90);});
  test('all twenty stages have valid explicit attacks and minimum warnings',()=>{
