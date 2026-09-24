@@ -3,19 +3,21 @@ import {BALANCE,EGGS,MONGLES,UPGRADES} from '../src/data';
 import {exportRuntime,restoreRuntime,type RuntimeState} from '../src/online-state';
 import {playerName} from '../src/player-identity';
 import type {EggNotice} from '../src/egg-notices';
+export {snapshotSections} from '../src/snapshot-stream';
 
 type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
 type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
-type Player={runtime:RuntimeState;input:{x:number;z:number};seen:number;receipts:string[];guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
+type Player={runtime:RuntimeState;input:{x:number;z:number;slow?:boolean};seen:number;receipts:string[];chat?:{id:string;text:string;at:number};guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
 export type Room={at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
-export type RequestInput={id:string;input?:{x:number;z:number};inputAt?:number;commands?:Command[]};
+export type RequestInput={id:string;input?:{x:number;z:number;slow?:boolean};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
 export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number,identity?:{guest:boolean}){
  if(!members.some(m=>m.user_id===user))throw Error('ROOM_EXPIRED');
  if(!request||typeof request.id!=='string'||request.id.length>80||!Array.isArray(request.commands??[])||(request.commands?.length??0)>16)throw Error('INVALID_REQUEST');
  const vector=request.input??{x:0,z:0};
  if(![vector.x,vector.z].every(v=>Number.isFinite(v)&&Math.abs(v)<=1.001))throw Error('INVALID_INPUT');
+ if(vector.slow!==undefined&&typeof vector.slow!=='boolean')throw Error('INVALID_INPUT');
  const cycle=Math.floor(now/BALANCE.nightInterval);
  const fresh=!previous||cycle!==previous.cycle?new GameState(freshSave(now),()=>now,random):null;
  const joinedNow=!previous?.players[user];
@@ -74,7 +76,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    const active=id===user||simTime-p.seen<BALANCE.roomInputGraceMs;
    if(active){const v=simTime-p.seen<=BALANCE.roomInputGraceMs?p.input:{x:0,z:0};
     const moveDt=id===user&&stopAt!==null?Math.max(0,Math.min(dt,(stopAt-(simTime-dt*1000))/1000)):dt;
-    g.move(v.x,v.z,moveDt);g.tick(dt);
+    g.move(v.x,v.z,moveDt,p.input.slow===true);g.tick(dt);
     (p.motion??=[]).push({at:simTime,x:g.x,z:g.z,hit:Number.isFinite(g.hitAt)?g.hitAt:0,egg:g.carried?.id??null,base:g.isAtBase});
     p.motion=p.motion.filter(point=>point.at>=now-BALANCE.roomStopRewindMs-50);
    }
@@ -130,21 +132,29 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  room.eggNotices=room.eggNotices.slice(-30);
  const events=self.events.splice(0);
  for(const [id,g] of games){g.world=room.world;g.bosses=room.bosses;room.players[id].runtime=exportRuntime(g);}
+ for(const p of Object.values(room.players))if(p.chat&&now-p.chat.at>=BALANCE.chatDurationMs)delete p.chat;
  const peers=[...games].filter(([id])=>id!==user).map(([id,g])=>({
   id,at:now,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
-  speed:g.speed,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,
+  speed:g.speed,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,chat:room.players[id].chat??null,
   activePets:g.save.active.filter(id=>g.save.mongles[id]>0).slice(0,BALANCE.maxCompanions),
   pets:g.save.mongles.flatMap((n,i)=>n&&!g.save.active.includes(i)?[i]:[]).slice(0,6),
  }));
  // Notice IDs start with the authenticated owner's UUID, not the nickname.
  const eggNotices=room.eggNotices.filter(notice=>!notice.id.startsWith(`${user}:`));
- return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,eggNotices,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
+ return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,eggNotices,chat:player.chat??null,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
 }
 function applyCommand(g:GameState,p:Player,c:Command,now:number){
  const integer=()=>{if(!Number.isSafeInteger(c.value)||Number(c.value)<0)throw Error('INVALID_ID');return Number(c.value);};
  const text=()=>{if(typeof c.value!=='string'||c.value.length>160)throw Error('INVALID_ID');return c.value;};
  const atBase=()=>{if(!g.isAtBase||g.death)throw Error('RETURN_TO_BASE');};
  switch(c.kind){
+  case 'chat':{
+   if(typeof c.value!=='string'||c.value.length>BALANCE.chatMaxLength*2)throw Error('INVALID_CHAT');
+   const message=c.value.normalize('NFC').replace(/[\p{Cc}\p{Cf}]/gu,'').trim().replace(/\s+/g,' ');
+   if(!message||Array.from(message).length>BALANCE.chatMaxLength)throw Error('INVALID_CHAT');
+   if(p.chat&&now-p.chat.at<BALANCE.chatCooldownMs)throw Error('CHAT_COOLDOWN');
+   p.chat={id:c.id,text:message,at:now};break;
+  }
   case 'prepare':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
    p.preparation={id:egg.id,at:now,x:g.x,z:g.z,hit:Number.isFinite(g.hitAt)?g.hitAt:0};break;}
   case 'pickup':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||g.isNight||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');

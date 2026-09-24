@@ -124,9 +124,9 @@ try{
    assert.ok(distance(5,0)>distance(0,0));assert.ok(distance(5,2)>distance(5,0));
   }
  });
- test('every stage increases guardian speed and uses the same close-range shove',()=>{
+ test('guardian speed follows stage growth up to its cap and preserves close-range shove',()=>{
   for(let stage=1;stage<=20;stage++){
-   if(stage>1)assert.ok(m.guardianSpeed(stage)>m.guardianSpeed(stage-1));
+   assert.equal(m.guardianSpeed(stage),Math.min(30,m.recommendedRouteSpeed(0,stage)));
    const g=make();g.selectStage(stage);g.z=-14;g.deadline=now+45000;g.pickup(g.world[2]);const egg=g.carried.id,b=g.bosses[0];b.x=g.x;b.z=g.z-1;
    g.tickBosses(m.ROUTE.bossWindup-.01);assert.equal(g.hp,g.maxHp);g.tickBosses(.02);
    assert.equal(g.carried,null);assert.equal(g.world.filter(e=>e.id===egg).length,1);assert.ok(g.hp<g.maxHp);assert.equal(g.knockback.remaining,m.ROUTE.bossKnockbackSeconds);

@@ -92,7 +92,12 @@ export class World {
       const motion=avatar.userData.motion as GuardianMotion;
       const down=now<peer.downUntil;
       if(avatar.userData.snapshot!==peer){
-        if(Math.hypot(peer.x-avatar.position.x,peer.z-avatar.position.z)>12||down!==avatar.userData.down)motion.reset();
+        const previous=avatar.userData.snapshot as Peer|undefined;
+        const interval=previous?Math.max(0,((peer.at??frameAt)-(previous.at??frameAt))/1000):0;
+        // Compare server samples, not the intentionally delayed render position.
+        // At speed 40 even a normal 350ms interpolation gap exceeds 12 units.
+        const teleported=previous&&Math.hypot(peer.x-previous.x,peer.z-previous.z)>Math.max(12,BALANCE.maxMovementSpeed*interval*1.5+2);
+        if(teleported||down!==avatar.userData.down)motion.reset();
         motion.sample(peer.x,peer.z,(peer.at??frameAt)/1000,frameAt/1000);avatar.userData.down=down;
         if(peer.attackAt!==avatar.userData.attackAt&&now-peer.attackAt<1500)avatar.userData.swingReceived=frameAt;
         if(peer.hitAt!==avatar.userData.hitAt&&now<peer.downUntil)avatar.userData.hitReceived=frameAt;
@@ -367,7 +372,7 @@ export class World {
     const m =
       result !== null ? petVisual(result) : this.eggModel(appearance??{type});
     if (this.hatchKey !== key) return;
-    if (this.hatchModel) this.hatch.remove(this.hatchModel);
+    if (this.hatchModel) {this.clearPetInstances(this.hatchModel);this.hatch.remove(this.hatchModel);}
     this.hatchModel = m ?? null;
     if (m) {
       m.scale.setScalar(result !== null ? 2 : 2.5*BALANCE.eggVisualScale);
@@ -443,8 +448,13 @@ export class World {
     const worldKey = visibleEggs.map((e) => e.id).join("|");
     if (worldKey !== this.lastWorld) {
       this.lastWorld = worldKey;
-      this.eggs.clear();
+      const existing=new Map(this.eggs.children.map(m=>[m.userData.id as string,m]));
+      const visibleIds=new Set(visibleEggs.map(e=>e.id));
+      for(const [id,m]of existing)if(!visibleIds.has(id)){
+        this.clearPetInstances(m as T.Group);this.eggs.remove(m);
+      }
       for (const e of visibleEggs) {
+        if(existing.has(e.id))continue;
         const m = this.eggModel(e);
         m.position.set(e.x, 0.06, e.z);
         m.scale.setScalar(RARITIES[EGGS[e.type].tier].scale*BALANCE.eggVisualScale);
@@ -474,13 +484,15 @@ export class World {
       m.visible = Math.abs(m.position.z - game.z) < 22;
       if (m.visible) animateEgg(m, time, this.low);
     });
+    // Previously every visited nest stayed renderable for the whole expedition.
+    for(const nest of this.nests.values())nest.visible=Math.abs(nest.position.z-game.z)<28;
     this.terrain.children.forEach((m) => {
       if (m instanceof T.Group)
         m.visible = Math.abs(m.position.z - game.z) < 24;
     });
     if (game.flyaway && game.flyaway.at !== this.flyAt) {
       this.flyAt = game.flyaway.at;
-      this.flying.clear();
+      this.clearPetInstances(this.flying);
       const egg=this.eggModel(game.flyaway);
       egg.scale.setScalar(BALANCE.eggVisualScale);
       this.flying.add(egg);
@@ -500,7 +512,7 @@ export class World {
     const storageKey = game.save.eggs.map((e) => e.id).join("|");
     if (storageKey !== this.storageKey) {
       this.storageKey = storageKey;
-      this.storage.clear();
+      this.clearPetInstances(this.storage);
       game.save.eggs.forEach((e, i) => {
         const m = this.eggModel(e);
         m.scale.setScalar(0.55*BALANCE.eggVisualScale);
@@ -541,7 +553,7 @@ export class World {
     }
     const carryId = game.carried?.id ?? "";
     if (this.carry.userData.id !== carryId) {
-      this.carry.clear();
+      this.clearPetInstances(this.carry);
       this.carry.userData.id = carryId;
       if (game.carried) {
         const m = this.eggModel(game.carried);

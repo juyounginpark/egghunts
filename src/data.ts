@@ -7,6 +7,11 @@ export type DefensePassive={maxHP?:number;damageReduction?:number;firstHitReduct
 export const PET_DEFENSE:Partial<Record<number,DefensePassive>>={};
 export const BALANCE = {
   eggVisualScale:1.5,
+  slowWalkSpeed:2,
+  slowHoldMs:450,
+  chatDurationMs:6000,
+  chatCooldownMs:1200,
+  chatMaxLength:80,
   roomStopRewindMs:500,
   virtualAdDuration:10000,
   virtualAdReward:30,
@@ -23,7 +28,7 @@ export const BALANCE = {
   secretDragonScale:6.5,
   baseMapX:14,
   baseWalkSpeed:2,
-  maxMovementSpeed:40,
+  maxMovementSpeed:20,
   deathChoiceDelay:5000,
   deathChoiceDuration:5000,
   reviveImmunity:3,

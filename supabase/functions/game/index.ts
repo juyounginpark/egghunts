@@ -1,9 +1,9 @@
-import {runRoom} from '../_shared/room-engine.js';
+import {runRoom,snapshotSections} from '../_shared/room-engine.js';
 import postgres from 'npm:postgres@3.4.7';
 
 const url=Deno.env.get('SUPABASE_URL')!;
 const service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-const sql=postgres(Deno.env.get('SUPABASE_DB_URL')!,{prepare:false,max:1,idle_timeout:20,connect_timeout:5});
+const sql=postgres(Deno.env.get('SUPABASE_DB_URL')!,{prepare:false,max:2,idle_timeout:20,connect_timeout:5});
 type Identity={user:string;until:number;guest:boolean};
 const verified=new Map<string,Identity>();
 const verifying=new Map<string,Promise<Identity|null>>();
@@ -86,6 +86,7 @@ Deno.serve(req=>{
  if(origin&&!allowed.includes(origin))return new Response('Forbidden',{status:403});
  const {socket,response}=Deno.upgradeWebSocket(req);
  let busy=false;
+ const baseline=new Map<string,string>();let baselineToken='';
  // Reconnect before the hosted worker lifetime expires. Requests retain IDs.
  const lifetime=setTimeout(()=>socket.close(1000,'Reconnect'),110000);
  const authenticationDeadline=setTimeout(()=>socket.close(1008,'Authentication required'),5000);
@@ -96,11 +97,20 @@ Deno.serve(req=>{
   busy=true;
   try{
    const packet=JSON.parse(event.data);
+   if(packet.hello===true&&typeof packet.token==='string'){
+    const identity=await verifyAuthorization(`Bearer ${packet.token}`);
+    if(!identity){socket.close(1008,'Authentication required');return;}
+    clearTimeout(authenticationDeadline);
+    if(socket.readyState===WebSocket.OPEN)socket.send(JSON.stringify({ready:true}));
+    return;
+   }
    if(typeof packet.token!=='string'||!packet.request||packet.request.operation!=='update'){socket.close(1008,'Invalid message');return;}
    const result=await handle(new Request(req.url,{method:'POST',headers:{origin,authorization:`Bearer ${packet.token}`},body:JSON.stringify(packet.request)}));
    const body=await result.json();
    clearTimeout(authenticationDeadline);
-   if(socket.readyState===WebSocket.OPEN)socket.send(JSON.stringify({id:packet.request.id,status:result.status,body,timing:result.headers.get('Server-Timing')}));
+   if(packet.token!==baselineToken){baseline.clear();baselineToken=packet.token;}
+   const compact=packet.stream===1&&result.ok;
+   if(socket.readyState===WebSocket.OPEN)socket.send(JSON.stringify({id:packet.request.id,status:result.status,body:compact?snapshotSections(body,baseline):body,format:compact?'sections-v1':undefined,timing:result.headers.get('Server-Timing')}));
    if(result.status===401)socket.close(1008,'Authentication required');
   }catch{if(socket.readyState===WebSocket.OPEN)socket.close(1011,'Request failed');}
   finally{busy=false;}

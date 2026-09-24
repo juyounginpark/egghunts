@@ -17,7 +17,7 @@ import {HazardManager,type Hazard} from "./hazards";
 import {farmGym} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
-import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,stageDamage,type HazardDefinition} from "./stage-data";
+import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianChaseSpeed,stageDamage,type HazardDefinition} from "./stage-data";
 export type Egg = { id: string; type: number; hp: number; distance: number; stageId?:number; variant?:number; special?:boolean };
 export type WorldEgg = Egg & {
   x: number;
@@ -671,7 +671,8 @@ export class GameState {
       const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):b.homeX??0;
       const tz=b.mode==='chase'?this.z:recovery?(b.loot?recovery.homeZ??b.homeZ??-17:recovery.z):b.homeZ??-17;
       const recoveryMultiplier=recovery?ROUTE.bossRecoverySpeedMultiplier:1;
-      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,guardianSpeed(b.stageId??1)*recoveryMultiplier*activeDt);
+      const speed=b.mode==='chase'?guardianChaseSpeed(b.stageId??1,this.speed):Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(b.stageId??1)*recoveryMultiplier);
+      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,speed*activeDt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
@@ -687,7 +688,7 @@ export class GameState {
       }else if(b.mode==='return'&&l-step<.2)b.mode='idle';
     });
   }
-  move(dx: number, dz: number, dt: number) {
+  move(dx: number, dz: number, dt: number, slow = false) {
     this.motionTime+=dt;
     this.inputHistory.push({at:this.motionTime,x:dx,z:dz});this.inputHistory=this.inputHistory.filter(v=>v.at>=this.motionTime-1);
     if(this.effects.delay>0){const delayed=this.inputHistory.filter(v=>v.at<=this.motionTime-HAZARD_BALANCE.inputDelay).at(-1);dx=delayed?.x??0;dz=delayed?.z??0;}
@@ -697,7 +698,7 @@ export class GameState {
     this.updateNight();
     if (!l || this.knockback.remaining>0 || this.launch || this.death || this.now()<this.knockedUntil) return;
     if(this.training)this.toggleTraining();
-    const speed=this.movementSpeed;
+    const speed=slow?Math.min(BALANCE.slowWalkSpeed,this.movementSpeed):this.movementSpeed;
     this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*speed,z:dz/Math.max(1,l)*speed};
     const scale = l > 1 ? 1 / l : 1;
     const beforeX=this.x,beforeZ=this.z;

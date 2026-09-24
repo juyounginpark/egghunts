@@ -5,10 +5,12 @@ import type {Peer} from './multiplayer';
 import {BALANCE} from './data';
 import {playerName} from './player-identity';
 import type {EggNotice} from './egg-notices';
+import {restoreSnapshotSections} from './snapshot-stream';
+import type {ChatMessage} from './multiplayer';
 
 export const SUPABASE_URL=import.meta.env.VITE_SUPABASE_URL||'https://leblcdiqsyxqzwlsnkio.supabase.co';
 const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_2KTon_WzPAci5G4dLyZ5Ww_bPgwmiig';
-type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
+type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];chat?:ChatMessage|null;eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
 export class OnlineGame{
@@ -20,8 +22,9 @@ export class OnlineGame{
  private game:GameState|null=null;
  private busy:Promise<void>|null=null;
  private queue:Command[]=[];
- private pending:{operation:string;id:string;input:{x:number;z:number};inputAt?:number;commands:Command[]}|null=null;
- private vector={x:0,z:0};
+ private pending:{operation:string;id:string;input:{x:number;z:number;slow?:boolean};inputAt?:number;commands:Command[]}|null=null;
+ private vector={x:0,z:0,slow:false};
+ private lastInput={x:0,z:0,slow:false};
  private inputAt=0;
  private receivedAt=0;
  private lastSent=0;
@@ -37,28 +40,52 @@ export class OnlineGame{
  private accessToken='';
  private leaving=false;
  private socket:WebSocket|null=null;
+ private warmSocket:WebSocket|null=null;
+ private warmReady=false;
+ private warmTimer:number|undefined;
  private socketRetryAt=0;
  private socketRequest:{id:string;resolve:(value:Response)=>void;reject:()=>void;timer:number}|null=null;
- private connectSocket(){
-  if(this.leaving||this.socket||performance.now()<this.socketRetryAt)return;
-  const socket=new WebSocket(`${SUPABASE_URL.replace(/^http/,'ws')}/functions/v1/game`);this.socket=socket;
-  const opened=window.setTimeout(()=>{if(socket.readyState===WebSocket.CONNECTING)socket.close();},5000);
-  socket.onopen=()=>clearTimeout(opened);
+ private connectSocket(warm=false){
+  if(this.leaving||(warm?!!this.warmSocket:!!this.socket)||performance.now()<this.socketRetryAt)return;
+  const socket=new WebSocket(`${SUPABASE_URL.replace(/^http/,'ws')}/functions/v1/game`);
+  if(warm){this.warmSocket=socket;this.warmReady=false;}else this.socket=socket;
+  const baseline=new Map<string,unknown>();
+  const opened=window.setTimeout(()=>{if(socket.readyState===WebSocket.CONNECTING||socket===this.warmSocket&&!this.warmReady)socket.close();},5000);
+  socket.onopen=()=>{
+   if(warm)socket.send(JSON.stringify({token:this.accessToken,hello:true}));
+   else {clearTimeout(opened);this.scheduleWarmSocket();}
+  };
   socket.onmessage=event=>{
-   try{const message=JSON.parse(event.data),request=this.socketRequest;if(!request||request.id!==message.id)return;
+   try{const message=JSON.parse(event.data);
+    if(message.ready===true&&socket===this.warmSocket){clearTimeout(opened);this.warmReady=true;return;}
+    const request=this.socketRequest;if(socket!==this.socket||!request||request.id!==message.id)return;
+    const body=message.format==='sections-v1'?restoreSnapshotSections(message.body,baseline):message.body;
     clearTimeout(request.timer);this.socketRequest=null;
-    request.resolve(new Response(JSON.stringify(message.body),{status:message.status,headers:{'Content-Type':'application/json','Server-Timing':message.timing??''}}));
+    request.resolve(new Response(JSON.stringify(body),{status:message.status,headers:{'Content-Type':'application/json','Server-Timing':message.timing??''}}));
    }catch{socket.close();}
   };
   socket.onerror=()=>socket.close();
   socket.onclose=()=>{
-   clearTimeout(opened);if(this.socket===socket)this.socket=null;
+   clearTimeout(opened);
+   if(this.warmSocket===socket){this.warmSocket=null;this.warmReady=false;return;}
+   if(this.socket!==socket)return;
+   this.socket=null;clearTimeout(this.warmTimer);
    this.socketRetryAt=performance.now()+1000;
    const request=this.socketRequest;this.socketRequest=null;if(request){clearTimeout(request.timer);request.reject();}
   };
  }
+ private scheduleWarmSocket(){
+  clearTimeout(this.warmTimer);
+  // Hosted sockets were observed dropping after 24–31s under sustained play,
+  // before our 110s wall-clock close. Prepare ahead of that observed window.
+  this.warmTimer=window.setTimeout(()=>this.connectSocket(true),15000);
+ }
  private async requestState(request:NonNullable<OnlineGame['pending']>,token:string):Promise<Response>{
   if(request.operation==='update'&&!this.leaving){
+   if(this.warmReady&&this.warmSocket?.readyState===WebSocket.OPEN){
+    const old=this.socket;this.socket=this.warmSocket;this.warmSocket=null;this.warmReady=false;
+    this.scheduleWarmSocket();old?.close(1000,'Warm handoff');
+   }
    this.connectSocket();
    const connecting=this.socket;
    if(connecting?.readyState===WebSocket.CONNECTING)await new Promise<void>(resolve=>{
@@ -71,7 +98,7 @@ export class OnlineGame{
     try{return await new Promise<Response>((resolve,reject)=>{
      const timer=window.setTimeout(()=>{this.socket?.close();reject(Error('STREAM_TIMEOUT'));},5000);
      this.socketRequest={id:request.id,resolve,reject:()=>reject(Error('STREAM_CLOSED')),timer};
-     this.socket!.send(JSON.stringify({token,request}));
+     this.socket!.send(JSON.stringify({token,request,stream:1}));
     });}catch{/* Replay the same request ID through HTTP; rewards remain idempotent. */}
    }
   }
@@ -87,7 +114,8 @@ export class OnlineGame{
   if(this.leaving)return;
   this.leaving=true;this.active=false;this.connected=false;this.peers=[];this.latest=null;
   this.socket?.close();
-  clearInterval(this.syncTimer);this.syncTimer=undefined;this.vector={x:0,z:0};this.queue=[];this.pending=null;
+  this.warmSocket?.close();clearTimeout(this.warmTimer);
+  clearInterval(this.syncTimer);this.syncTimer=undefined;this.vector={x:0,z:0,slow:false};this.queue=[];this.pending=null;
   for(const complete of this.completions.values())complete(false);this.completions.clear();
   if(!this.accessToken)return;
   try{await fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',keepalive:true,headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${this.accessToken}`,'Content-Type':'application/json'},body:JSON.stringify({operation:'leave'}),signal:AbortSignal.timeout(5000)});}
@@ -154,7 +182,8 @@ export class OnlineGame{
    const stable=old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
    if(stable&&!g.death&&!g.training&&g.now()>=g.knockedUntil){
     const lead=this.predictionLead;
-    if(Math.hypot(this.vector.x,this.vector.z)>.01)g.push(this.vector.x*g.movementSpeed*lead,this.vector.z*g.movementSpeed*lead);
+    const speed=this.vector.slow?Math.min(BALANCE.slowWalkSpeed,g.movementSpeed):g.movementSpeed;
+    if(Math.hypot(this.vector.x,this.vector.z)>.01)g.push(this.vector.x*speed*lead,this.vector.z*speed*lead);
     g.facing=old.facing;g.velocity=old.velocity;
    }
    // Correct the simulation once; ease only the drawn position, never the input velocity.
@@ -164,7 +193,7 @@ export class OnlineGame{
     this.awaitingStop=false;this.stopCorrectionRemaining=.12;
    }
   }
-  for(const error of state.errors)this.notify(errorText[error]??'지금은 사용할 수 없어요.');
+  for(const error of state.errors)this.notify(error==='CHAT_COOLDOWN'?'잠깐 기다렸다 보내주세요.':error==='INVALID_CHAT'?`메시지는 ${BALANCE.chatMaxLength}자 이내로 입력해 주세요.`:errorText[error]??'지금은 사용할 수 없어요.');
  }
  send(kind:string,value?:unknown):Promise<boolean>{
   if(this.completions.size>=64)return Promise.reject(Error('연결을 기다리고 있어요. 잠시 후 다시 시도해 주세요.'));
@@ -176,24 +205,30 @@ export class OnlineGame{
  reconcile(dt:number){
   if(!this.game)return;
   const distance=Math.hypot(this.visualOffset.x,this.visualOffset.z),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
+  const speed=this.vector.slow?Math.min(BALANCE.slowWalkSpeed,this.game.movementSpeed):this.game.movementSpeed;
   // A late packet must not briefly accelerate or reverse an otherwise steady walk.
   // Keep the released position while an older walking request is still in flight.
   // Once the stop is acknowledged, finish correction in finite time (no idle drift).
-  const amount=moving?Math.min(distance*(1-Math.exp(-dt*3)),this.game.movementSpeed*BALANCE.roomMovingCorrectionRatio*dt):this.awaitingStop?0:distance*Math.min(1,dt/Math.max(dt,this.stopCorrectionRemaining));
+  const amount=moving?Math.min(distance*(1-Math.exp(-dt*3)),speed*BALANCE.roomMovingCorrectionRatio*dt):this.awaitingStop?0:distance*Math.min(1,dt/Math.max(dt,this.stopCorrectionRemaining));
   if(!moving&&!this.awaitingStop)this.stopCorrectionRemaining=Math.max(0,this.stopCorrectionRemaining-dt);
   const decay=distance>0?1-amount/distance:0;this.visualOffset.x*=decay;this.visualOffset.z*=decay;
   // Only predict knockback motion here; rewards, damage and drops stay on the server.
   if(this.game.knockback.remaining>0){const k=this.game.knockback,step=Math.min(dt,k.remaining);this.game.push(k.x*step,k.z*step);k.remaining=Math.max(0,k.remaining-step);return;}
  }
- update(x:number,z:number){
+ update(x:number,z:number,slow=false){
   const wasStopped=Math.hypot(this.vector.x,this.vector.z)<.01,stopped=Math.hypot(x,z)<.01;
-  const length=Math.max(1,Math.hypot(x,z));this.vector={x:x/length,z:z/length};
+  const length=Math.max(1,Math.hypot(x,z));this.vector={x:x/length,z:z/length,slow};
   if(wasStopped!==stopped){
    // Gameplay clock is deliberately slewed after login; input timestamps need
    // the latest network anchor instead of that potentially stale offset.
    this.inputAt=this.latest?this.latest.serverTime+this.roundTrip/2+performance.now()-this.receivedAt:0;
    this.awaitingStop=stopped;this.stopCorrectionRemaining=0;
    this.lastSent=Math.min(this.lastSent,performance.now()-BALANCE.roomSyncMs);
+   this.pump();
+  }
+  else if(slow!==this.lastInput.slow||Math.hypot(this.vector.x-this.lastInput.x,this.vector.z-this.lastInput.z)>.25){
+   // Prioritize turns without turning every analog jitter into a database tick.
+   this.lastSent=Math.min(this.lastSent,performance.now()-BALANCE.roomSyncMs+50);
    this.pump();
   }
  }
@@ -207,6 +242,7 @@ export class OnlineGame{
   const work=async()=>{
    this.lastSent=performance.now();
    this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,inputAt:this.inputAt,commands:this.queue.splice(0,16)};
+   this.lastInput={...this.pending.input,slow:this.pending.input.slow===true};
    const {data,error}=await this.client.auth.getSession();if(error||!data.session)throw Error('다시 로그인해 주세요.');
    let session=data.session;
    this.accessToken=session.access_token;
@@ -221,7 +257,7 @@ export class OnlineGame{
      const lead=Math.min(.5,this.roundTrip/2000);this.predictionLead=this.predictionLead?this.predictionLead+(lead-this.predictionLead)*.15:lead;
      const commands=this.pending!.commands,acknowledgedInput=this.pending!.input;
      this.pending=null;this.connected=true;this.lastError='';this.apply(state,acknowledgedInput);
-     if(acknowledgedInput.x!==this.vector.x||acknowledgedInput.z!==this.vector.z)this.lastSent=performance.now()-BALANCE.roomSyncMs;
+     if(acknowledgedInput.x!==this.vector.x||acknowledgedInput.z!==this.vector.z||!!acknowledgedInput.slow!==this.vector.slow)this.lastSent=performance.now()-BALANCE.roomSyncMs;
      for(const command of commands){
       const result=state.commandResults?.find((r:{id:string;error:string|null})=>r.id===command.id);
       this.completions.get(command.id)?.(result?!result.error:!state.errors.length);this.completions.delete(command.id);

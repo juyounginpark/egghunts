@@ -4,6 +4,8 @@ export class Input {
   y = 0;
   keys = new Set<string>();
   pointer: number | null = null;
+  slow = false;
+  private holdTimer:number|undefined;
   private surface:HTMLElement;
   private origin={x:0,y:0};
   constructor(
@@ -15,7 +17,7 @@ export class Input {
     this.surface=pad.closest<HTMLElement>('#shell')!;
     this.surface.addEventListener("pointerdown", (e) => {
       if(this.pointer!==null||e.button!==0||!['base','expedition'].includes(this.surface.dataset.mode??''))return;
-      if((e.target as HTMLElement).closest('button,nav,#top-hud,#panel,#modal,#return-reward,#loading'))return;
+      if((e.target as HTMLElement).closest('button,input,textarea,form,nav,#top-hud,#panel,#modal,#return-reward,#loading'))return;
       if(!document.getElementById('modal')!.hidden||!document.getElementById('return-reward')!.hidden)return;
       e.preventDefault();
       this.pointer = e.pointerId;
@@ -28,6 +30,9 @@ export class Input {
         pad.dataset.floating='true';
         pad.style.left=`${e.clientX}px`;pad.style.top=`${e.clientY}px`;
       }
+      if(this.x===0&&this.y===0)this.holdTimer=window.setTimeout(()=>{
+        this.slow=true;pad.dataset.slow='true';this.knob.textContent='2';
+      },BALANCE.slowHoldMs);
       this.surface.setPointerCapture(e.pointerId);
     });
     this.surface.addEventListener("pointermove", (e) => {
@@ -40,7 +45,7 @@ export class Input {
     this.surface.addEventListener("pointercancel", release);
     this.surface.addEventListener("lostpointercapture", release);
     window.addEventListener("keydown", (e) => {
-      if ((e.target as HTMLElement).matches("input,button,select")) return;
+      if ((e.target as HTMLElement).closest("input,textarea,button,select,[contenteditable=true]")) return;
       if (
         ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)
       )
@@ -53,6 +58,7 @@ export class Input {
       this.keys.delete(e.key.toLowerCase()),
     );
     window.addEventListener("blur", () => this.reset());
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)this.reset();});
   }
   update(e: PointerEvent) {
     const r = this.pad.getBoundingClientRect(),
@@ -63,9 +69,12 @@ export class Input {
       scale = len > limit ? limit / len : 1;
     this.x = len < BALANCE.deadzone ? 0 : (dx * scale) / limit;
     this.y = len < BALANCE.deadzone ? 0 : (dy * scale) / limit;
+    if(len>=BALANCE.deadzone&&!this.slow)clearTimeout(this.holdTimer);
     this.knob.style.transform = `translate(${dx * scale}px,${dy * scale}px)`;
   }
   reset() {
+    clearTimeout(this.holdTimer);this.holdTimer=undefined;this.slow=false;
+    delete this.pad.dataset.slow;this.knob.textContent='';
     const pointer=this.pointer;
     this.pointer = null;
     if(pointer!==null&&this.surface.hasPointerCapture(pointer))this.surface.releasePointerCapture(pointer);

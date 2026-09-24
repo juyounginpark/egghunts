@@ -21,6 +21,7 @@ import { panelHTML } from "./panels";
 import { Multiplayer } from "./multiplayer";
 import {OnlineGame} from './online';
 import {RoomHUD} from './room-hud';
+import {RoomChat} from './room-chat';
 import { VirtualAd } from "./virtual-ad";
 import { formatNumber as num } from "./format";
 import { uiIcon } from './ui-icons';
@@ -108,6 +109,7 @@ const platform = new Platform();
 const multiplayer=new Multiplayer(time=>{if(!qa)platform.offset=time-Date.now();},toast);
 const online=new OnlineGame(toast,time=>platform.syncServerTime(time));
 async function remote(kind:string,value?:unknown){try{return await online.send(kind,value);}catch(err){toast(err instanceof Error?err.message:'연결을 확인해 주세요.');return false;}}
+const roomChat=new RoomChat($('controls'),()=>{input?.reset();online.halt();},text=>remote('chat',text));
 
 const qa = import.meta.env.DEV && new URLSearchParams(location.search).get("qa") === "true" ? await import("./qa") : null;
 if (qa) { platform.now = qa.now; platform.key="alkong:v1:qa"; }
@@ -292,7 +294,7 @@ function updateHud() {
   $("night-curtain").hidden = true;
   $("night-count").textContent = String(Math.max(0, Math.ceil((game.nightUntil-game.now())/1000)));
   $("speed-value").textContent = num(game.speed,2);
-  const speedHelp=`현재 스피드 ${num(game.speed,2)} · 실제 이동 ${num(game.movementSpeed,2)}${game.isAtBase?'':' · 최대 40'}`;
+  const speedHelp=`현재 스피드 ${num(game.speed,2)} · 실제 이동 ${num(input.slow?Math.min(BALANCE.slowWalkSpeed,game.movementSpeed):game.movementSpeed,2)}${input.slow?' · 슬로우 모드':game.isAtBase?'':` · 최대 ${BALANCE.maxMovementSpeed}`}`;
   $('speed-hud').setAttribute('aria-label',speedHelp);
   $('speed-hud').title=speedHelp;
   $('recommended-speed-value').textContent=num(game.recommendedSpeed,1);
@@ -714,10 +716,10 @@ function frame(now: number) {
   lastNow = now;
   if(online.active)online.reconcile(dt);
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}
-  if (!qa && !paused && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
+  if (!qa && !paused && !roomChat.active && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
     const v = input.vector();
-    if(online.active)online.update(v.x*.832+v.y*.555,-v.x*.555+v.y*.832);
-    game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt);
+    if(online.active)online.update(v.x*.832+v.y*.555,-v.x*.555+v.y*.832,input.slow);
+    game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt,input.slow);
     world.player.userData.moving = Math.hypot(v.x, v.y) > 0.1;
     if (world.player.userData.moving)
       world.player.rotation.y = Math.atan2(
@@ -792,7 +794,8 @@ function frame(now: number) {
   world.updatePeers(online.active?online.peers:multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
   world.networkOffset=online.active?online.visualOffset:{x:0,z:0};
   world.render(game, tab, qa ? 1 : dt, qa ? qa.visualTime : now / 1000);
-  roomHUD.update(game,online.active?online.peers:multiplayer.peers,world,online.latest?.isGuest??false,tab==='explore'&&!game.returnReward);
+  roomChat.show(online.active&&tab==='explore'&&!paused&&!game.death&&!game.returnReward&&$('modal').hidden);
+  roomHUD.update(game,online.active?online.peers:multiplayer.peers,world,online.latest?.isGuest??false,tab==='explore'&&!game.returnReward,online.latest?.chat);
   if (now - savedAt > 5000) {
     savedAt = now;
     void save();

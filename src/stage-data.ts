@@ -124,8 +124,13 @@ export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{cons
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
-// Guardians use the same stage speed shown to the player.
-export function guardianSpeed(stage:number){return recommendedRouteSpeed(0,stage);}
+export const BOSS_MOVEMENT={maxSpeed:30,qualifiedChaseMaxSpeed:15};
+export function guardianSpeed(stage:number){return Math.min(BOSS_MOVEMENT.maxSpeed,recommendedRouteSpeed(0,stage));}
+// Compare the uncapped displayed stat, including carry penalties, not movementSpeed.
+export function guardianChaseSpeed(stage:number,playerSpeed:number){
+ return playerSpeed>recommendedRouteSpeed(0,stage)
+  ?Math.min(BOSS_MOVEMENT.qualifiedChaseMaxSpeed,guardianSpeed(stage)):BOSS_MOVEMENT.maxSpeed;
+}
 export function recommendedRouteSpeed(_depth:number,stage:number){return ROUTE.baseRecommendedSpeed*STAGE_DIFFICULTY.recommendedSpeedMultiplier**(stage-1);}
 export const GUARDIAN_ATTACKS=new Set(['hay','train','ink','lava-breath','tentacle','sweep','locker','book','drone','scorpion','stomp','raptor','wisps','club','lightning','medusa','ufo','nightmare','vine','mantis','magnet','void-hand','memory-tentacle','memory-lightning','memory-ufo','memory-meteor','creation-wave']);
 

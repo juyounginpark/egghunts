@@ -1,5 +1,5 @@
 import * as T from 'three';
-import { ROUTE,FINAL_GUARDIAN } from './stage-data';
+import { ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT } from './stage-data';
 import type { GameState, Boss } from './game';
 import { voxelModel } from './voxel';
 import {GuardianMotion} from './guardian-motion';
@@ -17,7 +17,7 @@ export class RegionGuardian {
  private characters=new Map<number,T.Group>();
  private stage=0;private dummy=new T.Object3D();private color=new T.Color();
  private headings=Array<number>(21).fill(NaN);private roots=Array.from({length:21},()=>({x:NaN,z:NaN}));private lastTime=0;
- private samples=new Map<number,{state:Boss;stage:number;at:number}>();
+ private samples=new Map<number,{state:Boss;stage:number;at:number;serverAt:number}>();
  private motion=Array.from({length:21},()=>new GuardianMotion());
  constructor(){this.group.add(this.mesh,this.effects);this.mesh.castShadow=true;this.mesh.frustumCulled=this.effects.frustumCulled=false;this.mesh.count=this.effects.count=0;}
  render(game:GameState,time:number,visible:boolean){
@@ -29,10 +29,13 @@ export class RegionGuardian {
    if(chasing&&this.modes[k]!=='chase')this.wakeAt[k]=time;
    this.modes[k]=state.mode;
    let sample=this.samples.get(k);
-   const reset=!Number.isFinite(root.x)||sample?.stage!==stage||Math.hypot(root.x-state.x,root.z-state.z)>30;
+   const serverAt=game.roomSnapshotTime||time;
+   const gap=sample?Math.max(0,serverAt-sample.serverAt):0;
+   const teleported=sample&&sample.state!==state&&Math.hypot(sample.state.x-state.x,sample.state.z-state.z)>Math.max(30,BOSS_MOVEMENT.maxSpeed*gap*1.5+2);
+   const reset=!Number.isFinite(root.x)||sample?.stage!==stage||!!teleported;
    if(reset){root.x=state.x;root.z=state.z;this.headings[k]=NaN;this.motion[k].reset();}
    if(!sample||sample.state!==state||reset){
-    sample={state,stage,at:time};
+    sample={state,stage,at:time,serverAt};
     this.samples.set(k,sample);
     if(game.roomManaged)this.motion[k].sample(state.x,state.z,game.roomSnapshotTime||time,time);
    }
