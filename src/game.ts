@@ -525,7 +525,7 @@ export class GameState {
   get clickMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].clickMultiplier,1); }
   get autoMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].autoMultiplier,1); }
   get speedMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].speedMultiplier,1); }
-  get movementSpeed() { return this.isAtBase ? BALANCE.baseWalkSpeed : this.speed; }
+  get movementSpeed() { return this.isAtBase ? BALANCE.baseWalkSpeed : Math.min(BALANCE.maxMovementSpeed,this.speed); }
   get speed() {
     return (
       this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *

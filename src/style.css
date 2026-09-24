@@ -459,6 +459,12 @@ nav button img { width:28px; height:28px; }
 #top-hud #region-banner strong { font-size:clamp(16px,4.5vw,22px); line-height:1.25; margin:0; }
 #region-banner img { width:58px; height:58px; object-fit:contain; flex-shrink:0; }
 #region-banner #region-banner-object { width:42px; height:42px; }
+#top-hud #region-banner { gap:6px; }
+#top-hud #region-banner strong { flex:1; min-width:0; overflow-wrap:anywhere; font-size:clamp(13px,3.8vw,20px); }
+#top-hud #region-banner .recommended-speed,#day-clock.recommended-speed { display:inline-flex; align-items:center; gap:4px; flex-shrink:0; white-space:nowrap; }
+#hud-context #day-clock.recommended-speed { display:inline-flex!important; }
+.recommended-speed .ui-icon { width:18px; height:18px; }
+.recommended-speed b { font-size:12px; font-variant-numeric:tabular-nums; }
 #shell #boss-alert { top:calc(174px + var(--safe-top)); font-size:16px; padding:6px 10px; }
 #shell #panel { top:calc(88px + var(--safe-top)); }
 #bottom-hud #tutorial { width:calc(100% - 80px); margin:0; padding:4px 6px; gap:6px; border:var(--hud-border); border-radius:var(--hud-radius); box-shadow:var(--hud-shadow); pointer-events:auto; }

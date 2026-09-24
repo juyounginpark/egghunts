@@ -4,18 +4,34 @@ import postgres from 'npm:postgres@3.4.7';
 const url=Deno.env.get('SUPABASE_URL')!;
 const service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const sql=postgres(Deno.env.get('SUPABASE_DB_URL')!,{prepare:false,max:1,idle_timeout:20,connect_timeout:5});
-const verified=new Map<string,{user:string;until:number;guest:boolean}>();
+type Identity={user:string;until:number;guest:boolean};
+const verified=new Map<string,Identity>();
+const verifying=new Map<string,Promise<Identity|null>>();
+function verifyAuthorization(authorization:string){
+ const pending=verifying.get(authorization);if(pending)return pending;
+ const work=(async()=>{
+  const auth=await fetch(`${url}/auth/v1/user`,{headers:{apikey:service,Authorization:authorization},signal:AbortSignal.timeout(3000)});
+  if(!auth.ok){verified.delete(authorization);return null;}
+  const account=await auth.json();
+  const payload=JSON.parse(atob(authorization.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+  const identity={user:account.id,guest:account.is_anonymous===true,until:Math.min(Date.now()+10000,Number(payload.exp)*1000)};
+  if(!Number.isFinite(identity.until)||identity.until<=Date.now()){verified.delete(authorization);return null;}
+  verified.set(authorization,identity);if(verified.size>256)verified.delete(verified.keys().next().value!);
+  return identity;
+ })().finally(()=>verifying.delete(authorization));
+ verifying.set(authorization,work);return work;
+}
 const allowed=(Deno.env.get('GAME_ALLOWED_ORIGINS')??'https://juyounginpark.github.io,http://localhost:4317,http://127.0.0.1:4317,http://localhost:4320,http://127.0.0.1:4320').split(',');
 async function rpc(name:string,body:unknown){
  const response=await fetch(`${url}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:service,Authorization:`Bearer ${service}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
  if(!response.ok)throw Error('DATABASE_ERROR');return response.json();
 }
 async function handle(req:Request){
- const timing:string[]=[];
+ const timing:string[]=[],requestStarted=performance.now();
  const mark=(name:string,start:number)=>timing.push(`${name};dur=${(performance.now()-start).toFixed(1)}`);
  const origin=req.headers.get('origin')??'';
  const headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin',...(allowed.includes(origin)?{'Access-Control-Allow-Origin':origin}:{}),'Access-Control-Allow-Headers':'authorization,apikey,content-type','Access-Control-Allow-Methods':'POST,OPTIONS','Access-Control-Max-Age':'600','Access-Control-Expose-Headers':'Server-Timing,x-sb-edge-region'};
- const send=(status:number,data:unknown)=>new Response(JSON.stringify(data),{status,headers:{...headers,'Server-Timing':timing.join(',')}});
+ const send=(status:number,data:unknown)=>new Response(JSON.stringify(data),{status,headers:{...headers,'Server-Timing':[...timing,`total;dur=${(performance.now()-requestStarted).toFixed(1)}`].join(',')}});
  if(origin&&!allowed.includes(origin))return send(403,{error:'ORIGIN_NOT_ALLOWED'});
  if(req.method==='OPTIONS')return new Response(null,{status:204,headers});
  if(req.method!=='POST')return send(405,{error:'POST_REQUIRED'});
@@ -25,13 +41,12 @@ async function handle(req:Request){
   // Never trust an unverified JWT payload or a user ID from the request body.
   const authStart=performance.now();let identity=verified.get(authorization);
   if(!identity||identity.until<=Date.now()){
-   const auth=await fetch(`${url}/auth/v1/user`,{headers:{apikey:service,Authorization:authorization}});
-   if(!auth.ok)return send(401,{error:'SIGN_IN'});
-   const account=await auth.json(),user=account.id;
-   const payload=JSON.parse(atob(authorization.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
-   identity={user,guest:account.is_anonymous===true,until:Math.min(Date.now()+10000,Number(payload.exp)*1000)};
-   if(!Number.isFinite(identity.until)||identity.until<=Date.now())return send(401,{error:'SIGN_IN'});
-   verified.set(authorization,identity);if(verified.size>256)verified.delete(verified.keys().next().value!);
+   identity=await verifyAuthorization(authorization)??undefined;
+   if(!identity)return send(401,{error:'SIGN_IN'});
+  }else if(identity.until-Date.now()<2000){
+   // Renew while the previous verification is still valid. Failure never extends
+   // its expiry, and expired/revoked credentials still require verification.
+   void verifyAuthorization(authorization).catch(()=>{});
   }
   mark('auth',authStart);const user=identity.user;
   const raw=await req.text();if(raw.length>8192)return send(413,{error:'REQUEST_TOO_LARGE'});
@@ -44,9 +59,8 @@ async function handle(req:Request){
   // Separate read/commit RPCs lose revisions repeatedly in an active room.
   const transactionStart=performance.now();
   const response=await sql.begin(async transaction=>{
-   await transaction`set local statement_timeout = '5s'`;
    const readStart=performance.now();
-   const [{record}]=await transaction`select public.game_read(${user}::uuid) as record`;
+   const [{record}]=await transaction`with settings as materialized (select set_config('statement_timeout','5s',true)) select public.game_read(${user}::uuid) as record from settings`;
    mark('read',readStart);
    if(!record)throw Error('ROOM_EXPIRED');
    const simulationStart=performance.now();const result=runRoom(record.state,record.members,record.profiles,user,request,Date.now(),{guest:identity.guest});

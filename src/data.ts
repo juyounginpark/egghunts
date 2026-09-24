@@ -22,6 +22,7 @@ export const BALANCE = {
   secretDragonScale:6.5,
   baseMapX:14,
   baseWalkSpeed:2,
+  maxMovementSpeed:40,
   deathChoiceDelay:5000,
   deathChoiceDuration:5000,
   reviveImmunity:3,

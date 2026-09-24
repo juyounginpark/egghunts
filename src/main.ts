@@ -79,7 +79,10 @@ const roomHUD=new RoomHUD(hudPlace,$('world'));
 topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="hazard-cue" role="status" hidden></div>');
 $("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="플레이어 체력" aria-valuemin="0" hidden><div class="health-track"><i id="hp-fill"></i></div></div>');
 $("shell").insertAdjacentHTML('beforeend','<div id="region-banner" role="status" aria-live="polite" hidden><img id="region-banner-art" alt=""/><strong id="region-banner-name"></strong><img id="region-banner-object" alt=""/></div><div id="health-edge"></div><div id="ink-effect" hidden></div><div id="level-burst" hidden></div>');
-topHud.insertBefore($("region-banner"),$("hazard-cue"));
+topHud.insertBefore($("region-banner"),hudContext);
+$("region-banner").insertAdjacentHTML('beforeend',`<span id="region-banner-speed" class="recommended-speed">${uiIcon('speed')}<b></b></span>`);
+$('day-clock').innerHTML=`${uiIcon('speed')}<b id="recommended-speed-value"></b>`;
+$('day-clock').classList.add('recommended-speed');
 $("shell").insertAdjacentHTML('beforeend','<div id="boss-pressure" aria-hidden="true" hidden></div><div id="boss-alert" role="status" aria-live="polite" hidden><strong id="boss-alert-title"></strong><small id="boss-alert-detail" aria-hidden="true"></small></div>');
 $("world").insertAdjacentHTML('beforeend','<div id="night-sky" aria-hidden="true"><span>☾</span></div>');
 const tutorial = document.createElement("div");
@@ -249,6 +252,9 @@ function updateHud() {
     bannerUntil=first?performance.now()+ROUTE.bannerSeconds*1000:0;
     if(first){game.save.visitedStages.push(bannerStage);game.revision++;}
     $("region-banner-name").textContent=game.stage.name;
+    $('region-banner-speed').lastElementChild!.textContent=num(game.recommendedSpeed,1);
+    $('region-banner-speed').setAttribute('aria-label',`권장 스피드 ${num(game.recommendedSpeed,1)}`);
+    $('region-banner-speed').title=`권장 스피드 ${num(game.recommendedSpeed,1)}`;
     $<HTMLImageElement>("region-banner-art").src=`${import.meta.env.BASE_URL}models/guardian-${game.stage.id}.png`;
     $<HTMLImageElement>("region-banner-object").src=eggIcon({type:0,stageId:game.stage.id,variant:0});
     $("region-banner").style.setProperty('--region-accent',`#${game.stage.accent.toString(16).padStart(6,'0')}`);
@@ -286,10 +292,12 @@ function updateHud() {
   $("night-curtain").hidden = true;
   $("night-count").textContent = String(Math.max(0, Math.ceil((game.nightUntil-game.now())/1000)));
   $("speed-value").textContent = num(game.speed,2);
-  const speedHelp=`현재 스피드 ${num(game.speed,2)}${game.isAtBase?' · 기지 이동 속도 2':' · 운동으로 증가'}`;
+  const speedHelp=`현재 스피드 ${num(game.speed,2)} · 실제 이동 ${num(game.movementSpeed,2)}${game.isAtBase?'':' · 최대 40'}`;
   $('speed-hud').setAttribute('aria-label',speedHelp);
   $('speed-hud').title=speedHelp;
-  $("day-clock").textContent = `권장 스피드 ${num(game.recommendedSpeed,1)}`;
+  $('recommended-speed-value').textContent=num(game.recommendedSpeed,1);
+  $('day-clock').setAttribute('aria-label',`권장 스피드 ${num(game.recommendedSpeed,1)}`);
+  $('day-clock').title=`권장 스피드 ${num(game.recommendedSpeed,1)}`;
   $('cycle-phase').textContent=game.isNight?'☾ 밤':'☀ 낮';
   $('cycle-remaining').textContent=game.isNight?`아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;
   const nightCountdown=!game.isNight&&game.nightRemaining>0&&game.nightRemaining<=BALANCE.warningSeconds;
