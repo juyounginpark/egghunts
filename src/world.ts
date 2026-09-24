@@ -137,6 +137,8 @@ export class World {
   farmPets = new T.Group();
   private farmKey = "";
   private petLabels = document.createElement("div");
+  private peerPetLabels = document.createElement('div');
+  private peerPetLabelEntries=new Map<string,{id:number;label:HTMLDivElement}>();
   private trainingGains:{el:HTMLDivElement;at:number}[]=[];
   showTrainingGain(amount:number,at:number){
     const el=document.createElement('div');el.className='training-gain';el.textContent=`+${formatNumber(amount,3)}`;
@@ -195,6 +197,7 @@ export class World {
     this.renderer.setClearColor(0xe9f0d8);
     host.append(this.renderer.domElement);
     this.petLabels.id="pet-labels";host.append(this.petLabels);
+    this.peerPetLabels.id='peer-pet-labels';host.append(this.peerPetLabels);
     this.scene.add(this.farm,this.farmPets,this.roomFarmPets,this.footTrail);
     this.scene.add(this.hazardsView.group);
     this.scene.add(this.nestGroup);
@@ -612,17 +615,36 @@ export class World {
     }
     this.petLabels.hidden=isHatch;
     const labelBoxes:{x:number;y:number;height:number;width:number}[]=[];
-    this.companions.children.forEach((pet,i)=>{
-      const label=this.petLabels.children[i] as HTMLElement|undefined;if(!label)return;
+    const positionPetLabel=(pet:T.Object3D,label:HTMLElement)=>{
       const p=pet.position.clone();p.y+=(pet.userData.labelHeight??.8)*pet.scale.x+.06;p.project(this.camera);
+      label.hidden=p.z>1||Math.abs(p.x)>.95||Math.abs(p.y)>.85;
+      if(label.hidden)return;
       const halfWidth=label.offsetWidth/2+4;
       let lx=Math.max(halfWidth,Math.min(this.host.clientWidth-halfWidth,(p.x+1)/2*this.host.clientWidth));
       let ly=(1-p.y)/2*this.host.clientHeight;
       // Prefer a small sideways nudge; never detach labels far above their pet.
       for(const box of labelBoxes)if(Math.abs(box.x-lx)<halfWidth+box.width&&Math.abs(box.y-ly)<box.height+3){lx=Math.max(halfWidth,Math.min(this.host.clientWidth-halfWidth,lx+(lx<box.x?-24:24)));ly=box.y-box.height-4;}
       labelBoxes.push({x:lx,y:ly,height:label.offsetHeight,width:halfWidth});label.style.left=`${lx}px`;label.style.top=`${ly}px`;
-      label.hidden=p.z>1||Math.abs(p.x)>.95||Math.abs(p.y)>.85;
+    };
+    this.companions.children.forEach((pet,i)=>{
+      const label=this.petLabels.children[i] as HTMLElement|undefined;if(label)positionPetLabel(pet,label);
     });
+    this.peerPetLabels.hidden=isHatch||mode!=='explore';
+    const peerLabelKeys=new Set<string>();
+    for(const [owner,entry] of this.peerPets)entry.group.children.forEach((pet,index)=>{
+      const id=pet.userData.petId as number,definition=MONGLES[id];if(!definition)return;
+      const key=`${owner}:${index}`;peerLabelKeys.add(key);
+      let row=this.peerPetLabelEntries.get(key);
+      if(!row||row.id!==id){
+        row?.label.remove();const label=document.createElement('div'),name=document.createElement('b'),tier=document.createElement('span');
+        label.className='pet-label peer-pet-label';tier.style.color=RARITIES[definition.tier].color;
+        tier.textContent=`[${RARITIES[definition.tier].name}]`;name.append(tier,` ${definition.name}`);label.append(name);
+        this.peerPetLabels.append(label);row={id,label};this.peerPetLabelEntries.set(key,row);
+      }
+      if(!entry.group.visible){row.label.hidden=true;return;}
+      positionPetLabel(pet,row.label);
+    });
+    for(const [key,row] of this.peerPetLabelEntries)if(!peerLabelKeys.has(key)){row.label.remove();this.peerPetLabelEntries.delete(key);}
     const trailDef=TRAILS[game.save.equippedTrail??0];
     this.footTrail.visible=!isHatch&&moving&&trailDef.multiplier>1;
     (this.footTrail.material as T.MeshBasicMaterial).color.set(trailDef.color);

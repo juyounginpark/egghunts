@@ -136,7 +136,9 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   activePets:g.save.active.filter(id=>g.save.mongles[id]>0).slice(0,BALANCE.maxCompanions),
   pets:g.save.mongles.flatMap((n,i)=>n&&!g.save.active.includes(i)?[i]:[]).slice(0,6),
  }));
- return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,eggNotices:room.eggNotices,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
+ // Notice IDs start with the authenticated owner's UUID, not the nickname.
+ const eggNotices=room.eggNotices.filter(notice=>!notice.id.startsWith(`${user}:`));
+ return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,eggNotices,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
 }
 function applyCommand(g:GameState,p:Player,c:Command,now:number){
  const integer=()=>{if(!Number.isSafeInteger(c.value)||Number(c.value)<0)throw Error('INVALID_ID');return Number(c.value);};

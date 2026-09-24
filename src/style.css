@@ -246,7 +246,7 @@ header { background: #fff9e8ed; padding: 5px 8px; border-radius: 12px; }
 .reward-open #top-hud,.reward-open #bottom-hud,.reward-open nav { visibility: hidden; }
 .result-pet { display: block; width: 168px; height: 168px; margin: auto; image-rendering: auto; background: var(--reward); border-radius: 50%; box-shadow: 0 0 0 8px #ffe9a9,0 0 0 16px #fff3cf; animation: bob 1s steps(6) infinite; }
 .result-card .sparkles { margin: 14px 0 6px; }
-#pet-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+#pet-labels,#peer-pet-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .pet-label { position: absolute; transform: translate(-50%,-100%); text-align: center; padding: 3px 5px; background: #fff9e8df; border: 1px solid #687b4c; border-radius: 5px; color: #293e38; white-space: nowrap; }
 .pet-label b { display: block; font-size: 9px; }.pet-label small { display: block; font-size: 8px; }
 .trail-card { display: flex; align-items: center; gap: 12px; padding: 14px 10px; margin: 14px 0; border: 2px solid #a9b790; border-radius: 12px; background: #fff9e8; box-shadow: inset 5px 0 var(--trail); }
