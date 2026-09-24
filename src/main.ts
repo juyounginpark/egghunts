@@ -672,6 +672,7 @@ function frame(now: number) {
   if (document.hidden || syncing) return;
   const dt = Math.min(0.05, (now - lastNow) / 1000);
   lastNow = now;
+  if(online.active)online.reconcile(dt);
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}
   if (!qa && (!online.active||online.connected) && !paused && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
     const v = input.vector();
@@ -688,7 +689,7 @@ function frame(now: number) {
   if(pickupPreparation){
     const p=pickupPreparation;
     const target=game.world.find(e=>e.id===p.id);
-    if(paused||tab!=='explore'||game.death||game.carried||game.returnReward||!target||!game.canReachEgg(target)||game.hitAt!==p.hitAt||Math.hypot(game.x-p.x,game.z-p.z)>.05){pickupPreparation=null;}
+    if(paused||tab!=='explore'||game.death||game.carried||game.returnReward||!target||!game.canReachEgg(target)||game.hitAt!==p.hitAt||(online.active?Math.hypot(input.vector().x,input.vector().y)>.1:Math.hypot(game.x-p.x,game.z-p.z)>.05)){pickupPreparation=null;}
     else if(!qa){p.remaining=Math.max(0,p.remaining-dt);if(p.remaining===0){pickupPreparation=null;void action(p.id);}}
   }
   if(!paused&&tab==='explore'&&!game.isAtBase&&!game.carried&&!game.death&&!game.returnReward&&game.near&&!game.save.bossWarningSeen)warnAboutBoss();

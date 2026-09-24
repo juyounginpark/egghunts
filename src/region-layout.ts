@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {stageLandmarks} from './world-art';
 import { STAGES, STAGE_COVERS, STAGE_STEPS,FINAL_GUARDIAN,routeStep,ROUTE } from './stage-data';
 
 export type Block = { x:number;y:number;z:number;w:number;h:number;d:number;c:number;angle?:number;roll?:number };
@@ -265,6 +266,7 @@ function createRegionLayout(stage:number,length:number){
    for(const x of [-8,0,8]){b(x,1.7,wall+.2,.65,3.4,1.7,0xb4aa8d);b(x,3.45,wall+.2,.95,.2,1.9,gold);}
    for(let i=-2;i<=2;i++){b(i*.22,2,wall+.88,.2,.2,.08,gold);b(0,2+i*.22,wall+.88,.2,.2,.08,gold);}
   }
+  blocks.push(...stageLandmarks(stage,length));
   // Cut each themed section at its own boundary; neighbours stay visible across it.
   const end=-ROUTE.entrance-length;
   // Three equal steps have their own palette, density and boundary marker.

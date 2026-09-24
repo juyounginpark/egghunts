@@ -13,9 +13,10 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  if(!request||typeof request.id!=='string'||request.id.length>80||!Array.isArray(request.commands??[])||(request.commands?.length??0)>16)throw Error('INVALID_REQUEST');
  const vector=request.input??{x:0,z:0};
  if(![vector.x,vector.z].every(v=>Number.isFinite(v)&&Math.abs(v)<=1.001))throw Error('INVALID_INPUT');
- const fresh=new GameState(freshSave(now),()=>now,random);
+ const cycle=Math.floor(now/BALANCE.nightInterval);
+ const fresh=!previous||cycle!==previous.cycle?new GameState(freshSave(now),()=>now,random):null;
  const joinedNow=!previous?.players[user];
- const room:Room=previous??{at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh.world,bosses:fresh.bosses,players:{}};
+ const room:Room=previous??{at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
  // Disconnected players cannot keep an egg or operate an unoccupied plot.
  for(const [id,p] of Object.entries(room.players))if(!members.some(m=>m.user_id===id)){
   const egg=p.runtime.fields.carried as WorldEgg|null;
@@ -34,15 +35,14 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    g.roomManaged=true;g.farmSlot=m.slot;
    p=room.players[m.user_id]={runtime:exportRuntime(g),input:{x:0,z:0},seen:now,receipts:[]};
   }
-  const g=new GameState(structuredClone(p.runtime.save),()=>simTime,random);
+  const g=new GameState(structuredClone(p.runtime.save),()=>simTime,random,true);
   restoreRuntime(g,p.runtime,room.world,room.bosses);g.farmSlot=m.slot;g.events=[];
   games.set(m.user_id,g);
  }
  const self=games.get(user)!,player=room.players[user];
  if(!joinedNow&&now-player.seen<10&&!player.receipts.includes(`request:${request.id}`))throw Error('RATE_LIMIT');
- const cycle=Math.floor(now/BALANCE.nightInterval);
  if(cycle!==room.cycle){
-  room.world=fresh.world;room.bosses=fresh.bosses;room.cycle=cycle;
+  room.world=fresh!.world;room.bosses=fresh!.bosses;room.cycle=cycle;
   for(const [id,g] of games){g.failExpedition('night');g.world=room.world;g.bosses=room.bosses;delete room.players[id].preparation;}
  }
  for(const g of games.values()){
@@ -60,7 +60,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    if(active){const v=simTime-p.seen<=500?p.input:{x:0,z:0};g.move(v.x,v.z,dt);g.tick(dt);}
    else if(g.death&&g.deathChoiceRemaining<=0)g.revive(false);
    room.world=g.world;
-   if(p.preparation&&(Math.hypot(g.x-p.preparation.x,g.z-p.preparation.z)>.05||g.hitAt!==p.preparation.hit||g.death||g.carried))delete p.preparation;
+   if(p.preparation&&(Math.hypot(g.x-p.preparation.x,g.z-p.preparation.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(p.preparation.hit??0)||g.death||g.carried))delete p.preparation;
   }
   // Every boss advances exactly once, against the player holding its target egg.
   for(let index=0;index<room.bosses.length;index++){
@@ -100,10 +100,10 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number){
  const atBase=()=>{if(!g.isAtBase||g.death)throw Error('RETURN_TO_BASE');};
  switch(c.kind){
   case 'prepare':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
-   p.preparation={id:egg.id,at:now,x:g.x,z:g.z,hit:g.hitAt};break;}
+   p.preparation={id:egg.id,at:now,x:g.x,z:g.z,hit:Number.isFinite(g.hitAt)?g.hitAt:0};break;}
   case 'pickup':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||g.isNight||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
    const seconds=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier],prep=p.preparation;
-   if(seconds&&(!prep||prep.id!==egg.id||now-prep.at<seconds*1000||Math.hypot(g.x-prep.x,g.z-prep.z)>.05||g.hitAt!==prep.hit))throw Error('PREPARE_EGG');
+   if(seconds&&(!prep||prep.id!==egg.id||now-prep.at<seconds*1000||Math.hypot(g.x-prep.x,g.z-prep.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(prep.hit??0)))throw Error('PREPARE_EGG');
    g.pickup(egg);delete p.preparation;break;}
   case 'drop':if(g.carried)g.interact();break;
   case 'train':atBase();g.toggleTraining();break;

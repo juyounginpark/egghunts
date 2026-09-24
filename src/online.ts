@@ -23,6 +23,8 @@ export class OnlineGame{
  private lastSent=0;
  private retryAt=0;
  private lastError='';
+ private correction={x:0,z:0};
+ private roundTrip=0;
  constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){}
  async enter(host:HTMLElement){
   const {createClient}=await import('@supabase/supabase-js');
@@ -58,16 +60,30 @@ export class OnlineGame{
  attach(game:GameState){this.game=game;if(this.latest)this.apply(this.latest);}
  private apply(state:Snapshot){
   this.latest=state;this.peers=state.peers;this.syncClock(state.serverTime);
-  if(this.game){const settings=this.game.save.settings;restoreRuntime(this.game,state.runtime,state.world,state.bosses);this.game.save.settings=settings;this.game.events.push(...state.events);}
+  if(this.game){
+   const g=this.game,settings=g.save.settings,old={x:g.x,z:g.z,carried:g.carried?.id,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot};
+   restoreRuntime(g,state.runtime,state.world,state.bosses);g.save.settings=settings;g.events.push(...state.events);
+   const stable=old.carried===g.carried?.id&&old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
+   const gap=Math.hypot(old.x-g.x,old.z-g.z);
+   if(stable&&gap<Math.max(2,g.speed*.5)){
+    const lead=Math.min(.15,this.roundTrip/2000),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
+    this.correction={x:g.x+(moving?this.vector.x*g.speed*lead:0)-old.x,z:g.z+(moving?this.vector.z*g.speed*lead:0)-old.z};g.x=old.x;g.z=old.z;
+   }else this.correction={x:0,z:0};
+  }
   for(const error of state.errors)this.notify(errorText[error]??'지금은 사용할 수 없어요.');
   this.onState();
  }
  async send(kind:string,value?:unknown){
-  this.queue.push({id:crypto.randomUUID(),kind,value});
-  if(this.busy)await this.busy;
-  await this.flush();
+  const command={id:crypto.randomUUID(),kind,value};this.queue.push(command);
+  do{if(this.busy)await this.busy;else await this.flush();}
+  while(this.queue.some(c=>c.id===command.id)||this.pending?.commands.some(c=>c.id===command.id));
  }
  halt(){this.vector={x:0,z:0};}
+ reconcile(dt:number){
+  if(!this.game)return;
+  const blend=1-Math.exp(-dt*10),dx=this.correction.x*blend,dz=this.correction.z*blend;
+  this.game.push(dx,dz);this.correction.x-=dx;this.correction.z-=dz;
+ }
  update(x:number,z:number){
   const wasStopped=Math.hypot(this.vector.x,this.vector.z)<.01,stopped=Math.hypot(x,z)<.01;
   this.vector={x,z};
@@ -80,9 +96,11 @@ export class OnlineGame{
    this.lastSent=performance.now();
    this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,commands:this.queue.splice(0,16)};
    const {data,error}=await this.client.auth.getSession();if(error||!data.session)throw Error('다시 로그인해 주세요.');
+   const started=performance.now();
    const response=await fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${data.session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify(this.pending),signal:AbortSignal.timeout(10000)});
    const state=await response.json();
    if(!response.ok){if(state.error==='ROOM_EXPIRED')this.pending={...this.pending,operation:'join'};throw Error(errorText[state.error]??'서버에 연결하지 못했어요. 다시 시도해 주세요.');}
+   this.roundTrip=performance.now()-started;
    this.pending=null;this.connected=true;this.lastError='';this.apply(state);
   };
   this.busy=work().catch(error=>{this.connected=false;this.retryAt=performance.now()+1500;const message=error instanceof Error?error.message:'연결이 끊겼어요.';if(this.active&&this.lastError!==message){this.notify(message);this.lastError=message;}throw error;}).finally(()=>{this.busy=null;});

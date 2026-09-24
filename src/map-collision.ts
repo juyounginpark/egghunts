@@ -1,5 +1,7 @@
 import { buildRegionLayout,type Block } from './region-layout';
 import { routeSegments,stagePatterns,environmentPlacement } from './stage-data';
+import {villageArt} from './world-art';
+import {villageColliders} from './village';
 
 export type MapCollider={minX:number;maxX:number;minZ:number;maxZ:number};
 const radius=.24,epsilon=.0001,bandSize=4;
@@ -19,11 +21,15 @@ function buckets(boxes:MapCollider[]){
  }
  return bands;
 }
+const sharedSections=new Map<string,ReturnType<typeof buckets>>();
+const farmBuckets=new WeakMap<MapCollider[],ReturnType<typeof buckets>>();
+let villageBoxes:MapCollider[]|undefined;
+export function villageMapColliders(){return villageBoxes??= [...villageColliders(),...villageArt().flatMap(p=>{const box=blockCollider(p,0);return box?[box]:[];})];}
 /** Swept player footprint: even a fast move or knockback cannot skip a thin prop. */
 export class MapCollision{
  private farm=buckets([]);
- private sections=new Map<string,ReturnType<typeof buckets>>();
- setFarm(boxes:MapCollider[]){this.farm=buckets(boxes);}
+ private sections=sharedSections;
+ setFarm(boxes:MapCollider[]){let cached=farmBuckets.get(boxes);if(!cached){cached=buckets(boxes);farmBuckets.set(boxes,cached);}this.farm=cached;}
  private nearby(x:number,z:number,dx:number,dz:number,start:number){
   const minZ=Math.min(z,z+dz)-radius-2,maxZ=Math.max(z,z+dz)+radius+2;
   const minX=Math.min(x,x+dx)-radius-2,maxX=Math.max(x,x+dx)+radius+2;
@@ -46,7 +52,7 @@ export class MapCollision{
      }
     }
     this.sections.set(key,buckets(boxes));
-    if(this.sections.size>4)this.sections.delete(this.sections.keys().next().value!);
+    if(this.sections.size>24)this.sections.delete(this.sections.keys().next().value!);
    }
    sources.push(this.sections.get(key)!);
   }

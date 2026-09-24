@@ -27,11 +27,12 @@ export class RegionGuardian {
    this.modes[k]=state.mode;
    const waking=state.mode==='waking',wakeProgress=waking?Math.max(0,Math.min(1,1-(state.wakeRemaining??ROUTE.bossWakeSeconds)/ROUTE.bossWakeSeconds)):chasing?1:0;
    const rise=wakeProgress*wakeProgress*(3-2*wakeProgress);
-   const scale=(state.final?FINAL_GUARDIAN.scale:1)*(1+(ROUTE.bossAngryScale-1)*rise);
+   const scale=ROUTE.bossBaseScale*(state.final?FINAL_GUARDIAN.scale:1)*(1+(ROUTE.bossAngryScale-1)*rise);
    const tx=state.x,tz=state.z;
    if(!Number.isFinite(root.x)||Math.hypot(root.x-tx,root.z-tz)>30){root.x=tx;root.z=tz;}
    const moveX=tx-root.x,moveZ=tz-root.z;
-   root.x=tx;root.z=tz;
+   const follow=game.roomManaged?1-Math.exp(-dt*14):1;
+   root.x+=moveX*follow;root.z+=moveZ*follow;
    const z=root.z;if(Math.abs(z-game.z)>(state.final?40:23))continue;
 
 

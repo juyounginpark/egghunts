@@ -4,12 +4,13 @@ import { EGGS, REGIONS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage } from ".
 import { eggVisual, petVisual, animateEgg } from "./visuals";
 import type { Egg, GameState } from "./game";
 import { voxelModel as model, loadVoxels,voxelColliders } from "./voxel";
-import type {MapCollider} from './map-collision';
+import {villageMapColliders,type MapCollider} from './map-collision';
 import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
 import {petAbilities} from './pet-stats';
 import {HazardView} from "./hazard-view";
-import {FARM_PLOTS,farmPlot,farmGym,villageColliders} from './village';
+import {FARM_PLOTS,farmPlot,farmGym} from './village';
+import {villageArt} from './world-art';
 export class World {
   chasePressure=0;
   private reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -247,6 +248,7 @@ export class World {
         }
       }
     }
+    for(const p of villageArt())block(p.x,p.y,p.z,p.w,p.h,p.d,p.c);
     const g = mergeGeometries(chunks);
     chunks.forEach((c) => c.dispose());
     const mesh = new T.Mesh(g, groundMaterial);
@@ -256,14 +258,8 @@ export class World {
       if(!['flower','carrots','cabbage'].includes(name))this.mapColliders.push(...voxelColliders(name,x,z,scale,rotation));
       const g=model(name);g.position.set(x,0,z);g.scale.setScalar(scale);g.rotation.y=rotation;parent.add(g);return g;
     };
-    prop("shop",BALANCE.storeX,4,2,0,this.farm);
-    prop("well",0,10,1.7,0,this.farm);
-    prop("gate",0,-4.8,2.4,0,this.farm);
     for(const [slot,plot] of FARM_PLOTS.entries()){
-      prop("barn",plot.x-2.5,plot.z-.6,2,0,this.farm);
-      prop("carrots",plot.x,plot.z+2.5,1,0,this.farm);
       prop("feed",plot.x-2,plot.z+2.5,1,0,this.farm);
-      for(const dx of [-3.5,0,3.5])prop("fence",plot.x+dx,plot.z+3.5,1.4,0,this.farm);
       const position=farmGym(slot),gym=new T.Group();gym.name=`gym-${slot}`;gym.position.set(position.x,0,position.z);
       const material=new T.MeshLambertMaterial({color:[0x859e5d,0xc59566,0x7ca3ad,0xac8ab2,0xb8a35a][slot]});
       for(const [w,h,d,x,y,z] of [[1.2,.15,1.6,0,.08,0],[.85,.04,1.35,0,.18,0],[.12,1,.12,-.5,.6,-.7],[.12,1,.12,.5,.6,-.7],[1.1,.12,.12,0,1.05,-.7]]){
@@ -276,7 +272,7 @@ export class World {
       const tile=new T.Mesh(new T.PlaneGeometry(.8,.8),new T.MeshBasicMaterial({map:new T.CanvasTexture(canvas)}));tile.rotation.x=-Math.PI/2;tile.position.set(plot.x,.025,plot.z);this.farm.add(tile);
     }
     // Collision geometry is identical in the client and the authoritative server.
-    this.mapColliders.splice(0,this.mapColliders.length,...villageColliders());
+    this.mapColliders.splice(0,this.mapColliders.length,...villageMapColliders());
     const pedestal = model("pedestal");
     pedestal.scale.set(2.5, 1, 2.5);
     pedestal.position.y = -0.2;

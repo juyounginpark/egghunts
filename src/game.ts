@@ -15,8 +15,8 @@ import {
 } from "./data";
 import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,chooseTrait,traitPoints,reducedDamage,type Progression,type TraitId} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
-import {farmGym,villageColliders} from './village';
-import {MapCollision} from './map-collision';
+import {farmGym} from './village';
+import {MapCollision,villageMapColliders} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,stageDamage,type HazardDefinition} from "./stage-data";
 export type Egg = { id: string; type: number; hp: number; distance: number; stageId?:number; variant?:number; special?:boolean };
 export type WorldEgg = Egg & {
@@ -427,10 +427,12 @@ export class GameState {
     public save: Save,
     public now: () => number,
     public random: () => number = Math.random,
+    hydrateOnly=false,
   ) {
-    this.mapCollision.setFarm(villageColliders());
+    this.mapCollision.setFarm(villageMapColliders());
     if(!save.progression){save.progression=newProgression();save.progression.seenEggs=[...save.discovered];save.progression.hatchedPets=save.mongles.flatMap((n,i)=>n?[i]:[]);save.progression.distanceRecord=save.best;}
     validateProgression(save.progression);
+    if(hydrateOnly)return;
     if(save.routeVersion===1){
       const stretch=(z:number)=>z<-ROUTE.entrance?-ROUTE.entrance+(z+ROUTE.entrance)*3:z;
       const eggs=new Set([...(save.world??[]),...(save.expedition?.carried?[save.expedition.carried]:[]),...(save.bosses??[]).flatMap(b=>b.loot?[b.loot]:[])]);
