@@ -125,7 +125,8 @@ function feedback(sound:GameSound|null='ui') {
   if (game.save.settings.haptic) platform.haptic();
   if(sound)playSound(sound);
 }
-for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>{if(ready&&game.save.settings.sound)audio.unlock();},{capture:true});
+// Pay the audio device startup cost on login, before movement is available.
+for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>{if(!ready||game.save.settings.sound)audio.unlock();},{capture:true});
 function toast(text: string) {
   $("toast").textContent = text;
   $("toast").hidden = false;

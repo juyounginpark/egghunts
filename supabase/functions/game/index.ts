@@ -9,9 +9,11 @@ async function db(path:string,method='GET',body?:unknown){
  if(!response.ok)throw Error('DATABASE_ERROR');return response.status===204?null:response.json();
 }
 Deno.serve(async req=>{
+ const timing:string[]=[];
+ const mark=(name:string,start:number)=>timing.push(`${name};dur=${(performance.now()-start).toFixed(1)}`);
  const origin=req.headers.get('origin')??'';
- const headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin',...(allowed.includes(origin)?{'Access-Control-Allow-Origin':origin}:{}),'Access-Control-Allow-Headers':'authorization,apikey,content-type','Access-Control-Allow-Methods':'POST,OPTIONS'};
- const send=(status:number,data:unknown)=>new Response(JSON.stringify(data),{status,headers});
+ const headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin',...(allowed.includes(origin)?{'Access-Control-Allow-Origin':origin}:{}),'Access-Control-Allow-Headers':'authorization,apikey,content-type','Access-Control-Allow-Methods':'POST,OPTIONS','Access-Control-Max-Age':'600','Access-Control-Expose-Headers':'Server-Timing,x-sb-edge-region'};
+ const send=(status:number,data:unknown)=>new Response(JSON.stringify(data),{status,headers:{...headers,'Server-Timing':timing.join(',')}});
  if(origin&&!allowed.includes(origin))return send(403,{error:'ORIGIN_NOT_ALLOWED'});
  if(req.method==='OPTIONS')return new Response(null,{status:204,headers});
  if(req.method!=='POST')return send(405,{error:'POST_REQUIRED'});
@@ -19,7 +21,7 @@ Deno.serve(async req=>{
   const authorization=req.headers.get('authorization')??'';
   if(!authorization.startsWith('Bearer '))return send(401,{error:'SIGN_IN'});
   // Never trust an unverified JWT payload or a user ID from the request body.
-  let identity=verified.get(authorization);
+  const authStart=performance.now();let identity=verified.get(authorization);
   if(!identity||identity.until<=Date.now()){
    const auth=await fetch(`${url}/auth/v1/user`,{headers:{apikey:service,Authorization:authorization}});
    if(!auth.ok)return send(401,{error:'SIGN_IN'});
@@ -29,7 +31,7 @@ Deno.serve(async req=>{
    if(!Number.isFinite(identity.until)||identity.until<=Date.now())return send(401,{error:'SIGN_IN'});
    verified.set(authorization,identity);if(verified.size>256)verified.delete(verified.keys().next().value!);
   }
-  const user=identity.user;
+  mark('auth',authStart);const user=identity.user;
   const raw=await req.text();if(raw.length>8192)return send(413,{error:'REQUEST_TOO_LARGE'});
   const request=JSON.parse(raw);
   if(request.operation==='leave'){await db('rpc/game_leave','POST',{p_user:user});return send(200,{});}
@@ -37,10 +39,14 @@ Deno.serve(async req=>{
    await db('rpc/game_join','POST',{p_user:user});
   }else if(request.operation!=='update')return send(400,{error:'INVALID_OPERATION'});
   for(let attempt=0;attempt<5;attempt++){
+   const readStart=performance.now();
    const record=await db('rpc/game_read','POST',{p_user:user});
+   mark('read',readStart);
    if(!record)return send(409,{error:'ROOM_EXPIRED'});
-   const result=runRoom(record.state,record.members,record.profiles,user,request,Date.now());
+   const simulationStart=performance.now();const result=runRoom(record.state,record.members,record.profiles,user,request,Date.now());
+   mark('simulation',simulationStart);const commitStart=performance.now();
    const committed=await db('rpc/game_commit','POST',{p_room:record.id,p_revision:record.revision,p_state:result.room,p_user:user});
+   mark('commit',commitStart);
    if(committed)return send(200,result.response);
   }
   return send(409,{error:'RETRY'});

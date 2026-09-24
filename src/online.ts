@@ -27,6 +27,7 @@ export class OnlineGame{
  private completions=new Map<string,(ok:boolean)=>void>();
  private syncTimer:number|undefined;
  private roundTrip=0;
+ private predictionLead=0;
  constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){
   document.addEventListener('visibilitychange',()=>{if(document.hidden)this.halt();});
  }
@@ -81,7 +82,7 @@ export class OnlineGame{
    restoreRuntime(g,state.runtime,state.world,state.bosses);g.save.settings=settings;g.events.push(...state.events);
    const stable=old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
    if(stable&&!g.death&&!g.training&&g.now()>=g.knockedUntil){
-    const lead=Math.min(.5,this.roundTrip/2000);
+    const lead=this.predictionLead;
     if(Math.hypot(this.vector.x,this.vector.z)>.01)g.push(this.vector.x*g.speed*lead,this.vector.z*g.speed*lead);
     g.facing=old.facing;g.velocity=old.velocity;
    }
@@ -99,7 +100,10 @@ export class OnlineGame{
  halt(){this.update(0,0);}
  reconcile(dt:number){
   if(!this.game)return;
-  const decay=Math.exp(-dt*12);this.visualOffset.x*=decay;this.visualOffset.z*=decay;
+  const distance=Math.hypot(this.visualOffset.x,this.visualOffset.z),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
+  // A late packet must not briefly accelerate or reverse an otherwise steady walk.
+  const amount=moving?Math.min(distance,this.game.speed*BALANCE.roomMovingCorrectionRatio*dt):distance*(1-Math.exp(-dt*8));
+  const decay=distance>0?1-amount/distance:0;this.visualOffset.x*=decay;this.visualOffset.z*=decay;
   // Only predict knockback motion here; rewards, damage and drops stay on the server.
   if(this.game.knockback.remaining>0){const k=this.game.knockback,step=Math.min(dt,k.remaining);this.game.push(k.x*step,k.z*step);k.remaining=Math.max(0,k.remaining-step);return;}
  }
@@ -126,6 +130,7 @@ export class OnlineGame{
     const state=await response.json();
     if(response.ok){
      this.roundTrip=performance.now()-started;
+     const lead=Math.min(.5,this.roundTrip/2000);this.predictionLead=this.predictionLead?this.predictionLead+(lead-this.predictionLead)*.15:lead;
      const commands=this.pending!.commands;
      this.pending=null;this.connected=true;this.lastError='';this.apply(state);
      for(const command of commands){

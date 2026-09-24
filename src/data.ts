@@ -43,6 +43,7 @@ export const BALANCE = {
   batFlightSeconds:.28,
   roomInputGraceMs:1500,
   roomSyncMs:200,
+  roomMovingCorrectionRatio:.08,
   knockdownMs:900,
   knockback:2,
   bossFixedDamage:[10,14,18,22,26],
