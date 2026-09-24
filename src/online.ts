@@ -22,7 +22,7 @@ export class OnlineGame{
  private game:GameState|null=null;
  private busy:Promise<void>|null=null;
  private queue:Command[]=[];
- private pending:{operation:string;id:string;input:{x:number;z:number;slow?:boolean};inputAt?:number;commands:Command[]}|null=null;
+ private pending:{operation:string;id:string;input:{x:number;z:number;slow?:boolean};inputAt?:number;inputRevision?:number;commands:Command[]}|null=null;
  private vector={x:0,z:0,slow:false};
  private lastInput={x:0,z:0,slow:false};
  private inputAt=0;
@@ -35,8 +35,8 @@ export class OnlineGame{
  private syncTimer:number|undefined;
  private roundTrip=0;
  private predictionLead=0;
- private awaitingStop=false;
- private stopCorrectionRemaining=0;
+ private inputRevision=0;
+ private idleAcknowledgedRevision=-1;
  private accessToken='';
  private leaving=false;
  private socket:WebSocket|null=null;
@@ -172,11 +172,11 @@ export class OnlineGame{
   // Network cadence is independent of animation frames and input handlers.
   this.syncTimer??=window.setInterval(()=>this.pump(),50);
  }
- private apply(state:Snapshot,acknowledgedInput?:{x:number;z:number}){
+ private apply(state:Snapshot,acknowledgedInput?:{x:number;z:number},acknowledgedRevision?:number){
   this.latest=state;this.peers=state.peers;this.syncClock(state.serverTime+this.roundTrip/2);
   this.receivedAt=performance.now();
   if(this.game){
-   const g=this.game,settings=g.save.settings,old={x:g.x+this.visualOffset.x,z:g.z+this.visualOffset.z,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot,facing:g.facing,velocity:g.velocity};
+   const g=this.game,settings=g.save.settings,offset=this.visualOffset,old={x:g.x+offset.x,z:g.z+offset.z,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot,facing:g.facing,velocity:g.velocity};
    restoreRuntime(g,state.runtime,state.world,state.bosses);g.save.settings=settings;g.events.push(...state.events);
    g.roomSnapshotTime=state.serverTime/1000;
    const stable=old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
@@ -187,10 +187,16 @@ export class OnlineGame{
     g.facing=old.facing;g.velocity=old.velocity;
    }
    // Correct the simulation once; ease only the drawn position, never the input velocity.
-   this.visualOffset=stable&&Math.hypot(old.x-g.x,old.z-g.z)<Math.max(6,g.movementSpeed*2)?{x:old.x-g.x,z:old.z-g.z}:{x:0,z:0};
-   if(!stable){this.awaitingStop=false;this.stopCorrectionRemaining=0;}
-   else if(this.awaitingStop&&acknowledgedInput&&Math.hypot(acknowledgedInput.x,acknowledgedInput.z)<.01){
-    this.awaitingStop=false;this.stopCorrectionRemaining=.12;
+   const continuous=stable&&Math.hypot(old.x-g.x,old.z-g.z)<Math.max(6,g.movementSpeed*2);
+   this.visualOffset=continuous?{x:old.x-g.x,z:old.z-g.z}:{x:0,z:0};
+   const idle=Math.hypot(this.vector.x,this.vector.z)<.01;
+   const currentStop=idle&&acknowledgedRevision===this.inputRevision&&acknowledgedInput&&Math.hypot(acknowledgedInput.x,acknowledgedInput.z)<.01;
+   if(!continuous)this.idleAcknowledgedRevision=-1;
+   else if(currentStop){
+    // Keep the release position through the first stop acknowledgement. Later
+    // idle packets retain that offset, so server-driven motion (wind, etc.) still shows.
+    if(this.idleAcknowledgedRevision===this.inputRevision)this.visualOffset=offset;
+    this.idleAcknowledgedRevision=this.inputRevision;
    }
   }
   for(const error of state.errors)this.notify(error==='CHAT_COOLDOWN'?'잠깐 기다렸다 보내주세요.':error==='INVALID_CHAT'?`메시지는 ${BALANCE.chatMaxLength}자 이내로 입력해 주세요.`:errorText[error]??'지금은 사용할 수 없어요.');
@@ -207,10 +213,9 @@ export class OnlineGame{
   const distance=Math.hypot(this.visualOffset.x,this.visualOffset.z),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
   const speed=this.vector.slow?Math.min(BALANCE.slowWalkSpeed,this.game.movementSpeed):this.game.movementSpeed;
   // A late packet must not briefly accelerate or reverse an otherwise steady walk.
-  // Keep the released position while an older walking request is still in flight.
-  // Once the stop is acknowledged, finish correction in finite time (no idle drift).
-  const amount=moving?Math.min(distance*(1-Math.exp(-dt*3)),speed*BALANCE.roomMovingCorrectionRatio*dt):this.awaitingStop?0:distance*Math.min(1,dt/Math.max(dt,this.stopCorrectionRemaining));
-  if(!moving&&!this.awaitingStop)this.stopCorrectionRemaining=Math.max(0,this.stopCorrectionRemaining-dt);
+  // Network error is corrected during the next walk, never as unsolicited
+  // movement after release. Authoritative collisions/rewards remain at game.x/z.
+  const amount=moving?Math.min(distance*(1-Math.exp(-dt*3)),speed*BALANCE.roomMovingCorrectionRatio*dt):0;
   const decay=distance>0?1-amount/distance:0;this.visualOffset.x*=decay;this.visualOffset.z*=decay;
   // Only predict knockback motion here; rewards, damage and drops stay on the server.
   if(this.game.knockback.remaining>0){const k=this.game.knockback,step=Math.min(dt,k.remaining);this.game.push(k.x*step,k.z*step);k.remaining=Math.max(0,k.remaining-step);return;}
@@ -222,7 +227,8 @@ export class OnlineGame{
    // Gameplay clock is deliberately slewed after login; input timestamps need
    // the latest network anchor instead of that potentially stale offset.
    this.inputAt=this.latest?this.latest.serverTime+this.roundTrip/2+performance.now()-this.receivedAt:0;
-   this.awaitingStop=stopped;this.stopCorrectionRemaining=0;
+   this.inputRevision++;this.idleAcknowledgedRevision=-1;
+   if(stopped&&this.game)this.game.velocity={x:0,z:0};
    this.lastSent=Math.min(this.lastSent,performance.now()-BALANCE.roomSyncMs);
    this.pump();
   }
@@ -241,7 +247,7 @@ export class OnlineGame{
   if(this.busy)return this.busy;
   const work=async()=>{
    this.lastSent=performance.now();
-   this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,inputAt:this.inputAt,commands:this.queue.splice(0,16)};
+   this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,inputAt:this.inputAt,inputRevision:this.inputRevision,commands:this.queue.splice(0,16)};
    this.lastInput={...this.pending.input,slow:this.pending.input.slow===true};
    const {data,error}=await this.client.auth.getSession();if(error||!data.session)throw Error('다시 로그인해 주세요.');
    let session=data.session;
@@ -255,8 +261,8 @@ export class OnlineGame{
     if(response.ok){
      this.roundTrip=performance.now()-started;
      const lead=Math.min(.5,this.roundTrip/2000);this.predictionLead=this.predictionLead?this.predictionLead+(lead-this.predictionLead)*.15:lead;
-     const commands=this.pending!.commands,acknowledgedInput=this.pending!.input;
-     this.pending=null;this.connected=true;this.lastError='';this.apply(state,acknowledgedInput);
+     const commands=this.pending!.commands,acknowledgedInput=this.pending!.input,acknowledgedRevision=this.pending!.inputRevision;
+     this.pending=null;this.connected=true;this.lastError='';this.apply(state,acknowledgedInput,acknowledgedRevision);
      if(acknowledgedInput.x!==this.vector.x||acknowledgedInput.z!==this.vector.z||!!acknowledgedInput.slow!==this.vector.slow)this.lastSent=performance.now()-BALANCE.roomSyncMs;
      for(const command of commands){
       const result=state.commandResults?.find((r:{id:string;error:string|null})=>r.id===command.id);

@@ -714,7 +714,6 @@ function frame(now: number) {
   if (document.hidden || syncing) return;
   const dt = Math.min(0.05, (now - lastNow) / 1000);
   lastNow = now;
-  if(online.active)online.reconcile(dt);
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}
   if (!qa && !paused && !roomChat.active && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
     const v = input.vector();
@@ -727,6 +726,7 @@ function frame(now: number) {
         -v.x * 0.555 + v.y * 0.832,
       );
   } else {world.player.userData.moving = false;if(online.active)online.update(0,0);}
+  if(online.active)online.reconcile(dt);
   if (!qa && !online.active) game.tick(paused ? 0 : dt);
   if(pickupPreparation){
     const p=pickupPreparation;

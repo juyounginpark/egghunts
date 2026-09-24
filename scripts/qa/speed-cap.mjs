@@ -29,9 +29,12 @@ try{
  for(let stage=1;stage<=20;stage++){
   const recommended=recommendedRouteSpeed(0,stage);
   assert.ok(guardianSpeed(stage)<=BOSS_MOVEMENT.maxSpeed);
-  assert.equal(guardianChaseSpeed(stage,recommended-0.01),30);
-  assert.equal(guardianChaseSpeed(stage,recommended),30);
+  assert.equal(guardianChaseSpeed(stage,recommended-0.01),guardianSpeed(stage)*2);
+  assert.equal(guardianChaseSpeed(stage,recommended),guardianSpeed(stage)*2);
   assert.equal(guardianChaseSpeed(stage,recommended+0.01),Math.min(15,guardianSpeed(stage)));
+  if(stage>1)assert.ok(guardianSpeed(stage)>guardianSpeed(stage-1),'later stages are faster');
  }
+ assert.equal(guardianChaseSpeed(1,0),3);assert.equal(guardianChaseSpeed(20,0),30);
+ assert.equal(guardianChaseSpeed(1,Infinity),1.5);assert.equal(guardianChaseSpeed(20,Infinity),15);
  console.log(JSON.stringify(rows,null,2));
 }finally{await vite.close();}
