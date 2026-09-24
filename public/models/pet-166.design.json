@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-166","name":"스피커 해파리","stage":7,"slot":6,"boss":false,"anatomy":"jelly","concept":"막종 해파리 × 회로","silhouette":["종 모양 갓·가는 긴 촉수","신호를 주고받는 갈라진 안테나"],"personality":"몽환적인","ecology":"사이버 도시에 살며 신호를 주고받는 갈라진 안테나으로 환경에 적응한다. 스피커의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#566587","accent":"#e386d2"},"profile":{"width":11,"height":9,"depth":10,"ear":8,"tail":12,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,30,24,11,9,10,1,"body",true],["ellipsoid",24.5,27,24,14,4,13,2,"body",false],["tube",[[16,24,19],[14,15,21],[12,8,19],[14,6,15]],1.6,2,"left_arm",1.3],["tube",[[19,24,29],[17,15,31],[15,8,29],[17,6,25]],1.6,2,"left_arm",1.3],["tube",[[24,24,34],[22,15,36],[20,7,34],[22,5,30]],1.6,2,"left_arm",1.3],["tube",[[12,24,26],[10,15,28],[8,7,26],[10,5,22]],1.6,2,"left_arm",1.3],["tube",[[17,22,29],[13,35,29],[8,35,29]],2,2,"body",null],["box",13,33,29,3,1,2,4,"body"],["resample-solid",0.925,0.812,0.86]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-166",
+    "id": 166,
+    "name": "스피커 해파리",
+    "stage": 7,
+    "stageName": "네온 사이버시티",
+    "slot": 6,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "jelly",
+    "role": "사물 의인화 펫",
+    "tier": 3,
+    "rarity": "S",
+    "concept": "홀로그램 창을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 스피커 해파리.",
+    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
+    "silhouette": [
+      "큰 갓 아래 네 굵은 촉수",
+      "홀로그램 창"
+    ],
+    "feature": "홀로그램 창",
+    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
+    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
+    "material": "전자 패널",
+    "body": "큰 갓 아래 네 굵은 촉수",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 홀로그램 창: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "꼬리에 연결된 기관",
+    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
+    "colorPlacement": "몸 #26c6bb; 대표 기관 #26c6bb; 발·연결부 #263d70; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#26c6bb",
+      "accent": "#26c6bb"
+    },
+    "idle": "정지 후 짧은 신호 펄스와 틸트 / 대표 기관을 열고 고개를 옆으로 기울임",
+    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
+    "distinction": "사물 의인화 펫: 큰 갓 아래 네 굵은 촉수; 꼬리에 연결된 기관에 홀로그램 창",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

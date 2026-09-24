@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-305","name":"자정서고 유령룡","stage":6,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 잠긴 마도서","silhouette":["펼친 책 날개","종탑 목","갈라진 망토 꼬리"],"personality":"엄격하지만 호기심 많은","ecology":"유령 학교의 잊힌 이야기를 날개 속 책장에 보관한다.","colors":{"primary":"#928097","accent":"#d6dab3"},"profile":{"width":11,"height":8,"depth":12,"ear":11,"tail":13,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["ellipsoid",24.5,22,26,6,13,7,1,"body",false],["tube",[[24.5,18,24],[24.5,26,18],[24.5,33,11]],4,1,"body",null],["ellipsoid",24.5,33,10,7,6,6,1,"head",true],["ellipsoid",24.5,30,6,6,3,4,4,"head",true],["tube",[[19,37,12],[15,43,15],[17,45,18]],2,2,"head",1],["tube",[[24.5,14,34],[24.5,10,41],[24.5,17,46]],3,1,"tail",1.3],["fin",[[19,30,25],[3,42,27],[5,18,36]],2,"left_wing",1],["fin",[[19,26,25],[3,37,27],[5,15,36]],4,"left_wing",1],["fin",[[19,22,25],[3,32,27],[5,12,36]],2,"left_wing",1],["fin",[[19,18,25],[3,27,27],[5,9,36]],4,"left_wing",1],["box",24.5,38,27,5,7,5,2,"body"],["box",24.5,45,27,7,1,6,5,"body"],["ellipsoid",24.5,38,21,3,4,2,4,"body",false],["tube",[[19,16,29],[15,4,35]],2.5,1,"tail",1],["tube",[[23,16,29],[19,4,35]],2.5,1,"tail",1]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-305",
+    "id": 305,
+    "name": "자정서고 유령룡",
+    "stage": 6,
+    "stageName": "유령 학교",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "사물함 문 날개·책등이 접히는 계단 꼬리을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 자정서고 유령룡.",
+    "inspiration": "책상 · 사물함 · 긴 복도 / book",
+    "silhouette": [
+      "좁고 높은 교실 수호룡",
+      "사물함 문 날개·책등이 접히는 계단 꼬리"
+    ],
+    "feature": "사물함 문 날개·책등이 접히는 계단 꼬리",
+    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
+    "ecology": "텅 빈 교실에서 물건이 수업을 이어가는 학교",
+    "material": "종이·낡은 목재",
+    "body": "좁고 높은 교실 수호룡",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "책상 · 사물함 · 긴 복도에서 온 사물함 문 날개·책등이 접히는 계단 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "책등 자주갈색 → 펼친 면 아이보리; 모서리는 옅은 황토",
+    "colorPlacement": "몸 #a7774f; 대표 기관 #e1cba3; 발·연결부 #775274; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#a7774f",
+      "accent": "#e1cba3"
+    },
+    "idle": "고개를 갸웃하고 문짝을 살짝 열기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 좁고 높은 교실 수호룡; 성체 전용 골격에 사물함 문 날개·책등이 접히는 계단 꼬리",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "날아오는 책을 피하고 사물함 앞에서는 잠깐 조용히.",
+    "acquisitionCondition": "책·사물함 습격 회피 + 학교 위험 구간에서 2초 정지",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

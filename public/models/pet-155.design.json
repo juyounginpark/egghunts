@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-155","name":"시험지 종이학","stage":6,"slot":5,"boss":false,"anatomy":"bird","concept":"작은 조류 × 접힌 책장","silhouette":["쐐기 부리·부채 꼬리","소리를 기록하는 층층의 종이 깃"],"personality":"수다스럽고 경계심 많은","ecology":"유령 학교에 살며 소리를 기록하는 층층의 종이 깃으로 환경에 적응한다. 시험지의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#928097","accent":"#d6dab3"},"profile":{"width":11,"height":11,"depth":13,"ear":12,"tail":16,"stance":7},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,20,25,9,12,7,1,"body",true],["ellipsoid",24.5,31,19,8,7,6,1,"head",true],["tube",[[24.5,28,13],[24.5,26,7]],3,2,"head",1],["tube",[[20,10,24],[21,4,23]],2,1,"left_leg",2],["ellipsoid",21,4,21,3,2,5,2,"left_leg",false],["fin",[[19.5,24,25],[3.5,32,28],[8.5,18,34]],2,"left_wing",1.5],["tube",[[19.5,24,25],[3.5,32,28]],1.5,1,"left_wing",null],["tube",[[20,15,30],[18,7,40]],2.5,2,"tail",1],["tube",[[24,15,30],[22,7,40]],2.5,2,"tail",1],["fin",[[21.5,25,29],[13.5,29,31],[18.5,22,38]],4,"body",1.5],["fin",[[21.5,21,29],[13.5,25,31],[18.5,18,38]],2,"body",1.5],["fin",[[21.5,17,29],[13.5,21,31],[18.5,14,38]],4,"body",1.5],["resample-solid",0.925,0.876,0.98]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-155",
+    "id": 155,
+    "name": "시험지 종이학",
+    "stage": 6,
+    "stageName": "유령 학교",
+    "slot": 5,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "bird",
+    "role": "크고 듬직한 펫",
+    "tier": 2,
+    "rarity": "A",
+    "concept": "접힌 공책날개을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 시험지 종이학.",
+    "inspiration": "책상 · 사물함 · 긴 복도 / book",
+    "silhouette": [
+      "앞으로 나온 쐐기 부리와 낮은 양 날개",
+      "접힌 공책날개"
+    ],
+    "feature": "접힌 공책날개",
+    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
+    "ecology": "텅 빈 교실에서 물건이 수업을 이어가는 학교",
+    "material": "종이·낡은 목재",
+    "body": "앞으로 나온 쐐기 부리와 낮은 양 날개",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "책상 · 사물함 · 긴 복도에서 온 접힌 공책날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등과 옆구리에 이어진 기관",
+    "gradient": "책등 자주갈색 → 펼친 면 아이보리; 모서리는 옅은 황토",
+    "colorPlacement": "몸 #e1cba3; 대표 기관 #e1cba3; 발·연결부 #538590; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#e1cba3",
+      "accent": "#e1cba3"
+    },
+    "idle": "고개를 갸웃하고 문짝을 살짝 열기 / 양 발을 번갈아 들고 고개를 돌림",
+    "reaction": "발을 번갈아 디디고 머리를 돌린다",
+    "distinction": "크고 듬직한 펫: 앞으로 나온 쐐기 부리와 낮은 양 날개; 등과 옆구리에 이어진 기관에 접힌 공책날개",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

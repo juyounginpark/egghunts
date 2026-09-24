@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-136","name":"흑요석 전갈","stage":4,"slot":6,"boss":false,"anatomy":"scorpion","concept":"독침 갑각수 × 화산암","silhouette":["머리 위로 굽는 꼬리·열린 집게","열을 방출하는 벌어진 등판"],"personality":"위협적인","ecology":"화산에 살며 열을 방출하는 벌어진 등판으로 환경에 적응한다. 흑요석의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#655966","accent":"#ff9852"},"profile":{"width":12,"height":12,"depth":10,"ear":11,"tail":11,"stance":7},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,18,28,10,6,10,1,"body",true],["ellipsoid",24.5,23,15,8,5,5,1,"head",true],["tube",[[16,18,23],[6,14,24],[3,5,26]],1.8,1,"left_leg",null],["tube",[[16,18,29],[6,14,30],[3,5,32]],1.8,1,"left_leg",null],["tube",[[16,18,35],[6,14,36],[3,5,38]],1.8,1,"left_leg",null],["tube",[[16,20,19],[8,22,14],[9,26,7]],3,2,"left_arm",null],["tube",[[9,25,8],[5,30,5]],2,2,"left_arm",1],["tube",[[10,25,8],[14,30,6]],2,2,"left_arm",1],["tube",[[24.5,19,36],[24.5,25,43],[24.5,39,39],[24.5,42,29],[24.5,37,25]],3,2,"tail",1.5],["fin",[[21.5,22,26],[24.5,35,28],[27.5,22,30]],2,"body",2],["fin",[[21.5,22,32],[24.5,35,34],[27.5,22,36]],2,"body",2],["fin",[[21.5,22,38],[24.5,35,40],[27.5,22,42]],2,"body",2],["resample-solid",0.97,0.908,0.86]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-136",
+    "id": 136,
+    "name": "흑요석 전갈",
+    "stage": 4,
+    "stageName": "화산 입구",
+    "slot": 6,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "scorpion",
+    "role": "사물 의인화 펫",
+    "tier": 3,
+    "rarity": "S",
+    "concept": "열린 돌집게을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 흑요석 전갈.",
+    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
+    "silhouette": [
+      "낮은 여섯 발과 머리 위로 굽은 꼬리",
+      "열린 돌집게"
+    ],
+    "feature": "열린 돌집게",
+    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
+    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
+    "material": "현무암·용암",
+    "body": "낮은 여섯 발과 머리 위로 굽은 꼬리",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 열린 돌집게: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "꼬리에 연결된 기관",
+    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
+    "colorPlacement": "몸 #ffcb56; 대표 기관 #ed622c; 발·연결부 #524251; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#ffcb56",
+      "accent": "#ed622c"
+    },
+    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 대표 기관을 열고 고개를 옆으로 기울임",
+    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
+    "distinction": "사물 의인화 펫: 낮은 여섯 발과 머리 위로 굽은 꼬리; 꼬리에 연결된 기관에 열린 돌집게",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

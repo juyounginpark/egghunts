@@ -18,7 +18,7 @@ try{
   const result=await page.evaluate(rows=>window.review(rows),rows.slice(i,i+10));
   await writeFile(`docs/art/previews/sheet-${String(i/10+1).padStart(2,'0')}.png`,decode(result.sheet));
   // First six use their authored portrait angles and 384px exports from first-six.mjs.
-  for(const icon of result.icons)if(!/^pet-[0-5]$/.test(icon.key))await writeFile(`public/models/${icon.key}.png`,decode(icon.png));
+  for(const icon of result.icons)if(!/^pet-([0-5]|[12]\d\d|3[01]\d)$/.test(icon.key)&&!icon.key.startsWith('guardian-'))await writeFile(`public/models/${icon.key}.png`,decode(icon.png));
   for(const stat of result.stats){const index=stats.findIndex(r=>r.key===stat.key);if(index<0)stats.push(stat);else stats[index]=stat;}
   console.log(`Rendered ${Math.min(i+10,rows.length)}/${rows.length}`);
  }

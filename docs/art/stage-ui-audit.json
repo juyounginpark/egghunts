@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "12 pets + 3 dragons: identical portrait camera, lighting and card size before/after",
+    "21 boss portraits and four views",
+    "meadow / alien / void boss: continuous rise and eye opening at the sleeping position",
+    "camera follows the expanded rear farm area",
+    "320px and 390px catalogue: 11 cards, views, animation, no horizontal clipping",
+    "live game: stage catalogue, 3D viewer, dragon reveal",
+    "undiscovered dragon: silhouette and hint only; no full-model viewer, claim disabled"
+  ],
+  "errors": []
+}

@@ -16,6 +16,7 @@ import {
 import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,chooseTrait,traitPoints,reducedDamage,type Progression,type TraitId} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
 import {farmGym} from './village';
+import {DRAGON_RULES,newDragonClue,dragonReady,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,stageDamage,type HazardDefinition} from "./stage-data";
 export type Egg = { id: string; type: number; hp: number; distance: number; stageId?:number; variant?:number; special?:boolean };
@@ -43,6 +44,7 @@ export type Boss = {
   loot: WorldEgg | null;
 };
 export type Save = {
+  dragonClues?:Record<string,DragonClue>;
   visitedStages?:number[];
   routeVersion?:1|2;
   progression?:Progression;
@@ -107,6 +109,7 @@ export function freshSave(now: number): Save {
 export function parseSave(raw: string | null, now: number): Save {
   if (!raw) return freshSave(now);
   const s = JSON.parse(raw) as Save;
+  s.dragonClues??={};validateDragonClues(s.dragonClues);
   s.obtainedPets??=Array.isArray(s.mongles)?s.mongles.flatMap((n,i)=>n?[i]:[]):[];
   if(!Array.isArray(s.obtainedPets)||!s.obtainedPets.every(i=>Number.isInteger(i)&&!!MONGLES[i])||new Set(s.obtainedPets).size!==s.obtainedPets.length)throw new Error("Invalid discovery record");
   // Older maximum HP values may contain floating-point multiplication noise.
@@ -291,6 +294,15 @@ export class GameState {
     if(this.hp<=0)this.die();return true;
   }
   roomManaged=false;
+  dragonWatch:DragonWatch={stage:0,observed:{}};
+  claimDragon(stage:number){
+    if(!Number.isInteger(stage)||!this.isAtBase||this.death||this.save.eggs.length>=BALANCE.inventory)return false;
+    const clue=this.save.dragonClues?.[stage];if(!dragonReady(stage,clue)||clue!.claimed)return false;
+    const type=EGGS.findIndex(e=>e.region===Math.floor((stage-1)/4)&&e.tier===6);if(type<0)return false;
+    const id=`discovery-dragon-${stage}`;
+    this.save.eggs.push({id,type,hp:EGGS[type].hp,distance:0,stageId:stage,variant:5});this.save.selected??=id;
+    clue!.claimed=true;this.revision++;this.emit('dragon_egg_discovered',{stage});return true;
+  }
   farmSlot=0;
   get gym(){return farmGym(this.farmSlot);}
   readonly mapCollision=new MapCollision();
@@ -437,6 +449,7 @@ export class GameState {
     public random: () => number = Math.random,
     hydrateOnly=false,
   ) {
+    save.dragonClues??={};
     this.mapCollision.setFarm(villageMapColliders());
     if(!save.progression){save.progression=newProgression();save.progression.seenEggs=[...save.discovered];save.progression.hatchedPets=save.mongles.flatMap((n,i)=>n?[i]:[]);save.progression.distanceRecord=save.best;}
     validateProgression(save.progression);
@@ -735,7 +748,9 @@ export class GameState {
       const reached=Math.floor(this.distance/PROGRESSION.distanceStep),old=Math.floor(this.progression.distanceRecord/PROGRESSION.distanceStep);
       if(reached>old){this.progression.pendingXP+=(reached-old)*PROGRESSION.distanceXP;this.progression.distanceRecord=this.distance;this.revision++;}
       this.hazards.tick(dt,this.stage.id,{x:this.x,z:this.z,vx:this.velocity.x,vz:this.velocity.z,facing:this.facing,carrying:!!this.carried,metal:!!this.carried&&[2,18].includes(this.stage.id),moving:Math.hypot(this.velocity.x,this.velocity.z)>.01,stageOffset:this.stageOffset,guardianAwake:this.pursuing>=0&&Math.hypot(this.bosses[this.pursuing].x-this.x,this.bosses[this.pursuing].z-this.z)<12,guardianStage:this.bosses[this.pursuing]?.stageId,guardianOffset:((this.bosses[this.pursuing]?.stageId??this.stage.id)-this.progression.stage)*ROUTE.length},h=>this.applyHazard(h),(x,z)=>this.push(x,z),(key,seconds)=>{if(key in this.effects)this.effects[key as keyof typeof this.effects]=seconds;},!!this.carried&&EGGS[this.carried.type].tier===6);
-    }else this.hazards.reset();
+      const clue=this.save.dragonClues![this.stage.id]??=newDragonClue();
+      observeDragon(clue,this.dragonWatch,this.stage.id,dt,{x:this.x,z:this.z,offset:this.stageOffset,hit:Number.isFinite(this.hitAt)?this.hitAt:0,egg:this.carried?.stageId===this.stage.id?this.carried.id:null,moving:Math.hypot(this.velocity.x,this.velocity.z)>.01},this.hazards.attacks);
+    }else {this.hazards.reset();this.dragonWatch={stage:0,observed:{}};}
     for(const drop of [...this.dustDrops])if(Math.hypot(drop.x-this.x,drop.z-this.z)<1){this.save.dust+=drop.amount;this.dustDrops=this.dustDrops.filter(d=>d!==drop);this.revision++;}
     if (this.training && this.nearGym) {
       this.save.trainingSpeed = (this.save.trainingSpeed ?? 0) + this.trainingRate*dt;
@@ -755,6 +770,7 @@ export class GameState {
       if (this.carried) {
         if (this.save.eggs.length < BALANCE.inventory) {
           const e = this.carried;
+          if(e.stageId){const clue=this.save.dragonClues![e.stageId]??=newDragonClue();if(DRAGON_RULES[e.stageId-1].avoid.every(id=>clue.avoided.includes(id)))clue.returned=true;}
           this.emit("egg_saved", {type: e.type});
           this.emit("expedition_success", {distance: Math.floor(e.distance)});
           this.save.eggs.push({

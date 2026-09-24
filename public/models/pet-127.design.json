@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-127","name":"분홍 산호거북","stage":3,"slot":7,"boss":false,"anatomy":"turtle","concept":"등짐 거북 × 산호","silhouette":["낮고 넓은 등·돌출된 목","물살을 거르는 가지형 아가미"],"personality":"느긋하고 듬직한","ecology":"산호 바다에 살며 물살을 거르는 가지형 아가미으로 환경에 적응한다. 분홍의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#d8a0b5","accent":"#b5d6bd"},"profile":{"width":11,"height":8,"depth":9,"ear":11,"tail":9,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,16,27,13,9,13,1,"body",false],["ellipsoid",24.5,21,28,11,10,11,2,"body",false],["ellipsoid",24.5,15,10,6,5,6,1,"head",false],["tube",[[14,13,18],[15,5,17]],3,1,"left_leg",2],["ellipsoid",15,5,15,4,2,5,2,"left_leg",false],["tube",[[14,13,34],[15,5,33]],3,1,"left_leg",2],["ellipsoid",15,5,31,4,2,5,2,"left_leg",false],["tube",[[18,20,29],[15,34,29],[11,37,31]],1.7,2,"body",null],["tube",[[15,26,29],[10,28,26]],1.5,2,"body",null],["resample-solid",0.925,0.78,0.8200000000000001]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-127",
+    "id": 127,
+    "name": "분홍 산호거북",
+    "stage": 3,
+    "stageName": "얕은 산호 바다",
+    "slot": 7,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "turtle",
+    "role": "위험 요소 펫",
+    "tier": 4,
+    "rarity": "SS",
+    "concept": "둥근 조약돌집을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 분홍 산호거북.",
+    "inspiration": "산호 · 물결 · 문어 / coral",
+    "silhouette": [
+      "머리보다 넓은 낮은 등집과 네 발",
+      "둥근 조약돌집"
+    ],
+    "feature": "둥근 조약돌집",
+    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
+    "ecology": "얕은 물결을 거르는 산호 생태계",
+    "material": "젖은 산호·패각",
+    "body": "머리보다 넓은 낮은 등집과 네 발",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "산호 · 물결 · 문어에서 온 둥근 조약돌집: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 짊어진 기관",
+    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
+    "colorPlacement": "몸 #6868bd; 대표 기관 #f17e6f; 발·연결부 #22a9a4; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#6868bd",
+      "accent": "#f17e6f"
+    },
+    "idle": "짧게 뜨고 물결에 지느러미 접기 / 양 앞팔을 벌렸다 접고 고개를 듦",
+    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
+    "distinction": "위험 요소 펫: 머리보다 넓은 낮은 등집과 네 발; 등에 짊어진 기관에 둥근 조약돌집",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

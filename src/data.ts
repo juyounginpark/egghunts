@@ -21,7 +21,7 @@ export const BALANCE = {
   petIncomeByTier:[1,2,4,8,16,32,64],
   petIncomeLegacyStageMultipliers:[1,5,9,13,17],
   storeX:-4.5,
-  storeZ:4,
+  storeZ:1,
   storeRadius:1.3,
   multiplayerMaxPlayers:5,
   secretDragonEggShare:.5,
@@ -295,7 +295,7 @@ export const MONGLES = [...LEGACY_MONGLES, ...[...STAGE_PET_ROWS,...SECRET_DRAGO
     ...pet,id:`mongle-${100+i}`,region:Math.floor((pet.stageId-1)/4),species:pet.slot,
     clickMultiplier:ability===0?bonus:1,autoMultiplier:ability===2?bonus:1,speedMultiplier:ability===1?bonus:1,
     effect:`${['클릭','스피드','오토'][ability]} ×${bonus.toFixed(1)}`,
-    grid:50,scale:pet.slot===10?BALANCE.secretDragonScale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
+    grid:24,scale:pet.slot===10?BALANCE.secretDragonScale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
   };
 })];
 export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>100+(i+1)*50);

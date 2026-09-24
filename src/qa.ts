@@ -45,7 +45,7 @@ export function prepare(game: GameState, scene: string) {
     if (["result", "hatch-burst"].includes(scene)) game.damage(30);
   }
   if(scene==="night") {clock=game.nightAt;game.tick(.01);}
-  if(scene==="training"){game.x=BALANCE.gymX;game.z=BALANCE.gymZ;game.interact();game.tick(1);}
+  if(scene==="training"){game.x=game.gym.x;game.z=game.gym.z;game.interact();game.tick(1);}
   if(scene.startsWith('hazard-')||scene==='low-health'){
     const id=scene==='low-health'?5:Number(scene.slice(7));game.selectStage(id);game.x=0;game.z=-14;game.deadline=clock+45000;
     game.pickup(game.world[2]);game.hazards.reset(id);const d=HAZARDS.find(h=>h.stageId===id)!;
@@ -79,6 +79,8 @@ export function attach(game: GameState, world: World, input: Input, setTab: (tab
   };
   const state = () => ({...game.snapshot(),stageId:game.stage.id,knockback:game.knockback,hp:game.hp,maxHp:game.maxHp, x: game.x, z: game.z, carried: game.carried, remaining: game.remaining, speed: game.speed, dps: game.dps, result: game.result, flyaway: game.flyaway, message: game.message, near: game.near, input: input.vector(),isNight:game.isNight,training:game.training,returnReward:game.returnReward});
   const qa = {
+    villagePortrait:()=>{const camera=world.camera.clone(),fog=world.scene.fog;world.scene.fog=null;world.renderer.setSize(1000,1000,false);camera.left=-17;camera.right=17;camera.top=17;camera.bottom=-17;camera.updateProjectionMatrix();camera.position.set(0,37,27);camera.lookAt(0,0,8);world.renderer.render(world.scene,camera);const png=world.renderer.domElement.toDataURL();world.scene.fog=fog;world.resize();return png;},
+    petResult:(id:number)=>{prepare(game,'base');game.result=id;game.save.mongles[id]=1;game.revision++;setTab('explore');},
     pattern:(id:string,active=false)=>{
       const d=HAZARDS.find(h=>h.id===id)!;prepare(game,`hazard-${d.stageId}`);setTab('explore');
       game.pickup(game.world[2]);game.hazards.reset(d.stageId);const h=game.hazards.spawn(d,{x:game.x,z:game.z,vx:0,vz:0,facing:game.facing,carrying:false,metal:false,moving:false});

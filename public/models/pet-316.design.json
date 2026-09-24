@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-316","name":"왕벌집 갑충룡","stage":17,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 왕벌집 고치","silhouette":["층진 벌집 배","네 장의 겹날개","낫 앞발"],"personality":"질서정연한 수호자","ecology":"소인국의 이슬과 꽃가루를 거대한 벌집 배에 저장한다.","colors":{"primary":"#94ae69","accent":"#e1bb72"},"profile":{"width":9,"height":13,"depth":10,"ear":10,"tail":14,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["ellipsoid",24.5,12,31,8,4,9,2,"body",true],["ellipsoid",24.5,18,31,10,4,9,2,"body",true],["ellipsoid",24.5,24,31,9,4,9,2,"body",true],["ellipsoid",24.5,30,31,6,4,9,2,"body",true],["tube",[[24.5,18,24],[24.5,26,18],[24.5,34,11]],4,1,"body",null],["ellipsoid",24.5,34,10,7,6,6,1,"head",true],["ellipsoid",24.5,31,6,6,3,4,4,"head",true],["tube",[[19,38,12],[15,44,15],[17,46,18]],2,2,"head",1],["ellipsoid",10,32,30,7,12,2,4,"left_wing",true],["ellipsoid",10,17,34,6,7,2,4,"left_wing",true],["tube",[[19,27,20],[8,32,16],[10,21,9],[15,23,10]],2,2,"left_arm",null],["tube",[[18,15,26],[9,9,26],[7,3,28]],1.5,1,"left_leg",null],["tube",[[18,15,34],[9,9,34],[7,3,36]],1.5,1,"left_leg",null],["tube",[[18,15,39],[9,9,39],[7,3,41]],1.5,1,"left_leg",null],["tube",[[18,16,38],[18,18,38]],1.5,1,"left_leg",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-316",
+    "id": 316,
+    "name": "왕벌집 갑충룡",
+    "stage": 17,
+    "stageName": "곤충 소인국",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "접히는 낫 앞팔·겹친 육각 덮날개을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 왕벌집 갑충룡.",
+    "inspiration": "거대한 풀잎 · 이슬 · 버섯 / mantis",
+    "silhouette": [
+      "길게 분절된 곤충룡",
+      "접히는 낫 앞팔·겹친 육각 덮날개"
+    ],
+    "feature": "접히는 낫 앞팔·겹친 육각 덮날개",
+    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
+    "ecology": "이슬 한 방울도 집만큼 큰 풀잎 아래 나라",
+    "material": "등껍질·잎",
+    "body": "길게 분절된 곤충룡",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "거대한 풀잎 · 이슬 · 버섯에서 온 접히는 낫 앞팔·겹친 육각 덮날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "등갑 중심 적갈색 → 가장자리 호박색; 잎 끝은 연한 녹색",
+    "colorPlacement": "몸 #aa4a29; 대표 기관 #70a444; 발·연결부 #70a444; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#aa4a29",
+      "accent": "#70a444"
+    },
+    "idle": "더듬이 먼저 살피고 앞발 교대로 접기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 길게 분절된 곤충룡; 성체 전용 골격에 접히는 낫 앞팔·겹친 육각 덮날개",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "거미줄에도 순찰하는 날개에도 붙잡히지 않는 작은 길.",
+    "acquisitionCondition": "거미줄과 말벌 순찰을 각각 회피",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

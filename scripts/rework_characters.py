@@ -9,6 +9,7 @@ import hashlib
 import json
 import math
 import struct
+import sys
 from pathlib import Path
 from secret_dragon_designs import DRAGON_BRIEFS,sculpt_secret_dragon
 
@@ -570,6 +571,9 @@ def main():
         from first_six_pets import author
         author()  # The six 24³ originals supersede the older procedural anatomy.
     print('Authored',len(records),'models; player and save IDs preserved.')
+    # The stage-authoring source supersedes the historical 50³ generation.
+    import subprocess
+    subprocess.run([sys.executable,str(ROOT/'scripts/rework_stage_pets.py'),'--bosses'],check=True)
 
 
 if __name__=='__main__':main()

@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-144","name":"잠수함 복어","stage":5,"slot":4,"boss":false,"anatomy":"fish","concept":"부유 어류 × 유리 등불","silhouette":["좁은 꼬리자루·수직 꼬리 지느러미","먹이를 부르는 굽은 발광 촉각"],"personality":"재빠르고 장난스러운","ecology":"심해에 살며 먹이를 부르는 굽은 발광 촉각으로 환경에 적응한다. 잠수함의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#625b97","accent":"#8ae4ca"},"profile":{"width":11,"height":13,"depth":10,"ear":10,"tail":12,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,23,22,7,7,15,1,"body",false],["ellipsoid",24.5,23,12,7,7,6,1,"head",false],["tube",[[24.5,23,33],[24.5,23,43]],3,1,"tail",2],["fin",[[24.5,23,40],[24.5,35,47],[24.5,12,47]],2,"tail",1.5],["fin",[[19.5,21,20],[7,17,28],[18.5,20,30]],2,"left_wing",1.5],["fin",[[24.5,27,17],[24.5,37,27],[24.5,27,33]],2,"body",1.5],["tube",[[24.5,27,25],[24.5,42,22],[24.5,44,13],[24.5,40,10]],1.4,2,"body",null],["ellipsoid",24.5,39,10,3,3,3,4,"body",false],["resample-solid",0.925,0.9400000000000001,0.86]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-144",
+    "id": 144,
+    "name": "잠수함 복어",
+    "stage": 5,
+    "stageName": "크라켄 심해",
+    "slot": 4,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "fish",
+    "role": "예상 밖의 펫",
+    "tier": 2,
+    "rarity": "A",
+    "concept": "발광 부표을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 잠수함 복어.",
+    "inspiration": "발광 산호 · 촉수 · 해저 유적 / tentacle",
+    "silhouette": [
+      "옆으로 긴 몸과 수직 꼬리",
+      "발광 부표"
+    ],
+    "feature": "발광 부표",
+    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
+    "ecology": "깊은 어둠에서 촉각과 등불로 만나는 심해",
+    "material": "심해 피부·광구",
+    "body": "옆으로 긴 몸과 수직 꼬리",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "발광 산호 · 촉수 · 해저 유적에서 온 발광 부표: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸통에 연결된 덮개",
+    "gradient": "몸 아래 짙은 남색 → 등 청색; 촉각 끝만 민트빛",
+    "colorPlacement": "몸 #223c73; 대표 기관 #39cebd; 발·연결부 #39cebd; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#223c73",
+      "accent": "#39cebd"
+    },
+    "idle": "천천히 가라앉고 촉수를 순서대로 접기 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
+    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
+    "distinction": "예상 밖의 펫: 옆으로 긴 몸과 수직 꼬리; 몸통에 연결된 덮개에 발광 부표",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

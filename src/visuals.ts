@@ -10,7 +10,7 @@ const palettes=[[0xaaff88,0xffa1cb,0xffef95],[0x7cf8ff,0xffd16b,0xb59aff],[0x67d
 const reducedMotion=typeof window!=='undefined'?window.matchMedia('(prefers-reduced-motion: reduce)'):null;
 function aura(g:T.Group,tier:number,seed:number,family:number) {
   g.userData.tier=tier;g.userData.effectSeed=seed;g.userData.effectFamily=family;
-  const sparks = new T.InstancedMesh(cube,materials[tier],[2,4,10,24,40,64,96][tier]);
+  const sparks = new T.InstancedMesh(cube,materials[tier],g.userData.petId>=100?[2,3,4,6,8,10,14][tier]:[2,4,10,24,40,64,96][tier]);
   sparks.name='sparks'; sparks.frustumCulled=false;g.add(sparks);
   for(let i=0;i<sparks.instanceMatrix.count;i++){
     tint.set(RARITIES[tier].color).lerp(accent.setHex(palettes[family][(i+seed)%3]),tier>=3?.65:.2);
@@ -57,6 +57,7 @@ export function animateEgg(g:T.Object3D,time:number,low=false){
         const crown=i/count*Math.PI*8+t*.35;x=Math.cos(crown)*.5;z=Math.sin(crown)*.5;y=body*1.6+.1*Math.sin(crown*3);sx=.06;sy=i%3===0?.2:.08;sz=.06;
       }
     }
+    if(g.userData.petId>=100){x=Math.cos(a)*.95;z=Math.sin(a)*.95;y=.04+(i%3)*.035;sy=.025;}
     dummy.position.set(x,y,z);dummy.scale.set(sx,sy,sz);dummy.rotation.set(a*.4,a,a*.25);dummy.updateMatrix();sparks.setMatrixAt(i,dummy.matrix);
   }
   sparks.instanceMatrix.needsUpdate=true;

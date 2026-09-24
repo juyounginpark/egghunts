@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-228","name":"시계탑 올빼미","stage":13,"slot":8,"boss":false,"anatomy":"owl","concept":"관측 조류 × 황동","silhouette":["접시 같은 얼굴·두꺼운 낮은 날개","증기를 배출하는 등쪽 관과 용골"],"personality":"의심 많고 지적인","ecology":"공중도시에 살며 증기를 배출하는 등쪽 관과 용골으로 환경에 적응한다. 시계탑의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#b7916c","accent":"#8ec7c4"},"profile":{"width":8,"height":9,"depth":12,"ear":10,"tail":16,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,20,25,9,12,7,1,"body",true],["ellipsoid",24.5,31,19,11,7,6,1,"head",true],["tube",[[24.5,28,13],[24.5,26,7]],3,2,"head",1],["tube",[[20,10,24],[21,4,23]],2,1,"left_leg",2],["ellipsoid",21,4,21,3,2,5,2,"left_leg",false],["ellipsoid",12,21,27,4,8,5,2,"left_wing",false],["tube",[[20,15,30],[18,7,40]],2.5,2,"tail",1],["tube",[[24,15,30],[22,7,40]],2.5,2,"tail",1],["box",24.5,25,35,7,3,4,2,"body"],["tube",[[17,23,32],[14,33,33],[14,33,37]],2,2,"body",null],["box",14,33,37,3,1,2,5,"body"],["ellipsoid",18,32,13,4,4,4,2,"head",false],["ellipsoid",18,32,10,3,3,1,4,"head",false],["resample-solid",0.79,0.812,0.9400000000000001]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-228",
+    "id": 228,
+    "name": "시계탑 올빼미",
+    "stage": 13,
+    "stageName": "스팀펑크 공중도시",
+    "slot": 8,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "owl",
+    "role": "신비로운 펫",
+    "tier": 5,
+    "rarity": "SSS",
+    "concept": "풍향 프로펠러을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 시계탑 올빼미.",
+    "inspiration": "톱니 · 증기기관 · 비행선 / gear",
+    "silhouette": [
+      "넓은 얼굴 원판과 작은 접힌 날개",
+      "풍향 프로펠러"
+    ],
+    "feature": "풍향 프로펠러",
+    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
+    "ecology": "증기압과 프로펠러로 떠 있는 황동 도시",
+    "material": "황동·구리",
+    "body": "넓은 얼굴 원판과 작은 접힌 날개",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "톱니 · 증기기관 · 비행선에서 온 풍향 프로펠러: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸 양옆으로 펼친 기관",
+    "gradient": "이음새 적갈색 → 마모된 평면 황동 → 증기 입구 크림",
+    "colorPlacement": "몸 #c28b37; 대표 기관 #c28b37; 발·연결부 #b6532c; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#c28b37",
+      "accent": "#c28b37"
+    },
+    "idle": "압력에 몸을 들었다 천천히 내려놓기 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
+    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
+    "distinction": "신비로운 펫: 넓은 얼굴 원판과 작은 접힌 날개; 몸 양옆으로 펼친 기관에 풍향 프로펠러",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

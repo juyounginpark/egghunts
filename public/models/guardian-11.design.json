@@ -1,1 +1,40 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"guardian-11","name":"신전 둥지 수호자","stage":11,"slot":10,"boss":true,"anatomy":"lion","concept":"갈기 맹수 × 구름 대리석","silhouette":["방사형 갈기·뒤로 낮아지는 허리","바람을 받는 층진 날개 기관"],"personality":"영역을 지키는 당당한","ecology":"신전에 살며 바람을 받는 층진 날개 기관으로 환경에 적응한다. 신전의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#d3d3de","accent":"#dcb963"},"profile":{"width":11,"height":13,"depth":10,"ear":10,"tail":12,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,19,28,9,11,12,1,"body",false],["tube",[[17,18,19],[18,5,18]],3,1,"left_leg",2],["ellipsoid",18,5,16,4,2,5,2,"left_leg",false],["tube",[[17,17,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["ellipsoid",24.5,31,13,9,7,7,1,"head",false],["tube",[[24.5,19,21],[24.5,29,15]],4,1,"body",null],["ellipsoid",24.5,28,7,5,3,4,2,"head",false],["tube",[[17,35,15],[15,38.25,17],[17,40,18]],2.5,1,"head",1.5],["tube",[[17,37,14],[16,38.25,16]],1,2,"head",null],["ellipsoid",34.5,31.0,18,4,5,4,2,"head",true],["ellipsoid",31.571067811865476,37.36396103067893,18,4,5,4,2,"head",true],["ellipsoid",24.5,40.0,18,4,5,4,2,"head",true],["ellipsoid",17.428932188134524,37.36396103067893,18,4,5,4,2,"head",true],["ellipsoid",14.5,31.0,18,4,5,4,2,"head",true],["ellipsoid",17.428932188134524,24.63603896932107,18,4,5,4,2,"head",true],["ellipsoid",24.499999999999996,22.0,18,4,5,4,2,"head",true],["ellipsoid",31.571067811865476,24.63603896932107,18,4,5,4,2,"head",true],["tube",[[24.5,15,36],[24.5,19,43],[24.5,27,43]],2.5,2,"tail",1.5],["ellipsoid",14,27,33,6,6.0,4,4,"body",false],["ellipsoid",11,31,34,4,4,3,2,"body",false],["tube",[[18,38,20],[17,44,20],[21,41,20],[24,45,20]],1.7,2,"head",null],["ellipsoid",12,23,25,5,7,6,2,"left_arm",true],["tube",[[18,37,15],[14,41,19],[12,39,24]],2,2,"head",null],["resample-solid",0.925,0.9400000000000001,0.86]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "guardian-11",
+    "name": "신전 둥지 수호자",
+    "stage": 11,
+    "slot": 10,
+    "boss": true,
+    "anatomy": "lion",
+    "concept": "구름 위에서 대리석과 번개가 숨 쉬는 신전의 둥지를 지키는 성체",
+    "silhouette": [
+      "앞이 높은 갈기와 낮은 허리",
+      "두 기둥과 번개 가로보"
+    ],
+    "personality": "넓은 어깨와 낮은 눈썹, 잠에서 천천히 일어나는 묵직한 자세",
+    "ecology": "신전에 살며 바람을 받는 층진 날개 기관으로 환경에 적응한다. 신전의 형태를 기관의 구조로 표현한다.",
+    "colors": {
+      "primary": "#d3d3de",
+      "accent": "#dcb963"
+    },
+    "profile": {
+      "width": 11,
+      "height": 13,
+      "depth": 10,
+      "ear": 10,
+      "tail": 12,
+      "stance": 10
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "grid": 24,
+    "previewAngle": 35
+  }
+}

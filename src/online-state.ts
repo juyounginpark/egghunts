@@ -16,6 +16,6 @@ export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[
   // JSON represents infinite initial timestamps as null.
   known[key]=value===null&&typeof known[key]==='number'&&!Number.isFinite(known[key])?known[key]:value;
  }
- game.save=structuredClone(state.save);game.world=world;game.bosses=bosses;game.hazards.restore(state.hazards);
+ game.save=structuredClone(state.save);game.save.dragonClues??={};game.world=world;game.bosses=bosses;game.hazards.restore(state.hazards);
  game.roomManaged=true;
 }

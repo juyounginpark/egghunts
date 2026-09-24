@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-131","name":"불씨 도마뱀","stage":4,"slot":1,"boss":false,"anatomy":"lizard","concept":"낮은 파충수 × 화산암","silhouette":["벌어진 네 발·낮은 긴 꼬리","열을 방출하는 벌어진 등판"],"personality":"민첩한","ecology":"화산에 살며 열을 방출하는 벌어진 등판으로 환경에 적응한다. 불씨의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#655966","accent":"#ff9852"},"profile":{"width":12,"height":9,"depth":11,"ear":12,"tail":14,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,14,28,10,7,12,1,"body",true],["tube",[[17,13,19],[18,6,18]],3,1,"left_leg",2],["ellipsoid",18,6,16,4,2,5,2,"left_leg",false],["tube",[[17,12,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["ellipsoid",24.5,22,13,9,6,7,1,"head",true],["tube",[[24.5,14,21],[24.5,20,15]],4,1,"body",null],["ellipsoid",24.5,19,7,5,3,4,2,"head",false],["tube",[[17,26,15],[15,29.25,17],[17,31,18]],2.5,1,"head",1.5],["tube",[[17,28,14],[16,29.25,16]],1,2,"head",null],["tube",[[24.5,14,34],[24.5,11,41],[24.5,7,46]],4,1,"tail",1.5],["fin",[[21.5,19,26],[24.5,30,28],[27.5,19,30]],2,"body",2],["fin",[[21.5,19,32],[24.5,30,34],[27.5,19,36]],2,"body",2],["fin",[[21.5,19,38],[24.5,30,40],[27.5,19,42]],2,"body",2],["fin",[[19,27,31],[16,44,35],[22,36,37]],2,"body",1.5],["fin",[[24,27,31],[21,44,35],[27,36,37]],2,"body",1.5],["resample-solid",0.97,0.812,0.9]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-131",
+    "id": 131,
+    "name": "불씨 도마뱀",
+    "stage": 4,
+    "stageName": "화산 입구",
+    "slot": 1,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "lizard",
+    "role": "작고 귀여운 펫",
+    "tier": 0,
+    "rarity": "C",
+    "concept": "용암 꼬리을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 불씨 도마뱀.",
+    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
+    "silhouette": [
+      "낮은 네 발과 길고 넓은 꼬리",
+      "용암 꼬리"
+    ],
+    "feature": "용암 꼬리",
+    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
+    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
+    "material": "현무암·용암",
+    "body": "낮은 네 발과 길고 넓은 꼬리",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 용암 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 붙인 큰 기관",
+    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
+    "colorPlacement": "몸 #ed622c; 대표 기관 #ed622c; 발·연결부 #938085; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#ed622c",
+      "accent": "#ed622c"
+    },
+    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 양 귀를 짧게 움찔하고 고개를 숙임",
+    "reaction": "몸을 움츠렸다 작은 인사를 한다",
+    "distinction": "작고 귀여운 펫: 낮은 네 발과 길고 넓은 꼬리; 등에 붙인 큰 기관에 용암 꼬리",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

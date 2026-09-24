@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-306","name":"네온코어 회로룡","stage":7,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 네온 서버핵","silhouette":["각진 광선 날개","서버탑 등뼈","안테나 뿔"],"personality":"차갑고 정확한","ecology":"도시의 신호를 등쪽 서버탑에 모아 네온 회로로 내보낸다.","colors":{"primary":"#566587","accent":"#e386d2"},"profile":{"width":9,"height":9,"depth":8,"ear":12,"tail":16,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["box",24.5,21,27,7,10,8,1,"body"],["tube",[[24.5,18,24],[24.5,26,18],[24.5,31,11]],4,1,"body",null],["ellipsoid",24.5,31,10,7,6,6,1,"head",true],["ellipsoid",24.5,28,6,6,3,4,4,"head",true],["tube",[[19,35,12],[15,41,15],[17,43,18]],2,2,"head",1],["tube",[[15,19,24],[13,7,23]],3.5,1,"left_leg",null],["ellipsoid",13,4,20,4,2,5,2,"left_leg",true],["tube",[[24.5,15,34],[24.5,11,41],[24.5,18,46]],3,1,"tail",1.3],["box",24.5,32,25,4,7,2,2,"body"],["box",24.5,33,23,3,1,1,4,"body"],["box",24.5,32,31,4,7,2,2,"body"],["box",24.5,33,29,3,1,1,4,"body"],["box",24.5,32,37,4,7,2,2,"body"],["box",24.5,33,35,3,1,1,4,"body"],["tube",[[18,31,25],[5,41,29],[3,30,36]],2,2,"left_wing",null],["tube",[[18,26,25],[5,36,29],[3,25,36]],2,2,"left_wing",null],["tube",[[18,21,25],[5,31,29],[3,20,36]],2,2,"left_wing",null],["tube",[[18,36,14],[13,44,15],[8,44,15]],1.5,2,"head",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-306",
+    "id": 306,
+    "name": "네온코어 회로룡",
+    "stage": 7,
+    "stageName": "네온 사이버시티",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "열린 두 프레임 날개·뒤쪽 전지 꼬리을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 네온코어 회로룡.",
+    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
+    "silhouette": [
+      "가슴이 비어 있는 회로룡",
+      "열린 두 프레임 날개·뒤쪽 전지 꼬리"
+    ],
+    "feature": "열린 두 프레임 날개·뒤쪽 전지 꼬리",
+    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
+    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
+    "material": "전자 패널",
+    "body": "가슴이 비어 있는 회로룡",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 열린 두 프레임 날개·뒤쪽 전지 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
+    "colorPlacement": "몸 #26c6bb; 대표 기관 #26c6bb; 발·연결부 #263d70; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#26c6bb",
+      "accent": "#26c6bb"
+    },
+    "idle": "정지 후 짧은 신호 펄스와 틸트 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 가슴이 비어 있는 회로룡; 성체 전용 골격에 열린 두 프레임 날개·뒤쪽 전지 꼬리",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "보안선을 넘은 뒤 따라오는 눈도 따돌려 보자.",
+    "acquisitionCondition": "보안 레이저와 추적 드론을 각각 회피",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

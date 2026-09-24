@@ -1,6 +1,5 @@
 import type {Block} from './region-layout';
 import {STAGES} from './stage-data';
-import {FARM_PLOTS} from './village';
 
 const cream=0xf3e7c4,stone=0xb7b59b,wood=0x80644c,gold=0xd4ad62,dark=0x384b44;
 function builder(){
@@ -13,75 +12,7 @@ function builder(){
  return {blocks,b,roof,tree,arch,ring};
 }
 
-/** A settlement with a public square, garden lanes and five inhabited homesteads. */
-let villageCache:Block[]|undefined;
-export function villageArt(){
- if(villageCache)return villageCache;
- const {blocks,b,roof,tree,arch,ring}=builder();
- // Continuous earth apron joins the village edge (-5) to the route (-6).
- b(0,-.5,-5.5,18,.9,1,0xc9dda0);
- for(let x=-2;x<=2;x++)b(x,-.01,-5.5,.98,.07,1,0xd8d0a5);
- // Low masonry perimeter, with an open central expedition gate.
- const wall=(x:number,z:number,w:number,d:number)=>{
-  b(x,.44,z,w,1,d,stone);b(x,1,z,w+.12,.16,d+.12,cream);
- };
- for(const side of [-1,1]){
-  for(let z=-3;z<=23;z+=2)wall(side*15,z,.7,2);
-  wall(side*9,-4.8,12,.7);
-  for(const z of [-4.8,3,11,19,24]){
-   b(side*15,.65,z,1.1,1.4,1.1,stone);b(side*15,1.4,z,1.25,.15,1.25,cream);
-  }
-  // Entrance planters and stacked supply crates frame the path without blocking it.
-  b(side*4.4,.2,-5.4,1.6,.5,.8,stone);
-  for(let i=0;i<3;i++){b(side*(3.9+i*.5),.63,-5.4,.4,.4,.6,0x81965e);b(side*(3.9+i*.5),.87,-5.4,.18,.14,.18,gold);}
-  b(side*3.1,.8,-5.25,.16,1.6,.16,wood);b(side*3.1,1.7,-5.25,.45,.45,.45,gold);b(side*3.1,1.98,-5.25,.6,.12,.6,dark);
-  for(let i=0;i<2;i++)b(side*(5.5+i*.65),.32,-3.8,.58,.65,.65,wood);
- }
- for(let x=-14;x<=14;x+=2)wall(x,24,2,.7);
- // Cut stone plaza and walking lanes; the main expedition gate stays clear.
- for(let z=-4;z<=22;z++)for(let x=-2;x<=2;x++)b(x,.006,z,.94,.035,.94,(x+z)%3?0xdfd1ad:0xc9ba94);
- for(const z of [2,12,20])for(let x=-12;x<=12;x++)b(x,.012,z,.96,.04,1.7,0xd9c7a0);
- for(const side of [-1,1])for(let z=-3;z<21;z+=2)b(side*2.6,.12,z,.5,.24,1.7,stone);
- // Arrival arch: low side piers, clear road, tiled crown above the player.
- arch(0,-4.8,4.1,3.3,wood);roof(0,3.55,-4.8,5.4,1.65,0x708859);
- b(0,3.02,-4.15,1.15,.56,.12,cream);b(0,3.02,-4.05,.35,.35,.1,gold);
- // Fountain basin and three descending shelves of water at the village center.
- b(0,.25,10,2.1,.5,2.1,stone);b(0,.52,10,1.7,.08,1.7,0x86babc);
- b(0,.8,10,.6,.6,.6,cream);b(0,1.15,10,1.2,.2,1.2,stone);b(0,1.27,10,1,.04,1,0x9bcace);
- b(0,1.55,10,.28,.6,.28,gold);ring(0,1.9,10,.38,gold);
- // Market veranda: fabric bands, display crates and awning braces.
- const sx=-4.5,sz=4;b(sx,1.05,sz,1.8,2.1,1.7,cream);roof(sx,2.1,sz,2.4,2.4,0x998960);
- for(let i=0;i<6;i++)b(sx-1.1+i*.44,1.8,sz+1.05,.44,.18,1.1,i%2?cream:0x93a365);
- for(const side of [-1,1])b(sx+side*1.2,.85,sz+1.4,.12,1.7,.12,wood);
- for(let i=0;i<3;i++){b(sx-.6+i*.6,.4,sz+1.2,.5,.65,.45,wood);b(sx-.6+i*.6,.78,sz+1.2,.38,.14,.32,[0xbe805b,0xa6b871,0xe4bd69][i]);}
- const roofs=[0x6c895b,0xb77858,0x698d98,0x8f7c99,0xa69955];
- for(const [i,p] of FARM_PLOTS.entries()){
-  const x=p.x-2.5,z=p.z-.6,c=roofs[i];
-  b(x,.14,z,3.1,.28,2.8,stone);b(x,1.18,z,2.6,2.05,2.25,cream);
-  for(const side of [-1,1])b(x+side*1.22,1.2,z+1.17,.14,2.1,.14,wood);
-  b(x,1.05,z+1.2,.72,1.7,.12,wood);b(x,1.05,z+1.28,.52,1.5,.1,0x596d53);
-  b(x,.17,z+1.5,1.1,.24,.65,stone);roof(x,2.3,z,3.3,3.1,c);
-  for(const side of [-1,1]){b(x+side*.85,1.5,z+1.22,.5,.62,.12,wood);b(x+side*.85,1.5,z+1.3,.35,.42,.08,0xf2dba0);}
-  // Five intentionally different rooflines, rather than five recolored boxes.
-  if(i===0){b(x,3.5,z,.9,1.1,.85,cream);roof(x,4.1,z,1.25,1.25,c);}
-  if(i===1){b(x+.85,3.35,z-.55,.55,1.7,.55,0xb09073);b(x+.85,4.25,z-.55,.8,.2,.8,stone);}
-  if(i===2){for(let j=0;j<4;j++)b(x+1.5,1.9+j*.23,z,1.4-j*.23,.23,2.1,0x8caf9a);}
-  if(i===3){b(x,3.4,z,1.25,.95,1,cream);roof(x,3.95,z,1.55,1.5,c);ring(x,3.45,z+.55,.25,gold);}
-  if(i===4){arch(x,z+.1,1.5,3.8,wood);b(x,4.2,z,.7,.8,.7,gold);}
-  // Raised vegetable beds and flowers explain how each farm sustains its pets.
-  for(const dx of [-.65,.65]){b(p.x+dx,.13,p.z+2.7,.95,.26,1.1,wood);b(p.x+dx,.28,p.z+2.7,.8,.06,.95,0x695d43);
-   for(const dz of [-.3,0,.3]){b(p.x+dx,.48,p.z+2.7+dz,.35,.35,.25,0x8ea76d);b(p.x+dx,.66,p.z+2.7+dz,.18,.15,.18,i%2?0xd7b370:0xc48267);}}
-  tree(p.x+3,p.z-2,1.05,i===3?0xb59aaa:0x88a26a);
-  for(const dx of [-3.5,0,3.5]){b(p.x+dx,.48,p.z+3.5,1.4,.12,.15,cream);for(const side of [-1,1])b(p.x+dx+side*.6,.4,p.z+3.5,.14,.8,.2,wood);}
- }
- // A small pond, orchard and lamp-lit benches frame the public space.
- b(5,.04,7,3,.08,2.1,0x7da8a6);for(const side of [-1,1])b(5+side*1.55,.18,7,.25,.35,2.5,stone);
- for(let i=0;i<5;i++)b(3.7+i*.65,.24,7,.56,.18,1.15,wood);
- for(const x of [-13,13])for(const z of [0,7,16,21]){tree(x,z,1.3);b(x,.13,z,2.2,.26,2.2,stone);}
- for(const x of [-3.3,3.3])for(const z of [-1,7,15]){b(x,.85,z,.16,1.7,.16,wood);b(x,1.8,z,.5,.6,.5,gold);b(x,2.2,z,.65,.15,.65,dark);b(x,1.8,z+.27,.32,.4,.04,0xffe8ad);}
- for(const x of [-4,4]){b(x,.4,10,1.8,.18,.5,wood);b(x,.76,9.8,1.8,.55,.12,wood);for(const side of [-1,1])b(x+side*.7,.2,10,.15,.4,.4,dark);}
- villageCache=blocks;return blocks;
-}
+export {circularVillageArt as villageArt} from './village-art';
 
 /** Stage ecology becomes architecture: large readable landmarks plus tailored paths. */
 export function stageLandmarks(stage:number,length:number){

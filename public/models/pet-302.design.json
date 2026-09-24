@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-302","name":"산호궁 해룡","stage":3,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 산호 왕궁","silhouette":["납작한 유영 몸","산호 궁전 등","쌍지느러미"],"personality":"고요하고 위엄 있는","ecology":"산호 가지를 등에 기르고 넓은 지느러미로 산란장을 지킨다.","colors":{"primary":"#df9998","accent":"#75cbbc"},"profile":{"width":12,"height":11,"depth":12,"ear":8,"tail":12,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["ellipsoid",24.5,20,25,10,7,17,1,"body",false],["ellipsoid",24.5,22,9,9,5,6,1,"head",true],["ellipsoid",24.5,19,5,8,3,4,4,"head",true],["tube",[[19,26,11],[15,32,14],[17,34,17]],2,2,"head",1],["fin",[[18,20,14],[2,21,28],[17,20,38]],2,"left_wing",2],["fin",[[24.5,20,38],[9,22,46],[24.5,20,44]],2,"tail",1.5],["tube",[[18,23,24],[16,38,24],[12,42,26]],2,2,"body",null],["tube",[[16,32,24],[11,35,22]],1.7,4,"body",null],["tube",[[13,23,31],[11,38,31],[7,42,33]],2,2,"body",null],["tube",[[11,32,31],[6,35,29]],1.7,4,"body",null],["tube",[[21,23,35],[19,38,35],[15,42,37]],2,2,"body",null],["tube",[[19,32,35],[14,35,33]],1.7,4,"body",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-302",
+    "id": 302,
+    "name": "산호궁 해룡",
+    "stage": 3,
+    "stageName": "얕은 산호 바다",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "가지형 산호 뿔·패각 세 겹의 수중 날개을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 산호궁 해룡.",
+    "inspiration": "산호 · 물결 · 문어 / coral",
+    "silhouette": [
+      "납작한 가슴의 해룡",
+      "가지형 산호 뿔·패각 세 겹의 수중 날개"
+    ],
+    "feature": "가지형 산호 뿔·패각 세 겹의 수중 날개",
+    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
+    "ecology": "얕은 물결을 거르는 산호 생태계",
+    "material": "젖은 산호·패각",
+    "body": "납작한 가슴의 해룡",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "산호 · 물결 · 문어에서 온 가지형 산호 뿔·패각 세 겹의 수중 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
+    "colorPlacement": "몸 #f8dfaf; 대표 기관 #f17e6f; 발·연결부 #f17e6f; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#f8dfaf",
+      "accent": "#f17e6f"
+    },
+    "idle": "짧게 뜨고 물결에 지느러미 접기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 납작한 가슴의 해룡; 성체 전용 골격에 가지형 산호 뿔·패각 세 겹의 수중 날개",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "알을 젖지 않게 지킨 뒤 두 물가의 소리를 들어 보자.",
+    "acquisitionCondition": "산호 바다 알 운반 중 먹물 회피 + 위험 구간 좌우 방문",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

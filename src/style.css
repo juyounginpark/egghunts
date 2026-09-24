@@ -105,8 +105,9 @@ nav button.active { background: #dfe9bd; box-shadow: inset 0 -3px #6b8454; font-
 #egg-health > span { margin-left: 8px; font-size: 10px; }
 #egg-health small { display: block; font-size: 9px; margin-top: 4px; }
 #panel { position: absolute; inset: calc(122px + var(--safe-top)) 0 calc(72px + var(--safe-bottom)); overflow-y: auto; background: #f2f1dc; padding: 18px; z-index: 2; }
-.collection-count { font-size: 28px; font-weight: 900; margin: 16px 0; }
+.collection-count { font-size: 24px; font-weight: 900; margin: 8px 0; }
 .collection-count small { font-size: 11px; }
+.collection-tools{font-size:12px;margin:8px 0}.collection-tools>summary{min-height:32px;cursor:pointer}.collection-tools .collection-reward{margin-top:12px}
 .friend { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; padding: 12px; border: 2px solid #adb794; background: var(--paper); box-shadow: 3px 3px 0 #c3c9aa; }
 .friend-face { width: 56px; height: 60px; background: #e5e9cf; display: grid; place-items: center; }
 .friend-preview { width:96px;min-width:96px;height:104px;padding:0;background:#eee8d4;border:2px solid #bac19b;border-radius:8px; }
@@ -483,3 +484,8 @@ nav button img { width:28px; height:28px; }
 .login-card label{display:block;margin:12px 0 6px;font-weight:700}
 .login-card input{box-sizing:border-box;width:100%;min-height:48px;border:2px solid #aaa880;border-radius:8px;background:#fffdf6;padding:10px;font:inherit;color:#354329}
 .login-card button{width:100%;min-height:48px;margin-top:14px}.login-card p{line-height:1.5;overflow-wrap:anywhere;font-size:14px}
+.secret-pet{border-color:#c6ad6c!important;background:#f5edd4!important}.secret-pet .pet-portrait{background:#e7dec4}.secret-pet>p{font-size:13px;line-height:1.5}.secret-pet details{font-size:12px}.secret-pet .small-btn{margin-top:8px}
+.result-card{position:relative;isolation:isolate;overflow:hidden}.result-card>button{margin-top:14px}.result-idle{width:min(240px,60vw);aspect-ratio:1;margin:0 auto;background-size:2400% 100%;animation:pet-idle-strip 7s steps(23) infinite}.pet-reveal{position:absolute;inset:0;pointer-events:none;z-index:-1;overflow:hidden}.pet-reveal svg{position:absolute;left:calc(10% + mod(var(--i),2)*74%);top:calc(12% + var(--i)*10%);width:34px;height:34px;fill:none;stroke:var(--reward);stroke-width:2;stroke-linejoin:miter;animation:pet-reveal 2.4s var(--delay) both;transform:rotate(var(--turn))}.dragon-reveal svg{width:44px;height:44px;stroke-width:3}.pet-reveal svg:nth-child(odd){left:8%}.pet-reveal svg:nth-child(even){left:80%}
+@keyframes pet-idle-strip{to{background-position:100% 0}}@keyframes pet-reveal{0%{opacity:0;translate:0 40px;scale:.3}25%{opacity:1;scale:1.2}70%{opacity:.8}100%{opacity:0;translate:0 -25px;scale:1}}
+@media(prefers-reduced-motion:reduce){.result-idle,.pet-reveal svg{animation:none}.pet-reveal{display:none}}
+.result-pet-motion{position:relative;width:min(240px,60vw);margin:auto;aspect-ratio:1}.result-pet-motion .result-idle{animation-delay:2.4s}.result-greeting{position:absolute;inset:0;background-size:2400% 100%;background-color:var(--paper);animation:pet-greeting 2.4s steps(23) forwards}@keyframes pet-greeting{0%{background-position:0 0;visibility:visible}99.9%{visibility:visible}100%{background-position:100% 0;visibility:hidden}}@media(prefers-reduced-motion:reduce){.result-greeting{display:none}}

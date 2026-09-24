@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-310","name":"천뢰신전 성룡","stage":11,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 천둥 신전","silhouette":["신전 기둥 다리","큰 삼각 지붕 날개","번개 뿔"],"personality":"엄숙하고 자비로운","ecology":"올림포스의 무너진 기둥을 몸으로 받치며 구름 사이의 번개를 모은다.","colors":{"primary":"#d3d3de","accent":"#dcb963"},"profile":{"width":11,"height":13,"depth":10,"ear":10,"tail":12,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["box",24.5,23,28,10,3,12,1,"body"],["ellipsoid",24.5,31,10,7,6,6,1,"head",true],["ellipsoid",24.5,28,6,6,3,4,4,"head",true],["tube",[[19,35,12],[15,41,15],[17,43,18]],2,2,"head",1],["tube",[[24.5,24,22],[24.5,31,14]],4,1,"body",null],["box",15,13,20,3,9,3,4,"left_leg"],["box",15,4,20,5,1,5,2,"left_leg"],["box",15,13,34,3,9,3,4,"left_leg"],["box",15,4,34,5,1,5,2,"left_leg"],["fin",[[19,28,24],[3,40,29],[6,23,37]],4,"left_wing",1.5],["fin",[[19,25,24],[3,36,29],[6,19,37]],4,"left_wing",1.5],["fin",[[19,22,24],[3,32,29],[6,15,37]],4,"left_wing",1.5],["tube",[[19,36,13],[15,43,15],[12,40,17],[10,46,19]],1.5,2,"head",null],["tube",[[24.5,15,34],[24.5,11,41],[24.5,18,46]],3,1,"tail",1.3],["tube",[[23,17,33],[23,20,33]],1.5,1,"tail",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-310",
+    "id": 310,
+    "name": "천뢰신전 성룡",
+    "stage": 11,
+    "stageName": "올림포스 신전",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "대리석 기둥 앞발·끊어진 번개 날개을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 천뢰신전 성룡.",
+    "inspiration": "대리석 · 구름다리 · 번개 / lightning",
+    "silhouette": [
+      "석상처럼 묵직한 신전룡",
+      "대리석 기둥 앞발·끊어진 번개 날개"
+    ],
+    "feature": "대리석 기둥 앞발·끊어진 번개 날개",
+    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
+    "ecology": "구름 위에서 대리석과 번개가 숨 쉬는 신전",
+    "material": "대리석·금",
+    "body": "석상처럼 묵직한 신전룡",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "대리석 · 구름다리 · 번개에서 온 대리석 기둥 앞발·끊어진 번개 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "기둥 아랫면 청회색 → 위쪽 상아색; 연결부만 금색",
+    "colorPlacement": "몸 #4886b1; 대표 기관 #d6a231; 발·연결부 #e4e2d0; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#4886b1",
+      "accent": "#d6a231"
+    },
+    "idle": "무게 있게 멈췄다 날개 한 번 들기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 석상처럼 묵직한 신전룡; 성체 전용 골격에 대리석 기둥 앞발·끊어진 번개 날개",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "하늘의 번개를 피하고 돌이 되는 시선에 등을 돌려 보자.",
+    "acquisitionCondition": "번개와 메두사의 시선을 각각 회피",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

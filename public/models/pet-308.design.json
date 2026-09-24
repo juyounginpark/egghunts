@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-308","name":"세계수 원시룡","stage":9,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 세계수 화석","silhouette":["긴 목","거대한 나무 수관","뿌리 꼬리"],"personality":"오래 참고 기억하는","ecology":"공룡섬의 씨앗을 등에 기르며 발자국마다 어린 숲이 자란다.","colors":{"primary":"#7c9e73","accent":"#e0be87"},"profile":{"width":10,"height":11,"depth":12,"ear":8,"tail":14,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["ellipsoid",24.5,17,30,11,8,11,1,"body",false],["tube",[[24.5,18,24],[24.5,26,18],[24.5,37,11]],4,1,"body",null],["ellipsoid",24.5,37,10,7,6,6,1,"head",true],["ellipsoid",24.5,34,6,6,3,4,4,"head",true],["tube",[[19,41,12],[15,47,15],[17,49,18]],2,2,"head",1],["tube",[[14,17,20],[12,7,19]],3.5,1,"left_leg",null],["ellipsoid",12,4,16,4,2,5,2,"left_leg",true],["tube",[[14,17,34],[12,7,33]],3.5,1,"left_leg",null],["ellipsoid",12,4,30,4,2,5,2,"left_leg",true],["tube",[[24.5,15,34],[24.5,11,41],[24.5,18,46]],3,1,"tail",1.3],["tube",[[24.5,23,30],[24.5,35,31]],4,2,"body",null],["ellipsoid",13,34,30,8,4,7,2,"body",true],["ellipsoid",19,39,33,8,4,7,2,"body",true],["ellipsoid",24,43,32,8,4,7,2,"body",true],["tube",[[13,11,28],[9,4,36],[6,3,40]],2,2,"left_leg",null],["tube",[[18,11,28],[14,4,36],[11,3,40]],2,2,"left_leg",null],["fin",[[19,25,30],[3,37,33],[7,21,41]],2,"left_wing",1.4],["tube",[[19,25,30],[3,37,33]],1.4,4,"left_wing",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-308",
+    "id": 308,
+    "name": "세계수 원시룡",
+    "stage": 9,
+    "stageName": "태초의 공룡섬",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "목을 감싼 세 갈비·높은 양치 돛 꼬리을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 세계수 원시룡.",
+    "inspiration": "양치식물 · 화석 절벽 · 늪 / dinosaur",
+    "silhouette": [
+      "긴 목의 화석 고대룡",
+      "목을 감싼 세 갈비·높은 양치 돛 꼬리"
+    ],
+    "feature": "목을 감싼 세 갈비·높은 양치 돛 꼬리",
+    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
+    "ecology": "화석과 살아 있는 양치식물이 함께 자라는 섬",
+    "material": "가죽·화석",
+    "body": "긴 목의 화석 고대룡",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "양치식물 · 화석 절벽 · 늪에서 온 목을 감싼 세 갈비·높은 양치 돛 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "몸의 숲색 → 배의 따뜻한 모래색; 뼈 절단면은 아이보리",
+    "colorPlacement": "몸 #a4553e; 대표 기관 #4e874d; 발·연결부 #4e874d; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#a4553e",
+      "accent": "#4e874d"
+    },
+    "idle": "무거운 몸을 옮기고 등 돛 까딱 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 긴 목의 화석 고대룡; 성체 전용 골격에 목을 감싼 세 갈비·높은 양치 돛 꼬리",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "알을 든 채 작은 사냥꾼을 피하고, 늪의 숨도 살펴보자.",
+    "acquisitionCondition": "공룡섬 알 운반 중 랩터 회피 + 타르 늪 회피",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

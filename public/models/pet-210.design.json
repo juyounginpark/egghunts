@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-210","name":"촉수 콩별","stage":12,"slot":0,"boss":false,"anatomy":"octopus","concept":"연체 작업수 × 반투명 막","silhouette":["둥근 맨틀·말린 여덟 팔","중력을 느끼는 넓은 감각막"],"personality":"장난기 많은","ecology":"외계 습지에 살며 중력을 느끼는 넓은 감각막으로 환경에 적응한다. 촉수의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#9ba5bd","accent":"#a3e59c"},"profile":{"width":9,"height":8,"depth":8,"ear":7,"tail":13,"stance":7},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,30,24,11,9,10,1,"body",true],["tube",[[16,24,19],[14,15,21],[12,8,19],[14,6,15]],2.5,2,"left_arm",1.3],["tube",[[19,24,29],[17,15,31],[15,8,29],[17,6,25]],2.5,2,"left_arm",1.3],["tube",[[24,24,34],[22,15,36],[20,7,34],[22,5,30]],2.5,2,"left_arm",1.3],["tube",[[12,24,26],[10,15,28],[8,7,26],[10,5,22]],2.5,2,"left_arm",1.3],["fin",[[21.5,20,29],[14.5,31,33],[20.5,35,37]],2,"body",1.5],["resample-solid",0.8350000000000001,0.78,0.78]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-210",
+    "id": 210,
+    "name": "촉수 콩별",
+    "stage": 12,
+    "stageName": "외계인 51구역",
+    "slot": 0,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "slime",
+    "role": "대표 마스코트",
+    "tier": 0,
+    "rarity": "C",
+    "concept": "배양 캡슐을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 촉수 콩별.",
+    "inspiration": "UFO · 연구소 · 형광 액체 / ufo",
+    "silhouette": [
+      "낮게 퍼지는 받침과 높은 작은 머리",
+      "배양 캡슐"
+    ],
+    "feature": "배양 캡슐",
+    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
+    "ecology": "다른 중력에서 몸의 균형을 시험하는 연구 구역",
+    "material": "배양막·실험 금속",
+    "body": "낮게 퍼지는 받침과 높은 작은 머리",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "UFO · 연구소 · 형광 액체에서 온 배양 캡슐: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "머리와 등에 이어지는 기관",
+    "gradient": "배양막 중심 라임 → 가장자리 청록; 감각판 안쪽 보라빛",
+    "colorPlacement": "몸 #87bf40; 대표 기관 #7854af; 발·연결부 #efaa79; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#87bf40",
+      "accent": "#7854af"
+    },
+    "idle": "몸은 낮고 감각판은 반대로 떠오름 / 고개를 좌우로 천천히 돌려 주변을 확인",
+    "reaction": "고개를 들고 양쪽 기관을 펼친다",
+    "distinction": "대표 마스코트: 낮게 퍼지는 받침과 높은 작은 머리; 머리와 등에 이어지는 기관에 배양 캡슐",
+    "previewAngle": -35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

@@ -2,6 +2,7 @@ import * as T from "three";
 import type {MapCollider} from './map-collision';
 type Voxel = [number, number, number, number];
 type Model = {
+  previewAngle?:number;
   front?: '-z';
   colors: string[];
   size: number[];
@@ -98,6 +99,7 @@ export function voxelModel(name: string, rig = false) {
     mesh.receiveShadow = true;
     group.add(mesh);
   }
+  group.userData.previewAngle=d.previewAngle;
   return group;
 }
 

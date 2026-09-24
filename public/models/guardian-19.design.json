@@ -1,1 +1,40 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"guardian-19","name":"천문대 둥지 수호자","stage":19,"slot":10,"boss":true,"anatomy":"angel","concept":"문지기 정령 × 별 유리","silhouette":["세 쌍의 열린 날개·세로 씨앗핵","궤도를 감지하는 아치형 감각기관"],"personality":"영역을 지키는 엄숙한","ecology":"천문대에 살며 궤도를 감지하는 아치형 감각기관으로 환경에 적응한다. 천문대의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#8383bb","accent":"#acd6e5"},"profile":{"width":10,"height":9,"depth":8,"ear":12,"tail":12,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,20,25,6,12,7,1,"body",false],["ellipsoid",24.5,31,19,8,7,6,1,"head",false],["fin",[[19.5,31,28],[3.5,39,31],[8.5,25,37]],2,"left_wing",1.5],["tube",[[19.5,31,28],[3.5,39,31]],1.5,1,"left_wing",null],["fin",[[19.5,26,28],[3.5,32,31],[8.5,21,37]],4,"left_wing",1.5],["tube",[[19.5,26,28],[3.5,32,31]],1.5,1,"left_wing",null],["fin",[[19.5,21,28],[3.5,25,31],[8.5,17,37]],2,"left_wing",1.5],["tube",[[19.5,21,28],[3.5,25,31]],1.5,1,"left_wing",null],["tube",[[24.5,17,25],[24.5,5,29]],4,2,"body",1],["ellipsoid",24.5,24,17,3,6,2,2,"body",false],["tube",[[17,22,33],[10,30,33],[16,39,33],[24.5,41,33]],1.5,2,"body",null],["tube",[[18,38,20],[17,44,20],[21,41,20],[24,45,20]],1.7,2,"head",null],["ellipsoid",12,23,25,5,7,6,2,"left_arm",true],["tube",[[18,37,15],[14,41,19],[12,39,24]],2,2,"head",null],["resample-solid",0.88,0.812,0.78]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "guardian-19",
+    "name": "천문대 둥지 수호자",
+    "stage": 19,
+    "slot": 10,
+    "boss": true,
+    "anatomy": "angel",
+    "concept": "작은 행성과 별빛을 관측하는 은하수 역의 둥지를 지키는 성체",
+    "silhouette": [
+      "빈 중앙 몸과 위아래 세 쌍 날개",
+      "비스듬한 궤도 아치"
+    ],
+    "personality": "넓은 어깨와 낮은 눈썹, 잠에서 천천히 일어나는 묵직한 자세",
+    "ecology": "천문대에 살며 궤도를 감지하는 아치형 감각기관으로 환경에 적응한다. 천문대의 형태를 기관의 구조로 표현한다.",
+    "colors": {
+      "primary": "#8383bb",
+      "accent": "#acd6e5"
+    },
+    "profile": {
+      "width": 10,
+      "height": 9,
+      "depth": 8,
+      "ear": 12,
+      "tail": 12,
+      "stance": 10
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "grid": 24,
+    "previewAngle": 35
+  }
+}

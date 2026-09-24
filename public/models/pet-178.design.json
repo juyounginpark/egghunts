@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-178","name":"피라미드 스핑크스","stage":8,"slot":8,"boss":false,"anatomy":"lion","concept":"갈기 맹수 × 사암","silhouette":["방사형 갈기·뒤로 낮아지는 허리","물과 열을 저장하는 둥근 저장실"],"personality":"당당한","ecology":"사막에 살며 물과 열을 저장하는 둥근 저장실으로 환경에 적응한다. 피라미드의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#d1ac6e","accent":"#76b8ba"},"profile":{"width":8,"height":10,"depth":8,"ear":11,"tail":9,"stance":7},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,19,28,6,8,12,1,"body",true],["tube",[[17,18,19],[18,5,18]],3,1,"left_leg",2],["ellipsoid",18,5,16,4,2,5,2,"left_leg",false],["tube",[[17,17,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["ellipsoid",24.5,31,13,9,7,7,1,"head",true],["tube",[[24.5,19,21],[24.5,29,15]],4,1,"body",null],["ellipsoid",24.5,28,7,5,3,4,2,"head",false],["tube",[[17,35,15],[15,38.25,17],[17,40,18]],2.5,1,"head",1.5],["tube",[[17,37,14],[16,38.25,16]],1,2,"head",null],["ellipsoid",34.5,31.0,18,4,5,4,2,"head",true],["ellipsoid",31.571067811865476,37.36396103067893,18,4,5,4,2,"head",true],["ellipsoid",24.5,40.0,18,4,5,4,2,"head",true],["ellipsoid",17.428932188134524,37.36396103067893,18,4,5,4,2,"head",true],["ellipsoid",14.5,31.0,18,4,5,4,2,"head",true],["ellipsoid",17.428932188134524,24.63603896932107,18,4,5,4,2,"head",true],["ellipsoid",24.499999999999996,22.0,18,4,5,4,2,"head",true],["ellipsoid",31.571067811865476,24.63603896932107,18,4,5,4,2,"head",true],["tube",[[24.5,15,36],[24.5,19,43],[24.5,24,43]],2.5,2,"tail",1.5],["ellipsoid",24.5,26,34,7,8,7,2,"body",true],["resample-solid",0.79,0.8440000000000001,0.78]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-178",
+    "id": 178,
+    "name": "피라미드 스핑크스",
+    "stage": 8,
+    "stageName": "황금 사막왕국",
+    "slot": 8,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "lion",
+    "role": "신비로운 펫",
+    "tier": 5,
+    "rarity": "SSS",
+    "concept": "전갈 태양갈기을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 피라미드 스핑크스.",
+    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
+    "silhouette": [
+      "앞이 높은 갈기와 낮은 허리",
+      "전갈 태양갈기"
+    ],
+    "feature": "전갈 태양갈기",
+    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
+    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
+    "material": "사암·황동",
+    "body": "앞이 높은 갈기와 낮은 허리",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 전갈 태양갈기: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸 양옆으로 펼친 기관",
+    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
+    "colorPlacement": "몸 #d7a247; 대표 기관 #d7a247; 발·연결부 #259c9c; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#d7a247",
+      "accent": "#d7a247"
+    },
+    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
+    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
+    "distinction": "신비로운 펫: 앞이 높은 갈기와 낮은 허리; 몸 양옆으로 펼친 기관에 전갈 태양갈기",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

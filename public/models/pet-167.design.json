@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-167","name":"호버보드 여우","stage":7,"slot":7,"boss":false,"anatomy":"fox","concept":"꼬리 맹수 × 회로","silhouette":["쐐기 머리·몸보다 큰 꼬리 부채","신호를 주고받는 갈라진 안테나"],"personality":"영리하고 짓궂은","ecology":"사이버 도시에 살며 신호를 주고받는 갈라진 안테나으로 환경에 적응한다. 호버보드의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#566587","accent":"#e386d2"},"profile":{"width":8,"height":12,"depth":11,"ear":9,"tail":13,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,19,28,6,10,12,1,"body",true],["tube",[[17,18,19],[18,5,18]],3,1,"left_leg",2],["ellipsoid",18,5,16,4,2,5,2,"left_leg",false],["tube",[[17,17,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["ellipsoid",24.5,31,13,9,7,7,1,"head",true],["tube",[[24.5,19,21],[24.5,29,15]],4,1,"body",null],["ellipsoid",24.5,28,7,5,3,4,4,"head",false],["tube",[[17,35,15],[15,40.2,17],[17,43,18]],2.5,1,"head",1.5],["tube",[[17,37,14],[16,40.2,16]],1,2,"head",null],["tube",[[24.5,17,34],[18,23,39],[15,35,43]],4,2,"tail",2],["tube",[[24.5,17,34],[24,23,39],[21,35,43]],4,2,"tail",2],["tube",[[17,22,29],[13,35,29],[8,35,29]],2,2,"body",null],["box",13,33,29,3,1,2,4,"body"],["resample-solid",0.79,0.908,0.9]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-167",
+    "id": 167,
+    "name": "호버보드 여우",
+    "stage": 7,
+    "stageName": "네온 사이버시티",
+    "slot": 7,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "fox",
+    "role": "위험 요소 펫",
+    "tier": 4,
+    "rarity": "SS",
+    "concept": "네온 도로꼬리을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 호버보드 여우.",
+    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
+    "silhouette": [
+      "낮은 네 발과 몸보다 높은 꼬리",
+      "네온 도로꼬리"
+    ],
+    "feature": "네온 도로꼬리",
+    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
+    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
+    "material": "전자 패널",
+    "body": "낮은 네 발과 몸보다 높은 꼬리",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 네온 도로꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 짊어진 기관",
+    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
+    "colorPlacement": "몸 #d6e5f1; 대표 기관 #26c6bb; 발·연결부 #d348ac; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#d6e5f1",
+      "accent": "#26c6bb"
+    },
+    "idle": "정지 후 짧은 신호 펄스와 틸트 / 양 앞팔을 벌렸다 접고 고개를 듦",
+    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
+    "distinction": "위험 요소 펫: 낮은 네 발과 몸보다 높은 꼬리; 등에 짊어진 기관에 네온 도로꼬리",
+    "previewAngle": -35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

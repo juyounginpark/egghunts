@@ -1,0 +1,1114 @@
+{
+  "passed": [
+    "320 stable IDs; stage, species, tier and name match pre-rework catalogue",
+    "100 / 300 / 320 saves preserve counts, equipment, sold discoveries and claimed rewards",
+    "20 discovery rules use real hazards and observed stage-specific actions",
+    "no observation, damage, dropped egg and forged progress do not earn clues",
+    "all seven tiers hatch from correct stage; existing random dragon eggs still hatch",
+    "server rejects forged claims; issue/retry is exactly once and private per player",
+    "five farms face the promenade; entry and all five gym approaches are traversable",
+    "220 distinct 24³ geometries, exact rig partition and symmetric facial eyes"
+  ],
+  "geometry": [
+    {
+      "id": 100,
+      "voxels": 1942,
+      "eyes": 32
+    },
+    {
+      "id": 101,
+      "voxels": 2046,
+      "eyes": 16
+    },
+    {
+      "id": 102,
+      "voxels": 2520,
+      "eyes": 24
+    },
+    {
+      "id": 103,
+      "voxels": 1826,
+      "eyes": 32
+    },
+    {
+      "id": 104,
+      "voxels": 2270,
+      "eyes": 16
+    },
+    {
+      "id": 105,
+      "voxels": 2078,
+      "eyes": 32
+    },
+    {
+      "id": 106,
+      "voxels": 3070,
+      "eyes": 24
+    },
+    {
+      "id": 107,
+      "voxels": 2888,
+      "eyes": 18
+    },
+    {
+      "id": 108,
+      "voxels": 2758,
+      "eyes": 32
+    },
+    {
+      "id": 109,
+      "voxels": 2674,
+      "eyes": 32
+    },
+    {
+      "id": 300,
+      "voxels": 3024,
+      "eyes": 32
+    },
+    {
+      "id": 110,
+      "voxels": 2284,
+      "eyes": 16
+    },
+    {
+      "id": 111,
+      "voxels": 2874,
+      "eyes": 24
+    },
+    {
+      "id": 112,
+      "voxels": 2016,
+      "eyes": 32
+    },
+    {
+      "id": 113,
+      "voxels": 2172,
+      "eyes": 16
+    },
+    {
+      "id": 114,
+      "voxels": 1678,
+      "eyes": 32
+    },
+    {
+      "id": 115,
+      "voxels": 2508,
+      "eyes": 24
+    },
+    {
+      "id": 116,
+      "voxels": 3414,
+      "eyes": 18
+    },
+    {
+      "id": 117,
+      "voxels": 2894,
+      "eyes": 32
+    },
+    {
+      "id": 118,
+      "voxels": 3156,
+      "eyes": 32
+    },
+    {
+      "id": 119,
+      "voxels": 2944,
+      "eyes": 32
+    },
+    {
+      "id": 301,
+      "voxels": 3756,
+      "eyes": 16
+    },
+    {
+      "id": 120,
+      "voxels": 3344,
+      "eyes": 24
+    },
+    {
+      "id": 121,
+      "voxels": 3410,
+      "eyes": 32
+    },
+    {
+      "id": 122,
+      "voxels": 2770,
+      "eyes": 16
+    },
+    {
+      "id": 123,
+      "voxels": 1715,
+      "eyes": 32
+    },
+    {
+      "id": 124,
+      "voxels": 4266,
+      "eyes": 24
+    },
+    {
+      "id": 125,
+      "voxels": 2568,
+      "eyes": 18
+    },
+    {
+      "id": 126,
+      "voxels": 3160,
+      "eyes": 32
+    },
+    {
+      "id": 127,
+      "voxels": 2440,
+      "eyes": 32
+    },
+    {
+      "id": 128,
+      "voxels": 3138,
+      "eyes": 32
+    },
+    {
+      "id": 129,
+      "voxels": 2980,
+      "eyes": 16
+    },
+    {
+      "id": 302,
+      "voxels": 2714,
+      "eyes": 24
+    },
+    {
+      "id": 130,
+      "voxels": 2694,
+      "eyes": 32
+    },
+    {
+      "id": 131,
+      "voxels": 2244,
+      "eyes": 16
+    },
+    {
+      "id": 132,
+      "voxels": 2050,
+      "eyes": 32
+    },
+    {
+      "id": 133,
+      "voxels": 2259,
+      "eyes": 24
+    },
+    {
+      "id": 134,
+      "voxels": 2142,
+      "eyes": 18
+    },
+    {
+      "id": 135,
+      "voxels": 2516,
+      "eyes": 32
+    },
+    {
+      "id": 136,
+      "voxels": 3284,
+      "eyes": 32
+    },
+    {
+      "id": 137,
+      "voxels": 2464,
+      "eyes": 32
+    },
+    {
+      "id": 138,
+      "voxels": 2574,
+      "eyes": 16
+    },
+    {
+      "id": 139,
+      "voxels": 3126,
+      "eyes": 24
+    },
+    {
+      "id": 303,
+      "voxels": 5250,
+      "eyes": 32
+    },
+    {
+      "id": 140,
+      "voxels": 2628,
+      "eyes": 16
+    },
+    {
+      "id": 141,
+      "voxels": 3504,
+      "eyes": 32
+    },
+    {
+      "id": 142,
+      "voxels": 2686,
+      "eyes": 24
+    },
+    {
+      "id": 143,
+      "voxels": 2482,
+      "eyes": 18
+    },
+    {
+      "id": 144,
+      "voxels": 2216,
+      "eyes": 32
+    },
+    {
+      "id": 145,
+      "voxels": 2914,
+      "eyes": 32
+    },
+    {
+      "id": 146,
+      "voxels": 1476,
+      "eyes": 32
+    },
+    {
+      "id": 147,
+      "voxels": 1862,
+      "eyes": 16
+    },
+    {
+      "id": 148,
+      "voxels": 2812,
+      "eyes": 24
+    },
+    {
+      "id": 149,
+      "voxels": 3398,
+      "eyes": 32
+    },
+    {
+      "id": 304,
+      "voxels": 3306,
+      "eyes": 16
+    },
+    {
+      "id": 150,
+      "voxels": 2488,
+      "eyes": 32
+    },
+    {
+      "id": 151,
+      "voxels": 2022,
+      "eyes": 24
+    },
+    {
+      "id": 152,
+      "voxels": 2398,
+      "eyes": 18
+    },
+    {
+      "id": 153,
+      "voxels": 1482,
+      "eyes": 32
+    },
+    {
+      "id": 154,
+      "voxels": 2514,
+      "eyes": 32
+    },
+    {
+      "id": 155,
+      "voxels": 2130,
+      "eyes": 32
+    },
+    {
+      "id": 156,
+      "voxels": 2790,
+      "eyes": 16
+    },
+    {
+      "id": 157,
+      "voxels": 2340,
+      "eyes": 24
+    },
+    {
+      "id": 158,
+      "voxels": 2370,
+      "eyes": 32
+    },
+    {
+      "id": 159,
+      "voxels": 2489,
+      "eyes": 16
+    },
+    {
+      "id": 305,
+      "voxels": 3750,
+      "eyes": 32
+    },
+    {
+      "id": 160,
+      "voxels": 2178,
+      "eyes": 24
+    },
+    {
+      "id": 161,
+      "voxels": 2532,
+      "eyes": 18
+    },
+    {
+      "id": 162,
+      "voxels": 1866,
+      "eyes": 32
+    },
+    {
+      "id": 163,
+      "voxels": 2270,
+      "eyes": 32
+    },
+    {
+      "id": 164,
+      "voxels": 2503,
+      "eyes": 32
+    },
+    {
+      "id": 165,
+      "voxels": 2522,
+      "eyes": 16
+    },
+    {
+      "id": 166,
+      "voxels": 2286,
+      "eyes": 24
+    },
+    {
+      "id": 167,
+      "voxels": 3024,
+      "eyes": 32
+    },
+    {
+      "id": 168,
+      "voxels": 2830,
+      "eyes": 16
+    },
+    {
+      "id": 169,
+      "voxels": 2744,
+      "eyes": 32
+    },
+    {
+      "id": 306,
+      "voxels": 3150,
+      "eyes": 24
+    },
+    {
+      "id": 170,
+      "voxels": 3326,
+      "eyes": 18
+    },
+    {
+      "id": 171,
+      "voxels": 2730,
+      "eyes": 32
+    },
+    {
+      "id": 172,
+      "voxels": 3030,
+      "eyes": 32
+    },
+    {
+      "id": 173,
+      "voxels": 3562,
+      "eyes": 32
+    },
+    {
+      "id": 174,
+      "voxels": 3218,
+      "eyes": 16
+    },
+    {
+      "id": 175,
+      "voxels": 2722,
+      "eyes": 24
+    },
+    {
+      "id": 176,
+      "voxels": 3292,
+      "eyes": 32
+    },
+    {
+      "id": 177,
+      "voxels": 3260,
+      "eyes": 16
+    },
+    {
+      "id": 178,
+      "voxels": 3568,
+      "eyes": 32
+    },
+    {
+      "id": 179,
+      "voxels": 3520,
+      "eyes": 24
+    },
+    {
+      "id": 307,
+      "voxels": 3284,
+      "eyes": 18
+    },
+    {
+      "id": 180,
+      "voxels": 2759,
+      "eyes": 32
+    },
+    {
+      "id": 181,
+      "voxels": 3304,
+      "eyes": 32
+    },
+    {
+      "id": 182,
+      "voxels": 2758,
+      "eyes": 32
+    },
+    {
+      "id": 183,
+      "voxels": 2421,
+      "eyes": 16
+    },
+    {
+      "id": 184,
+      "voxels": 3138,
+      "eyes": 24
+    },
+    {
+      "id": 185,
+      "voxels": 2948,
+      "eyes": 32
+    },
+    {
+      "id": 186,
+      "voxels": 2888,
+      "eyes": 16
+    },
+    {
+      "id": 187,
+      "voxels": 3282,
+      "eyes": 32
+    },
+    {
+      "id": 188,
+      "voxels": 3208,
+      "eyes": 24
+    },
+    {
+      "id": 189,
+      "voxels": 3950,
+      "eyes": 18
+    },
+    {
+      "id": 308,
+      "voxels": 2817,
+      "eyes": 32
+    },
+    {
+      "id": 190,
+      "voxels": 2292,
+      "eyes": 32
+    },
+    {
+      "id": 191,
+      "voxels": 2794,
+      "eyes": 32
+    },
+    {
+      "id": 192,
+      "voxels": 2050,
+      "eyes": 16
+    },
+    {
+      "id": 193,
+      "voxels": 1614,
+      "eyes": 24
+    },
+    {
+      "id": 194,
+      "voxels": 2954,
+      "eyes": 32
+    },
+    {
+      "id": 195,
+      "voxels": 2618,
+      "eyes": 16
+    },
+    {
+      "id": 196,
+      "voxels": 2528,
+      "eyes": 32
+    },
+    {
+      "id": 197,
+      "voxels": 2526,
+      "eyes": 24
+    },
+    {
+      "id": 198,
+      "voxels": 2840,
+      "eyes": 18
+    },
+    {
+      "id": 199,
+      "voxels": 3084,
+      "eyes": 32
+    },
+    {
+      "id": 309,
+      "voxels": 3438,
+      "eyes": 32
+    },
+    {
+      "id": 200,
+      "voxels": 2648,
+      "eyes": 32
+    },
+    {
+      "id": 201,
+      "voxels": 1762,
+      "eyes": 16
+    },
+    {
+      "id": 202,
+      "voxels": 2374,
+      "eyes": 24
+    },
+    {
+      "id": 203,
+      "voxels": 1679,
+      "eyes": 32
+    },
+    {
+      "id": 204,
+      "voxels": 2274,
+      "eyes": 16
+    },
+    {
+      "id": 205,
+      "voxels": 1874,
+      "eyes": 32
+    },
+    {
+      "id": 206,
+      "voxels": 2312,
+      "eyes": 24
+    },
+    {
+      "id": 207,
+      "voxels": 2818,
+      "eyes": 18
+    },
+    {
+      "id": 208,
+      "voxels": 2954,
+      "eyes": 32
+    },
+    {
+      "id": 209,
+      "voxels": 3150,
+      "eyes": 32
+    },
+    {
+      "id": 310,
+      "voxels": 3272,
+      "eyes": 32
+    },
+    {
+      "id": 210,
+      "voxels": 2606,
+      "eyes": 16
+    },
+    {
+      "id": 211,
+      "voxels": 1732,
+      "eyes": 24
+    },
+    {
+      "id": 212,
+      "voxels": 2658,
+      "eyes": 32
+    },
+    {
+      "id": 213,
+      "voxels": 2064,
+      "eyes": 16
+    },
+    {
+      "id": 214,
+      "voxels": 1844,
+      "eyes": 32
+    },
+    {
+      "id": 215,
+      "voxels": 2684,
+      "eyes": 24
+    },
+    {
+      "id": 216,
+      "voxels": 2562,
+      "eyes": 18
+    },
+    {
+      "id": 217,
+      "voxels": 2650,
+      "eyes": 32
+    },
+    {
+      "id": 218,
+      "voxels": 3074,
+      "eyes": 32
+    },
+    {
+      "id": 219,
+      "voxels": 3058,
+      "eyes": 32
+    },
+    {
+      "id": 311,
+      "voxels": 3438,
+      "eyes": 16
+    },
+    {
+      "id": 220,
+      "voxels": 1998,
+      "eyes": 24
+    },
+    {
+      "id": 221,
+      "voxels": 2170,
+      "eyes": 32
+    },
+    {
+      "id": 222,
+      "voxels": 1960,
+      "eyes": 16
+    },
+    {
+      "id": 223,
+      "voxels": 1770,
+      "eyes": 32
+    },
+    {
+      "id": 224,
+      "voxels": 1676,
+      "eyes": 24
+    },
+    {
+      "id": 225,
+      "voxels": 2312,
+      "eyes": 18
+    },
+    {
+      "id": 226,
+      "voxels": 2520,
+      "eyes": 32
+    },
+    {
+      "id": 227,
+      "voxels": 3442,
+      "eyes": 32
+    },
+    {
+      "id": 228,
+      "voxels": 2144,
+      "eyes": 32
+    },
+    {
+      "id": 229,
+      "voxels": 3008,
+      "eyes": 16
+    },
+    {
+      "id": 312,
+      "voxels": 4468,
+      "eyes": 24
+    },
+    {
+      "id": 230,
+      "voxels": 2924,
+      "eyes": 32
+    },
+    {
+      "id": 231,
+      "voxels": 2296,
+      "eyes": 16
+    },
+    {
+      "id": 232,
+      "voxels": 2642,
+      "eyes": 32
+    },
+    {
+      "id": 233,
+      "voxels": 2634,
+      "eyes": 24
+    },
+    {
+      "id": 234,
+      "voxels": 2266,
+      "eyes": 18
+    },
+    {
+      "id": 235,
+      "voxels": 2690,
+      "eyes": 32
+    },
+    {
+      "id": 236,
+      "voxels": 2531,
+      "eyes": 32
+    },
+    {
+      "id": 237,
+      "voxels": 2438,
+      "eyes": 32
+    },
+    {
+      "id": 238,
+      "voxels": 2414,
+      "eyes": 16
+    },
+    {
+      "id": 239,
+      "voxels": 3238,
+      "eyes": 24
+    },
+    {
+      "id": 313,
+      "voxels": 2896,
+      "eyes": 32
+    },
+    {
+      "id": 240,
+      "voxels": 3798,
+      "eyes": 16
+    },
+    {
+      "id": 241,
+      "voxels": 2498,
+      "eyes": 32
+    },
+    {
+      "id": 242,
+      "voxels": 1790,
+      "eyes": 24
+    },
+    {
+      "id": 243,
+      "voxels": 1776,
+      "eyes": 18
+    },
+    {
+      "id": 244,
+      "voxels": 2592,
+      "eyes": 32
+    },
+    {
+      "id": 245,
+      "voxels": 2834,
+      "eyes": 32
+    },
+    {
+      "id": 246,
+      "voxels": 2104,
+      "eyes": 32
+    },
+    {
+      "id": 247,
+      "voxels": 3146,
+      "eyes": 16
+    },
+    {
+      "id": 248,
+      "voxels": 3136,
+      "eyes": 24
+    },
+    {
+      "id": 249,
+      "voxels": 2601,
+      "eyes": 32
+    },
+    {
+      "id": 314,
+      "voxels": 4046,
+      "eyes": 16
+    },
+    {
+      "id": 250,
+      "voxels": 2708,
+      "eyes": 32
+    },
+    {
+      "id": 251,
+      "voxels": 1944,
+      "eyes": 24
+    },
+    {
+      "id": 252,
+      "voxels": 2276,
+      "eyes": 18
+    },
+    {
+      "id": 253,
+      "voxels": 2261,
+      "eyes": 32
+    },
+    {
+      "id": 254,
+      "voxels": 2736,
+      "eyes": 32
+    },
+    {
+      "id": 255,
+      "voxels": 2672,
+      "eyes": 32
+    },
+    {
+      "id": 256,
+      "voxels": 2502,
+      "eyes": 16
+    },
+    {
+      "id": 257,
+      "voxels": 2462,
+      "eyes": 24
+    },
+    {
+      "id": 258,
+      "voxels": 2602,
+      "eyes": 32
+    },
+    {
+      "id": 259,
+      "voxels": 3472,
+      "eyes": 16
+    },
+    {
+      "id": 315,
+      "voxels": 3746,
+      "eyes": 32
+    },
+    {
+      "id": 260,
+      "voxels": 3600,
+      "eyes": 24
+    },
+    {
+      "id": 261,
+      "voxels": 3022,
+      "eyes": 18
+    },
+    {
+      "id": 262,
+      "voxels": 3042,
+      "eyes": 32
+    },
+    {
+      "id": 263,
+      "voxels": 2254,
+      "eyes": 32
+    },
+    {
+      "id": 264,
+      "voxels": 2796,
+      "eyes": 32
+    },
+    {
+      "id": 265,
+      "voxels": 2604,
+      "eyes": 16
+    },
+    {
+      "id": 266,
+      "voxels": 2922,
+      "eyes": 24
+    },
+    {
+      "id": 267,
+      "voxels": 3186,
+      "eyes": 32
+    },
+    {
+      "id": 268,
+      "voxels": 2810,
+      "eyes": 16
+    },
+    {
+      "id": 269,
+      "voxels": 2860,
+      "eyes": 32
+    },
+    {
+      "id": 316,
+      "voxels": 5164,
+      "eyes": 24
+    },
+    {
+      "id": 270,
+      "voxels": 2406,
+      "eyes": 18
+    },
+    {
+      "id": 271,
+      "voxels": 3200,
+      "eyes": 32
+    },
+    {
+      "id": 272,
+      "voxels": 2670,
+      "eyes": 32
+    },
+    {
+      "id": 273,
+      "voxels": 1486,
+      "eyes": 32
+    },
+    {
+      "id": 274,
+      "voxels": 2902,
+      "eyes": 16
+    },
+    {
+      "id": 275,
+      "voxels": 3364,
+      "eyes": 24
+    },
+    {
+      "id": 276,
+      "voxels": 1968,
+      "eyes": 32
+    },
+    {
+      "id": 277,
+      "voxels": 3230,
+      "eyes": 16
+    },
+    {
+      "id": 278,
+      "voxels": 3184,
+      "eyes": 32
+    },
+    {
+      "id": 279,
+      "voxels": 2974,
+      "eyes": 24
+    },
+    {
+      "id": 317,
+      "voxels": 4488,
+      "eyes": 18
+    },
+    {
+      "id": 280,
+      "voxels": 2290,
+      "eyes": 32
+    },
+    {
+      "id": 281,
+      "voxels": 1821,
+      "eyes": 32
+    },
+    {
+      "id": 282,
+      "voxels": 2314,
+      "eyes": 32
+    },
+    {
+      "id": 283,
+      "voxels": 1554,
+      "eyes": 16
+    },
+    {
+      "id": 284,
+      "voxels": 2634,
+      "eyes": 24
+    },
+    {
+      "id": 285,
+      "voxels": 2744,
+      "eyes": 32
+    },
+    {
+      "id": 286,
+      "voxels": 1958,
+      "eyes": 16
+    },
+    {
+      "id": 287,
+      "voxels": 1494,
+      "eyes": 32
+    },
+    {
+      "id": 288,
+      "voxels": 2478,
+      "eyes": 24
+    },
+    {
+      "id": 289,
+      "voxels": 3150,
+      "eyes": 18
+    },
+    {
+      "id": 318,
+      "voxels": 2470,
+      "eyes": 32
+    },
+    {
+      "id": 290,
+      "voxels": 2346,
+      "eyes": 32
+    },
+    {
+      "id": 291,
+      "voxels": 2396,
+      "eyes": 32
+    },
+    {
+      "id": 292,
+      "voxels": 2761,
+      "eyes": 16
+    },
+    {
+      "id": 293,
+      "voxels": 1511,
+      "eyes": 24
+    },
+    {
+      "id": 294,
+      "voxels": 4640,
+      "eyes": 32
+    },
+    {
+      "id": 295,
+      "voxels": 1782,
+      "eyes": 16
+    },
+    {
+      "id": 296,
+      "voxels": 2154,
+      "eyes": 32
+    },
+    {
+      "id": 297,
+      "voxels": 2352,
+      "eyes": 24
+    },
+    {
+      "id": 298,
+      "voxels": 2806,
+      "eyes": 18
+    },
+    {
+      "id": 299,
+      "voxels": 3042,
+      "eyes": 32
+    },
+    {
+      "id": 319,
+      "voxels": 3094,
+      "eyes": 32
+    }
+  ]
+}

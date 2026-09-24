@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-170","name":"모래 귀쫑","stage":8,"slot":0,"boss":false,"anatomy":"rabbit","concept":"뛰는 초식수 × 사암","silhouette":["기울어진 긴 귀·큰 뒷발","물과 열을 저장하는 둥근 저장실"],"personality":"겁 많지만 재빠른","ecology":"사막에 살며 물과 열을 저장하는 둥근 저장실으로 환경에 적응한다. 모래의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#d1ac6e","accent":"#76b8ba"},"profile":{"width":12,"height":10,"depth":12,"ear":9,"tail":9,"stance":7},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,18,27,11,10,9,1,"body",true],["ellipsoid",24.5,29,19,9,8,8,1,"head",true],["tube",[[18,34,20],[16,39.85,22],[18,43,23]],2.5,1,"head",1.5],["tube",[[18,36,19],[17,39.85,21]],1,2,"head",null],["tube",[[18,13,26],[19,4,25]],3,1,"left_leg",2],["ellipsoid",19,4,23,4,2,5,2,"left_leg",false],["tube",[[15,24,23],[12,18,18]],3,1,"left_arm",null],["ellipsoid",24.5,14,36,4,4,4,4,"tail",false],["ellipsoid",24.5,26,34,7,8,7,2,"body",true],["resample-solid",0.97,0.8440000000000001,0.9400000000000001]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-170",
+    "id": 170,
+    "name": "모래 귀쫑",
+    "stage": 8,
+    "stageName": "황금 사막왕국",
+    "slot": 0,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "rabbit",
+    "role": "대표 마스코트",
+    "tier": 0,
+    "rarity": "C",
+    "concept": "햇빛 가리개을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 모래 귀쫑.",
+    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
+    "silhouette": [
+      "좁은 몸과 몸 높이만큼 긴 귀",
+      "햇빛 가리개"
+    ],
+    "feature": "햇빛 가리개",
+    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
+    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
+    "material": "사암·황동",
+    "body": "좁은 몸과 몸 높이만큼 긴 귀",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 햇빛 가리개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "머리와 등에 이어지는 기관",
+    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
+    "colorPlacement": "몸 #d7a247; 대표 기관 #d7a247; 발·연결부 #259c9c; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#d7a247",
+      "accent": "#d7a247"
+    },
+    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 고개를 좌우로 천천히 돌려 주변을 확인",
+    "reaction": "고개를 들고 양쪽 기관을 펼친다",
+    "distinction": "대표 마스코트: 좁은 몸과 몸 높이만큼 긴 귀; 머리와 등에 이어지는 기관에 햇빛 가리개",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

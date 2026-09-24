@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-300","name":"풍차정원 고룡","stage":1,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 풍차 씨앗","silhouette":["풍차처럼 펼친 잎 날개","뿌리로 뻗은 네 다리"],"personality":"느긋한 정원지기","ecology":"등의 풍차 잎으로 바람을 모아 초원에 씨앗을 뿌린다.","colors":{"primary":"#97b971","accent":"#f2c66d"},"profile":{"width":11,"height":9,"depth":8,"ear":12,"tail":14,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["ellipsoid",24.5,18,27,9,8,13,1,"body",false],["tube",[[24.5,18,24],[24.5,26,18],[24.5,31,11]],4,1,"body",null],["ellipsoid",24.5,31,10,7,6,6,1,"head",true],["ellipsoid",24.5,28,6,6,3,4,4,"head",true],["tube",[[19,35,12],[15,41,15],[17,43,18]],2,2,"head",1],["tube",[[15,17,20],[13,7,19]],3.5,1,"left_leg",null],["ellipsoid",13,4,16,4,2,5,2,"left_leg",true],["tube",[[15,17,34],[13,7,33]],3.5,1,"left_leg",null],["ellipsoid",13,4,30,4,2,5,2,"left_leg",true],["tube",[[24.5,15,34],[24.5,11,41],[24.5,18,46]],3,1,"tail",1.3],["fin",[[17,27,27],[19.0,29.0,28],[16.573653674777322,36.17356090899523,34]],2,"left_wing",1.5],["fin",[[17,27,27],[10.0,40.0,28],[5.2611512728038194,35.967067093471655,34]],2,"left_wing",1.5],["fin",[[17,27,27],[1.0,29.0,28],[5.426346325222675,21.826439091004772,34]],2,"left_wing",1.5],["fin",[[17,27,27],[9.999999999999998,18.0,28],[16.738848727196178,22.032932906528345,34]],2,"left_wing",1.5],["tube",[[24.5,24,31],[24.5,37,33]],3,2,"body",null],["ellipsoid",18,38,33,7,4,7,2,"body",false],["ellipsoid",24.5,41,33,7,4,6,4,"body",false]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-300",
+    "id": 300,
+    "name": "풍차정원 고룡",
+    "stage": 1,
+    "stageName": "몽글 초원",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "두 잎 풍차 날개·건초로 감싼 굵은 꼬리을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 풍차정원 고룡.",
+    "inspiration": "꽃밭 · 풍차 · 건초 / hay",
+    "silhouette": [
+      "낮은 네 발 씨앗용",
+      "두 잎 풍차 날개·건초로 감싼 굵은 꼬리"
+    ],
+    "feature": "두 잎 풍차 날개·건초로 감싼 굵은 꼬리",
+    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
+    "ecology": "바람을 모아 씨앗을 나르는 초원",
+    "material": "식물·털",
+    "body": "낮은 네 발 씨앗용",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "꽃밭 · 풍차 · 건초에서 온 두 잎 풍차 날개·건초로 감싼 굵은 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "줄기 뿌리의 짙은 올리브 → 잎 끝의 연두; 얼굴·배는 크림",
+    "colorPlacement": "몸 #efe4b7; 대표 기관 #71a73d; 발·연결부 #71a73d; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#efe4b7",
+      "accent": "#71a73d"
+    },
+    "idle": "바람을 살피고 잎을 접었다 펼침 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 낮은 네 발 씨앗용; 성체 전용 골격에 두 잎 풍차 날개·건초로 감싼 굵은 꼬리",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "건초 바람을 비켜 간 씨앗이 둥지로 돌아오면 풍차가 돈다.",
+    "acquisitionCondition": "굴러오는 건초 회피 후 초원 알을 기지에 보관",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

@@ -134,6 +134,7 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number){
   case 'sellEgg':atBase();g.sellEgg(text());break;
   case 'sellPet':atBase();if(!MONGLES[integer()])throw Error('INVALID_PET');g.sellPet(integer());break;
   case 'claimPet':g.claimPet(integer());break;
+  case 'claimDragon':atBase();if(!g.claimDragon(integer()))throw Error('DRAGON_NOT_READY');break;
   case 'claimRegion':g.claimRegion(integer());break;
   case 'claimStage':g.claimStage(integer());break;
   case 'claimCollection':g.claimCollection();break;

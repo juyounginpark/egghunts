@@ -65,12 +65,14 @@ export class RegionGuardian {
    character.position.set(x,(breath+bounce+(hover&&!reduced?Math.sin(time*1.2+k)*.14*rise:0))*scale,z);
    character.rotation.set(-charge*.1,angle,0);
    character.scale.set(2.8*scale,2.8*scale*(sleeping?.78+.22*rise:1),2.8*scale);
-   for(const part of character.children){
+   character.traverse(part=>{
+    if(!(part instanceof T.Group))return;
     const side=part.name.startsWith('left_')?-1:1;
     const limb=/_(leg|arm|wing)$/.test(part.name);
     part.rotation.x=limb&&!reduced?Math.sin(stride+side)*(.08+.22*rise):0;
     if(part.name==='head')part.rotation.x=-charge*.15;
-   }
+    if(part.name==='crown'||part.name==='tail')part.rotation.y=reduced?0:Math.sin(time*(.6+stage*.025))*.055*(sleeping?.4:1);
+   });
    const eyes=character.getObjectByName('eyes');if(eyes)eyes.scale.y=sleeping?.12+.88*rise:1;
    character.traverse(o=>{if(o.name==='anger-rim')o.visible=rise>.05;});
    // Sleeping Zs become a red anger mark as the guardian wakes.

@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-314","name":"꿈베개 몽환룡","stage":15,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 별이불 요람","silhouette":["쿠션처럼 넓은 몸","이불 날개","나선 리본 꼬리"],"personality":"졸리지만 다정한","ecology":"꿈나라를 떠다니며 이불 날개 아래에 길 잃은 꿈을 재운다.","colors":{"primary":"#bf9fc3","accent":"#f2d29d"},"profile":{"width":8,"height":11,"depth":12,"ear":8,"tail":16,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["ellipsoid",24.5,20,28,12,8,13,1,"body",false],["tube",[[24.5,18,24],[24.5,26,18],[24.5,29,11]],4,1,"body",null],["ellipsoid",24.5,29,10,7,6,6,1,"head",true],["ellipsoid",24.5,26,6,6,3,4,4,"head",true],["tube",[[19,33,12],[15,39,15],[17,41,18]],2,2,"head",1],["ellipsoid",10,24,28,7,4,12,2,"left_wing",false],["ellipsoid",9,27,34,6,4,6,4,"left_wing",false],["tube",[[12,17,35],[10,10,41]],2,4,"tail",null],["tube",[[19,17,35],[17,10,41]],2,4,"tail",null],["tube",[[24.5,20,37],[24.5,30,44],[24.5,39,41],[24.5,37,35]],3,2,"tail",1.5],["tube",[[16,15,20],[14,7,19]],3.5,1,"left_leg",null],["ellipsoid",14,4,16,4,2,5,2,"left_leg",true],["tube",[[12,19,35],[12,21,35]],1.5,4,"tail",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-314",
+    "id": 314,
+    "name": "꿈베개 몽환룡",
+    "stage": 15,
+    "stageName": "뒤죽박죽 꿈나라",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "거꾸로 매달린 시계추 날개·구름 베개 꼬리을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 꿈베개 몽환룡.",
+    "inspiration": "공중 침대 · 거꾸로 시계 / hand",
+    "silhouette": [
+      "부푼 이불 몸의 꿈룡",
+      "거꾸로 매달린 시계추 날개·구름 베개 꼬리"
+    ],
+    "feature": "거꾸로 매달린 시계추 날개·구름 베개 꼬리",
+    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
+    "ecology": "시간과 위아래가 뒤집힌 잠의 세계",
+    "material": "쿠션·꿈빛",
+    "body": "부푼 이불 몸의 꿈룡",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "공중 침대 · 거꾸로 시계에서 온 거꾸로 매달린 시계추 날개·구름 베개 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "쿠션 중앙 복숭아색 → 접힌 가장자리 자주색; 달 무늬만 금빛",
+    "colorPlacement": "몸 #63b8c9; 대표 기관 #c875ae; 발·연결부 #c875ae; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#63b8c9",
+      "accent": "#c875ae"
+    },
+    "idle": "고개와 꼬리가 서로 반대 박자로 졸기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 부푼 이불 몸의 꿈룡; 성체 전용 골격에 거꾸로 매달린 시계추 날개·구름 베개 꼬리",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "느려지는 시계 밖으로 걸어 나와 떨어지는 침대를 기다려 보자.",
+    "acquisitionCondition": "시계 지연 영역에 들어갔다 탈출 + 떨어지는 침대 회피",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

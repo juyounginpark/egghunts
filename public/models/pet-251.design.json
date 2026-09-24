@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-251","name":"형광 이끼","stage":16,"slot":1,"boss":false,"anatomy":"sprout","concept":"씨앗 정령 × 유리 이끼","silhouette":["갈라진 뿌리 다리·잎 부채 머리","독을 걸러내는 뿌리형 여과기관"],"personality":"호기심 많은","ecology":"폐허에 살며 독을 걸러내는 뿌리형 여과기관으로 환경에 적응한다. 형광의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#82915e","accent":"#c3e57c"},"profile":{"width":8,"height":9,"depth":11,"ear":12,"tail":10,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,16,26,7,12,7,1,"body",false],["ellipsoid",24.5,26,20,9,6,7,1,"head",false],["tube",[[18,14,26],[14,6,23],[12,4,17]],2,2,"left_leg",null],["tube",[[23,14,26],[19,6,23],[17,4,17]],2,2,"left_leg",null],["tube",[[24.5,30,25],[24.5,38,25]],2,2,"head",null],["fin",[[24.5,36,25],[7,43,23],[14,34,28]],2,"head",1.5],["tube",[[24.5,25,29],[24.5,33,32]],2,2,"body",null],["fin",[[24.5,29,29],[16.5,36,32],[21.5,30,37]],2,"body",1.5],["resample-solid",0.79,0.812,0.9]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-251",
+    "id": 251,
+    "name": "형광 이끼",
+    "stage": 16,
+    "stageName": "방사능 폐허",
+    "slot": 1,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "seed",
+    "role": "작고 귀여운 펫",
+    "tier": 0,
+    "rarity": "C",
+    "concept": "변이 새순을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 형광 이끼.",
+    "inspiration": "녹색 안개 · 폐허 · 변이 식물 / vine",
+    "silhouette": [
+      "폭 12칸의 낮은 씨앗과 두 뿌리 발",
+      "변이 새순"
+    ],
+    "feature": "변이 새순",
+    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
+    "ecology": "폐기물 틈에서 독을 걸러내는 새 생태계",
+    "material": "녹슨 통·변이 식물",
+    "body": "폭 12칸의 낮은 씨앗과 두 뿌리 발",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "녹색 안개 · 폐허 · 변이 식물에서 온 변이 새순: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 붙인 큰 기관",
+    "gradient": "녹슨 판 적갈색 → 겹친 판 황토; 여과구만 산성 연두",
+    "colorPlacement": "몸 #a15634; 대표 기관 #718330; 발·연결부 #367974; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#a15634",
+      "accent": "#718330"
+    },
+    "idle": "독을 들이마셨다 몸을 접어 배출 / 양 귀를 짧게 움찔하고 고개를 숙임",
+    "reaction": "몸을 움츠렸다 작은 인사를 한다",
+    "distinction": "작고 귀여운 펫: 폭 12칸의 낮은 씨앗과 두 뿌리 발; 등에 붙인 큰 기관에 변이 새순",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

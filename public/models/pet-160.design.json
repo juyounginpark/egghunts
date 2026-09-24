@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-160","name":"픽셀 삐약","stage":7,"slot":0,"boss":false,"anatomy":"bird","concept":"작은 조류 × 회로","silhouette":["쐐기 부리·부채 꼬리","신호를 주고받는 갈라진 안테나"],"personality":"수다스럽고 경계심 많은","ecology":"사이버 도시에 살며 신호를 주고받는 갈라진 안테나으로 환경에 적응한다. 픽셀의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#566587","accent":"#e386d2"},"profile":{"width":9,"height":9,"depth":10,"ear":8,"tail":14,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,20,25,9,12,7,1,"body",true],["ellipsoid",24.5,31,19,8,7,6,1,"head",true],["tube",[[24.5,28,13],[24.5,26,7]],3,2,"head",1],["tube",[[20,10,24],[21,4,23]],2,1,"left_leg",2],["ellipsoid",21,4,21,3,2,5,2,"left_leg",false],["fin",[[19.5,24,25],[3.5,32,28],[8.5,18,34]],2,"left_wing",1.5],["tube",[[19.5,24,25],[3.5,32,28]],1.5,1,"left_wing",null],["tube",[[20,15,30],[18,7,40]],2.5,2,"tail",1],["tube",[[24,15,30],[22,7,40]],2.5,2,"tail",1],["tube",[[17,22,29],[13,35,29],[8,35,29]],2,2,"body",null],["box",13,33,29,3,1,2,4,"body"],["resample-solid",0.8350000000000001,0.812,0.86]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-160",
+    "id": 160,
+    "name": "픽셀 삐약",
+    "stage": 7,
+    "stageName": "네온 사이버시티",
+    "slot": 0,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "bird",
+    "role": "대표 마스코트",
+    "tier": 0,
+    "rarity": "C",
+    "concept": "접힌 드론날개을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 픽셀 삐약.",
+    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
+    "silhouette": [
+      "앞으로 나온 쐐기 부리와 낮은 양 날개",
+      "접힌 드론날개"
+    ],
+    "feature": "접힌 드론날개",
+    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
+    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
+    "material": "전자 패널",
+    "body": "앞으로 나온 쐐기 부리와 낮은 양 날개",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 접힌 드론날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "머리와 등에 이어지는 기관",
+    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
+    "colorPlacement": "몸 #263d70; 대표 기관 #26c6bb; 발·연결부 #26c6bb; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#263d70",
+      "accent": "#26c6bb"
+    },
+    "idle": "정지 후 짧은 신호 펄스와 틸트 / 고개를 좌우로 천천히 돌려 주변을 확인",
+    "reaction": "고개를 들고 양쪽 기관을 펼친다",
+    "distinction": "대표 마스코트: 앞으로 나온 쐐기 부리와 낮은 양 날개; 머리와 등에 이어지는 기관에 접힌 드론날개",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

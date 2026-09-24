@@ -1,7 +1,7 @@
 import { buildRegionLayout,type Block } from './region-layout';
 import { routeSegments,stagePatterns,environmentPlacement } from './stage-data';
 import {villageArt} from './world-art';
-import {villageColliders} from './village';
+import {villageColliders,clampVillage} from './village';
 
 export type MapCollider={minX:number;maxX:number;minZ:number;maxZ:number};
 const radius=.24,epsilon=.0001,bandSize=4;
@@ -96,6 +96,6 @@ export class MapCollision{
    dx*=1-hit;dz*=1-hit;
    const into=dx*nx+dz*nz;if(into<0){dx-=into*nx;dz-=into*nz;}
   }
-  return {x,z};
+  return clampVillage(x,z);
  }
 }

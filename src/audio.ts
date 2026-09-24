@@ -72,11 +72,12 @@ export class GameAudio{
   void this.context.resume().catch(()=>{});
  }catch{/* Sound is optional. */}}
  suspend(){return this.context?.suspend().catch(()=>{});}
- play(sound:GameSound,stage=1){
+ play(sound:GameSound,stage=1,tier=6){
   const ctx=this.context;if(!ctx||ctx.state!=='running'||this.voices>18)return;
   const now=ctx.currentTime;if(now-(this.last.get(sound)??-Infinity)<.09)return;this.last.set(sound,now);
-  const pitch=['water','fire','machine','magic','boss'].includes(sound)?2**(((stage-1)%7)/12):1;
-  for(const [frequency,duration,delay,wave,end] of sounds[sound]){
+  const pitch=['water','fire','machine','magic','boss','hatch'].includes(sound)?2**(((stage-1)%7)/12):1;
+  const notes=sound==='hatch'?sounds.hatch.slice(0,Math.min(4,2+Math.floor(tier/2))):sounds[sound];
+  for(const [frequency,duration,delay,wave,end] of notes){
    const oscillator=ctx.createOscillator(),gain=ctx.createGain(),at=now+delay;
    oscillator.type=wave;oscillator.frequency.setValueAtTime(frequency*pitch,at);
    if(end)oscillator.frequency.exponentialRampToValueAtTime(end*pitch,at+duration);

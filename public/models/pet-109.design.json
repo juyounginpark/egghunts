@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-109","name":"사계절 정원사슴","stage":1,"slot":9,"boss":false,"anatomy":"deer","concept":"가지뿔 초식수 × 잎맥","silhouette":["갈라진 뿔·가늘고 높은 다리","햇빛을 모으는 넓은 잎 기관"],"personality":"예민하고 고요한","ecology":"초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 사계절의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#97b971","accent":"#f2c66d"},"profile":{"width":9,"height":12,"depth":13,"ear":11,"tail":13,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,19,28,7,10,12,1,"body",false],["tube",[[17,18,19],[18,5,18]],3,1,"left_leg",2],["ellipsoid",18,5,16,4,2,5,2,"left_leg",false],["tube",[[17,17,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["tube",[[24.5,20,19],[24.5,35,14]],4,1,"head",null],["ellipsoid",24.5,35,13,7,7,7,1,"head",false],["tube",[[24.5,19,21],[24.5,33,15]],4,1,"body",null],["ellipsoid",24.5,32,7,5,3,4,2,"head",false],["tube",[[17,39,15],[15,44.2,17],[17,47,18]],2.5,1,"head",1.5],["tube",[[17,41,14],[16,44.2,16]],1,2,"head",null],["tube",[[19,39,15],[17,44,19],[12,46,23]],1.7,2,"head",null],["tube",[[17,42,18],[12,42,16]],1.4,2,"head",null],["tube",[[24.5,15,36],[24.5,19,43],[24.5,28,43]],2.5,2,"tail",1.5],["tube",[[24.5,25,29],[24.5,33,32]],2,2,"body",null],["fin",[[24.5,29,29],[16.5,36,32],[21.5,30,37]],2,"body",1.5],["ellipsoid",24.5,43.0,22,4,3,4,2,"head",false],["ellipsoid",17.571796769724493,40.5,22,4,3,4,2,"head",false],["ellipsoid",17.57179676972449,35.5,22,4,3,4,2,"head",false],["resample-solid",0.8350000000000001,0.908,0.98]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-109",
+    "id": 109,
+    "name": "사계절 정원사슴",
+    "stage": 1,
+    "stageName": "몽글 초원",
+    "slot": 9,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "deer",
+    "role": "스테이지 인기 펫",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "수확 나무뿔을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 사계절 정원사슴.",
+    "inspiration": "꽃밭 · 풍차 · 건초 / hay",
+    "silhouette": [
+      "높은 가슴과 갈라진 뿔",
+      "수확 나무뿔"
+    ],
+    "feature": "수확 나무뿔",
+    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
+    "ecology": "바람을 모아 씨앗을 나르는 초원",
+    "material": "식물·털",
+    "body": "높은 가슴과 갈라진 뿔",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "꽃밭 · 풍차 · 건초에서 온 수확 나무뿔: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸 전체를 감싼 대표 기관",
+    "gradient": "줄기 뿌리의 짙은 올리브 → 잎 끝의 연두; 얼굴·배는 크림",
+    "colorPlacement": "몸 #c99438; 대표 기관 #71a73d; 발·연결부 #316d47; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#c99438",
+      "accent": "#71a73d"
+    },
+    "idle": "바람을 살피고 잎을 접었다 펼침 / 양쪽 대표 기관과 꼬리를 다른 박자로 펼침",
+    "reaction": "큰 대표 기관을 펼치고 짧게 인사한다",
+    "distinction": "스테이지 인기 펫: 높은 가슴과 갈라진 뿔; 몸 전체를 감싼 대표 기관에 수확 나무뿔",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

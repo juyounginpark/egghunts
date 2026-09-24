@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-117","name":"기관차 코끼리","stage":2,"slot":7,"boss":false,"anatomy":"elephant","concept":"짐꾼 초식수 × 접힌 나무 조립판","silhouette":["낮게 굽는 코·넓은 귀판","움직임을 저장하는 커다란 태엽 지지대"],"personality":"느긋한","ecology":"장난감에 살며 움직임을 저장하는 커다란 태엽 지지대으로 환경에 적응한다. 기관차의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#c99579","accent":"#72b7ca"},"profile":{"width":8,"height":13,"depth":13,"ear":10,"tail":14,"stance":7},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,19,28,6,11,12,1,"body",true],["tube",[[17,18,19],[18,5,18]],3,1,"left_leg",2],["ellipsoid",18,5,16,4,2,5,2,"left_leg",false],["tube",[[17,17,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["ellipsoid",24.5,31,13,9,7,7,1,"head",true],["tube",[[24.5,19,21],[24.5,29,15]],4,1,"body",null],["ellipsoid",24.5,28,7,5,3,4,2,"head",false],["ellipsoid",12,31,17,6,8,3,2,"head",false],["tube",[[24.5,30,6],[24.5,21,5],[24.5,17,10]],3.5,1,"head",2],["tube",[[24.5,15,36],[24.5,19,43],[24.5,29,43]],2.5,2,"tail",1.5],["box",24.5,25,35,7,3,4,2,"body"],["tube",[[17,23,32],[14,33,33],[14,33,37]],2,2,"body",null],["box",14,33,37,3,1,2,5,"body"],["ellipsoid",12,7,18,3,4,4,5,"left_leg",false],["ellipsoid",10,7,18,1,2,2,2,"left_leg",false],["ellipsoid",12,7,27,3,4,4,5,"left_leg",false],["ellipsoid",10,7,27,1,2,2,2,"left_leg",false],["ellipsoid",12,7,36,3,4,4,5,"left_leg",false],["ellipsoid",10,7,36,1,2,2,2,"left_leg",false],["box",24.5,24,33,5,9,5,2,"body"],["box",24.5,33,33,6,1,6,5,"body"],["resample-solid",0.79,0.9400000000000001,0.98]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-117",
+    "id": 117,
+    "name": "기관차 코끼리",
+    "stage": 2,
+    "stageName": "장난감 왕국",
+    "slot": 7,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "elephant",
+    "role": "위험 요소 펫",
+    "tier": 4,
+    "rarity": "SS",
+    "concept": "블록 미끄럼틀 코을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 기관차 코끼리.",
+    "inspiration": "블록 성 · 태엽길 · 기차 / train",
+    "silhouette": [
+      "큰 귀판과 아래로 굽은 코",
+      "블록 미끄럼틀 코"
+    ],
+    "feature": "블록 미끄럼틀 코",
+    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
+    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
+    "material": "칠한 목재",
+    "body": "큰 귀판과 아래로 굽은 코",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "블록 성 · 태엽길 · 기차에서 온 블록 미끄럼틀 코: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 짊어진 기관",
+    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
+    "colorPlacement": "몸 #7255ad; 대표 기관 #efbb36; 발·연결부 #efbb36; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#7255ad",
+      "accent": "#efbb36"
+    },
+    "idle": "멈칫하고 정해진 각도로 회전 / 양 앞팔을 벌렸다 접고 고개를 듦",
+    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
+    "distinction": "위험 요소 펫: 큰 귀판과 아래로 굽은 코; 등에 짊어진 기관에 블록 미끄럼틀 코",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

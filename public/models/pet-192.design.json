@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-192","name":"방망이 콩깨비","stage":10,"slot":2,"boss":false,"anatomy":"robot","concept":"자율 작업수 × 기와","silhouette":["분리된 어깨·집게 손","달빛을 담는 굽은 뿔과 처마"],"personality":"정확하고 고집 센","ecology":"달마을에 살며 달빛을 담는 굽은 뿔과 처마으로 환경에 적응한다. 방망이의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#758f8d","accent":"#f4a47d"},"profile":{"width":12,"height":12,"depth":12,"ear":7,"tail":9,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,18,27,11,12,9,1,"body",false],["ellipsoid",24.5,29,19,9,8,8,1,"head",false],["box",24.5,28,20,9,5,6,1,"head"],["box",24.5,28,13,7,3,1,5,"head"],["tube",[[16,22,26],[10,19,21],[11,12,18]],3,2,"left_arm",null],["tube",[[10,13,18],[8,10,15]],1.5,1,"left_arm",null],["tube",[[12,13,18],[14,10,15]],1.5,1,"left_arm",null],["tube",[[18,13,26],[19,4,25]],3,1,"left_leg",2],["ellipsoid",19,4,23,4,2,5,2,"left_leg",false],["fin",[[21.5,25,29],[11.5,29,31],[18.5,22,38]],4,"body",1.5],["fin",[[21.5,21,29],[11.5,25,31],[18.5,18,38]],2,"body",1.5],["fin",[[21.5,17,29],[11.5,21,31],[18.5,14,38]],4,"body",1.5],["resample-solid",0.97,0.908,0.9400000000000001]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-192",
+    "id": 192,
+    "name": "방망이 콩깨비",
+    "stage": 10,
+    "stageName": "도깨비 달마을",
+    "slot": 2,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "goblin",
+    "role": "환경 생물 펫",
+    "tier": 1,
+    "rarity": "B",
+    "concept": "작은 방망이을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 방망이 콩깨비.",
+    "inspiration": "기와집 · 붉은 달 · 도깨비불 / flame",
+    "silhouette": [
+      "벌어진 두 뿔과 낮은 배",
+      "작은 방망이"
+    ],
+    "feature": "작은 방망이",
+    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
+    "ecology": "기와 처마 아래 붉은 달의 불씨가 사는 마을",
+    "material": "도자기·기와",
+    "body": "벌어진 두 뿔과 낮은 배",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "기와집 · 붉은 달 · 도깨비불에서 온 작은 방망이: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "넓은 등집",
+    "gradient": "몸 중앙 따뜻한 자주 → 처마의 짙은 보라; 불씨 중심은 살구",
+    "colorPlacement": "몸 #52a38b; 대표 기관 #52416f; 발·연결부 #52416f; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#52a38b",
+      "accent": "#52416f"
+    },
+    "idle": "부채를 접고 고개 숙여 장난스러운 인사 / 무게를 좌우로 옮기며 고개를 꾸벅임",
+    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
+    "distinction": "환경 생물 펫: 벌어진 두 뿔과 낮은 배; 넓은 등집에 작은 방망이",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

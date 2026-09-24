@@ -1,0 +1,80 @@
+{
+  "stats": [
+    {
+      "id": 100,
+      "triangles": 434,
+      "animated": true
+    },
+    {
+      "id": 103,
+      "triangles": 438,
+      "animated": true
+    },
+    {
+      "id": 108,
+      "triangles": 766,
+      "animated": true
+    },
+    {
+      "id": 300,
+      "triangles": 564,
+      "animated": true
+    },
+    {
+      "id": 120,
+      "triangles": 520,
+      "animated": true
+    },
+    {
+      "id": 125,
+      "triangles": 566,
+      "animated": true
+    },
+    {
+      "id": 128,
+      "triangles": 828,
+      "animated": true
+    },
+    {
+      "id": 160,
+      "triangles": 480,
+      "animated": true
+    },
+    {
+      "id": 168,
+      "triangles": 672,
+      "animated": true
+    },
+    {
+      "id": 210,
+      "triangles": 396,
+      "animated": true
+    },
+    {
+      "id": 218,
+      "triangles": 672,
+      "animated": true
+    },
+    {
+      "id": 311,
+      "triangles": 344,
+      "animated": true
+    },
+    {
+      "id": 290,
+      "triangles": 478,
+      "animated": true
+    },
+    {
+      "id": 298,
+      "triangles": 778,
+      "animated": true
+    },
+    {
+      "id": 319,
+      "triangles": 568,
+      "animated": true
+    }
+  ],
+  "errors": []
+}

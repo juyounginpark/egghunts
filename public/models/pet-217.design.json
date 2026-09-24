@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-217","name":"수정 원자로봇","stage":12,"slot":7,"boss":false,"anatomy":"robot","concept":"자율 작업수 × 반투명 막","silhouette":["분리된 어깨·집게 손","중력을 느끼는 넓은 감각막"],"personality":"정확하고 고집 센","ecology":"외계 습지에 살며 중력을 느끼는 넓은 감각막으로 환경에 적응한다. 수정의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#9ba5bd","accent":"#a3e59c"},"profile":{"width":8,"height":11,"depth":9,"ear":8,"tail":12,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,18,27,7,11,9,1,"body",true],["ellipsoid",24.5,29,19,9,8,8,1,"head",true],["box",24.5,28,20,9,5,6,1,"head"],["box",24.5,28,13,7,3,1,5,"head"],["tube",[[16,22,26],[10,19,21],[11,12,18]],3,2,"left_arm",null],["tube",[[10,13,18],[8,10,15]],1.5,1,"left_arm",null],["tube",[[12,13,18],[14,10,15]],1.5,1,"left_arm",null],["tube",[[18,13,26],[19,4,25]],3,1,"left_leg",2],["ellipsoid",19,4,23,4,2,5,2,"left_leg",false],["fin",[[21.5,20,29],[8.5,31,33],[20.5,35,37]],2,"body",1.5],["resample-solid",0.79,0.876,0.8200000000000001]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-217",
+    "id": 217,
+    "name": "수정 원자로봇",
+    "stage": 12,
+    "stageName": "외계인 51구역",
+    "slot": 7,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "tripod",
+    "role": "위험 요소 펫",
+    "tier": 4,
+    "rarity": "SS",
+    "concept": "삼각 착륙선을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 수정 원자로봇.",
+    "inspiration": "UFO · 연구소 · 형광 액체 / ufo",
+    "silhouette": [
+      "세 방향으로 벌어진 받침과 높은 중심",
+      "삼각 착륙선"
+    ],
+    "feature": "삼각 착륙선",
+    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
+    "ecology": "다른 중력에서 몸의 균형을 시험하는 연구 구역",
+    "material": "배양막·실험 금속",
+    "body": "세 방향으로 벌어진 받침과 높은 중심",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "UFO · 연구소 · 형광 액체에서 온 삼각 착륙선: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 짊어진 기관",
+    "gradient": "배양막 중심 라임 → 가장자리 청록; 감각판 안쪽 보라빛",
+    "colorPlacement": "몸 #23a49d; 대표 기관 #7854af; 발·연결부 #7854af; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#23a49d",
+      "accent": "#7854af"
+    },
+    "idle": "몸은 낮고 감각판은 반대로 떠오름 / 양 앞팔을 벌렸다 접고 고개를 듦",
+    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
+    "distinction": "위험 요소 펫: 세 방향으로 벌어진 받침과 높은 중심; 등에 짊어진 기관에 삼각 착륙선",
+    "previewAngle": -35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-278","name":"폐선 우주고래","stage":18,"slot":8,"boss":false,"anatomy":"whale","concept":"거대 유영수 × 겹친 금속판","silhouette":["긴 유선형 등·수평 꼬리","수리 도구로도 쓰는 관절 지지대"],"personality":"평온하고 사려 깊은","ecology":"고철 행성에 살며 수리 도구로도 쓰는 관절 지지대으로 환경에 적응한다. 폐선의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#869099","accent":"#dca365"},"profile":{"width":8,"height":8,"depth":10,"ear":9,"tail":15,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,23,22,11,8,15,1,"body",true],["ellipsoid",24.5,23,12,10,7,6,1,"head",true],["tube",[[24.5,23,33],[24.5,23,43]],3,1,"tail",2],["fin",[[24.5,23,40],[8,24,45],[24.5,23,46]],2,"tail",1.5],["fin",[[19.5,21,20],[7,17,28],[18.5,20,30]],2,"left_wing",1.5],["box",24.5,25,31,7,3,4,2,"body"],["tube",[[17,23,28],[14,33,29],[14,33,33]],2,2,"body",null],["box",14,33,33,3,1,2,5,"body"],["resample-solid",0.79,0.78,0.86]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-278",
+    "id": 278,
+    "name": "폐선 우주고래",
+    "stage": 18,
+    "stageName": "고철 로봇행성",
+    "slot": 8,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "whale",
+    "role": "신비로운 펫",
+    "tier": 5,
+    "rarity": "SSS",
+    "concept": "폐선 선체등을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 폐선 우주고래.",
+    "inspiration": "자석 크레인 · 고철산 / magnet",
+    "silhouette": [
+      "긴 둔한 머리와 수평 꼬리",
+      "폐선 선체등"
+    ],
+    "feature": "폐선 선체등",
+    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
+    "ecology": "쓸모를 되찾은 고철이 스스로 조립되는 행성",
+    "material": "철·산화 구리",
+    "body": "긴 둔한 머리와 수평 꼬리",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "자석 크레인 · 고철산에서 온 폐선 선체등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸 양옆으로 펼친 기관",
+    "gradient": "철판 앞면 청회색 → 이음새 남색; 판 아래 녹슨 주황",
+    "colorPlacement": "몸 #879bac; 대표 기관 #879bac; 발·연결부 #3c526b; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#879bac",
+      "accent": "#879bac"
+    },
+    "idle": "관절을 잠갔다 집게를 벌리는 정비 동작 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
+    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
+    "distinction": "신비로운 펫: 긴 둔한 머리와 수평 꼬리; 몸 양옆으로 펼친 기관에 폐선 선체등",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

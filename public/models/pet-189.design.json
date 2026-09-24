@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-189","name":"태초의 세계수룡","stage":9,"slot":9,"boss":false,"anatomy":"dragon","concept":"활공 파충수 × 화석","silhouette":["비탈진 날개·긴 등과 꼬리","몸을 지탱하는 돛 모양 척추"],"personality":"대담한","ecology":"공룡섬에 살며 몸을 지탱하는 돛 모양 척추으로 환경에 적응한다. 태초의의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#7c9e73","accent":"#e0be87"},"profile":{"width":8,"height":8,"depth":11,"ear":7,"tail":13,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,19,28,6,6,12,1,"body",true],["tube",[[17,18,19],[18,5,18]],3,1,"left_leg",2],["ellipsoid",18,5,16,4,2,5,2,"left_leg",false],["tube",[[17,17,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["ellipsoid",24.5,31,13,9,7,7,1,"head",true],["tube",[[24.5,19,21],[24.5,29,15]],4,1,"body",null],["ellipsoid",24.5,28,7,5,3,4,2,"head",false],["tube",[[17,35,15],[15,38.25,17],[17,40,18]],2.5,1,"head",1.5],["tube",[[17,37,14],[16,38.25,16]],1,2,"head",null],["tube",[[24.5,14,34],[24.5,11,41],[24.5,7,46]],4,1,"tail",1.5],["fin",[[19.5,25,28],[3.5,33,31],[8.5,19,37]],2,"left_wing",1.5],["tube",[[19.5,25,28],[3.5,33,31]],1.5,1,"left_wing",null],["fin",[[19.5,20,28],[3.5,26,31],[8.5,15,37]],4,"left_wing",1.5],["tube",[[19.5,20,28],[3.5,26,31]],1.5,1,"left_wing",null],["fin",[[19.5,15,28],[3.5,19,31],[8.5,11,37]],2,"left_wing",1.5],["tube",[[19.5,15,28],[3.5,19,31]],1.5,1,"left_wing",null],["fin",[[21.5,22,26],[24.5,33,28],[27.5,22,30]],2,"body",2],["fin",[[21.5,22,32],[24.5,33,34],[27.5,22,36]],2,"body",2],["fin",[[21.5,22,38],[24.5,33,40],[27.5,22,42]],2,"body",2],["ellipsoid",24.5,43.0,22,4,3,4,2,"head",false],["ellipsoid",17.571796769724493,40.5,22,4,3,4,2,"head",false],["ellipsoid",17.57179676972449,35.5,22,4,3,4,2,"head",false],["resample-solid",0.79,0.78,0.9]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-189",
+    "id": 189,
+    "name": "태초의 세계수룡",
+    "stage": 9,
+    "stageName": "태초의 공룡섬",
+    "slot": 9,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "dragon",
+    "role": "스테이지 인기 펫",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "고대 화석문을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 태초의 세계수룡.",
+    "inspiration": "양치식물 · 화석 절벽 · 늪 / dinosaur",
+    "silhouette": [
+      "앞이 높은 가슴과 굵은 꼬리",
+      "고대 화석문"
+    ],
+    "feature": "고대 화석문",
+    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
+    "ecology": "화석과 살아 있는 양치식물이 함께 자라는 섬",
+    "material": "가죽·화석",
+    "body": "앞이 높은 가슴과 굵은 꼬리",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "양치식물 · 화석 절벽 · 늪에서 온 고대 화석문: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸 전체를 감싼 대표 기관",
+    "gradient": "몸의 숲색 → 배의 따뜻한 모래색; 뼈 절단면은 아이보리",
+    "colorPlacement": "몸 #d6b070; 대표 기관 #4e874d; 발·연결부 #c9d39d; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#d6b070",
+      "accent": "#4e874d"
+    },
+    "idle": "무거운 몸을 옮기고 등 돛 까딱 / 양쪽 대표 기관과 꼬리를 다른 박자로 펼침",
+    "reaction": "큰 대표 기관을 펼치고 짧게 인사한다",
+    "distinction": "스테이지 인기 펫: 앞이 높은 가슴과 굵은 꼬리; 몸 전체를 감싼 대표 기관에 고대 화석문",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

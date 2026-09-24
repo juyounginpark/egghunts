@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-264","name":"풀잎 메뚜기","stage":17,"slot":4,"boss":false,"anatomy":"mantis","concept":"낫팔 곤충 × 잎 껍질","silhouette":["접힌 큰 낫팔·가는 허리","이슬을 모으는 갈라진 더듬이"],"personality":"냉정한","ecology":"소인국에 살며 이슬을 모으는 갈라진 더듬이으로 환경에 적응한다. 풀잎의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#94ae69","accent":"#e1bb72"},"profile":{"width":12,"height":13,"depth":10,"ear":10,"tail":16,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,18,28,5,6,10,1,"body",false],["ellipsoid",24.5,23,15,8,5,5,1,"head",false],["tube",[[16,18,23],[6,14,24],[3,5,26]],1.8,1,"left_leg",null],["tube",[[16,18,29],[6,14,30],[3,5,32]],1.8,1,"left_leg",null],["tube",[[16,18,35],[6,14,36],[3,5,38]],1.8,1,"left_leg",null],["tube",[[20,24,21],[10,32,17],[9,22,11],[16,25,10]],2.5,2,"left_arm",null],["tube",[[20,28,17],[18,38,14],[13,40,16]],1,2,"head",null],["tube",[[18,23,29],[15,31,29],[11,34,31]],1.7,2,"body",null],["tube",[[15,29,29],[10,31,26]],1.5,2,"body",null],["resample-solid",0.97,0.9400000000000001,0.86],["tube",[[19,21,28],[21,21,28]],1.5,2,"body",null],["tube",[[17,18,28],[17,21,28]],1.5,1,"left_leg",null],["tube",[[4,6,27],[4,6,29]],1.5,1,"left_leg",null],["tube",[[4,6,34],[4,6,32]],1.5,1,"left_leg",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-264",
+    "id": 264,
+    "name": "풀잎 메뚜기",
+    "stage": 17,
+    "stageName": "곤충 소인국",
+    "slot": 4,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "mantis",
+    "role": "예상 밖의 펫",
+    "tier": 2,
+    "rarity": "A",
+    "concept": "풀줄기 낫을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 풀잎 메뚜기.",
+    "inspiration": "거대한 풀잎 · 이슬 · 버섯 / mantis",
+    "silhouette": [
+      "꺾인 낫팔과 긴 좁은 배",
+      "풀줄기 낫"
+    ],
+    "feature": "풀줄기 낫",
+    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
+    "ecology": "이슬 한 방울도 집만큼 큰 풀잎 아래 나라",
+    "material": "등껍질·잎",
+    "body": "꺾인 낫팔과 긴 좁은 배",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "거대한 풀잎 · 이슬 · 버섯에서 온 풀줄기 낫: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸통에 연결된 덮개",
+    "gradient": "등갑 중심 적갈색 → 가장자리 호박색; 잎 끝은 연한 녹색",
+    "colorPlacement": "몸 #70a444; 대표 기관 #70a444; 발·연결부 #aa4a29; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#70a444",
+      "accent": "#70a444"
+    },
+    "idle": "더듬이 먼저 살피고 앞발 교대로 접기 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
+    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
+    "distinction": "예상 밖의 펫: 꺾인 낫팔과 긴 좁은 배; 몸통에 연결된 덮개에 풀줄기 낫",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

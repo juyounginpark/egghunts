@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-201","name":"월계 새싹","stage":11,"slot":1,"boss":false,"anatomy":"sprout","concept":"씨앗 정령 × 구름 대리석","silhouette":["갈라진 뿌리 다리·잎 부채 머리","바람을 받는 층진 날개 기관"],"personality":"호기심 많은","ecology":"신전에 살며 바람을 받는 층진 날개 기관으로 환경에 적응한다. 월계의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#d3d3de","accent":"#dcb963"},"profile":{"width":8,"height":10,"depth":13,"ear":7,"tail":11,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,16,26,7,12,7,1,"body",false],["ellipsoid",24.5,26,20,9,6,7,1,"head",false],["tube",[[18,14,26],[14,6,23],[12,4,17]],2,2,"left_leg",null],["tube",[[23,14,26],[19,6,23],[17,4,17]],2,2,"left_leg",null],["tube",[[24.5,30,25],[24.5,38,25]],2,2,"head",null],["fin",[[24.5,36,25],[7,43,23],[14,34,28]],2,"head",1.5],["ellipsoid",14,27,33,6,4.8,4,4,"body",false],["ellipsoid",11,31,34,4,4,3,2,"body",false],["ellipsoid",24.5,43.0,22,4,3,4,2,"head",false],["ellipsoid",17.571796769724493,40.5,22,4,3,4,2,"head",false],["ellipsoid",17.57179676972449,35.5,22,4,3,4,2,"head",false],["resample-solid",0.79,0.8440000000000001,0.98],["tube",[[16,26,30],[16,28,29]],1.5,4,"body",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-201",
+    "id": 201,
+    "name": "월계 새싹",
+    "stage": 11,
+    "stageName": "올림포스 신전",
+    "slot": 1,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "seed",
+    "role": "작고 귀여운 펫",
+    "tier": 0,
+    "rarity": "C",
+    "concept": "올리브 가지을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 월계 새싹.",
+    "inspiration": "대리석 · 구름다리 · 번개 / lightning",
+    "silhouette": [
+      "폭 12칸의 낮은 씨앗과 두 뿌리 발",
+      "올리브 가지"
+    ],
+    "feature": "올리브 가지",
+    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
+    "ecology": "구름 위에서 대리석과 번개가 숨 쉬는 신전",
+    "material": "대리석·금",
+    "body": "폭 12칸의 낮은 씨앗과 두 뿌리 발",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "대리석 · 구름다리 · 번개에서 온 올리브 가지: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 붙인 큰 기관",
+    "gradient": "기둥 아랫면 청회색 → 위쪽 상아색; 연결부만 금색",
+    "colorPlacement": "몸 #d6a231; 대표 기관 #d6a231; 발·연결부 #72ab8e; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#d6a231",
+      "accent": "#d6a231"
+    },
+    "idle": "무게 있게 멈췄다 날개 한 번 들기 / 양 귀를 짧게 움찔하고 고개를 숙임",
+    "reaction": "몸을 움츠렸다 작은 인사를 한다",
+    "distinction": "작고 귀여운 펫: 폭 12칸의 낮은 씨앗과 두 뿌리 발; 등에 붙인 큰 기관에 올리브 가지",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

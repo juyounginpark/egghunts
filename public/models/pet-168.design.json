@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-168","name":"레이저 날개룡","stage":7,"slot":8,"boss":false,"anatomy":"dragon","concept":"활공 파충수 × 회로","silhouette":["비탈진 날개·긴 등과 꼬리","신호를 주고받는 갈라진 안테나"],"personality":"대담한","ecology":"사이버 도시에 살며 신호를 주고받는 갈라진 안테나으로 환경에 적응한다. 레이저의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#566587","accent":"#e386d2"},"profile":{"width":10,"height":9,"depth":12,"ear":10,"tail":14,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,19,28,8,7,12,1,"body",true],["tube",[[17,18,19],[18,5,18]],3,1,"left_leg",2],["ellipsoid",18,5,16,4,2,5,2,"left_leg",false],["tube",[[17,17,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["ellipsoid",24.5,31,13,9,7,7,1,"head",true],["tube",[[24.5,19,21],[24.5,29,15]],4,1,"body",null],["ellipsoid",24.5,28,7,5,3,4,2,"head",false],["tube",[[17,35,15],[15,38.25,17],[17,40,18]],2.5,1,"head",1.5],["tube",[[17,37,14],[16,38.25,16]],1,2,"head",null],["tube",[[24.5,14,34],[24.5,11,41],[24.5,7,46]],4,1,"tail",1.5],["fin",[[19.5,25,28],[3.5,33,31],[8.5,19,37]],2,"left_wing",1.5],["tube",[[19.5,25,28],[3.5,33,31]],1.5,1,"left_wing",null],["fin",[[19.5,20,28],[3.5,26,31],[8.5,15,37]],4,"left_wing",1.5],["tube",[[19.5,20,28],[3.5,26,31]],1.5,1,"left_wing",null],["fin",[[19.5,15,28],[3.5,19,31],[8.5,11,37]],2,"left_wing",1.5],["tube",[[19.5,15,28],[3.5,19,31]],1.5,1,"left_wing",null],["tube",[[17,22,29],[13,35,29],[8,35,29]],2,2,"body",null],["box",13,33,29,3,1,2,4,"body"],["resample-solid",0.88,0.812,0.9400000000000001]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-168",
+    "id": 168,
+    "name": "레이저 날개룡",
+    "stage": 7,
+    "stageName": "네온 사이버시티",
+    "slot": 8,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "dragon",
+    "role": "신비로운 펫",
+    "tier": 5,
+    "rarity": "SSS",
+    "concept": "레이저 스캐너날개을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 레이저 날개룡.",
+    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
+    "silhouette": [
+      "앞이 높은 가슴과 굵은 꼬리",
+      "레이저 스캐너날개"
+    ],
+    "feature": "레이저 스캐너날개",
+    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
+    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
+    "material": "전자 패널",
+    "body": "앞이 높은 가슴과 굵은 꼬리",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 레이저 스캐너날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸 양옆으로 펼친 기관",
+    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
+    "colorPlacement": "몸 #263d70; 대표 기관 #26c6bb; 발·연결부 #26c6bb; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#263d70",
+      "accent": "#26c6bb"
+    },
+    "idle": "정지 후 짧은 신호 펄스와 틸트 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
+    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
+    "distinction": "신비로운 펫: 앞이 높은 가슴과 굵은 꼬리; 몸 양옆으로 펼친 기관에 레이저 스캐너날개",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

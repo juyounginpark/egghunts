@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-271","name":"너트 굴렁","stage":18,"slot":1,"boss":false,"anatomy":"beetle","concept":"장갑 곤충 × 겹친 금속판","silhouette":["갈라진 등갑·집게형 뿔","수리 도구로도 쓰는 관절 지지대"],"personality":"묵묵한","ecology":"고철 행성에 살며 수리 도구로도 쓰는 관절 지지대으로 환경에 적응한다. 너트의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#869099","accent":"#dca365"},"profile":{"width":9,"height":11,"depth":9,"ear":8,"tail":16,"stance":7},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,16,27,13,9,13,1,"body",true],["ellipsoid",24.5,21,28,11,10,11,2,"body",false],["ellipsoid",24.5,15,10,6,5,6,1,"head",true],["tube",[[14,13,18],[15,5,17]],3,1,"left_leg",2],["ellipsoid",15,5,15,4,2,5,2,"left_leg",false],["tube",[[14,13,34],[15,5,33]],3,1,"left_leg",2],["ellipsoid",15,5,31,4,2,5,2,"left_leg",false],["box",24.5,24,28,0.5,7,10,5,"body"],["tube",[[21,20,12],[18,32,10],[21,35,12]],2,2,"head",null],["tube",[[12,13,26],[13,5,25]],2,1,"left_leg",2],["ellipsoid",13,5,23,3,2,5,2,"left_leg",false],["box",24.5,22,35,7,3,4,2,"body"],["tube",[[17,20,32],[14,30,33],[14,30,37]],2,2,"body",null],["box",14,30,37,3,1,2,5,"body"],["ellipsoid",24.5,21,12,5,5,2,2,"body",true],["ellipsoid",24.5,21,10,2,2,1,5,"body",false],["resample-solid",0.8350000000000001,0.876,0.8200000000000001]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-271",
+    "id": 271,
+    "name": "너트 굴렁",
+    "stage": 18,
+    "stageName": "고철 로봇행성",
+    "slot": 1,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "beetle",
+    "role": "작고 귀여운 펫",
+    "tier": 0,
+    "rarity": "C",
+    "concept": "너트 등갑을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 너트 굴렁.",
+    "inspiration": "자석 크레인 · 고철산 / magnet",
+    "silhouette": [
+      "갈라진 큰 등갑과 앞으로 나온 뿔",
+      "너트 등갑"
+    ],
+    "feature": "너트 등갑",
+    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
+    "ecology": "쓸모를 되찾은 고철이 스스로 조립되는 행성",
+    "material": "철·산화 구리",
+    "body": "갈라진 큰 등갑과 앞으로 나온 뿔",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "자석 크레인 · 고철산에서 온 너트 등갑: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 붙인 큰 기관",
+    "gradient": "철판 앞면 청회색 → 이음새 남색; 판 아래 녹슨 주황",
+    "colorPlacement": "몸 #d27831; 대표 기관 #879bac; 발·연결부 #dcd6ad; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#d27831",
+      "accent": "#879bac"
+    },
+    "idle": "관절을 잠갔다 집게를 벌리는 정비 동작 / 양 귀를 짧게 움찔하고 고개를 숙임",
+    "reaction": "몸을 움츠렸다 작은 인사를 한다",
+    "distinction": "작고 귀여운 펫: 갈라진 큰 등갑과 앞으로 나온 뿔; 등에 붙인 큰 기관에 너트 등갑",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

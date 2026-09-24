@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-257","name":"독안개 까마귀","stage":16,"slot":7,"boss":false,"anatomy":"bird","concept":"작은 조류 × 유리 이끼","silhouette":["쐐기 부리·부채 꼬리","독을 걸러내는 뿌리형 여과기관"],"personality":"수다스럽고 경계심 많은","ecology":"폐허에 살며 독을 걸러내는 뿌리형 여과기관으로 환경에 적응한다. 독안개의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#82915e","accent":"#c3e57c"},"profile":{"width":10,"height":9,"depth":11,"ear":12,"tail":16,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,20,25,9,12,7,1,"body",false],["ellipsoid",24.5,31,19,8,7,6,1,"head",false],["tube",[[24.5,28,13],[24.5,26,7]],3,2,"head",1],["tube",[[20,10,24],[21,4,23]],2,1,"left_leg",2],["ellipsoid",21,4,21,3,2,5,2,"left_leg",false],["fin",[[19.5,24,25],[3.5,32,28],[8.5,18,34]],2,"left_wing",1.5],["tube",[[19.5,24,25],[3.5,32,28]],1.5,1,"left_wing",null],["tube",[[20,15,30],[18,7,40]],2.5,2,"tail",1],["tube",[[24,15,30],[22,7,40]],2.5,2,"tail",1],["tube",[[24.5,25,29],[24.5,33,32]],2,2,"body",null],["fin",[[24.5,29,29],[12.5,36,32],[21.5,30,37]],2,"body",1.5],["resample-solid",0.88,0.812,0.9]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-257",
+    "id": 257,
+    "name": "독안개 까마귀",
+    "stage": 16,
+    "stageName": "방사능 폐허",
+    "slot": 7,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "armadillo",
+    "role": "위험 요소 펫",
+    "tier": 4,
+    "rarity": "SS",
+    "concept": "여과 장갑등을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 독안개 까마귀.",
+    "inspiration": "녹색 안개 · 폐허 · 변이 식물 / vine",
+    "silhouette": [
+      "세 겹 장갑판과 낮은 발",
+      "여과 장갑등"
+    ],
+    "feature": "여과 장갑등",
+    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
+    "ecology": "폐기물 틈에서 독을 걸러내는 새 생태계",
+    "material": "녹슨 통·변이 식물",
+    "body": "세 겹 장갑판과 낮은 발",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "녹색 안개 · 폐허 · 변이 식물에서 온 여과 장갑등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 짊어진 기관",
+    "gradient": "녹슨 판 적갈색 → 겹친 판 황토; 여과구만 산성 연두",
+    "colorPlacement": "몸 #367974; 대표 기관 #718330; 발·연결부 #a15634; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#367974",
+      "accent": "#718330"
+    },
+    "idle": "독을 들이마셨다 몸을 접어 배출 / 양 앞팔을 벌렸다 접고 고개를 듦",
+    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
+    "distinction": "위험 요소 펫: 세 겹 장갑판과 낮은 발; 등에 짊어진 기관에 여과 장갑등",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

@@ -1,16 +1,19 @@
-// Stable room slots: public paths, privately operated farm and treadmill.
-export const FARM_PLOTS = [
-  {x:-8,z:2},{x:8,z:2},{x:-8,z:12},{x:8,z:12},{x:0,z:20},
-] as const;
+// Stable slots: local +Z faces the circular public promenade.
+export const VILLAGE={x:0,z:9,radius:14,walkRadius:13.25};
+export const FARM_PLOTS=[-115,-57,0,57,115].map(deg=>{
+ const a=deg*Math.PI/180,x=Math.sin(a)*10.3,z=VILLAGE.z+Math.cos(a)*10.3;
+ return {x,z,rotation:Math.atan2(-x,VILLAGE.z-z)};
+});
 export const farmPlot=(slot:number)=>FARM_PLOTS[slot]??FARM_PLOTS[0];
-export const farmGym=(slot:number)=>{const p=farmPlot(slot);return {x:p.x+2,z:p.z-1};};
-export const villageColliders=()=>[...FARM_PLOTS.flatMap(p=>[
-  {minX:p.x-3.8,maxX:p.x-1.2,minZ:p.z-1.8,maxZ:p.z+.6},
-  {minX:p.x+1.35,maxX:p.x+2.65,minZ:p.z-1.8,maxZ:p.z-1.6},
-  {minX:p.x-2.4,maxX:p.x-1.6,minZ:p.z+2.1,maxZ:p.z+2.9},
-  ...[-3.5,0,3.5].map(dx=>({minX:p.x+dx-.7,maxX:p.x+dx+.7,minZ:p.z+3.4,maxZ:p.z+3.6})),
-]),
- {minX:-5.4,maxX:-3.6,minZ:3.1,maxZ:4.9},
- {minX:-.7,maxX:.7,minZ:9.3,maxZ:10.7},
- ...[-1,1].map(side=>({minX:side*1.9-.25,maxX:side*1.9+.25,minZ:-5.1,maxZ:-4.5})),
-];
+export function farmLocal(slot:number,x:number,z:number){const p=farmPlot(slot),c=Math.cos(p.rotation),s=Math.sin(p.rotation);return {x:p.x+x*c+z*s,z:p.z-x*s+z*c};}
+export const farmGym=(slot:number)=>farmLocal(slot,2.1,2.3);
+// Segment diagonal rails instead of filling their entire bounding rectangle.
+export const villageColliders=()=>FARM_PLOTS.flatMap((_,slot)=>Array.from({length:7},(_,i)=>{
+ const p=farmLocal(slot,1.5+i*.2,1.6);
+ return {minX:p.x-.12,maxX:p.x+.12,minZ:p.z-.12,maxZ:p.z+.12};
+}));
+export function clampVillage(x:number,z:number){
+ if(z<-4.4||(Math.abs(x)<1.5&&z<0))return {x,z};
+ const dx=x-VILLAGE.x,dz=z-VILLAGE.z,d=Math.hypot(dx,dz);
+ return d>VILLAGE.walkRadius?{x:VILLAGE.x+dx/d*VILLAGE.walkRadius,z:VILLAGE.z+dz/d*VILLAGE.walkRadius}:{x,z};
+}

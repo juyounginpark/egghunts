@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-281","name":"달조각 토끼","stage":19,"slot":1,"boss":false,"anatomy":"rabbit","concept":"뛰는 초식수 × 별 유리","silhouette":["기울어진 긴 귀·큰 뒷발","궤도를 감지하는 아치형 감각기관"],"personality":"겁 많지만 재빠른","ecology":"천문대에 살며 궤도를 감지하는 아치형 감각기관으로 환경에 적응한다. 달조각의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#8383bb","accent":"#acd6e5"},"profile":{"width":12,"height":12,"depth":11,"ear":9,"tail":11,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,18,27,11,12,9,1,"body",false],["ellipsoid",24.5,29,19,9,8,8,1,"head",false],["tube",[[18,34,20],[16,39.85,22],[18,43,23]],2.5,1,"head",1.5],["tube",[[18,36,19],[17,39.85,21]],1,2,"head",null],["tube",[[18,13,26],[19,4,25]],3,1,"left_leg",2],["ellipsoid",19,4,23,4,2,5,2,"left_leg",false],["tube",[[15,24,23],[12,18,18]],3,1,"left_arm",null],["ellipsoid",24.5,14,36,4,4,4,4,"tail",false],["tube",[[17,22,33],[10,30,33],[16,39,33],[24.5,41,33]],1.5,2,"body",null],["resample-solid",0.97,0.908,0.9]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-281",
+    "id": 281,
+    "name": "달조각 토끼",
+    "stage": 19,
+    "stageName": "은하수 천문대",
+    "slot": 1,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "rabbit",
+    "role": "작고 귀여운 펫",
+    "tier": 0,
+    "rarity": "C",
+    "concept": "달 귀판을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 달조각 토끼.",
+    "inspiration": "작은 행성 · 별자리 · 우주열차 / meteor",
+    "silhouette": [
+      "좁은 몸과 몸 높이만큼 긴 귀",
+      "달 귀판"
+    ],
+    "feature": "달 귀판",
+    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
+    "ecology": "작은 행성과 별빛을 관측하는 은하수 역",
+    "material": "성운·관측 유리",
+    "body": "좁은 몸과 몸 높이만큼 긴 귀",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "작은 행성 · 별자리 · 우주열차에서 온 달 귀판: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등에 붙인 큰 기관",
+    "gradient": "꼬리 시작 남보라 → 끝 청록; 별 원판 중앙은 아이보리",
+    "colorPlacement": "몸 #93d1e6; 대표 기관 #e9b84c; 발·연결부 #b664aa; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#93d1e6",
+      "accent": "#e9b84c"
+    },
+    "idle": "몸과 궤도가 다른 속도로 기울어짐 / 양 귀를 짧게 움찔하고 고개를 숙임",
+    "reaction": "몸을 움츠렸다 작은 인사를 한다",
+    "distinction": "작고 귀여운 펫: 좁은 몸과 몸 높이만큼 긴 귀; 등에 붙인 큰 기관에 달 귀판",
+    "previewAngle": -35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

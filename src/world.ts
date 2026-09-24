@@ -1,6 +1,6 @@
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { EGGS, REGIONS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage } from "./data";
+import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage } from "./data";
 import { eggVisual, petVisual, animateEgg } from "./visuals";
 import type { Egg, GameState } from "./game";
 import { voxelModel as model, loadVoxels,voxelColliders } from "./voxel";
@@ -9,9 +9,9 @@ import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
 import {petAbilities} from './pet-stats';
 import {HazardView} from "./hazard-view";
-import {FARM_PLOTS,farmPlot,farmGym} from './village';
+import {FARM_PLOTS,farmPlot,farmGym,farmLocal} from './village';
 import {villageArt} from './world-art';
-import {animatePet} from './pet-animation';
+import {animatePet,greetPet} from './pet-animation';
 export class World {
   networkOffset={x:0,z:0};
   chasePressure=0;
@@ -30,7 +30,7 @@ export class World {
     const key=JSON.stringify(entries);if(key===this.roomFarmKey)return;this.roomFarmKey=key;
     await loadVoxels(entries.map(p=>`pet-${p.id}`));if(key!==this.roomFarmKey)return;
     this.roomFarmPets.clear();
-    for(const p of entries){const pet=petVisual(p.id,p.id<6),plot=farmPlot(p.slot);pet.scale.setScalar(Math.min(1.5,MONGLES[p.id].scale));pet.position.set(plot.x-1+p.i,0,plot.z+1.8);this.roomFarmPets.add(pet);}
+    for(const p of entries){const pet=petVisual(p.id,p.id<6||p.id>=100),plot=farmPlot(p.slot);pet.scale.setScalar(Math.min(1.5,MONGLES[p.id].scale));const at=farmLocal(p.slot,-.6+p.i*.6,3);pet.position.set(at.x,0,at.z);pet.rotation.y=plot.rotation;this.roomFarmPets.add(pet);}
   }
   private appearance=-1;
   private batGeometry=new T.BoxGeometry(.13,.13,1.25);
@@ -234,9 +234,10 @@ export class World {
       h: number,
       d: number,
       color: number,
+      angle=0,
     ) => {
       const g = new T.BoxGeometry(w, h, d).toNonIndexed();
-      g.translate(x, y, z);
+      g.rotateY(angle);g.translate(x, y, z);
       const c = new T.Color(color);
       g.setAttribute(
         "color",
@@ -251,19 +252,7 @@ export class World {
       );
       chunks.push(g);
     };
-    for (let z = 24; z >= -4; z -= 2) {
-      const region = REGIONS.filter((r) => -z >= r.start).at(-1) ?? REGIONS[0];
-      for (let x = z >= -4 ? -16 : -8; x <= (z >= -4 ? 16 : 8); x += 2) {
-        const path = Math.abs(x) < 2;
-        block(x, -0.5, z, 2, 0.9, 2, path ? (REGIONS.indexOf(region)%2 ? 0xb0afb4 : 0xd8d0a5) : region.color);
-        const scatter=Math.abs(Math.sin(x*41.7+z*17.3)*43758.5453)%1;
-        if (Math.abs(x) >= 4 && scatter>.65) {
-          block(x + scatter*1.7-.8, 0.09, z + Math.sin(z*7+x)*.8, 0.15, 0.22, 0.15, 0xf9efd0);
-          if(scatter>.85)block(x-.3, 0.07, z-.4, .2,.16,.2,region.color);
-        }
-      }
-    }
-    for(const p of villageArt())block(p.x,p.y,p.z,p.w,p.h,p.d,p.c);
+    for(const p of villageArt())block(p.x,p.y,p.z,p.w,p.h,p.d,p.c,p.angle??0);
     const g = mergeGeometries(chunks);
     chunks.forEach((c) => c.dispose());
     const mesh = new T.Mesh(g, groundMaterial);
@@ -274,8 +263,8 @@ export class World {
       const g=model(name);g.position.set(x,0,z);g.scale.setScalar(scale);g.rotation.y=rotation;parent.add(g);return g;
     };
     for(const [slot,plot] of FARM_PLOTS.entries()){
-      prop("feed",plot.x-2,plot.z+2.5,1,0,this.farm);
-      const position=farmGym(slot),gym=new T.Group();gym.name=`gym-${slot}`;gym.position.set(position.x,0,position.z);
+      const feed=farmLocal(slot,-1,2.5);prop("feed",feed.x,feed.z,.7,plot.rotation,this.farm);
+      const position=farmGym(slot),gym=new T.Group();gym.name=`gym-${slot}`;gym.position.set(position.x,0,position.z);gym.rotation.y=plot.rotation;
       const material=new T.MeshLambertMaterial({color:[0x859e5d,0xc59566,0x7ca3ad,0xac8ab2,0xb8a35a][slot]});
       for(const [w,h,d,x,y,z] of [[1.2,.15,1.6,0,.08,0],[.85,.04,1.35,0,.18,0],[.12,1,.12,-.5,.6,-.7],[.12,1,.12,.5,.6,-.7],[1.1,.12,.12,0,1.05,-.7]]){
         const part=new T.Mesh(new T.BoxGeometry(w,h,d),material);part.position.set(x,y,z);gym.add(part);
@@ -284,7 +273,7 @@ export class World {
       // A numbered tile marks each assigned plot without a text-heavy panel.
       const canvas=document.createElement('canvas');canvas.width=canvas.height=64;const ctx=canvas.getContext('2d')!;
       ctx.fillStyle='#fff4d7';ctx.fillRect(0,0,64,64);ctx.strokeStyle='#68724d';ctx.lineWidth=6;ctx.strokeRect(3,3,58,58);ctx.fillStyle='#465334';ctx.font='bold 40px sans-serif';ctx.textAlign='center';ctx.fillText(String(slot+1),32,46);
-      const tile=new T.Mesh(new T.PlaneGeometry(.8,.8),new T.MeshBasicMaterial({map:new T.CanvasTexture(canvas)}));tile.rotation.x=-Math.PI/2;tile.position.set(plot.x,.025,plot.z);this.farm.add(tile);
+      const tile=new T.Mesh(new T.PlaneGeometry(.8,.8),new T.MeshBasicMaterial({map:new T.CanvasTexture(canvas)}));tile.rotation.x=-Math.PI/2;const label=farmLocal(slot,0,2.3);tile.position.set(label.x,.065,label.z);this.farm.add(tile);
     }
     // Collision geometry is identical in the client and the authoritative server.
     this.mapColliders.splice(0,this.mapColliders.length,...villageMapColliders());
@@ -320,7 +309,7 @@ export class World {
     const ids=all.length<=BALANCE.farmPetsVisible?all:Array.from({length:BALANCE.farmPetsVisible},(_,i)=>all[(page*BALANCE.farmPetsVisible+i)%all.length]);
     const key=ids.join(',');if(key===this.farmKey)return;this.farmKey=key;
     await loadVoxels(ids.map(i=>`pet-${i}`));if(key!==this.farmKey)return;
-    this.farmPets.clear();ids.forEach((id,i)=>{const m=petVisual(id,id<6);m.scale.setScalar(Math.min(1.5,MONGLES[id].scale));m.userData.slot=i;this.farmPets.add(m);});
+    this.farmPets.clear();ids.forEach((id,i)=>{const m=petVisual(id,id<6||id>=100);m.scale.setScalar(Math.min(1.5,MONGLES[id].scale));m.userData.slot=i;this.farmPets.add(m);});
   }
   async updateHatch(key: string, type: number, result: number | null, appearance?:Pick<Egg,'type'|'stageId'|'variant'>) {
     this.hatchKey = key;
@@ -367,8 +356,8 @@ export class World {
     if(this.farm.visible)void this.showFarmPets(game).catch(err=>{this.assetError=String(err);});
     this.farmPets.children.forEach((pet,i)=>{
       const plot=farmPlot(game.farmSlot);
-      pet.position.set(plot.x+2*Math.sin(i*2.4+time*.12),0,plot.z+1+Math.cos(i*2.4+time*.12));
-      pet.rotation.y=-i*2.4-time*.12;pet.position.y=Math.abs(Math.sin(time*2+i))*.05;animateEgg(pet,time,this.low);
+      const at=farmLocal(game.farmSlot,Math.sin(i*2.4+time*.12),2.8+Math.cos(i*2.4+time*.12)*.35);pet.position.set(at.x,0,at.z);
+      pet.rotation.y=plot.rotation-i*2.4-time*.12;pet.position.y=Math.abs(Math.sin(time*2+i))*.05;animateEgg(pet,time,this.low);
       animatePet(pet,pet.userData.petId,time,false,this.reducedMotion.matches);
     });
     this.roomFarmPets.children.forEach(pet=>animatePet(pet,pet.userData.petId,time,false,this.reducedMotion.matches));
@@ -527,7 +516,7 @@ export class World {
     this.ambient.intensity=T.MathUtils.lerp(2.5,.45,this.nightLight);
     this.ambient.color.setHex(game.isNight&&!isHatch?0x779de7:0xfffae9);
     const moving = !game.death&&(game.training || Boolean(this.player.userData.moving));
-    if(game.training)this.player.rotation.y=Math.PI;
+    if(game.training)this.player.rotation.y=farmPlot(game.farmSlot).rotation+Math.PI;
     const rig = this.player.children[1];
     if (rig) {
       rig.position.y = game.death?0:moving
@@ -586,7 +575,8 @@ export class World {
       }
     }
     if (this.hatchModel) {
-      if (game.result === null) animateEgg(this.hatchModel, time, this.low);
+      animateEgg(this.hatchModel, time, this.low);
+      if(game.result!==null){animatePet(this.hatchModel,game.result,time,false,this.reducedMotion.matches);this.hatchModel.userData.greetingAt??=time;greetPet(this.hatchModel,game.result,time-this.hatchModel.userData.greetingAt,this.reducedMotion.matches);}
       this.hatchModel.visible = !!game.selected || game.result !== null || isReward;
       const kick = Math.max(0, 1 - (performance.now() - this.hitAt) / 220);
       this.hatchModel.rotation.z = Math.sin(time * 70) * kick * 0.12;
@@ -596,7 +586,7 @@ export class World {
     }
     const target = isHatch
       ? new T.Vector3(0, 1, 0)
-      : new T.Vector3(this.player.position.x, 0.3, game.training?this.player.position.z:game.isAtBase ? 1 : this.player.position.z - 1.4);
+      : new T.Vector3(this.player.position.x, 0.3, game.training?this.player.position.z:game.isAtBase ? Math.max(1,this.player.position.z) : this.player.position.z - 1.4);
     this.focus.lerp(target, 1 - Math.exp(-dt * 6));
     this.camera.position.copy(this.focus).add(new T.Vector3(8, 11, 12));
     this.camera.lookAt(this.focus);

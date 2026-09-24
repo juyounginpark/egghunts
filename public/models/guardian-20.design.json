@@ -1,1 +1,40 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"guardian-20","name":"공허 정원 둥지 수호자","stage":20,"slot":10,"boss":true,"anatomy":"angel","concept":"문지기 정령 × 흑요석과 씨앗","silhouette":["세 쌍의 열린 날개·세로 씨앗핵","빛을 품는 열린 문틀형 골격"],"personality":"영역을 지키는 엄숙한","ecology":"공허 정원에 살며 빛을 품는 열린 문틀형 골격으로 환경에 적응한다. 공허의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#6e6685","accent":"#ebcb80"},"profile":{"width":8,"height":10,"depth":10,"ear":7,"tail":15,"stance":7},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,20,25,6,12,7,1,"body",true],["ellipsoid",24.5,31,19,8,7,6,1,"head",true],["fin",[[19.5,31,28],[3.5,39,31],[8.5,25,37]],2,"left_wing",1.5],["tube",[[19.5,31,28],[3.5,39,31]],1.5,1,"left_wing",null],["fin",[[19.5,26,28],[3.5,32,31],[8.5,21,37]],4,"left_wing",1.5],["tube",[[19.5,26,28],[3.5,32,31]],1.5,1,"left_wing",null],["fin",[[19.5,21,28],[3.5,25,31],[8.5,17,37]],2,"left_wing",1.5],["tube",[[19.5,21,28],[3.5,25,31]],1.5,1,"left_wing",null],["tube",[[24.5,17,25],[24.5,5,29]],4,2,"body",1],["ellipsoid",24.5,24,17,3,6,2,2,"body",false],["tube",[[17,22,33],[10,30,33],[16,39,33],[24.5,41,33]],1.5,2,"body",null],["ellipsoid",24.5,43.0,22,4,3,4,2,"head",false],["ellipsoid",17.571796769724493,40.5,22,4,3,4,2,"head",false],["ellipsoid",17.57179676972449,35.5,22,4,3,4,2,"head",false],["tube",[[18,38,20],[17,44,20],[21,41,20],[24,45,20]],1.7,2,"head",null],["ellipsoid",12,23,25,5,7,6,2,"left_arm",true],["tube",[[18,37,15],[14,41,19],[12,39,24]],2,2,"head",null],["resample-solid",0.79,0.8440000000000001,0.86]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "guardian-20",
+    "name": "공허 정원 둥지 수호자",
+    "stage": 20,
+    "slot": 10,
+    "boss": true,
+    "anatomy": "angel",
+    "concept": "잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원의 둥지를 지키는 성체",
+    "silhouette": [
+      "빈 중앙 몸과 위아래 세 쌍 날개",
+      "끊어진 사각 문틀"
+    ],
+    "personality": "넓은 어깨와 낮은 눈썹, 잠에서 천천히 일어나는 묵직한 자세",
+    "ecology": "공허 정원에 살며 빛을 품는 열린 문틀형 골격으로 환경에 적응한다. 공허의 형태를 기관의 구조로 표현한다.",
+    "colors": {
+      "primary": "#6e6685",
+      "accent": "#ebcb80"
+    },
+    "profile": {
+      "width": 8,
+      "height": 10,
+      "depth": 10,
+      "ear": 7,
+      "tail": 15,
+      "stance": 7
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "grid": 24,
+    "previewAngle": 35
+  }
+}

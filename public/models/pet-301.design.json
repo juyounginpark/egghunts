@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-301","name":"태엽기관 거룡","stage":2,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 황금 기관실","silhouette":["기관차 가슴","바퀴 발","기차 객차 꼬리"],"personality":"성실하고 우렁찬","ecology":"장난감 왕국의 멈춘 태엽을 가슴 속 기관으로 되감는다.","colors":{"primary":"#c99579","accent":"#72b7ca"},"profile":{"width":9,"height":10,"depth":10,"ear":7,"tail":9,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["box",24.5,17,27,9,8,11,1,"body"],["box",24.5,25,29,7,2,9,2,"body"],["tube",[[24.5,18,24],[24.5,26,18],[24.5,29,11]],4,1,"body",null],["ellipsoid",24.5,29,10,7,6,6,1,"head",true],["ellipsoid",24.5,26,6,6,3,4,4,"head",true],["tube",[[19,33,12],[15,39,15],[17,41,18]],2,2,"head",1],["ellipsoid",12,7,18,4,5,5,5,"left_leg",false],["ellipsoid",9,7,18,1,3,3,2,"left_leg",false],["ellipsoid",12,7,27,4,5,5,5,"left_leg",false],["ellipsoid",9,7,27,1,3,3,2,"left_leg",false],["ellipsoid",12,7,36,4,5,5,5,"left_leg",false],["ellipsoid",9,7,36,1,3,3,2,"left_leg",false],["box",17,31,28,3,8,3,2,"body"],["box",17,39,28,4,1,4,5,"body"],["box",24.5,16,39,5,4,3,2,"tail"],["box",24.5,21,39,6,1,4,4,"tail"],["box",24.5,22,44,5,4,3,2,"tail"],["box",24.5,27,44,6,1,4,4,"tail"],["fin",[[19,24,26],[3,36,29],[7,20,37]],2,"left_wing",1.4],["tube",[[19,24,26],[3,36,29]],1.4,4,"left_wing",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-301",
+    "id": 301,
+    "name": "태엽기관 거룡",
+    "stage": 2,
+    "stageName": "장난감 왕국",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "세 쌍의 바퀴 발·앞으로 솟은 블록 성 목을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 태엽기관 거룡.",
+    "inspiration": "블록 성 · 태엽길 · 기차 / train",
+    "silhouette": [
+      "기관차처럼 긴 육중한 기룡",
+      "세 쌍의 바퀴 발·앞으로 솟은 블록 성 목"
+    ],
+    "feature": "세 쌍의 바퀴 발·앞으로 솟은 블록 성 목",
+    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
+    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
+    "material": "칠한 목재",
+    "body": "기관차처럼 긴 육중한 기룡",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "블록 성 · 태엽길 · 기차에서 온 세 쌍의 바퀴 발·앞으로 솟은 블록 성 목: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
+    "colorPlacement": "몸 #32a6c2; 대표 기관 #efbb36; 발·연결부 #d34d35; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#32a6c2",
+      "accent": "#efbb36"
+    },
+    "idle": "멈칫하고 정해진 각도로 회전 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 기관차처럼 긴 육중한 기룡; 성체 전용 골격에 세 쌍의 바퀴 발·앞으로 솟은 블록 성 목",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "기차가 지나간 길 너머, 태엽 성의 가장 깊은 곳.",
+    "acquisitionCondition": "태엽 기차 회피 + 왕국 길 80% 지점 도달",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

@@ -22,7 +22,7 @@ export async function openPetViewer(id:number){
   const light=new T.DirectionalLight(0xfff4dd,2.6);light.position.set(-3,6,5);scene.add(light);
   const box=new T.Box3().setFromObject(model),center=box.getCenter(new T.Vector3()),size=box.getSize(new T.Vector3());
   const camera=new T.OrthographicCamera(),extent=Math.max(size.x,size.y,size.z)*.78;
-  const view=(index:number)=>{const a=[petPortraitAngle(id),0,90,180][index]*Math.PI/180;camera.position.set(center.x+Math.sin(a)*4,center.y+(index===0?1:0.2),center.z+Math.cos(a)*4);camera.lookAt(center);dialog.querySelectorAll('[data-view]').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));};view(0);
+  const view=(index:number)=>{const a=[model.userData.previewAngle??petPortraitAngle(id),0,90,180][index]*Math.PI/180;camera.position.set(center.x+Math.sin(a)*4,center.y+(index===0?1:0.2),center.z+Math.cos(a)*4);camera.lookAt(center);dialog.querySelectorAll('[data-view]').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));};view(0);
   dialog.querySelectorAll<HTMLElement>('[data-view]').forEach(b=>b.addEventListener('click',()=>view(Number(b.dataset.view))));
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');playing=!reduced.matches;
   const motion=dialog.querySelector<HTMLButtonElement>('.viewer-motion')!;

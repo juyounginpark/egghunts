@@ -1,1 +1,52 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-317","name":"행성용광 고철룡","stage":18,"slot":10,"boss":false,"anatomy":"dragon","concept":"거대한 드래곤 × 행성 조립핵","silhouette":["무한궤도 뒷발","트러스 목","자석 집게 꼬리"],"personality":"거칠지만 꼼꼼한","ecology":"로봇행성의 고철을 몸에 잇고 집게 꼬리로 고장 난 구조물을 조립한다.","colors":{"primary":"#869099","accent":"#dca365"},"profile":{"width":12,"height":8,"depth":12,"ear":11,"tail":9,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","secretDragon":true},"operations":[["box",24.5,19,29,10,7,11,1,"body"],["tube",[[24.5,18,24],[24.5,26,18],[24.5,33,11]],4,1,"body",null],["ellipsoid",24.5,33,10,7,6,6,1,"head",true],["ellipsoid",24.5,30,6,6,3,4,4,"head",true],["tube",[[19,37,12],[15,43,15],[17,45,18]],2,2,"head",1],["ellipsoid",11,7,22,3,5,5,5,"left_leg",false],["box",9,7,22,1,2,2,2,"left_leg"],["ellipsoid",11,7,29,3,5,5,5,"left_leg",false],["box",9,7,29,1,2,2,2,"left_leg"],["ellipsoid",11,7,36,3,5,5,5,"left_leg",false],["box",9,7,36,1,2,2,2,"left_leg"],["box",24.5,23,18,5,1,3,2,"body"],["box",24.5,29,18,5,1,3,2,"body"],["box",24.5,35,18,5,1,3,2,"body"],["tube",[[14,24,26],[5,22,21],[7,13,14]],3,2,"left_arm",null],["tube",[[24.5,20,38],[24.5,30,45],[24.5,38,42]],2.5,1,"tail",null],["tube",[[20,38,42],[18,44,40]],2,2,"tail",null],["fin",[[19,29,30],[3,41,33],[7,25,41]],2,"left_wing",1.4],["tube",[[19,29,30],[3,41,33]],1.4,4,"left_wing",null],["tube",[[12,11,20],[15,12,20]],1.5,5,"left_leg",null]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-317",
+    "id": 317,
+    "name": "행성용광 고철룡",
+    "stage": 18,
+    "stageName": "고철 로봇행성",
+    "slot": 10,
+    "boss": false,
+    "secretDragon": true,
+    "grid": 24,
+    "anatomy": "secret-dragon",
+    "role": "시크릿 상징",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "두 거대 자석 턱·엇갈린 집게 날개을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 행성용광 고철룡.",
+    "inspiration": "자석 크레인 · 고철산 / magnet",
+    "silhouette": [
+      "무한궤도 골격의 고철룡",
+      "두 거대 자석 턱·엇갈린 집게 날개"
+    ],
+    "feature": "두 거대 자석 턱·엇갈린 집게 날개",
+    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
+    "ecology": "쓸모를 되찾은 고철이 스스로 조립되는 행성",
+    "material": "철·산화 구리",
+    "body": "무한궤도 골격의 고철룡",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "자석 크레인 · 고철산에서 온 두 거대 자석 턱·엇갈린 집게 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
+    "gradient": "철판 앞면 청회색 → 이음새 남색; 판 아래 녹슨 주황",
+    "colorPlacement": "몸 #3c526b; 대표 기관 #879bac; 발·연결부 #879bac; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#3c526b",
+      "accent": "#879bac"
+    },
+    "idle": "관절을 잠갔다 집게를 벌리는 정비 동작 / 양 날개와 꼬리를 서로 다른 박자로 편다",
+    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
+    "distinction": "시크릿 상징: 무한궤도 골격의 고철룡; 성체 전용 골격에 두 거대 자석 턱·엇갈린 집게 날개",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
+    "discoveryHint": "자석 손에서 발을 빼고 커다란 압착기가 쉬기를 기다려 보자.",
+    "acquisitionCondition": "자석 견인 영역에 들어갔다 탈출 + 압착기 회피",
+    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+  }
+}

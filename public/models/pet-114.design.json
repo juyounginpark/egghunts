@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-114","name":"실타래 토끼","stage":2,"slot":4,"boss":false,"anatomy":"rabbit","concept":"뛰는 초식수 × 접힌 나무 조립판","silhouette":["기울어진 긴 귀·큰 뒷발","움직임을 저장하는 커다란 태엽 지지대"],"personality":"겁 많지만 재빠른","ecology":"장난감에 살며 움직임을 저장하는 커다란 태엽 지지대으로 환경에 적응한다. 실타래의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#c99579","accent":"#72b7ca"},"profile":{"width":12,"height":10,"depth":10,"ear":7,"tail":11,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,18,27,11,10,9,1,"body",true],["ellipsoid",24.5,29,19,9,8,8,1,"head",true],["tube",[[18,34,20],[16,38.55,22],[18,41,23]],2.5,1,"head",1.5],["tube",[[18,36,19],[17,38.55,21]],1,2,"head",null],["tube",[[18,13,26],[19,4,25]],3,1,"left_leg",2],["ellipsoid",19,4,23,4,2,5,2,"left_leg",false],["tube",[[15,24,23],[12,18,18]],3,1,"left_arm",null],["ellipsoid",24.5,14,36,4,4,4,4,"tail",false],["box",24.5,25,35,7,3,4,2,"body"],["tube",[[17,23,32],[14,33,33],[14,33,37]],2,2,"body",null],["box",14,33,37,3,1,2,5,"body"],["resample-solid",0.97,0.8440000000000001,0.86]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-114",
+    "id": 114,
+    "name": "실타래 토끼",
+    "stage": 2,
+    "stageName": "장난감 왕국",
+    "slot": 4,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "rabbit",
+    "role": "예상 밖의 펫",
+    "tier": 2,
+    "rarity": "A",
+    "concept": "리본 손잡이을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 실타래 토끼.",
+    "inspiration": "블록 성 · 태엽길 · 기차 / train",
+    "silhouette": [
+      "좁은 몸과 몸 높이만큼 긴 귀",
+      "리본 손잡이"
+    ],
+    "feature": "리본 손잡이",
+    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
+    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
+    "material": "칠한 목재",
+    "body": "좁은 몸과 몸 높이만큼 긴 귀",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "블록 성 · 태엽길 · 기차에서 온 리본 손잡이: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸통에 연결된 덮개",
+    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
+    "colorPlacement": "몸 #d34d35; 대표 기관 #efbb36; 발·연결부 #32a6c2; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#d34d35",
+      "accent": "#efbb36"
+    },
+    "idle": "멈칫하고 정해진 각도로 회전 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
+    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
+    "distinction": "예상 밖의 펫: 좁은 몸과 몸 높이만큼 긴 귀; 몸통에 연결된 덮개에 리본 손잡이",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

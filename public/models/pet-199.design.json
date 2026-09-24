@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-199","name":"소원불 기린","stage":10,"slot":9,"boss":false,"anatomy":"giraffe","concept":"높은 관측수 × 기와","silhouette":["긴 기둥 목·짧은 뿔","달빛을 담는 굽은 뿔과 처마"],"personality":"침착한","ecology":"달마을에 살며 달빛을 담는 굽은 뿔과 처마으로 환경에 적응한다. 소원불의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#758f8d","accent":"#f4a47d"},"profile":{"width":11,"height":9,"depth":13,"ear":8,"tail":16,"stance":7},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,19,28,9,7,12,1,"body",false],["tube",[[17,18,19],[18,5,18]],3,1,"left_leg",2],["ellipsoid",18,5,16,4,2,5,2,"left_leg",false],["tube",[[17,17,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["tube",[[24.5,20,19],[24.5,35,14]],4,1,"head",null],["ellipsoid",24.5,35,13,7,7,7,1,"head",false],["tube",[[24.5,19,21],[24.5,33,15]],4,1,"body",null],["ellipsoid",24.5,32,7,5,3,4,2,"head",false],["tube",[[17,39,15],[15,42.25,17],[17,44,18]],2.5,1,"head",1.5],["tube",[[17,41,14],[16,42.25,16]],1,2,"head",null],["tube",[[19,39,15],[17,44,19],[12,46,23]],1.7,2,"head",null],["tube",[[17,42,18],[12,42,16]],1.4,2,"head",null],["tube",[[24.5,15,36],[24.5,19,43],[24.5,31,43]],2.5,2,"tail",1.5],["fin",[[21.5,25,29],[13.5,29,31],[18.5,22,38]],4,"body",1.5],["fin",[[21.5,21,29],[13.5,25,31],[18.5,18,38]],2,"body",1.5],["fin",[[21.5,17,29],[13.5,21,31],[18.5,14,38]],4,"body",1.5],["resample-solid",0.925,0.812,0.98]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-199",
+    "id": 199,
+    "name": "소원불 기린",
+    "stage": 10,
+    "stageName": "도깨비 달마을",
+    "slot": 9,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "giraffe",
+    "role": "스테이지 인기 펫",
+    "tier": 6,
+    "rarity": "SECRET",
+    "concept": "도깨비 기와문을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 소원불 기린.",
+    "inspiration": "기와집 · 붉은 달 · 도깨비불 / flame",
+    "silhouette": [
+      "짧은 몸 위로 솟은 긴 목",
+      "도깨비 기와문"
+    ],
+    "feature": "도깨비 기와문",
+    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
+    "ecology": "기와 처마 아래 붉은 달의 불씨가 사는 마을",
+    "material": "도자기·기와",
+    "body": "짧은 몸 위로 솟은 긴 목",
+    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
+    "objectUse": "기와집 · 붉은 달 · 도깨비불에서 온 도깨비 기와문: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "몸 전체를 감싼 대표 기관",
+    "gradient": "몸 중앙 따뜻한 자주 → 처마의 짙은 보라; 불씨 중심은 살구",
+    "colorPlacement": "몸 #df7148; 대표 기관 #52416f; 발·연결부 #e7b64f; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#df7148",
+      "accent": "#52416f"
+    },
+    "idle": "부채를 접고 고개 숙여 장난스러운 인사 / 양쪽 대표 기관과 꼬리를 다른 박자로 펼침",
+    "reaction": "큰 대표 기관을 펼치고 짧게 인사한다",
+    "distinction": "스테이지 인기 펫: 짧은 몸 위로 솟은 긴 목; 몸 전체를 감싼 대표 기관에 도깨비 기와문",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

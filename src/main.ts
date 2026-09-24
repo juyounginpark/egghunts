@@ -1,4 +1,5 @@
 import "./style.css";
+import {petReveal} from './pet-reveal';
 import {GameAudio,type GameSound} from './audio';
 import {
   BALANCE,
@@ -120,7 +121,7 @@ let lastBossStep=0;
 let virtualAd:VirtualAd|null=null;
 let virtualAdPurpose:'currency'|'revive'='currency';
 let pendingSale:{kind:'egg'|'pet';id:string}|null=null;
-function playSound(sound:GameSound,stage=game.stage.id){if(game.save.settings.sound)audio.play(sound,stage);}
+function playSound(sound:GameSound,stage=game.stage.id,tier=6){if(game.save.settings.sound)audio.play(sound,stage,tier);}
 function feedback(sound:GameSound|null='ui') {
   if (game.save.settings.haptic) platform.haptic();
   if(sound)playSound(sound);
@@ -404,7 +405,7 @@ function updateHud() {
     input.reset();
     const m = MONGLES[game.result];
     $("modal").innerHTML =
-      `<div class="result-card" style="--reward:${m.color}"><img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}" /><span class="tag">HELLO, LITTLE FRIEND!</span><h1>${m.name}, 반가워!</h1><p>${m.description}</p><div class="benefit stat-badges">${petAbilities(m)}</div><p>도감에 몽글이가 추가되었어요.</p><button id="result-ok" class="primary">함께 모험하기</button></div>`;
+      `<div class="result-card" style="--reward:${m.color}">${petReveal(m.stageId,game.result>=300,m.tier)}${game.result>=100?`<div class="result-pet-motion"><div class="result-idle" role="img" aria-label="${m.name}" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-idle.png')"></div><div class="result-greeting" aria-hidden="true" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-greeting.png')"></div></div>`:`<img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}"/>`}<span class="tag">${game.result>=300?'SECRET DRAGON':RARITIES[m.tier].name}</span><h1>${m.name}</h1><div class="benefit stat-badges">${petAbilities(m)}</div><details><summary>이 친구는?</summary><p>${m.description}</p></details><button id="result-ok" class="primary">함께 모험하기</button></div>`;
     $("modal").hidden = false;
     platform.track("hatch_complete", { mongle: m.id });
     feedback(null);
@@ -431,7 +432,7 @@ function renderEggQueue() {
     : "알을 부화하면 펫이 함께 걸어요";
 }
 async function onlineButton(b:HTMLElement):Promise<boolean>{
-  const bindings:Record<string,string>={trait:'trait',claimStage:'claimStage',claimPet:'claimPet',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'equip'};
+  const bindings:Record<string,string>={trait:'trait',claimStage:'claimStage',claimPet:'claimPet',claimDragon:'claimDragon',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'equip'};
   for(const [attribute,kind] of Object.entries(bindings))if(b.dataset[attribute]!==undefined){
     const raw=b.dataset[attribute]!;await remote(kind,['trait','upgrade','select'].includes(kind)?raw:Number(raw));return true;
   }
@@ -469,6 +470,7 @@ document.addEventListener("click", async (e) => {
   if (!b || !ready) return;
   if(b.dataset.petView!==undefined){input.reset();const {openPetViewer}=await import('./pet-viewer');await openPetViewer(Number(b.dataset.petView));return;}
   if(online.active&&await onlineButton(b))return;
+  if(b.dataset.claimDragon!==undefined){if(game.claimDragon(Number(b.dataset.claimDragon))){renderPanel();void save();toast('전용 알을 보관했어요. 부화실에서 만나 보세요.');}return;}
   if(b.id==='boss-warning-ok'){
     game.save.bossWarningSeen=true;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();void save();return;
   }
@@ -709,7 +711,7 @@ function frame(now: number) {
   heardHazards=audible;
   for (const event of game.events.splice(0)) {
     const cues:Partial<Record<string,GameSound>>={hatch_manual_hit:'tap',egg_pickup:'pickup',egg_drop:'drop',egg_saved:'return',mongle_obtained:'hatch',player_hit:'hit',player_death:'death',player_revive:'revive',night_refresh:'night',region_enter:'stage',level_up:'upgrade',upgrade_purchase:'upgrade',trail_purchase:'upgrade',collection_reward:'upgrade',boss_wake:'boss',egg_recovered:'drop'};
-    const cue=cues[event.name];if(cue)playSound(cue,Number(event.params.stage??game.stage.id));
+    const cue=cues[event.name];if(cue)playSound(cue,Number(event.params.stage??game.stage.id),cue==='hatch'?MONGLES[Number(event.params.mongle)]?.tier??0:6);
     if(event.name==='boss_wake'){bossAlertUntil=now+3000;if(!paused&&!game.death&&tab==='explore')feedback(null);}
     if(event.name==='expedition_start'){$("toast").hidden=true;clearTimeout(toastTimer);}
     if(['level_up','player_hit','health_unlocked','player_death'].includes(event.name)){feedback(null);void save();}

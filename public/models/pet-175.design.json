@@ -1,1 +1,49 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-175","name":"비단 코브라","stage":8,"slot":5,"boss":false,"anatomy":"cobra","concept":"후드 파충수 × 사암","silhouette":["펼쳐진 목막·말린 받침 꼬리","물과 열을 저장하는 둥근 저장실"],"personality":"오만한","ecology":"사막에 살며 물과 열을 저장하는 둥근 저장실으로 환경에 적응한다. 비단의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#d1ac6e","accent":"#76b8ba"},"profile":{"width":12,"height":13,"depth":11,"ear":8,"tail":14,"stance":9},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["tube",[[24.5,12,40],[24.5,8,32],[24.5,12,25],[24.5,24,28],[24.5,32,17]],4.5,1,"body",5],["ellipsoid",24.5,33,14,7,5,6,1,"head",true],["ellipsoid",24.5,28,23,13,11,2.5,2,"body",false],["ellipsoid",24.5,26,34,7,8,7,2,"body",true],["resample-solid",0.97,0.9400000000000001,0.9]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "pet-175",
+    "id": 175,
+    "name": "비단 코브라",
+    "stage": 8,
+    "stageName": "황금 사막왕국",
+    "slot": 5,
+    "boss": false,
+    "secretDragon": false,
+    "grid": 24,
+    "anatomy": "cobra",
+    "role": "크고 듬직한 펫",
+    "tier": 2,
+    "rarity": "A",
+    "concept": "코브라 목막을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 비단 코브라.",
+    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
+    "silhouette": [
+      "열린 목막과 접힌 꼬리 받침",
+      "코브라 목막"
+    ],
+    "feature": "코브라 목막",
+    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
+    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
+    "material": "사암·황동",
+    "body": "열린 목막과 접힌 꼬리 받침",
+    "locomotion": "느리게 체중 이동",
+    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 코브라 목막: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
+    "objectAttachment": "등과 옆구리에 이어진 기관",
+    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
+    "colorPlacement": "몸 #93532e; 대표 기관 #d7a247; 발·연결부 #f5d48b; 얼굴 #fff1cf; 눈 #253143",
+    "colors": {
+      "primary": "#93532e",
+      "accent": "#d7a247"
+    },
+    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 양 발을 번갈아 들고 고개를 돌림",
+    "reaction": "발을 번갈아 디디고 머리를 돌린다",
+    "distinction": "크고 듬직한 펫: 열린 목막과 접힌 꼬리 받침; 등과 옆구리에 이어진 기관에 코브라 목막",
+    "previewAngle": 35,
+    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+  }
+}

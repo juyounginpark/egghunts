@@ -1,1 +1,40 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"guardian-13","name":"공중도시 둥지 수호자","stage":13,"slot":10,"boss":true,"anatomy":"robot","concept":"자율 작업수 × 황동","silhouette":["분리된 어깨·집게 손","증기를 배출하는 등쪽 관과 용골"],"personality":"영역을 지키는 정확하고 고집 센","ecology":"공중도시에 살며 증기를 배출하는 등쪽 관과 용골으로 환경에 적응한다. 공중도시의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#b7916c","accent":"#8ec7c4"},"profile":{"width":12,"height":9,"depth":8,"ear":12,"tail":10,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z"},"operations":[["ellipsoid",24.5,18,27,11,9,9,1,"body",true],["ellipsoid",24.5,29,19,9,8,8,1,"head",true],["box",24.5,28,20,9,5,6,1,"head"],["box",24.5,28,13,7,3,1,5,"head"],["tube",[[16,22,26],[10,19,21],[11,12,18]],3,2,"left_arm",null],["tube",[[10,13,18],[8,10,15]],1.5,1,"left_arm",null],["tube",[[12,13,18],[14,10,15]],1.5,1,"left_arm",null],["tube",[[18,13,26],[19,4,25]],3,1,"left_leg",2],["ellipsoid",19,4,23,4,2,5,2,"left_leg",false],["box",24.5,25,35,7,3,4,2,"body"],["tube",[[17,23,32],[14,33,33],[14,33,37]],2,2,"body",null],["box",14,33,37,3,1,2,5,"body"],["tube",[[18,38,20],[17,44,20],[21,41,20],[24,45,20]],1.7,2,"head",null],["ellipsoid",12,23,25,5,7,6,2,"left_arm",true],["tube",[[18,34,15],[14,38,19],[12,36,24]],2,2,"head",null],["resample-solid",0.97,0.812,0.78]]}
+{
+  "schema": "alkong-stage-24-v2",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "source": "scripts/rework_stage_pets.py",
+  "concept": {
+    "key": "guardian-13",
+    "name": "공중도시 둥지 수호자",
+    "stage": 13,
+    "slot": 10,
+    "boss": true,
+    "anatomy": "airship",
+    "concept": "증기압과 프로펠러로 떠 있는 황동 도시의 둥지를 지키는 성체",
+    "silhouette": [
+      "긴 부유낭과 작은 아래 곤돌라",
+      "큰 노 프로펠러"
+    ],
+    "personality": "넓은 어깨와 낮은 눈썹, 잠에서 천천히 일어나는 묵직한 자세",
+    "ecology": "공중도시에 살며 증기를 배출하는 등쪽 관과 용골으로 환경에 적응한다. 공중도시의 형태를 기관의 구조로 표현한다.",
+    "colors": {
+      "primary": "#b7916c",
+      "accent": "#8ec7c4"
+    },
+    "profile": {
+      "width": 12,
+      "height": 9,
+      "depth": 8,
+      "ear": 12,
+      "tail": 10,
+      "stance": 8
+    },
+    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "front": "-Z",
+    "grid": 24,
+    "previewAngle": 35
+  }
+}
