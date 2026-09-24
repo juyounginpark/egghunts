@@ -34,8 +34,21 @@ export class OnlineGame{
  private predictionLead=0;
  private awaitingStop=false;
  private stopCorrectionRemaining=0;
+ private accessToken='';
+ private leaving=false;
  constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){
   document.addEventListener('visibilitychange',()=>{if(document.hidden)this.halt();});
+  window.addEventListener('pagehide',()=>{void this.leave();});
+  window.addEventListener('pageshow',event=>{if(event.persisted&&this.leaving)location.reload();});
+ }
+ async leave(){
+  if(this.leaving)return;
+  this.leaving=true;this.active=false;this.connected=false;this.peers=[];this.latest=null;
+  clearInterval(this.syncTimer);this.syncTimer=undefined;this.vector={x:0,z:0};this.queue=[];this.pending=null;
+  for(const complete of this.completions.values())complete(false);this.completions.clear();
+  if(!this.accessToken)return;
+  try{await fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',keepalive:true,headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${this.accessToken}`,'Content-Type':'application/json'},body:JSON.stringify({operation:'leave'}),signal:AbortSignal.timeout(5000)});}
+  catch{/* A crashed/offline browser is also removed by the server membership lease. */}
  }
  async enter(host:HTMLElement){
   const {createClient}=await import('@supabase/supabase-js');
@@ -142,7 +155,7 @@ export class OnlineGame{
   }
  }
  private pump(){
-  if(!this.active||this.busy||performance.now()<this.retryAt)return;
+  if(this.leaving||!this.active||this.busy||performance.now()<this.retryAt)return;
   if(!this.queue.length&&performance.now()-this.lastSent<BALANCE.roomSyncMs)return;
   void this.flush().catch(()=>{});
  }
@@ -153,10 +166,13 @@ export class OnlineGame{
    this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,inputAt:this.inputAt,commands:this.queue.splice(0,16)};
    const {data,error}=await this.client.auth.getSession();if(error||!data.session)throw Error('다시 로그인해 주세요.');
    let session=data.session;
+   this.accessToken=session.access_token;
    for(let attempt=0;attempt<4;attempt++){
+    if(this.leaving)return;
     const started=performance.now();
     const response=await fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify(this.pending),signal:AbortSignal.timeout(10000)});
     const state=await response.json();
+    if(this.leaving)return;
     if(response.ok){
      this.roundTrip=performance.now()-started;
      const lead=Math.min(.5,this.roundTrip/2000);this.predictionLead=this.predictionLead?this.predictionLead+(lead-this.predictionLead)*.15:lead;
@@ -169,7 +185,7 @@ export class OnlineGame{
      }
      return;
     }
-    if(attempt===0&&response.status===401){const refreshed=await this.client.auth.refreshSession();if(!refreshed.error&&refreshed.data.session){session=refreshed.data.session;continue;}}
+    if(attempt===0&&response.status===401){const refreshed=await this.client.auth.refreshSession();if(!refreshed.error&&refreshed.data.session){session=refreshed.data.session;this.accessToken=session.access_token;continue;}}
     if(state.error==='ROOM_EXPIRED')this.pending={...this.pending!,operation:'join'};
     if(attempt<3&&['ROOM_EXPIRED','RETRY','RATE_LIMIT'].includes(state.error)){
      await new Promise(resolve=>setTimeout(resolve,100+Math.random()*150));continue;

@@ -471,6 +471,7 @@ function showSettings() {
     `<div class="settings-card"><span class="tag">TAKE A LITTLE BREAK</span><h1>잠깐 쉬어가요</h1><p>진행 상황은 자동으로 저장돼요. 탐험 제한시간은 없어요.</p><fieldset class="sound-settings"><legend>사운드</legend><label for="volume-setting">전체 볼륨 <output id="volume-value" for="volume-setting">${Math.round((game.save.settings.volume??1)*100)}%</output></label><input id="volume-setting" type="range" min="0" max="100" step="1" value="${Math.round((game.save.settings.volume??1)*100)}" aria-label="배경음악과 효과음 볼륨"/><label for="sound-setting">음소거 <input id="sound-setting" type="checkbox" ${!game.save.settings.sound ? "checked" : ""}></label><small>배경음악 · 효과음에 함께 적용</small></fieldset><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
   $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label><p>${platform.native?"토스 게임 로그인 연결됨":"브라우저 · 기기 저장"}</p><button id="multiplayer-connect" class="secondary">${multiplayer.connected?"친구 연결 종료":"게스트 로그인 · 친구와 걷기"}</button><small>같은 서버에서 이동 공유 · 알과 수집은 각자 진행</small>`);
   if(online.active){
+    $("resume").insertAdjacentHTML('afterend','<button id="leave-room" class="secondary">방 나가기</button>');
     const button=$("multiplayer-connect");button.textContent=`${online.latest?.count??1} / 5`;
     const note=button.nextElementSibling;if(note)note.textContent='';
     const label=button.previousElementSibling;if(label)label.textContent='Supabase';
@@ -480,6 +481,7 @@ function showSettings() {
 document.addEventListener("click", async (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("button");
   if (!b || !ready) return;
+  if(b.id==='leave-room'){paused=true;input.reset();b.setAttribute('disabled','');await online.leave();location.reload();return;}
   if(b.id==='claim-hatch'){
     const egg=game.selected;
     if(hatchClaiming||!egg||egg.hp!==0||game.result!==null)return;
