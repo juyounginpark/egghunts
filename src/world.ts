@@ -193,7 +193,7 @@ export class World {
     this.hudMeasureAt = -1;
   }
   async init() {
-    await loadVoxels(["alkong", "tree", "mushroom", "camp", "nest", "crystal", "ruin", "meteor", "pedestal", "barn", "fence", "gate", "well", "carrots", "cabbage", "hay", "flower", "lantern", "feed", "shop", "appletree", "beehive", "teapot", "log", "cart", "stalagmite", "statue", "column", "antenna", "starflower", ...EGGS.map((_, i) => `egg-${i}`)]);
+    await loadVoxels([...Array.from({length:20},(_,i)=>`guardian-${i+1}`),"guardian-final","alkong", "tree", "mushroom", "camp", "nest", "crystal", "ruin", "meteor", "pedestal", "barn", "fence", "gate", "well", "carrots", "cabbage", "hay", "flower", "lantern", "feed", "shop", "appletree", "beehive", "teapot", "log", "cart", "stalagmite", "statue", "column", "antenna", "starflower", ...EGGS.map((_, i) => `egg-${i}`)]);
     this.player.add(model("alkong", true));
     this.eggModels = EGGS.map((_, i) => eggVisual(i));
     const groundMaterial = new T.MeshLambertMaterial({ vertexColors: true });
@@ -312,7 +312,6 @@ export class World {
   }
   followerMetrics(){return this.companions.children.map(p=>({x:p.position.x,z:p.position.z,rotation:p.rotation.y,scale:p.scale.x}));}
   render(game: GameState, mode: string, dt: number, time: number) {
-    this.player.rotation.z=T.MathUtils.lerp(this.player.rotation.z,game.death||game.now()<game.knockedUntil?Math.PI/2:0,1-Math.exp(-dt*15));
     this.animateBat(this.player,game.now()-this.swungAt);
     if(this.appearance!==(game.save.appearance??0)){this.appearance=game.save.appearance??0;this.decorateAvatar(this.player,this.appearance);}
     if (time - this.hudMeasureAt > 0.3 || this.hudMeasureAt < 0) {
@@ -355,17 +354,20 @@ export class World {
     this.hatch.visible = isHatch;
     const deathAge=game.death?(game.now()-game.death.at)/1000:Infinity;
     const reviveAge=(game.now()-game.revivedAt)/1000;
-    this.player.scale.setScalar(game.death?Math.max(.2,1-deathAge*.5):1);
-    if(game.death&&deathAge>1.5)this.player.visible=false;
-    this.lifeEffects.visible=!isHatch&&(deathAge<2||reviveAge<1.5);
+    const fall=game.death?(this.reducedMotion.matches?1:T.MathUtils.smoothstep(deathAge,.05,.8)):0;
+    this.player.scale.setScalar(1);
+    this.player.rotation.z=game.death?-Math.PI*.49*fall:T.MathUtils.lerp(this.player.rotation.z,game.now()<game.knockedUntil?Math.PI/2:0,1-Math.exp(-dt*15));
+    this.player.rotation.x=.1*fall;
+    const bat=this.player.getObjectByName('bat');if(game.death&&bat)bat.visible=false;
+    this.lifeEffects.visible=!isHatch&&(deathAge<.8||reviveAge<1.5);
     if(this.lifeEffects.visible){
       const dying=!!game.death,age=dying?deathAge:reviveAge;
       const material=this.lifeEffects.material as T.MeshBasicMaterial;
-      material.color.set(dying?0xe3f1d2:0xffe29b);material.opacity=Math.max(0,1-age/(dying?2:1.5));
+      material.color.set(dying?0xd5c39e:0xffe29b);material.opacity=Math.max(0,1-age/(dying?.8:1.5));
       const particle=new T.Object3D();
       for(let i=0;i<32;i++){
         const angle=i*2.399,radius=dying?age*(.3+i%4*.15):Math.max(0,1.4-age)*(1+i%3*.2);
-        particle.position.set(game.x+Math.cos(angle)*radius,.3+age*(dying?1.6:1)+i%4*.15,game.z+Math.sin(angle)*radius);
+        particle.position.set(game.x+Math.cos(angle)*radius,(dying?.08:.3)+age*(dying?.2:1)+i%4*(dying?.025:.15),game.z+Math.sin(angle)*radius);
         particle.scale.setScalar(dying?1:1.6);particle.rotation.set(angle,age*3,angle);particle.updateMatrix();this.lifeEffects.setMatrixAt(i,particle.matrix);
       }
       this.lifeEffects.instanceMatrix.needsUpdate=true;
@@ -423,7 +425,7 @@ export class World {
     }
     this.player.position.set(
       game.x,
-      game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
+      game.death ? .4*fall : game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
       game.z,
     );
     const here = new T.Vector3(game.x, 0, game.z);
@@ -496,20 +498,20 @@ export class World {
     this.sun.color.setHex(game.isNight&&!isHatch?0x98b7ff:0xfff5de);
     this.ambient.intensity=T.MathUtils.lerp(2.5,.45,this.nightLight);
     this.ambient.color.setHex(game.isNight&&!isHatch?0x779de7:0xfffae9);
-    const moving = game.training || Boolean(this.player.userData.moving);
+    const moving = !game.death&&(game.training || Boolean(this.player.userData.moving));
     if(game.training)this.player.rotation.y=Math.PI;
     const rig = this.player.children[1];
     if (rig) {
-      rig.position.y = moving
+      rig.position.y = game.death?0:moving
         ? Math.abs(Math.sin(time * 9)) * 0.07
         : Math.sin(time * 2) * 0.025;
       for (const side of ["left", "right"]) {
         const sign = side === "left" ? 1 : -1;
         const leg = rig.getObjectByName(`${side}_leg`),
           arm = rig.getObjectByName(`${side}_arm`);
-        if (leg) leg.rotation.x = moving ? Math.sin(time * 9) * 0.4 * sign : 0;
+        if (leg) leg.rotation.x = game.death?.2*fall:moving ? Math.sin(time * 9) * 0.4 * sign : 0;
         if (arm)
-          arm.rotation.x = game.carried
+          arm.rotation.x = game.death?-.35*fall:game.carried
             ? -2.4
             : moving
               ? -Math.sin(time * 9) * 0.3 * sign

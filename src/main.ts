@@ -255,7 +255,7 @@ function updateHud() {
     if(virtualAdPurpose==='revive')virtualAd=null;
     paused=false;$("modal").hidden=true;$("modal").dataset.kind='';
   }
-  if(game.death&&!virtualAd&&$("modal").dataset.kind!=='death'){
+  if(game.death&&game.deathAnimationRemaining<=0&&!virtualAd&&$("modal").dataset.kind!=='death'){
     input.reset();paused=true;$("modal").hidden=false;$("modal").dataset.kind='death';
     $("modal").innerHTML='<section class="death-card" role="dialog" aria-modal="true" aria-labelledby="death-title"><span class="tag">A LITTLE REST</span><h1 id="death-title">잠시 쓰러졌어요</h1><p>떨어뜨린 알은 현장에 남아 있어요.</p><strong id="death-count"></strong><button id="revive-ad" class="primary">가상광고 보고 부활</button><small>10초 시청 · 제자리 HP 전부 회복 · 3초 무적<br>밤이 되면 농장으로 돌아가요</small><button id="respawn-base" class="secondary">그냥 복귀</button><small>복귀 시 원정 경험치 70% 유지</small></section>';
   }
@@ -625,7 +625,7 @@ function frame(now: number) {
   const dt = Math.min(0.05, (now - lastNow) / 1000);
   lastNow = now;
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}
-  if (!qa && !paused && !game.returnReward && $("modal").hidden && tab === "explore") {
+  if (!qa && !paused && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
     const v = input.vector();
     game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt);
     world.player.userData.moving = Math.hypot(v.x, v.y) > 0.1;

@@ -225,6 +225,8 @@ def build_composite(design,name):
     return design['size'],colors,combined,grids
 manifest=[]
 for name,design in designs.items():
+    # Characters now have their own 50-cube authoring source. Props/player stay here.
+    if name.startswith(('pet-','boss-')): continue
     path=out/f'{name}.design.json'
     path.write_text(json.dumps(design,indent=2),encoding='utf-8')
     design=json.loads(path.read_text(encoding='utf-8'))
@@ -240,5 +242,8 @@ for name,design in designs.items():
     data={'size':size,'colors':colors,'voxels':[[*p,c] for p,c in surface(grid).items()],'parts':parts,'pivot':[(size[0]-1)/2,-0.5,(size[2]-1)/2]}
     (out/f'{name}.json').write_text(json.dumps(data,separators=(',',':')),encoding='utf-8')
     manifest.append({'name':name,'grid':size,'paletteCount':len(colors),'voxelCount':len(grid),'bounds':[[min(p[a] for p in grid),max(p[a] for p in grid)] for a in range(3)]})
-(out/'manifest.json').write_text(json.dumps({'generator':'AIvoxel/voxel.py','sourceSha256':hashlib.sha256((source/'voxel.py').read_bytes()).hexdigest(),'models':manifest},indent=2),encoding='utf-8')
+existing=json.loads((out/'manifest.json').read_text(encoding='utf-8')) if (out/'manifest.json').exists() else {}
+names={m['name'] for m in manifest}
+manifest.extend(m for m in existing.get('models',[]) if m['name'] not in names)
+(out/'manifest.json').write_text(json.dumps({**existing,'generator':'AIvoxel/voxel.py','sourceSha256':hashlib.sha256((source/'voxel.py').read_bytes()).hexdigest(),'models':manifest},indent=2),encoding='utf-8')
 print("AIvoxel: exported",len(manifest),"models;",sum(m["voxelCount"] for m in manifest),"voxels")

@@ -2,6 +2,7 @@ import * as T from "three";
 import type {MapCollider} from './map-collision';
 type Voxel = [number, number, number, number];
 type Model = {
+  front?: '-z';
   colors: string[];
   size: number[];
   pivot: number[];
@@ -23,7 +24,7 @@ async function data(name: string) {
   }
   return dataCache.get(name)!;
 }
-function geometry(key: string, voxels: Voxel[], colors: string[], origin: number[], unit: number) {
+function geometry(key: string, voxels: Voxel[], colors: string[], origin: number[], unit: number, front?: '-z') {
   if (geometryCache.has(key)) return geometryCache.get(key)!;
   const occupied = new Set(voxels.map(v => `${v[0]},${v[1]},${v[2]}`));
   const positions: number[] = [], normals: number[] = [], rgb: number[] = [];
@@ -59,7 +60,9 @@ function geometry(key: string, voxels: Voxel[], colors: string[], origin: number
   const g=new T.BufferGeometry();
   g.setAttribute('position',new T.Float32BufferAttribute(positions,3));
   g.setAttribute('normal',new T.Float32BufferAttribute(normals,3));
-  g.setAttribute('color',new T.Float32BufferAttribute(rgb,3));g.computeBoundingSphere();geometryCache.set(key,g);return g;
+  g.setAttribute('color',new T.Float32BufferAttribute(rgb,3));
+  if(front==='-z')g.rotateY(Math.PI);
+  g.computeBoundingSphere();geometryCache.set(key,g);return g;
 }
 export function voxelModel(name: string, rig = false) {
   const d = dataCache.get(name)! ,
@@ -70,7 +73,7 @@ export function voxelModel(name: string, rig = false) {
       const g = new T.Group();
       g.name = n;
       const mesh = new T.Mesh(
-        geometry(`${name}:${n}`, p.voxels, d.colors, p.pivot, d.size[1]*.9),
+        geometry(`${name}:${n}`, p.voxels, d.colors, p.pivot, d.size[1]*.9, d.front),
         mat,
       );
       mesh.castShadow = true;
@@ -80,15 +83,15 @@ export function voxelModel(name: string, rig = false) {
     for (const [n, p] of Object.entries(d.parts)) {
       const parent = p.parent ? d.parts[p.parent].pivot : d.pivot;
       groups[n].position.set(
-        (p.pivot[0] - parent[0]) / (d.size[1]*.9),
+        (p.pivot[0] - parent[0]) / (d.size[1]*.9) * (d.front==='-z'?-1:1),
         (p.pivot[1] - parent[1]) / (d.size[1]*.9),
-        (p.pivot[2] - parent[2]) / (d.size[1]*.9),
+        (p.pivot[2] - parent[2]) / (d.size[1]*.9) * (d.front==='-z'?-1:1),
       );
       (p.parent ? groups[p.parent] : group).add(groups[n]);
     }
   } else {
     const mesh = new T.Mesh(
-      geometry(name, d.voxels, d.colors, d.pivot, d.size[1]*.9),
+      geometry(name, d.voxels, d.colors, d.pivot, d.size[1]*.9, d.front),
       mat,
     );
     mesh.castShadow = true;

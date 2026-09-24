@@ -24,8 +24,11 @@ try {
  await test('virtual advertisement grants once only after ten seconds',()=>{
    let clock=0;const ad=new m.VirtualAd(()=>clock);assert.equal(ad.remaining,10);assert.equal(ad.claim(),0);clock=9999;assert.equal(ad.claim(),0);clock=10000;assert.equal(ad.remaining,0);assert.equal(ad.claim(),BALANCE.virtualAdReward);assert.equal(ad.claim(),0);
  });
- await test('HP failure auto returns, saves full recovery and cannot revive twice',()=>{
-   const g=make();g.selectStage(5);g.z=-12;g.deadline=now+20000;g.hp=1;g.receiveHit(0);assert.equal(g.death,null);assert.ok(g.isAtBase);assert.equal(g.hp,g.maxHp);
+ await test('HP failure holds a five-second collapse then a five-second choice before returning',()=>{
+   const g=make();g.selectStage(5);g.z=-12;g.deadline=now+20000;g.hp=1;g.receiveHit(0);assert.ok(g.death);assert.equal(g.deathAnimationRemaining,5);assert.equal(g.revive(false),false);assert.equal(g.beginReviveAd(),false);
+   now+=4999;g.tick(0);assert.ok(g.death);assert.equal(g.deathChoiceRemaining,5);
+   now+=1;g.tick(0);assert.equal(g.deathAnimationRemaining,0);assert.equal(g.deathChoiceRemaining,5);
+   now+=5000;g.tick(0);assert.equal(g.death,null);assert.ok(g.isAtBase);assert.equal(g.hp,g.maxHp);
    const restored=new GameState(parseSave(JSON.stringify(g.snapshot()),now),()=>now);assert.equal(restored.hp,restored.maxHp);assert.equal(restored.revive(true),false);assert.equal(restored.revive(false),false);
  });
  await test('HP fixed plus proportional damage, no field regen, full base heal',()=>{
@@ -56,7 +59,7 @@ try {
  await test('training requires machine, accrues per second, paid rate upgrade',()=>{const g=make();g.x=BALANCE.gymX;g.z=BALANCE.gymZ;g.interact();assert.ok(g.training);const speed=g.speed;g.tick(10);assert.ok(Math.abs(g.speed-speed-.1)<1e-8);g.save.dust=100;g.upgrade('training');assert.equal(g.trainingRate,.02);const position=[g.x,g.z];g.move(-1,0,.1);assert.equal(g.training,true);assert.deepEqual([g.x,g.z],position);g.interact();assert.equal(g.training,false);g.move(-1,0,.1);assert.ok(g.x<position[0]);});
  await test('trail ownership, multiplier, no double purchase',()=>{const g=make();assert.equal(g.buyTrail(3),false);g.save.dust=1000;const speed=g.speed;g.buyTrail(3);assert.equal(g.save.dust,350);assert.ok(Math.abs(g.speed/speed-1.65)<1e-8);g.buyTrail(3);assert.equal(g.save.dust,350);});
  await test('discovery and stage/all rewards cannot be replayed after reload',()=>{const g=make();assert.equal(g.claimPet(0),0);g.save.mongles.fill(1);const rare=g.discoveryReward(99);assert.ok(rare>g.discoveryReward(0));assert.equal(g.claimPet(99),rare);assert.equal(g.claimPet(99),0);assert.equal(g.claimRegion(0),100);assert.equal(g.claimRegion(0),0);assert.equal(g.claimCollection(),5000);const h=new GameState(parseSave(JSON.stringify(g.snapshot()),now),()=>now);assert.equal(h.claimCollection(),0);assert.equal(h.claimPet(99),0);});
- await test('20x egg size, 10..100 pet detail and exact probabilities',()=>{assert.equal(RARITIES[6].scale/RARITIES[0].scale,20);assert.equal(Math.min(...MONGLES.map(m=>m.grid)),10);assert.equal(Math.max(...MONGLES.map(m=>m.grid)),100);assert.deepEqual(RARITIES.map(r=>r.chance),[45,28,15,7,3.5,1.3,.2]);});
+ await test('20x egg size, uniform 50-cube character detail and exact probabilities',()=>{assert.equal(RARITIES[6].scale/RARITIES[0].scale,20);assert.ok(MONGLES.every(m=>m.grid===50));assert.deepEqual(RARITIES.map(r=>r.chance),[45,28,15,7,3.5,1.3,.2]);});
  await test('invalid/duplicate saves rejected without mutation',()=>{const s=freshSave(now);s.eggs=[{id:'dup',type:0,hp:30,distance:1},{id:'dup',type:0,hp:30,distance:1}];assert.throws(()=>parseSave(JSON.stringify(s),now));assert.throws(()=>parseSave('{broken',now));});
  await test('input deadzone, release, pointer ownership, keyboard fallback',()=>{
    const handlers={},globalHandlers={};globalThis.window={addEventListener:(n,f)=>globalHandlers[n]=f};

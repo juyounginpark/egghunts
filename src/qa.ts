@@ -55,7 +55,7 @@ export function prepare(game: GameState, scene: string) {
   if(scene.startsWith('region-')){const id=Number(scene.slice(7));game.selectStage(id);game.x=0;game.z=-17;game.deadline=clock+45000;}
   if(['death','death-choice','revive'].includes(scene)){
     game.selectStage(5);game.z=-12;game.deadline=clock+30000;game.pickup(game.world[2]);game.hp=1;game.receiveHit(0);
-    if(scene==='revive'){game.revive(true);clock+=300;}else clock+=scene==='death'?400:900;
+    if(scene==='revive'){clock+=BALANCE.deathChoiceDelay;game.beginReviveAd();clock+=BALANCE.virtualAdDuration;game.revive(true);clock+=300;}else clock+=scene==='death'?400:900;
   }
   if(scene==="farm-pets") {state.mongles[0]=state.mongles[4]=state.mongles[19]=1;state.active=[0,4,19];}
   if(scene.startsWith("stage-")) {const stage=Number(scene.slice(6));game.z=-[14,43,74,108,142][stage]+5;game.deadline=clock+45000;}
@@ -92,6 +92,7 @@ export function attach(game: GameState, world: World, input: Input, setTab: (tab
     followMetrics:()=>world.followerMetrics(),
     followStep:(seconds:number,x:number,z:number)=>{for(let t=0;t<seconds;t+=1/60){step(1/60,{x,z});world.render(game,'explore',1/60,visualTime+=1/60);}},
     regionArt:()=>({terrain:world.hazardsView.regions.metrics(),guardian:world.hazardsView.guardians.metrics()}),
+    playerPose:()=>({visible:world.player.visible,scale:world.player.scale.toArray(),rotation:world.player.rotation.toArray(),position:world.player.position.toArray(),deathAnimationRemaining:game.deathAnimationRemaining,deathChoiceRemaining:game.deathChoiceRemaining}),
     animationTime:(seconds:number)=>{visualTime=seconds;},
     spawnHazard:(id:string)=>{const d=HAZARDS.find(h=>h.id===id)!;return game.hazards.spawn(d,{x:game.x,z:game.z,vx:0,vz:0,facing:game.facing,carrying:!!game.carried,metal:false,moving:false}).serial;},
     gainXP:(xp:number)=>game.gainXP(xp),

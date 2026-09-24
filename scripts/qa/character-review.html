@@ -1,0 +1,38 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>캐릭터 제작 검수</title>
+<style>body{margin:0;background:#f5efdb;font-family:Malgun Gothic,sans-serif}canvas{display:block}</style>
+<canvas id="sheet" width="864" height="1440"></canvas>
+<script type="module">
+import * as T from '/node_modules/three/build/three.module.js';
+import {loadVoxels,voxelModel} from '/src/voxel.ts';
+const renderer=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+renderer.setSize(144,144);renderer.setPixelRatio(1);
+const scene=new T.Scene();scene.add(new T.AmbientLight(0xffffff,2));
+const sun=new T.DirectionalLight(0xfff4db,3);sun.position.set(-3,5,6);scene.add(sun);
+const camera=new T.OrthographicCamera(-.69,.69,.69,-.69,.01,20);
+const sheet=document.querySelector('#sheet'),ctx=sheet.getContext('2d');
+const black=new T.MeshBasicMaterial({color:0x252a24});
+window.review=async function(rows){
+ sheet.height=rows.length*166+32;ctx.fillStyle='#f5efdb';ctx.fillRect(0,0,864,sheet.height);
+ ctx.fillStyle='#414932';ctx.font='12px sans-serif';
+ ['정면','측면','후면','45°','실루엣','32px 썸네일'].forEach((s,i)=>ctx.fillText(s,i*144+10,20));
+ const icons=[],stats=[];
+ for(let row=0;row<rows.length;row++){
+  const r=rows[row];await loadVoxels([r.key]);const model=voxelModel(r.key);scene.add(model);
+  const box=new T.Box3().setFromObject(model),center=box.getCenter(new T.Vector3());
+  const original=[];model.traverse(o=>{if(o.isMesh)original.push([o,o.material]);});
+  let maxTriangles=0;
+  for(let view=0;view<6;view++){
+   const a=[0,Math.PI/2,Math.PI,Math.PI/4,Math.PI/4,Math.PI/4][view];
+   camera.position.set(Math.sin(a)*4,center.y+(view>=3?.9:0),Math.cos(a)*4);camera.lookAt(0,center.y,0);
+   for(const [mesh,material] of original)mesh.material=view===4?black:material;
+   renderer.render(scene,camera);maxTriangles=Math.max(maxTriangles,renderer.info.render.triangles);
+   const yy=32+row*166;
+   if(view===5){ctx.drawImage(renderer.domElement,view*144+56,yy+48,32,32);icons.push({key:r.key,png:renderer.domElement.toDataURL('image/png')});}
+   else ctx.drawImage(renderer.domElement,view*144,yy,144,144);
+  }
+  ctx.fillStyle='#414932';ctx.font='11px sans-serif';ctx.fillText(`${r.key} · ${r.name} · ${r.anatomy}`,8,32+row*166+155);
+  stats.push({key:r.key,triangles:maxTriangles,bounds:box.getSize(new T.Vector3()).toArray()});scene.remove(model);
+ }
+ return {icons,stats,sheet:sheet.toDataURL('image/png')};
+};
+</script></html>

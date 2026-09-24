@@ -23,7 +23,7 @@ export const BALANCE = {
   storeZ:4,
   storeRadius:1.3,
   multiplayerMaxPlayers:8,
-  deathChoiceDelay:0,
+  deathChoiceDelay:5000,
   deathChoiceDuration:5000,
   reviveImmunity:3,
   reviveMinimumTime:10,
@@ -272,7 +272,7 @@ const LEGACY_MONGLES = Array.from({ length: 100 }, (_, i) => {
     tier,
     region: Math.floor(i / 20),
     species: speciesId,
-    grid: [10, 16, 24, 32, 48, 64, 100][tier],
+    grid: 50,
     scale: [0.45, 0.7, 1.05, 1.65, 2.4, 3.4, 4.5][tier],
     color: colors[variant],
     icon: `pet-${i}`,
@@ -286,11 +286,11 @@ export const MONGLES = [...LEGACY_MONGLES, ...STAGE_PET_ROWS.map((pet,i)=>{
     ...pet,id:`mongle-${100+i}`,region:Math.floor((pet.stageId-1)/4),species:pet.slot,
     clickMultiplier:ability===0?bonus:1,autoMultiplier:ability===2?bonus:1,speedMultiplier:ability===1?bonus:1,
     effect:`${['클릭','스피드','오토'][ability]} ×${bonus.toFixed(1)}`,
-    grid:[10,16,24,32,48,64,100][pet.tier],scale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
+    grid:50,scale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
   };
 })];
 export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>100+(i+1)*50);
-export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id>=100?'svg':'png'}`;}
+export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.png`;}
 export const UPGRADES = {
   health: {name:"든든한 체력",description:"최대 HP +20",icon:"pack",cost:30,growth:1.6},
   training: {

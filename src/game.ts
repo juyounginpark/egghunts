@@ -314,7 +314,8 @@ export class GameState {
   }
   death:NonNullable<Save['death']>|null=null;
   private reviveAdUntil:number|null=null;
-  get deathChoiceRemaining(){return this.death?Math.max(0,Math.ceil((this.death.at+BALANCE.deathChoiceDuration-this.now())/1000)):0;}
+  get deathAnimationRemaining(){return this.death?Math.max(0,(this.death.at+BALANCE.deathChoiceDelay-this.now())/1000):0;}
+  get deathChoiceRemaining(){return this.death?Math.max(0,Math.min(BALANCE.deathChoiceDuration/1000,Math.ceil((this.death.at+BALANCE.deathChoiceDelay+BALANCE.deathChoiceDuration-this.now())/1000))):0;}
   private die(){
     if(this.death)return;
     if(this.carried){const egg=this.carried;egg.x=this.x;egg.z=this.z;this.world.push(egg);this.carried=null;this.emit('egg_drop',{type:egg.type,reason:'death'});}
@@ -323,12 +324,12 @@ export class GameState {
     this.emit('player_death');this.revision++;
   }
   beginReviveAd(){
-    if(!this.death||this.deathChoiceRemaining<=0||this.reviveAdUntil!==null)return false;
+    if(!this.death||this.deathAnimationRemaining>0||this.deathChoiceRemaining<=0||this.reviveAdUntil!==null)return false;
     this.reviveAdUntil=this.now()+BALANCE.virtualAdDuration;return true;
   }
   revivedAt=-Infinity;
   revive(inPlace:boolean){
-    if(!this.death)return false;
+    if(!this.death||this.deathAnimationRemaining>0)return false;
     if(!inPlace)return this.failExpedition('hp');
     if(this.reviveAdUntil===null||this.now()<this.reviveAdUntil)return false;
     this.updateNight();if(!this.death)return false;

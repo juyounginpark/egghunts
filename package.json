@@ -9,6 +9,8 @@
     "build:toss": "npm run build && ait build",
     "models": "python scripts/generate_models.py",
     "models:stage-pets": "python scripts/generate_stage_pets.py",
+    "models:characters": "python scripts/rework_characters.py",
+    "qa:characters": "node scripts/qa/character-review.mjs",
     "models:nest": "python scripts/nest_design.py",
     "qa:lint": "eslint src scripts *.ts",
     "qa:typecheck": "tsc --noEmit",
