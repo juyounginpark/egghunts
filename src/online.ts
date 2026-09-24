@@ -6,7 +6,7 @@ import {BALANCE} from './data';
 
 export const SUPABASE_URL=import.meta.env.VITE_SUPABASE_URL||'https://leblcdiqsyxqzwlsnkio.supabase.co';
 const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_2KTon_WzPAci5G4dLyZ5Ww_bPgwmiig';
-type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];slot:number;count:number;events:GameState['events'];errors:string[]};
+type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
 export class OnlineGame{
@@ -14,7 +14,6 @@ export class OnlineGame{
  connected=false;
  latest:Snapshot|null=null;
  peers:Peer[]=[];
- onState:()=>void=()=>{};
  private client!:SupabaseClient;
  private game:GameState|null=null;
  private busy:Promise<void>|null=null;
@@ -24,11 +23,13 @@ export class OnlineGame{
  private lastSent=0;
  private retryAt=0;
  private lastError='';
- private correction={x:0,z:0};
+ visualOffset={x:0,z:0};
+ private completions=new Map<string,(ok:boolean)=>void>();
+ private syncTimer:number|undefined;
  private roundTrip=0;
- private receivedAt=0;
- get canPredict(){return performance.now()-this.receivedAt<BALANCE.roomPredictionMs;}
- constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){}
+ constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)this.halt();});
+ }
  async enter(host:HTMLElement){
   const {createClient}=await import('@supabase/supabase-js');
   this.client=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
@@ -68,41 +69,48 @@ export class OnlineGame{
    };
   });
  }
- attach(game:GameState){this.game=game;if(this.latest)this.apply(this.latest);}
+ attach(game:GameState){
+  this.game=game;if(this.latest)this.apply(this.latest);
+  // Network cadence is independent of animation frames and input handlers.
+  this.syncTimer??=window.setInterval(()=>this.pump(),50);
+ }
  private apply(state:Snapshot){
-  this.receivedAt=performance.now();
-  this.latest=state;this.peers=state.peers;this.syncClock(state.serverTime);
+  this.latest=state;this.peers=state.peers;this.syncClock(state.serverTime+this.roundTrip/2);
   if(this.game){
-   const g=this.game,settings=g.save.settings,old={x:g.x,z:g.z,carried:g.carried?.id,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot};
+   const g=this.game,settings=g.save.settings,old={x:g.x+this.visualOffset.x,z:g.z+this.visualOffset.z,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot,facing:g.facing,velocity:g.velocity};
    restoreRuntime(g,state.runtime,state.world,state.bosses);g.save.settings=settings;g.events.push(...state.events);
-   const stable=old.carried===g.carried?.id&&old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
-   const gap=Math.hypot(old.x-g.x,old.z-g.z);
-   if(stable&&gap<Math.max(2,g.speed*.5)){
-    const lead=Math.min(.5,this.roundTrip/2000),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
-    this.correction={x:g.x+(moving?this.vector.x*g.speed*lead:0)-old.x,z:g.z+(moving?this.vector.z*g.speed*lead:0)-old.z};g.x=old.x;g.z=old.z;
-   }else this.correction={x:0,z:0};
+   const stable=old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
+   if(stable&&!g.death&&!g.training&&g.now()>=g.knockedUntil){
+    const lead=Math.min(.5,this.roundTrip/2000);
+    if(Math.hypot(this.vector.x,this.vector.z)>.01)g.push(this.vector.x*g.speed*lead,this.vector.z*g.speed*lead);
+    g.facing=old.facing;g.velocity=old.velocity;
+   }
+   // Correct the simulation once; ease only the drawn position, never the input velocity.
+   this.visualOffset=stable&&Math.hypot(old.x-g.x,old.z-g.z)<Math.max(6,g.speed*2)?{x:old.x-g.x,z:old.z-g.z}:{x:0,z:0};
   }
   for(const error of state.errors)this.notify(errorText[error]??'지금은 사용할 수 없어요.');
-  this.onState();
  }
- async send(kind:string,value?:unknown){
+ send(kind:string,value?:unknown):Promise<boolean>{
+  if(this.completions.size>=64)return Promise.reject(Error('연결을 기다리고 있어요. 잠시 후 다시 시도해 주세요.'));
   const command={id:crypto.randomUUID(),kind,value};this.queue.push(command);
-  do{if(this.busy)await this.busy;else await this.flush();}
-  while(this.queue.some(c=>c.id===command.id)||this.pending?.commands.some(c=>c.id===command.id));
+  const completion=new Promise<boolean>(resolve=>this.completions.set(command.id,resolve));
+  this.pump();return completion;
  }
- halt(){this.vector={x:0,z:0};}
+ halt(){this.update(0,0);}
  reconcile(dt:number){
   if(!this.game)return;
+  const decay=Math.exp(-dt*12);this.visualOffset.x*=decay;this.visualOffset.z*=decay;
   // Only predict knockback motion here; rewards, damage and drops stay on the server.
   if(this.game.knockback.remaining>0){const k=this.game.knockback,step=Math.min(dt,k.remaining);this.game.push(k.x*step,k.z*step);k.remaining=Math.max(0,k.remaining-step);return;}
-  const blend=1-Math.exp(-dt*10),dx=this.correction.x*blend,dz=this.correction.z*blend;
-  if(Math.hypot(this.correction.x,this.correction.z)<.01){this.correction={x:0,z:0};return;}
-  this.game.push(dx,dz);this.correction.x-=dx;this.correction.z-=dz;
  }
  update(x:number,z:number){
   const wasStopped=Math.hypot(this.vector.x,this.vector.z)<.01,stopped=Math.hypot(x,z)<.01;
   const length=Math.max(1,Math.hypot(x,z));this.vector={x:x/length,z:z/length};
-  if(!this.active||this.busy||performance.now()<this.retryAt||performance.now()-this.lastSent<(wasStopped!==stopped?50:200))return;
+  if(wasStopped!==stopped)this.lastSent=Math.min(this.lastSent,performance.now()-BALANCE.roomSyncMs);
+ }
+ private pump(){
+  if(!this.active||this.busy||performance.now()<this.retryAt)return;
+  if(!this.queue.length&&performance.now()-this.lastSent<BALANCE.roomSyncMs)return;
   void this.flush().catch(()=>{});
  }
  private flush():Promise<void>{
@@ -112,13 +120,19 @@ export class OnlineGame{
    this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,commands:this.queue.splice(0,16)};
    const {data,error}=await this.client.auth.getSession();if(error||!data.session)throw Error('다시 로그인해 주세요.');
    let session=data.session;
-   const started=performance.now();
    for(let attempt=0;attempt<4;attempt++){
+    const started=performance.now();
     const response=await fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify(this.pending),signal:AbortSignal.timeout(10000)});
     const state=await response.json();
     if(response.ok){
      this.roundTrip=performance.now()-started;
-     this.pending=null;this.connected=true;this.lastError='';this.apply(state);return;
+     const commands=this.pending!.commands;
+     this.pending=null;this.connected=true;this.lastError='';this.apply(state);
+     for(const command of commands){
+      const result=state.commandResults?.find((r:{id:string;error:string|null})=>r.id===command.id);
+      this.completions.get(command.id)?.(result?!result.error:!state.errors.length);this.completions.delete(command.id);
+     }
+     return;
     }
     if(attempt===0&&response.status===401){const refreshed=await this.client.auth.refreshSession();if(!refreshed.error&&refreshed.data.session){session=refreshed.data.session;continue;}}
     if(state.error==='ROOM_EXPIRED')this.pending={...this.pending!,operation:'join'};

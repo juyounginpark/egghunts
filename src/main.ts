@@ -93,8 +93,8 @@ let lastAnnouncement = 0,
   announcementTimer = 0;
 const platform = new Platform();
 const multiplayer=new Multiplayer(time=>{if(!qa)platform.offset=time-Date.now();},toast);
-const online=new OnlineGame(toast,time=>{platform.offset=time-Date.now();});
-async function remote(kind:string,value?:unknown){try{await online.send(kind,value);return !online.latest?.errors.length;}catch(err){toast(err instanceof Error?err.message:'연결을 확인해 주세요.');return false;}}
+const online=new OnlineGame(toast,time=>platform.syncServerTime(time));
+async function remote(kind:string,value?:unknown){try{return await online.send(kind,value);}catch(err){toast(err instanceof Error?err.message:'연결을 확인해 주세요.');return false;}}
 
 const qa = import.meta.env.DEV && new URLSearchParams(location.search).get("qa") === "true" ? await import("./qa") : null;
 if (qa) { platform.now = qa.now; platform.key="alkong:v1:qa"; }
@@ -141,7 +141,7 @@ async function save() {
   }
 }
 let claiming=false;
-let pickupPreparation:{id:string;remaining:number;duration:number;x:number;z:number;hitAt:number}|null=null;
+let pickupPreparation:{id:string;remaining:number;duration:number;x:number;z:number;hitAt:number;ready?:boolean}|null=null;
 function warnAboutBoss(){
   const egg=game.near;if(!egg||game.save.bossWarningSeen||!$("modal").hidden)return false;
   input.reset();paused=true;pickupPreparation=null;
@@ -155,7 +155,7 @@ async function action(preparedId?:string) {
   const preparedEgg=preparedId?game.world.find(e=>e.id===preparedId):undefined;
   if(preparedId&&(!preparedEgg||!game.canReachEgg(preparedEgg)||game.carried))return;
   if (tab === "hatchery") {
-    if(online.active){await remote('tap');world.hitAt=performance.now();feedback(null);return;}
+    if(online.active){world.hitAt=performance.now();feedback(null);void remote('tap');return;}
     if (game.tap()) {
       world.hitAt = performance.now();
       $("action").dataset.hit = String(game.lastTap);
@@ -170,9 +170,10 @@ async function action(preparedId?:string) {
         if(pickupPreparation)return;
         input.reset();
         online.halt();
-        if(online.active&&!await remote('prepare',egg.id))return;
-        pickupPreparation={id:egg.id,remaining:duration,duration,x:game.x,z:game.z,hitAt:game.hitAt};
-        feedback('tap');return;
+        const preparation={id:egg.id,remaining:duration,duration,x:game.x,z:game.z,hitAt:game.hitAt,ready:!online.active};
+        pickupPreparation=preparation;feedback('tap');
+        if(online.active){const ok=await remote('prepare',egg.id);if(pickupPreparation===preparation){if(ok)preparation.ready=true;else pickupPreparation=null;}}
+        return;
       }
     }
     if(!game.carried&&!game.near&&game.nearStore){setTab('store');return;}
@@ -180,7 +181,7 @@ async function action(preparedId?:string) {
       if(game.carried)await remote('drop');
       else if(targetEgg)await remote('pickup',targetEgg.id);
       else if(game.nearGym)await remote('train');
-      else if(!game.knockback.remaining&&world.swingBat(game.now())){feedback('swing');await remote('attack');}
+      else if(!game.knockback.remaining&&world.swingBat(game.now())){feedback('swing');void remote('attack');}
       return;
     }
     if(!game.carried&&targetEgg?.id.startsWith('net-')){
@@ -644,7 +645,6 @@ async function start() {
     if(online.active){
       online.attach(game);
       try{const preferences=JSON.parse(localStorage.getItem("alkong:preferences")??"null");if(preferences&&typeof preferences.sound==="boolean")game.save.settings={...game.save.settings,...preferences};}catch{/* Ignore invalid device preferences. */}
-      online.onState=()=>{if(ready)updateHud();};
     }
     applyAudioSettings();
     multiplayer.onHit=()=>{}; // Cooperative movement only; no PvP damage in expedition mode.
@@ -679,7 +679,7 @@ function frame(now: number) {
   if (!qa && !paused && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
     const v = input.vector();
     if(online.active)online.update(v.x*.832+v.y*.555,-v.x*.555+v.y*.832);
-    if(!online.active||online.canPredict)game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt);
+    game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt);
     world.player.userData.moving = Math.hypot(v.x, v.y) > 0.1;
     if (world.player.userData.moving)
       world.player.rotation.y = Math.atan2(
@@ -692,7 +692,7 @@ function frame(now: number) {
     const p=pickupPreparation;
     const target=game.world.find(e=>e.id===p.id);
     if(paused||tab!=='explore'||game.death||game.carried||game.returnReward||!target||!game.canReachEgg(target)||game.hitAt!==p.hitAt||(online.active?Math.hypot(input.vector().x,input.vector().y)>.1:Math.hypot(game.x-p.x,game.z-p.z)>.05)){pickupPreparation=null;}
-    else if(!qa){p.remaining=Math.max(0,p.remaining-dt);if(p.remaining===0){pickupPreparation=null;void action(p.id);}}
+    else if(!qa&&p.ready!==false){p.remaining=Math.max(0,p.remaining-dt);if(p.remaining===0){pickupPreparation=null;void action(p.id);}}
   }
   if(!paused&&tab==='explore'&&!game.isAtBase&&!game.carried&&!game.death&&!game.returnReward&&game.near&&!game.save.bossWarningSeen)warnAboutBoss();
   if(!paused&&!game.death&&!game.isAtBase&&game.hp/game.maxHp<=PROGRESSION.lowHP&&now-lastHeartbeat>1000){lastHeartbeat=now;feedback('heartbeat');}
@@ -752,6 +752,7 @@ function frame(now: number) {
     for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:EGGS[egg.type].hp,distance:Math.abs(egg.z),expires:game.nightAt});
   }
   world.updatePeers(online.active?online.peers:multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
+  world.networkOffset=online.active?online.visualOffset:{x:0,z:0};
   world.render(game, tab, qa ? 1 : dt, qa ? qa.visualTime : now / 1000);
   if (now - savedAt > 5000) {
     savedAt = now;

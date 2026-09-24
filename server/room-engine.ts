@@ -4,7 +4,7 @@ import {exportRuntime,restoreRuntime,type RuntimeState} from '../src/online-stat
 
 type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
-type Player={runtime:RuntimeState;input:{x:number;z:number};seen:number;receipts:string[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
+type Player={runtime:RuntimeState;input:{x:number;z:number};seen:number;receipts:string[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
 export type Room={at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>};
 export type RequestInput={id:string;input?:{x:number;z:number};commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
@@ -90,11 +90,14 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
       }
      }
     }else applyCommand(self,player,command,now);
-   }catch(e){errors.push(e instanceof Error?e.message:'ACTION_FAILED');}
+   }catch(e){const error=e instanceof Error?e.message:'ACTION_FAILED';(player.commandErrors??=[]).push({id:command.id,error});}
   }
   player.receipts.push(`request:${request.id}`);player.receipts=player.receipts.slice(-128);
+  if(player.commandErrors)player.commandErrors=player.commandErrors.filter(c=>player.receipts.includes(c.id));
   player.input=vector;player.seen=now;
  }
+ const commandResults=(request.commands??[]).map(c=>({id:c.id,error:player.commandErrors?.find(e=>e.id===c.id)?.error??null}));
+ errors.push(...commandResults.flatMap(c=>c.error?[c.error]:[]));
  room.world=self.world;
  const tutorialSteps:Record<string,number>={expedition_start:1,egg_pickup:2,egg_saved:3,mongle_obtained:4,upgrade_purchase:5,trail_purchase:5};
  for(const g of games.values())for(const event of g.events)g.save.tutorial=Math.max(g.save.tutorial??0,tutorialSteps[event.name]??0);
@@ -105,7 +108,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,
   pets:g.save.mongles.flatMap((n,i)=>n?[i]:[]).slice(0,6),
  }));
- return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,slot:self.farmSlot,count:members.length,events,errors}};
+ return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
 }
 function applyCommand(g:GameState,p:Player,c:Command,now:number){
  const integer=()=>{if(!Number.isSafeInteger(c.value)||Number(c.value)<0)throw Error('INVALID_ID');return Number(c.value);};

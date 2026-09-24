@@ -66,3 +66,11 @@ const swingAt=hit.room.players['user-0'].runtime.fields.batAt;
 hit=runRoom(JSON.parse(JSON.stringify(hit.room)),members,profiles,'user-0',{...strike,id:crypto.randomUUID(),commands:[{id:crypto.randomUUID(),kind:'attack'}]},now+130);
 assert.equal(hit.room.players['user-0'].runtime.fields.batAt,swingAt);
 console.log('PASS: melee facing, retained input, knockback, shared drop, replay and cooldown');
+
+// Each asynchronous action keeps its own result, including after a lost response.
+const failedId=crypto.randomUUID(),okId=crypto.randomUUID(),batchId=crypto.randomUUID();
+const batch={id:batchId,commands:[{id:failedId,kind:'upgrade',value:'__proto__'},{id:okId,kind:'warning'}]};
+const mixed=call('user-0',[],batch);
+assert.deepEqual(mixed.commandResults,[{id:failedId,error:'INVALID_UPGRADE'},{id:okId,error:null}]);
+assert.deepEqual(call('user-0',[],batch).commandResults,mixed.commandResults);
+console.log('PASS: independent command results survive retries');

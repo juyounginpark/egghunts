@@ -12,6 +12,7 @@ import {HazardView} from "./hazard-view";
 import {FARM_PLOTS,farmPlot,farmGym} from './village';
 import {villageArt} from './world-art';
 export class World {
+  networkOffset={x:0,z:0};
   chasePressure=0;
   private reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   readonly mapColliders:MapCollider[]=[];
@@ -447,11 +448,11 @@ export class World {
       this.flying.rotation.z = -flyAge * 2;
     }
     this.player.position.set(
-      game.x,
+      game.x+this.networkOffset.x,
       game.death ? .4*fall : game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
-      game.z,
+      game.z+this.networkOffset.z,
     );
-    const here = new T.Vector3(game.x, 0, game.z);
+    const here = new T.Vector3(this.player.position.x, 0, this.player.position.z);
     if (!this.trail.length || this.trail[0].distanceTo(here) > 10) {
       this.trail = Array.from({ length: 500 }, (_, i) =>
         here.clone().add(new T.Vector3(-game.facing.x*i*.1,0,-game.facing.z*i*.1)),
@@ -591,7 +592,7 @@ export class World {
     }
     const target = isHatch
       ? new T.Vector3(0, 1, 0)
-      : new T.Vector3(game.x, 0.3, game.training?game.z:game.isAtBase ? 1 : game.z - 1.4);
+      : new T.Vector3(this.player.position.x, 0.3, game.training?this.player.position.z:game.isAtBase ? 1 : this.player.position.z - 1.4);
     this.focus.lerp(target, 1 - Math.exp(-dt * 6));
     this.camera.position.copy(this.focus).add(new T.Vector3(8, 11, 12));
     this.camera.lookAt(this.focus);

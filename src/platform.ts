@@ -23,6 +23,14 @@ export interface PlatformAdapter {
 export class Platform implements PlatformAdapter {
   native = false;
   offset = 0;
+  private remoteClockReady=false;
+  private lastClock=0;
+  syncServerTime(time:number){
+    const desired=time-Date.now();
+    if(!this.remoteClockReady)this.lastClock=time;
+    this.offset=this.remoteClockReady?this.offset+Math.max(-5,Math.min(5,desired-this.offset)):desired;
+    this.remoteClockReady=true;
+  }
   key = "alkong:v1:local";
   private writes = Promise.resolve();
   private unsubscribe?: () => void;
@@ -35,7 +43,7 @@ export class Platform implements PlatformAdapter {
     }
   }
   now() {
-    return Date.now() + this.offset;
+    this.lastClock=Math.max(this.lastClock,Date.now()+this.offset);return this.lastClock;
   }
   async syncTime() {
     if (this.native) {
