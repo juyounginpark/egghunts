@@ -9,7 +9,7 @@ import {createServer} from 'vite';
 const server=await createServer({server:{middlewareMode:true}}),passed=[];
 try{
  const load=n=>server.ssrLoadModule(`/src/${n}.ts`);
- const {GameState,freshSave,parseSave}=await load('game'),{MONGLES,EGGS}=await load('data');
+ const {GameState,freshSave,parseSave}=await load('game'),{MONGLES,EGGS,BALANCE}=await load('data');
  const {HAZARDS,STAGE_ENVIRONMENT_IDS}=await load('stage-data');
  const {DRAGON_RULES,newDragonClue,observeDragon,dragonReady,validateDragonClues}=await load('dragon-discovery');
  const {HazardManager}=await load('hazards');
@@ -53,7 +53,7 @@ try{
    }
    c.depth=true;c.sides=3;c.quiet=2;c.returned=true;
    assert.equal(dragonReady(stage,c),true,`stage ${stage}`);completed[stage]=c;
-   const g=make();g.save.dragonClues[stage]=structuredClone(c);assert.equal(g.claimDragon(stage),true);assert.equal(g.claimDragon(stage),false);g.damage(1e9);g.claimHatch(g.save.selected);assert.equal(g.result,299+stage);
+   const g=make();g.save.dragonClues[stage]=structuredClone(c);assert.equal(g.claimDragon(stage),false);assert.equal(g.save.eggs.length,0);assert.equal(g.save.dragonClues[stage].claimed,false);
   }
   validateDragonClues(completed);
  });
@@ -69,6 +69,16 @@ try{
   assert.throws(()=>validateDragonClues({1:{...newDragonClue(),avoided:['ufo']}}));
   const g=make();assert.equal(g.claimDragon(1),false);g.save.dragonClues[1]=structuredClone(completed[1]);g.z=-10;assert.equal(g.claimDragon(1),false);g.z=0;g.save.eggs=Array.from({length:6},(_,i)=>({id:String(i),type:0,hp:1,distance:0}));assert.equal(g.claimDragon(1),false);
  });
+ test('each stage dragon has an independent 0.01 percent spawn boundary, including final nest',()=>{
+  assert.equal(BALANCE.secretDragonEggChance,.0001);
+  for(const [roll,dragon]of [[0,true],[.000099999,true],[.0001,false],[.5,false],[.999999,false]]){
+   const g=new GameState(freshSave(now),()=>now,()=>roll);
+   g.spawn();
+   assert.equal(new Set(g.world.map(e=>e.stageId)).size,20);
+   assert.ok(g.world.every(e=>(e.variant===5)===dragon));
+   if(dragon)assert.ok(g.world.every(e=>EGGS[e.type].tier===6));
+  }
+ });
  test('all seven tiers hatch from correct stage; existing random dragon eggs still hatch',()=>{
   for(let stage=1;stage<=20;stage++)for(let tier=0;tier<7;tier++){
    const g=make(),type=EGGS.findIndex(e=>e.region===Math.floor((stage-1)/4)&&e.tier===tier);
@@ -77,12 +87,12 @@ try{
    assert.ok(g.world.every(e=>Number.isInteger(e.variant)&&e.variant>=0&&e.variant<=5));
   }
  });
- test('server rejects forged claims; issue/retry is exactly once and private per player',()=>{
+ test('server rejects all catalog dragon claims, including completed clues and retries',()=>{
   const members=[0,1].map(slot=>({user_id:`u${slot}`,slot,last_seen:new Date(now).toISOString()}));
   const g=make();g.save.dragonClues=structuredClone(completed);
   const profiles=[{user_id:'u0',state:exportRuntime(g)},{user_id:'u1',state:null}],cmd={id:'claim',kind:'claimDragon',value:1},request={id:'request',commands:[cmd]};
-  let r=runRoom(null,members,profiles,'u0',request,now);assert.equal(r.room.players.u0.runtime.save.eggs.length,1);assert.equal(r.room.players.u1.runtime.save.eggs.length,0);
-  r=runRoom(r.room,members,profiles,'u0',request,now+200);assert.equal(r.room.players.u0.runtime.save.eggs.length,1);
+  let r=runRoom(null,members,profiles,'u0',request,now);assert.equal(r.room.players.u0.runtime.save.eggs.length,0);assert.ok(r.response.errors.includes('DRAGON_NOT_READY'));assert.equal(r.room.players.u1.runtime.save.eggs.length,0);
+  r=runRoom(r.room,members,profiles,'u0',request,now+200);assert.equal(r.room.players.u0.runtime.save.eggs.length,0);assert.ok(r.response.errors.includes('DRAGON_NOT_READY'));
   r=runRoom(r.room,members,profiles,'u1',{id:'forged',commands:[{...cmd,id:'forged'}],save:{dragonClues:completed}},now+400);assert.ok(r.response.errors.includes('DRAGON_NOT_READY'));assert.equal(r.room.players.u1.runtime.save.eggs.length,0);
  });
  test('five farms face the promenade; entry and all five gym approaches are traversable',()=>{

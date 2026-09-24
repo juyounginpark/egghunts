@@ -1,5 +1,5 @@
 import { buildRegionLayout,type Block } from './region-layout';
-import { routeSegments,stagePatterns,environmentPlacement } from './stage-data';
+import { routeSegments,stagePatterns,environmentPlacement,ROAD_WIDTH_SCALE } from './stage-data';
 import {villageArt} from './world-art';
 import {villageColliders,clampVillage} from './village';
 
@@ -39,7 +39,7 @@ export class MapCollision{
    const key=`${start}:${r.stage}`;
    if(!this.sections.has(key)){
     const layout=buildRegionLayout(r.stage,r.end-r.start),boxes:MapCollider[]=[];
-    for(const p of layout.blocks){const box=blockCollider(p,r.offset);if(box&&box.minX<7&&box.maxX>-7)boxes.push(box);}
+    for(const p of layout.blocks){const box=blockCollider(p,r.offset);if(box&&box.minX<7*ROAD_WIDTH_SCALE&&box.maxX>-7*ROAD_WIDTH_SCALE)boxes.push(box);}
     // Swaying grounded sculptures keep a stable footprint; floating effects have none.
     for(const motion of layout.motions)if(motion.kind==='sway')for(const p of motion.blocks){
      const box=blockCollider({...p,x:p.x+motion.x,y:p.y+motion.y,z:p.z+motion.z},r.offset);if(box)boxes.push(box);
@@ -71,7 +71,7 @@ export class MapCollision{
    const candidates=initial.flatMap(b=>[
     {x:b.minX-radius-epsilon,z},{x:b.maxX+radius+epsilon,z},
     {x,z:b.minZ-radius-epsilon},{x,z:b.maxZ+radius+epsilon},
-   ]).filter(p=>Math.abs(p.x)<=(p.z>=-4.4?14:6.5)&&!boxes.some(b=>overlaps(p.x,p.z,b)));
+   ]).filter(p=>Math.abs(p.x)<=(p.z>=-4.4?14:6.5*ROAD_WIDTH_SCALE)&&!boxes.some(b=>overlaps(p.x,p.z,b)));
    candidates.sort((a,b)=>Math.hypot(a.x-x,a.z-z)-Math.hypot(b.x-x,b.z-z));
    if(candidates[0]){x=candidates[0].x;z=candidates[0].z;}
   }

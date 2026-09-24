@@ -60,6 +60,13 @@ export class OnlineGame{
  private async requestState(request:NonNullable<OnlineGame['pending']>,token:string):Promise<Response>{
   if(request.operation==='update'&&!this.leaving){
    this.connectSocket();
+   const connecting=this.socket;
+   if(connecting?.readyState===WebSocket.CONNECTING)await new Promise<void>(resolve=>{
+    const done=()=>{clearTimeout(timer);connecting.removeEventListener('open',done);connecting.removeEventListener('close',done);resolve();};
+    const timer=window.setTimeout(done,1200);
+    connecting.addEventListener('open',done,{once:true});connecting.addEventListener('close',done,{once:true});
+   });
+   if(this.leaving)throw Error('LEFT_ROOM');
    if(this.socket?.readyState===WebSocket.OPEN){
     try{return await new Promise<Response>((resolve,reject)=>{
      const timer=window.setTimeout(()=>{this.socket?.close();reject(Error('STREAM_TIMEOUT'));},5000);

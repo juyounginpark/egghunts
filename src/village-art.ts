@@ -1,5 +1,6 @@
 import type {Block} from './region-layout';
 import {FARM_PLOTS,farmLocal,VILLAGE} from './village';
+import {ROAD_WIDTH_SCALE} from './stage-data';
 let cached:Block[]|undefined;
 export function circularVillageArt(){
  if(cached)return cached;
@@ -7,6 +8,8 @@ export function circularVillageArt(){
  const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number,angle=0)=>blocks.push({x,y,z,w,h,d,c,angle});
  for(let z=-5;z<=23;z++){const half=Math.sqrt(Math.max(0,VILLAGE.radius**2-(z-VILLAGE.z)**2));if(half)b(0,-.5,z,Math.floor(half*2),.9,1,grass);}
  b(0,-.5,-5.5,5,.9,2,grass);b(0,.008,-5.4,3.4,.06,2,0xdacfad);
+ // Taper the wider expedition road into the existing village gateway.
+ for(let i=0;i<4;i++){const t=(i+.5)/4,z=-6.5+t*1.8,width=6*ROAD_WIDTH_SCALE+(3.4-6*ROAD_WIDTH_SCALE)*t;b(0,-.5,z,width+1.6,.9,.46,grass);b(0,.012,z,width,.06,.46,0xdacfad);}
  for(let z=-5;z<7;z++)b(0,.006,z,3.4,.06,.98,0xdacfad);
  for(let i=0;i<56;i++){const a=i*Math.PI/28,x=Math.sin(a)*5.8,z=9+Math.cos(a)*5.8;b(x,.015,z,1.6,.06,.85,0xdacfad,a);}
  for(let slot=0;slot<5;slot++)for(let d=2;d<5.8;d+=.6){const p=farmLocal(slot,0,d);b(p.x,.022,p.z,2,.07,.65,0xdfd2ac,FARM_PLOTS[slot].rotation);}

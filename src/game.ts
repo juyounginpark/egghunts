@@ -15,7 +15,7 @@ import {
 import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,reducedDamage,type Progression} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
 import {farmGym} from './village';
-import {DRAGON_RULES,newDragonClue,dragonReady,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
+import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,stageDamage,type HazardDefinition} from "./stage-data";
 export type Egg = { id: string; type: number; hp: number; distance: number; stageId?:number; variant?:number; special?:boolean };
@@ -293,14 +293,8 @@ export class GameState {
   }
   roomManaged=false;
   dragonWatch:DragonWatch={stage:0,observed:{}};
-  claimDragon(stage:number){
-    if(!Number.isInteger(stage)||!this.isAtBase||this.death||this.save.eggs.length>=BALANCE.inventory)return false;
-    const clue=this.save.dragonClues?.[stage];if(!dragonReady(stage,clue)||clue!.claimed)return false;
-    const type=EGGS.findIndex(e=>e.region===Math.floor((stage-1)/4)&&e.tier===6);if(type<0)return false;
-    const id=`discovery-dragon-${stage}`;
-    this.save.eggs.push({id,type,hp:EGGS[type].hp,distance:0,stageId:stage,variant:5});this.save.selected??=id;
-    clue!.claimed=true;this.revision++;this.emit('dragon_egg_discovered',{stage});return true;
-  }
+  // Keep the legacy command callable but never grant eggs from the catalog.
+  claimDragon(_stage:number){return false;}
   farmSlot=0;
   get gym(){return farmGym(this.farmSlot);}
   readonly mapCollision=new MapCollision();
@@ -598,7 +592,8 @@ export class GameState {
     this.world = this.route.flatMap((boss, guardian) =>
       Array.from({ length: 5 }, (_, slot) => {
         const region=Math.floor((boss.stage-1)/4);
-        const type = rollEgg(region, this.random);
+        const dragon = this.random()<BALANCE.secretDragonEggChance;
+        const type = dragon?6*REGIONS.length+region:rollEgg(region, this.random);
         const x = (slot - 2) * 1.6,
           z = -boss.home + Math.abs(slot - 2) * 0.45;
         return {
@@ -610,7 +605,7 @@ export class GameState {
           z,
           homeX: x,
           homeZ: z,
-          region,stageId:boss.stage,variant:EGGS[type].tier===6&&this.random()<BALANCE.secretDragonEggShare?5:slot,guardian,
+          region,stageId:boss.stage,variant:dragon?5:slot,guardian,
           secured: false,
           expires: this.now() + BALANCE.nightInterval,
         };
@@ -618,9 +613,10 @@ export class GameState {
     );
     const rare=RARITIES.slice(FINAL_GUARDIAN.minimumEggTier);
     let roll=this.random()*rare.reduce((sum,r)=>sum+r.chance,0);
-    const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
+    const dragon=this.random()<BALANCE.secretDragonEggChance;
+    const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=dragon?6:FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
     const type=tier*REGIONS.length+REGIONS.length-1,z=-this.route.at(-1)!.end+FINAL_GUARDIAN.eggEndOffset;
-    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:EGGS[type].hp,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:tier===6&&this.random()<BALANCE.secretDragonEggShare?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
+    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:EGGS[type].hp,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
   }
   get nightRemaining() {
     return Math.max(0, Math.ceil((this.nightAt - this.now()) / 1000));

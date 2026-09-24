@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {stageLandmarks} from './world-art';
-import { STAGES, STAGE_COVERS, STAGE_STEPS,FINAL_GUARDIAN,routeStep,ROUTE } from './stage-data';
+import { STAGES, STAGE_COVERS, STAGE_STEPS,FINAL_GUARDIAN,routeStep,ROUTE,ROAD_WIDTH_SCALE } from './stage-data';
 
 export type Block = { x:number;y:number;z:number;w:number;h:number;d:number;c:number;angle?:number;roll?:number };
 export type Motion = { blocks:Block[];x:number;y:number;z:number;kind:'spin'|'sway'|'float'|'windmill';phase:number };
@@ -172,11 +172,11 @@ export function buildRegionLayout(stage:number,length=ROUTE.length){
 function createRegionLayout(stage:number,length:number){
   let blocks:Block[]=[];let motions:Motion[]=[];const color=new T.Color(),s=STAGES[stage-1];let seed=stage*7919;
   const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
-  const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number)=>blocks.push({x,y,z,w,h,d,c});
+  const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number)=>blocks.push({x:x*ROAD_WIDTH_SCALE,y,z,w:w*ROAD_WIDTH_SCALE,h,d,c});
   const stamp=(parts:Block[],x:number,z:number,scale=1,y=0)=>{
    const angle=rand()*Math.PI*2,roll=(rand()-.5)*.12,cs=Math.cos(angle),sn=Math.sin(angle);
    for(const p of parts){const px=(p.x*Math.cos(roll)-p.y*Math.sin(roll))*scale,py=(p.x*Math.sin(roll)+p.y*Math.cos(roll))*scale,pz=p.z*scale;
-    blocks.push({x:x+px*cs-pz*sn,y:y+py,z:z+px*sn+pz*cs,w:p.w*scale,h:p.h*scale,d:p.d*scale,c:p.c,angle,roll});
+    blocks.push({x:x*ROAD_WIDTH_SCALE+px*cs-pz*sn,y:y+py,z:z+px*sn+pz*cs,w:p.w*scale,h:p.h*scale,d:p.d*scale,c:p.c,angle,roll});
    }
   };
   const tiles=[0xceb994,0xd4b58f,0xaddbd3,0x706971,0x426b7e,0x9b928f,0x4a5978,0xdfc38a,0x9aa17a,0x9b8294,0xdedbcd,0x8995a2,0xa48b71,0xc2e4e8,0xd0bdd8,0x849077,0xadba81,0x929393,0x8887ad,0x756d91];
@@ -225,9 +225,9 @@ function createRegionLayout(stage:number,length:number){
    stamp(sculpture(stage,(v+1)%15),-side*5.2,-depth-3,1.1);
   }
   for(const cover of STAGE_COVERS){
-   b(cover.x,.28,cover.z,1.7,.56,1.7,s.color);
+   b(cover.x/ROAD_WIDTH_SCALE,.28,cover.z,1.7/ROAD_WIDTH_SCALE,.56,1.7,s.color);
    const v=stage===6?1:stage===9?2:stage===3||stage===5?0:1;
-   stamp(sculpture(stage,v),cover.x,cover.z,.8);
+   stamp(sculpture(stage,v),cover.x/ROAD_WIDTH_SCALE,cover.z,.8);
   }
   // Fine ground details form patches rather than another evenly spaced prop row.
   for(let i=0;i<Math.ceil(length*1.5);i++){
@@ -251,7 +251,7 @@ function createRegionLayout(stage:number,length:number){
    else if([3,5,12,19].includes(stage)){parts=[{x:0,y:0,z:0,w:.35,h:.18,d:.5,c:s.accent},{x:.24,y:0,z:-.1,w:.15,h:.3,d:.2,c:cream}];kind='float';y=.8+i%3*.6;}
    else if([4,7,10,14,16,20].includes(stage)){parts=[{x:0,y:0,z:0,w:.16,h:.25,d:.16,c:s.accent}];kind='float';y=.5;}
    else {parts=sculpture(stage,stage===15?0:2);kind=stage===15?'float':'sway';y=stage===15?1.4:0;}
-   motions.push({blocks:parts,x,y,z,kind,phase});
+   motions.push({blocks:parts,x:x*ROAD_WIDTH_SCALE,y,z,kind,phase});
   }
   // Closed garden wall at the end of region 20. The movement limit stops at its front.
   if(stage===20){

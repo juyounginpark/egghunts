@@ -10,7 +10,7 @@ async function rpc(name:string,body:unknown){
  const response=await fetch(`${url}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:service,Authorization:`Bearer ${service}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
  if(!response.ok)throw Error('DATABASE_ERROR');return response.json();
 }
-async function handle(req:Request,stream=false){
+async function handle(req:Request){
  const timing:string[]=[];
  const mark=(name:string,start:number)=>timing.push(`${name};dur=${(performance.now()-start).toFixed(1)}`);
  const origin=req.headers.get('origin')??'';
@@ -40,18 +40,8 @@ async function handle(req:Request,stream=false){
   if(request.operation==='join'){
    await rpc('game_join',{p_user:user});
   }else if(request.operation!=='update')return send(400,{error:'INVALID_OPERATION'});
-  // HTTP remains the compatibility/reconnect path. A new DB connection on
-  // every short-lived HTTP worker measured slower than the existing RPC path.
-  if(!stream){
-   for(let attempt=0;attempt<5;attempt++){
-    const readStart=performance.now(),record=await rpc('game_read',{p_user:user});mark('read',readStart);
-    if(!record)throw Error('ROOM_EXPIRED');
-    const simulationStart=performance.now(),result=runRoom(record.state,record.members,record.profiles,user,request,Date.now(),{guest:identity.guest});mark('simulation',simulationStart);
-    const commitStart=performance.now(),committed=await rpc('game_commit',{p_room:record.id,p_revision:record.revision,p_state:result.room,p_user:user});mark('commit',commitStart);
-    if(committed)return send(200,result.response);
-   }
-   throw Error('RETRY');
-  }
+  // HTTP joins/fallbacks must hold the same room lock as WebSocket updates.
+  // Separate read/commit RPCs lose revisions repeatedly in an active room.
   const transactionStart=performance.now();
   const response=await sql.begin(async transaction=>{
    await transaction`set local statement_timeout = '5s'`;
@@ -93,7 +83,7 @@ Deno.serve(req=>{
   try{
    const packet=JSON.parse(event.data);
    if(typeof packet.token!=='string'||!packet.request||packet.request.operation!=='update'){socket.close(1008,'Invalid message');return;}
-   const result=await handle(new Request(req.url,{method:'POST',headers:{origin,authorization:`Bearer ${packet.token}`},body:JSON.stringify(packet.request)}),true);
+   const result=await handle(new Request(req.url,{method:'POST',headers:{origin,authorization:`Bearer ${packet.token}`},body:JSON.stringify(packet.request)}));
    const body=await result.json();
    clearTimeout(authenticationDeadline);
    if(socket.readyState===WebSocket.OPEN)socket.send(JSON.stringify({id:packet.request.id,status:result.status,body,timing:result.headers.get('Server-Timing')}));

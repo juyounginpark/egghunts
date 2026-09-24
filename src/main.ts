@@ -449,7 +449,7 @@ function renderEggQueue() {
     : "알을 부화하면 펫이 함께 걸어요";
 }
 async function onlineButton(b:HTMLElement):Promise<boolean>{
-  const bindings:Record<string,string>={claimStage:'claimStage',claimPet:'claimPet',claimDragon:'claimDragon',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'equip'};
+  const bindings:Record<string,string>={claimStage:'claimStage',claimPet:'claimPet',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'equip'};
   for(const [attribute,kind] of Object.entries(bindings))if(b.dataset[attribute]!==undefined){
     const raw=b.dataset[attribute]!;await remote(kind,['upgrade','select'].includes(kind)?raw:Number(raw));return true;
   }
@@ -498,7 +498,6 @@ document.addEventListener("click", async (e) => {
   if(b.id==='result-ok'){closeHatchReveal?.();closeHatchReveal=undefined;}
   if(b.dataset.petView!==undefined){input.reset();const {openPetViewer}=await import('./pet-viewer');await openPetViewer(Number(b.dataset.petView));return;}
   if(online.active&&await onlineButton(b))return;
-  if(b.dataset.claimDragon!==undefined){if(game.claimDragon(Number(b.dataset.claimDragon))){renderPanel();void save();toast('전용 알을 보관했어요. 부화실에서 만나 보세요.');}return;}
   if(b.id==='boss-warning-ok'){
     game.save.bossWarningSeen=true;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();void save();return;
   }

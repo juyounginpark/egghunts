@@ -1,5 +1,5 @@
 import type {Block} from './region-layout';
-import {STAGES} from './stage-data';
+import {STAGES,ROAD_WIDTH_SCALE} from './stage-data';
 
 const cream=0xf3e7c4,stone=0xb7b59b,wood=0x80644c,gold=0xd4ad62,dark=0x384b44;
 function builder(){
@@ -17,7 +17,7 @@ export {circularVillageArt as villageArt} from './village-art';
 /** Stage ecology becomes architecture: large readable landmarks plus tailored paths. */
 export function stageLandmarks(stage:number,length:number){
  const {blocks,b,roof,tree,arch,ring}=builder(),s=STAGES[stage-1];
- const x=stage%2?8.6:-8.6,z=-Math.min(38,length*.34),c=s.color,a=s.accent;
+ const x=(stage%2?8.6:-8.6)*ROAD_WIDTH_SCALE,z=-Math.min(38,length*.34),c=s.color,a=s.accent;
  const tower=(xx:number,zz:number,h:number,w=2)=>{b(xx,h/2,zz,w,h,w,c);b(xx,h+.15,zz,w+.4,.3,w+.4,a);};
  switch(stage){
   case 1: // A seed mill with broad sails and terraced orchard roots.
@@ -69,9 +69,9 @@ export function stageLandmarks(stage:number,length:number){
  }
  // The playable center stays uncluttered; paths use shape and material, not labels.
  for(let zz=-8;zz>-length-4;zz-=3){
-  if([3,5,14].includes(stage))for(const side of [-1,1])b(side*3.7,.006,zz,1,.03,2.5,a);
-  else if([2,7,12,13,18].includes(stage))for(const side of [-1,1]){b(side*3.6,.02,zz,.12,.04,2.8,gold);b(side*3.6,.04,zz,1,.05,.2,dark);}
-  else for(const side of [-1,1])b(side*3.7,.015,zz,.55,.05,1.1,stage===4?dark:cream);
+  if([3,5,14].includes(stage))for(const side of [-1,1])b(side*3.7*ROAD_WIDTH_SCALE,.006,zz,1,.03,2.5,a);
+  else if([2,7,12,13,18].includes(stage))for(const side of [-1,1]){b(side*3.6*ROAD_WIDTH_SCALE,.02,zz,.12,.04,2.8,gold);b(side*3.6*ROAD_WIDTH_SCALE,.04,zz,1,.05,.2,dark);}
+  else for(const side of [-1,1])b(side*3.7*ROAD_WIDTH_SCALE,.015,zz,.55,.05,1.1,stage===4?dark:cream);
  }
  return blocks;
 }

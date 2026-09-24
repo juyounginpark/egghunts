@@ -5,10 +5,9 @@ import type { GameState } from "./game";
 import { formatNumber as num } from "./format";
 import {uiIcon} from './ui-icons';
 import {petAbilities,petIncomeBadge} from './pet-stats';
-import {DRAGON_RULES,dragonReady} from './dragon-discovery';
 function collectionCard(i:number,slot:number,game:GameState){
  const m=MONGLES[i],found=game.hasDiscoveredPet(i),claimed=game.save.claimedPets?.includes(i);
- if(i>=300&&!found){const stage=i-299,clue=game.save.dragonClues?.[stage],ready=dragonReady(stage,clue);return `<article class="pet-catalog-card secret-pet"><div class="pet-portrait"><img src="${import.meta.env.BASE_URL}models/stage-previews/pet-${i}-silhouette.png" alt="숨겨진 드래곤 실루엣" loading="lazy"/></div><small>SECRET DRAGON</small><h3>숨겨진 수호룡</h3><p>${DRAGON_RULES[stage-1].hint}</p><details><summary>발견 단서</summary><p>${DRAGON_RULES[stage-1].condition}</p></details><button class="small-btn" data-claim-dragon="${stage}" ${!ready||clue?.claimed||game.save.eggs.length>=BALANCE.inventory?'disabled':''}>${clue?.claimed?'전용 알 보관 완료':ready?'전용 알 받기':'탐험하며 단서 찾기'}</button></article>`;}
+ if(i>=300&&!found)return `<article class="pet-catalog-card secret-pet"><div class="pet-portrait"><img src="${import.meta.env.BASE_URL}models/stage-previews/pet-${i}-silhouette.png" alt="숨겨진 드래곤 실루엣" loading="lazy"/></div><small>SECRET DRAGON</small><h3>숨겨진 수호룡</h3><p>${STAGES[m.stageId-1].name} · 전용 알 ${(BALANCE.secretDragonEggChance*100).toFixed(2)}%</p></article>`;
  return `<article class="pet-catalog-card ${found?'':'locked'} ${i>=300?'secret-pet':''}">${found?`<button class="pet-portrait" data-pet-view="${i}" aria-label="${m.name} 크게 보기"><img src="${petIcon(i)}" alt="${m.name}" loading="lazy"/></button>`:'<div class="pet-portrait unknown" aria-label="미발견">?</div>'}<small>NO.${String(slot+1).padStart(2,'0')} · ${RARITIES[m.tier].name}</small><h3>${found?m.name:'???'}</h3>${found?`<div class="stat-badges">${petAbilities(m)}</div><details class="pet-details"><summary>상세</summary><p>${m.description}<br>${m.effect}</p></details><small>보유 ${num(game.save.mongles[i])}</small><button class="small-btn" data-claim-pet="${i}" ${claimed?'disabled':''}>${claimed?'보상 수령 완료':`+${num(game.discoveryReward(i))}`}</button>`:''}</article>`;
 }
 
@@ -28,7 +27,7 @@ export function panelHTML(tab: string, game: GameState) {
     const fullClaimed=legacy?game.save.claimedCollection:game.save.claimedStageCollection;
     const title=legacy?`이전 도감 · ${REGIONS[region].name}`:`${stage}. ${STAGES[stage-1].name}`;
     const reward=legacy?BALANCE.regionCollectionRewards[region]:STAGE_COLLECTION_REWARDS[stage-1];
-    const chances=rarityChances(legacy?region:Math.floor((stage-1)/4));
+    const chances=rarityChances(legacy?region:Math.floor((stage-1)/4)).map((chance,tier)=>legacy?chance:chance*(1-BALANCE.secretDragonEggChance)+(tier===6?BALANCE.secretDragonEggChance*100:0));
     return `<h1>펫 도감</h1>
       <div class="collection-count">${catalog.filter(i=>game.hasDiscoveredPet(i)).length}<small> / ${catalog.length} 발견${legacy?' · 이전 수집 기록':' · 스테이지 전용 펫'}</small></div>
       <details class="stage-categories"><summary>${title} · 카테고리 변경</summary><div class="stage-category-grid">${STAGES.map(s=>{const found=MONGLES.filter((m,i)=>m.stageId===s.id&&game.hasDiscoveredPet(i)).length;return `<button data-collection-stage="${s.id}" class="${stage===s.id?'active':''}" aria-pressed="${stage===s.id}"><b>${s.id}. ${s.name}</b><small>${found}/11</small></button>`;}).join('')}</div></details>
