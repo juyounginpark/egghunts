@@ -376,13 +376,10 @@ function updateHud() {
     game.pursuing >= 0
       ? "알을 들고 귀환하세요 · ! 표시의 장애물을 피하세요"
       : game.message;
-  $("carry-chip").hidden = (!game.carried && !game.near) || tab !== "explore";
+  $("carry-chip").hidden = !game.carried || tab !== "explore";
   if (game.carried)
     $("carry-chip").textContent =
       `${EGGS[game.carried.type].rarity} · 운반 중`;
-  else if (game.near)
-    $("carry-chip").textContent =
-      `${EGGS[game.near.type].rarity} · 알 발견`;
   $("risk").className = game.risk;
   $("risk").querySelector("span")!.textContent = !game.isAtBase
     ? `기지 ${Math.round(game.distance)}m · ${game.risk==='safe'?'스피드 충분':game.risk==='warning'?'스피드 강화 추천':'먼 지역 · 스피드를 더 키워요'}`
