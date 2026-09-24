@@ -531,6 +531,7 @@ export class GameState {
   get clickMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].clickMultiplier,1); }
   get autoMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].autoMultiplier,1); }
   get speedMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].speedMultiplier,1); }
+  get movementSpeed() { return this.isAtBase ? BALANCE.baseWalkSpeed : this.speed; }
   get speed() {
     return (
       this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
@@ -700,10 +701,11 @@ export class GameState {
     this.updateNight();
     if (!l || this.knockback.remaining>0 || this.launch || this.death || this.now()<this.knockedUntil) return;
     if(this.training)this.toggleTraining();
-    this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*this.speed,z:dz/Math.max(1,l)*this.speed};
+    const speed=this.movementSpeed;
+    this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*speed,z:dz/Math.max(1,l)*speed};
     const scale = l > 1 ? 1 / l : 1;
     const beforeX=this.x,beforeZ=this.z;
-    this.push(dx*scale*this.speed*dt,dz*scale*this.speed*dt);
+    this.push(dx*scale*speed*dt,dz*scale*speed*dt);
     if(dt>0)this.velocity={x:(this.x-beforeX)/dt,z:(this.z-beforeZ)/dt};
     if (!this.deadline && !this.isAtBase) {
       this.deadline = this.now() + this.duration * 1000;

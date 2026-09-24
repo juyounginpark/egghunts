@@ -282,8 +282,9 @@ function updateHud() {
   $("night-curtain").hidden = true;
   $("night-count").textContent = String(Math.max(0, Math.ceil((game.nightUntil-game.now())/1000)));
   $("speed-value").textContent = num(game.speed,2);
-  $('speed-hud').setAttribute('aria-label',`이동 속도 ${num(game.speed,2)} · 운동으로 증가`);
-  $('speed-hud').title=`이동 속도 ${num(game.speed,2)} · 운동으로 증가`;
+  const speedHelp=`현재 스피드 ${num(game.speed,2)}${game.isAtBase?' · 기지 이동 속도 2':' · 운동으로 증가'}`;
+  $('speed-hud').setAttribute('aria-label',speedHelp);
+  $('speed-hud').title=speedHelp;
   $("day-clock").textContent = `권장 스피드 ${num(game.recommendedSpeed,1)}`;
   $('cycle-phase').textContent=game.isNight?'☾ 밤':'☀ 낮';
   $('cycle-remaining').textContent=game.isNight?`아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;

@@ -111,11 +111,11 @@ export class OnlineGame{
    const stable=old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
    if(stable&&!g.death&&!g.training&&g.now()>=g.knockedUntil){
     const lead=this.predictionLead;
-    if(Math.hypot(this.vector.x,this.vector.z)>.01)g.push(this.vector.x*g.speed*lead,this.vector.z*g.speed*lead);
+    if(Math.hypot(this.vector.x,this.vector.z)>.01)g.push(this.vector.x*g.movementSpeed*lead,this.vector.z*g.movementSpeed*lead);
     g.facing=old.facing;g.velocity=old.velocity;
    }
    // Correct the simulation once; ease only the drawn position, never the input velocity.
-   this.visualOffset=stable&&Math.hypot(old.x-g.x,old.z-g.z)<Math.max(6,g.speed*2)?{x:old.x-g.x,z:old.z-g.z}:{x:0,z:0};
+   this.visualOffset=stable&&Math.hypot(old.x-g.x,old.z-g.z)<Math.max(6,g.movementSpeed*2)?{x:old.x-g.x,z:old.z-g.z}:{x:0,z:0};
    if(!stable){this.awaitingStop=false;this.stopCorrectionRemaining=0;}
    else if(this.awaitingStop&&acknowledgedInput&&Math.hypot(acknowledgedInput.x,acknowledgedInput.z)<.01){
     this.awaitingStop=false;this.stopCorrectionRemaining=.12;
@@ -136,7 +136,7 @@ export class OnlineGame{
   // A late packet must not briefly accelerate or reverse an otherwise steady walk.
   // Keep the released position while an older walking request is still in flight.
   // Once the stop is acknowledged, finish correction in finite time (no idle drift).
-  const amount=moving?Math.min(distance*(1-Math.exp(-dt*3)),this.game.speed*BALANCE.roomMovingCorrectionRatio*dt):this.awaitingStop?0:distance*Math.min(1,dt/Math.max(dt,this.stopCorrectionRemaining));
+  const amount=moving?Math.min(distance*(1-Math.exp(-dt*3)),this.game.movementSpeed*BALANCE.roomMovingCorrectionRatio*dt):this.awaitingStop?0:distance*Math.min(1,dt/Math.max(dt,this.stopCorrectionRemaining));
   if(!moving&&!this.awaitingStop)this.stopCorrectionRemaining=Math.max(0,this.stopCorrectionRemaining-dt);
   const decay=distance>0?1-amount/distance:0;this.visualOffset.x*=decay;this.visualOffset.z*=decay;
   // Only predict knockback motion here; rewards, damage and drops stay on the server.
