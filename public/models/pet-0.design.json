@@ -1,1 +1,26 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-0","name":"풀빛 새싹콩","stage":1,"slot":0,"boss":false,"anatomy":"sprout","concept":"씨앗 정령 × 잎맥","silhouette":["갈라진 뿌리 다리·잎 부채 머리","햇빛을 모으는 넓은 잎 기관"],"personality":"호기심 많은","ecology":"초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#97b971","accent":"#f2c66d"},"profile":{"width":11,"height":10,"depth":10,"ear":8,"tail":12,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","lineage":"기존 수집종"},"operations":[["ellipsoid",24.5,16,26,7,12,7,1,"body",false],["ellipsoid",24.5,26,20,9,6,7,1,"head",false],["tube",[[18,14,26],[14,6,23],[12,4,17]],2,2,"left_leg",null],["tube",[[23,14,26],[19,6,23],[17,4,17]],2,2,"left_leg",null],["tube",[[24.5,30,25],[24.5,38,25]],2,2,"head",null],["fin",[[24.5,36,25],[7,43,23],[14,34,28]],2,"head",1.5],["tube",[[24.5,25,29],[24.5,33,32]],2,2,"body",null],["fin",[[24.5,29,29],[18.5,36,32],[21.5,30,37]],2,"body",1.5],["resample-solid",0.925,0.8440000000000001,0.86]]}
+{
+  "schema": "alkong-authored-24-v1",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "mirrorX": 11.5,
+  "concept": {
+    "name": "새싹콩",
+    "concept": "햇빛을 따라 두 잎을 기울이는 어린 콩 정령",
+    "body": "낮고 납작한 씨앗과 작은 뿌리 발",
+    "feature": "몸보다 높이 솟은 두 장의 두꺼운 잎",
+    "face": "넓게 뜬 눈으로 위를 살핌",
+    "idle": "두 잎을 번갈아 까딱하고 고개를 올림",
+    "colors": [
+      "#94bd59",
+      "#477b4a",
+      "#e5ecad",
+      "#28372f",
+      "#fff8df"
+    ],
+    "angle": 32
+  },
+  "source": "scripts/first_six_pets.py"
+}

@@ -1,1 +1,26 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-3","name":"풀빛 여우콩","stage":1,"slot":3,"boss":false,"anatomy":"fox","concept":"꼬리 맹수 × 잎맥","silhouette":["쐐기 머리·몸보다 큰 꼬리 부채","햇빛을 모으는 넓은 잎 기관"],"personality":"영리하고 짓궂은","ecology":"초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#97b971","accent":"#f2c66d"},"profile":{"width":12,"height":13,"depth":13,"ear":11,"tail":15,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","lineage":"기존 수집종"},"operations":[["ellipsoid",24.5,19,28,10,11,12,1,"body",false],["tube",[[17,18,19],[18,5,18]],3,1,"left_leg",2],["ellipsoid",18,5,16,4,2,5,2,"left_leg",false],["tube",[[17,17,34],[18,5,33]],3,1,"left_leg",2],["ellipsoid",18,5,31,4,2,5,2,"left_leg",false],["ellipsoid",24.5,31,13,9,7,7,1,"head",false],["tube",[[24.5,19,21],[24.5,29,15]],4,1,"body",null],["ellipsoid",24.5,28,7,5,3,4,4,"head",false],["tube",[[17,35,15],[15,40.2,17],[17,43,18]],2.5,1,"head",1.5],["tube",[[17,37,14],[16,40.2,16]],1,2,"head",null],["tube",[[24.5,17,34],[18,23,39],[15,35,43]],4,2,"tail",2],["tube",[[24.5,17,34],[24,23,39],[21,35,43]],4,2,"tail",2],["tube",[[24.5,25,29],[24.5,33,32]],2,2,"body",null],["fin",[[24.5,29,29],[12.5,36,32],[21.5,30,37]],2,"body",1.5],["resample-solid",0.97,0.9400000000000001,0.98]]}
+{
+  "schema": "alkong-authored-24-v1",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "mirrorX": 11.5,
+  "concept": {
+    "name": "여우콩",
+    "concept": "풀숲에 납작 엎드려 바람을 읽는 여우",
+    "body": "낮고 긴 네 발 몸과 넓은 볼",
+    "feature": "등 뒤에서 커다랗게 꺾여 올라오는 붓 꼬리",
+    "face": "가늘게 뜬 눈과 앞으로 나온 작은 코",
+    "idle": "고개를 좌우로 살피며 꼬리를 천천히 움직임",
+    "colors": [
+      "#d98a4e",
+      "#a95638",
+      "#f5dfb4",
+      "#39343a",
+      "#fff7e3"
+    ],
+    "angle": 40
+  },
+  "source": "scripts/first_six_pets.py"
+}

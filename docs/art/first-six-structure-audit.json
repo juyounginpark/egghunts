@@ -1,0 +1,71 @@
+{
+  "models": [
+    {
+      "key": "pet-0",
+      "symmetric": true,
+      "pairedAnatomySymmetric": true,
+      "partitionExact": true,
+      "components": [
+        1890
+      ],
+      "eyes": 12,
+      "gzipBytes": 5859
+    },
+    {
+      "key": "pet-1",
+      "symmetric": true,
+      "pairedAnatomySymmetric": true,
+      "partitionExact": true,
+      "components": [
+        1394
+      ],
+      "eyes": 12,
+      "gzipBytes": 4148
+    },
+    {
+      "key": "pet-2",
+      "symmetric": true,
+      "pairedAnatomySymmetric": true,
+      "partitionExact": true,
+      "components": [
+        1518
+      ],
+      "eyes": 12,
+      "gzipBytes": 4923
+    },
+    {
+      "key": "pet-3",
+      "symmetric": true,
+      "pairedAnatomySymmetric": true,
+      "partitionExact": true,
+      "components": [
+        2226
+      ],
+      "eyes": 4,
+      "gzipBytes": 7932
+    },
+    {
+      "key": "pet-4",
+      "symmetric": false,
+      "pairedAnatomySymmetric": true,
+      "partitionExact": true,
+      "components": [
+        2218
+      ],
+      "eyes": 12,
+      "gzipBytes": 6840
+    },
+    {
+      "key": "pet-5",
+      "symmetric": true,
+      "pairedAnatomySymmetric": true,
+      "partitionExact": true,
+      "components": [
+        3538
+      ],
+      "eyes": 4,
+      "gzipBytes": 15616
+    }
+  ],
+  "guardianPreloadGzip": 0
+}

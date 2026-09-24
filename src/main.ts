@@ -467,6 +467,7 @@ function showSettings() {
 document.addEventListener("click", async (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("button");
   if (!b || !ready) return;
+  if(b.dataset.petView!==undefined){input.reset();const {openPetViewer}=await import('./pet-viewer');await openPetViewer(Number(b.dataset.petView));return;}
   if(online.active&&await onlineButton(b))return;
   if(b.id==='boss-warning-ok'){
     game.save.bossWarningSeen=true;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();void save();return;

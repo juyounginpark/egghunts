@@ -1,0 +1,32 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>첫 여섯 펫 실제 모델 검수</title><canvas id="sheet" width="1440" height="360"></canvas>
+<script type="module">
+import * as T from '/node_modules/three/build/three.module.js';
+import {loadVoxels,voxelModel} from '/src/voxel.ts';
+import {animatePet,petPortraitAngle} from '/src/pet-animation.ts';
+const renderer=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});renderer.setSize(384,384);
+const scene=new T.Scene();scene.add(new T.HemisphereLight(0xfffaed,0x79836a,2.4));const light=new T.DirectionalLight(0xfff4dd,2.6);light.position.set(-3,6,5);scene.add(light);
+const camera=new T.OrthographicCamera(),black=new T.MeshBasicMaterial({color:0x263027});
+window.renderSix=async()=>{
+ const results=[],sheet=document.querySelector('#sheet'),ctx=sheet.getContext('2d');sheet.height=420;ctx.fillStyle='#f5efdb';ctx.fillRect(0,0,1440,420);
+ const names=['새싹콩','달토리','별꼬리','여우콩','고양콩','곰구리'];
+ for(let id=0;id<6;id++){
+  await loadVoxels([`pet-${id}`]);const model=voxelModel(`pet-${id}`,true);scene.add(model);
+  const box=new T.Box3().setFromObject(model),center=box.getCenter(new T.Vector3()),size=box.getSize(new T.Vector3()),extent=Math.max(size.x,size.y,size.z)*.67;
+  camera.left=-extent;camera.right=extent;camera.top=extent;camera.bottom=-extent;camera.near=.01;camera.far=20;camera.updateProjectionMatrix();
+  const mats=[];model.traverse(o=>{if(o.isMesh)mats.push([o,o.material]);});
+  const views=[];
+  for(let v=0;v<5;v++){
+   const a=[petPortraitAngle(id),0,90,180,petPortraitAngle(id)][v]*Math.PI/180;camera.position.set(center.x+Math.sin(a)*4,center.y+(v===0||v===4?1:.2),center.z+Math.cos(a)*4);camera.lookAt(center);
+   mats.forEach(([o,m])=>o.material=v===4?black:m);renderer.render(scene,camera);views.push(renderer.domElement.toDataURL());
+   if(v===0){ctx.fillStyle='#fff9e8';ctx.fillRect(id*240+8,8,224,270);ctx.drawImage(renderer.domElement,id*240+8,12,224,224);ctx.fillStyle='#3e4833';ctx.font='bold 20px sans-serif';ctx.textAlign='center';ctx.fillText(names[id],id*240+120,260);}
+   if(v===4)ctx.drawImage(renderer.domElement,id*240+56,290,128,128);
+  }
+  mats.forEach(([o,m])=>o.material=m);
+  const strip=document.createElement('canvas');strip.width=256*24;strip.height=256;const sc=strip.getContext('2d');const a=petPortraitAngle(id)*Math.PI/180;camera.position.set(center.x+Math.sin(a)*4,center.y+1,center.z+Math.cos(a)*4);camera.lookAt(center);
+  const poses=[];
+  for(let f=0;f<24;f++){animatePet(model,id,f*7/24);model.updateMatrixWorld(true);renderer.render(scene,camera);sc.drawImage(renderer.domElement,f*256,0,256,256);poses.push(model.getObjectByName('head').matrixWorld.elements.slice());}
+  results.push({id,views,strip:strip.toDataURL(),poses,bounds:size.toArray(),triangles:renderer.info.render.triangles});scene.remove(model);
+ }
+ return {results,sheet:sheet.toDataURL()};
+};
+</script></html>

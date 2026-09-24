@@ -281,9 +281,9 @@ const LEGACY_MONGLES = Array.from({ length: 100 }, (_, i) => {
     tier,
     region: Math.floor(i / 20),
     species: speciesId,
-    grid: 50,
+    grid: i<6?24:50,
     scale: [0.45, 0.7, 1.05, 1.65, 2.4, 3.4, 4.5][tier],
-    color: colors[variant],
+    color: i<6?['#94bd59','#b5a5cc','#626ca3','#d98a4e','#e6d8b6','#94725e'][i]:colors[variant],
     icon: `pet-${i}`,
   };
 });

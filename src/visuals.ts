@@ -63,6 +63,7 @@ export function animateEgg(g:T.Object3D,time:number,low=false){
 }
 export function petVisual(id:number,rig=true){
   const pet=voxelModel(`pet-${id}`,rig);
+  pet.userData.petId=id;
   // Measure the actual body before adding tall beams and particles.
   const bounds=new T.Box3().setFromObject(pet);
   pet.userData.labelHeight=bounds.max.y;

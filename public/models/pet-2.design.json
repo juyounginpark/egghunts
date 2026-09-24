@@ -1,1 +1,26 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-2","name":"풀빛 별꼬리","stage":1,"slot":2,"boss":false,"anatomy":"mouse","concept":"저장쥐 × 잎맥","silhouette":["넓은 볼·말린 굵은 꼬리","햇빛을 모으는 넓은 잎 기관"],"personality":"부지런한","ecology":"초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#97b971","accent":"#f2c66d"},"profile":{"width":10,"height":10,"depth":12,"ear":10,"tail":14,"stance":8},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","lineage":"기존 수집종"},"operations":[["ellipsoid",24.5,18,27,9,10,9,1,"body",false],["ellipsoid",24.5,29,19,9,8,8,1,"head",false],["ellipsoid",16,36,21,4,4,2.5,2,"head",false],["tube",[[18,13,26],[19,4,25]],3,1,"left_leg",2],["ellipsoid",19,4,23,4,2,5,2,"left_leg",false],["tube",[[15,24,23],[12,18,18]],3,1,"left_arm",null],["tube",[[24.5,13,33],[24.5,17,40],[24.5,27,43]],4,2,"tail",1.5],["tube",[[24.5,25,29],[24.5,33,32]],2,2,"body",null],["fin",[[24.5,29,29],[14.5,36,32],[21.5,30,37]],2,"body",1.5],["resample-solid",0.88,0.8440000000000001,0.9400000000000001]]}
+{
+  "schema": "alkong-authored-24-v1",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "mirrorX": 11.5,
+  "concept": {
+    "name": "별꼬리",
+    "concept": "밤에 모은 빛을 별 꼬리에 저장하는 장난꾸러기 들쥐",
+    "body": "작은 둥근 몸 앞에 짧은 발, 뒤로 큰 별 부채",
+    "feature": "몸의 두 배 너비로 펼친 입체 별 꼬리",
+    "face": "살짝 치켜든 눈과 뒤를 돌아보는 머리",
+    "idle": "별을 흔들고 고개를 뒤로 돌림",
+    "colors": [
+      "#626ca3",
+      "#e9b84e",
+      "#f8df86",
+      "#272b45",
+      "#fff3d5"
+    ],
+    "angle": -32
+  },
+  "source": "scripts/first_six_pets.py"
+}

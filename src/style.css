@@ -109,6 +109,30 @@ nav button.active { background: #dfe9bd; box-shadow: inset 0 -3px #6b8454; font-
 .collection-count small { font-size: 11px; }
 .friend { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; padding: 12px; border: 2px solid #adb794; background: var(--paper); box-shadow: 3px 3px 0 #c3c9aa; }
 .friend-face { width: 56px; height: 60px; background: #e5e9cf; display: grid; place-items: center; }
+.friend-preview { width:96px;min-width:96px;height:104px;padding:0;background:#eee8d4;border:2px solid #bac19b;border-radius:8px; }
+.friend-preview img { width:100%;height:100%;object-fit:contain; }
+.first-six-showcase { margin:12px 0 24px; }
+.first-six-showcase>summary { min-height:44px;cursor:pointer; }
+.pet-catalog-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px; }
+.pet-catalog-card { min-width:0;padding:8px;background:#fff9e8;border:2px solid #bac19b;border-radius:8px;box-shadow:0 3px #d8d5b8; }
+.pet-catalog-card .pet-portrait { display:grid;place-items:center;width:100%;aspect-ratio:1;background:#eee8d4;border:0;border-radius:5px;padding:0;overflow:hidden; }
+.pet-portrait img { width:100%;height:100%;object-fit:contain; }
+.pet-portrait.unknown { font-size:40px;color:#8b9375; }
+.pet-catalog-card h3 { font-size:15px;margin:10px 0 6px;line-height:1.4; }
+.pet-catalog-card small { font-size:11px; }
+.pet-catalog-card .stat-badges { flex-wrap:wrap; }
+.pet-catalog-card .small-btn { width:100%;margin-top:8px;min-height:44px; }
+.pet-viewer { box-sizing:border-box;width:min(92vw,560px);max-height:92dvh;overflow:auto;padding:16px;background:#fff9e8;color:#3e4833;border:2px solid #929d76;border-radius:8px;box-shadow:0 5px #596344; }
+.pet-viewer::backdrop { background:#26332799; }
+.pet-viewer header { display:flex;position:static!important;inset:auto!important;height:auto!important;padding:0!important;background:none!important;align-items:center;justify-content:space-between; }
+.pet-viewer h2 { font-size:20px;margin:0; }
+.pet-viewer button { min-width:44px;min-height:44px;background:#e8e8cc;border:2px solid #b5bd97;border-radius:6px;color:inherit;cursor:pointer; }
+.pet-viewport { width:100%;height:min(56vh,380px);background:#eee8d4;border-radius:6px;margin:12px 0; }
+.pet-viewport canvas { display:block;width:100%;height:100%; }
+.pet-views { display:grid;grid-template-columns:repeat(4,1fr);gap:6px; }
+.pet-views [aria-pressed=true] { background:#f2d790;border-color:#8b804d; }
+.viewer-motion { margin-top:10px;width:100%; }
+@media(min-width:700px){.pet-catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
 .friend-face img { width: 56px; height: 60px; }
 .friend > div:nth-child(2) { flex: 1; min-width: 135px; }
 .friend small,.upgrade small { font-size: 8px; letter-spacing: .5px; color: #6b775c; }

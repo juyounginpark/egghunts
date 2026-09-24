@@ -566,6 +566,9 @@ def main():
         art=rows[100+i]
         pet.update(description=art['concept']+'. '+art['personality']+'.',color=art['colors']['primary'])
     catalog_path.write_text('// Stable gameplay IDs; visual descriptions follow docs/art/character-concepts.json.\nexport const STAGE_PET_ROWS = '+json.dumps(catalog,ensure_ascii=False,indent=2)+';\n',encoding='utf-8')
+    if not args.secrets_only:
+        from first_six_pets import author
+        author()  # The six 24³ originals supersede the older procedural anatomy.
     print('Authored',len(records),'models; player and save IDs preserved.')
 
 

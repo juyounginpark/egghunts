@@ -1,1 +1,26 @@
-{"schema":"alkong-symmetric-sculpt-v1","size":[50,50,50],"front":"-z","mirrorX":24.5,"concept":{"key":"pet-5","name":"풀빛 곰구리","stage":1,"slot":5,"boss":false,"anatomy":"bear","concept":"수호 곰 × 잎맥","silhouette":["작은 귀·큰 앞발과 좁은 어깨","햇빛을 모으는 넓은 잎 기관"],"personality":"무뚝뚝하지만 다정한","ecology":"초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.","colors":{"primary":"#97b971","accent":"#f2c66d"},"profile":{"width":11,"height":13,"depth":9,"ear":7,"tail":9,"stance":10},"symmetry":"x ↔ 49-x, 모든 신체·표정·기관 대칭","front":"-Z","lineage":"기존 수집종"},"operations":[["ellipsoid",24.5,18,27,10,13,9,1,"body",false],["ellipsoid",24.5,29,19,10,8,8,1,"head",false],["ellipsoid",16,36,21,3,4,2.5,2,"head",false],["tube",[[18,13,26],[19,4,25]],4,1,"left_leg",3],["ellipsoid",19,4,23,5,2,5,2,"left_leg",false],["tube",[[15,24,23],[12,18,18]],4,1,"left_arm",null],["tube",[[24.5,25,29],[24.5,33,32]],2,2,"body",null],["fin",[[24.5,29,29],[16.5,36,32],[21.5,30,37]],2,"body",1.5],["resample-solid",0.925,0.9400000000000001,0.8200000000000001]]}
+{
+  "schema": "alkong-authored-24-v1",
+  "size": [
+    24,
+    24,
+    24
+  ],
+  "mirrorX": 11.5,
+  "concept": {
+    "name": "곰구리",
+    "concept": "따뜻한 흙을 앞발로 다독이는 졸음 많은 곰",
+    "body": "폭넓은 몸과 아주 짧은 뒷다리, 묵직한 앞발",
+    "feature": "넓적한 얼굴 아래 두 개의 큰 앞발",
+    "face": "처진 눈꺼풀과 넓은 크림색 주둥이",
+    "idle": "천천히 졸다가 고개를 들고 다시 편안해짐",
+    "colors": [
+      "#94725e",
+      "#624d45",
+      "#dec4a0",
+      "#302d32",
+      "#fff0d7"
+    ],
+    "angle": 28
+  },
+  "source": "scripts/first_six_pets.py"
+}

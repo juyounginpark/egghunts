@@ -6,16 +6,16 @@
     "slot": 0,
     "boss": false,
     "anatomy": "sprout",
-    "concept": "씨앗 정령 × 잎맥",
+    "concept": "햇빛을 따라 두 잎을 기울이는 어린 콩 정령",
     "silhouette": [
-      "갈라진 뿌리 다리·잎 부채 머리",
-      "햇빛을 모으는 넓은 잎 기관"
+      "낮고 납작한 씨앗과 작은 뿌리 발",
+      "몸보다 높이 솟은 두 장의 두꺼운 잎"
     ],
-    "personality": "호기심 많은",
-    "ecology": "초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.",
+    "personality": "넓게 뜬 눈으로 위를 살핌",
+    "ecology": "두 잎을 번갈아 까딱하고 고개를 올림",
     "colors": {
-      "primary": "#97b971",
-      "accent": "#f2c66d"
+      "primary": "#94bd59",
+      "accent": "#477b4a"
     },
     "profile": {
       "width": 11,
@@ -25,9 +25,12 @@
       "tail": 12,
       "stance": 8
     },
-    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "symmetry": "x ↔ 23-x; 고양콩의 갈고리 꼬리만 의도적 비대칭",
     "front": "-Z",
-    "lineage": "기존 수집종"
+    "lineage": "기존 수집종",
+    "grid": 24,
+    "idle": "두 잎을 번갈아 까딱하고 고개를 올림",
+    "previewAngle": 32
   },
   {
     "key": "pet-1",
@@ -36,16 +39,16 @@
     "slot": 1,
     "boss": false,
     "anatomy": "rabbit",
-    "concept": "뛰는 초식수 × 잎맥",
+    "concept": "달빛을 귀에 모으는 수줍은 풀숲 토끼",
     "silhouette": [
-      "기울어진 긴 귀·큰 뒷발",
-      "햇빛을 모으는 넓은 잎 기관"
+      "좁고 긴 몸과 모아 든 앞발, 큰 뒷발",
+      "몸 높이만큼 긴 한 쌍의 귀"
     ],
-    "personality": "겁 많지만 재빠른",
-    "ecology": "초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.",
+    "personality": "작은 입과 멀찍이 벌어진 눈, 움츠린 목",
+    "ecology": "귀를 움찔한 뒤 몸을 살짝 웅크림",
     "colors": {
-      "primary": "#97b971",
-      "accent": "#f2c66d"
+      "primary": "#b5a5cc",
+      "accent": "#e5bed1"
     },
     "profile": {
       "width": 8,
@@ -55,9 +58,12 @@
       "tail": 13,
       "stance": 10
     },
-    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "symmetry": "x ↔ 23-x; 고양콩의 갈고리 꼬리만 의도적 비대칭",
     "front": "-Z",
-    "lineage": "기존 수집종"
+    "lineage": "기존 수집종",
+    "grid": 24,
+    "idle": "귀를 움찔한 뒤 몸을 살짝 웅크림",
+    "previewAngle": 26
   },
   {
     "key": "pet-2",
@@ -66,16 +72,16 @@
     "slot": 2,
     "boss": false,
     "anatomy": "mouse",
-    "concept": "저장쥐 × 잎맥",
+    "concept": "밤에 모은 빛을 별 꼬리에 저장하는 장난꾸러기 들쥐",
     "silhouette": [
-      "넓은 볼·말린 굵은 꼬리",
-      "햇빛을 모으는 넓은 잎 기관"
+      "작은 둥근 몸 앞에 짧은 발, 뒤로 큰 별 부채",
+      "몸의 두 배 너비로 펼친 입체 별 꼬리"
     ],
-    "personality": "부지런한",
-    "ecology": "초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.",
+    "personality": "살짝 치켜든 눈과 뒤를 돌아보는 머리",
+    "ecology": "별을 흔들고 고개를 뒤로 돌림",
     "colors": {
-      "primary": "#97b971",
-      "accent": "#f2c66d"
+      "primary": "#626ca3",
+      "accent": "#e9b84e"
     },
     "profile": {
       "width": 10,
@@ -85,9 +91,12 @@
       "tail": 14,
       "stance": 8
     },
-    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "symmetry": "x ↔ 23-x; 고양콩의 갈고리 꼬리만 의도적 비대칭",
     "front": "-Z",
-    "lineage": "기존 수집종"
+    "lineage": "기존 수집종",
+    "grid": 24,
+    "idle": "별을 흔들고 고개를 뒤로 돌림",
+    "previewAngle": -32
   },
   {
     "key": "pet-3",
@@ -96,16 +105,16 @@
     "slot": 3,
     "boss": false,
     "anatomy": "fox",
-    "concept": "꼬리 맹수 × 잎맥",
+    "concept": "풀숲에 납작 엎드려 바람을 읽는 여우",
     "silhouette": [
-      "쐐기 머리·몸보다 큰 꼬리 부채",
-      "햇빛을 모으는 넓은 잎 기관"
+      "낮고 긴 네 발 몸과 넓은 볼",
+      "등 뒤에서 커다랗게 꺾여 올라오는 붓 꼬리"
     ],
-    "personality": "영리하고 짓궂은",
-    "ecology": "초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.",
+    "personality": "가늘게 뜬 눈과 앞으로 나온 작은 코",
+    "ecology": "고개를 좌우로 살피며 꼬리를 천천히 움직임",
     "colors": {
-      "primary": "#97b971",
-      "accent": "#f2c66d"
+      "primary": "#d98a4e",
+      "accent": "#a95638"
     },
     "profile": {
       "width": 12,
@@ -115,9 +124,12 @@
       "tail": 15,
       "stance": 10
     },
-    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "symmetry": "x ↔ 23-x; 고양콩의 갈고리 꼬리만 의도적 비대칭",
     "front": "-Z",
-    "lineage": "기존 수집종"
+    "lineage": "기존 수집종",
+    "grid": 24,
+    "idle": "고개를 좌우로 살피며 꼬리를 천천히 움직임",
+    "previewAngle": 40
   },
   {
     "key": "pet-4",
@@ -126,16 +138,16 @@
     "slot": 4,
     "boss": false,
     "anatomy": "cat",
-    "concept": "지붕을 걷는 맹수 × 잎맥",
+    "concept": "이슬을 건드리려다 멈춘 당당한 고양이",
     "silhouette": [
-      "삼각 귀·고리처럼 말린 꼬리",
-      "햇빛을 모으는 넓은 잎 기관"
+      "몸보다 넓은 머리와 단단한 앉은 몸",
+      "큰 삼각 귀와 머리 옆까지 치켜든 갈고리 꼬리"
     ],
-    "personality": "도도하고 호기심 많은",
-    "ecology": "초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.",
+    "personality": "곧게 선 눈동자와 한쪽으로 돌린 고개",
+    "ecology": "고개를 돌리고 꼬리 끝을 들어 올림",
     "colors": {
-      "primary": "#97b971",
-      "accent": "#f2c66d"
+      "primary": "#e6d8b6",
+      "accent": "#8c999a"
     },
     "profile": {
       "width": 9,
@@ -145,9 +157,12 @@
       "tail": 16,
       "stance": 8
     },
-    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "symmetry": "x ↔ 23-x; 고양콩의 갈고리 꼬리만 의도적 비대칭",
     "front": "-Z",
-    "lineage": "기존 수집종"
+    "lineage": "기존 수집종",
+    "grid": 24,
+    "idle": "고개를 돌리고 꼬리 끝을 들어 올림",
+    "previewAngle": -30
   },
   {
     "key": "pet-5",
@@ -156,16 +171,16 @@
     "slot": 5,
     "boss": false,
     "anatomy": "bear",
-    "concept": "수호 곰 × 잎맥",
+    "concept": "따뜻한 흙을 앞발로 다독이는 졸음 많은 곰",
     "silhouette": [
-      "작은 귀·큰 앞발과 좁은 어깨",
-      "햇빛을 모으는 넓은 잎 기관"
+      "폭넓은 몸과 아주 짧은 뒷다리, 묵직한 앞발",
+      "넓적한 얼굴 아래 두 개의 큰 앞발"
     ],
-    "personality": "무뚝뚝하지만 다정한",
-    "ecology": "초원에 살며 햇빛을 모으는 넓은 잎 기관으로 환경에 적응한다. 풀빛의 형태를 기관의 구조로 표현한다.",
+    "personality": "처진 눈꺼풀과 넓은 크림색 주둥이",
+    "ecology": "천천히 졸다가 고개를 들고 다시 편안해짐",
     "colors": {
-      "primary": "#97b971",
-      "accent": "#f2c66d"
+      "primary": "#94725e",
+      "accent": "#624d45"
     },
     "profile": {
       "width": 11,
@@ -175,9 +190,12 @@
       "tail": 9,
       "stance": 10
     },
-    "symmetry": "x ↔ 49-x, 모든 신체·표정·기관 대칭",
+    "symmetry": "x ↔ 23-x; 고양콩의 갈고리 꼬리만 의도적 비대칭",
     "front": "-Z",
-    "lineage": "기존 수집종"
+    "lineage": "기존 수집종",
+    "grid": 24,
+    "idle": "천천히 졸다가 고개를 들고 다시 편안해짐",
+    "previewAngle": 28
   },
   {
     "key": "pet-6",
