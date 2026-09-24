@@ -33,6 +33,8 @@ export class OnlineGame{
   host.innerHTML=`<section class="login-card"><img src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><h1>알콩 원정대</h1><form id="room-login"><label for="login-email">이메일</label><input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com"/><details id="otp-fields" hidden><summary>CODE</summary><label for="login-code">인증 코드</label><input id="login-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]{6,8}"/></details><button id="login-submit" class="primary" type="submit">인증 코드 받기</button></form><button id="find-room" class="primary" ${data.session?'':'hidden'}>방 찾기</button><p id="login-status" role="status">최대 5명 · 함께 탐험해요</p><button id="switch-account" class="secondary" ${data.session?'':'hidden'}>다른 계정</button></section>`;
   const form=host.querySelector<HTMLFormElement>('#room-login')!,email=host.querySelector<HTMLInputElement>('#login-email')!,code=host.querySelector<HTMLInputElement>('#login-code')!,submit=host.querySelector<HTMLButtonElement>('#login-submit')!,find=host.querySelector<HTMLButtonElement>('#find-room')!,status=host.querySelector<HTMLElement>('#login-status')!,switchAccount=host.querySelector<HTMLButtonElement>('#switch-account')!;
   form.hidden=!!data.session;let sent=false;
+  form.insertAdjacentHTML('afterend',`<button id="guest-login" class="secondary" ${data.session?'hidden':''}>게스트로 시작</button><small id="guest-note" ${data.session&&!data.session.user.is_anonymous?'hidden':''}>게스트 기록은 이 브라우저에서 이어집니다. 로그아웃·브라우저 데이터 삭제 시 복구할 수 없어요.</small>`);
+  const guest=host.querySelector<HTMLButtonElement>('#guest-login')!,guestNote=host.querySelector<HTMLElement>('#guest-note')!;
   submit.textContent='로그인 메일 받기';
   host.querySelector('summary')!.textContent='코드로 인증';
   code.oninput=()=>{submit.textContent=code.value.trim()?'코드 확인':sent?'메일 다시 받기':'로그인 메일 받기';};
@@ -40,7 +42,7 @@ export class OnlineGame{
   await new Promise<void>(resolve=>{
    const {data:listener}=this.client.auth.onAuthStateChange((_event,session)=>{
     if(!session)return;
-    form.hidden=true;find.hidden=false;switchAccount.hidden=false;status.textContent='로그인 완료';
+    form.hidden=true;guest.hidden=true;guestNote.hidden=!session.user.is_anonymous;find.hidden=false;switchAccount.hidden=false;status.textContent=session.user.is_anonymous?'게스트 로그인 완료':'로그인 완료';
    });
    form.onsubmit=async event=>{
     event.preventDefault();submit.disabled=true;
@@ -49,7 +51,13 @@ export class OnlineGame{
      else{const {error}=await this.client.auth.verifyOtp({email:email.value.trim(),token:code.value.trim(),type:'email'});if(error)throw error;form.hidden=true;find.hidden=false;switchAccount.hidden=false;status.textContent='로그인 완료';}
     }catch(err){status.textContent=err instanceof Error?err.message:'인증하지 못했어요.';}finally{submit.disabled=false;}
    };
-   switchAccount.onclick=async()=>{await this.client.auth.signOut();form.hidden=false;find.hidden=true;switchAccount.hidden=true;sent=false;email.readOnly=false;code.value='';code.required=false;host.querySelector<HTMLElement>('#otp-fields')!.hidden=true;submit.textContent='로그인 메일 받기';};
+   guest.onclick=async()=>{
+    guest.disabled=submit.disabled=true;status.textContent='게스트로 연결 중…';
+    try{const {error}=await this.client.auth.signInAnonymously();if(error)throw error;}
+    catch(err){status.textContent=err instanceof Error?err.message:'게스트 로그인에 실패했어요.';}
+    finally{guest.disabled=submit.disabled=false;}
+   };
+   switchAccount.onclick=async()=>{const {error}=await this.client.auth.signOut();if(error){status.textContent=error.message;return;}this.pending=null;form.hidden=false;guest.hidden=false;guestNote.hidden=false;find.hidden=true;switchAccount.hidden=true;sent=false;email.readOnly=false;code.value='';code.required=false;host.querySelector<HTMLElement>('#otp-fields')!.hidden=true;submit.textContent='로그인 메일 받기';};
    find.onclick=async()=>{
     find.disabled=true;status.textContent='빈자리를 찾고 있어요…';
     try{this.pending={operation:'join',id:crypto.randomUUID(),input:{x:0,z:0},commands:[]};await this.flush();this.active=true;listener.subscription.unsubscribe();resolve();}
@@ -96,12 +104,23 @@ export class OnlineGame{
    this.lastSent=performance.now();
    this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,commands:this.queue.splice(0,16)};
    const {data,error}=await this.client.auth.getSession();if(error||!data.session)throw Error('다시 로그인해 주세요.');
+   let session=data.session;
    const started=performance.now();
-   const response=await fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${data.session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify(this.pending),signal:AbortSignal.timeout(10000)});
-   const state=await response.json();
-   if(!response.ok){if(state.error==='ROOM_EXPIRED')this.pending={...this.pending,operation:'join'};throw Error(errorText[state.error]??'서버에 연결하지 못했어요. 다시 시도해 주세요.');}
-   this.roundTrip=performance.now()-started;
-   this.pending=null;this.connected=true;this.lastError='';this.apply(state);
+   for(let attempt=0;attempt<4;attempt++){
+    const response=await fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify(this.pending),signal:AbortSignal.timeout(10000)});
+    const state=await response.json();
+    if(response.ok){
+     this.roundTrip=performance.now()-started;
+     this.pending=null;this.connected=true;this.lastError='';this.apply(state);return;
+    }
+    if(attempt===0&&response.status===401){const refreshed=await this.client.auth.refreshSession();if(!refreshed.error&&refreshed.data.session){session=refreshed.data.session;continue;}}
+    if(state.error==='ROOM_EXPIRED')this.pending={...this.pending!,operation:'join'};
+    if(attempt<3&&['ROOM_EXPIRED','RETRY','RATE_LIMIT'].includes(state.error)){
+     await new Promise(resolve=>setTimeout(resolve,100+Math.random()*150));continue;
+    }
+    console.warn('Room request failed',response.status,state.error??state.code??'UNKNOWN');
+    throw Error(errorText[state.error]??(['RETRY','RATE_LIMIT'].includes(state.error)?'방 동기화가 지연되고 있어요. 다시 연결할게요.':`서버 응답 오류 (${response.status}). 다시 연결할게요.`));
+   }
   };
   this.busy=work().catch(error=>{this.connected=false;this.retryAt=performance.now()+1500;const message=error instanceof Error?error.message:'연결이 끊겼어요.';if(this.active&&this.lastError!==message){this.notify(message);this.lastError=message;}throw error;}).finally(()=>{this.busy=null;});
   return this.busy;

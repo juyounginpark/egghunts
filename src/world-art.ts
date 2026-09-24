@@ -18,6 +18,26 @@ let villageCache:Block[]|undefined;
 export function villageArt(){
  if(villageCache)return villageCache;
  const {blocks,b,roof,tree,arch,ring}=builder();
+ // Continuous earth apron joins the village edge (-5) to the route (-6).
+ b(0,-.5,-5.5,18,.9,1,0xc9dda0);
+ for(let x=-2;x<=2;x++)b(x,-.01,-5.5,.98,.07,1,0xd8d0a5);
+ // Low masonry perimeter, with an open central expedition gate.
+ const wall=(x:number,z:number,w:number,d:number)=>{
+  b(x,.44,z,w,1,d,stone);b(x,1,z,w+.12,.16,d+.12,cream);
+ };
+ for(const side of [-1,1]){
+  for(let z=-3;z<=23;z+=2)wall(side*15,z,.7,2);
+  wall(side*9,-4.8,12,.7);
+  for(const z of [-4.8,3,11,19,24]){
+   b(side*15,.65,z,1.1,1.4,1.1,stone);b(side*15,1.4,z,1.25,.15,1.25,cream);
+  }
+  // Entrance planters and stacked supply crates frame the path without blocking it.
+  b(side*4.4,.2,-5.4,1.6,.5,.8,stone);
+  for(let i=0;i<3;i++){b(side*(3.9+i*.5),.63,-5.4,.4,.4,.6,0x81965e);b(side*(3.9+i*.5),.87,-5.4,.18,.14,.18,gold);}
+  b(side*3.1,.8,-5.25,.16,1.6,.16,wood);b(side*3.1,1.7,-5.25,.45,.45,.45,gold);b(side*3.1,1.98,-5.25,.6,.12,.6,dark);
+  for(let i=0;i<2;i++)b(side*(5.5+i*.65),.32,-3.8,.58,.65,.65,wood);
+ }
+ for(let x=-14;x<=14;x+=2)wall(x,24,2,.7);
  // Cut stone plaza and walking lanes; the main expedition gate stays clear.
  for(let z=-4;z<=22;z++)for(let x=-2;x<=2;x++)b(x,.006,z,.94,.035,.94,(x+z)%3?0xdfd1ad:0xc9ba94);
  for(const z of [2,12,20])for(let x=-12;x<=12;x++)b(x,.012,z,.96,.04,1.7,0xd9c7a0);

@@ -2,7 +2,7 @@ import {GameState,type Save,type WorldEgg,type Boss} from './game';
 import type {HazardManager} from './hazards';
 
 export type RuntimeState={save:Save;fields:Record<string,unknown>;hazards:ReturnType<HazardManager['snapshot']>};
-const omitted=new Set(['save','world','bosses','hazards','mapCollision','now','random','events','routeCache']);
+const omitted=new Set(['save','world','bosses','hazards','mapCollision','now','random','events','routeCache','routeStart']);
 // Only the trusted server produces this format. Clients never upload a save.
 export function exportRuntime(game:GameState):RuntimeState{
  const save=game.snapshot();delete save.world;delete save.bosses;

@@ -225,7 +225,7 @@ export class GameState {
   velocity={x:0,z:0};
   get progression(){return this.save.progression!;}
   private routeStart=0;private routeCache:ReturnType<typeof routeSegments>=[];
-  get route(){if(this.routeStart!==this.progression.stage){this.routeStart=this.progression.stage;this.routeCache=routeSegments(this.routeStart);}return this.routeCache;}
+  get route(){if(!this.routeCache.length||this.routeStart!==this.progression.stage){this.routeStart=this.progression.stage;this.routeCache=routeSegments(this.routeStart);}return this.routeCache;}
   get stage(){return STAGES[routeStage(this.progression.stage,this.z)-1];}
   get recommendedSpeed(){return recommendedRouteSpeed(this.route.find(r=>r.stage===this.stage.id)!.home,this.stage.id);}
   get stageOffset(){return (this.stage.id-this.progression.stage)*ROUTE.length;}

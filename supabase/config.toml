@@ -1,6 +1,7 @@
 project_id = "leblcdiqsyxqzwlsnkio"
 
 [auth]
+enable_anonymous_sign_ins = true
 site_url = "https://juyounginpark.github.io/egghunts/"
 additional_redirect_urls = ["https://juyounginpark.github.io/egghunts/"]
 # The default mail provider sends a magic link. Enable the code template only
