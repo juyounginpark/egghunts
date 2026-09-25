@@ -18,7 +18,18 @@ import {farmGym} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianChaseSpeed,stageDamage,type HazardDefinition} from "./stage-data";
-export type Egg = { id: string; type: number; hp: number; distance: number; stageId?:number; variant?:number; special?:boolean };
+export type Egg = { id: string; type: number; hp: number; hpVersion?:2; distance: number; stageId?:number; variant?:number; special?:boolean };
+// Version each egg because stored, carried and shared-room eggs have separate lifetimes.
+export function migrateEggHealth(eggs:(Egg|null|undefined)[]){
+  for(const egg of eggs){
+    if(!egg||egg.hpVersion===2)continue;
+    if(egg.hpVersion!==undefined||!EGGS[egg.type]||!Number.isFinite(egg.hp)||egg.hp<0)throw Error('Invalid egg health');
+    const max=EGGS[egg.type].hp;
+    const hp=egg.hp*10;
+    if(hp>max+Number.EPSILON*max*8)throw Error('Invalid legacy egg health');
+    egg.hp=Math.min(max,hp);egg.hpVersion=2;
+  }
+}
 export type WorldEgg = Egg & {
   x: number;
   z: number;
@@ -109,6 +120,7 @@ export function freshSave(now: number): Save {
 export function parseSave(raw: string | null, now: number): Save {
   if (!raw) return freshSave(now);
   const s = JSON.parse(raw) as Save;
+  migrateEggHealth([...(Array.isArray(s.eggs)?s.eggs:[]),...(Array.isArray(s.world)?s.world:[]),s.expedition?.carried,...(Array.isArray(s.bosses)?s.bosses.flatMap(b=>b.loot?[b.loot]:[]):[])]);
   s.dragonClues??={};validateDragonClues(s.dragonClues);
   s.obtainedPets??=Array.isArray(s.mongles)?s.mongles.flatMap((n,i)=>n?[i]:[]):[];
   if(!Array.isArray(s.obtainedPets)||!s.obtainedPets.every(i=>Number.isInteger(i)&&!!MONGLES[i])||new Set(s.obtainedPets).size!==s.obtainedPets.length)throw new Error("Invalid discovery record");
@@ -441,6 +453,7 @@ export class GameState {
     public random: () => number = Math.random,
     hydrateOnly=false,
   ) {
+    migrateEggHealth([...save.eggs,...(save.world??[]),save.expedition?.carried,...(save.bosses??[]).flatMap(b=>b.loot?[b.loot]:[])]);
     save.dragonClues??={};
     this.mapCollision.setFarm(villageMapColliders());
     if(!save.progression){save.progression=newProgression();save.progression.seenEggs=[...save.discovered];save.progression.hatchedPets=save.mongles.flatMap((n,i)=>n?[i]:[]);save.progression.distanceRecord=save.best;}
@@ -602,6 +615,7 @@ export class GameState {
           id: `${boss.stage}-${slot}-${this.now()}-${this.random()}`,
           type,
           hp: EGGS[type].hp,
+          hpVersion:2 as const,
           distance: Math.abs(z),
           x,
           z,
@@ -618,7 +632,7 @@ export class GameState {
     const dragon=this.random()<BALANCE.secretDragonEggChance;
     const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=dragon?6:FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
     const type=tier*REGIONS.length+REGIONS.length-1,z=-this.route.at(-1)!.end+FINAL_GUARDIAN.eggEndOffset;
-    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:EGGS[type].hp,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
+    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:EGGS[type].hp,hpVersion:2,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
   }
   get nightRemaining() {
     return Math.max(0, Math.ceil((this.nightAt - this.now()) / 1000));
@@ -775,6 +789,7 @@ export class GameState {
             id: e.id,stageId:e.stageId,variant:e.variant,special:e.special,
             type: e.type,
             hp: e.hp,
+            hpVersion:e.hpVersion,
             distance: e.distance,
           });
           this.save.selected ??= e.id;
