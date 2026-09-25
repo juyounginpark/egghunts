@@ -1,6 +1,7 @@
 ﻿import * as T from "three";
 import { EGGS, RARITIES, MONGLES } from "./data";
-import {appearanceOf,stageEggCells,type EggAppearance} from "./stage-eggs";
+import {eggDesignAppearance,stageEggCells,type EggAppearance} from "./stage-eggs";
+import {EGG_EFFECT_FAMILIES} from './egg-design';
 import { voxelModel, proceduralVoxelModel } from "./voxel";
 const cube = new T.BoxGeometry(1, 1, 1);
 const materials = RARITIES.map(() => new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.8,blending:T.AdditiveBlending,depthWrite:false}));
@@ -10,11 +11,12 @@ const palettes=[[0xaaff88,0xffa1cb,0xffef95],[0x7cf8ff,0xffd16b,0xb59aff],[0x67d
 const reducedMotion=typeof window!=='undefined'?window.matchMedia('(prefers-reduced-motion: reduce)'):null;
 function aura(g:T.Group,tier:number,seed:number,family:number) {
   g.userData.tier=tier;g.userData.effectSeed=seed;g.userData.effectFamily=family;
-  const sparks = new T.InstancedMesh(cube,materials[tier],g.userData.petId>=100?[2,3,4,6,8,10,14][tier]:[2,4,10,24,40,64,96][tier]);
+  const sparks = new T.InstancedMesh(cube,materials[tier],g.userData.eggDesign?[0,2,3,5,8,12,16][tier]:g.userData.petId>=100?[2,3,4,6,8,10,14][tier]:[2,4,10,24,40,64,96][tier]);
   sparks.name='sparks'; sparks.frustumCulled=false;g.add(sparks);
   for(let i=0;i<sparks.instanceMatrix.count;i++){
     tint.set(RARITIES[tier].color).lerp(accent.setHex(palettes[family][(i+seed)%3]),tier>=3?.65:.2);
-    if(tier===6&&i%5===0)tint.setHSL((i*.13+seed*.07)%1,.85,.72);
+    if(g.userData.eggAccent)tint.set(g.userData.eggAccent).lerp(accent.setHex(0xfff5de),i%3*.2);
+    else if(tier===6&&i%5===0)tint.setHSL((i*.13+seed*.07)%1,.85,.72);
     sparks.setColorAt(i,tint);
   }
   // InstancedMesh starts with identity transforms: initialize before its first
@@ -23,8 +25,10 @@ function aura(g:T.Group,tier:number,seed:number,family:number) {
   return g;
 }
 export function eggVisual(type:number,appearance?:EggAppearance){
- const a=appearance&&appearanceOf(appearance);if(!a)return aura(voxelModel(`egg-${type}`),EGGS[type].tier,type,EGGS[type].region);
- const data=stageEggCells(a.stage,a.variant),model=proceduralVoxelModel(`stage-egg:${a.stage}:${a.variant}`,data.cells,data.colors);model.userData.appearance=`${a.stage}:${a.variant}`;return aura(model,EGGS[type].tier,a.stage*7+a.variant,(a.stage-1)%5);
+ const a=eggDesignAppearance({...appearance,type});
+ const data=stageEggCells(a.stage,a.variant,a.tier),model=proceduralVoxelModel(`toy-egg:${a.stage}:${a.variant}:${a.tier}`,data.cells,data.colors);
+ model.userData.appearance=`${a.stage}:${a.variant}:${a.tier}`;model.userData.eggDesign=true;model.userData.eggAccent=data.colors[1];
+ return aura(model,a.tier,a.stage*7+a.variant,EGG_EFFECT_FAMILIES[a.stage-1]);
 }
 export function animateEgg(g:T.Object3D,time:number,low=false){
   const sparks=g.getObjectByName('sparks') as T.InstancedMesh|undefined;
@@ -61,6 +65,19 @@ export function animateEgg(g:T.Object3D,time:number,low=false){
       }
     }
     if(g.userData.petId>=100){x=Math.cos(a)*.95;z=Math.sin(a)*.95;y=.04+(i%3)*.035;sy=.025;}
+    if(g.userData.eggDesign){
+      // Small material-specific motions remain outside the silhouette. No beams,
+      // generic luminous wings or crowns covering the egg's actual structure.
+      const pulse=.8+.2*Math.sin(t*1.8+i),radius=.56+phase*.13;
+      x=Math.cos(a)*radius;z=Math.sin(a)*radius;y=.18+phase*.75;
+      sx=sz=.025*pulse;sy=sx;
+      if(family===0){sx=.065*pulse;sy=.02;z=Math.sin(a*.7)*radius;}
+      else if(family===1){y=.4+Math.sin(a)*.15;sx=.045;sy=.025;}
+      else if(family===2){y=.12+phase*.95;sy=.035;}
+      else if(family===3){y=.15+phase*.8;x*=1-phase*.25;z*=1-phase*.25;sy=.055*pulse;}
+      else{y=.55+Math.sin(a)*.38;sx=i%3===0?.065:.025;}
+      if(tier>=5&&i%3===0){x=Math.cos(a)*.65;z=Math.sin(a)*.65;y=.035;sx=.08;sy=.015;sz=.025;}
+    }
     dummy.position.set(x,y,z);dummy.scale.set(sx,sy,sz);dummy.rotation.set(a*.4,a,a*.25);dummy.updateMatrix();sparks.setMatrixAt(i,dummy.matrix);
   }
   sparks.instanceMatrix.needsUpdate=true;

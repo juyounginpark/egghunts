@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>알 디자인 비교</title>
+<style>
+body{margin:0;padding:20px;background:#f5efd9;color:#35432f;font-family:system-ui,sans-serif}header{display:flex;align-items:center;flex-wrap:wrap;gap:16px}h1{font-size:20px}select,button{font:inherit;min-height:44px;padding:8px;border:2px solid #77815c;border-radius:8px;background:#fff9e9;color:inherit}main{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}article{padding:10px;background:#fff9e9;border:2px solid #89946c;border-radius:10px;text-align:center}img{display:block;width:100%;max-width:192px;margin:auto}h2{font-size:14px;margin:4px}small{display:block}body[data-view="silhouette"] img{filter:brightness(0)}body[data-view="gray"] img{filter:grayscale(1)}p{font-size:13px}
+</style>
+<header><h1>알 디자인 비교</h1><select id="stage" aria-label="스테이지"></select><select id="view" aria-label="표시 방식"><option value="color">컬러</option><option value="gray">회색</option><option value="silhouette">실루엣</option></select></header>
+<p>개발 서버 전용 · 실제 게임과 같은 복셀 데이터로 만든 아이콘입니다. 각 등급의 5개 변형과 전용 드래곤 알을 비교합니다.</p>
+<main></main>
+<script type="module">
+import {STAGES} from '/src/stage-data.ts';
+import {RARITIES} from '/src/data.ts';
+import {eggIcon,eggName} from '/src/stage-eggs.ts';
+const select=document.querySelector('#stage'),main=document.querySelector('main');
+for(const s of STAGES){const o=document.createElement('option');o.value=s.id;o.textContent=`${s.id} · ${s.name}`;select.append(o);}
+function render(){
+ main.replaceChildren();const stage=Number(select.value),region=Math.floor((stage-1)/4);
+ for(let tier=0;tier<7;tier++)for(let variant=0;variant<5;variant++)card({type:tier*5+region,stageId:stage,variant},RARITIES[tier].name);
+ card({type:30+region,stageId:stage,variant:5},'전용 드래곤');
+}
+function card(e,rarity){const a=document.createElement('article'),img=document.createElement('img'),h=document.createElement('h2'),tag=document.createElement('small');img.src=eggIcon(e);img.alt=eggName(e);h.textContent=eggName(e);tag.textContent=rarity;a.append(img,h,tag);main.append(a);}
+select.onchange=render;document.querySelector('#view').onchange=e=>document.body.dataset.view=e.target.value;render();
+</script></html>
