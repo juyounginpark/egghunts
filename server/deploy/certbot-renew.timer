@@ -1,0 +1,8 @@
+[Unit]
+Description=Twice daily game HTTPS renewal
+[Timer]
+OnCalendar=*-*-* 00,12:00:00
+RandomizedDelaySec=3600
+Persistent=true
+[Install]
+WantedBy=timers.target

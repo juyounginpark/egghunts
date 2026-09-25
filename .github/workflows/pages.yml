@@ -23,6 +23,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build:pages
+        env:
+          VITE_GAME_SERVER_URL: https://egghunts.54-180-115-11.sslip.io/game
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

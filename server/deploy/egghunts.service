@@ -1,0 +1,27 @@
+[Unit]
+Description=EggHunts authoritative room host
+After=network-online.target
+Wants=network-online.target
+[Service]
+User=egghunts
+Group=egghunts
+WorkingDirectory=/opt/egghunts
+EnvironmentFile=/etc/egghunts.env
+ExecStart=/usr/bin/node --max-old-space-size=384 /opt/egghunts/host.mjs
+Restart=on-failure
+RestartSec=5
+StateDirectory=egghunts
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/egghunts
+MemoryMax=550M
+CPUQuota=80%
+TasksMax=64
+LimitNOFILE=2048
+TimeoutStopSec=20
+[Install]
+WantedBy=multi-user.target

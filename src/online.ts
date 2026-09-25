@@ -10,6 +10,9 @@ import type {ChatMessage} from './multiplayer';
 
 export const SUPABASE_URL=import.meta.env.VITE_SUPABASE_URL||'https://leblcdiqsyxqzwlsnkio.supabase.co';
 const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_2KTon_WzPAci5G4dLyZ5Ww_bPgwmiig';
+// Login remains on Supabase; all room operations must use the same game host.
+const GAME_URL=import.meta.env.VITE_GAME_SERVER_URL||`${SUPABASE_URL}/functions/v1/game`;
+const HOSTED_EDGE=!import.meta.env.VITE_GAME_SERVER_URL;
 type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];chat?:ChatMessage|null;eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
@@ -47,7 +50,7 @@ export class OnlineGame{
  private socketRequest:{id:string;resolve:(value:Response)=>void;reject:()=>void;timer:number}|null=null;
  private connectSocket(warm=false){
   if(this.leaving||(warm?!!this.warmSocket:!!this.socket)||performance.now()<this.socketRetryAt)return;
-  const socket=new WebSocket(`${SUPABASE_URL.replace(/^http/,'ws')}/functions/v1/game`);
+  const socket=new WebSocket(GAME_URL.replace(/^http/,'ws'));
   if(warm){this.warmSocket=socket;this.warmReady=false;}else this.socket=socket;
   const baseline=new Map<string,unknown>();
   const opened=window.setTimeout(()=>{if(socket.readyState===WebSocket.CONNECTING||socket===this.warmSocket&&!this.warmReady)socket.close();},5000);
@@ -76,6 +79,7 @@ export class OnlineGame{
  }
  private scheduleWarmSocket(){
   clearTimeout(this.warmTimer);
+  if(!HOSTED_EDGE)return;
   // Hosted sockets were observed dropping after 24–31s under sustained play,
   // before our 110s wall-clock close. Prepare ahead of that observed window.
   this.warmTimer=window.setTimeout(()=>this.connectSocket(true),15000);
@@ -103,7 +107,7 @@ export class OnlineGame{
    }
   }
   if(this.leaving)throw Error('LEFT_ROOM');
-  return fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(request),signal:AbortSignal.timeout(10000)});
+  return fetch(GAME_URL,{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(request),signal:AbortSignal.timeout(10000)});
  }
  constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){
   document.addEventListener('visibilitychange',()=>{if(document.hidden)this.halt();});
@@ -118,7 +122,7 @@ export class OnlineGame{
   clearInterval(this.syncTimer);this.syncTimer=undefined;this.vector={x:0,z:0,slow:false};this.queue=[];this.pending=null;
   for(const complete of this.completions.values())complete(false);this.completions.clear();
   if(!this.accessToken)return;
-  try{await fetch(`${SUPABASE_URL}/functions/v1/game`,{method:'POST',keepalive:true,headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${this.accessToken}`,'Content-Type':'application/json'},body:JSON.stringify({operation:'leave'}),signal:AbortSignal.timeout(5000)});}
+  try{await fetch(GAME_URL,{method:'POST',keepalive:true,headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${this.accessToken}`,'Content-Type':'application/json'},body:JSON.stringify({operation:'leave'}),signal:AbortSignal.timeout(5000)});}
   catch{/* A crashed/offline browser is also removed by the server membership lease. */}
  }
  async enter(host:HTMLElement){
