@@ -127,7 +127,7 @@ export const REGIONS = [
 export const RARITIES = [
   {
     name: "C",
-    chance: 47.5,
+    chance: 59.83,
     color: "#a8c393",
     size: 5,
     scale: 0.22,
@@ -136,7 +136,7 @@ export const RARITIES = [
   },
   {
     name: "B",
-    chance: 28,
+    chance: 35.27,
     color: "#65cfa1",
     size: 10,
     scale: 0.44,
@@ -145,7 +145,7 @@ export const RARITIES = [
   },
   {
     name: "A",
-    chance: 15,
+    chance: 3,
     color: "#60bafa",
     size: 20,
     scale: 0.88,
@@ -154,7 +154,7 @@ export const RARITIES = [
   },
   {
     name: "S",
-    chance: 7,
+    chance: 1.4,
     color: "#bd8bfa",
     size: 35,
     scale: 1.54,
@@ -163,7 +163,7 @@ export const RARITIES = [
   },
   {
     name: "SS",
-    chance: 1.75,
+    chance: 0.35,
     color: "#ffc761",
     size: 55,
     scale: 2.42,
@@ -172,7 +172,7 @@ export const RARITIES = [
   },
   {
     name: "SSS",
-    chance: 0.65,
+    chance: 0.13,
     color: "#ff87bc",
     size: 75,
     scale: 3.3,
@@ -181,7 +181,7 @@ export const RARITIES = [
   },
   {
     name: "Secret",
-    chance: 0.1,
+    chance: 0.02,
     color: "#b5ffff",
     size: 100,
     scale: 4.4,
