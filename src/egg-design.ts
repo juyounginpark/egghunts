@@ -65,7 +65,7 @@ export function designEgg(stage:number,variant:number,tier=0){
  // named variants retain their own shell/lantern/key/etc. outline, not the same hat.
  if(variant===0||dragon)switch(stage){
   case 1: // Seed husk with two broad leaves; acorn cap / blossom cup / sprout.
-   ring(crown-2,rx+1,rz+1,variant===0?4:8);leaf(6.5,crown,variant===2?2:8);
+   ring(crown-2,rx+1,rz+1,variant===0?4:8);leaf(6.5,crown,8);
    if(rank>=2)leaf(5.5,5,2);break;
   case 2: // Toy seam and chunky interlocking studs, never tiny pixel speckles.
    box(9.5,crown-1,9.5,10,2,10,2);pair(6.5,crown+1,9.5,4,2,4,3);
