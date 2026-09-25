@@ -39,4 +39,6 @@
 - 배포 번들 생성 성공, EC2 프로세스 실행, nginx 구성 적용, 공개 HTTPS 인증서 확인.
 - 격리 `scripts/qa/ec2-host.mjs`: 5인 정원, 공유 알, 초과 정원 거부, sections 스트림, 위조 인증 실패 캐시, 퇴장, 비동기 체크포인트, 프로세스 재시작 후 저장 복구 통과.
 - 실제 EC2 소켓 진단은 `scripts/qa/ec2-live.mjs`, 결과 `artifacts/performance/ec2-live.json`. 실기기/브라우저 렌더링 FPS, 20명 부하, 장시간 이동 시험과 구분한다.
+- 공개 HTTPS/WS 2인 × 180회: 중앙값 26.6/24.1ms, P95 56.8/54.4ms, 최대 161.9/148.4ms, 서버 내부 P95 8.7/9.7ms. 약 40초 동안 두 연결이 유지되고 모든 업데이트가 200이었다. 진단 계정은 퇴장·체크포인트 대기 후 삭제했다. 과거 Edge 측정과 동시 조건의 A/B 시험은 아니다.
+- 운영 소유권을 EC2로 전환했고 /readyz=true를 확인했다. 게임 프런트는 GitHub Pages 배포로 주소를 반영한다.
 - AWS Standard/예산 알림/시드니 정리 및 Supabase CAPTCHA는 미확인·미적용.
