@@ -1,5 +1,4 @@
 import {reorderStages,OLD_TO_STAGE} from './stage-order';
-import {softenGrowth} from './growth-curve';
 export const ROAD_WIDTH_SCALE=2;
 export type Shape='ellipse'|'line'|'cone'|'ring';
 export type Targeting='predict'|'fixed'|'track'|'sweep';
@@ -35,7 +34,11 @@ documentRows[3]=['화산 대장간',0x62545b,0xf29b58,'모루 · 풀무 · 용�
 documentRows[18]=['공허의 틈',0x373343,0xd5cbb7,'빈 돌 고리 · 끊긴 암반 · 공백','void',47,57];
 documentRows[19]=['창조주의 정원',0xc3cab7,0xe2c685,'최초의 나무 · 흑토 · 씨앗','creation',60,60];
 export const STAGES=documentRows.map(([name,color,accent,description,kit,minLevel,maxLevel],i)=>({id:i+1,name,color,accent,description,kit,minLevel,maxLevel,safe:i<4}));
-export const STAGE_DIFFICULTY={minimumDamage:40,damagePerStage:20,recommendedSpeedMultiplier:1.4,speedSoftThreshold:1000};
+export const STAGE_DIFFICULTY={minimumDamage:40,damagePerStage:20};
+// Displayed speed targets, already softened above 1K. Baseline: 1.7 * 1.4^(stage-1)
+// with three previous-stage B speed pets (HP / 80 bonus each), rounded upward.
+// Keep these separate from boss movement speed and the player's movement cap.
+export const STAGE_RECOMMENDED_SPEED=[1.7,3.6,6.7,14,38,86,200,450,1010,1360,1710,2060,2400,2750,3090,3440,3780,4130,4480,4820] as const;
 export const STAGE_STEPS=[{damage:1,cooldown:1,density:1,tint:1.08},{damage:1.25,cooldown:.85,density:1.2,tint:1},{damage:1.5,cooldown:.7,density:1.4,tint:.88}];
 export const FINAL_GUARDIAN={stage:20,scale:3,bossEndOffset:12,eggEndOffset:23,minimumEggTier:4};
 export function stageDamage(stage:number,step=1){return Math.round((STAGE_DIFFICULTY.minimumDamage+(stage-1)*STAGE_DIFFICULTY.damagePerStage)*STAGE_STEPS[step-1].damage);}
@@ -154,6 +157,6 @@ export function guardianPursuitSpeed(stage:number,playerSpeed:number,distance:nu
  if(excess<=0)return guardianChaseSpeed(stage,playerSpeed);
  return Math.min(BOSS_MOVEMENT.catchupMaxSpeed,Math.max(0,escapeSpeed)+BOSS_MOVEMENT.catchupMinSpeed+excess*BOSS_MOVEMENT.catchupGain);
 }
-export function recommendedRouteSpeed(_depth:number,stage:number){return softenGrowth(ROUTE.baseRecommendedSpeed*STAGE_DIFFICULTY.recommendedSpeedMultiplier**(stage-1),STAGE_DIFFICULTY.speedSoftThreshold);}
+export function recommendedRouteSpeed(_depth:number,stage:number){return STAGE_RECOMMENDED_SPEED[Math.max(0,Math.min(STAGE_RECOMMENDED_SPEED.length-1,Math.floor(stage)-1))];}
 export const GUARDIAN_ATTACKS=new Set(['hay','train','ink','lava-breath','tentacle','sweep','locker','book','drone','scorpion','stomp','raptor','wisps','club','lightning','medusa','ufo','nightmare','vine','mantis','magnet','void-hand','memory-tentacle','memory-lightning','memory-ufo','memory-meteor','creation-wave']);
 
