@@ -11,6 +11,30 @@
     "form": "clam",
     "motif": "galaxy",
     "prompt": "넓고 낮은 보라색 껍질 두 장 사이에 크림색 진주 얼굴을 두어라. 껍질 안쪽에는 청록 은하띠 하나와 별점 세 개만 넣는다. 껍질이 열리면 진주가 조금 떠오르고 안쪽 띠가 느리게 밝아진다.",
+    "references": {
+      "form": {
+        "reference": "R18-05",
+        "id": 284,
+        "name": "토성고양이",
+        "path": "public/models/pet-284.json",
+        "sha256": "af1829b3aded4b2168965c61d67db78b0caa9aa2aeee458c695684f533bbdef7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-08",
+        "id": 287,
+        "name": "성운문어",
+        "path": "public/models/pet-287.json",
+        "sha256": "1898a34fb2e3707f879aeb10f00136fc70200aa23cc81fb7d8ea20087282b843",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#8566ad"
   },
   "assembly": {

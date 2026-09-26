@@ -11,6 +11,30 @@
     "form": "bear",
     "motif": "cloudcushion",
     "prompt": "넓은 아이보리 몸과 짧은 갈색 귀의 곰을 푸른 구름방석 위에 앉혀라. 목에는 작은 자주색 보자기를 두르고 앞발로 둥근 찻잔을 받친다. 숨을 내쉴 때 방석이 낮아졌다 떠오르고 차의 김이 가늘게 흐른다.",
+    "references": {
+      "form": {
+        "reference": "R09-05",
+        "id": 194,
+        "name": "장승곰",
+        "path": "public/models/pet-194.json",
+        "sha256": "09d722d3478b904d2818fd4542f8632abd00b2c630b14e19bfc54351426054a4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-08",
+        "id": 197,
+        "name": "청자두꺼비",
+        "path": "public/models/pet-197.json",
+        "sha256": "eefb2a2c0cc98a038c4479907fde1cdab6441b90500ab74e8ea8f0b89c6ed82e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

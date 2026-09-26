@@ -11,6 +11,30 @@
     "form": "fish",
     "motif": "sail",
     "prompt": "짧고 넓은 청색 몸과 작은 주둥이 위에 커다란 주황 돛지느러미를 세워라. 배는 크림색, 꼬리는 남색 두 갈래로 나눈다. 고개를 돌릴 때 돛이 기울어 접히며 얼굴은 계속 드러나게 한다.",
+    "references": {
+      "form": {
+        "reference": "R03-08",
+        "id": 127,
+        "name": "노을 돌고래",
+        "path": "public/models/pet-127.json",
+        "sha256": "5b927912bf654328641847b3b5419710b82c00686a715fdf0966f0fee82ca196",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-05",
+        "id": 124,
+        "name": "파도 가오리",
+        "path": "public/models/pet-124.json",
+        "sha256": "d8e7af9bf7bbe962758aea0a6775a209c019aaf52d2944d6d40deb126c2cafce",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#658fbd"
   },
   "assembly": {

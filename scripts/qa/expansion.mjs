@@ -8,7 +8,7 @@ const baseline=JSON.parse(await readFile('docs/art/expansion-baseline.json','utf
 await mkdir('artifacts/expansion',{recursive:true});
 const oldSource=execFileSync('git',['-c',`safe.directory=${process.cwd().replaceAll('\\','/')}`,'show',`${baseline.commit}:src/data.ts`],{encoding:'utf8'});
 await writeFile('artifacts/expansion/old-data.ts',oldSource.replaceAll("from './","from '../../src/"));
-const server=await createServer({server:{middlewareMode:true}});
+const server=await createServer({optimizeDeps:{noDiscovery:true,include:[]},server:{middlewareMode:true,watch:null,hmr:false}});
 try{
  const old=await server.ssrLoadModule('/artifacts/expansion/old-data.ts');
  const current=await server.ssrLoadModule('/src/data.ts');

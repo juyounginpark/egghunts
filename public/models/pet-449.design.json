@@ -11,6 +11,30 @@
     "form": "cicada",
     "motif": "crystalwings",
     "prompt": "짧은 황갈색 몸과 크림색 작은 얼굴 뒤로 긴 날개 네 장을 펼쳐라. 날개는 청록 수정의 큰 면과 짙은 청색 맥으로 나눈다. 날개를 접으면 가늘어지고 펼치면 보석 부채처럼 넓은 윤곽이 드러난다.",
+    "references": {
+      "form": {
+        "reference": "R07-05",
+        "id": 174,
+        "name": "청금석 풍뎅이",
+        "path": "public/models/pet-174.json",
+        "sha256": "10841d60f504f55b48f77ca7925a17fbc8bddc9d79ed5e02f8f947d7e95da111",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      },
+      "material": {
+        "reference": "R07-05",
+        "id": 174,
+        "name": "청금석 풍뎅이",
+        "path": "public/models/pet-174.json",
+        "sha256": "10841d60f504f55b48f77ca7925a17fbc8bddc9d79ed5e02f8f947d7e95da111",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      }
+    },
     "color": "#b78d53"
   },
   "assembly": {

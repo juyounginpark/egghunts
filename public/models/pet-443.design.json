@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "hourglass",
     "prompt": "짧은 크림색 몸 위에 넓은 아래쪽과 좁은 목을 가진 유리 모래시계 껍질을 세워라. 테두리는 청동, 내부 모래는 주황이다. 작은 눈자루가 모래를 따라 내려가고 껍질은 느리게 기울어진다.",
+    "references": {
+      "form": {
+        "reference": "R07-06",
+        "id": 175,
+        "name": "항아리 코브라",
+        "path": "public/models/pet-175.json",
+        "sha256": "b5bfc5a0d9eed18a6f5da1634e0dce19ead0c36acaa5d6843700fe6be3f3a0ba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R07-05",
+        "id": 174,
+        "name": "청금석 풍뎅이",
+        "path": "public/models/pet-174.json",
+        "sha256": "10841d60f504f55b48f77ca7925a17fbc8bddc9d79ed5e02f8f947d7e95da111",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

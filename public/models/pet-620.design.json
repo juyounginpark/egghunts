@@ -11,6 +11,30 @@
     "form": "bee",
     "motif": "jade",
     "prompt": "가는 검정 허리와 큰 청록 가슴, 짧은 얼굴의 벌을 만들라. 등껍질은 넓은 비취 면 네 개, 날개는 아이보리의 길고 얇은 판이다. 몸을 기울이며 가슴 면의 빛이 이동하고 앞발로 작은 보석을 안는다.",
+    "references": {
+      "form": {
+        "reference": "R16-10",
+        "id": 269,
+        "name": "왕관사슴벌레",
+        "path": "public/models/pet-269.json",
+        "sha256": "b532ef28d8cad1ed7dc1e2bb37f5a2b2e127eded4fc07dfff79cb0262fcf2c7d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-08",
+        "id": 267,
+        "name": "호박빛 매미",
+        "path": "public/models/pet-267.json",
+        "sha256": "9b5663f526603cb6c27113c316deb5c32ea30b4f06b781d6e055d6496a553aba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

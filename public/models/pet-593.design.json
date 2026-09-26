@@ -11,6 +11,30 @@
     "form": "hamster",
     "motif": "filters",
     "prompt": "넓은 크림색 볼과 작은 귀, 짧은 갈색 몸을 만들라. 몸 양옆에 납작한 회색 필터통 두 개를 달고 가운데 배에는 노랑 지퍼를 둔다. 필터를 앞발로 털면 회색 먼지가 적게 나오고 얼굴이 안도하듯 편안해진다.",
+    "references": {
+      "form": {
+        "reference": "R15-01",
+        "id": 250,
+        "name": "새싹들쥐",
+        "path": "public/models/pet-250.json",
+        "sha256": "9d8c902371b82654881ce8509966a1a6f7cf7edd8914337a8e44ef548c372ebb",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-03",
+        "id": 252,
+        "name": "방독면 너구리",
+        "path": "public/models/pet-252.json",
+        "sha256": "968189d06631dfca349b7fd3cf00e84a0d6e9754f1a7e18b2ed3b7ca7cb35e78",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

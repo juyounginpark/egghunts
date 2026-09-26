@@ -11,6 +11,30 @@
     "form": "puffer",
     "motif": "sandcastle",
     "prompt": "크림색 구형 몸, 작은 부리 입, 넓게 떨어진 점눈의 복어를 만들라. 등가시는 짧은 황갈색 돌기 여섯 개만 사용한다. 가슴 앞의 작은 모래성을 바라보다 몸이 둥글게 부풀어 지느러미가 옆으로 벌어진다.",
+    "references": {
+      "form": {
+        "reference": "R03-01",
+        "id": 120,
+        "name": "물방울 물개",
+        "path": "public/models/pet-120.json",
+        "sha256": "fe0dd48632a6447c9d46b38be40e72410b95e9bbefceec1356c2a9332e7e75e0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-06",
+        "id": 125,
+        "name": "산호거북",
+        "path": "public/models/pet-125.json",
+        "sha256": "5485d1ade4575a41dce91f76fee91ad9d2b81cbeb79ca6197eba12e5ec106c60",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

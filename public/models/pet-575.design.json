@@ -11,6 +11,30 @@
     "form": "raccoon",
     "motif": "vase",
     "prompt": "둥근 회색 얼굴과 큰 꼬리의 너구리 몸을 아이보리 꽃병처럼 아래가 넓게 만들라. 머리 뒤의 병 입구에서 분홍 꽃 하나가 자란다. 앞발로 물뿌리개를 기울이면 꽃잎이 대신 비처럼 작은 물점을 떨어뜨린다.",
+    "references": {
+      "form": {
+        "reference": "R14-05",
+        "id": 244,
+        "name": "찻잔고양이",
+        "path": "public/models/pet-244.json",
+        "sha256": "106a535cceff0eafee2ab5cd7df0344835b618f971465934875358c8a28caaf4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-07",
+        "id": 246,
+        "name": "구름기린",
+        "path": "public/models/pet-246.json",
+        "sha256": "286573f5261d4c97a0e65feae7e56cc8c9ed9af46aa096294c4ebc5393dbf1cb",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

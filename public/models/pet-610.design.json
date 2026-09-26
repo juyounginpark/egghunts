@@ -11,6 +11,30 @@
     "form": "aphid",
     "motif": "pollen",
     "prompt": "둥근 연분홍 배와 작은 크림색 머리, 짧은 여섯 발을 만들라. 등에는 노란 꽃가루 덩어리 하나를 얹고 더듬이는 짧게 휘게 한다. 앞발로 꽃가루를 코에 가까이 가져가면 작은 점 두 개가 흩어진다.",
+    "references": {
+      "form": {
+        "reference": "R16-01",
+        "id": 260,
+        "name": "꽃꿀벌",
+        "path": "public/models/pet-260.json",
+        "sha256": "231d7182482d00ef683874dfef33f6a647908b5bcd3ca63944905528e0b84d5b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-01",
+        "id": 260,
+        "name": "꽃꿀벌",
+        "path": "public/models/pet-260.json",
+        "sha256": "231d7182482d00ef683874dfef33f6a647908b5bcd3ca63944905528e0b84d5b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#e8b6cb"
   },
   "assembly": {

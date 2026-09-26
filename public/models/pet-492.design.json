@@ -11,6 +11,30 @@
     "form": "seed",
     "motif": "acorn",
     "prompt": "작은 아이보리 씨앗 몸에 두 발과 넓은 잎 귀를 달아라. 머리의 갈색 도토리 모자와 짙은 초록 작은 망토를 분리한다. 점눈으로 앞을 바라보며 두 손으로 작은 올리브 가지를 들어 인사한다.",
+    "references": {
+      "form": {
+        "reference": "R10-02",
+        "id": 201,
+        "name": "구름양",
+        "path": "public/models/pet-201.json",
+        "sha256": "47005bf9bae7d59c74fd343a45085be4ff96ebf567522221a48d2a1fecc19362",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-01",
+        "id": 200,
+        "name": "올리브 거북",
+        "path": "public/models/pet-200.json",
+        "sha256": "d0322da881e3ee674505cc27e4a132b9dbe6da8449cdd13e73b7e7e992a3517a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

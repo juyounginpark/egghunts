@@ -11,6 +11,30 @@
     "form": "crocodile",
     "motif": "canal",
     "prompt": "길고 넓은 짙은 청록 몸과 크림색 턱의 악어를 만들라. 등판은 얕은 푸른 수로와 사암 둑을 이루게 하고 작은 수문 하나를 둔다. 몸을 기울이면 수로 안 빛 점이 한 방향으로 움직이며 수문이 열린다.",
+    "references": {
+      "form": {
+        "reference": "R07-08",
+        "id": 177,
+        "name": "보석전갈",
+        "path": "public/models/pet-177.json",
+        "sha256": "2e6af75e5579fa98ab76d291ad59a68aa2671cee3602ac3a555482916ae01d50",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R07-05",
+        "id": 174,
+        "name": "청금석 풍뎅이",
+        "path": "public/models/pet-174.json",
+        "sha256": "10841d60f504f55b48f77ca7925a17fbc8bddc9d79ed5e02f8f947d7e95da111",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      }
+    },
     "color": "#235b60"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "rabbit",
     "motif": "starclock",
     "prompt": "가는 아이보리 몸과 긴 남색 귀의 토끼가 큰 황동 별시계를 들게 하라. 시계판은 청색 바탕에 금빛 별 네 개만 두고 얼굴은 옆으로 드러낸다. 시계의 고리가 돌면 귀가 그 방향으로 천천히 기운다.",
+    "references": {
+      "form": {
+        "reference": "R18-01",
+        "id": 280,
+        "name": "별모래 햄스터",
+        "path": "public/models/pet-280.json",
+        "sha256": "bdae75527810feae68ae9b10a65d20af61e3fde401ecf01578a73d9de0e84b11",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-04",
+        "id": 283,
+        "name": "망원경 부엉이",
+        "path": "public/models/pet-283.json",
+        "sha256": "2ab4228458dc014dece411dc17f956495cbd939e806c9aafc70ea6de31cc9b9c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

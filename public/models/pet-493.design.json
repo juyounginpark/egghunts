@@ -11,6 +11,30 @@
     "form": "mouse",
     "motif": "honey",
     "prompt": "짧은 갈색 몸과 큰 둥근 귀, 크림색 볼의 생쥐를 만들라. 앞발에 청색 작은 항아리를 들고 가장자리에 황금 꿀방울 하나를 둔다. 코를 가까이 대면 꿀방울이 늘어났다가 안으로 돌아간다.",
+    "references": {
+      "form": {
+        "reference": "R10-06",
+        "id": 205,
+        "name": "물항아리 수달",
+        "path": "public/models/pet-205.json",
+        "sha256": "8d07354f2deaa0bce8eeb42ee93534df8abc0e9f799e303fbde587e4061597af",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-03",
+        "id": 202,
+        "name": "포도멧돼지",
+        "path": "public/models/pet-202.json",
+        "sha256": "5f08c103f1d9d514f2cc6f3ef8488f241b86fedeb800721a4ceb95ad679e78f6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

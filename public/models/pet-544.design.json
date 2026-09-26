@@ -11,6 +11,30 @@
     "form": "parrot",
     "motif": "gramophone",
     "prompt": "짧은 청색 몸과 크림색 얼굴 뒤로 큰 황동 나팔꼬리를 펼쳐라. 가슴에는 붉은 천깃을 두고 발 아래의 작은 레코드판 하나를 강조한다. 고개를 돌리면 판이 회전하고 나팔 안쪽의 빛이 부드럽게 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R12-04",
+        "id": 223,
+        "name": "프로펠러 참새",
+        "path": "public/models/pet-223.json",
+        "sha256": "cfef9fc62907f50246680885a5a03df8f97490d1978659b7f0f1566a1f6ce909",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R12-10",
+        "id": 229,
+        "name": "시계부엉이",
+        "path": "public/models/pet-229.json",
+        "sha256": "84a9da23bc3d58070b421eb75dfb92d91d5c9e82626cef56d1bc3630517d24bd",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      }
+    },
     "color": "#658fbd"
   },
   "assembly": {

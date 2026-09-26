@@ -11,6 +11,30 @@
     "form": "hamster",
     "motif": "window",
     "prompt": "큰 볼과 짧은 귀의 아이보리 햄스터를 만들라. 배만 옅은 보라색 유리창으로 두고 안에 주황 구슬 세 개가 떠 있게 한다. 두 앞발로 배를 살짝 누르면 구슬들이 흩어졌다 중앙으로 모인다.",
+    "references": {
+      "form": {
+        "reference": "R11-01",
+        "id": 210,
+        "name": "안테나 슬라임",
+        "path": "public/models/pet-210.json",
+        "sha256": "e6b9422b1522352792405c960f58f17e2564858d268def5a823a26c0d25f8e19",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-04",
+        "id": 213,
+        "name": "수정달팽이",
+        "path": "public/models/pet-213.json",
+        "sha256": "726de674263c599257177c577a081faf7e1517bd979f27e31af507ba69365a9b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "polished"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

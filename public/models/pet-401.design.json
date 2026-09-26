@@ -11,6 +11,30 @@
     "form": "mouse",
     "motif": "notebook",
     "prompt": "작은 회색 얼굴과 둥근 귀, 책처럼 얇은 청색 몸을 가진 생쥐를 만들라. 옆구리의 크림색 페이지 단면과 분홍 끈 꼬리를 보이게 한다. 몸이 살짝 펼쳐지면 큰 연필 낙서 하나가 드러났다 닫힌다.",
+    "references": {
+      "form": {
+        "reference": "R05-02",
+        "id": 151,
+        "name": "지우개 햄스터",
+        "path": "public/models/pet-151.json",
+        "sha256": "16618814712a92a73df01ed8ffc00ff46bcb3369f6d0c4dd02d04f42c47d1be9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-06",
+        "id": 155,
+        "name": "종이학",
+        "path": "public/models/pet-155.json",
+        "sha256": "c54376715ac0b4d72c8dd7d0385629ed21480bcb11212b6ae73de2e50fc3c6ef",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#658fbd"
   },
   "assembly": {

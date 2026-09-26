@@ -11,6 +11,30 @@
     "form": "cat",
     "motif": "yarn",
     "prompt": "짧은 크림색 얼굴과 긴 귀, 둥근 자주색 실타래 몸을 만들라. 실선은 굵은 홈 세 개로 표현하고 꼬리는 풀린 실 한 가닥처럼 말린다. 앞발로 꼬리 끝을 잡아당기면 몸이 조금 돌아가게 한다.",
+    "references": {
+      "form": {
+        "reference": "R02-05",
+        "id": 114,
+        "name": "구슬고양이",
+        "path": "public/models/pet-114.json",
+        "sha256": "73ff05f015e0614cc297d7ca8b6cedc4679881d4b51210a66b2c9e89a38cd983",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "polished"
+      },
+      "material": {
+        "reference": "R02-01",
+        "id": 110,
+        "name": "단추곰",
+        "path": "public/models/pet-110.json",
+        "sha256": "ec278c8a8e2eeb63a8b5129d2466cbfb07ccfb6a9240aff2d5ebc305a868cc90",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

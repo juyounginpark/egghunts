@@ -11,6 +11,30 @@
     "form": "ray",
     "motif": "mobile",
     "prompt": "넓고 납작한 하늘색 가오리 몸과 가는 꼬리를 만들라. 양날개 아래에 크림색 달·노랑 별 두 개씩을 짧은 줄로 매달고 얼굴은 앞쪽에 작게 둔다. 몸을 기울이면 매달린 조각들이 서로 다른 속도로 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R02-09",
+        "id": 118,
+        "name": "오르골 백조",
+        "path": "public/models/pet-118.json",
+        "sha256": "336cb6911665ac445923c17dee057dc693eb955287828d6a3b9869a3ea3c744d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-06",
+        "id": 115,
+        "name": "종이배 펭귄",
+        "path": "public/models/pet-115.json",
+        "sha256": "7dd5663c652bb13d27f7b190415d50ca96f4caca43d2c53d77469ec76774a78c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#93bfd8"
   },
   "assembly": {

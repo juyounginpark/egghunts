@@ -11,6 +11,30 @@
     "form": "giant",
     "motif": "ironflower",
     "prompt": "넓은 녹슨 철제 가슴과 큰 손, 짧고 튼튼한 다리의 거인을 만들라. 얼굴은 아이보리 화분 면의 점눈 두 개, 어깨에는 분홍 큰 꽃 한 송이와 초록 잎막을 둔다. 손바닥 사이의 작은 고철이 꽃 모형으로 접히며 가슴의 씨앗빛이 부드럽게 켜진다.",
+    "references": {
+      "form": {
+        "reference": "R15-08",
+        "id": 257,
+        "name": "건전지 멧돼지",
+        "path": "public/models/pet-257.json",
+        "sha256": "7bb9bb76a4548de43f42819b1ea8418c24e31d5d5482e4126753509051d20be3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-09",
+        "id": 258,
+        "name": "온실사슴",
+        "path": "public/models/pet-258.json",
+        "sha256": "bc2a4767d3d0a55689fea7cb1e00841ec1dd11126e3aabde4d716d9945db9b68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

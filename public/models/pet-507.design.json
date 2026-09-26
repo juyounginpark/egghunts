@@ -11,6 +11,30 @@
     "form": "twohead",
     "motif": "collar",
     "prompt": "낮고 길쭉한 남색 몸 위에 작은 머리 두 개를 나란히 두어라. 두 얼굴의 크림색 볼과 짧은 귀를 같은 크기로 맞추고 목에는 청동 고리 하나를 둔다. 한쪽이 졸 때 다른 쪽이 주변을 보다가 동시에 고개를 든다.",
+    "references": {
+      "form": {
+        "reference": "R10-05",
+        "id": 204,
+        "name": "날개샌들 강아지",
+        "path": "public/models/pet-204.json",
+        "sha256": "60019f6275a6794eb294fa7b80d9e6377050ed85eaf392e365d03fd72682fac7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-09",
+        "id": 208,
+        "name": "대리석 그리핀",
+        "path": "public/models/pet-208.json",
+        "sha256": "9b4392f6dd3a8b45bd3a2359a8e7296b18a40ad41602c7b4d2c1d6df3a101abc",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "ammonite",
     "motif": "ammonite",
     "prompt": "큰 크림색 나선 껍질에서 작은 주황 얼굴과 짧은 촉수를 내밀게 하라. 껍질 홈은 갈색의 굵은 간격으로 나눈다. 앞 촉수로 조개 조각을 들었다가 안으로 반쯤 숨으며 점눈은 드러난다.",
+    "references": {
+      "form": {
+        "reference": "R08-06",
+        "id": 185,
+        "name": "물수제비 수장룡",
+        "path": "public/models/pet-185.json",
+        "sha256": "66267187f38e07616f6e115b7720496d4bf20c3368f57f8c56302f754a12d1f7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-05",
+        "id": 184,
+        "name": "조약돌 안킬로",
+        "path": "public/models/pet-184.json",
+        "sha256": "b7c2e64ec5a1e6f18c96a47451d07d57c23da00e940556705dcb50668c2b010c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

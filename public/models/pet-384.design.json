@@ -11,6 +11,30 @@
     "form": "bear",
     "motif": "hammer",
     "prompt": "넓은 어깨와 크림색 짧은 주둥이의 적갈색 곰을 만들라. 검정 앞치마와 둥근 황동 망치 하나를 두고 발은 크게 잡는다. 작은 모루를 한 번 두드리면 불꽃 대신 금빛 점 세 개만 튀게 한다.",
+    "references": {
+      "form": {
+        "reference": "R04-09",
+        "id": 138,
+        "name": "모루두더지",
+        "path": "public/models/pet-138.json",
+        "sha256": "6284f8a9a78bae3409cfc1f463859f989a4016ec11903dc5be07152b827052b3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R04-09",
+        "id": 138,
+        "name": "모루두더지",
+        "path": "public/models/pet-138.json",
+        "sha256": "6284f8a9a78bae3409cfc1f463859f989a4016ec11903dc5be07152b827052b3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

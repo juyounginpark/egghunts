@@ -11,6 +11,30 @@
     "form": "weasel",
     "motif": "gourd",
     "prompt": "길고 가는 갈색 몸과 작은 귀, 크림색 턱의 족제비를 만들라. 꼬리 끝에 아이보리 조롱박 하나를 매달고 진초록 끈을 연결한다. 앞발로 박을 끌어안아 흔들면 씨앗 한 점이 입구에 나타난다.",
+    "references": {
+      "form": {
+        "reference": "R09-04",
+        "id": 193,
+        "name": "짚신너구리",
+        "path": "public/models/pet-193.json",
+        "sha256": "293020ff51a02e265440b8ef32926c0cd6cd76b9bfdec3d7d41d70e907abdf84",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-04",
+        "id": 193,
+        "name": "짚신너구리",
+        "path": "public/models/pet-193.json",
+        "sha256": "293020ff51a02e265440b8ef32926c0cd6cd76b9bfdec3d7d41d70e907abdf84",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

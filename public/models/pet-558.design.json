@@ -11,6 +11,30 @@
     "form": "raccoon",
     "motif": "fishing",
     "prompt": "넓은 회색 볼과 크림색 배의 너구리를 작은 나무상자에 앉혀라. 짧은 낚싯대를 앞발로 들고 발 앞에는 둥근 청색 얼음 구멍 모형을 둔다. 고개를 숙여 줄을 살피면 꼬리 끝이 상자 옆으로 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R13-09",
+        "id": 238,
+        "name": "오로라 여우",
+        "path": "public/models/pet-238.json",
+        "sha256": "da8f4c1c543e905d774f5ae169ec42ae5c62dae5e4bf15b418b26d5a29617258",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R13-08",
+        "id": 237,
+        "name": "털북숭이 매머드",
+        "path": "public/models/pet-237.json",
+        "sha256": "edb1ae71193945d244f9a51d49f92cf8aa3e86d26a93dcbdfeab412d3f80cf5c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

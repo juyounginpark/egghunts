@@ -11,6 +11,30 @@
     "form": "hedgehog",
     "motif": "equalizer",
     "prompt": "작은 크림색 얼굴과 짙은 보라 몸 위에 굵은 막대 가시 다섯 개를 세워라. 가시는 청록·분홍·노랑 세 색을 큰 구역으로 나눈다. 몸이 박자를 탈 때 가시가 음량 막대처럼 높이를 번갈아 바꾼다.",
+    "references": {
+      "form": {
+        "reference": "R06-02",
+        "id": 161,
+        "name": "배터리 햄스터",
+        "path": "public/models/pet-161.json",
+        "sha256": "058b798e16b85e76c049e414bd1ddb051a84f76c8233b28d1580f3330569a35a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-05",
+        "id": 164,
+        "name": "헤드폰 고양이",
+        "path": "public/models/pet-164.json",
+        "sha256": "da9bb6cee71e4989659dc02a2ba193da508e45a349679fead98baf5579173a06",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      }
+    },
     "color": "#513b68"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "shieldbug",
     "motif": "petalshield",
     "prompt": "넓은 방패형 초록 몸과 짧은 갈색 머리, 작은 점눈을 만들라. 등판 중앙은 분홍 꽃잎 한 장이 겹쳐진 형태로 두고 가장자리는 크림색으로 밝힌다. 앞다리로 몸을 높이면 꽃잎 판이 살짝 열려 작은 씨앗이 보인다.",
+    "references": {
+      "form": {
+        "reference": "R16-02",
+        "id": 261,
+        "name": "이슬무당벌레",
+        "path": "public/models/pet-261.json",
+        "sha256": "4425c911e5e3d7c5fbdf35399671c6e1b361422bd2717bf6c88236d3ddcfc1f8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-03",
+        "id": 262,
+        "name": "잎사귀벌레",
+        "path": "public/models/pet-262.json",
+        "sha256": "2f0d4b369ef0fc8f608c5bbaf2246bc8dbe4b638a6de2aa610668a9cb67422c0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#669858"
   },
   "assembly": {

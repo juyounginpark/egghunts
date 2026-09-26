@@ -11,6 +11,30 @@
     "form": "lizard",
     "motif": "broken",
     "prompt": "낮고 긴 검정 몸과 작은 회색 얼굴의 도마뱀을 만들라. 꼬리 중간 한 구간만 비우고 끝 조각은 같은 곡선 위에 떠 있게 한다. 고개를 돌린 뒤 꼬리 끝이 느리게 따라오며 발은 정상적으로 접지한다.",
+    "references": {
+      "form": {
+        "reference": "R19-03",
+        "id": 142,
+        "name": "그림자토끼",
+        "path": "public/models/pet-142.json",
+        "sha256": "2ed56038b96ebe46f6786245835e5b276e9630d98cf4778e8aaa86731bdb662b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-05",
+        "id": 144,
+        "name": "조각여우",
+        "path": "public/models/pet-144.json",
+        "sha256": "0c75554c3b701ebf1b4570433fb62e153b6c94243c7129f7e4e1eb78c8284ae8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "chimera",
     "motif": "snakehead",
     "prompt": "넓은 사자 몸과 짧은 염소뿔, 뱀 모양 꼬리를 결합하라. 몸은 크림색, 갈기는 짙은 자주색, 꼬리는 청록으로 큰 구역을 나눈다. 얼굴은 하나만 주인공으로 두고 꼬리의 작은 눈은 낮게 배치해 서로 다른 방향을 살핀다.",
+    "references": {
+      "form": {
+        "reference": "R10-07",
+        "id": 206,
+        "name": "월계관 사자",
+        "path": "public/models/pet-206.json",
+        "sha256": "321d9b5792500f9089bc521980f92449523d159993c3e4bb211165b9c4dc14ab",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-09",
+        "id": 208,
+        "name": "대리석 그리핀",
+        "path": "public/models/pet-208.json",
+        "sha256": "9b4392f6dd3a8b45bd3a2359a8e7296b18a40ad41602c7b4d2c1d6df3a101abc",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

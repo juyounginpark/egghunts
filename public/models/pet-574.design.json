@@ -11,6 +11,30 @@
     "form": "rabbit",
     "motif": "clock",
     "prompt": "짧은 보라 몸과 크림색 얼굴, 뒤로 접힌 긴 귀의 토끼를 만들라. 배의 큰 아이보리 시계판은 눈금 네 개와 굵은 바늘 하나로 정리한다. 귀가 내려오면 바늘이 반대로 조금 돌고 귀를 세우면 멈춘다.",
+    "references": {
+      "form": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-03",
+        "id": 242,
+        "name": "초승달 해마",
+        "path": "public/models/pet-242.json",
+        "sha256": "e11808fab966e4e0665cd8f068d5f6e226966391039a88872e02eec11ff518e8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "matte"
+      }
+    },
     "color": "#8566ad"
   },
   "assembly": {

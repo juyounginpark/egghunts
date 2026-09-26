@@ -11,6 +11,30 @@
     "form": "salamander",
     "motif": "cable",
     "prompt": "납작한 크림색 머리와 짧은 파랑 몸을 가진 도롱뇽을 만들라. 꼬리는 굵은 주황 케이블이 두 번 접힌 형태이며 끝에 검정 커넥터를 둔다. 몸을 낮추면 꼬리 접힌 구간이 차례로 펴졌다 돌아온다.",
+    "references": {
+      "form": {
+        "reference": "R17-01",
+        "id": 270,
+        "name": "볼트생쥐",
+        "path": "public/models/pet-270.json",
+        "sha256": "976005938fdcaf5df973e863391bbb309a48ce8a95c43fb7029a4636cf54d8e2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-02",
+        "id": 271,
+        "name": "양철강아지",
+        "path": "public/models/pet-271.json",
+        "sha256": "b8cfbf04085dbeadabbc2dfc751049ab47a8df7e38f532709c1eef5e85217d96",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      }
+    },
     "color": "#527cad"
   },
   "assembly": {

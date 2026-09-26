@@ -11,6 +11,30 @@
     "form": "butterfly",
     "motif": "hollowwings",
     "prompt": "작은 검정 몸과 넓은 회색 날개 네 장을 만들라. 날개 중심의 큰 구멍과 크림색 바깥 테두리를 두고 얼굴은 작은 밝은 점눈으로 둔다. 날개를 움직여도 주변 입자는 정지해 있는 짧은 연출로 고요함을 표현한다.",
+    "references": {
+      "form": {
+        "reference": "R19-04",
+        "id": 143,
+        "name": "공백가오리",
+        "path": "public/models/pet-143.json",
+        "sha256": "b61759246a30a09401b29667663dbb436a0e8b3c247d8b4e29fc558231d69c20",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-04",
+        "id": 143,
+        "name": "공백가오리",
+        "path": "public/models/pet-143.json",
+        "sha256": "b61759246a30a09401b29667663dbb436a0e8b3c247d8b4e29fc558231d69c20",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

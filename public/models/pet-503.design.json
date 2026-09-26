@@ -11,6 +11,30 @@
     "form": "crane",
     "motif": "laurelleaf",
     "prompt": "긴 흰 목과 가는 금빛 다리, 작은 눈의 학을 만들라. 접힌 날개는 큰 청색 깃판으로 구성하고 부리에 짙은 초록 월계 가지를 물게 한다. 날개를 반쯤 펴며 가지를 높이 들어 올리는 동작을 준다.",
+    "references": {
+      "form": {
+        "reference": "R10-10",
+        "id": 209,
+        "name": "새벽 페가수스",
+        "path": "public/models/pet-209.json",
+        "sha256": "88fb60127beae41064f440c4954e1350cb9bb1514922f995a5b6331b8daa267a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-01",
+        "id": 200,
+        "name": "올리브 거북",
+        "path": "public/models/pet-200.json",
+        "sha256": "d0322da881e3ee674505cc27e4a132b9dbe6da8449cdd13e73b7e7e992a3517a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#e9e8dc"
   },
   "assembly": {

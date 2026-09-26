@@ -11,6 +11,30 @@
     "form": "lizard",
     "motif": "mushrooms",
     "prompt": "낮고 길쭉한 자주색 몸과 크림색 턱을 만들라. 등에는 높이가 다른 아이보리 버섯 세 개만 두고 꼬리는 하나로 굵게 휜다. 고개를 돌리면 버섯 갓이 차례로 흔들리고 작은 포자 두 점이 뜬다.",
+    "references": {
+      "form": {
+        "reference": "R15-05",
+        "id": 254,
+        "name": "쌍꼬리 도마뱀",
+        "path": "public/models/pet-254.json",
+        "sha256": "fc65aff5a0a573632f837cda7c035f4b073f21f3d1065ed1c5c53eeb6c3e1145",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-04",
+        "id": 253,
+        "name": "유리버섯 달팽이",
+        "path": "public/models/pet-253.json",
+        "sha256": "ba2ac29046117eff7984280ef63158e83cf4ccb4779d87f13019ade2aab9d261",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

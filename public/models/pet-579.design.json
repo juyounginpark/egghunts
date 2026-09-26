@@ -11,6 +11,30 @@
     "form": "crocodile",
     "motif": "bookwing",
     "prompt": "긴 초록 몸과 짧은 크림색 주둥이가 펼친 큰 책을 통과하는 형태로 만들라. 앞몸과 꼬리는 양쪽 페이지 밖에 두고 책 표지는 남색으로 둔다. 책이 조금 닫히면 몸은 그대로인데 꼬리만 반대편에서 더 길게 나온다.",
+    "references": {
+      "form": {
+        "reference": "R14-06",
+        "id": 245,
+        "name": "양말물고기",
+        "path": "public/models/pet-245.json",
+        "sha256": "6b5832500c7f8471a2c916074176e11d8ba543088d35cb111292d89cf10a4b3a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-05",
+        "id": 244,
+        "name": "찻잔고양이",
+        "path": "public/models/pet-244.json",
+        "sha256": "106a535cceff0eafee2ab5cd7df0344835b618f971465934875358c8a28caaf4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#669858"
   },
   "assembly": {

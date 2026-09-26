@@ -11,6 +11,30 @@
     "form": "beetle",
     "motif": "copper",
     "prompt": "넓은 구리색 등껍질과 검정 짧은 다리의 딱정벌레를 만들라. 껍질 중앙의 큰 이음매와 작은 청록 녹 무늬 하나만 넣는다. 얼굴의 점눈을 드러내고 앞다리로 작은 금속 구슬을 돌려 닦게 한다.",
+    "references": {
+      "form": {
+        "reference": "R04-07",
+        "id": 136,
+        "name": "흑요석 전갈",
+        "path": "public/models/pet-136.json",
+        "sha256": "cd2cb6329bc5e70ea056df562722c35326a08fc1f09ae90bee424b6a7352230c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R04-09",
+        "id": 138,
+        "name": "모루두더지",
+        "path": "public/models/pet-138.json",
+        "sha256": "6284f8a9a78bae3409cfc1f463859f989a4016ec11903dc5be07152b827052b3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      }
+    },
     "color": "#b97853"
   },
   "assembly": {

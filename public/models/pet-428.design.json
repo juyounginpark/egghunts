@@ -11,6 +11,30 @@
     "form": "jelly",
     "motif": "display",
     "prompt": "넓은 검정 우산과 청색 짧은 촉수 네 개를 만들라. 우산 앞면의 큰 전광판에 작은 흰 점눈과 짧은 미소를 표시한다. 우산 가장자리에 자홍 테두리만 두고 촉수의 빛이 위에서 아래로 차례로 흐른다.",
+    "references": {
+      "form": {
+        "reference": "R06-06",
+        "id": 165,
+        "name": "신호등 부엉이",
+        "path": "public/models/pet-165.json",
+        "sha256": "01f5fbacf82bcd8f6b50060ef5c1d9d1f6c2249089bc1af2acccea90d5190215",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-07",
+        "id": 166,
+        "name": "홀로그램 잉어",
+        "path": "public/models/pet-166.json",
+        "sha256": "d0892bef54030854aae59066aa4eefe8371810bfdfb412208da03a76cbae3344",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "scorpion",
     "motif": "excavator",
     "prompt": "넓은 흑철 몸과 굵은 여덟 다리, 거대한 주황 집게의 전갈을 만들라. 꼬리는 위로 굽은 크레인 팔 끝에 둥근 은색 굴착 헤드를 달고 가슴에는 크림색 점눈 두 개를 둔다. 집게가 몸을 지탱하며 헤드가 천천히 회전하되 지형을 실제로 파괴하지 않는다.",
+    "references": {
+      "form": {
+        "reference": "R17-03",
+        "id": 272,
+        "name": "자석문어",
+        "path": "public/models/pet-272.json",
+        "sha256": "35a2622cd7b437b211870a984248643c7f4c672c46ee50263d60fd8d2722f573",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-09",
+        "id": 278,
+        "name": "굴착두더지",
+        "path": "public/models/pet-278.json",
+        "sha256": "68dfd63092bcab531441e8fe906fc41e44e2cb75237c7b0bc0f491fe1180d284",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "metal"
+      }
+    },
     "color": "#393c45"
   },
   "assembly": {

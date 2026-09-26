@@ -11,6 +11,30 @@
     "form": "anemone",
     "motif": "tentacles",
     "prompt": "낮은 크림색 받침 위에 굵은 주황 촉수 여섯 개를 꽃처럼 펼쳐라. 중앙의 짧은 몸에 작은 점눈을 두고 촉수에는 흰 띠 하나씩만 넣는다. 앞 촉수가 접혀 얼굴을 잠깐 가렸다 다시 열린다.",
+    "references": {
+      "form": {
+        "reference": "R03-07",
+        "id": 126,
+        "name": "별빛해파리",
+        "path": "public/models/pet-126.json",
+        "sha256": "01892de7f4e5caae3d390f7c0820c34253f6a4a4c8440043fb603641b3924b00",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-07",
+        "id": 126,
+        "name": "별빛해파리",
+        "path": "public/models/pet-126.json",
+        "sha256": "01892de7f4e5caae3d390f7c0820c34253f6a4a4c8440043fb603641b3924b00",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "yeti",
     "motif": "snowcrystal",
     "prompt": "작은 머리와 거대한 팔, 낮고 넓은 흰 털 몸의 설인을 만들라. 얼굴과 손바닥은 남색, 어깨의 큰 얼음판 두 개는 청록으로 구분한다. 작은 점눈과 짧은 코로 온화하게 만들고 두 손 사이에서 눈결정 한 개를 빚어 올리는 동작을 준다.",
+    "references": {
+      "form": {
+        "reference": "R13-08",
+        "id": 237,
+        "name": "털북숭이 매머드",
+        "path": "public/models/pet-237.json",
+        "sha256": "edb1ae71193945d244f9a51d49f92cf8aa3e86d26a93dcbdfeab412d3f80cf5c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R13-05",
+        "id": 234,
+        "name": "얼음게",
+        "path": "public/models/pet-234.json",
+        "sha256": "5e5c71a0233137a4ed19a75203fa77094cf8ed6017009a88454b6c1f44a064c1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      }
+    },
     "color": "#e9e8dc"
   },
   "assembly": {

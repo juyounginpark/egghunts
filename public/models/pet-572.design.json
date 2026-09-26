@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "blanket",
     "prompt": "짧은 살구색 몸 위에 둥글게 말린 파랑 이불 껍질을 얹어라. 이불 안쪽은 크림색, 큰 별 자수 하나는 노랑으로 둔다. 작은 눈자루가 잠깐 들어갔다 나오면 이불 끝이 저절로 덮인다.",
+    "references": {
+      "form": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      }
+    },
     "color": "#e8b18f"
   },
   "assembly": {

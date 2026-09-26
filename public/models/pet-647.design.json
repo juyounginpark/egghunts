@@ -11,6 +11,30 @@
     "form": "salamander",
     "motif": "comettail",
     "prompt": "넓은 크림색 얼굴과 짧은 청록 몸의 도롱뇽을 만들라. 꼬리는 몸보다 길고 넓게 퍼지는 보라색 판 두 장으로 나누며 끝은 흰색으로 밝힌다. 꼬리를 앞으로 말아 코로 가볍게 건드리는 동작을 준다.",
+    "references": {
+      "form": {
+        "reference": "R18-02",
+        "id": 281,
+        "name": "혜성다람쥐",
+        "path": "public/models/pet-281.json",
+        "sha256": "a07c99dd5a36ddd3b3f45fb290386775f929a061380d934e409a3e8c32d541a7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-06",
+        "id": 285,
+        "name": "유성제비",
+        "path": "public/models/pet-285.json",
+        "sha256": "99a5a4e2d53f78e3f877177ec6c487f96f55b40f0912a27d5bbfd3e10308fc0d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#449b98"
   },
   "assembly": {

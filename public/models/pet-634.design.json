@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "beacon",
     "prompt": "낮고 긴 회색 몸과 짧은 점눈 자루의 달팽이를 만들라. 등껍질은 둥근 주황 경광등과 검정 받침으로 구성한다. 몸이 천천히 기울면 등 안의 밝은 면이 한 바퀴 돌아오되 빠른 점멸은 쓰지 않는다.",
+    "references": {
+      "form": {
+        "reference": "R17-04",
+        "id": 273,
+        "name": "바퀴딱정벌레",
+        "path": "public/models/pet-273.json",
+        "sha256": "4ceca3da33fc010951496f7584465fbb4ef875f2457104eee7a6d8283268dc04",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-08",
+        "id": 277,
+        "name": "전구해파리",
+        "path": "public/models/pet-277.json",
+        "sha256": "914f74d05b2862d4e4fcf8eb8bfa7a7f38bfc149fd1de3da74e2949e1a9405b2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

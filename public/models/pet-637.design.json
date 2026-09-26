@@ -11,6 +11,30 @@
     "form": "ram",
     "motif": "radiator",
     "prompt": "둥근 크림색 얼굴과 짧은 남색 다리의 양을 만들라. 털 대신 큰 은색 방열판 다섯 장을 몸 둘레에 겹치고 뿔은 주황으로 둔다. 숨을 쉬면 판 사이가 살짝 벌어지고 얇은 열기 한 줄이 올라온다.",
+    "references": {
+      "form": {
+        "reference": "R17-02",
+        "id": 271,
+        "name": "양철강아지",
+        "path": "public/models/pet-271.json",
+        "sha256": "b8cfbf04085dbeadabbc2dfc751049ab47a8df7e38f532709c1eef5e85217d96",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-05",
+        "id": 274,
+        "name": "유압고릴라",
+        "path": "public/models/pet-274.json",
+        "sha256": "c9409230a0364ecd6d94daac0a845bec5d3095cd865168c0c80ec71bf1a94b4e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      }
+    },
     "color": "#a9bac6"
   },
   "assembly": {

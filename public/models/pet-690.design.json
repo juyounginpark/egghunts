@@ -11,6 +11,30 @@
     "form": "penguin",
     "motif": "pollenbag",
     "prompt": "둥근 남색 머리와 크림색 배, 짧은 주황 발의 펭귄을 만들라. 배 앞에는 분홍 꽃주머니를 달고 날개 끝만 노란 꽃가루색으로 칠한다. 주머니에서 꽃가루를 조금 꺼내면 공중에 작은 꽃 한 개가 피었다 사라진다.",
+    "references": {
+      "form": {
+        "reference": "R20-03",
+        "id": 292,
+        "name": "물감새",
+        "path": "public/models/pet-292.json",
+        "sha256": "7a61e303fa834cdfdbd79e5eba0da5b1c9549110ed4f2666ee81810a608da7b8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-08",
+        "id": 297,
+        "name": "계절나비",
+        "path": "public/models/pet-297.json",
+        "sha256": "cea39eb19a32094cf724ecb9d8a0ad8baca4e4e8b1df21f40d8c696c2d8af411",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

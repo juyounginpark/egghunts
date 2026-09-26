@@ -11,6 +11,30 @@
     "form": "mouse",
     "motif": "pocketvoid",
     "prompt": "크림색 작은 얼굴과 큰 귀, 검정 천주머니 몸의 생쥐를 만들라. 주머니 가운데는 깊은 빈 공간이 보이게 하고 꼬리는 회보라색으로 짧게 뻗는다. 앞발로 주머니를 열어 보여도 아무것도 없고 귀만 천천히 접힌다.",
+    "references": {
+      "form": {
+        "reference": "R19-01",
+        "id": 140,
+        "name": "틈새고양이",
+        "path": "public/models/pet-140.json",
+        "sha256": "0b87304b378b807aebd05d507cd3537422110e2021e3da5a4b30b90b2628fc31",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-02",
+        "id": 141,
+        "name": "빈껍질 거북",
+        "path": "public/models/pet-141.json",
+        "sha256": "261a0d1afbf46694f30a1de930b77fbfe1ad564f3e909961160351c6fd015ae6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

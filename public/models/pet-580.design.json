@@ -11,6 +11,30 @@
     "form": "octopus",
     "motif": "candle",
     "prompt": "크림색 초 몸에 작은 점눈과 굵은 팔 여덟 개를 달아라. 머리 위 불꽃은 연보라, 팔 끝은 녹은 밀랍처럼 넓게 말린다. 팔로 불꽃을 가리면 빛이 약해지고 팔 끝의 밀랍방울이 위로 돌아온다.",
+    "references": {
+      "form": {
+        "reference": "R14-04",
+        "id": 243,
+        "name": "우산해파리",
+        "path": "public/models/pet-243.json",
+        "sha256": "ed1c0debfcf044a773fde9ff0cdf2b0b14bdf3c27e7ad0b63513d435b8976bb1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "crocodile",
     "motif": "paddlewheel",
     "prompt": "길고 낮은 청록 몸과 넓은 아이보리 턱의 악어를 만들라. 앞다리 양옆에 목재 수차 같은 큰 날개바퀴 한 쌍을 둔다. 꼬리는 넓게 펼치고 바퀴가 천천히 돌아가면 몸이 조금 높아지는 연출을 준다.",
+    "references": {
+      "form": {
+        "reference": "R12-08",
+        "id": 227,
+        "name": "기관차 멧돼지",
+        "path": "public/models/pet-227.json",
+        "sha256": "f2a29bfd75177470c34dc7b4ac7bdbf1b12db1f3ad5492cba8f0b77c71067396",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R12-04",
+        "id": 223,
+        "name": "프로펠러 참새",
+        "path": "public/models/pet-223.json",
+        "sha256": "cfef9fc62907f50246680885a5a03df8f97490d1978659b7f0f1566a1f6ce909",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "metal"
+      }
+    },
     "color": "#449b98"
   },
   "assembly": {

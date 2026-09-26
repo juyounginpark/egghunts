@@ -11,6 +11,30 @@
     "form": "swan",
     "motif": "portrait",
     "prompt": "짧은 흰 몸에서 긴 목이 올라와 자주색 액자 밖으로 나오게 하라. 액자는 몸 뒤를 둘러싸되 날개와 얼굴을 가리지 않는다. 액자 안의 그림자 백조가 실제 고개보다 조금 늦게 움직이는 연출을 준다.",
+    "references": {
+      "form": {
+        "reference": "R05-10",
+        "id": 159,
+        "name": "그림자 사슴",
+        "path": "public/models/pet-159.json",
+        "sha256": "3cbeda6426a9a5a2a7ef4de0b80289f1ee8ca1470a242e7d99a0493e87ea05ea",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-08",
+        "id": 157,
+        "name": "종소리 부엉이",
+        "path": "public/models/pet-157.json",
+        "sha256": "e5196739431c9c4e1650baa9dffe1026c8b30cf66c8cd1297aed684009672feb",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#eae9df"
   },
   "assembly": {

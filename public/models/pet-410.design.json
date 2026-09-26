@@ -11,6 +11,30 @@
     "form": "giraffe",
     "motif": "bookshelves",
     "prompt": "긴 갈색 목과 작은 크림색 얼굴의 기린을 만들라. 넓은 몸통 옆에 얕은 책장 두 칸을 두고 붉은 책과 청색 책을 큰 덩어리로 넣는다. 고개를 낮추면 책 한 권이 앞으로 조금 나왔다 들어간다.",
+    "references": {
+      "form": {
+        "reference": "R05-10",
+        "id": 159,
+        "name": "그림자 사슴",
+        "path": "public/models/pet-159.json",
+        "sha256": "3cbeda6426a9a5a2a7ef4de0b80289f1ee8ca1470a242e7d99a0493e87ea05ea",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-05",
+        "id": 154,
+        "name": "책가방 거북",
+        "path": "public/models/pet-154.json",
+        "sha256": "0cdd4b6c64857f0b21c5ddcbc873e58d1d21ac5778378af033b3770772f75bb8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

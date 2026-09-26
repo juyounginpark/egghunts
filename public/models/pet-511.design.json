@@ -11,6 +11,30 @@
     "form": "slime",
     "motif": "eyeorbs",
     "prompt": "납작한 살구색 젤 몸 위에 짧은 목 두 개와 둥근 눈방울을 세워라. 입은 몸 앞의 작은 점 하나, 배 속 핵은 청록으로 둔다. 눈방울이 서로 다른 곳을 보다가 중앙으로 모이며 몸이 낮아진다.",
+    "references": {
+      "form": {
+        "reference": "R11-01",
+        "id": 210,
+        "name": "안테나 슬라임",
+        "path": "public/models/pet-210.json",
+        "sha256": "e6b9422b1522352792405c960f58f17e2564858d268def5a823a26c0d25f8e19",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-01",
+        "id": 210,
+        "name": "안테나 슬라임",
+        "path": "public/models/pet-210.json",
+        "sha256": "e6b9422b1522352792405c960f58f17e2564858d268def5a823a26c0d25f8e19",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#e8b18f"
   },
   "assembly": {

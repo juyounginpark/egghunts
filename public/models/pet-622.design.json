@@ -11,6 +11,30 @@
     "form": "butterfly",
     "motif": "silk",
     "prompt": "작은 남색 몸과 위가 넓고 아래가 길게 흐르는 네 장의 날개를 만들라. 날개는 아이보리 비단에 큰 자주색 문양과 금빛 가장자리로 정리한다. 접으면 긴 망토, 펴면 넓은 왕실 부채처럼 보이게 한다.",
+    "references": {
+      "form": {
+        "reference": "R16-09",
+        "id": 268,
+        "name": "비단나방",
+        "path": "public/models/pet-268.json",
+        "sha256": "5a4172c169e7b688cba6801c678c8c57dfb1d54e705a153022cc3437de5f11d6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-08",
+        "id": 267,
+        "name": "호박빛 매미",
+        "path": "public/models/pet-267.json",
+        "sha256": "9b5663f526603cb6c27113c316deb5c32ea30b4f06b781d6e055d6496a553aba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "whale",
     "motif": "globe",
     "prompt": "둥근 청색 몸에 크고 단순한 초록 대륙 무늬를 두고 배는 아이보리로 만들라. 짧은 지느러미와 작은 얼굴, 몸 아래의 황동 반원 받침을 구분한다. 몸이 받침 안에서 천천히 기울며 꼬리가 균형을 잡는다.",
+    "references": {
+      "form": {
+        "reference": "R05-05",
+        "id": 154,
+        "name": "책가방 거북",
+        "path": "public/models/pet-154.json",
+        "sha256": "0cdd4b6c64857f0b21c5ddcbc873e58d1d21ac5778378af033b3770772f75bb8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-06",
+        "id": 155,
+        "name": "종이학",
+        "path": "public/models/pet-155.json",
+        "sha256": "c54376715ac0b4d72c8dd7d0385629ed21480bcb11212b6ae73de2e50fc3c6ef",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#658fbd"
   },
   "assembly": {

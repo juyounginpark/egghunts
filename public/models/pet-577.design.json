@@ -11,6 +11,30 @@
     "form": "seal",
     "motif": "envelope",
     "prompt": "낮고 둥근 크림색 물개 몸의 등을 큰 봉투 덮개처럼 표현하라. 얼굴과 짧은 지느러미는 밝은 회색, 등 봉인은 붉은 하트로 둔다. 덮개가 조금 열리면 짧은 종이 리본이 꼬리처럼 나왔다 들어간다.",
+    "references": {
+      "form": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-06",
+        "id": 245,
+        "name": "양말물고기",
+        "path": "public/models/pet-245.json",
+        "sha256": "6b5832500c7f8471a2c916074176e11d8ba543088d35cb111292d89cf10a4b3a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

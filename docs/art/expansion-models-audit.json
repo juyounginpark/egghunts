@@ -7,7 +7,7 @@
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 1479,
+    "voxelCount": 2648,
     "bounds": [
       [
         -10,
@@ -28,18 +28,18 @@
     "name": "pet-322",
     "grid": [
       19,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1535,
+    "voxelCount": 2664,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -53,18 +53,18 @@
     "name": "pet-323",
     "grid": [
       13,
-      21,
+      22,
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 2000,
+    "voxelCount": 3263,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
+        0,
         21
       ],
       [
@@ -82,7 +82,7 @@
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 1393,
+    "voxelCount": 2368,
     "bounds": [
       [
         -6,
@@ -103,19 +103,19 @@
     "name": "pet-325",
     "grid": [
       17,
-      18,
+      20,
       18
     ],
     "paletteCount": 12,
-    "voxelCount": 1604,
+    "voxelCount": 2229,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -8,
@@ -128,18 +128,18 @@
     "name": "pet-326",
     "grid": [
       19,
-      17,
+      18,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1626,
+    "voxelCount": 2814,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -153,22 +153,22 @@
     "name": "pet-327",
     "grid": [
       16,
-      18,
-      33
+      19,
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 2385,
+    "voxelCount": 4380,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         21
       ]
     ],
@@ -178,18 +178,18 @@
     "name": "pet-328",
     "grid": [
       15,
-      19,
+      20,
       18
     ],
     "paletteCount": 12,
-    "voxelCount": 1239,
+    "voxelCount": 2147,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         19
       ],
       [
@@ -203,18 +203,18 @@
     "name": "pet-329",
     "grid": [
       19,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1557,
+    "voxelCount": 2766,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -232,7 +232,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 2348,
+    "voxelCount": 4121,
     "bounds": [
       [
         -8,
@@ -253,23 +253,23 @@
     "name": "pet-331",
     "grid": [
       27,
-      21,
-      31
+      22,
+      26
     ],
     "paletteCount": 12,
-    "voxelCount": 1609,
+    "voxelCount": 2766,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         21
       ],
       [
-        -11,
-        19
+        -12,
+        13
       ]
     ],
     "anatomy": "fox"
@@ -278,11 +278,11 @@
     "name": "pet-332",
     "grid": [
       18,
-      19,
+      20,
       35
     ],
     "paletteCount": 12,
-    "voxelCount": 1938,
+    "voxelCount": 2865,
     "bounds": [
       [
         -8,
@@ -290,7 +290,7 @@
       ],
       [
         0,
-        18
+        19
       ],
       [
         -17,
@@ -303,18 +303,18 @@
     "name": "pet-333",
     "grid": [
       17,
-      16,
+      17,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 2335,
+    "voxelCount": 4080,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         16
       ],
       [
@@ -332,7 +332,7 @@
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1532,
+    "voxelCount": 3199,
     "bounds": [
       [
         -12,
@@ -353,22 +353,22 @@
     "name": "pet-335",
     "grid": [
       15,
-      33,
-      31
+      34,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1517,
+    "voxelCount": 2790,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         33
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -378,22 +378,22 @@
     "name": "pet-336",
     "grid": [
       21,
-      18,
-      31
+      19,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1330,
+    "voxelCount": 2382,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -403,18 +403,18 @@
     "name": "pet-337",
     "grid": [
       26,
-      26,
+      27,
       19
     ],
     "paletteCount": 12,
-    "voxelCount": 2712,
+    "voxelCount": 4374,
     "bounds": [
       [
         -10,
         15
       ],
       [
-        1,
+        0,
         26
       ],
       [
@@ -428,18 +428,18 @@
     "name": "pet-338",
     "grid": [
       33,
-      24,
+      25,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 3045,
+    "voxelCount": 4813,
     "bounds": [
       [
         -16,
         16
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -453,18 +453,18 @@
     "name": "pet-339",
     "grid": [
       23,
-      20,
+      21,
       39
     ],
     "paletteCount": 12,
-    "voxelCount": 2905,
+    "voxelCount": 4553,
     "bounds": [
       [
         -11,
         11
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -479,10 +479,10 @@
     "grid": [
       33,
       22,
-      32
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 3562,
+    "voxelCount": 5810,
     "bounds": [
       [
         -16,
@@ -493,7 +493,7 @@
         21
       ],
       [
-        -12,
+        -14,
         19
       ]
     ],
@@ -503,22 +503,22 @@
     "name": "pet-341",
     "grid": [
       16,
-      10,
-      32
+      11,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1156,
+    "voxelCount": 2050,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         10
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -528,22 +528,22 @@
     "name": "pet-342",
     "grid": [
       15,
-      16,
-      31
+      18,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1671,
+    "voxelCount": 2981,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -553,18 +553,18 @@
     "name": "pet-343",
     "grid": [
       19,
-      17,
+      18,
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1411,
+    "voxelCount": 2340,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -578,22 +578,22 @@
     "name": "pet-344",
     "grid": [
       14,
-      16,
-      33
+      18,
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 1640,
+    "voxelCount": 2906,
     "bounds": [
       [
         -5,
         8
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         21
       ]
     ],
@@ -603,22 +603,22 @@
     "name": "pet-345",
     "grid": [
       15,
-      33,
-      31
+      34,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1389,
+    "voxelCount": 2409,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         33
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -628,22 +628,22 @@
     "name": "pet-346",
     "grid": [
       16,
-      10,
-      32
+      11,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1143,
+    "voxelCount": 2090,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         10
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -657,7 +657,7 @@
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1671,
+    "voxelCount": 3279,
     "bounds": [
       [
         -12,
@@ -678,18 +678,18 @@
     "name": "pet-348",
     "grid": [
       21,
-      20,
+      21,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1634,
+    "voxelCount": 2830,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -703,19 +703,19 @@
     "name": "pet-349",
     "grid": [
       21,
-      19,
+      21,
       20
     ],
     "paletteCount": 12,
-    "voxelCount": 1800,
+    "voxelCount": 3262,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
-        19
+        0,
+        20
       ],
       [
         -14,
@@ -728,18 +728,18 @@
     "name": "pet-350",
     "grid": [
       16,
-      19,
+      20,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1411,
+    "voxelCount": 2370,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         19
       ],
       [
@@ -753,19 +753,19 @@
     "name": "pet-351",
     "grid": [
       13,
-      24,
+      26,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1275,
+    "voxelCount": 2099,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
-        24
+        0,
+        25
       ],
       [
         -11,
@@ -778,18 +778,18 @@
     "name": "pet-352",
     "grid": [
       33,
-      22,
+      23,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 2473,
+    "voxelCount": 4007,
     "bounds": [
       [
         -16,
         16
       ],
       [
-        1,
+        0,
         22
       ],
       [
@@ -807,7 +807,7 @@
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 1521,
+    "voxelCount": 2798,
     "bounds": [
       [
         -13,
@@ -828,22 +828,22 @@
     "name": "pet-354",
     "grid": [
       17,
-      19,
-      31
+      20,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1816,
+    "voxelCount": 3096,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         19
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -853,22 +853,22 @@
     "name": "pet-355",
     "grid": [
       17,
-      21,
-      31
+      22,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2038,
+    "voxelCount": 3409,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         21
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -882,7 +882,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1480,
+    "voxelCount": 2738,
     "bounds": [
       [
         -17,
@@ -904,10 +904,10 @@
     "grid": [
       21,
       27,
-      31
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1933,
+    "voxelCount": 3419,
     "bounds": [
       [
         -10,
@@ -918,7 +918,7 @@
         26
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -928,18 +928,18 @@
     "name": "pet-358",
     "grid": [
       17,
-      22,
+      23,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 3004,
+    "voxelCount": 4703,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         22
       ],
       [
@@ -957,7 +957,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 1024,
+    "voxelCount": 1908,
     "bounds": [
       [
         -12,
@@ -982,7 +982,7 @@
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 1115,
+    "voxelCount": 2034,
     "bounds": [
       [
         -5,
@@ -1007,7 +1007,7 @@
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 2407,
+    "voxelCount": 4474,
     "bounds": [
       [
         -12,
@@ -1032,7 +1032,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1643,
+    "voxelCount": 2662,
     "bounds": [
       [
         -12,
@@ -1057,7 +1057,7 @@
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 695,
+    "voxelCount": 1031,
     "bounds": [
       [
         -12,
@@ -1082,7 +1082,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 2534,
+    "voxelCount": 4358,
     "bounds": [
       [
         -13,
@@ -1107,7 +1107,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 2016,
+    "voxelCount": 3335,
     "bounds": [
       [
         -12,
@@ -1128,22 +1128,22 @@
     "name": "pet-366",
     "grid": [
       16,
-      11,
-      32
+      12,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1145,
+    "voxelCount": 2146,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         11
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -1157,7 +1157,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1749,
+    "voxelCount": 3031,
     "bounds": [
       [
         -12,
@@ -1178,18 +1178,18 @@
     "name": "pet-368",
     "grid": [
       11,
-      11,
+      12,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 742,
+    "voxelCount": 1557,
     "bounds": [
       [
         -5,
         5
       ],
       [
-        1,
+        0,
         11
       ],
       [
@@ -1207,7 +1207,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1544,
+    "voxelCount": 2872,
     "bounds": [
       [
         -12,
@@ -1227,23 +1227,23 @@
   {
     "name": "pet-370",
     "grid": [
-      15,
-      17,
-      23
+      14,
+      19,
+      27
     ],
     "paletteCount": 12,
-    "voxelCount": 1201,
+    "voxelCount": 1780,
     "bounds": [
       [
-        -8,
-        6
+        -6,
+        7
       ],
       [
-        1,
-        17
+        0,
+        18
       ],
       [
-        -11,
+        -15,
         11
       ]
     ],
@@ -1257,7 +1257,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 1060,
+    "voxelCount": 1832,
     "bounds": [
       [
         -12,
@@ -1279,10 +1279,10 @@
     "grid": [
       25,
       19,
-      32
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 1867,
+    "voxelCount": 3423,
     "bounds": [
       [
         -12,
@@ -1293,7 +1293,7 @@
         18
       ],
       [
-        -12,
+        -14,
         19
       ]
     ],
@@ -1307,7 +1307,7 @@
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1891,
+    "voxelCount": 3622,
     "bounds": [
       [
         -12,
@@ -1332,7 +1332,7 @@
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 719,
+    "voxelCount": 1234,
     "bounds": [
       [
         -12,
@@ -1357,7 +1357,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 2477,
+    "voxelCount": 4682,
     "bounds": [
       [
         -12,
@@ -1378,18 +1378,18 @@
     "name": "pet-376",
     "grid": [
       17,
-      19,
+      20,
       37
     ],
     "paletteCount": 12,
-    "voxelCount": 2832,
+    "voxelCount": 4266,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         19
       ],
       [
@@ -1407,7 +1407,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 3554,
+    "voxelCount": 5910,
     "bounds": [
       [
         -18,
@@ -1432,7 +1432,7 @@
       21
     ],
     "paletteCount": 12,
-    "voxelCount": 1616,
+    "voxelCount": 2919,
     "bounds": [
       [
         -10,
@@ -1453,19 +1453,19 @@
     "name": "pet-379",
     "grid": [
       14,
-      18,
+      20,
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 1188,
+    "voxelCount": 2049,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -8,
@@ -1482,7 +1482,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1119,
+    "voxelCount": 2025,
     "bounds": [
       [
         -8,
@@ -1503,18 +1503,18 @@
     "name": "pet-381",
     "grid": [
       14,
-      10,
+      11,
       35
     ],
     "paletteCount": 12,
-    "voxelCount": 965,
+    "voxelCount": 1902,
     "bounds": [
       [
         -5,
         8
       ],
       [
-        1,
+        0,
         10
       ],
       [
@@ -1528,19 +1528,19 @@
     "name": "pet-382",
     "grid": [
       13,
-      24,
+      26,
       15
     ],
     "paletteCount": 12,
-    "voxelCount": 1281,
+    "voxelCount": 2077,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
-        24
+        0,
+        25
       ],
       [
         -9,
@@ -1554,10 +1554,10 @@
     "grid": [
       25,
       12,
-      33
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 1917,
+    "voxelCount": 3355,
     "bounds": [
       [
         -12,
@@ -1568,7 +1568,7 @@
         11
       ],
       [
-        -13,
+        -14,
         19
       ]
     ],
@@ -1578,19 +1578,19 @@
     "name": "pet-384",
     "grid": [
       21,
-      19,
+      21,
       18
     ],
     "paletteCount": 12,
-    "voxelCount": 1802,
+    "voxelCount": 2906,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
-        19
+        0,
+        20
       ],
       [
         -12,
@@ -1603,19 +1603,19 @@
     "name": "pet-385",
     "grid": [
       15,
-      16,
+      18,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1780,
+    "voxelCount": 3231,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
         -14,
@@ -1632,7 +1632,7 @@
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 2036,
+    "voxelCount": 3975,
     "bounds": [
       [
         -10,
@@ -1653,18 +1653,18 @@
     "name": "pet-387",
     "grid": [
       16,
-      13,
+      14,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1549,
+    "voxelCount": 2463,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         13
       ],
       [
@@ -1678,23 +1678,23 @@
     "name": "pet-388",
     "grid": [
       37,
-      26,
-      31
+      27,
+      26
     ],
     "paletteCount": 12,
-    "voxelCount": 2199,
+    "voxelCount": 3648,
     "bounds": [
       [
         -18,
         18
       ],
       [
-        1,
+        0,
         26
       ],
       [
-        -11,
-        19
+        -12,
+        13
       ]
     ],
     "anatomy": "fox"
@@ -1704,10 +1704,10 @@
     "grid": [
       25,
       12,
-      33
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 2245,
+    "voxelCount": 3917,
     "bounds": [
       [
         -12,
@@ -1718,7 +1718,7 @@
         11
       ],
       [
-        -13,
+        -14,
         19
       ]
     ],
@@ -1728,22 +1728,22 @@
     "name": "pet-390",
     "grid": [
       21,
-      18,
-      31
+      19,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2052,
+    "voxelCount": 3707,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -1753,22 +1753,22 @@
     "name": "pet-391",
     "grid": [
       19,
-      20,
-      31
+      21,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1786,
+    "voxelCount": 2896,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         20
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -1778,22 +1778,22 @@
     "name": "pet-392",
     "grid": [
       20,
-      33,
-      31
+      34,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1579,
+    "voxelCount": 2890,
     "bounds": [
       [
         -7,
         12
       ],
       [
-        1,
+        0,
         33
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -1807,7 +1807,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 1077,
+    "voxelCount": 1850,
     "bounds": [
       [
         -12,
@@ -1828,18 +1828,18 @@
     "name": "pet-394",
     "grid": [
       15,
-      20,
+      21,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 2060,
+    "voxelCount": 3598,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -1857,7 +1857,7 @@
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 3093,
+    "voxelCount": 4601,
     "bounds": [
       [
         -15,
@@ -1878,19 +1878,19 @@
     "name": "pet-396",
     "grid": [
       21,
-      19,
+      21,
       18
     ],
     "paletteCount": 12,
-    "voxelCount": 1583,
+    "voxelCount": 2731,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
-        19
+        0,
+        20
       ],
       [
         -12,
@@ -1903,22 +1903,22 @@
     "name": "pet-397",
     "grid": [
       16,
-      16,
-      33
+      18,
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 1846,
+    "voxelCount": 3430,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         21
       ]
     ],
@@ -1928,18 +1928,18 @@
     "name": "pet-398",
     "grid": [
       17,
-      18,
+      19,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 2300,
+    "voxelCount": 4008,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         18
       ],
       [
@@ -1957,7 +1957,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1970,
+    "voxelCount": 3132,
     "bounds": [
       [
         -6,
@@ -1978,18 +1978,18 @@
     "name": "pet-400",
     "grid": [
       19,
-      20,
+      21,
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1774,
+    "voxelCount": 2958,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -2003,19 +2003,19 @@
     "name": "pet-401",
     "grid": [
       14,
-      18,
+      20,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1340,
+    "voxelCount": 2070,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -11,
@@ -2028,18 +2028,18 @@
     "name": "pet-402",
     "grid": [
       16,
-      12,
+      13,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1302,
+    "voxelCount": 2279,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         12
       ],
       [
@@ -2053,18 +2053,18 @@
     "name": "pet-403",
     "grid": [
       27,
-      21,
+      22,
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 2156,
+    "voxelCount": 3470,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         21
       ],
       [
@@ -2078,22 +2078,22 @@
     "name": "pet-404",
     "grid": [
       15,
-      16,
-      31
+      18,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1606,
+    "voxelCount": 2879,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -2107,7 +2107,7 @@
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 3029,
+    "voxelCount": 4533,
     "bounds": [
       [
         -15,
@@ -2132,7 +2132,7 @@
       21
     ],
     "paletteCount": 12,
-    "voxelCount": 1391,
+    "voxelCount": 2477,
     "bounds": [
       [
         -10,
@@ -2157,7 +2157,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1411,
+    "voxelCount": 2403,
     "bounds": [
       [
         -13,
@@ -2178,22 +2178,22 @@
     "name": "pet-408",
     "grid": [
       16,
-      16,
-      33
+      18,
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 2395,
+    "voxelCount": 4138,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         21
       ]
     ],
@@ -2207,7 +2207,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 3156,
+    "voxelCount": 5797,
     "bounds": [
       [
         -12,
@@ -2228,22 +2228,22 @@
     "name": "pet-410",
     "grid": [
       15,
-      33,
-      31
+      34,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1845,
+    "voxelCount": 2874,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         33
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -2253,22 +2253,22 @@
     "name": "pet-411",
     "grid": [
       21,
-      20,
-      31
+      21,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2408,
+    "voxelCount": 4011,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         20
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -2278,18 +2278,18 @@
     "name": "pet-412",
     "grid": [
       25,
-      24,
+      25,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2035,
+    "voxelCount": 3382,
     "bounds": [
       [
         -12,
         12
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -2307,7 +2307,7 @@
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1903,
+    "voxelCount": 3166,
     "bounds": [
       [
         -9,
@@ -2332,7 +2332,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 1403,
+    "voxelCount": 2211,
     "bounds": [
       [
         -12,
@@ -2353,22 +2353,22 @@
     "name": "pet-415",
     "grid": [
       27,
-      21,
-      31
+      22,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2231,
+    "voxelCount": 3365,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         21
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -2378,18 +2378,18 @@
     "name": "pet-416",
     "grid": [
       19,
-      17,
+      18,
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1597,
+    "voxelCount": 2817,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -2403,19 +2403,19 @@
     "name": "pet-417",
     "grid": [
       14,
-      18,
+      20,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1267,
+    "voxelCount": 2007,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -11,
@@ -2428,22 +2428,22 @@
     "name": "pet-418",
     "grid": [
       16,
-      10,
-      32
+      11,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1242,
+    "voxelCount": 2076,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         10
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -2453,22 +2453,22 @@
     "name": "pet-419",
     "grid": [
       14,
-      16,
-      33
+      18,
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 1713,
+    "voxelCount": 3261,
     "bounds": [
       [
         -5,
         8
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         21
       ]
     ],
@@ -2478,18 +2478,18 @@
     "name": "pet-420",
     "grid": [
       17,
-      12,
+      13,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 2018,
+    "voxelCount": 3691,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         12
       ],
       [
@@ -2503,19 +2503,19 @@
     "name": "pet-421",
     "grid": [
       15,
-      18,
+      20,
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 1236,
+    "voxelCount": 2177,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -11,
@@ -2532,7 +2532,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 2083,
+    "voxelCount": 3748,
     "bounds": [
       [
         -12,
@@ -2557,7 +2557,7 @@
       22
     ],
     "paletteCount": 12,
-    "voxelCount": 1436,
+    "voxelCount": 2541,
     "bounds": [
       [
         -10,
@@ -2582,7 +2582,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1632,
+    "voxelCount": 2376,
     "bounds": [
       [
         -7,
@@ -2603,18 +2603,18 @@
     "name": "pet-425",
     "grid": [
       19,
-      17,
+      18,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1544,
+    "voxelCount": 2612,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -2628,18 +2628,18 @@
     "name": "pet-426",
     "grid": [
       19,
-      17,
+      18,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1660,
+    "voxelCount": 2701,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -2653,18 +2653,18 @@
     "name": "pet-427",
     "grid": [
       29,
-      18,
+      19,
       26
     ],
     "paletteCount": 12,
-    "voxelCount": 3095,
+    "voxelCount": 4621,
     "bounds": [
       [
         -10,
         18
       ],
       [
-        1,
+        0,
         18
       ],
       [
@@ -2682,7 +2682,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 1076,
+    "voxelCount": 1823,
     "bounds": [
       [
         -12,
@@ -2703,18 +2703,18 @@
     "name": "pet-429",
     "grid": [
       23,
-      17,
+      18,
       39
     ],
     "paletteCount": 12,
-    "voxelCount": 2221,
+    "voxelCount": 4101,
     "bounds": [
       [
         -11,
         11
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -2728,18 +2728,18 @@
     "name": "pet-430",
     "grid": [
       37,
-      26,
+      27,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2639,
+    "voxelCount": 4368,
     "bounds": [
       [
         -18,
         18
       ],
       [
-        1,
+        0,
         26
       ],
       [
@@ -2753,11 +2753,11 @@
     "name": "pet-431",
     "grid": [
       21,
-      19,
+      20,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1745,
+    "voxelCount": 2957,
     "bounds": [
       [
         -10,
@@ -2765,7 +2765,7 @@
       ],
       [
         0,
-        18
+        19
       ],
       [
         -10,
@@ -2782,7 +2782,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1362,
+    "voxelCount": 2510,
     "bounds": [
       [
         -13,
@@ -2803,19 +2803,19 @@
     "name": "pet-433",
     "grid": [
       21,
-      19,
+      21,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1606,
+    "voxelCount": 2829,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
-        19
+        0,
+        20
       ],
       [
         -11,
@@ -2832,7 +2832,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 3198,
+    "voxelCount": 5212,
     "bounds": [
       [
         -12,
@@ -2853,19 +2853,19 @@
     "name": "pet-435",
     "grid": [
       14,
-      18,
+      20,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1146,
+    "voxelCount": 2084,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -13,
@@ -2882,7 +2882,7 @@
       36
     ],
     "paletteCount": 12,
-    "voxelCount": 1232,
+    "voxelCount": 2395,
     "bounds": [
       [
         -7,
@@ -2907,7 +2907,7 @@
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 2137,
+    "voxelCount": 4020,
     "bounds": [
       [
         -12,
@@ -2928,18 +2928,18 @@
     "name": "pet-438",
     "grid": [
       19,
-      20,
+      21,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1730,
+    "voxelCount": 2906,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -2957,7 +2957,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 1189,
+    "voxelCount": 2231,
     "bounds": [
       [
         -8,
@@ -2982,7 +2982,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1448,
+    "voxelCount": 2564,
     "bounds": [
       [
         -17,
@@ -3007,7 +3007,7 @@
       21
     ],
     "paletteCount": 12,
-    "voxelCount": 1839,
+    "voxelCount": 3186,
     "bounds": [
       [
         -10,
@@ -3028,18 +3028,18 @@
     "name": "pet-442",
     "grid": [
       19,
-      24,
+      25,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1715,
+    "voxelCount": 2916,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -3057,7 +3057,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1322,
+    "voxelCount": 2085,
     "bounds": [
       [
         -8,
@@ -3078,19 +3078,19 @@
     "name": "pet-444",
     "grid": [
       15,
-      16,
+      18,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1731,
+    "voxelCount": 3005,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
         -13,
@@ -3102,23 +3102,23 @@
   {
     "name": "pet-445",
     "grid": [
-      21,
       23,
-      31
+      24,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1419,
+    "voxelCount": 2502,
     "bounds": [
       [
-        -10,
-        10
+        -11,
+        11
       ],
       [
-        1,
+        0,
         23
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -3128,18 +3128,18 @@
     "name": "pet-446",
     "grid": [
       19,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1835,
+    "voxelCount": 2937,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -3153,19 +3153,19 @@
     "name": "pet-447",
     "grid": [
       14,
-      18,
+      20,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1166,
+    "voxelCount": 2088,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -14,
@@ -3178,18 +3178,18 @@
     "name": "pet-448",
     "grid": [
       23,
-      17,
+      18,
       39
     ],
     "paletteCount": 12,
-    "voxelCount": 2310,
+    "voxelCount": 4254,
     "bounds": [
       [
         -11,
         11
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -3207,7 +3207,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1349,
+    "voxelCount": 2321,
     "bounds": [
       [
         -8,
@@ -3228,22 +3228,22 @@
     "name": "pet-450",
     "grid": [
       14,
-      16,
-      31
+      18,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1451,
+    "voxelCount": 2303,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -3253,18 +3253,18 @@
     "name": "pet-451",
     "grid": [
       16,
-      12,
+      13,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1335,
+    "voxelCount": 2312,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         12
       ],
       [
@@ -3278,18 +3278,18 @@
     "name": "pet-452",
     "grid": [
       37,
-      26,
+      27,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2757,
+    "voxelCount": 4598,
     "bounds": [
       [
         -18,
         18
       ],
       [
-        1,
+        0,
         26
       ],
       [
@@ -3307,7 +3307,7 @@
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2194,
+    "voxelCount": 3801,
     "bounds": [
       [
         -19,
@@ -3328,22 +3328,22 @@
     "name": "pet-454",
     "grid": [
       16,
-      10,
-      32
+      11,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1169,
+    "voxelCount": 2105,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         10
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -3353,19 +3353,19 @@
     "name": "pet-455",
     "grid": [
       19,
-      18,
+      20,
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 1165,
+    "voxelCount": 1975,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -8,
@@ -3382,7 +3382,7 @@
       21
     ],
     "paletteCount": 12,
-    "voxelCount": 1593,
+    "voxelCount": 2875,
     "bounds": [
       [
         -10,
@@ -3403,22 +3403,22 @@
     "name": "pet-457",
     "grid": [
       16,
-      13,
-      32
+      14,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1790,
+    "voxelCount": 2619,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         13
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -3432,7 +3432,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1123,
+    "voxelCount": 1777,
     "bounds": [
       [
         -8,
@@ -3453,18 +3453,18 @@
     "name": "pet-459",
     "grid": [
       13,
-      24,
+      25,
       39
     ],
     "paletteCount": 12,
-    "voxelCount": 1194,
+    "voxelCount": 2265,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -3478,18 +3478,18 @@
     "name": "pet-460",
     "grid": [
       13,
-      23,
+      24,
       36
     ],
     "paletteCount": 12,
-    "voxelCount": 1447,
+    "voxelCount": 2576,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
+        0,
         23
       ],
       [
@@ -3503,22 +3503,22 @@
     "name": "pet-461",
     "grid": [
       16,
-      19,
-      32
+      20,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1354,
+    "voxelCount": 2251,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         19
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -3528,18 +3528,18 @@
     "name": "pet-462",
     "grid": [
       27,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2319,
+    "voxelCount": 3678,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -3553,18 +3553,18 @@
     "name": "pet-463",
     "grid": [
       16,
-      17,
+      18,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1870,
+    "voxelCount": 2863,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -3578,19 +3578,19 @@
     "name": "pet-464",
     "grid": [
       15,
-      16,
+      18,
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 1648,
+    "voxelCount": 2937,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
         -12,
@@ -3607,7 +3607,7 @@
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 2710,
+    "voxelCount": 3975,
     "bounds": [
       [
         -14,
@@ -3632,7 +3632,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1860,
+    "voxelCount": 3032,
     "bounds": [
       [
         -12,
@@ -3653,18 +3653,18 @@
     "name": "pet-467",
     "grid": [
       13,
-      24,
+      25,
       39
     ],
     "paletteCount": 12,
-    "voxelCount": 1256,
+    "voxelCount": 2371,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -3678,18 +3678,18 @@
     "name": "pet-468",
     "grid": [
       37,
-      26,
+      27,
       35
     ],
     "paletteCount": 12,
-    "voxelCount": 2145,
+    "voxelCount": 3664,
     "bounds": [
       [
         -18,
         18
       ],
       [
-        1,
+        0,
         26
       ],
       [
@@ -3703,22 +3703,22 @@
     "name": "pet-469",
     "grid": [
       15,
-      28,
-      31
+      30,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2178,
+    "voxelCount": 4090,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        28
+        0,
+        29
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -3728,22 +3728,22 @@
     "name": "pet-470",
     "grid": [
       15,
-      17,
-      31
+      18,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2044,
+    "voxelCount": 3048,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         17
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -3753,18 +3753,18 @@
     "name": "pet-471",
     "grid": [
       45,
-      18,
+      19,
       37
     ],
     "paletteCount": 12,
-    "voxelCount": 3192,
+    "voxelCount": 5218,
     "bounds": [
       [
         -22,
         22
       ],
       [
-        1,
+        0,
         18
       ],
       [
@@ -3778,18 +3778,18 @@
     "name": "pet-472",
     "grid": [
       19,
-      23,
+      24,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 2866,
+    "voxelCount": 4266,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         23
       ],
       [
@@ -3803,19 +3803,19 @@
     "name": "pet-473",
     "grid": [
       14,
-      18,
+      20,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1267,
+    "voxelCount": 2007,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -11,
@@ -3828,18 +3828,18 @@
     "name": "pet-474",
     "grid": [
       19,
-      19,
+      20,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1569,
+    "voxelCount": 2688,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         19
       ],
       [
@@ -3857,7 +3857,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1132,
+    "voxelCount": 1801,
     "bounds": [
       [
         -8,
@@ -3878,19 +3878,19 @@
     "name": "pet-476",
     "grid": [
       17,
-      18,
+      20,
       19
     ],
     "paletteCount": 12,
-    "voxelCount": 1378,
+    "voxelCount": 2241,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -8,
@@ -3903,22 +3903,22 @@
     "name": "pet-477",
     "grid": [
       15,
-      10,
-      32
+      11,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 965,
+    "voxelCount": 1899,
     "bounds": [
       [
         -5,
         9
       ],
       [
-        1,
+        0,
         10
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -3928,19 +3928,19 @@
     "name": "pet-478",
     "grid": [
       17,
-      18,
+      20,
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 1020,
+    "voxelCount": 1850,
     "bounds": [
       [
         -6,
         10
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -12,
@@ -3952,23 +3952,23 @@
   {
     "name": "pet-479",
     "grid": [
-      15,
       17,
-      31
+      18,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1730,
+    "voxelCount": 3127,
     "bounds": [
       [
-        -7,
-        7
+        -8,
+        8
       ],
       [
         0,
-        16
+        17
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -3977,20 +3977,20 @@
   {
     "name": "pet-480",
     "grid": [
-      17,
-      12,
+      19,
+      15,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 2102,
+    "voxelCount": 3679,
     "bounds": [
       [
-        -8,
-        8
+        -9,
+        9
       ],
       [
-        1,
-        12
+        0,
+        14
       ],
       [
         -11,
@@ -4003,18 +4003,18 @@
     "name": "pet-481",
     "grid": [
       19,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1702,
+    "voxelCount": 2858,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -4032,7 +4032,7 @@
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1511,
+    "voxelCount": 2969,
     "bounds": [
       [
         -12,
@@ -4053,22 +4053,22 @@
     "name": "pet-483",
     "grid": [
       21,
-      18,
-      31
+      19,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2151,
+    "voxelCount": 3783,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -4082,7 +4082,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 966,
+    "voxelCount": 1509,
     "bounds": [
       [
         -9,
@@ -4103,18 +4103,18 @@
     "name": "pet-485",
     "grid": [
       19,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1502,
+    "voxelCount": 2582,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -4128,18 +4128,18 @@
     "name": "pet-486",
     "grid": [
       27,
-      21,
+      22,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2335,
+    "voxelCount": 3911,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         21
       ],
       [
@@ -4153,22 +4153,22 @@
     "name": "pet-487",
     "grid": [
       19,
-      26,
-      31
+      27,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1434,
+    "voxelCount": 2601,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         26
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -4178,18 +4178,18 @@
     "name": "pet-488",
     "grid": [
       27,
-      24,
+      25,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 2481,
+    "voxelCount": 3890,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -4203,18 +4203,18 @@
     "name": "pet-489",
     "grid": [
       17,
-      18,
+      19,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 2140,
+    "voxelCount": 3586,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         18
       ],
       [
@@ -4228,11 +4228,11 @@
     "name": "pet-490",
     "grid": [
       21,
-      20,
+      21,
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 2085,
+    "voxelCount": 3445,
     "bounds": [
       [
         -10,
@@ -4240,7 +4240,7 @@
       ],
       [
         0,
-        19
+        20
       ],
       [
         -10,
@@ -4253,18 +4253,18 @@
     "name": "pet-491",
     "grid": [
       39,
-      17,
+      18,
       45
     ],
     "paletteCount": 12,
-    "voxelCount": 3268,
+    "voxelCount": 5243,
     "bounds": [
       [
         -19,
         19
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -4278,18 +4278,18 @@
     "name": "pet-492",
     "grid": [
       13,
-      15,
+      16,
       14
     ],
     "paletteCount": 12,
-    "voxelCount": 922,
+    "voxelCount": 1633,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
+        0,
         15
       ],
       [
@@ -4303,19 +4303,19 @@
     "name": "pet-493",
     "grid": [
       14,
-      18,
+      20,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1162,
+    "voxelCount": 2195,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -14,
@@ -4328,18 +4328,18 @@
     "name": "pet-494",
     "grid": [
       27,
-      21,
+      22,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2135,
+    "voxelCount": 3549,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         21
       ],
       [
@@ -4353,22 +4353,22 @@
     "name": "pet-495",
     "grid": [
       16,
-      13,
-      32
+      14,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1492,
+    "voxelCount": 2344,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         13
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -4382,7 +4382,7 @@
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 894,
+    "voxelCount": 1810,
     "bounds": [
       [
         -8,
@@ -4403,19 +4403,19 @@
     "name": "pet-497",
     "grid": [
       19,
-      24,
+      26,
       19
     ],
     "paletteCount": 12,
-    "voxelCount": 1173,
+    "voxelCount": 2067,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
-        24
+        0,
+        25
       ],
       [
         -8,
@@ -4432,7 +4432,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1481,
+    "voxelCount": 2454,
     "bounds": [
       [
         -6,
@@ -4453,22 +4453,22 @@
     "name": "pet-499",
     "grid": [
       14,
-      16,
-      33
+      18,
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 1837,
+    "voxelCount": 3371,
     "bounds": [
       [
         -5,
         8
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         21
       ]
     ],
@@ -4478,18 +4478,18 @@
     "name": "pet-500",
     "grid": [
       19,
-      17,
+      18,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1603,
+    "voxelCount": 2791,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -4503,22 +4503,22 @@
     "name": "pet-501",
     "grid": [
       21,
-      18,
-      31
+      19,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1380,
+    "voxelCount": 2393,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -4528,22 +4528,22 @@
     "name": "pet-502",
     "grid": [
       21,
-      20,
-      31
+      21,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2196,
+    "voxelCount": 3531,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         20
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -4553,18 +4553,18 @@
     "name": "pet-503",
     "grid": [
       19,
-      24,
+      25,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1699,
+    "voxelCount": 2864,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -4582,7 +4582,7 @@
       18
     ],
     "paletteCount": 12,
-    "voxelCount": 490,
+    "voxelCount": 846,
     "bounds": [
       [
         -3,
@@ -4603,18 +4603,18 @@
     "name": "pet-505",
     "grid": [
       13,
-      22,
+      23,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1439,
+    "voxelCount": 2657,
     "bounds": [
       [
         -5,
         7
       ],
       [
-        1,
+        0,
         22
       ],
       [
@@ -4628,22 +4628,22 @@
     "name": "pet-506",
     "grid": [
       15,
-      21,
-      31
+      23,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1943,
+    "voxelCount": 3344,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        21
+        0,
+        22
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -4653,18 +4653,18 @@
     "name": "pet-507",
     "grid": [
       15,
-      15,
+      16,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1557,
+    "voxelCount": 2777,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         15
       ],
       [
@@ -4678,18 +4678,18 @@
     "name": "pet-508",
     "grid": [
       25,
-      24,
+      25,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2005,
+    "voxelCount": 3352,
     "bounds": [
       [
         -12,
         12
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -4703,22 +4703,22 @@
     "name": "pet-509",
     "grid": [
       21,
-      18,
-      35
+      19,
+      36
     ],
     "paletteCount": 12,
-    "voxelCount": 2243,
+    "voxelCount": 3636,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         23
       ]
     ],
@@ -4728,18 +4728,18 @@
     "name": "pet-510",
     "grid": [
       39,
-      17,
+      18,
       51
     ],
     "paletteCount": 12,
-    "voxelCount": 3281,
+    "voxelCount": 5245,
     "bounds": [
       [
         -19,
         19
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -4753,18 +4753,18 @@
     "name": "pet-511",
     "grid": [
       15,
-      14,
+      15,
       14
     ],
     "paletteCount": 12,
-    "voxelCount": 670,
+    "voxelCount": 1470,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         14
       ],
       [
@@ -4779,10 +4779,10 @@
     "grid": [
       16,
       17,
-      23
+      24
     ],
     "paletteCount": 12,
-    "voxelCount": 1175,
+    "voxelCount": 1945,
     "bounds": [
       [
         -8,
@@ -4793,7 +4793,7 @@
         17
       ],
       [
-        -11,
+        -12,
         11
       ]
     ],
@@ -4804,10 +4804,10 @@
     "grid": [
       15,
       11,
-      13
+      14
     ],
     "paletteCount": 12,
-    "voxelCount": 674,
+    "voxelCount": 1366,
     "bounds": [
       [
         -7,
@@ -4819,7 +4819,7 @@
       ],
       [
         -7,
-        5
+        6
       ]
     ],
     "anatomy": "slime"
@@ -4832,7 +4832,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1341,
+    "voxelCount": 2511,
     "bounds": [
       [
         -12,
@@ -4857,7 +4857,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 2279,
+    "voxelCount": 4133,
     "bounds": [
       [
         -8,
@@ -4877,16 +4877,16 @@
   {
     "name": "pet-516",
     "grid": [
-      9,
+      11,
       10,
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 1065,
+    "voxelCount": 1784,
     "bounds": [
       [
-        -4,
-        4
+        -5,
+        5
       ],
       [
         0,
@@ -4903,18 +4903,18 @@
     "name": "pet-517",
     "grid": [
       15,
-      19,
+      20,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1217,
+    "voxelCount": 2163,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         19
       ],
       [
@@ -4927,23 +4927,23 @@
   {
     "name": "pet-518",
     "grid": [
-      21,
-      28,
-      31
+      23,
+      29,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1438,
+    "voxelCount": 2574,
     "bounds": [
       [
-        -10,
-        10
+        -11,
+        11
       ],
       [
-        1,
+        0,
         28
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -4953,19 +4953,19 @@
     "name": "pet-519",
     "grid": [
       15,
-      16,
+      18,
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 1712,
+    "voxelCount": 3045,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
         -12,
@@ -4982,7 +4982,7 @@
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1079,
+    "voxelCount": 2028,
     "bounds": [
       [
         -8,
@@ -5003,18 +5003,18 @@
     "name": "pet-521",
     "grid": [
       17,
-      12,
+      13,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 2109,
+    "voxelCount": 3818,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         12
       ],
       [
@@ -5028,18 +5028,18 @@
     "name": "pet-522",
     "grid": [
       19,
-      22,
+      23,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1381,
+    "voxelCount": 2619,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         22
       ],
       [
@@ -5057,7 +5057,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1712,
+    "voxelCount": 3238,
     "bounds": [
       [
         -17,
@@ -5078,22 +5078,22 @@
     "name": "pet-524",
     "grid": [
       31,
-      24,
-      28
+      25,
+      29
     ],
     "paletteCount": 12,
-    "voxelCount": 1724,
+    "voxelCount": 2959,
     "bounds": [
       [
         -15,
         15
       ],
       [
-        1,
+        0,
         24
       ],
       [
-        -9,
+        -10,
         18
       ]
     ],
@@ -5107,7 +5107,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1786,
+    "voxelCount": 3112,
     "bounds": [
       [
         -12,
@@ -5129,10 +5129,10 @@
     "grid": [
       27,
       12,
-      32
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 1879,
+    "voxelCount": 3493,
     "bounds": [
       [
         -13,
@@ -5143,7 +5143,7 @@
         11
       ],
       [
-        -12,
+        -14,
         19
       ]
     ],
@@ -5153,18 +5153,18 @@
     "name": "pet-527",
     "grid": [
       15,
-      23,
+      24,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 2110,
+    "voxelCount": 3921,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         23
       ],
       [
@@ -5182,7 +5182,7 @@
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 3103,
+    "voxelCount": 4607,
     "bounds": [
       [
         -15,
@@ -5207,7 +5207,7 @@
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 3647,
+    "voxelCount": 5295,
     "bounds": [
       [
         -18,
@@ -5227,23 +5227,23 @@
   {
     "name": "pet-530",
     "grid": [
-      19,
-      17,
-      30
+      23,
+      16,
+      31
     ],
     "paletteCount": 12,
-    "voxelCount": 1507,
+    "voxelCount": 2210,
     "bounds": [
       [
-        -9,
-        9
-      ],
-      [
-        1,
-        17
-      ],
-      [
         -11,
+        11
+      ],
+      [
+        0,
+        15
+      ],
+      [
+        -12,
         18
       ]
     ],
@@ -5257,7 +5257,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1181,
+    "voxelCount": 1898,
     "bounds": [
       [
         -8,
@@ -5278,19 +5278,19 @@
     "name": "pet-532",
     "grid": [
       19,
-      24,
+      26,
       15
     ],
     "paletteCount": 12,
-    "voxelCount": 1131,
+    "voxelCount": 2157,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
-        24
+        0,
+        25
       ],
       [
         -9,
@@ -5303,19 +5303,19 @@
     "name": "pet-533",
     "grid": [
       16,
-      18,
+      20,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 2428,
+    "voxelCount": 4255,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -12,
@@ -5332,7 +5332,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 1476,
+    "voxelCount": 2709,
     "bounds": [
       [
         -10,
@@ -5353,18 +5353,18 @@
     "name": "pet-535",
     "grid": [
       19,
-      17,
+      18,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1852,
+    "voxelCount": 3099,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -5382,7 +5382,7 @@
       22
     ],
     "paletteCount": 12,
-    "voxelCount": 1408,
+    "voxelCount": 2596,
     "bounds": [
       [
         -10,
@@ -5403,22 +5403,22 @@
     "name": "pet-537",
     "grid": [
       23,
-      26,
-      32
+      27,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 2190,
+    "voxelCount": 3656,
     "bounds": [
       [
         -7,
         15
       ],
       [
-        1,
+        0,
         26
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -5428,18 +5428,18 @@
     "name": "pet-538",
     "grid": [
       21,
-      20,
+      21,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1659,
+    "voxelCount": 2941,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -5457,7 +5457,7 @@
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 3063,
+    "voxelCount": 4777,
     "bounds": [
       [
         -8,
@@ -5482,7 +5482,7 @@
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 2845,
+    "voxelCount": 4547,
     "bounds": [
       [
         -14,
@@ -5503,22 +5503,22 @@
     "name": "pet-541",
     "grid": [
       19,
-      26,
-      31
+      27,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1379,
+    "voxelCount": 2583,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         26
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -5528,18 +5528,18 @@
     "name": "pet-542",
     "grid": [
       28,
-      12,
+      13,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1257,
+    "voxelCount": 2428,
     "bounds": [
       [
         -13,
         14
       ],
       [
-        1,
+        0,
         12
       ],
       [
@@ -5553,18 +5553,18 @@
     "name": "pet-543",
     "grid": [
       17,
-      20,
+      21,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 2127,
+    "voxelCount": 3786,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -5578,18 +5578,18 @@
     "name": "pet-544",
     "grid": [
       19,
-      21,
+      22,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1586,
+    "voxelCount": 2748,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         21
       ],
       [
@@ -5607,7 +5607,7 @@
       26
     ],
     "paletteCount": 12,
-    "voxelCount": 2056,
+    "voxelCount": 4104,
     "bounds": [
       [
         -12,
@@ -5628,18 +5628,18 @@
     "name": "pet-546",
     "grid": [
       25,
-      24,
+      25,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1882,
+    "voxelCount": 3304,
     "bounds": [
       [
         -12,
         12
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -5653,22 +5653,22 @@
     "name": "pet-547",
     "grid": [
       27,
-      23,
-      31
+      24,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 4457,
+    "voxelCount": 7988,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         23
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -5678,22 +5678,22 @@
     "name": "pet-548",
     "grid": [
       45,
-      19,
-      31
+      20,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 4189,
+    "voxelCount": 6309,
     "bounds": [
       [
         -22,
         22
       ],
       [
-        1,
+        0,
         19
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -5703,18 +5703,18 @@
     "name": "pet-549",
     "grid": [
       17,
-      19,
+      20,
       19
     ],
     "paletteCount": 12,
-    "voxelCount": 2104,
+    "voxelCount": 3914,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         19
       ],
       [
@@ -5728,22 +5728,22 @@
     "name": "pet-550",
     "grid": [
       14,
-      18,
-      33
+      20,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1144,
+    "voxelCount": 2256,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
-        -13,
+        -12,
         19
       ]
     ],
@@ -5753,18 +5753,18 @@
     "name": "pet-551",
     "grid": [
       19,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1589,
+    "voxelCount": 2664,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -5779,10 +5779,10 @@
     "grid": [
       16,
       11,
-      32
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1325,
+    "voxelCount": 2224,
     "bounds": [
       [
         -7,
@@ -5793,7 +5793,7 @@
         10
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -5807,7 +5807,7 @@
       22
     ],
     "paletteCount": 12,
-    "voxelCount": 1664,
+    "voxelCount": 2836,
     "bounds": [
       [
         -10,
@@ -5829,10 +5829,10 @@
     "grid": [
       14,
       11,
-      32
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1072,
+    "voxelCount": 1834,
     "bounds": [
       [
         -5,
@@ -5843,7 +5843,7 @@
         10
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -5857,7 +5857,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1257,
+    "voxelCount": 2464,
     "bounds": [
       [
         -8,
@@ -5878,19 +5878,19 @@
     "name": "pet-556",
     "grid": [
       19,
-      18,
+      20,
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 1123,
+    "voxelCount": 2065,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -9,
@@ -5902,19 +5902,19 @@
   {
     "name": "pet-557",
     "grid": [
-      17,
       19,
+      20,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 2176,
+    "voxelCount": 3780,
     "bounds": [
       [
-        -8,
-        8
+        -9,
+        9
       ],
       [
-        1,
+        0,
         19
       ],
       [
@@ -5928,19 +5928,19 @@
     "name": "pet-558",
     "grid": [
       16,
-      16,
+      18,
       38
     ],
     "paletteCount": 12,
-    "voxelCount": 2192,
+    "voxelCount": 4020,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
         -16,
@@ -5953,11 +5953,11 @@
     "name": "pet-559",
     "grid": [
       15,
-      17,
-      31
+      18,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2022,
+    "voxelCount": 3269,
     "bounds": [
       [
         -7,
@@ -5965,10 +5965,10 @@
       ],
       [
         0,
-        16
+        17
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -5982,7 +5982,7 @@
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 2293,
+    "voxelCount": 3437,
     "bounds": [
       [
         -14,
@@ -6003,19 +6003,19 @@
     "name": "pet-561",
     "grid": [
       19,
-      18,
+      20,
       15
     ],
     "paletteCount": 12,
-    "voxelCount": 1233,
+    "voxelCount": 2071,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -9,
@@ -6032,7 +6032,7 @@
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 2717,
+    "voxelCount": 4216,
     "bounds": [
       [
         -12,
@@ -6053,19 +6053,19 @@
     "name": "pet-563",
     "grid": [
       13,
-      16,
+      18,
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 1191,
+    "voxelCount": 2188,
     "bounds": [
       [
         -5,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
         -12,
@@ -6078,22 +6078,22 @@
     "name": "pet-564",
     "grid": [
       27,
-      28,
-      31
+      29,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1596,
+    "voxelCount": 2902,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         28
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -6103,22 +6103,22 @@
     "name": "pet-565",
     "grid": [
       21,
-      20,
-      31
+      21,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2905,
+    "voxelCount": 4690,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         20
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -6132,7 +6132,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 2133,
+    "voxelCount": 3752,
     "bounds": [
       [
         -12,
@@ -6153,19 +6153,19 @@
     "name": "pet-567",
     "grid": [
       21,
-      19,
+      21,
       18
     ],
     "paletteCount": 12,
-    "voxelCount": 1597,
+    "voxelCount": 2751,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
-        19
+        0,
+        20
       ],
       [
         -12,
@@ -6178,19 +6178,19 @@
     "name": "pet-568",
     "grid": [
       16,
-      18,
+      20,
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 1069,
+    "voxelCount": 1771,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -8,
@@ -6203,18 +6203,18 @@
     "name": "pet-569",
     "grid": [
       19,
-      17,
+      18,
       26
     ],
     "paletteCount": 12,
-    "voxelCount": 1630,
+    "voxelCount": 3021,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -6228,18 +6228,18 @@
     "name": "pet-570",
     "grid": [
       15,
-      10,
+      11,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 692,
+    "voxelCount": 1439,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         10
       ],
       [
@@ -6253,22 +6253,22 @@
     "name": "pet-571",
     "grid": [
       16,
-      18,
-      32
+      19,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1316,
+    "voxelCount": 2374,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -6282,7 +6282,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1153,
+    "voxelCount": 1853,
     "bounds": [
       [
         -7,
@@ -6303,18 +6303,18 @@
     "name": "pet-573",
     "grid": [
       27,
-      24,
+      25,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2064,
+    "voxelCount": 3143,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -6328,19 +6328,19 @@
     "name": "pet-574",
     "grid": [
       13,
-      24,
+      26,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1058,
+    "voxelCount": 2004,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
-        24
+        0,
+        25
       ],
       [
         -11,
@@ -6353,22 +6353,22 @@
     "name": "pet-575",
     "grid": [
       16,
-      26,
-      33
+      27,
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 2405,
+    "voxelCount": 4439,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         26
       ],
       [
-        -11,
+        -12,
         21
       ]
     ],
@@ -6382,7 +6382,7 @@
       21
     ],
     "paletteCount": 12,
-    "voxelCount": 2452,
+    "voxelCount": 4073,
     "bounds": [
       [
         -10,
@@ -6407,7 +6407,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1585,
+    "voxelCount": 2800,
     "bounds": [
       [
         -12,
@@ -6428,18 +6428,18 @@
     "name": "pet-578",
     "grid": [
       19,
-      17,
+      18,
       38
     ],
     "paletteCount": 12,
-    "voxelCount": 1730,
+    "voxelCount": 3050,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -6453,18 +6453,18 @@
     "name": "pet-579",
     "grid": [
       33,
-      21,
+      22,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 2766,
+    "voxelCount": 4528,
     "bounds": [
       [
         -16,
         16
       ],
       [
-        1,
+        0,
         21
       ],
       [
@@ -6482,7 +6482,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 1443,
+    "voxelCount": 2258,
     "bounds": [
       [
         -12,
@@ -6503,18 +6503,18 @@
     "name": "pet-581",
     "grid": [
       21,
-      20,
+      21,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1684,
+    "voxelCount": 3028,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -6529,10 +6529,10 @@
     "grid": [
       19,
       28,
-      31
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1524,
+    "voxelCount": 2906,
     "bounds": [
       [
         -9,
@@ -6543,7 +6543,7 @@
         26
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -6557,7 +6557,7 @@
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1914,
+    "voxelCount": 3353,
     "bounds": [
       [
         -9,
@@ -6578,18 +6578,18 @@
     "name": "pet-584",
     "grid": [
       17,
-      17,
+      18,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 2563,
+    "voxelCount": 4828,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -6603,18 +6603,18 @@
     "name": "pet-585",
     "grid": [
       37,
-      41,
+      42,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2832,
+    "voxelCount": 4787,
     "bounds": [
       [
         -18,
         18
       ],
       [
-        1,
+        0,
         41
       ],
       [
@@ -6628,18 +6628,18 @@
     "name": "pet-586",
     "grid": [
       15,
-      17,
+      18,
       38
     ],
     "paletteCount": 12,
-    "voxelCount": 2104,
+    "voxelCount": 3913,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -6657,7 +6657,7 @@
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 1087,
+    "voxelCount": 1842,
     "bounds": [
       [
         -5,
@@ -6678,18 +6678,18 @@
     "name": "pet-588",
     "grid": [
       19,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1579,
+    "voxelCount": 2584,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -6703,18 +6703,18 @@
     "name": "pet-589",
     "grid": [
       19,
-      15,
+      16,
       18
     ],
     "paletteCount": 12,
-    "voxelCount": 800,
+    "voxelCount": 1571,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         15
       ],
       [
@@ -6728,19 +6728,19 @@
     "name": "pet-590",
     "grid": [
       14,
-      18,
+      20,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1087,
+    "voxelCount": 1910,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -11,
@@ -6753,22 +6753,22 @@
     "name": "pet-591",
     "grid": [
       17,
-      20,
-      32
+      21,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1368,
+    "voxelCount": 2658,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         20
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -6778,18 +6778,18 @@
     "name": "pet-592",
     "grid": [
       17,
-      16,
+      17,
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1140,
+    "voxelCount": 1547,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         16
       ],
       [
@@ -6803,22 +6803,22 @@
     "name": "pet-593",
     "grid": [
       17,
-      19,
-      18
+      20,
+      19
     ],
     "paletteCount": 12,
-    "voxelCount": 1609,
+    "voxelCount": 3073,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         19
       ],
       [
-        -12,
+        -13,
         5
       ]
     ],
@@ -6828,23 +6828,23 @@
     "name": "pet-594",
     "grid": [
       27,
-      21,
-      31
+      22,
+      26
     ],
     "paletteCount": 12,
-    "voxelCount": 1875,
+    "voxelCount": 3169,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         21
       ],
       [
-        -11,
-        19
+        -12,
+        13
       ]
     ],
     "anatomy": "fox"
@@ -6853,18 +6853,18 @@
     "name": "pet-595",
     "grid": [
       19,
-      21,
+      22,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1604,
+    "voxelCount": 2795,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         21
       ],
       [
@@ -6878,18 +6878,18 @@
     "name": "pet-596",
     "grid": [
       16,
-      22,
+      23,
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 1311,
+    "voxelCount": 2473,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         22
       ],
       [
@@ -6907,7 +6907,7 @@
       22
     ],
     "paletteCount": 12,
-    "voxelCount": 1334,
+    "voxelCount": 2372,
     "bounds": [
       [
         -8,
@@ -6932,7 +6932,7 @@
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1532,
+    "voxelCount": 2576,
     "bounds": [
       [
         -8,
@@ -6957,7 +6957,7 @@
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 2376,
+    "voxelCount": 3516,
     "bounds": [
       [
         -14,
@@ -6978,22 +6978,22 @@
     "name": "pet-600",
     "grid": [
       23,
-      20,
-      31
+      21,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1419,
+    "voxelCount": 2610,
     "bounds": [
       [
         -11,
         11
       ],
       [
-        1,
+        0,
         20
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -7003,22 +7003,22 @@
     "name": "pet-601",
     "grid": [
       13,
-      16,
-      35
+      18,
+      36
     ],
     "paletteCount": 12,
-    "voxelCount": 1327,
+    "voxelCount": 2372,
     "bounds": [
       [
         -5,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         23
       ]
     ],
@@ -7028,18 +7028,18 @@
     "name": "pet-602",
     "grid": [
       16,
-      16,
+      17,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1301,
+    "voxelCount": 2300,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         16
       ],
       [
@@ -7053,22 +7053,22 @@
     "name": "pet-603",
     "grid": [
       19,
-      20,
-      31
+      21,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2327,
+    "voxelCount": 3583,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         20
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -7078,18 +7078,18 @@
     "name": "pet-604",
     "grid": [
       17,
-      17,
+      18,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 2171,
+    "voxelCount": 3919,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -7103,19 +7103,19 @@
     "name": "pet-605",
     "grid": [
       21,
-      19,
+      21,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1562,
+    "voxelCount": 2725,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
-        19
+        0,
+        20
       ],
       [
         -11,
@@ -7132,7 +7132,7 @@
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1297,
+    "voxelCount": 2027,
     "bounds": [
       [
         -8,
@@ -7157,7 +7157,7 @@
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 1139,
+    "voxelCount": 2062,
     "bounds": [
       [
         -8,
@@ -7182,7 +7182,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1311,
+    "voxelCount": 2407,
     "bounds": [
       [
         -13,
@@ -7207,7 +7207,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 643,
+    "voxelCount": 1284,
     "bounds": [
       [
         -8,
@@ -7232,7 +7232,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 1157,
+    "voxelCount": 2166,
     "bounds": [
       [
         -8,
@@ -7257,7 +7257,7 @@
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1302,
+    "voxelCount": 1911,
     "bounds": [
       [
         -8,
@@ -7278,11 +7278,11 @@
     "name": "pet-612",
     "grid": [
       19,
-      15,
+      16,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 1519,
+    "voxelCount": 2543,
     "bounds": [
       [
         -9,
@@ -7290,7 +7290,7 @@
       ],
       [
         0,
-        14
+        15
       ],
       [
         -12,
@@ -7307,7 +7307,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1270,
+    "voxelCount": 2317,
     "bounds": [
       [
         -13,
@@ -7332,7 +7332,7 @@
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 2840,
+    "voxelCount": 4506,
     "bounds": [
       [
         -14,
@@ -7357,7 +7357,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 622,
+    "voxelCount": 1133,
     "bounds": [
       [
         -10,
@@ -7382,7 +7382,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 2315,
+    "voxelCount": 3639,
     "bounds": [
       [
         -13,
@@ -7407,7 +7407,7 @@
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 3099,
+    "voxelCount": 4765,
     "bounds": [
       [
         -15,
@@ -7432,7 +7432,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 2048,
+    "voxelCount": 3239,
     "bounds": [
       [
         -13,
@@ -7457,7 +7457,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1278,
+    "voxelCount": 2184,
     "bounds": [
       [
         -8,
@@ -7482,7 +7482,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 2491,
+    "voxelCount": 4002,
     "bounds": [
       [
         -14,
@@ -7507,7 +7507,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1358,
+    "voxelCount": 2626,
     "bounds": [
       [
         -9,
@@ -7532,7 +7532,7 @@
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 2615,
+    "voxelCount": 3871,
     "bounds": [
       [
         -14,
@@ -7557,7 +7557,7 @@
       43
     ],
     "paletteCount": 12,
-    "voxelCount": 2191,
+    "voxelCount": 3313,
     "bounds": [
       [
         -8,
@@ -7582,7 +7582,7 @@
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 4266,
+    "voxelCount": 6042,
     "bounds": [
       [
         -17,
@@ -7603,19 +7603,19 @@
     "name": "pet-625",
     "grid": [
       13,
-      24,
+      26,
       15
     ],
     "paletteCount": 12,
-    "voxelCount": 1055,
+    "voxelCount": 1897,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
-        24
+        0,
+        25
       ],
       [
         -9,
@@ -7632,7 +7632,7 @@
       21
     ],
     "paletteCount": 12,
-    "voxelCount": 1406,
+    "voxelCount": 2495,
     "bounds": [
       [
         -10,
@@ -7657,7 +7657,7 @@
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1256,
+    "voxelCount": 2169,
     "bounds": [
       [
         -8,
@@ -7682,7 +7682,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1301,
+    "voxelCount": 2142,
     "bounds": [
       [
         -8,
@@ -7703,22 +7703,22 @@
     "name": "pet-629",
     "grid": [
       16,
-      10,
-      35
+      11,
+      36
     ],
     "paletteCount": 12,
-    "voxelCount": 1214,
+    "voxelCount": 2187,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         10
       ],
       [
-        -11,
+        -12,
         23
       ]
     ],
@@ -7728,18 +7728,18 @@
     "name": "pet-630",
     "grid": [
       19,
-      19,
+      20,
       15
     ],
     "paletteCount": 12,
-    "voxelCount": 1209,
+    "voxelCount": 2221,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         19
       ],
       [
@@ -7757,7 +7757,7 @@
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1673,
+    "voxelCount": 2841,
     "bounds": [
       [
         -11,
@@ -7782,7 +7782,7 @@
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 845,
+    "voxelCount": 1178,
     "bounds": [
       [
         -12,
@@ -7803,18 +7803,18 @@
     "name": "pet-633",
     "grid": [
       31,
-      24,
+      25,
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 1650,
+    "voxelCount": 2749,
     "bounds": [
       [
         -15,
         15
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -7832,7 +7832,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1425,
+    "voxelCount": 2630,
     "bounds": [
       [
         -8,
@@ -7853,22 +7853,22 @@
     "name": "pet-635",
     "grid": [
       16,
-      16,
-      33
+      18,
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 2238,
+    "voxelCount": 4153,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         21
       ]
     ],
@@ -7882,7 +7882,7 @@
       27
     ],
     "paletteCount": 12,
-    "voxelCount": 1060,
+    "voxelCount": 1818,
     "bounds": [
       [
         -8,
@@ -7903,22 +7903,22 @@
     "name": "pet-637",
     "grid": [
       29,
-      18,
-      31
+      19,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 2667,
+    "voxelCount": 3846,
     "bounds": [
       [
         -10,
         18
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -7928,18 +7928,18 @@
     "name": "pet-638",
     "grid": [
       19,
-      20,
+      21,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 2597,
+    "voxelCount": 4064,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -7953,19 +7953,19 @@
     "name": "pet-639",
     "grid": [
       14,
-      18,
+      20,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1342,
+    "voxelCount": 2236,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -14,
@@ -7978,18 +7978,18 @@
     "name": "pet-640",
     "grid": [
       33,
-      24,
+      25,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 3029,
+    "voxelCount": 4810,
     "bounds": [
       [
         -16,
         16
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -8003,22 +8003,22 @@
     "name": "pet-641",
     "grid": [
       25,
-      26,
-      31
+      27,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1641,
+    "voxelCount": 3039,
     "bounds": [
       [
         -12,
         12
       ],
       [
-        1,
+        0,
         26
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -8028,18 +8028,18 @@
     "name": "pet-642",
     "grid": [
       18,
-      18,
+      19,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1812,
+    "voxelCount": 3123,
     "bounds": [
       [
         -8,
         9
       ],
       [
-        1,
+        0,
         18
       ],
       [
@@ -8054,10 +8054,10 @@
     "grid": [
       25,
       27,
-      31
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1594,
+    "voxelCount": 3022,
     "bounds": [
       [
         -12,
@@ -8068,7 +8068,7 @@
         26
       ],
       [
-        -12,
+        -14,
         18
       ]
     ],
@@ -8078,19 +8078,19 @@
     "name": "pet-644",
     "grid": [
       14,
-      18,
+      20,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1114,
+    "voxelCount": 2035,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -13,
@@ -8103,18 +8103,18 @@
     "name": "pet-645",
     "grid": [
       19,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1582,
+    "voxelCount": 2854,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -8132,7 +8132,7 @@
       35
     ],
     "paletteCount": 12,
-    "voxelCount": 1857,
+    "voxelCount": 3192,
     "bounds": [
       [
         -8,
@@ -8153,22 +8153,22 @@
     "name": "pet-647",
     "grid": [
       27,
-      21,
-      32
+      22,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1511,
+    "voxelCount": 2639,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         21
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -8178,11 +8178,11 @@
     "name": "pet-648",
     "grid": [
       21,
-      14,
+      15,
       21
     ],
     "paletteCount": 12,
-    "voxelCount": 1579,
+    "voxelCount": 2892,
     "bounds": [
       [
         -10,
@@ -8190,7 +8190,7 @@
       ],
       [
         0,
-        13
+        14
       ],
       [
         -10,
@@ -8203,19 +8203,19 @@
     "name": "pet-649",
     "grid": [
       16,
-      19,
+      21,
       35
     ],
     "paletteCount": 12,
-    "voxelCount": 2627,
+    "voxelCount": 4620,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
-        19
+        0,
+        20
       ],
       [
         -13,
@@ -8228,11 +8228,11 @@
     "name": "pet-650",
     "grid": [
       17,
-      26,
+      27,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 1093,
+    "voxelCount": 2036,
     "bounds": [
       [
         -8,
@@ -8240,7 +8240,7 @@
       ],
       [
         -1,
-        24
+        25
       ],
       [
         -11,
@@ -8257,7 +8257,7 @@
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2207,
+    "voxelCount": 4291,
     "bounds": [
       [
         -10,
@@ -8282,7 +8282,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 2441,
+    "voxelCount": 3919,
     "bounds": [
       [
         -14,
@@ -8304,10 +8304,10 @@
     "grid": [
       26,
       12,
-      32
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 1757,
+    "voxelCount": 3415,
     "bounds": [
       [
         -13,
@@ -8318,7 +8318,7 @@
         11
       ],
       [
-        -12,
+        -14,
         19
       ]
     ],
@@ -8328,19 +8328,19 @@
     "name": "pet-654",
     "grid": [
       15,
-      16,
+      18,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1793,
+    "voxelCount": 3146,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
         -14,
@@ -8352,19 +8352,19 @@
   {
     "name": "pet-655",
     "grid": [
-      17,
-      12,
+      19,
+      13,
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 2019,
+    "voxelCount": 3707,
     "bounds": [
       [
         -8,
-        8
+        10
       ],
       [
-        1,
+        0,
         12
       ],
       [
@@ -8382,7 +8382,7 @@
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 2317,
+    "voxelCount": 3483,
     "bounds": [
       [
         -15,
@@ -8403,22 +8403,22 @@
     "name": "pet-657",
     "grid": [
       13,
-      18,
-      31
+      19,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1228,
+    "voxelCount": 1991,
     "bounds": [
       [
         -5,
         7
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -8428,18 +8428,18 @@
     "name": "pet-658",
     "grid": [
       25,
-      20,
+      21,
       38
     ],
     "paletteCount": 12,
-    "voxelCount": 2668,
+    "voxelCount": 4472,
     "bounds": [
       [
         -12,
         12
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -8453,22 +8453,22 @@
     "name": "pet-659",
     "grid": [
       16,
-      33,
-      31
+      34,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1557,
+    "voxelCount": 2910,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         33
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -8478,18 +8478,18 @@
     "name": "pet-660",
     "grid": [
       23,
-      21,
+      22,
       39
     ],
     "paletteCount": 12,
-    "voxelCount": 2822,
+    "voxelCount": 4999,
     "bounds": [
       [
         -11,
         11
       ],
       [
-        1,
+        0,
         21
       ],
       [
@@ -8503,18 +8503,18 @@
     "name": "pet-661",
     "grid": [
       25,
-      24,
+      25,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1892,
+    "voxelCount": 3293,
     "bounds": [
       [
         -12,
         12
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -8532,7 +8532,7 @@
       22
     ],
     "paletteCount": 12,
-    "voxelCount": 534,
+    "voxelCount": 1010,
     "bounds": [
       [
         -5,
@@ -8553,18 +8553,18 @@
     "name": "pet-663",
     "grid": [
       15,
-      19,
+      20,
       13
     ],
     "paletteCount": 12,
-    "voxelCount": 676,
+    "voxelCount": 1352,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         19
       ],
       [
@@ -8578,19 +8578,19 @@
     "name": "pet-664",
     "grid": [
       14,
-      18,
+      20,
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 673,
+    "voxelCount": 1423,
     "bounds": [
       [
         -6,
         7
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -8,
@@ -8607,7 +8607,7 @@
       21
     ],
     "paletteCount": 12,
-    "voxelCount": 1311,
+    "voxelCount": 2676,
     "bounds": [
       [
         -10,
@@ -8628,22 +8628,22 @@
     "name": "pet-666",
     "grid": [
       16,
-      10,
-      32
+      11,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1023,
+    "voxelCount": 1926,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         10
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -8653,18 +8653,18 @@
     "name": "pet-667",
     "grid": [
       19,
-      17,
+      18,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1592,
+    "voxelCount": 2707,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -8682,7 +8682,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 2748,
+    "voxelCount": 4409,
     "bounds": [
       [
         -16,
@@ -8707,7 +8707,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1075,
+    "voxelCount": 1720,
     "bounds": [
       [
         -8,
@@ -8732,7 +8732,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1842,
+    "voxelCount": 2999,
     "bounds": [
       [
         -11,
@@ -8753,23 +8753,23 @@
     "name": "pet-671",
     "grid": [
       17,
-      18,
-      13
+      20,
+      14
     ],
     "paletteCount": 12,
-    "voxelCount": 875,
+    "voxelCount": 1579,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -8,
-        4
+        5
       ]
     ],
     "anatomy": "mole"
@@ -8778,22 +8778,22 @@
     "name": "pet-672",
     "grid": [
       21,
-      18,
-      31
+      19,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1297,
+    "voxelCount": 2428,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -8803,18 +8803,18 @@
     "name": "pet-673",
     "grid": [
       29,
-      20,
+      21,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 1785,
+    "voxelCount": 2874,
     "bounds": [
       [
         -14,
         14
       ],
       [
-        1,
+        0,
         20
       ],
       [
@@ -8832,7 +8832,7 @@
       29
     ],
     "paletteCount": 12,
-    "voxelCount": 2213,
+    "voxelCount": 3439,
     "bounds": [
       [
         -18,
@@ -8854,10 +8854,10 @@
     "grid": [
       25,
       22,
-      31
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1552,
+    "voxelCount": 2881,
     "bounds": [
       [
         -12,
@@ -8868,7 +8868,7 @@
         21
       ],
       [
-        -12,
+        -14,
         18
       ]
     ],
@@ -8878,22 +8878,22 @@
     "name": "pet-676",
     "grid": [
       15,
-      33,
-      31
+      34,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1330,
+    "voxelCount": 2463,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         33
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -8907,7 +8907,7 @@
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 709,
+    "voxelCount": 1525,
     "bounds": [
       [
         -12,
@@ -8928,19 +8928,19 @@
     "name": "pet-678",
     "grid": [
       21,
-      19,
+      21,
       14
     ],
     "paletteCount": 12,
-    "voxelCount": 1458,
+    "voxelCount": 2487,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
-        19
+        0,
+        20
       ],
       [
         -8,
@@ -8957,7 +8957,7 @@
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1767,
+    "voxelCount": 3117,
     "bounds": [
       [
         -11,
@@ -8982,7 +8982,7 @@
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2669,
+    "voxelCount": 4238,
     "bounds": [
       [
         -18,
@@ -9003,19 +9003,19 @@
     "name": "pet-681",
     "grid": [
       21,
-      19,
+      21,
       14
     ],
     "paletteCount": 12,
-    "voxelCount": 1526,
+    "voxelCount": 2207,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
-        19
+        0,
+        20
       ],
       [
         -8,
@@ -9028,18 +9028,18 @@
     "name": "pet-682",
     "grid": [
       11,
-      11,
+      12,
       17
     ],
     "paletteCount": 12,
-    "voxelCount": 704,
+    "voxelCount": 1463,
     "bounds": [
       [
         -5,
         5
       ],
       [
-        1,
+        0,
         11
       ],
       [
@@ -9053,18 +9053,18 @@
     "name": "pet-683",
     "grid": [
       21,
-      17,
+      18,
       32
     ],
     "paletteCount": 12,
-    "voxelCount": 1653,
+    "voxelCount": 2815,
     "bounds": [
       [
         -10,
         10
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -9078,22 +9078,22 @@
     "name": "pet-684",
     "grid": [
       16,
-      10,
-      32
+      11,
+      33
     ],
     "paletteCount": 12,
-    "voxelCount": 1134,
+    "voxelCount": 2068,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         10
       ],
       [
-        -11,
+        -12,
         20
       ]
     ],
@@ -9107,7 +9107,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 959,
+    "voxelCount": 1726,
     "bounds": [
       [
         -9,
@@ -9128,18 +9128,18 @@
     "name": "pet-686",
     "grid": [
       27,
-      21,
+      22,
       28
     ],
     "paletteCount": 12,
-    "voxelCount": 1504,
+    "voxelCount": 2568,
     "bounds": [
       [
         -13,
         13
       ],
       [
-        1,
+        0,
         21
       ],
       [
@@ -9153,19 +9153,19 @@
     "name": "pet-687",
     "grid": [
       17,
-      18,
+      20,
       19
     ],
     "paletteCount": 12,
-    "voxelCount": 1551,
+    "voxelCount": 2486,
     "bounds": [
       [
         -8,
         8
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -13,
@@ -9182,7 +9182,7 @@
       23
     ],
     "paletteCount": 12,
-    "voxelCount": 1352,
+    "voxelCount": 2306,
     "bounds": [
       [
         -13,
@@ -9203,19 +9203,19 @@
     "name": "pet-689",
     "grid": [
       13,
-      18,
+      20,
       26
     ],
     "paletteCount": 12,
-    "voxelCount": 1104,
+    "voxelCount": 2014,
     "bounds": [
       [
         -6,
         6
       ],
       [
-        1,
-        18
+        0,
+        19
       ],
       [
         -8,
@@ -9232,7 +9232,7 @@
       20
     ],
     "paletteCount": 12,
-    "voxelCount": 1112,
+    "voxelCount": 2232,
     "bounds": [
       [
         -8,
@@ -9257,7 +9257,7 @@
       20
     ],
     "paletteCount": 12,
-    "voxelCount": 1355,
+    "voxelCount": 2811,
     "bounds": [
       [
         -10,
@@ -9278,22 +9278,22 @@
     "name": "pet-692",
     "grid": [
       16,
-      16,
-      33
+      18,
+      34
     ],
     "paletteCount": 12,
-    "voxelCount": 2223,
+    "voxelCount": 4079,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
-        16
+        0,
+        17
       ],
       [
-        -11,
+        -12,
         21
       ]
     ],
@@ -9303,18 +9303,18 @@
     "name": "pet-693",
     "grid": [
       16,
-      12,
+      13,
       34
     ],
     "paletteCount": 12,
-    "voxelCount": 1610,
+    "voxelCount": 2519,
     "bounds": [
       [
         -7,
         8
       ],
       [
-        1,
+        0,
         12
       ],
       [
@@ -9328,18 +9328,18 @@
     "name": "pet-694",
     "grid": [
       19,
-      17,
+      18,
       31
     ],
     "paletteCount": 12,
-    "voxelCount": 1675,
+    "voxelCount": 2854,
     "bounds": [
       [
         -9,
         9
       ],
       [
-        1,
+        0,
         17
       ],
       [
@@ -9353,18 +9353,18 @@
     "name": "pet-695",
     "grid": [
       23,
-      18,
+      19,
       39
     ],
     "paletteCount": 12,
-    "voxelCount": 2323,
+    "voxelCount": 4257,
     "bounds": [
       [
         -11,
         11
       ],
       [
-        1,
+        0,
         18
       ],
       [
@@ -9378,22 +9378,22 @@
     "name": "pet-696",
     "grid": [
       15,
-      33,
-      31
+      34,
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1441,
+    "voxelCount": 2764,
     "bounds": [
       [
         -7,
         7
       ],
       [
-        1,
+        0,
         33
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -9404,10 +9404,10 @@
     "grid": [
       21,
       20,
-      31
+      32
     ],
     "paletteCount": 12,
-    "voxelCount": 1982,
+    "voxelCount": 3557,
     "bounds": [
       [
         -10,
@@ -9418,7 +9418,7 @@
         18
       ],
       [
-        -11,
+        -12,
         19
       ]
     ],
@@ -9428,22 +9428,22 @@
     "name": "pet-698",
     "grid": [
       39,
-      18,
-      41
+      19,
+      42
     ],
     "paletteCount": 12,
-    "voxelCount": 3817,
+    "voxelCount": 5866,
     "bounds": [
       [
         -19,
         19
       ],
       [
-        1,
+        0,
         18
       ],
       [
-        -11,
+        -12,
         29
       ]
     ],
@@ -9453,18 +9453,18 @@
     "name": "pet-699",
     "grid": [
       34,
-      24,
+      25,
       30
     ],
     "paletteCount": 12,
-    "voxelCount": 2806,
+    "voxelCount": 4566,
     "bounds": [
       [
         -17,
         16
       ],
       [
-        1,
+        0,
         24
       ],
       [
@@ -9478,18 +9478,18 @@
     "name": "pet-700",
     "grid": [
       13,
-      25,
+      26,
       33
     ],
     "paletteCount": 12,
-    "voxelCount": 1359,
+    "voxelCount": 2538,
     "bounds": [
       [
         -5,
         7
       ],
       [
-        1,
+        0,
         25
       ],
       [

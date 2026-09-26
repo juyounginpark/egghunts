@@ -11,6 +11,30 @@
     "form": "whale",
     "motif": "pearls",
     "prompt": "넓고 둥근 짙은 청색 몸과 짧은 옆지느러미를 만들라. 등에는 크기가 다른 진주 세 개를 낮게 묻고 배와 눈 주변을 크림색으로 밝힌다. 숨을 쉬면 앞 진주부터 차례로 빛나며 꼬리가 넓게 휘어진다.",
+    "references": {
+      "form": {
+        "reference": "R03-08",
+        "id": 127,
+        "name": "노을 돌고래",
+        "path": "public/models/pet-127.json",
+        "sha256": "5b927912bf654328641847b3b5419710b82c00686a715fdf0966f0fee82ca196",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-03",
+        "id": 122,
+        "name": "진주조개",
+        "path": "public/models/pet-122.json",
+        "sha256": "905acdbdba229781b65a11844ccbe6c0dd8c10437b721d4d6c66caf8b0ffabc0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#314d79"
   },
   "assembly": {

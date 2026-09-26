@@ -11,6 +11,30 @@
     "form": "ant",
     "motif": "bread",
     "prompt": "작은 갈색 머리와 가는 가슴, 둥근 크림색 배의 개미를 만들라. 앞발에 몸보다 큰 황갈색 빵 조각을 들고 더듬이는 앞쪽으로 넓게 벌린다. 빵을 들어 올렸다 내려놓으며 배가 균형추처럼 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R16-06",
+        "id": 265,
+        "name": "버섯개미",
+        "path": "public/models/pet-265.json",
+        "sha256": "bed1d185b245b224963d76bdde4fbd135eed6f4752cb7ab9192ade89b04f1852",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-06",
+        "id": 265,
+        "name": "버섯개미",
+        "path": "public/models/pet-265.json",
+        "sha256": "bed1d185b245b224963d76bdde4fbd135eed6f4752cb7ab9192ade89b04f1852",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

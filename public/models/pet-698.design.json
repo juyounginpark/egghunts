@@ -11,6 +11,30 @@
     "form": "griffin",
     "motif": "sunrise",
     "prompt": "넓은 크림색 사자 몸과 짧은 새 부리, 큰 앞발의 그리핀을 만들라. 날개는 짙은 청색 뿌리에서 분홍·금빛 끝으로 변하며 가슴에는 작은 흰 해무늬를 둔다. 날개를 펴면 가장자리에서 작은 빛점이 올라갔다 사라진다.",
+    "references": {
+      "form": {
+        "reference": "R20-09",
+        "id": 298,
+        "name": "밤낮의 사자",
+        "path": "public/models/pet-298.json",
+        "sha256": "3d7559b62f3c1aabb53b6eab99f72ad2f76a02ee2dfb3d5d014c13cbbac36f1e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-08",
+        "id": 297,
+        "name": "계절나비",
+        "path": "public/models/pet-297.json",
+        "sha256": "cea39eb19a32094cf724ecb9d8a0ad8baca4e4e8b1df21f40d8c696c2d8af411",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

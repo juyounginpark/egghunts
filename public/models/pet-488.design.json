@@ -11,6 +11,30 @@
     "form": "crane",
     "motif": "moonwing",
     "prompt": "긴 흰 목과 남색 날개, 가는 붉은 다리의 학을 만들라. 한쪽 날개 안쪽에 큰 은빛 초승달 면을 둔다. 고개를 숙여 날개를 펴면 바닥의 그림자가 잠깐 둥근 달 형태로 이어지게 한다.",
+    "references": {
+      "form": {
+        "reference": "R09-06",
+        "id": 195,
+        "name": "보자기 박쥐",
+        "path": "public/models/pet-195.json",
+        "sha256": "f1f2b49cdab9aecca42d4790b37118b777dbfc6a7caaf9720691415661025d77",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-10",
+        "id": 199,
+        "name": "은빛 구미호",
+        "path": "public/models/pet-199.json",
+        "sha256": "7c3bcbcb93fe292e279386e9f159cf950acc0613a5840d5735f551e8d07b644c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#e9e8dc"
   },
   "assembly": {

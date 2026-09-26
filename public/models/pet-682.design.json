@@ -11,6 +11,30 @@
     "form": "seed",
     "motif": "clay",
     "prompt": "낮고 둥근 갈색 씨앗 몸과 크림색 얼굴 면, 짧은 두 발을 만들라. 머리의 작은 초록 잎 한 장과 배의 아이보리 균열을 구분한다. 앞손으로 흙을 모으면 작은 씨앗 모형 하나가 생겼다가 몸에 다시 들어간다.",
+    "references": {
+      "form": {
+        "reference": "R20-01",
+        "id": 290,
+        "name": "첫새싹",
+        "path": "public/models/pet-290.json",
+        "sha256": "f1247b8da269a2a35eb0ccb58d96fd35bc3eb9799d155c662cd6f2429e73f9f1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-07",
+        "id": 296,
+        "name": "나무껍질 거북",
+        "path": "public/models/pet-296.json",
+        "sha256": "922ba48de8994efe3baea963d024cc2494ef023ef7c75b0a0c1284590d1b7671",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

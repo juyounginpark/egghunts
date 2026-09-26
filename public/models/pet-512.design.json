@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "cupears",
     "prompt": "짧은 연보라 몸 위에 크림색 소라껍질을 눕혀라. 눈 옆의 귀는 작은 컵 두 개처럼 바깥으로 열리고 안쪽은 민트색으로 둔다. 한 귀에 작은 물방울이 들어오면 머리가 그쪽으로 천천히 기운다.",
+    "references": {
+      "form": {
+        "reference": "R11-04",
+        "id": 213,
+        "name": "수정달팽이",
+        "path": "public/models/pet-213.json",
+        "sha256": "726de674263c599257177c577a081faf7e1517bd979f27e31af507ba69365a9b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "polished"
+      },
+      "material": {
+        "reference": "R11-04",
+        "id": 213,
+        "name": "수정달팽이",
+        "path": "public/models/pet-213.json",
+        "sha256": "726de674263c599257177c577a081faf7e1517bd979f27e31af507ba69365a9b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "polished"
+      }
+    },
     "color": "#b6a2cf"
   },
   "assembly": {

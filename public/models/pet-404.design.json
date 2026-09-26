@@ -11,6 +11,30 @@
     "form": "dog",
     "motif": "tracksuit",
     "prompt": "축 처진 귀와 짧은 코의 아이보리 강아지에게 넓은 남색 체육복을 입혀라. 옷에는 흰 줄 두 개, 목에는 작은 은색 호루라기 하나를 둔다. 제자리에서 다리를 풀고 호루라기를 앞발로 만지게 한다.",
+    "references": {
+      "form": {
+        "reference": "R05-02",
+        "id": 151,
+        "name": "지우개 햄스터",
+        "path": "public/models/pet-151.json",
+        "sha256": "16618814712a92a73df01ed8ffc00ff46bcb3369f6d0c4dd02d04f42c47d1be9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-05",
+        "id": 154,
+        "name": "책가방 거북",
+        "path": "public/models/pet-154.json",
+        "sha256": "0cdd4b6c64857f0b21c5ddcbc873e58d1d21ac5778378af033b3770772f75bb8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

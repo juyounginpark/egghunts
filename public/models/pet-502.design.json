@@ -11,6 +11,30 @@
     "form": "ram",
     "motif": "fleece",
     "prompt": "넓은 가슴과 큰 나선뿔, 짧은 크림색 얼굴의 숫양을 만들라. 털은 금빛의 넓은 물결판 세 겹, 다리는 짙은 갈색으로 구분한다. 몸을 털면 양털 판이 차례로 들렸다 내려와 풍성한 윤곽을 만든다.",
+    "references": {
+      "form": {
+        "reference": "R10-02",
+        "id": 201,
+        "name": "구름양",
+        "path": "public/models/pet-201.json",
+        "sha256": "47005bf9bae7d59c74fd343a45085be4ff96ebf567522221a48d2a1fecc19362",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-07",
+        "id": 206,
+        "name": "월계관 사자",
+        "path": "public/models/pet-206.json",
+        "sha256": "321d9b5792500f9089bc521980f92449523d159993c3e4bb211165b9c4dc14ab",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#654736"
   },
   "assembly": {

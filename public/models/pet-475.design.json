@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "lantern",
     "prompt": "낮은 청회색 몸 위에 아이보리 도자기 호롱을 껍질로 얹어라. 불꽃은 작은 주황 덩어리 하나, 눈자루는 짧고 둥글게 둔다. 몸이 기울면 불꽃만 반대쪽으로 움직이며 호롱 손잡이가 보인다.",
+    "references": {
+      "form": {
+        "reference": "R09-08",
+        "id": 197,
+        "name": "청자두꺼비",
+        "path": "public/models/pet-197.json",
+        "sha256": "eefb2a2c0cc98a038c4479907fde1cdab6441b90500ab74e8ea8f0b89c6ed82e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-03",
+        "id": 192,
+        "name": "초롱반딧불",
+        "path": "public/models/pet-192.json",
+        "sha256": "e7a3339c90f7373f6b8db45acb88c44636255b64c783f2a35874e70836421d64",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#899cac"
   },
   "assembly": {

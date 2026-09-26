@@ -11,6 +11,30 @@
     "form": "deer",
     "motif": "satellites",
     "prompt": "가는 남색 다리와 긴 크림색 목의 사슴을 만들라. 뿔은 넓은 은색 접시 두 개와 안쪽의 주황 안테나로 구성한다. 고개는 고정한 채 접시가 각기 다른 방향으로 돌아가다 정면에 맞춰진다.",
+    "references": {
+      "form": {
+        "reference": "R17-10",
+        "id": 279,
+        "name": "레이더여우",
+        "path": "public/models/pet-279.json",
+        "sha256": "a1d5446cf4d75b802e598b32063d0a144b9cb477eb2fc4ef213da5c6ed67ec41",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-10",
+        "id": 279,
+        "name": "레이더여우",
+        "path": "public/models/pet-279.json",
+        "sha256": "a1d5446cf4d75b802e598b32063d0a144b9cb477eb2fc4ef213da5c6ed67ec41",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

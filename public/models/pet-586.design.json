@@ -11,6 +11,30 @@
     "form": "tapir",
     "motif": "dreambundle",
     "prompt": "짧고 넓은 주둥이와 둥근 귀, 낮고 무거운 아이보리 몸의 맥을 만들라. 등에 별무늬 남색 보따리를 크게 메고 보라 끈이 배 아래를 감싸게 한다. 긴 코끝으로 작은 꿈방울을 받아 보따리에 넣으면 내부에서 옅은 별빛이 한 번 퍼진다.",
+    "references": {
+      "form": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-10",
+        "id": 249,
+        "name": "밤하늘 양",
+        "path": "public/models/pet-249.json",
+        "sha256": "abd7f137f4dc592da7631fc401e0502912592518b27fce840a7968f304302eaa",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

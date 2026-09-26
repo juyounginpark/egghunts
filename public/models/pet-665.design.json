@@ -11,6 +11,30 @@
     "form": "clam",
     "motif": "split",
     "prompt": "넓고 낮은 아이보리 껍질 두 장을 좁은 틈으로 떨어뜨려 놓아라. 가운데의 작은 남색 진주 얼굴은 두 눈이 정렬되게 둔다. 껍질이 닫히려 하면 진주가 조금 떠올라 틈이 일정하게 남는다.",
+    "references": {
+      "form": {
+        "reference": "R19-06",
+        "id": 145,
+        "name": "침묵의 종",
+        "path": "public/models/pet-145.json",
+        "sha256": "574017419107837635ca86df23d755e6970c84a00f55d2059daf57819d553bdf",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-02",
+        "id": 141,
+        "name": "빈껍질 거북",
+        "path": "public/models/pet-141.json",
+        "sha256": "261a0d1afbf46694f30a1de930b77fbfe1ad564f3e909961160351c6fd015ae6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

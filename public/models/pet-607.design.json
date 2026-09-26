@@ -11,6 +11,30 @@
     "form": "weevil",
     "motif": "sunflowerseed",
     "prompt": "짧고 넓은 검정 등껍질에 아이보리 줄무늬 두 개를 넣어라. 얼굴의 긴 갈색 코와 작은 점눈을 구분하고 앞발 사이에 노란 꽃잎 하나를 둔다. 코끝으로 꽃잎을 밀어 씨앗 몸 아래에 숨긴다.",
+    "references": {
+      "form": {
+        "reference": "R16-04",
+        "id": 263,
+        "name": "도토리 장수풍뎅이",
+        "path": "public/models/pet-263.json",
+        "sha256": "251ac90ded07c5b0aa5acc5487e834d5ec2b48be2b14611cf3cb3a3cb4708168",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-04",
+        "id": 263,
+        "name": "도토리 장수풍뎅이",
+        "path": "public/models/pet-263.json",
+        "sha256": "251ac90ded07c5b0aa5acc5487e834d5ec2b48be2b14611cf3cb3a3cb4708168",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

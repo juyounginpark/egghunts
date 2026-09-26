@@ -11,6 +11,30 @@
     "form": "lizard",
     "motif": "pajamas",
     "prompt": "길고 낮은 크림색 몸과 둥근 얼굴의 도마뱀을 만들라. 등에 옅은 파랑 줄무늬 잠옷을 두르고 긴 자주색 수면모 끝을 꼬리에 걸친다. 하품하면 모자 끝이 코 앞으로 내려와 앞발로 밀어낸다.",
+    "references": {
+      "form": {
+        "reference": "R14-06",
+        "id": 245,
+        "name": "양말물고기",
+        "path": "public/models/pet-245.json",
+        "sha256": "6b5832500c7f8471a2c916074176e11d8ba543088d35cb111292d89cf10a4b3a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

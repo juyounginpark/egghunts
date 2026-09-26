@@ -11,6 +11,30 @@
     "form": "fish",
     "motif": "shellplates",
     "prompt": "앞머리가 크고 몸 뒤가 가늘어지는 짙은 청색 물고기를 만들라. 머리와 가슴을 아이보리 조개 갑판 세 장으로 덮되 작은 눈은 드러낸다. 입을 짧게 열면 아래턱 판이 내려가고 넓은 꼬리가 한 번 휜다.",
+    "references": {
+      "form": {
+        "reference": "R08-06",
+        "id": 185,
+        "name": "물수제비 수장룡",
+        "path": "public/models/pet-185.json",
+        "sha256": "66267187f38e07616f6e115b7720496d4bf20c3368f57f8c56302f754a12d1f7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-05",
+        "id": 184,
+        "name": "조약돌 안킬로",
+        "path": "public/models/pet-184.json",
+        "sha256": "b7c2e64ec5a1e6f18c96a47451d07d57c23da00e940556705dcb50668c2b010c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#314d79"
   },
   "assembly": {

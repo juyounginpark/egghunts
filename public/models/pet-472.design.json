@@ -11,6 +11,30 @@
     "form": "turtle",
     "motif": "mountains",
     "prompt": "낮고 거대한 회갈색 몸과 넓은 크림색 얼굴의 거북을 만들라. 등껍질은 높이가 다른 산봉우리 세 개와 깊은 골짜기로 만들고 능선 일부에만 초록 숲을 둔다. 숨을 쉬면 골짜기의 얇은 안개가 흐르고 고개가 천천히 올라온다.",
+    "references": {
+      "form": {
+        "reference": "R08-05",
+        "id": 184,
+        "name": "조약돌 안킬로",
+        "path": "public/models/pet-184.json",
+        "sha256": "b7c2e64ec5a1e6f18c96a47451d07d57c23da00e940556705dcb50668c2b010c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-09",
+        "id": 188,
+        "name": "이끼 긴목공룡",
+        "path": "public/models/pet-188.json",
+        "sha256": "d6d51c359a21d5dfcdff8030482d299da7330fbafcc9c119d9759dc9b33c1047",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#958477"
   },
   "assembly": {

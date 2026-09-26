@@ -11,6 +11,30 @@
     "form": "ray",
     "motif": "carpet",
     "prompt": "넓고 납작한 자주색 몸과 짧은 앞면의 점눈을 만들라. 날개 가장자리는 금빛 술로 마감하고 중앙에는 큰 청록 마름모 무늬 하나를 넣는다. 공중에서 모서리가 차례로 접혀 양탄자처럼 느리게 펄럭인다.",
+    "references": {
+      "form": {
+        "reference": "R07-09",
+        "id": 178,
+        "name": "해시계 매",
+        "path": "public/models/pet-178.json",
+        "sha256": "5627352de4f83bae1df1c6fc133b2594ce2449938c208e528a117f7b44817b4c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R07-06",
+        "id": 175,
+        "name": "항아리 코브라",
+        "path": "public/models/pet-175.json",
+        "sha256": "b5bfc5a0d9eed18a6f5da1634e0dce19ead0c36acaa5d6843700fe6be3f3a0ba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "matte"
+      }
+    },
     "color": "#dfc782"
   },
   "assembly": {

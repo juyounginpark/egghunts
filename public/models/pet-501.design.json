@@ -11,6 +11,30 @@
     "form": "goat",
     "motif": "lantern",
     "prompt": "짧은 아이보리 몸과 회갈색 얼굴, 옆으로 휘는 작은 뿔을 만들라. 뿔 사이에 청동 등불 하나를 매달고 주황빛은 등불 내부에만 둔다. 고개를 낮추면 등불이 천천히 흔들리며 발을 한 번 정돈한다.",
+    "references": {
+      "form": {
+        "reference": "R10-02",
+        "id": 201,
+        "name": "구름양",
+        "path": "public/models/pet-201.json",
+        "sha256": "47005bf9bae7d59c74fd343a45085be4ff96ebf567522221a48d2a1fecc19362",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-08",
+        "id": 207,
+        "name": "번개독수리",
+        "path": "public/models/pet-207.json",
+        "sha256": "ed3010cd9cb1a63337264087d53f4d4ea8626ab4a565220a4a3d5d58247441b2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

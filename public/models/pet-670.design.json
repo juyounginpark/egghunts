@@ -11,6 +11,30 @@
     "form": "chick",
     "motif": "shadow",
     "prompt": "둥근 차콜색 몸과 작은 크림색 부리, 짧은 발을 만들라. 눈 주변에 밝은 작은 면을 두고 바닥 그림자만 긴 새 날개 형태로 펼친다. 실제 작은 날개를 움직이면 큰 그림자 날개가 한 박자 늦게 따라간다.",
+    "references": {
+      "form": {
+        "reference": "R19-01",
+        "id": 140,
+        "name": "틈새고양이",
+        "path": "public/models/pet-140.json",
+        "sha256": "0b87304b378b807aebd05d507cd3537422110e2021e3da5a4b30b90b2628fc31",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-03",
+        "id": 142,
+        "name": "그림자토끼",
+        "path": "public/models/pet-142.json",
+        "sha256": "2ed56038b96ebe46f6786245835e5b276e9630d98cf4778e8aaa86731bdb662b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#39363f"
   },
   "assembly": {

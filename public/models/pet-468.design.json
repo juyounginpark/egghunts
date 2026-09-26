@@ -11,6 +11,30 @@
     "form": "raptor",
     "motif": "featherfan",
     "prompt": "둥근 몸과 짧은 부리, 큰 앞팔 깃털을 가진 아이보리 공룡을 만들라. 꼬리는 부채꼴의 보라·주황 큰 깃판 다섯 장으로 만든다. 앞팔로 작은 둥지를 가렸다가 꼬리를 펴며 안의 돌알 하나를 드러낸다.",
+    "references": {
+      "form": {
+        "reference": "R08-04",
+        "id": 183,
+        "name": "깃털 랩터",
+        "path": "public/models/pet-183.json",
+        "sha256": "c8c65610d6fab5a5dfd1463f1eeeb7081f89e3082e402930d09417ba631f84f9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-04",
+        "id": 183,
+        "name": "깃털 랩터",
+        "path": "public/models/pet-183.json",
+        "sha256": "c8c65610d6fab5a5dfd1463f1eeeb7081f89e3082e402930d09417ba631f84f9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

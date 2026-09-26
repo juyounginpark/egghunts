@@ -11,6 +11,30 @@
     "form": "deer",
     "motif": "glasshorn",
     "prompt": "가는 민트색 다리와 작은 크림색 얼굴의 사슴을 만들라. 뿔은 뒤로 흐르는 투명한 보라 관 두 개로 만들고 끝에 작은 금색 액체방울을 둔다. 고개를 숙이면 방울이 뿔 안쪽을 따라 천천히 이동한다.",
+    "references": {
+      "form": {
+        "reference": "R11-02",
+        "id": 211,
+        "name": "세눈 도마뱀",
+        "path": "public/models/pet-211.json",
+        "sha256": "5bea137fa10863e936ea5ba037ac9016de4401739a7a018ec082cd48ab66e822",
+        "unit": 21.6,
+        "eyeHeightVoxels": 4,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-04",
+        "id": 213,
+        "name": "수정달팽이",
+        "path": "public/models/pet-213.json",
+        "sha256": "726de674263c599257177c577a081faf7e1517bd979f27e31af507ba69365a9b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "polished"
+      }
+    },
     "color": "#a1d4c4"
   },
   "assembly": {

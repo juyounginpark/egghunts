@@ -11,6 +11,30 @@
     "form": "fish",
     "motif": "spiral",
     "prompt": "길고 둥근 옅은 청색 물고기에 짧은 크림색 얼굴을 만들라. 몸 안에는 생물학적 세부 없이 큰 아이보리 나선 골격 하나만 표현한다. 꼬리가 휘면 나선도 완만히 구부러지고 등지느러미는 주황으로 강조한다.",
+    "references": {
+      "form": {
+        "reference": "R11-02",
+        "id": 211,
+        "name": "세눈 도마뱀",
+        "path": "public/models/pet-211.json",
+        "sha256": "5bea137fa10863e936ea5ba037ac9016de4401739a7a018ec082cd48ab66e822",
+        "unit": 21.6,
+        "eyeHeightVoxels": 4,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-04",
+        "id": 213,
+        "name": "수정달팽이",
+        "path": "public/models/pet-213.json",
+        "sha256": "726de674263c599257177c577a081faf7e1517bd979f27e31af507ba69365a9b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "polished"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "giraffe",
     "motif": "blockneck",
     "prompt": "짧은 직사각 몸 위로 노랑·파랑 블록 세 개가 목을 이루는 기린을 만들라. 머리는 크림색이며 작은 눈과 둥근 뿔 두 개를 둔다. 목 구간이 좁은 틈을 두고 떠 있다가 고개를 숙이면 순서대로 붙게 한다.",
+    "references": {
+      "form": {
+        "reference": "R02-04",
+        "id": 113,
+        "name": "블록코끼리",
+        "path": "public/models/pet-113.json",
+        "sha256": "a88885fa8da9109b4ccc9bdbaabf923fec554d7b5354de777230fdb78b5ea00d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-04",
+        "id": 113,
+        "name": "블록코끼리",
+        "path": "public/models/pet-113.json",
+        "sha256": "a88885fa8da9109b4ccc9bdbaabf923fec554d7b5354de777230fdb78b5ea00d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#ead378"
   },
   "assembly": {

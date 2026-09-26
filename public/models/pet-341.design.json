@@ -11,6 +11,30 @@
     "form": "lizard",
     "motif": "puzzle",
     "prompt": "낮고 긴 파랑 몸과 둥근 머리, 짧은 네 발의 도마뱀을 만들라. 등 중앙의 퍼즐 조각 하나만 노랑으로 다르게 칠하고 꼬리는 옆으로 한 번 휜다. 앞발로 조각을 눌러 맞추며 작은 눈이 등을 돌아보게 한다.",
+    "references": {
+      "form": {
+        "reference": "R02-04",
+        "id": 113,
+        "name": "블록코끼리",
+        "path": "public/models/pet-113.json",
+        "sha256": "a88885fa8da9109b4ccc9bdbaabf923fec554d7b5354de777230fdb78b5ea00d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-04",
+        "id": 113,
+        "name": "블록코끼리",
+        "path": "public/models/pet-113.json",
+        "sha256": "a88885fa8da9109b4ccc9bdbaabf923fec554d7b5354de777230fdb78b5ea00d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#527cad"
   },
   "assembly": {

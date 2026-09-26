@@ -9,6 +9,7 @@ from pathlib import Path
 from document_models import Sculpt, palette, COLORS
 from expansion_recipes import FORMS, MOTIFS
 from expansion_details import details
+from expansion_references import references
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'public/models'
@@ -34,6 +35,15 @@ class Pet(Sculpt):
  def __init__(self):
   super().__init__();self.parts={};self.face=(10,-7);self.head_width=5
   self.part('body',(0,5,0),None)
+ def orb(self,x,y,z,rx,ry,rz,c=1,p='body'):
+  # Broad planes with clipped corners, rather than densely stepped spheres.
+  # Retain the original voxel unit: only the authored silhouette changes.
+  rx,ry,rz=[max(.75,v) for v in (rx,ry,rz)]
+  for xx in range(math.ceil(x-rx),math.floor(x+rx)+1):
+   for yy in range(math.ceil(y-ry),math.floor(y+ry)+1):
+    for zz in range(math.ceil(z-rz),math.floor(z+rz)+1):
+     axes=[abs(xx-x)/rx,abs(yy-y)/ry,abs(zz-z)/rz]
+     if sum(axes)<=2.45 and max(axes[0]+axes[1],axes[0]+axes[2],axes[1]+axes[2])<=1.8:self.cells[xx,yy,zz]=(c,p)
  def part(self,name,pivot,parent='body',rotation=None):
   self.parts[name]={'pivot':list(pivot),'parent':parent}
   if rotation:self.parts[name]['rotation']=rotation
@@ -161,7 +171,7 @@ def anatomy(g,form,n):
   wide=form in {'bear','panda','gorilla','giant','yeti'}
   g.orb(0,7,1,7 if wide else 4.5,6,4.5,1);g.legs(3,4 if wide else 2.5,False)
   g.head(y=13 if not wide else 14,z=-3,w=6 if form in {'hamster','panda'} else 4.5,h=4,d=4)
-  g.ears(form=='rabbit',form in {'mouse','hamster','bear','panda','monkey'})
+  g.ears(form=='rabbit',form in {'mouse','squirrel','hamster','bear','panda','monkey'})
   for sign,side in [(-1,'left'),(1,'right')]:
    x=sign*(8 if wide else 5);g.line((x,11,0),(x*.9,3 if wide else 7,-4),2 if wide else 1.3,1,side+'_arm');g.part(side+'_arm',(x,11,0))
   if form=='squirrel':g.tail([(0,5,4),(0,5,12),(0,15,15),(0,19,9),(0,16,6)],3.7)
@@ -594,10 +604,12 @@ def export_model(g,row,colors):
  # Ground authored feet without altering the head/prop proportions.
  min_y=min(xyz[1] for xyz in g.cells)
  voxels=[[*xyz,c] for xyz,(c,_) in sorted(g.cells.items())]
- model={'size':[max(p[a] for p in g.cells)-min(p[a] for p in g.cells)+1 for a in range(3)],'unit':18,'front':'-z','pivot':[0,min_y-.5,0],'previewAngle':35,'colors':colors,'voxels':voxels,'parts':parts,'artForm':row['form'],'artMotion':row['motif'],'artStage':row['stageId'],'artMaterial':'metal' if row['stageId'] in [6,12,17] else 'matte','expansion':True}
+ refs=row['references']
+ model={'size':[max(p[a] for p in g.cells)-min(p[a] for p in g.cells)+1 for a in range(3)],'unit':refs['form']['unit'],'front':'-z','pivot':[0,min_y-.5,0],'previewAngle':35,'colors':colors,'voxels':voxels,'parts':parts,'artForm':row['form'],'artMotion':row['motif'],'artStage':row['stageId'],'artMaterial':refs['material']['material'],'expansion':True,'styleVersion':2,'styleReferences':{k:v['id'] for k,v in refs.items()}}
  if row['motif'] in {'glassfan','bubble','glasscore','hourglass','glasshorn','window','culture','seedgarden','crystalwings','icebean','icefin','amber','fuse','helmet'}:
   glass_parts={'glassfan':['tail'],'glasshorn':['crest'],'crystalwings':['left_arm','right_arm','left_tip','right_tip'],'icefin':['crest'],'amber':['left_arm','right_arm'],'icebean':['prop'],'helmet':['crest'],'bubble':['prop'],'hourglass':['shell'],'glasscore':['body'],'window':['prop'],'culture':['prop'],'seedgarden':['crest'],'fuse':['crest']}
-  model['partOpacity']={p:.62 for p in glass_parts[row['motif']] if p in parts}
+  # Faces and principal bodies remain opaque even for glass-inspired species.
+  model['partOpacity']={p:.78 for p in glass_parts[row['motif']] if p in parts and p not in {'body','head','eyes'}}
  if row['motif']=='shadowless':model['castShadow']=False
  path=OUT/f"pet-{row['id']}.json";path.write_text(json.dumps(model,separators=(',',':')),encoding='utf8')
  (OUT/f"pet-{row['id']}.design.json").write_text(json.dumps({'source':'scripts/expansion_models.py','brief':row,'assembly':{n:{k:v for k,v in p.items() if k!='voxels'} for n,p in parts.items()}},ensure_ascii=False,indent=2)+'\n',encoding='utf8')
@@ -627,19 +639,23 @@ def main():
   tier=allocations[stage][index]
   rows.append({'id':321+(stage-1)*19+index,'key':match[1]+'-N'+match[2],'name':name,'sourceName':match[4].strip(),'stageId':stage,'tier':tier,'slot':11+index,'form':FORMS[stage-1].split()[index],'motif':MOTIFS[stage-1].split()[index],'prompt':prompt})
  if len(rows)!=380:raise ValueError(f'Expected 380 briefs, got {len(rows)}')
+ refs=references()
+ # These IDs already exist. Art revisions never regenerate gameplay registration.
+ registered=json.loads((ROOT/'docs/art/expansion-id-map.json').read_text(encoding='utf8'))
+ for row,old in zip(rows,registered):
+  assert all(row[k]==old[k] for k in ['id','key','name','stageId','tier','slot'])
+  row['references']=refs[row['id']]
  records=[]
  for row in rows:
   if args.stages and row['stageId'] not in args.stages:continue
   g=Pet();anatomy(g,row['form'],row['slot']);attachment(g,row['motif'],row['form'],row['slot']-11);details(g,row);g.eyes(row['form'])
   colors=new_palette(row['prompt']);dark=['#'+''.join(f'{round(int(c[i:i+2],16)*.85):02x}' for i in [1,3,5]) for c in colors]
   for xyz,(c,p) in list(g.cells.items()):
-   if c!=5 and xyz[1]<5:g.cells[xyz]=(c+6,p)
+   # Local material direction only; no universal dark stripe on every body.
+   if c!=5 and (p.startswith('tail') or p in {'shell','crest','mane'}) and xyz[2]>8:g.cells[xyz]=(c+6,p)
   row['color']=colors[0];records.append(export_model(g,row,colors+dark))
   print(row['key'],row['id'],flush=True)
  if not args.stages:
-  (ROOT/'docs/art/expansion-id-map.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
-  runtime=[{k:r[k] for k in ['id','name','stageId','tier','slot','color']} for r in rows]
-  (ROOT/'src/expansion-pet-catalog.ts').write_text('// Append-only permanent IDs 321..700. Source: docs/art/add-380-characters-prompt.md\nexport const EXPANSION_PETS = '+json.dumps(runtime,ensure_ascii=False,separators=(',',':'))+';\n',encoding='utf8')
   manifestpath=OUT/'manifest.json';manifest=json.loads(manifestpath.read_text(encoding='utf8'));replacements={r['name']:r for r in records}
   manifest['models']=[r for r in manifest['models'] if r['name'] not in replacements]+records
   manifestpath.write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf8')

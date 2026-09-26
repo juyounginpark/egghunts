@@ -11,6 +11,30 @@
     "form": "lizard",
     "motif": "skates",
     "prompt": "낮고 긴 청록 몸과 짧은 크림색 얼굴을 만들라. 네 발 밑에 작은 아이보리 얼음판을 붙이고 꼬리는 옆으로 크게 휜다. 앞발을 움직이면 몸이 조금 미끄러지고 꼬리로 자세를 바로잡는다.",
+    "references": {
+      "form": {
+        "reference": "R13-05",
+        "id": 234,
+        "name": "얼음게",
+        "path": "public/models/pet-234.json",
+        "sha256": "5e5c71a0233137a4ed19a75203fa77094cf8ed6017009a88454b6c1f44a064c1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      },
+      "material": {
+        "reference": "R13-05",
+        "id": 234,
+        "name": "얼음게",
+        "path": "public/models/pet-234.json",
+        "sha256": "5e5c71a0233137a4ed19a75203fa77094cf8ed6017009a88454b6c1f44a064c1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      }
+    },
     "color": "#449b98"
   },
   "assembly": {

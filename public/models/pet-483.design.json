@@ -11,6 +11,30 @@
     "form": "bull",
     "motif": "millstone",
     "prompt": "낮고 넓은 갈색 몸과 짧은 크림색 뿔의 황소를 만들라. 등에 두꺼운 회색 맷돌 두 장을 낮게 얹고 손잡이는 옆으로 빼라. 고개를 숙이면 위 맷돌이 천천히 돌아가고 앞발로 몸을 지탱한다.",
+    "references": {
+      "form": {
+        "reference": "R09-09",
+        "id": 198,
+        "name": "달무늬 호랑이",
+        "path": "public/models/pet-198.json",
+        "sha256": "85a1c0aa92288209c36e84b9dc7cdd6b173b96582ec148184e7e4b40582ca839",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-05",
+        "id": 194,
+        "name": "장승곰",
+        "path": "public/models/pet-194.json",
+        "sha256": "09d722d3478b904d2818fd4542f8632abd00b2c630b14e19bfc54351426054a4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

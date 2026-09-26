@@ -11,6 +11,30 @@
     "form": "ram",
     "motif": "halfwool",
     "prompt": "크림색 작은 얼굴과 짧은 검정 다리의 양을 만들라. 털 몸통은 왼쪽의 단단한 회색 덩어리와 오른쪽의 두꺼운 빈 윤곽으로 나눈다. 머리와 발 위치는 대칭을 지키고 숨을 쉴 때 빈 윤곽만 조금 늦게 팽창한다.",
+    "references": {
+      "form": {
+        "reference": "R19-03",
+        "id": 142,
+        "name": "그림자토끼",
+        "path": "public/models/pet-142.json",
+        "sha256": "2ed56038b96ebe46f6786245835e5b276e9630d98cf4778e8aaa86731bdb662b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-08",
+        "id": 147,
+        "name": "어긋난 사슴",
+        "path": "public/models/pet-147.json",
+        "sha256": "1cd2107fbd2d26732a02a01c5dc8e792a2f3581c225de65da08ad67b577a0030",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

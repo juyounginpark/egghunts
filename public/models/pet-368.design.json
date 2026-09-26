@@ -11,6 +11,30 @@
     "form": "tunicate",
     "motif": "glasscore",
     "prompt": "넓은 밑면에서 위로 좁아지는 옅은 민트색 몸을 만들라. 짧은 입구 두 개와 앞면의 작은 점눈을 두고 몸 안에는 주황 핵 하나만 보이게 한다. 입구가 번갈아 열리며 내부 핵이 천천히 오르내린다.",
+    "references": {
+      "form": {
+        "reference": "R03-07",
+        "id": 126,
+        "name": "별빛해파리",
+        "path": "public/models/pet-126.json",
+        "sha256": "01892de7f4e5caae3d390f7c0820c34253f6a4a4c8440043fb603641b3924b00",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-03",
+        "id": 122,
+        "name": "진주조개",
+        "path": "public/models/pet-122.json",
+        "sha256": "905acdbdba229781b65a11844ccbe6c0dd8c10437b721d4d6c66caf8b0ffabc0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#a1d4c4"
   },
   "assembly": {

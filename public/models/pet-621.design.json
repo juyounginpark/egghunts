@@ -11,6 +11,30 @@
     "form": "grasshopper",
     "motif": "leaves",
     "prompt": "긴 황갈색 몸과 매우 큰 접힌 뒷다리, 작은 점눈의 방아깨비를 만들라. 등날개는 적갈색 낙엽 두 장이며 가장자리 한쪽만 크림색으로 밝힌다. 뒷다리를 눌렀다 천천히 펴면 낙엽이 크게 벌어졌다 돌아온다.",
+    "references": {
+      "form": {
+        "reference": "R16-05",
+        "id": 264,
+        "name": "풀잎메뚜기",
+        "path": "public/models/pet-264.json",
+        "sha256": "dbdec56e1566f345227ad1b7f00c6076c5c1fea2a0236b3b28a0525f817ef6f5",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-03",
+        "id": 262,
+        "name": "잎사귀벌레",
+        "path": "public/models/pet-262.json",
+        "sha256": "2f0d4b369ef0fc8f608c5bbaf2246bc8dbe4b638a6de2aa610668a9cb67422c0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#b78d53"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "parrot",
     "motif": "billboard",
     "prompt": "큰 부리와 크림색 얼굴, 짧은 자주색 몸을 만들라. 등 뒤 꼬리는 넓은 청색 사각 광고판으로 펼치고 흰 과일 아이콘 하나만 표시한다. 꼬리를 접었다 펼치면 다른 단순 아이콘으로 한 번 바뀐다.",
+    "references": {
+      "form": {
+        "reference": "R06-06",
+        "id": 165,
+        "name": "신호등 부엉이",
+        "path": "public/models/pet-165.json",
+        "sha256": "01f5fbacf82bcd8f6b50060ef5c1d9d1f6c2249089bc1af2acccea90d5190215",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-06",
+        "id": 165,
+        "name": "신호등 부엉이",
+        "path": "public/models/pet-165.json",
+        "sha256": "01f5fbacf82bcd8f6b50060ef5c1d9d1f6c2249089bc1af2acccea90d5190215",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

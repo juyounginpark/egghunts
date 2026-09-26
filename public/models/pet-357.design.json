@@ -11,6 +11,30 @@
     "form": "deer",
     "motif": "carousel",
     "prompt": "가는 크림색 다리와 짧은 얼굴, 뒤로 뻗은 금빛 뿔을 가진 사슴을 만들라. 등에는 민트색 안장, 몸 아래에는 낮은 붉은 회전 받침을 둔다. 몸이 천천히 돌아가며 앞발 한쪽을 들고 리본 꼬리가 흐르게 한다.",
+    "references": {
+      "form": {
+        "reference": "R02-03",
+        "id": 112,
+        "name": "목마 조랑말",
+        "path": "public/models/pet-112.json",
+        "sha256": "02c74ab4bcd9aeb957024be2a10de7fe55a135d4329b81c9b8cbfcacd0d74207",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-09",
+        "id": 118,
+        "name": "오르골 백조",
+        "path": "public/models/pet-118.json",
+        "sha256": "336cb6911665ac445923c17dee057dc693eb955287828d6a3b9869a3ea3c744d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#a1d4c4"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "octopus",
     "motif": "graduation",
     "prompt": "크림색 둥근 얼굴 아래로 짙은 남색 가운과 굵은 팔 여덟 개를 펼쳐라. 머리의 사각 모자와 금빛 술 하나만 강조한다. 두 팔로 두루마리를 펼치고 나머지 팔은 가운 아래에서 차례로 인사한다.",
+    "references": {
+      "form": {
+        "reference": "R05-04",
+        "id": 153,
+        "name": "잉크문어",
+        "path": "public/models/pet-153.json",
+        "sha256": "f20440a8bbc937b84efae54fb3f181889e1099011c3d8fc77ceec51bb5d2fb24",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-09",
+        "id": 158,
+        "name": "커튼박쥐",
+        "path": "public/models/pet-158.json",
+        "sha256": "eb1406eff71ea2a94ab3d0259833f11c9375aba59c6aba6aaacff5e167f7025c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

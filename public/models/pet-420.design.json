@@ -11,6 +11,30 @@
     "form": "turtle",
     "motif": "chip",
     "prompt": "낮은 검정 몸과 짧은 크림색 얼굴의 거북을 만들라. 등에 큰 초록 회로판을 얹고 중앙의 은색 칩 하나와 굵은 회로선 세 개를 둔다. 고개를 내밀 때 중앙 칩 옆의 작은 표시등만 켜진다.",
+    "references": {
+      "form": {
+        "reference": "R06-04",
+        "id": 163,
+        "name": "스케이트 도마뱀",
+        "path": "public/models/pet-163.json",
+        "sha256": "480599f01a323ed7a428c0202bbe5671796a00a32b99cf78881c193818d2cd92",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-02",
+        "id": 161,
+        "name": "배터리 햄스터",
+        "path": "public/models/pet-161.json",
+        "sha256": "058b798e16b85e76c049e414bd1ddb051a84f76c8233b28d1580f3330569a35a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

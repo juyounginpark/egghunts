@@ -11,6 +11,30 @@
     "form": "rabbit",
     "motif": "card",
     "prompt": "얇고 넓은 카드 몸 위에 짧은 흰 토끼 머리와 긴 귀를 붙여라. 몸 앞은 아이보리, 가장자리는 진홍, 가슴에는 큰 하트 하나를 둔다. 짧은 종이창을 들고 발을 한 번 맞춰 구른 뒤 귀가 까딱하게 한다.",
+    "references": {
+      "form": {
+        "reference": "R02-07",
+        "id": 116,
+        "name": "깜짝상자 토끼",
+        "path": "public/models/pet-116.json",
+        "sha256": "ca622819290ec624bed3de84071ee39d835576d4ae067ef25864a7376849e73d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-06",
+        "id": 115,
+        "name": "종이배 펭귄",
+        "path": "public/models/pet-115.json",
+        "sha256": "7dd5663c652bb13d27f7b190415d50ca96f4caca43d2c53d77469ec76774a78c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#e9e8dc"
   },
   "assembly": {

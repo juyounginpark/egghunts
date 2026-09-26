@@ -11,6 +11,30 @@
     "form": "salamander",
     "motif": "mud",
     "prompt": "낮고 넓은 주황 몸과 짧은 네 발, 작은 검정 눈의 도롱뇽을 만들라. 등에 큰 갈색 진흙 무늬 두 개와 크림색 배를 둔다. 앞발로 등을 문지르면 굵은 흙 알갱이 두 개만 떨어진다.",
+    "references": {
+      "form": {
+        "reference": "R08-01",
+        "id": 180,
+        "name": "알껍질 공룡",
+        "path": "public/models/pet-180.json",
+        "sha256": "4d0cd6c0cfef6c332830af65a2333838bec54d8b05549a311fbd37d5e3d73870",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-05",
+        "id": 184,
+        "name": "조약돌 안킬로",
+        "path": "public/models/pet-184.json",
+        "sha256": "b7c2e64ec5a1e6f18c96a47451d07d57c23da00e940556705dcb50668c2b010c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#dc9851"
   },
   "assembly": {

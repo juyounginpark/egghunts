@@ -11,6 +11,30 @@
     "form": "shark",
     "motif": "keyboard",
     "prompt": "넓은 크림색 얼굴과 짧은 팔의 곰 몸을 주황 자판기 형태로 만들라. 배의 큰 창에는 파란 캔 두 개, 아래에는 작은 출구 하나를 둔다. 앞발로 버튼을 누르면 모형 캔이 창 안에서만 내려간다.",
+    "references": {
+      "form": {
+        "reference": "R06-02",
+        "id": 161,
+        "name": "배터리 햄스터",
+        "path": "public/models/pet-161.json",
+        "sha256": "058b798e16b85e76c049e414bd1ddb051a84f76c8233b28d1580f3330569a35a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-03",
+        "id": 162,
+        "name": "택배너구리",
+        "path": "public/models/pet-162.json",
+        "sha256": "9b8fedfd1393135c05554fe3ff70a530811cbc10a9b085086f356b1be1dde6ac",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

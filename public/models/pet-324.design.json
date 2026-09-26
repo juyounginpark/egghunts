@@ -11,6 +11,30 @@
     "form": "caterpillar",
     "motif": "pea",
     "prompt": "둥근 연두 몸 세 덩어리를 낮게 연결하고 앞 덩어리에 멀찍이 떨어진 점눈을 둔다. 열린 진초록 콩깍지가 몸 아래를 받치게 한다. 고개부터 차례로 들썩이며 콩깍지 가장자리를 넘겨다보게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-01",
+        "id": 100,
+        "name": "새싹이",
+        "path": "public/models/pet-100.json",
+        "sha256": "fe536293441d569c7d318250dda82a1833638850362d390d76473748876d8ce4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R01-02",
+        "id": 101,
+        "name": "클로버 토끼",
+        "path": "public/models/pet-101.json",
+        "sha256": "4ddd3fa46b9739538a78dc616b6b00e2d8bb554092159b8071ac6a34b1d8c122",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#a3c674"
   },
   "assembly": {

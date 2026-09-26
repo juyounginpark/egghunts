@@ -11,6 +11,30 @@
     "form": "rabbit",
     "motif": "laurel",
     "prompt": "둥근 흰 몸과 길게 뒤로 젖힌 귀의 토끼를 만들라. 귀 뿌리를 짙은 초록 월계 가지가 낮게 감싸고 가슴에는 청색 천 한 장을 둔다. 앞발로 떨어진 잎을 잡아 다시 가지에 붙이는 동작을 준다.",
+    "references": {
+      "form": {
+        "reference": "R10-02",
+        "id": 201,
+        "name": "구름양",
+        "path": "public/models/pet-201.json",
+        "sha256": "47005bf9bae7d59c74fd343a45085be4ff96ebf567522221a48d2a1fecc19362",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-01",
+        "id": 200,
+        "name": "올리브 거북",
+        "path": "public/models/pet-200.json",
+        "sha256": "d0322da881e3ee674505cc27e4a132b9dbe6da8449cdd13e73b7e7e992a3517a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#eae9df"
   },
   "assembly": {

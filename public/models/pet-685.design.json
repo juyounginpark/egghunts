@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "sunwheel",
     "prompt": "짧은 살구색 몸 위에 납작한 금빛 원반 껍질을 기울여 얹어라. 껍질 가장자리는 아이보리 짧은 햇살 판 다섯 개로 나누고 눈자루는 작게 둔다. 고개를 들면 햇살 판이 차례로 바깥쪽으로 펼쳐진다.",
+    "references": {
+      "form": {
+        "reference": "R20-07",
+        "id": 296,
+        "name": "나무껍질 거북",
+        "path": "public/models/pet-296.json",
+        "sha256": "922ba48de8994efe3baea963d024cc2494ef023ef7c75b0a0c1284590d1b7671",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-02",
+        "id": 291,
+        "name": "새벽토끼",
+        "path": "public/models/pet-291.json",
+        "sha256": "a8e851d7bb7af8ef73121c0adfa659cbd37a0917eec03e3a0dea05323b45b2da",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#e8b18f"
   },
   "assembly": {

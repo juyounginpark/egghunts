@@ -11,6 +11,30 @@
     "form": "squirrel",
     "motif": "chestnut",
     "prompt": "짧은 주둥이와 작은 귀, 몸 앞으로 말리는 큰 밤색 꼬리를 만들라. 배는 아이보리, 꼬리 끝은 적갈색 두 단계로 나눈다. 앞발로 밤송이를 안고 가시 없는 밑면을 조심스럽게 들여다보게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-04",
+        "id": 103,
+        "name": "딸기쥐",
+        "path": "public/models/pet-103.json",
+        "sha256": "52701e1dcb7a26db16a5a2b19bfc2b04bb26bffc6f6160620e9694da92201642",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R01-07",
+        "id": 106,
+        "name": "꿀단지 곰",
+        "path": "public/models/pet-106.json",
+        "sha256": "8b1f5c6d64aa5fd1c5b37de32ca605d39424fa088ddb18a475adc45942d2f291",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      }
+    },
     "color": "#76503b"
   },
   "assembly": {

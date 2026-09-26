@@ -11,6 +11,30 @@
     "form": "frog",
     "motif": "candyumbrella",
     "prompt": "넓은 민트색 머리와 짧은 크림색 몸의 개구리를 만들라. 한 앞발에 분홍 소용돌이 사탕 우산을 들고 다른 발은 앞으로 내민다. 우산이 돌아가면 빗방울이 아래에서 위로 올라가 사탕 안으로 들어간다.",
+    "references": {
+      "form": {
+        "reference": "R14-04",
+        "id": 243,
+        "name": "우산해파리",
+        "path": "public/models/pet-243.json",
+        "sha256": "ed1c0debfcf044a773fde9ff0cdf2b0b14bdf3c27e7ad0b63513d435b8976bb1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-09",
+        "id": 248,
+        "name": "별사탕 고슴도치",
+        "path": "public/models/pet-248.json",
+        "sha256": "8f2d4e70769a7391d54bc17b23e97ba93dc7ae31e396bf302da858518b90e6b8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

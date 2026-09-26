@@ -11,6 +11,30 @@
     "form": "mole",
     "motif": "nest",
     "prompt": "넓은 앞발과 짧은 분홍 코의 회갈색 두더지를 만들라. 등에 낮은 볏짚 둥지 하나를 얹고 안에는 작은 깃털만 둔다. 몸을 움직이면 둥지가 기울어 두 앞발로 조심히 바로잡게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-04",
+        "id": 103,
+        "name": "딸기쥐",
+        "path": "public/models/pet-103.json",
+        "sha256": "52701e1dcb7a26db16a5a2b19bfc2b04bb26bffc6f6160620e9694da92201642",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R01-05",
+        "id": 104,
+        "name": "도토리 거북",
+        "path": "public/models/pet-104.json",
+        "sha256": "62576c1a2a9342f692f0829c2eeb3c0feb468b6ab724f3724cde6be82bff8a65",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#958477"
   },
   "assembly": {

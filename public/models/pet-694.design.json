@@ -11,6 +11,30 @@
     "form": "owl",
     "motif": "lightshard",
     "prompt": "넓은 크림색 얼굴과 짧은 남색 몸, 작은 점눈의 부엉이를 만들라. 두 날개 사이에는 커다란 금빛 삼각 조각 하나를 들고 날개 끝은 아이보리로 둔다. 조각을 돌리면 작은 사각 빛이 분리되었다 다시 붙는다.",
+    "references": {
+      "form": {
+        "reference": "R20-03",
+        "id": 292,
+        "name": "물감새",
+        "path": "public/models/pet-292.json",
+        "sha256": "7a61e303fa834cdfdbd79e5eba0da5b1c9549110ed4f2666ee81810a608da7b8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-02",
+        "id": 291,
+        "name": "새벽토끼",
+        "path": "public/models/pet-291.json",
+        "sha256": "a8e851d7bb7af8ef73121c0adfa659cbd37a0917eec03e3a0dea05323b45b2da",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

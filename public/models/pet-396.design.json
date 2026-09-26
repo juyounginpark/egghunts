@@ -11,6 +11,30 @@
     "form": "giant",
     "motif": "ruby",
     "prompt": "머리가 작고 어깨와 두 팔이 큰 바위 생물을 만들라. 몸은 무광 검정, 가슴에는 커다란 육각 홍옥 하나, 관절은 어두운 적갈색으로 둔다. 둥근 작은 눈으로 온화한 인상을 남기고 손바닥 위에서 작은 돌을 가열했다 식히는 동작을 준다.",
+    "references": {
+      "form": {
+        "reference": "R04-09",
+        "id": 138,
+        "name": "모루두더지",
+        "path": "public/models/pet-138.json",
+        "sha256": "6284f8a9a78bae3409cfc1f463859f989a4016ec11903dc5be07152b827052b3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R04-07",
+        "id": 136,
+        "name": "흑요석 전갈",
+        "path": "public/models/pet-136.json",
+        "sha256": "cd2cb6329bc5e70ea056df562722c35326a08fc1f09ae90bee424b6a7352230c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

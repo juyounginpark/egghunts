@@ -11,6 +11,30 @@
     "form": "penguin",
     "motif": "recycle",
     "prompt": "짧고 둥근 남색 몸과 크림색 배의 펭귄을 만들라. 배 앞에는 초록 상자 주머니와 단순한 흰 순환 화살표 하나를 둔다. 날개로 작은 병을 주머니에 넣으면 등 뒤의 새싹이 조금 올라온다.",
+    "references": {
+      "form": {
+        "reference": "R15-03",
+        "id": 252,
+        "name": "방독면 너구리",
+        "path": "public/models/pet-252.json",
+        "sha256": "968189d06631dfca349b7fd3cf00e84a0d6e9754f1a7e18b2ed3b7ca7cb35e78",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-06",
+        "id": 255,
+        "name": "깡통꽃게",
+        "path": "public/models/pet-255.json",
+        "sha256": "305d24f0a0553c567c30187846263c100dd7f823ce555497562b234f657063ba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

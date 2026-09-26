@@ -11,6 +11,30 @@
     "form": "deer",
     "motif": "balloonfeet",
     "prompt": "작은 살구색 몸과 짧은 얼굴, 뒤로 흐르는 가지뿔의 사슴을 만들라. 가는 다리 끝에 둥근 청색 풍선 발 네 개를 달고 끈은 짧게 유지한다. 앞발 풍선부터 차례로 부풀어 몸이 살짝 기울었다 돌아온다.",
+    "references": {
+      "form": {
+        "reference": "R14-07",
+        "id": 246,
+        "name": "구름기린",
+        "path": "public/models/pet-246.json",
+        "sha256": "286573f5261d4c97a0e65feae7e56cc8c9ed9af46aa096294c4ebc5393dbf1cb",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-02",
+        "id": 241,
+        "name": "꿈풍선 코끼리",
+        "path": "public/models/pet-241.json",
+        "sha256": "c4c7b35c18ca07c44a5ad47fcd725d783df21b0accd567345cdeb95c37a39b1e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#e8b18f"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "giraffe",
     "motif": "segmented",
     "prompt": "가는 크림색 다리와 긴 남색 목, 작은 밝은 얼굴의 기린을 만들라. 목은 큰 구간 네 개 사이에 얇은 빈 틈을 두고 머리 연결은 유지한다. 고개를 앞으로 숙였다 들 때 목 구간이 꼬리 쪽부터 역순으로 따라 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R19-08",
+        "id": 147,
+        "name": "어긋난 사슴",
+        "path": "public/models/pet-147.json",
+        "sha256": "1cd2107fbd2d26732a02a01c5dc8e792a2f3581c225de65da08ad67b577a0030",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-05",
+        "id": 144,
+        "name": "조각여우",
+        "path": "public/models/pet-144.json",
+        "sha256": "0c75554c3b701ebf1b4570433fb62e153b6c94243c7129f7e4e1eb78c8284ae8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

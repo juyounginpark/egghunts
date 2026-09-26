@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "cone",
     "prompt": "낮고 긴 회색 몸 위에 기울어진 주황 교통콘 껍질을 얹어라. 흰 띠 두 개와 짧은 눈자루를 명확히 구분한다. 껍질이 흔들리면 고개를 돌려 확인하고 몸을 조금 낮춰 균형을 잡는다.",
+    "references": {
+      "form": {
+        "reference": "R06-04",
+        "id": 163,
+        "name": "스케이트 도마뱀",
+        "path": "public/models/pet-163.json",
+        "sha256": "480599f01a323ed7a428c0202bbe5671796a00a32b99cf78881c193818d2cd92",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-08",
+        "id": 167,
+        "name": "케이블 뱀",
+        "path": "public/models/pet-167.json",
+        "sha256": "cd8cb27190ba7a88e17e4ee57437041a48c886561e30371e58d8575c6353ad53",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "metal"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "crab",
     "motif": "jar",
     "prompt": "낮은 적갈색 게 몸 위에 깨진 아이보리 석항아리를 비스듬히 얹어라. 앞쪽의 짧은 눈자루와 작은 청색 집게가 확실히 보이게 한다. 항아리 입구의 모래를 한 집게로 털고 몸을 바로 세운다.",
+    "references": {
+      "form": {
+        "reference": "R07-08",
+        "id": 177,
+        "name": "보석전갈",
+        "path": "public/models/pet-177.json",
+        "sha256": "2e6af75e5579fa98ab76d291ad59a68aa2671cee3602ac3a555482916ae01d50",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R07-06",
+        "id": 175,
+        "name": "항아리 코브라",
+        "path": "public/models/pet-175.json",
+        "sha256": "b5bfc5a0d9eed18a6f5da1634e0dce19ead0c36acaa5d6843700fe6be3f3a0ba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "matte"
+      }
+    },
     "color": "#974e40"
   },
   "assembly": {

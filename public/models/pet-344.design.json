@@ -11,6 +11,30 @@
     "form": "fox",
     "motif": "papercup",
     "prompt": "거꾸로 놓인 아이보리 종이컵에 주황 얼굴과 큰 귀, 접힌 종이 꼬리를 달아라. 컵 무늬는 청색 띠 하나로 정리하고 작은 발이 아래에 보이게 한다. 컵 몸을 기울이면 꼬리가 반대쪽으로 벌어지게 한다.",
+    "references": {
+      "form": {
+        "reference": "R02-10",
+        "id": 119,
+        "name": "풍선강아지",
+        "path": "public/models/pet-119.json",
+        "sha256": "449d3b4bf8a042ec60bf58507a298cd8e9c36270949533fd1a35f0473932574c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-06",
+        "id": 115,
+        "name": "종이배 펭귄",
+        "path": "public/models/pet-115.json",
+        "sha256": "7dd5663c652bb13d27f7b190415d50ca96f4caca43d2c53d77469ec76774a78c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

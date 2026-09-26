@@ -11,6 +11,30 @@
     "form": "chick",
     "motif": "thumbtack",
     "prompt": "둥근 노랑 머리와 넓은 붉은 압정 모자, 짧은 발을 만들라. 모자는 뒤로 기울여 작은 부리와 눈을 드러내고 배는 크림색으로 밝힌다. 몸을 한 번 까딱하면 모자가 흔들리고 날개로 바로잡는다.",
+    "references": {
+      "form": {
+        "reference": "R05-02",
+        "id": 151,
+        "name": "지우개 햄스터",
+        "path": "public/models/pet-151.json",
+        "sha256": "16618814712a92a73df01ed8ffc00ff46bcb3369f6d0c4dd02d04f42c47d1be9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-06",
+        "id": 155,
+        "name": "종이학",
+        "path": "public/models/pet-155.json",
+        "sha256": "c54376715ac0b4d72c8dd7d0385629ed21480bcb11212b6ae73de2e50fc3c6ef",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

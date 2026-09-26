@@ -4,6 +4,47 @@ import math
 def details(g,row):
  f,m,id=row['form'],row['motif'],row['id'];o,b,c,l=g.orb,g.box,g.curve,g.line
  def clear(*parts):g.cells={xyz:v for xyz,v in g.cells.items() if v[1] not in parts}
+ if m=='rooftile':
+  clear('crest')
+  for z in [1,6]:
+   b(-7,7,10,11,z-2,z+2,2,'crest')
+   for sign in [-1,1]:c([(sign*5,11,z),(sign*8,12,z),(sign*9,14,z)],1.2,2,'crest')
+  o(7,7,7,1.4,2,1.4,3,'token')
+ elif m=='starmap':
+  clear('crest');b(-7,7,10,11,-3,9,2,'crest')
+  c([(-5,12,-1),(2,12,2),(-3,12,7)],.8,3,'crest',False)
+  b(7,10,11,12,3,5,3,'token')
+ elif m=='rivets':
+  for sign,side in [(-1,'left'),(1,'right')]:
+   clear(side+'_arm');o(sign*7,10,3,4,1.5,6,2,side+'_arm')
+   for z in [-1,3,7]:o(sign*8,12,z,1,1,1,3,side+'_arm')
+  y,z=g.face;l((0,y-1,z),(0,y-1,z-4),.8,3,'head')
+ elif m=='icebean':
+  clear('prop');o(-1,5,-10,4,5,2.5,2,'prop');o(2,8,-10,3,3,2.5,2,'prop');o(0,6,-10,1.5,2,1.5,3,'token')
+ if id==323:
+  # Chestnut fur and a warm tail tip, not a cream slab. The nut sits in both paws.
+  for xyz,(color,part) in list(g.cells.items()):
+   if part.startswith('tail'):g.cells[xyz]=(3 if part=='tail_3' else 1,part)
+   elif part=='prop':g.cells[xyz]=(3,part)
+  for sign,side in [(-1,'left'),(1,'right')]:
+   c([(sign*5,11,0),(sign*4,8,-6),(sign*2,6,-9)],1.3,1,side+'_arm')
+  for x,y in [(-3,6),(0,8),(3,6)]:o(x,y,-12,1,1,1,1,'prop')
+  g.parts['prop']['pivot']=[0,6,-9]
+ if id==370:
+  clear('shell','prop','token')
+  # A thick ivory spiral around a blue face; two broad nacre patches only.
+  pts=[]
+  for i in range(17):
+   a=i*.5;r=1+i*.38;pts.append((math.cos(a)*r,10+math.sin(a)*r,4))
+  c(pts,1.8,1,'shell',False);g.part('shell',(0,6,4))
+  for xyz,(color,part) in list(g.cells.items()):
+   if part=='head' and color!=5:g.cells[xyz]=(2,part)
+   if part=='shell' and xyz[0]>3 and xyz[1]>11:g.cells[xyz]=(3,part)
+   elif part=='shell' and xyz[0]<-3 and xyz[1]<10:g.cells[xyz]=(4,part)
+  y,z=g.face
+  for sign,side in [(-1,'left'),(1,'right')]:
+   p=side+'_arm';c([(sign*2,y-2,z+1),(sign*4,y-3,z-2),(sign*2,y-3,z-4)],1,2,p);g.part(p,(sign*2,y-2,z+1))
+  o(0,y-3,z-4,1.5,1,1.5,1,'prop');g.parts['prop']['pivot']=[0,y-3,z-4]
  if f=='penguin':
   clear('body','left_arm','right_arm','tail','tail_1')
   o(0,7,1,5,7,4,1);o(0,7,-2,4,5,2,2)

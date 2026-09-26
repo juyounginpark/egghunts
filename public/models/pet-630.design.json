@@ -11,6 +11,30 @@
     "form": "hamster",
     "motif": "brushes",
     "prompt": "큰 크림색 볼과 짧은 귀의 회색 햄스터를 만들라. 몸 아래에는 넓은 주황 회전솔 두 개를 달고 배의 작은 먼지통을 투명하게 둔다. 앞발로 솔을 톡 건드리면 솔이 짧게 돌아가고 통 속 모형 먼지가 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R17-01",
+        "id": 270,
+        "name": "볼트생쥐",
+        "path": "public/models/pet-270.json",
+        "sha256": "976005938fdcaf5df973e863391bbb309a48ce8a95c43fb7029a4636cf54d8e2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-09",
+        "id": 278,
+        "name": "굴착두더지",
+        "path": "public/models/pet-278.json",
+        "sha256": "68dfd63092bcab531441e8fe906fc41e44e2cb75237c7b0bc0f491fe1180d284",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "metal"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "cicada",
     "motif": "warning",
     "prompt": "넓은 회색 머리와 짧은 검정 몸, 긴 주황 날개의 매미를 만들라. 배 끝은 둥근 노랑 경고등, 날개 무늬는 검정 띠 두 개로 정리한다. 날개가 떨리면 경고등이 느리게 밝아졌다 낮아지며 얼굴은 선명하게 둔다.",
+    "references": {
+      "form": {
+        "reference": "R15-07",
+        "id": 256,
+        "name": "형광나방",
+        "path": "public/models/pet-256.json",
+        "sha256": "5dbda35a2a317cba4d937dc5fe04b3bbfb42eb8fb3acbf0e7d9573ee29b52fc1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-08",
+        "id": 257,
+        "name": "건전지 멧돼지",
+        "path": "public/models/pet-257.json",
+        "sha256": "7bb9bb76a4548de43f42819b1ea8418c24e31d5d5482e4126753509051d20be3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

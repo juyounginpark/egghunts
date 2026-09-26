@@ -11,6 +11,30 @@
     "form": "spider",
     "motif": "piano",
     "prompt": "넓고 낮은 검정 배와 크림색 작은 머리, 굵은 다리 여덟 개를 만들라. 등에는 흰 건반 다섯 개와 검정 건반 두 개만 배치한다. 앞다리 두 개가 번갈아 건반을 눌러 밝은 점 하나가 짧게 뜨게 한다.",
+    "references": {
+      "form": {
+        "reference": "R05-04",
+        "id": 153,
+        "name": "잉크문어",
+        "path": "public/models/pet-153.json",
+        "sha256": "f20440a8bbc937b84efae54fb3f181889e1099011c3d8fc77ceec51bb5d2fb24",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-08",
+        "id": 157,
+        "name": "종소리 부엉이",
+        "path": "public/models/pet-157.json",
+        "sha256": "e5196739431c9c4e1650baa9dffe1026c8b30cf66c8cd1297aed684009672feb",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

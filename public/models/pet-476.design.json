@@ -11,6 +11,30 @@
     "form": "mole",
     "motif": "ricecake",
     "prompt": "넓은 앞발과 짧은 분홍 코의 크림색 두더지를 만들라. 등에 낮은 초록 쑥떡 두 덩어리를 얹고 흰 고물은 큰 점 몇 개로 표현한다. 앞발로 떡을 눌러 모양을 다듬고 코를 한 번 턴다.",
+    "references": {
+      "form": {
+        "reference": "R09-04",
+        "id": 193,
+        "name": "짚신너구리",
+        "path": "public/models/pet-193.json",
+        "sha256": "293020ff51a02e265440b8ef32926c0cd6cd76b9bfdec3d7d41d70e907abdf84",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-01",
+        "id": 190,
+        "name": "달떡토끼",
+        "path": "public/models/pet-190.json",
+        "sha256": "3e24ff03ee4d2a2b550d408d3ef76ae56ec01d832fe17df72f0839e4c59cfc3f",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

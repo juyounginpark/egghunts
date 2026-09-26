@@ -3,7 +3,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import {createServer} from 'vite';
 import {chromium} from 'playwright';
 import {ready} from './lib.mjs';
-const server=await createServer({server:{host:'127.0.0.1',port:4332,strictPort:true},plugins:[{name:'expansion-fixture',enforce:'pre',transform(code,id){
+const server=await createServer({optimizeDeps:{entries:['index.html']},server:{host:'127.0.0.1',port:4332,strictPort:true,watch:null,hmr:false},plugins:[{name:'expansion-fixture',enforce:'pre',transform(code,id){
  if(id.replaceAll('\\','/').endsWith('/src/main.ts'))return code.replace('ready = true;','ready = true; window.__expansion={game,world};');
 }}]});await server.listen();
 const browser=await chromium.launch({channel:'msedge',headless:true}),errors=[];
@@ -34,6 +34,26 @@ try{
  assert.match(await page.locator('.result-card').innerText(),/첫빛 유니콘/);
  assert.equal(await page.locator('.result-pet').evaluate(img=>img.complete&&img.naturalWidth>0),true);
  await page.screenshot({path:'artifacts/expansion/hatch-last-pet.png'});
+ if(process.argv.includes('--style')){
+  await mkdir('artifacts/expansion-style',{recursive:true});
+  for(let stage=1;stage<=20;stage++){
+   const last=321+stage*19-1;
+   await page.evaluate(async({stage,last})=>{
+    window.__qa.scene('base');window.__qa.selectStage(stage);window.__qa.region(stage);
+    const {game}=window.__expansion,{MONGLES}=await import('/src/data.ts');
+    const old=MONGLES.findIndex(p=>p.stageId===stage);game.save.active=[old,last-18,last];
+    for(const id of game.save.active)game.save.mongles[id]=1;game.revision++;
+   },{stage,last});
+   await page.waitForFunction(id=>window.__expansion.world.companions.children.some(p=>p.userData.petId===id),last);
+   for(const night of [false,true]){
+    // Use the real world's environment preview: no night gameplay bypass in production.
+    await page.evaluate(night=>window.__qa.environment(night?1:0),night);await page.waitForTimeout(300);
+    assert.equal(await page.evaluate(()=>window.__expansion.world.assetError),'');
+    await page.screenshot({path:`artifacts/expansion-style/game-stage-${stage}-${night?'night':'day'}.png`});
+   }
+   console.log(`Game lighting stage ${stage}/20`);
+  }
+ }
  assert.deepEqual(errors,[]);
  await writeFile('artifacts/expansion/ui-audit.json',JSON.stringify({initialNewModels,collectionCount:30,lastPet:700,metrics,errors,scope:'Desktop Edge at mobile viewport; not physical-device FPS'},null,2));
  console.log(JSON.stringify({initialNewModels,collectionCount:30,metrics,errors}));

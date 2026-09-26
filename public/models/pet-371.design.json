@@ -11,6 +11,30 @@
     "form": "starfish",
     "motif": "hammock",
     "prompt": "넓은 주황 불가사리의 다섯 팔을 서로 다른 각도로 구부려라. 가운데는 크림색 작은 얼굴, 양쪽 팔 사이에는 연보라 해초 해먹을 건다. 해먹 속 진주 하나를 좌우로 굴리며 가운데 몸이 천천히 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R03-05",
+        "id": 124,
+        "name": "파도 가오리",
+        "path": "public/models/pet-124.json",
+        "sha256": "d8e7af9bf7bbe962758aea0a6775a209c019aaf52d2944d6d40deb126c2cafce",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-04",
+        "id": 123,
+        "name": "리본해마",
+        "path": "public/models/pet-123.json",
+        "sha256": "27070a0904a48a2f52eae7b273e2728e650b1a04bc8913e066a177b5c32e3400",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "matte"
+      }
+    },
     "color": "#dc9851"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "slime",
     "motif": "footpads",
     "prompt": "둥근 청색 젤 몸 아래에 넓은 주황 발판 네 개를 달아라. 작은 점눈과 크림색 배를 구분하고 등에 작은 은색 실험 표식 하나만 둔다. 발판이 차례로 눌렸다 올라가며 몸이 부드럽게 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R11-01",
+        "id": 210,
+        "name": "안테나 슬라임",
+        "path": "public/models/pet-210.json",
+        "sha256": "e6b9422b1522352792405c960f58f17e2564858d268def5a823a26c0d25f8e19",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-05",
+        "id": 214,
+        "name": "흡착개구리",
+        "path": "public/models/pet-214.json",
+        "sha256": "927d719913ff8f5bec05cfbde7274bdb08e821b71536f141b46faed2ff7ec175",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#658fbd"
   },
   "assembly": {

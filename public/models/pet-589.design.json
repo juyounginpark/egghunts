@@ -11,6 +11,30 @@
     "form": "slime",
     "motif": "moss",
     "prompt": "넓고 낮은 크림색 젤 몸 위에 짙은 초록 이끼 두 덩어리를 얹어라. 얼굴은 점눈과 작은 입으로 단순화하고 한쪽에 녹슨 병뚜껑을 붙인다. 몸이 부풀면 이끼 사이의 작은 물방울이 떠올랐다 내려온다.",
+    "references": {
+      "form": {
+        "reference": "R15-01",
+        "id": 250,
+        "name": "새싹들쥐",
+        "path": "public/models/pet-250.json",
+        "sha256": "9d8c902371b82654881ce8509966a1a6f7cf7edd8914337a8e44ef548c372ebb",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-04",
+        "id": 253,
+        "name": "유리버섯 달팽이",
+        "path": "public/models/pet-253.json",
+        "sha256": "ba2ac29046117eff7984280ef63158e83cf4ccb4779d87f13019ade2aab9d261",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "urchin",
     "motif": "umbrella",
     "prompt": "작은 자주색 몸 위로 긴 크림색 가시 다섯 개가 우산 뼈대처럼 펼쳐지게 하라. 가시 사이에는 얇은 분홍 막을 두고 얼굴은 아래쪽에 밝게 드러낸다. 우산을 닫았다 열며 작은 기포 두 개를 내보낸다.",
+    "references": {
+      "form": {
+        "reference": "R03-07",
+        "id": 126,
+        "name": "별빛해파리",
+        "path": "public/models/pet-126.json",
+        "sha256": "01892de7f4e5caae3d390f7c0820c34253f6a4a4c8440043fb603641b3924b00",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-03",
+        "id": 122,
+        "name": "진주조개",
+        "path": "public/models/pet-122.json",
+        "sha256": "905acdbdba229781b65a11844ccbe6c0dd8c10437b721d4d6c66caf8b0ffabc0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

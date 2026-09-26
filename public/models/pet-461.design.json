@@ -11,6 +11,30 @@
     "form": "lizard",
     "motif": "sail",
     "prompt": "낮고 긴 초록 몸과 짧은 다리 위에 큰 붉은 돛을 세워라. 돛은 높이가 다른 굵은 기둥 네 개와 살구색 막으로 만든다. 얼굴은 짧고 넓게 두고 몸을 돌릴 때 돛이 뒤늦게 따라 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R08-03",
+        "id": 182,
+        "name": "꽃등 스테고",
+        "path": "public/models/pet-182.json",
+        "sha256": "b161945d866cbd9ef66df7a767b817d0b9a0cc61afe43002ff5700870d1cf395",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-03",
+        "id": 182,
+        "name": "꽃등 스테고",
+        "path": "public/models/pet-182.json",
+        "sha256": "b161945d866cbd9ef66df7a767b817d0b9a0cc61afe43002ff5700870d1cf395",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#669858"
   },
   "assembly": {

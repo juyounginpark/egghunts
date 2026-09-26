@@ -11,6 +11,30 @@
     "form": "moth",
     "motif": "map",
     "prompt": "작은 갈색 몸과 큰 사각형에 가까운 날개의 나방을 만들라. 날개는 낡은 아이보리 지도 바탕에 청색 강 한 줄과 초록 섬 두 개로 나눈다. 머리의 점눈을 드러내고 접힌 날개를 펴 지형 무늬를 보여준다.",
+    "references": {
+      "form": {
+        "reference": "R05-09",
+        "id": 158,
+        "name": "커튼박쥐",
+        "path": "public/models/pet-158.json",
+        "sha256": "eb1406eff71ea2a94ab3d0259833f11c9375aba59c6aba6aaacff5e167f7025c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-06",
+        "id": 155,
+        "name": "종이학",
+        "path": "public/models/pet-155.json",
+        "sha256": "c54376715ac0b4d72c8dd7d0385629ed21480bcb11212b6ae73de2e50fc3c6ef",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "firefly",
     "motif": "lantern",
     "prompt": "작은 검정 머리와 황동 틀의 둥근 배를 가진 반딧불을 만들라. 배 안쪽은 따뜻한 아이보리 유리, 날개는 얇은 청록 판 두 장이다. 날개를 접으면 빛이 약해지고 펼치면 배의 불빛이 천천히 올라온다.",
+    "references": {
+      "form": {
+        "reference": "R12-04",
+        "id": 223,
+        "name": "프로펠러 참새",
+        "path": "public/models/pet-223.json",
+        "sha256": "cfef9fc62907f50246680885a5a03df8f97490d1978659b7f0f1566a1f6ce909",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R12-03",
+        "id": 222,
+        "name": "찻주전자 코끼리",
+        "path": "public/models/pet-222.json",
+        "sha256": "efc5f43574a57244e1972749d2be49bcc825e9ea40d45ae88d3257ed89f337f8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

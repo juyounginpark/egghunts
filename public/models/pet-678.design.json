@@ -11,6 +11,30 @@
     "form": "gorilla",
     "motif": "seals",
     "prompt": "넓은 회색 어깨와 긴 검정 팔, 작은 크림색 얼굴을 만들라. 몸을 감싼 큰 아이보리 띠 두 개는 가슴 앞에서 끊겨 떠 있도록 둔다. 팔을 벌리면 띠가 조금 넓어지고 가슴의 깊은 어두운 면이 드러난다.",
+    "references": {
+      "form": {
+        "reference": "R19-10",
+        "id": 149,
+        "name": "경계의 사냥개",
+        "path": "public/models/pet-149.json",
+        "sha256": "03ca9efe48bc17aff946b0910b10c675ed344b9f4ef6b9953d0068900c0e7118",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-10",
+        "id": 149,
+        "name": "경계의 사냥개",
+        "path": "public/models/pet-149.json",
+        "sha256": "03ca9efe48bc17aff946b0910b10c675ed344b9f4ef6b9953d0068900c0e7118",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

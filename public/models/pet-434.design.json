@@ -11,6 +11,30 @@
     "form": "whale",
     "motif": "skyline",
     "prompt": "길고 넓은 남색 고래 몸과 진주색 배, 뒤로 흐르는 큰 지느러미를 만들라. 등에는 높이가 다른 건물형 능선 세 개와 큰 노랑 창만 배치한다. 옆구리의 한 줄 전광 띠가 천천히 지나가고 숨을 쉴 때 창빛이 차례로 켜진다.",
+    "references": {
+      "form": {
+        "reference": "R06-09",
+        "id": 168,
+        "name": "드론가오리",
+        "path": "public/models/pet-168.json",
+        "sha256": "b4c1f17c3871ca3de9857904a645e7b068631e2641715bcd5404ea4513e19b18",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-07",
+        "id": 166,
+        "name": "홀로그램 잉어",
+        "path": "public/models/pet-166.json",
+        "sha256": "d0892bef54030854aae59066aa4eefe8371810bfdfb412208da03a76cbae3344",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

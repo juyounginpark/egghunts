@@ -11,6 +11,30 @@
     "form": "rabbit",
     "motif": "pumice",
     "prompt": "옅은 회색의 통통한 돌 몸과 짧고 넓은 귀의 토끼를 만들라. 몸의 구멍은 큰 홈 세 개만 두고 배는 따뜻한 아이보리로 밝힌다. 귀 사이의 작은 주황 광석을 고개로 받쳤다 앞발로 내려놓는다.",
+    "references": {
+      "form": {
+        "reference": "R04-05",
+        "id": 134,
+        "name": "유황산양",
+        "path": "public/models/pet-134.json",
+        "sha256": "fe412fa2f78a3ecd80833ec992dcf403ddd0f646c5ab280d7e319b3db8be0563",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R04-03",
+        "id": 132,
+        "name": "화로거북",
+        "path": "public/models/pet-132.json",
+        "sha256": "921c8554cb9b15ba9da7ee1a23b1da24b782354b1a22aefc9fdba199cc92e94a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

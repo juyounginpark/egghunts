@@ -11,6 +11,30 @@
     "form": "toad",
     "motif": "exam",
     "prompt": "넓은 크림색 몸과 작은 눈자리의 두꺼비를 만들라. 등은 접힌 종이처럼 평평하게 두고 붉은 동그라미 두 개와 청색 선 몇 개를 넣는다. 앞발로 등을 가렸다가 자랑하듯 천천히 펴 보인다.",
+    "references": {
+      "form": {
+        "reference": "R05-02",
+        "id": 151,
+        "name": "지우개 햄스터",
+        "path": "public/models/pet-151.json",
+        "sha256": "16618814712a92a73df01ed8ffc00ff46bcb3369f6d0c4dd02d04f42c47d1be9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-01",
+        "id": 150,
+        "name": "분필유령",
+        "path": "public/models/pet-150.json",
+        "sha256": "2f3ad306bde384952d072b6e2afe0880da9e3813c7898fde03e25424891cf7db",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

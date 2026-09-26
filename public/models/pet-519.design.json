@@ -11,6 +11,30 @@
     "form": "chameleon",
     "motif": "eyespots",
     "prompt": "짧은 살구색 머리와 굽은 꼬리의 작은 카멜레온을 만들라. 등 양옆의 넓은 파랑 막에는 큰 눈모양 문양 하나씩만 둔다. 실제 얼굴의 점눈은 작게 유지하고 막을 펼칠 때 문양이 드러나게 한다.",
+    "references": {
+      "form": {
+        "reference": "R11-02",
+        "id": 211,
+        "name": "세눈 도마뱀",
+        "path": "public/models/pet-211.json",
+        "sha256": "5bea137fa10863e936ea5ba037ac9016de4401739a7a018ec082cd48ab66e822",
+        "unit": 21.6,
+        "eyeHeightVoxels": 4,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-10",
+        "id": 219,
+        "name": "별꽃 사마귀",
+        "path": "public/models/pet-219.json",
+        "sha256": "b466ad2644c3b12c940bf03c23819ed06cdcffb58e0d277b30a1751feae8ace6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#e8b18f"
   },
   "assembly": {

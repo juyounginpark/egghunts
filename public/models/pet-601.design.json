@@ -11,6 +11,30 @@
     "form": "leopard",
     "motif": "wiretail",
     "prompt": "가는 검정 몸과 높은 어깨, 짧은 밝은 얼굴의 표범을 만들라. 꼬리는 굵은 주황 전선 세 가닥이 합쳐진 형태이며 등에 큰 회색 패치 두 개를 둔다. 꼬리를 휘면 세 가닥의 끝이 차례로 따라온다.",
+    "references": {
+      "form": {
+        "reference": "R15-10",
+        "id": 259,
+        "name": "두머리 살쾡이",
+        "path": "public/models/pet-259.json",
+        "sha256": "a05361ef8aacf0fd7bc7f2ba7bf12240253fe6dc4fe6191ec1dc88ec1a3dac6f",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-08",
+        "id": 257,
+        "name": "건전지 멧돼지",
+        "path": "public/models/pet-257.json",
+        "sha256": "7bb9bb76a4548de43f42819b1ea8418c24e31d5d5482e4126753509051d20be3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

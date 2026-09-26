@@ -11,6 +11,30 @@
     "form": "horseshoe",
     "motif": "terrace",
     "prompt": "넓은 아이보리 투구형 껍질과 긴 청동색 꼬리를 만들라. 껍질 위에는 낮은 청록 테라스 세 단과 분홍 산호 두 개만 둔다. 작은 눈은 앞 테두리에 배치하고 숨을 쉴 때 테라스 틈으로 기포가 나온다.",
+    "references": {
+      "form": {
+        "reference": "R03-06",
+        "id": 125,
+        "name": "산호거북",
+        "path": "public/models/pet-125.json",
+        "sha256": "5485d1ade4575a41dce91f76fee91ad9d2b81cbeb79ca6197eba12e5ec106c60",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-06",
+        "id": 125,
+        "name": "산호거북",
+        "path": "public/models/pet-125.json",
+        "sha256": "5485d1ade4575a41dce91f76fee91ad9d2b81cbeb79ca6197eba12e5ec106c60",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

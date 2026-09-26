@@ -11,6 +11,30 @@
     "form": "worm",
     "motif": "suction",
     "prompt": "굵고 짧은 연분홍 몸 네 구간과 넓은 크림색 얼굴을 만들라. 몸 아래 큰 청록 흡착판 세 개를 두고 머리의 점눈은 멀찍이 배치한다. 앞구간이 들리면 흡착판이 순서대로 떨어졌다 다시 붙는다.",
+    "references": {
+      "form": {
+        "reference": "R11-02",
+        "id": 211,
+        "name": "세눈 도마뱀",
+        "path": "public/models/pet-211.json",
+        "sha256": "5bea137fa10863e936ea5ba037ac9016de4401739a7a018ec082cd48ab66e822",
+        "unit": 21.6,
+        "eyeHeightVoxels": 4,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-05",
+        "id": 214,
+        "name": "흡착개구리",
+        "path": "public/models/pet-214.json",
+        "sha256": "927d719913ff8f5bec05cfbde7274bdb08e821b71536f141b46faed2ff7ec175",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#e8b6cb"
   },
   "assembly": {

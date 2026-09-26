@@ -11,6 +11,30 @@
     "form": "rabbit",
     "motif": "screws",
     "prompt": "짧고 둥근 은색 몸과 작은 크림색 얼굴의 토끼를 만들라. 귀는 굵은 노랑 나사 두 개로 세우고 발은 남색으로 작게 둔다. 고개를 갸웃하면 귀 하나가 반 바퀴 돌아갔다 제자리로 온다.",
+    "references": {
+      "form": {
+        "reference": "R17-06",
+        "id": 275,
+        "name": "스프링토끼",
+        "path": "public/models/pet-275.json",
+        "sha256": "8f2c9834d19032624f0458cdb0a4f6d70640b4595eaa53eefc0bd75ab80af768",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-01",
+        "id": 270,
+        "name": "볼트생쥐",
+        "path": "public/models/pet-270.json",
+        "sha256": "976005938fdcaf5df973e863391bbb309a48ce8a95c43fb7029a4636cf54d8e2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      }
+    },
     "color": "#a9bac6"
   },
   "assembly": {

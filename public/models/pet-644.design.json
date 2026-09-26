@@ -11,6 +11,30 @@
     "form": "mouse",
     "motif": "moonrock",
     "prompt": "작은 청회색 몸과 크림색 볼, 큰 둥근 귀의 생쥐를 만들라. 두 앞발에 큰 아이보리 달돌 하나를 안고 돌에는 깊은 구덩이 두 개만 둔다. 코로 구덩이를 들여다보면 작은 별점 하나가 떠오른다.",
+    "references": {
+      "form": {
+        "reference": "R18-01",
+        "id": 280,
+        "name": "별모래 햄스터",
+        "path": "public/models/pet-280.json",
+        "sha256": "bdae75527810feae68ae9b10a65d20af61e3fde401ecf01578a73d9de0e84b11",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-03",
+        "id": 282,
+        "name": "달구덩이 거북",
+        "path": "public/models/pet-282.json",
+        "sha256": "80c08420621f45aea344e48bd725773a52ddbc2ab9c3d447c500c4c87f952615",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#899cac"
   },
   "assembly": {

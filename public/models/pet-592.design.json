@@ -11,6 +11,30 @@
     "form": "turtle",
     "motif": "tire",
     "prompt": "넓고 낮은 회갈색 몸과 짧은 밝은 얼굴의 거북을 만들라. 등껍질은 두꺼운 검정 타이어 한 개로 만들고 중앙에 작은 분홍 꽃을 심는다. 앞발로 꽃에 고인 물을 살짝 건드리면 타이어 몸이 느리게 기운다.",
+    "references": {
+      "form": {
+        "reference": "R15-02",
+        "id": 251,
+        "name": "철통두꺼비",
+        "path": "public/models/pet-251.json",
+        "sha256": "a4e2593859d54ec7887263e02b43ce32764258a791c5926ca0c3bd20f75d488b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R15-06",
+        "id": 255,
+        "name": "깡통꽃게",
+        "path": "public/models/pet-255.json",
+        "sha256": "305d24f0a0553c567c30187846263c100dd7f823ce555497562b234f657063ba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#958477"
   },
   "assembly": {

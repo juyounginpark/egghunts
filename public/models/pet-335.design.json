@@ -11,6 +11,30 @@
     "form": "giraffe",
     "motif": "sunflower",
     "prompt": "가는 다리와 긴 목, 짧은 얼굴의 황갈색 기린을 만들라. 목 뒤 갈기는 노란 꽃잎이 큰 간격으로 이어지고 머리 뒤에 둥근 갈색 꽃 중심이 보인다. 고개를 천천히 들어 꽃잎이 차례로 햇빛을 향하게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-10",
+        "id": 109,
+        "name": "사계절 사슴",
+        "path": "public/models/pet-109.json",
+        "sha256": "0cc01858c2e0dfaeb91fbb1f3d4de33033617b0b18f557ca3f116f9345f37b67",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R01-03",
+        "id": 102,
+        "name": "민들레 병아리",
+        "path": "public/models/pet-102.json",
+        "sha256": "983bb790cb6c60deff3145c6b7b94421782144b240b53aff484401d62ecd1dbf",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#b78d53"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "crocodile",
     "motif": "rebar",
     "prompt": "길고 낮은 회색 몸과 넓은 크림색 턱의 악어를 만들라. 등에는 휘어진 녹슨 철근 세 개를 낮게 세우고 그 사이에 초록 덩굴을 두른다. 고개를 낮추면 덩굴 꽃 하나가 열리고 꼬리가 천천히 옆으로 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R15-05",
+        "id": 254,
+        "name": "쌍꼬리 도마뱀",
+        "path": "public/models/pet-254.json",
+        "sha256": "fc65aff5a0a573632f837cda7c035f4b073f21f3d1065ed1c5c53eeb6c3e1145",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-06",
+        "id": 255,
+        "name": "깡통꽃게",
+        "path": "public/models/pet-255.json",
+        "sha256": "305d24f0a0553c567c30187846263c100dd7f823ce555497562b234f657063ba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

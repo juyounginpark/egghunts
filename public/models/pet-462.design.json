@@ -11,6 +11,30 @@
     "form": "bird",
     "motif": "feathers",
     "prompt": "가는 뒷다리와 짧은 부리, 긴 깃털 꼬리의 남색 새를 만들라. 팔 날개와 꼬리 끝에는 아이보리·주황의 넓은 깃판을 둔다. 작은 눈이 주변을 살핀 뒤 팔을 펴고 한 발로 잠깐 균형을 잡는다.",
+    "references": {
+      "form": {
+        "reference": "R08-04",
+        "id": 183,
+        "name": "깃털 랩터",
+        "path": "public/models/pet-183.json",
+        "sha256": "c8c65610d6fab5a5dfd1463f1eeeb7081f89e3082e402930d09417ba631f84f9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-07",
+        "id": 186,
+        "name": "과일 익룡",
+        "path": "public/models/pet-186.json",
+        "sha256": "ec03d1c7616249024b7547d9ba5f007bf06eacef607a51c4b79a01ab74608d12",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

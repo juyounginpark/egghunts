@@ -11,6 +11,30 @@
     "form": "ostrich",
     "motif": "cloudshoes",
     "prompt": "둥근 남색 몸과 긴 크림색 목, 작은 얼굴의 타조를 만들라. 가는 두 다리 끝에는 몸보다 큰 흰 구름신발을 신고 날개는 작게 둔다. 제자리 걸음을 하면 구름신발 모양이 눌렸다 펴지며 머리가 늦게 따라간다.",
+    "references": {
+      "form": {
+        "reference": "R14-07",
+        "id": 246,
+        "name": "구름기린",
+        "path": "public/models/pet-246.json",
+        "sha256": "286573f5261d4c97a0e65feae7e56cc8c9ed9af46aa096294c4ebc5393dbf1cb",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-10",
+        "id": 249,
+        "name": "밤하늘 양",
+        "path": "public/models/pet-249.json",
+        "sha256": "abd7f137f4dc592da7631fc401e0502912592518b27fce840a7968f304302eaa",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

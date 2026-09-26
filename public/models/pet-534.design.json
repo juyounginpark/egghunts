@@ -11,6 +11,30 @@
     "form": "toad",
     "motif": "teacup",
     "prompt": "넓은 청회색 몸과 작은 눈자리의 두꺼비를 만들라. 배 앞에는 아이보리 찻잔 무늬, 등에는 황동 손잡이 하나를 낮게 둔다. 짧은 앞발로 설탕 모형 하나를 들고 턱이 천천히 부풀게 한다.",
+    "references": {
+      "form": {
+        "reference": "R12-05",
+        "id": 224,
+        "name": "나침반 거북",
+        "path": "public/models/pet-224.json",
+        "sha256": "0741ba65c503b879fd46ccc37721bb2d937c849e18a59d26eb96fc9192097f81",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R12-03",
+        "id": 222,
+        "name": "찻주전자 코끼리",
+        "path": "public/models/pet-222.json",
+        "sha256": "efc5f43574a57244e1972749d2be49bcc825e9ea40d45ae88d3257ed89f337f8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      }
+    },
     "color": "#899cac"
   },
   "assembly": {

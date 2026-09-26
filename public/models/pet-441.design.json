@@ -11,6 +11,30 @@
     "form": "frog",
     "motif": "palm",
     "prompt": "낮고 둥근 청록 몸과 크림색 턱, 짧은 뒷다리를 만들라. 등 위에 작은 야자잎 한 장을 우산처럼 세우고 옆에 파란 물방울을 둔다. 턱이 부풀 때 물방울이 잎 끝으로 굴러왔다 멈춘다.",
+    "references": {
+      "form": {
+        "reference": "R07-04",
+        "id": 173,
+        "name": "모래두더지",
+        "path": "public/models/pet-173.json",
+        "sha256": "4f85554593786139f4daad83a3d8b4b3b48d30413041fad7907ccba119c91596",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R07-03",
+        "id": 172,
+        "name": "선인장 고슴도치",
+        "path": "public/models/pet-172.json",
+        "sha256": "558ae386c37ea32255361e668bbeee8042e6e0cd9ed416444101a95148c6ab1e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#449b98"
   },
   "assembly": {

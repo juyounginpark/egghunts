@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "meteor",
     "prompt": "낮고 긴 남색 몸 위에 뒤로 길게 기운 회색 운석 껍질을 얹어라. 껍질 끝에는 주황의 굵은 두 갈래 꼬리를 달고 눈자루는 크림색으로 둔다. 몸이 멈춰도 유성 꼬리만 한 박자 늦게 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R18-03",
+        "id": 282,
+        "name": "달구덩이 거북",
+        "path": "public/models/pet-282.json",
+        "sha256": "80c08420621f45aea344e48bd725773a52ddbc2ab9c3d447c500c4c87f952615",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-02",
+        "id": 281,
+        "name": "혜성다람쥐",
+        "path": "public/models/pet-281.json",
+        "sha256": "a07c99dd5a36ddd3b3f45fb290386775f929a061380d934e409a3e8c32d541a7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

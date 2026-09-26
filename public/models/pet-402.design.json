@@ -11,6 +11,30 @@
     "form": "crocodile",
     "motif": "zipper",
     "prompt": "긴 초록 몸과 둥근 주둥이의 악어 등에 굵은 지퍼 한 줄을 넣어라. 배는 아이보리, 지퍼 손잡이는 노랑이며 작은 눈은 얼굴에 독립적으로 둔다. 지퍼가 조금 열려 파란 연필 한 자루가 고개를 내민다.",
+    "references": {
+      "form": {
+        "reference": "R05-05",
+        "id": 154,
+        "name": "책가방 거북",
+        "path": "public/models/pet-154.json",
+        "sha256": "0cdd4b6c64857f0b21c5ddcbc873e58d1d21ac5778378af033b3770772f75bb8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-05",
+        "id": 154,
+        "name": "책가방 거북",
+        "path": "public/models/pet-154.json",
+        "sha256": "0cdd4b6c64857f0b21c5ddcbc873e58d1d21ac5778378af033b3770772f75bb8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#669858"
   },
   "assembly": {

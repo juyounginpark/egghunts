@@ -11,6 +11,30 @@
     "form": "mouse",
     "motif": "memory",
     "prompt": "작고 둥근 회색 얼굴과 큰 귀, 얇은 민트색 카드 몸을 만들라. 몸 한쪽에는 흰 화살표와 짧은 목걸이 끈을 둔다. 앞발로 카드를 들어 보이면 가장자리 한 줄이 잠깐 밝아지고 코가 까딱한다.",
+    "references": {
+      "form": {
+        "reference": "R06-03",
+        "id": 162,
+        "name": "택배너구리",
+        "path": "public/models/pet-162.json",
+        "sha256": "9b8fedfd1393135c05554fe3ff70a530811cbc10a9b085086f356b1be1dde6ac",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-03",
+        "id": 162,
+        "name": "택배너구리",
+        "path": "public/models/pet-162.json",
+        "sha256": "9b8fedfd1393135c05554fe3ff70a530811cbc10a9b085086f356b1be1dde6ac",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      }
+    },
     "color": "#a1d4c4"
   },
   "assembly": {

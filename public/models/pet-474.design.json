@@ -11,6 +11,30 @@
     "form": "sparrow",
     "motif": "persimmon",
     "prompt": "둥근 크림색 몸과 갈색 날개의 참새를 만들라. 머리 뒤에 짧은 나뭇가지와 주황 감 하나를 붙이고 얼굴과 간격을 둔다. 감이 흔들리면 부리로 받치려 고개를 돌리고 짧은 꼬리가 들린다.",
+    "references": {
+      "form": {
+        "reference": "R09-02",
+        "id": 191,
+        "name": "복주머니 참새",
+        "path": "public/models/pet-191.json",
+        "sha256": "3ceaaf97f9a34ec61f91776208b11943b11bb5690afb78fcd3adbd070a739223",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-02",
+        "id": 191,
+        "name": "복주머니 참새",
+        "path": "public/models/pet-191.json",
+        "sha256": "3ceaaf97f9a34ec61f91776208b11943b11bb5690afb78fcd3adbd070a739223",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

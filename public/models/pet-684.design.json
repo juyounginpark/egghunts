@@ -11,6 +11,30 @@
     "form": "lizard",
     "motif": "leafvein",
     "prompt": "낮고 긴 크림색 몸과 짧은 주둥이, 작은 점눈을 만들라. 등에는 넓은 초록 잎 한 장을 붙이고 꼬리까지 굵은 아이보리 잎맥이 이어진다. 몸을 휘면 잎맥의 작은 빛 점이 머리에서 꼬리로 이동한다.",
+    "references": {
+      "form": {
+        "reference": "R20-06",
+        "id": 295,
+        "name": "바람사슴",
+        "path": "public/models/pet-295.json",
+        "sha256": "eaca6c51c155952b4d741f294cd6052340dac5bf5388cd193eac457e367e59b9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-07",
+        "id": 296,
+        "name": "나무껍질 거북",
+        "path": "public/models/pet-296.json",
+        "sha256": "922ba48de8994efe3baea963d024cc2494ef023ef7c75b0a0c1284590d1b7671",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

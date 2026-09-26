@@ -11,6 +11,30 @@
     "form": "capybara",
     "motif": "hotspa",
     "prompt": "낮고 넓은 갈색 몸과 짧은 눈·귀, 큰 둥근 코를 만들라. 머리 위에 노란 유자 하나를 올리고 몸 아래에는 얕은 회색 돌받침을 둔다. 편안하게 눈을 감으면 어깨 뒤로 짧은 수증기 한 줄이 오른다.",
+    "references": {
+      "form": {
+        "reference": "R04-08",
+        "id": 137,
+        "name": "분화구 멧돼지",
+        "path": "public/models/pet-137.json",
+        "sha256": "8b56971f6f9fac0177ca26c545b138e0e9b0a9dc349584f0ba992fd1dab3dc6e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R04-03",
+        "id": 132,
+        "name": "화로거북",
+        "path": "public/models/pet-132.json",
+        "sha256": "921c8554cb9b15ba9da7ee1a23b1da24b782354b1a22aefc9fdba199cc92e94a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "penguin",
     "motif": "culture",
     "prompt": "둥근 남색 얼굴과 크림색 배, 짧은 주황 발의 펭귄을 만들라. 몸통에는 낮은 투명 민트색 배양통을 두르되 얼굴과 날개는 밖으로 내민다. 배양통의 작은 기포가 올라가면 고개가 따라 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R11-08",
+        "id": 217,
+        "name": "실험복 족제비",
+        "path": "public/models/pet-217.json",
+        "sha256": "12f1bee34384fda82f707428eef5f0fa571b31560517754be5289f6a413a26d5",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-07",
+        "id": 216,
+        "name": "부유해파리",
+        "path": "public/models/pet-216.json",
+        "sha256": "6f00370ce8296e17f1a2a8a945f748e7b81f24d67831fe71f4120b43a597144c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

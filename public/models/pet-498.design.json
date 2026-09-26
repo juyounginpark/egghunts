@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "grapes",
     "prompt": "짧은 크림색 몸 위에 큰 자주색 포도송이 껍질을 만들라. 포도 알은 굵은 다섯 덩어리, 꼭지는 청록으로 나눈다. 짧은 눈자루가 위로 움직이고 껍질 아래의 작은 잎이 뒤늦게 따라 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R10-01",
+        "id": 200,
+        "name": "올리브 거북",
+        "path": "public/models/pet-200.json",
+        "sha256": "d0322da881e3ee674505cc27e4a132b9dbe6da8449cdd13e73b7e7e992a3517a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-03",
+        "id": 202,
+        "name": "포도멧돼지",
+        "path": "public/models/pet-202.json",
+        "sha256": "5f08c103f1d9d514f2cc6f3ef8488f241b86fedeb800721a4ceb95ad679e78f6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

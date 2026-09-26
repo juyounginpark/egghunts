@@ -11,6 +11,30 @@
     "form": "beetle",
     "motif": "folded",
     "prompt": "넓고 얇은 검정 몸과 큰 아이보리 집게턱의 사슴벌레를 만들라. 등껍질은 종이처럼 두 큰 면으로 접히고 안쪽은 짙은 자주색으로 둔다. 껍질을 열면 내부가 비어 있고 앞다리가 조심스럽게 가장자리를 짚는다.",
+    "references": {
+      "form": {
+        "reference": "R19-02",
+        "id": 141,
+        "name": "빈껍질 거북",
+        "path": "public/models/pet-141.json",
+        "sha256": "261a0d1afbf46694f30a1de930b77fbfe1ad564f3e909961160351c6fd015ae6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-04",
+        "id": 143,
+        "name": "공백가오리",
+        "path": "public/models/pet-143.json",
+        "sha256": "b61759246a30a09401b29667663dbb436a0e8b3c247d8b4e29fc558231d69c20",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

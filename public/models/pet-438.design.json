@@ -11,6 +11,30 @@
     "form": "quail",
     "motif": "tile",
     "prompt": "둥근 모래색 몸과 짧은 다리, 작은 검정 부리의 메추리를 만들라. 얼굴은 크림색, 이마의 긴 깃털 한 가닥은 뒤로 휘게 한다. 부리에 푸른 타일 조각을 물었다 내려놓고 깃털이 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R07-09",
+        "id": 178,
+        "name": "해시계 매",
+        "path": "public/models/pet-178.json",
+        "sha256": "5627352de4f83bae1df1c6fc133b2594ce2449938c208e528a117f7b44817b4c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R07-02",
+        "id": 171,
+        "name": "물병낙타",
+        "path": "public/models/pet-171.json",
+        "sha256": "f616bf32154859c3dba94183331390ad08578e9ba734e521b321a95d085cfed2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#cbb88b"
   },
   "assembly": {

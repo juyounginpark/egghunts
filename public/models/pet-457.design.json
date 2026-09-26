@@ -11,6 +11,30 @@
     "form": "lizard",
     "motif": "pinecone",
     "prompt": "길고 낮은 적갈색 몸과 짧은 둥근 주둥이를 만들라. 등판은 솔방울처럼 넓은 황갈색 판 다섯 개를 겹치고 꼬리 끝은 크림색으로 둔다. 몸을 둥글게 말면 판들이 닫혀 작은 솔방울처럼 보인다.",
+    "references": {
+      "form": {
+        "reference": "R08-05",
+        "id": 184,
+        "name": "조약돌 안킬로",
+        "path": "public/models/pet-184.json",
+        "sha256": "b7c2e64ec5a1e6f18c96a47451d07d57c23da00e940556705dcb50668c2b010c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-05",
+        "id": 184,
+        "name": "조약돌 안킬로",
+        "path": "public/models/pet-184.json",
+        "sha256": "b7c2e64ec5a1e6f18c96a47451d07d57c23da00e940556705dcb50668c2b010c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#974e40"
   },
   "assembly": {

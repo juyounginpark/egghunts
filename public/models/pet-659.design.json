@@ -11,6 +11,30 @@
     "form": "giraffe",
     "motif": "planets",
     "prompt": "가는 청회색 다리와 긴 목, 작은 크림색 얼굴의 기린을 만들라. 목 옆에는 크기가 다른 작은 행성 세 개를 가까이 띄우고 등에는 황동 관측 호 하나를 둔다. 고개를 낮추면 행성들이 목의 곡선을 따라 천천히 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R18-07",
+        "id": 286,
+        "name": "별자리 사슴",
+        "path": "public/models/pet-286.json",
+        "sha256": "de7b2f6e4cd2eb7382f441acac4942ce5e5cc2603bf838ecdc42066d717402d5",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-05",
+        "id": 284,
+        "name": "토성고양이",
+        "path": "public/models/pet-284.json",
+        "sha256": "af1829b3aded4b2168965c61d67db78b0caa9aa2aeee458c695684f533bbdef7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#899cac"
   },
   "assembly": {

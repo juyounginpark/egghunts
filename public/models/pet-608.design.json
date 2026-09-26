@@ -11,6 +11,30 @@
     "form": "strider",
     "motif": "lilypads",
     "prompt": "작은 청록 몸과 길고 가는 갈색 다리 네~여섯 개를 만들라. 발끝에는 둥근 연두 연잎 패드를 달고 얼굴은 작은 크림색 면으로 밝힌다. 한 다리를 들면 나머지 연잎이 넓게 벌어져 균형을 잡는다.",
+    "references": {
+      "form": {
+        "reference": "R16-05",
+        "id": 264,
+        "name": "풀잎메뚜기",
+        "path": "public/models/pet-264.json",
+        "sha256": "dbdec56e1566f345227ad1b7f00c6076c5c1fea2a0236b3b28a0525f817ef6f5",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-03",
+        "id": 262,
+        "name": "잎사귀벌레",
+        "path": "public/models/pet-262.json",
+        "sha256": "2f0d4b369ef0fc8f608c5bbaf2246bc8dbe4b638a6de2aa610668a9cb67422c0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#449b98"
   },
   "assembly": {

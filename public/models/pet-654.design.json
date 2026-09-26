@@ -11,6 +11,30 @@
     "form": "chameleon",
     "motif": "lenses",
     "prompt": "짧은 청록 몸과 말린 꼬리, 넓은 크림색 얼굴을 만들라. 눈 양옆에 작은 황동 렌즈 테두리를 두되 표정이 보이도록 중심은 투명하게 한다. 두 눈이 다른 방향을 살피다가 하나의 별점에 맞춰진다.",
+    "references": {
+      "form": {
+        "reference": "R18-04",
+        "id": 283,
+        "name": "망원경 부엉이",
+        "path": "public/models/pet-283.json",
+        "sha256": "2ab4228458dc014dece411dc17f956495cbd939e806c9aafc70ea6de31cc9b9c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-04",
+        "id": 283,
+        "name": "망원경 부엉이",
+        "path": "public/models/pet-283.json",
+        "sha256": "2ab4228458dc014dece411dc17f956495cbd939e806c9aafc70ea6de31cc9b9c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#449b98"
   },
   "assembly": {

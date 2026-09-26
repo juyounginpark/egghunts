@@ -11,6 +11,30 @@
     "form": "bird",
     "motif": "eargrain",
     "prompt": "둥근 밤색 몸과 크림색 볼, 작은 검정 부리의 참새를 만들라. 뒤로 모인 꼬리는 굵은 풀씨 세 알처럼 표현한다. 부리에 긴 이삭 하나를 물고 고개를 돌릴 때 이삭이 늦게 흔들리게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-03",
+        "id": 102,
+        "name": "민들레 병아리",
+        "path": "public/models/pet-102.json",
+        "sha256": "983bb790cb6c60deff3145c6b7b94421782144b240b53aff484401d62ecd1dbf",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R01-06",
+        "id": 105,
+        "name": "바람개비 병아리",
+        "path": "public/models/pet-105.json",
+        "sha256": "ca0bfe76b21e7a91524d459445d69aa95a029af7e078bc905c4c08b9e58e2842",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      }
+    },
     "color": "#76503b"
   },
   "assembly": {

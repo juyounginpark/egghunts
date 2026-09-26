@@ -11,6 +11,30 @@
     "form": "chick",
     "motif": "button",
     "prompt": "넓고 둥근 크림색 몸과 짧은 주황 부리의 병아리를 만들라. 배에 큰 청색 버튼 하나, 양 날개 끝에 작은 자홍색 면을 둔다. 날개로 버튼을 누르면 등 뒤의 짧은 깃털이 차례로 올라간다.",
+    "references": {
+      "form": {
+        "reference": "R06-02",
+        "id": 161,
+        "name": "배터리 햄스터",
+        "path": "public/models/pet-161.json",
+        "sha256": "058b798e16b85e76c049e414bd1ddb051a84f76c8233b28d1580f3330569a35a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-02",
+        "id": 161,
+        "name": "배터리 햄스터",
+        "path": "public/models/pet-161.json",
+        "sha256": "058b798e16b85e76c049e414bd1ddb051a84f76c8233b28d1580f3330569a35a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

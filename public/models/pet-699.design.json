@@ -11,6 +11,30 @@
     "form": "peacock",
     "motif": "seasonfan",
     "prompt": "작은 아이보리 얼굴과 짙은 청록 몸 뒤에 넓은 부채 꼬리를 만들라. 깃 네 구역은 분홍 꽃·초록 잎·주황 낙엽·청백색 서리로 나누되 굵은 형태만 쓴다. 꼬리가 열릴 때 네 구역이 차례로 움직여 계절 흐름을 보여준다.",
+    "references": {
+      "form": {
+        "reference": "R20-08",
+        "id": 297,
+        "name": "계절나비",
+        "path": "public/models/pet-297.json",
+        "sha256": "cea39eb19a32094cf724ecb9d8a0ad8baca4e4e8b1df21f40d8c696c2d8af411",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-09",
+        "id": 298,
+        "name": "밤낮의 사자",
+        "path": "public/models/pet-298.json",
+        "sha256": "3d7559b62f3c1aabb53b6eab99f72ad2f76a02ee2dfb3d5d014c13cbbac36f1e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#235b60"
   },
   "assembly": {

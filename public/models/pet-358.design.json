@@ -11,6 +11,30 @@
     "form": "turtle",
     "motif": "castle",
     "prompt": "넓고 낮은 남색 거북의 등을 큰 목재 장난감 성으로 만들라. 성은 아이보리 벽과 붉은 지붕의 큰 탑 세 개로 정리하고 얼굴과 네 발은 노랑으로 드러낸다. 등 앞의 작은 문이 열리며 거북이 고개를 높이 드는 동작을 준다.",
+    "references": {
+      "form": {
+        "reference": "R02-04",
+        "id": 113,
+        "name": "블록코끼리",
+        "path": "public/models/pet-113.json",
+        "sha256": "a88885fa8da9109b4ccc9bdbaabf923fec554d7b5354de777230fdb78b5ea00d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-03",
+        "id": 112,
+        "name": "목마 조랑말",
+        "path": "public/models/pet-112.json",
+        "sha256": "02c74ab4bcd9aeb957024be2a10de7fe55a135d4329b81c9b8cbfcacd0d74207",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

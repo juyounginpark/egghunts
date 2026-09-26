@@ -11,6 +11,30 @@
     "form": "lion",
     "motif": "trumpet",
     "prompt": "넓은 크림색 얼굴과 큰 붉은 천갈기, 짧은 파랑 몸을 만들라. 가슴의 작은 황동 나팔 하나를 대표 소품으로 두고 꼬리 끝은 천 술로 마감한다. 앞발을 번갈아 올리며 나팔을 들어 올리는 당당한 동작을 준다.",
+    "references": {
+      "form": {
+        "reference": "R02-10",
+        "id": 119,
+        "name": "풍선강아지",
+        "path": "public/models/pet-119.json",
+        "sha256": "449d3b4bf8a042ec60bf58507a298cd8e9c36270949533fd1a35f0473932574c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-01",
+        "id": 110,
+        "name": "단추곰",
+        "path": "public/models/pet-110.json",
+        "sha256": "ec278c8a8e2eeb63a8b5129d2466cbfb07ccfb6a9240aff2d5ebc305a868cc90",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#527cad"
   },
   "assembly": {

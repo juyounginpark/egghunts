@@ -11,6 +11,30 @@
     "form": "queen",
     "motif": "palace",
     "prompt": "작은 크림색 얼굴과 넓은 자주색 가슴, 큰 둥근 배의 여왕개미를 만들라. 배 위에는 분홍 꽃잎 세 장이 낮은 궁전 지붕처럼 겹치고 두 긴 비단날개가 뒤로 흐른다. 고개를 들면 꽃잎 문이 열리고 앞다리가 우아하게 정렬된다.",
+    "references": {
+      "form": {
+        "reference": "R16-06",
+        "id": 265,
+        "name": "버섯개미",
+        "path": "public/models/pet-265.json",
+        "sha256": "bed1d185b245b224963d76bdde4fbd135eed6f4752cb7ab9192ade89b04f1852",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-09",
+        "id": 268,
+        "name": "비단나방",
+        "path": "public/models/pet-268.json",
+        "sha256": "5a4172c169e7b688cba6801c678c8c57dfb1d54e705a153022cc3437de5f11d6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

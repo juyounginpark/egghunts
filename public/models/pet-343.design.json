@@ -11,6 +11,30 @@
     "form": "chick",
     "motif": "spinningtop",
     "prompt": "노란 둥근 머리 아래에 넓은 빨강 팽이 몸을 연결하라. 작은 부리와 점눈, 양옆의 짧은 날개를 드러내고 아래의 축은 둥글게 마감한다. 짧게 한 바퀴 돈 뒤 날개를 펴서 균형을 잡게 한다.",
+    "references": {
+      "form": {
+        "reference": "R02-02",
+        "id": 111,
+        "name": "태엽오리",
+        "path": "public/models/pet-111.json",
+        "sha256": "41126c294b2665e3b884243e8aa54fee3454c86d90cfa2922e6598a13cccf96a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-07",
+        "id": 116,
+        "name": "깜짝상자 토끼",
+        "path": "public/models/pet-116.json",
+        "sha256": "ca622819290ec624bed3de84071ee39d835576d4ae067ef25864a7376849e73d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#cf5557"
   },
   "assembly": {

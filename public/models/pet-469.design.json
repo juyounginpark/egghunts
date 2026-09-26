@@ -11,6 +11,30 @@
     "form": "sauropod",
     "motif": "waterfall",
     "prompt": "큰 회청색 몸에서 긴 목이 위로 올라가고 작은 얼굴이 앞을 보게 하라. 등에 밝은 바위 세 단과 좁은 청색 물길 하나를 통합한다. 고개를 낮추면 물길의 빛이 꼬리 방향으로 흘러 짧은 폭포처럼 보인다.",
+    "references": {
+      "form": {
+        "reference": "R08-09",
+        "id": 188,
+        "name": "이끼 긴목공룡",
+        "path": "public/models/pet-188.json",
+        "sha256": "d6d51c359a21d5dfcdff8030482d299da7330fbafcc9c119d9759dc9b33c1047",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-06",
+        "id": 185,
+        "name": "물수제비 수장룡",
+        "path": "public/models/pet-185.json",
+        "sha256": "66267187f38e07616f6e115b7720496d4bf20c3368f57f8c56302f754a12d1f7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "matte"
+      }
+    },
     "color": "#899cac"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "raccoon",
     "motif": "tray",
     "prompt": "넓은 회색 볼과 짧은 몸의 너구리가 큰 은색 식판을 안게 하라. 식판에는 주황 당근과 크림색 빵 두 덩어리만 둔다. 꼬리는 몸 옆으로 감고 작은 코로 빵 냄새를 맡으며 귀가 올라간다.",
+    "references": {
+      "form": {
+        "reference": "R05-02",
+        "id": 151,
+        "name": "지우개 햄스터",
+        "path": "public/models/pet-151.json",
+        "sha256": "16618814712a92a73df01ed8ffc00ff46bcb3369f6d0c4dd02d04f42c47d1be9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-05",
+        "id": 154,
+        "name": "책가방 거북",
+        "path": "public/models/pet-154.json",
+        "sha256": "0cdd4b6c64857f0b21c5ddcbc873e58d1d21ac5778378af033b3770772f75bb8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

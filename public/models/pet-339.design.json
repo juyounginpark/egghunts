@@ -11,6 +11,30 @@
     "form": "elephant",
     "motif": "flowercart",
     "prompt": "큰 귀와 위로 말린 짧은 코, 낮고 넓은 크림색 몸을 만들라. 등에는 바퀴 모양 난간이 있는 낮은 꽃마차 구조를 통합하고 산호색 꽃 세 덩어리를 싣는다. 코로 작은 꽃을 들어 귀 뒤에 꽂고 난간 덩굴이 천천히 흔들리게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-07",
+        "id": 106,
+        "name": "꿀단지 곰",
+        "path": "public/models/pet-106.json",
+        "sha256": "8b1f5c6d64aa5fd1c5b37de32ca605d39424fa088ddb18a475adc45942d2f291",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      },
+      "material": {
+        "reference": "R01-10",
+        "id": 109,
+        "name": "사계절 사슴",
+        "path": "public/models/pet-109.json",
+        "sha256": "0cc01858c2e0dfaeb91fbb1f3d4de33033617b0b18f557ca3f116f9345f37b67",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "pumpkin",
     "prompt": "짧은 눈자루와 납작한 아이보리 몸 위에 큰 주황 호박 껍질을 얹어라. 껍질 골은 넓은 다섯 구간으로 나누고 꼭지는 뒤로 휘게 한다. 고개를 들어 호박잎을 건드리면 잎이 느리게 돌아오게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-05",
+        "id": 104,
+        "name": "도토리 거북",
+        "path": "public/models/pet-104.json",
+        "sha256": "62576c1a2a9342f692f0829c2eeb3c0feb468b6ab724f3724cde6be82bff8a65",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R01-04",
+        "id": 103,
+        "name": "딸기쥐",
+        "path": "public/models/pet-103.json",
+        "sha256": "52701e1dcb7a26db16a5a2b19bfc2b04bb26bffc6f6160620e9694da92201642",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

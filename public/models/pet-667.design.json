@@ -11,6 +11,30 @@
     "form": "bird",
     "motif": "blankmask",
     "prompt": "작고 둥근 남보라 몸과 짧은 날개에 큰 아이보리 얼굴 면을 두어라. 눈은 얼굴 면 위의 작은 검정 점, 부리는 짧은 회색으로 만든다. 고개를 돌리면 얼굴 뒤에 남은 얇은 그림자가 조금 늦게 합쳐진다.",
+    "references": {
+      "form": {
+        "reference": "R19-01",
+        "id": 140,
+        "name": "틈새고양이",
+        "path": "public/models/pet-140.json",
+        "sha256": "0b87304b378b807aebd05d507cd3537422110e2021e3da5a4b30b90b2628fc31",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-03",
+        "id": 142,
+        "name": "그림자토끼",
+        "path": "public/models/pet-142.json",
+        "sha256": "2ed56038b96ebe46f6786245835e5b276e9630d98cf4778e8aaa86731bdb662b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#464360"
   },
   "assembly": {

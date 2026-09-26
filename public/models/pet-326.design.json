@@ -11,6 +11,30 @@
     "form": "duck",
     "motif": "daisy",
     "prompt": "낮고 둥근 흰 몸, 넓은 노랑 부리, 짧은 주황 발을 만들라. 목 아래에 노란 중심과 굵은 흰 꽃잎 다섯 장의 데이지를 단다. 부리로 꽃잎을 정돈하다가 꼬리를 짧게 흔들게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-03",
+        "id": 102,
+        "name": "민들레 병아리",
+        "path": "public/models/pet-102.json",
+        "sha256": "983bb790cb6c60deff3145c6b7b94421782144b240b53aff484401d62ecd1dbf",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R01-03",
+        "id": 102,
+        "name": "민들레 병아리",
+        "path": "public/models/pet-102.json",
+        "sha256": "983bb790cb6c60deff3145c6b7b94421782144b240b53aff484401d62ecd1dbf",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#eae9df"
   },
   "assembly": {

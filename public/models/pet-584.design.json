@@ -11,6 +11,30 @@
     "form": "hippo",
     "motif": "teapot",
     "prompt": "넓은 크림색 주둥이와 둥근 보라 몸의 하마를 만들라. 꼬리는 큰 주전자 손잡이, 등에 낮은 금빛 뚜껑 하나를 둔다. 입을 조금 열면 물줄기 대신 작은 별사탕 세 개가 떠올라 다시 뚜껑으로 들어간다.",
+    "references": {
+      "form": {
+        "reference": "R14-02",
+        "id": 241,
+        "name": "꿈풍선 코끼리",
+        "path": "public/models/pet-241.json",
+        "sha256": "c4c7b35c18ca07c44a5ad47fcd725d783df21b0accd567345cdeb95c37a39b1e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-05",
+        "id": 244,
+        "name": "찻잔고양이",
+        "path": "public/models/pet-244.json",
+        "sha256": "106a535cceff0eafee2ab5cd7df0344835b618f971465934875358c8a28caaf4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#8566ad"
   },
   "assembly": {

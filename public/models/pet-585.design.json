@@ -11,6 +11,30 @@
     "form": "peacock",
     "motif": "invertedfan",
     "prompt": "작은 크림색 얼굴과 남색 몸, 큰 부채꼴 꼬리의 공작을 만들라. 꼬리는 머리 위로 우산처럼 펼쳐지고 깃 끝에 분홍 작은 베개 세 개가 매달린다. 꼬리를 접으면 베개가 위로 올라가고 펼치면 천천히 내려온다.",
+    "references": {
+      "form": {
+        "reference": "R14-08",
+        "id": 247,
+        "name": "거울백조",
+        "path": "public/models/pet-247.json",
+        "sha256": "22909a74174d3cb58fe05854c29828e04b72f5770fc5972dbadaac4d814c5b8e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-04",
+        "id": 243,
+        "name": "우산해파리",
+        "path": "public/models/pet-243.json",
+        "sha256": "ed1c0debfcf044a773fde9ff0cdf2b0b14bdf3c27e7ad0b63513d435b8976bb1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

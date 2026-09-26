@@ -11,6 +11,30 @@
     "form": "raccoon",
     "motif": "mushroom",
     "prompt": "길고 줄무늬가 큰 꼬리와 짧은 회색 얼굴을 만들라. 등을 덮는 적갈색 버섯갓은 뒤로 비스듬히 기울이고 크림색 큰 점 세 개만 넣는다. 앞발로 갓 끝의 물방울을 털며 귀는 밖으로 드러낸다.",
+    "references": {
+      "form": {
+        "reference": "R01-07",
+        "id": 106,
+        "name": "꿀단지 곰",
+        "path": "public/models/pet-106.json",
+        "sha256": "8b1f5c6d64aa5fd1c5b37de32ca605d39424fa088ddb18a475adc45942d2f291",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      },
+      "material": {
+        "reference": "R01-05",
+        "id": 104,
+        "name": "도토리 거북",
+        "path": "public/models/pet-104.json",
+        "sha256": "62576c1a2a9342f692f0829c2eeb3c0feb468b6ab724f3724cde6be82bff8a65",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

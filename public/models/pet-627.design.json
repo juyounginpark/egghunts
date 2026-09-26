@@ -11,6 +11,30 @@
     "form": "penguin",
     "motif": "lid",
     "prompt": "둥근 남색 몸과 크림색 배, 짧은 주황 발의 펭귄을 만들라. 머리에는 큰 은색 캔뚜껑을 뒤로 기울이고 날개는 얇은 금속판으로 둔다. 한 날개로 뚜껑 고리를 들어 올렸다 내려놓는 동작을 준다.",
+    "references": {
+      "form": {
+        "reference": "R17-02",
+        "id": 271,
+        "name": "양철강아지",
+        "path": "public/models/pet-271.json",
+        "sha256": "b8cfbf04085dbeadabbc2dfc751049ab47a8df7e38f532709c1eef5e85217d96",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-02",
+        "id": 271,
+        "name": "양철강아지",
+        "path": "public/models/pet-271.json",
+        "sha256": "b8cfbf04085dbeadabbc2dfc751049ab47a8df7e38f532709c1eef5e85217d96",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

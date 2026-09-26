@@ -11,6 +11,30 @@
     "form": "rabbit",
     "motif": "gloves",
     "prompt": "짧은 크림색 몸과 한쪽 끝이 접힌 긴 귀의 토끼를 만들라. 앞발에는 몸에 비해 큰 갈색 가죽 장갑을 끼우고 가슴에 청록 천띠를 둔다. 두 장갑을 맞대어 툭 털고 귀가 뒤늦게 까딱인다.",
+    "references": {
+      "form": {
+        "reference": "R12-01",
+        "id": 220,
+        "name": "태엽생쥐",
+        "path": "public/models/pet-220.json",
+        "sha256": "18bfa4aed0a61650eb0fb925bc3c7f9268e10d83672f787939b9af727a84adbd",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R12-02",
+        "id": 221,
+        "name": "비행모 강아지",
+        "path": "public/models/pet-221.json",
+        "sha256": "d5d8abb0093c42ee232f60fe0fef7ba5954b2e971a7ddb4097b08aca791195c0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

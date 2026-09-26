@@ -11,6 +11,30 @@
     "form": "otter",
     "motif": "bubble",
     "prompt": "통통한 갈색 몸과 크림색 볼, 작은 앞발을 가진 해달을 만들라. 앞발 사이에 큰 반투명 청색 거품을 잡고 배에는 작은 조개 하나를 올린다. 거품을 굴리다가 조개와 닿으면 작은 거품으로 나뉘는 연출을 준다.",
+    "references": {
+      "form": {
+        "reference": "R03-01",
+        "id": 120,
+        "name": "물방울 물개",
+        "path": "public/models/pet-120.json",
+        "sha256": "fe0dd48632a6447c9d46b38be40e72410b95e9bbefceec1356c2a9332e7e75e0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-03",
+        "id": 122,
+        "name": "진주조개",
+        "path": "public/models/pet-122.json",
+        "sha256": "905acdbdba229781b65a11844ccbe6c0dd8c10437b721d4d6c66caf8b0ffabc0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

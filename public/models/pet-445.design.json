@@ -11,6 +11,30 @@
     "form": "goat",
     "motif": "crystalhorn",
     "prompt": "가는 다리와 작은 크림색 얼굴의 검은 염소를 만들라. 뿔은 옆으로 넓게 휘는 청록 결정 두 개로 두고 목에는 금빛 작은 방울을 단다. 고개를 숙이면 결정의 큰 면에 빛이 차례로 지나간다.",
+    "references": {
+      "form": {
+        "reference": "R07-02",
+        "id": 171,
+        "name": "물병낙타",
+        "path": "public/models/pet-171.json",
+        "sha256": "f616bf32154859c3dba94183331390ad08578e9ba734e521b321a95d085cfed2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R07-05",
+        "id": 174,
+        "name": "청금석 풍뎅이",
+        "path": "public/models/pet-174.json",
+        "sha256": "10841d60f504f55b48f77ca7925a17fbc8bddc9d79ed5e02f8f947d7e95da111",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

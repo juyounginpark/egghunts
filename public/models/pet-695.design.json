@@ -11,6 +11,30 @@
     "form": "elephant",
     "motif": "fruitbranch",
     "prompt": "넓은 회갈색 몸과 큰 크림색 귀, 위로 휘는 짧은 코를 만들라. 등에는 낮은 나무가지 두 갈래와 주황 열매 세 개만 둔다. 코로 작은 씨앗을 가지에 올리면 열매 하나가 살짝 커졌다 원래 크기로 돌아온다.",
+    "references": {
+      "form": {
+        "reference": "R20-04",
+        "id": 293,
+        "name": "흙빚는 곰",
+        "path": "public/models/pet-293.json",
+        "sha256": "693427c8c2c15169cf39171c96623822a475a38988ae0b58b92b823dcaf9580b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-07",
+        "id": 296,
+        "name": "나무껍질 거북",
+        "path": "public/models/pet-296.json",
+        "sha256": "922ba48de8994efe3baea963d024cc2494ef023ef7c75b0a0c1284590d1b7671",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#958477"
   },
   "assembly": {

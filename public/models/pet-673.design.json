@@ -11,6 +11,30 @@
     "form": "peacock",
     "motif": "framefan",
     "prompt": "작은 크림색 얼굴과 남색 몸 뒤로 큰 부채꼴 꼬리를 펼쳐라. 꼬리깃은 두께 있는 아이보리 액자 다섯 개처럼 중앙을 비우고 안쪽 벽은 자주색으로 둔다. 펼칠 때 액자 속 배경이 그대로 보이게 하며 작은 눈이 천천히 깜박인다.",
+    "references": {
+      "form": {
+        "reference": "R19-04",
+        "id": 143,
+        "name": "공백가오리",
+        "path": "public/models/pet-143.json",
+        "sha256": "b61759246a30a09401b29667663dbb436a0e8b3c247d8b4e29fc558231d69c20",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-04",
+        "id": 143,
+        "name": "공백가오리",
+        "path": "public/models/pet-143.json",
+        "sha256": "b61759246a30a09401b29667663dbb436a0e8b3c247d8b4e29fc558231d69c20",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

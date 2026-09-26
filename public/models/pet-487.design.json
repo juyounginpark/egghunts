@@ -11,6 +11,30 @@
     "form": "deer",
     "motif": "wishes",
     "prompt": "가는 갈색 몸과 크림색 목, 넓게 갈라진 나무뿔의 사슴을 만들라. 뿔에는 흰 소원지 세 장과 붉은 끈 하나만 묶는다. 고개를 낮추면 소원지가 서로 다른 속도로 흔들리고 작은 눈이 위를 바라본다.",
+    "references": {
+      "form": {
+        "reference": "R09-09",
+        "id": 198,
+        "name": "달무늬 호랑이",
+        "path": "public/models/pet-198.json",
+        "sha256": "85a1c0aa92288209c36e84b9dc7cdd6b173b96582ec148184e7e4b40582ca839",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-05",
+        "id": 194,
+        "name": "장승곰",
+        "path": "public/models/pet-194.json",
+        "sha256": "09d722d3478b904d2818fd4542f8632abd00b2c630b14e19bfc54351426054a4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

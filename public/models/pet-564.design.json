@@ -11,6 +11,30 @@
     "form": "deer",
     "motif": "antlers",
     "prompt": "가는 갈색 다리와 큰 아이보리 목털의 순록을 만들라. 뿔은 넓게 벌어진 흰 가지 두 개, 끝에는 청록 얼음방울 세 개를 둔다. 고개를 낮추면 방울이 흔들리고 붉은 코 주변의 작은 입김이 흐른다.",
+    "references": {
+      "form": {
+        "reference": "R13-07",
+        "id": 236,
+        "name": "설산 산양",
+        "path": "public/models/pet-236.json",
+        "sha256": "1380431c4c923fd9f9ea51f60b360941512334561a11979a31ce8449651dbaf6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R13-09",
+        "id": 238,
+        "name": "오로라 여우",
+        "path": "public/models/pet-238.json",
+        "sha256": "da8f4c1c543e905d774f5ae169ec42ae5c62dae5e4bf15b418b26d5a29617258",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

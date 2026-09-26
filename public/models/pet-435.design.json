@@ -11,6 +11,30 @@
     "form": "mouse",
     "motif": "date",
     "prompt": "큰 둥근 귀와 짧은 크림색 주둥이의 연갈색 생쥐를 만들라. 배 앞에 붉은 갈색 대추 하나를 안고 꼬리는 발 옆으로 짧게 말린다. 대추를 돌려 냄새 맡으며 귀가 바깥쪽으로 펼쳐지게 한다.",
+    "references": {
+      "form": {
+        "reference": "R07-01",
+        "id": 170,
+        "name": "모래여우",
+        "path": "public/models/pet-170.json",
+        "sha256": "f78b91e201c9f58e30bd35f7d1a18e02a880fcf92a3a7cea0be2c68f8bbcaa75",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "polished"
+      },
+      "material": {
+        "reference": "R07-02",
+        "id": 171,
+        "name": "물병낙타",
+        "path": "public/models/pet-171.json",
+        "sha256": "f616bf32154859c3dba94183331390ad08578e9ba734e521b321a95d085cfed2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

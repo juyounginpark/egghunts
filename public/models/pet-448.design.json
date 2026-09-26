@@ -11,6 +11,30 @@
     "form": "elephant",
     "motif": "spices",
     "prompt": "큰 귀와 낮은 넓은 몸, 짧게 말린 코의 모래색 코끼리를 만들라. 등에 자주색 천과 노랑·적갈색 향료 그릇 두 개를 낮게 싣는다. 코로 한 그릇을 들어 냄새 맡고 귀가 편안히 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R07-02",
+        "id": 171,
+        "name": "물병낙타",
+        "path": "public/models/pet-171.json",
+        "sha256": "f616bf32154859c3dba94183331390ad08578e9ba734e521b321a95d085cfed2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R07-06",
+        "id": 175,
+        "name": "항아리 코브라",
+        "path": "public/models/pet-175.json",
+        "sha256": "b5bfc5a0d9eed18a6f5da1634e0dce19ead0c36acaa5d6843700fe6be3f3a0ba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 6,
+        "material": "matte"
+      }
+    },
     "color": "#ead378"
   },
   "assembly": {

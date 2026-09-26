@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "glue",
     "prompt": "짧은 연보라 몸 위에 둥근 흰 풀통 껍질을 얹어라. 껍질 위 노란 뚜껑과 앞쪽 짧은 눈자루를 구분한다. 고개를 들어 뚜껑을 건드리면 풀방울 한 점이 늘어났다 껍질 안으로 돌아간다.",
+    "references": {
+      "form": {
+        "reference": "R05-05",
+        "id": 154,
+        "name": "책가방 거북",
+        "path": "public/models/pet-154.json",
+        "sha256": "0cdd4b6c64857f0b21c5ddcbc873e58d1d21ac5778378af033b3770772f75bb8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R05-04",
+        "id": 153,
+        "name": "잉크문어",
+        "path": "public/models/pet-153.json",
+        "sha256": "f20440a8bbc937b84efae54fb3f181889e1099011c3d8fc77ceec51bb5d2fb24",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#b6a2cf"
   },
   "assembly": {

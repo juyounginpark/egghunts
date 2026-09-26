@@ -11,6 +11,30 @@
     "form": "walrus",
     "motif": "icebergs",
     "prompt": "넓은 남색 앞몸과 크림색 짧은 엄니, 작은 눈을 만들라. 등에 높이가 다른 아이보리 빙산 세 봉우리를 낮게 연결한다. 고개를 들면 등 틈에 청색 물결이 흐르고 앞지느러미가 바닥을 짚는다.",
+    "references": {
+      "form": {
+        "reference": "R13-01",
+        "id": 230,
+        "name": "눈송이 물범",
+        "path": "public/models/pet-230.json",
+        "sha256": "302f4938b93b14f20e7e3327ddb966d0afe76a8e6164d15e7526e2c644d183d7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R13-06",
+        "id": 235,
+        "name": "고드름 일각고래",
+        "path": "public/models/pet-235.json",
+        "sha256": "f478dd8d57bfb0172a806dc59362dcd83b808d234da83bb25ab2d43c1e270789",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

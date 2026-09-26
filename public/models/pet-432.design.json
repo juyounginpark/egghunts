@@ -11,6 +11,30 @@
     "form": "spider",
     "motif": "dish",
     "prompt": "작은 크림색 얼굴과 넓은 청색 배, 굵은 다리 여덟 개를 만들라. 배 위에는 큰 접시 안테나 하나를 뒤로 기울이고 앞다리 사이에 얇은 자홍 신호 고리 한 개를 둔다. 안테나가 돌아가면 다리 끝이 차례로 밝아진다.",
+    "references": {
+      "form": {
+        "reference": "R06-09",
+        "id": 168,
+        "name": "드론가오리",
+        "path": "public/models/pet-168.json",
+        "sha256": "b4c1f17c3871ca3de9857904a645e7b068631e2641715bcd5404ea4513e19b18",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-01",
+        "id": 160,
+        "name": "안테나 토끼",
+        "path": "public/models/pet-160.json",
+        "sha256": "0c996f088871cfa2b2f6db04624d953d65471f83aaadbea8bde8ba8e701c9a76",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "pachy",
     "motif": "dome",
     "prompt": "큰 둥근 이마와 짧은 부리, 직립 몸의 황갈색 공룡을 만들라. 이마는 밝은 회색 바위 한 덩어리로 두고 눈은 양옆 아래에 작게 둔다. 이마 위 작은 돌을 받치며 고개가 천천히 기울어진다.",
+    "references": {
+      "form": {
+        "reference": "R08-02",
+        "id": 181,
+        "name": "양치 트리케라",
+        "path": "public/models/pet-181.json",
+        "sha256": "e8d2bf8e92b684a464968bd8debc4ea7c08978d26b0650153d6a03ec621e195e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-05",
+        "id": 184,
+        "name": "조약돌 안킬로",
+        "path": "public/models/pet-184.json",
+        "sha256": "b7c2e64ec5a1e6f18c96a47451d07d57c23da00e940556705dcb50668c2b010c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#b78d53"
   },
   "assembly": {

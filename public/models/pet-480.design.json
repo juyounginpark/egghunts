@@ -11,6 +11,30 @@
     "form": "turtle",
     "motif": "rooftile",
     "prompt": "낮은 갈색 몸 위에 짙은 청회색 기와 두 줄이 등껍질을 이루게 하라. 기와 끝은 위로 조금 들고 얼굴은 아이보리로 밝힌다. 머리를 내밀면 등 한쪽의 작은 풍경이 느리게 흔들리게 한다.",
+    "references": {
+      "form": {
+        "reference": "R09-08",
+        "id": 197,
+        "name": "청자두꺼비",
+        "path": "public/models/pet-197.json",
+        "sha256": "eefb2a2c0cc98a038c4479907fde1cdab6441b90500ab74e8ea8f0b89c6ed82e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-05",
+        "id": 194,
+        "name": "장승곰",
+        "path": "public/models/pet-194.json",
+        "sha256": "09d722d3478b904d2818fd4542f8632abd00b2c630b14e19bfc54351426054a4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

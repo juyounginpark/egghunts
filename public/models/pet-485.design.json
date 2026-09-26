@@ -11,6 +11,30 @@
     "form": "bird",
     "motif": "talisman",
     "prompt": "큰 접힌 아이보리 날개와 짧은 목, 작은 점눈의 종이새를 만들라. 날개에는 붉은 기하 문양 두 개만 넣고 꼬리 끝에 청색 매듭을 단다. 날개를 펴면 몸 아래에 옅은 원 하나가 나타났다 사라진다.",
+    "references": {
+      "form": {
+        "reference": "R09-06",
+        "id": 195,
+        "name": "보자기 박쥐",
+        "path": "public/models/pet-195.json",
+        "sha256": "f1f2b49cdab9aecca42d4790b37118b777dbfc6a7caaf9720691415661025d77",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R09-06",
+        "id": 195,
+        "name": "보자기 박쥐",
+        "path": "public/models/pet-195.json",
+        "sha256": "f1f2b49cdab9aecca42d4790b37118b777dbfc6a7caaf9720691415661025d77",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

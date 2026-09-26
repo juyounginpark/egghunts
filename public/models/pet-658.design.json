@@ -11,6 +11,30 @@
     "form": "peacock",
     "motif": "meteorfan",
     "prompt": "작은 아이보리 얼굴과 짙은 보라 몸 뒤에 넓은 부채꼴 꼬리를 만들라. 꼬리깃은 남색 큰 판 다섯 장과 길게 흐르는 금빛 선으로 나눈다. 꼬리를 펼치면 선 끝의 밝은 점이 위에서 아래로 순서대로 이동한다.",
+    "references": {
+      "form": {
+        "reference": "R18-06",
+        "id": 285,
+        "name": "유성제비",
+        "path": "public/models/pet-285.json",
+        "sha256": "99a5a4e2d53f78e3f877177ec6c487f96f55b40f0912a27d5bbfd3e10308fc0d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-07",
+        "id": 286,
+        "name": "별자리 사슴",
+        "path": "public/models/pet-286.json",
+        "sha256": "de7b2f6e4cd2eb7382f441acac4942ce5e5cc2603bf838ecdc42066d717402d5",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "matte"
+      }
+    },
     "color": "#513b68"
   },
   "assembly": {

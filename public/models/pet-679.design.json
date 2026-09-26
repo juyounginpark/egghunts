@@ -11,6 +11,30 @@
     "form": "horse",
     "motif": "shadowless",
     "prompt": "길고 가는 아이보리 다리와 짧은 회색 얼굴의 말을 만들라. 갈기와 꼬리는 짙은 남색 판이 서로 떨어져 흐르는 형태로 둔다. 몸은 접지하지만 그림자는 새 캐릭터 전용 표현으로 생략하고 움직임 후 잔윤곽이 짧게 따라오게 한다.",
+    "references": {
+      "form": {
+        "reference": "R19-08",
+        "id": 147,
+        "name": "어긋난 사슴",
+        "path": "public/models/pet-147.json",
+        "sha256": "1cd2107fbd2d26732a02a01c5dc8e792a2f3581c225de65da08ad67b577a0030",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-05",
+        "id": 144,
+        "name": "조각여우",
+        "path": "public/models/pet-144.json",
+        "sha256": "0c75554c3b701ebf1b4570433fb62e153b6c94243c7129f7e4e1eb78c8284ae8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

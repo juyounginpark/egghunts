@@ -11,6 +11,30 @@
     "form": "pterosaur",
     "motif": "fossil",
     "prompt": "긴 부리와 가는 목, 매우 넓은 날개의 익룡을 만들라. 몸은 아이보리, 날개막은 청회색, 머리 볏은 짙은 적갈색으로 구분한다. 발에 작은 조개 화석을 쥐고 날개를 낮게 펼쳤다가 큰 호를 그리며 접는다.",
+    "references": {
+      "form": {
+        "reference": "R08-07",
+        "id": 186,
+        "name": "과일 익룡",
+        "path": "public/models/pet-186.json",
+        "sha256": "ec03d1c7616249024b7547d9ba5f007bf06eacef607a51c4b79a01ab74608d12",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-07",
+        "id": 186,
+        "name": "과일 익룡",
+        "path": "public/models/pet-186.json",
+        "sha256": "ec03d1c7616249024b7547d9ba5f007bf06eacef607a51c4b79a01ab74608d12",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

@@ -6,7 +6,7 @@ import {animatePet} from '/src/pet-animation.ts';
 const renderer=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});renderer.setSize(256,256);
 const scene=new T.Scene(),camera=new T.OrthographicCamera(-1,1,1,-1,.01,200);
 scene.add(new T.HemisphereLight(0xfffaee,0x92978c,2.5));const sun=new T.DirectionalLight(0xfff4df,2.6);sun.position.set(-3,6,5);scene.add(sun);
-window.renderExpansion=async id=>{
+window.renderExpansion=async(id,assetOnly=false)=>{
  await loadVoxels([`pet-${id}`]);const pet=petVisual(id),staticPet=voxelModel(`pet-${id}`,false);
  const sparks=pet.getObjectByName('sparks');sparks.visible=false;
  const bounds=new T.Box3().setFromObject(voxelModel(`pet-${id}`,true),true),baked=new T.Box3().setFromObject(staticPet,true);
@@ -17,9 +17,26 @@ window.renderExpansion=async id=>{
  camera.position.copy(center).add(new T.Vector3(3,2.4,4));camera.lookAt(center);
  scene.add(pet);animatePet(pet,id,0,false,true);renderer.render(scene,camera);
  const image=renderer.domElement.toDataURL(),triangles=renderer.info.render.triangles;
+ if(assetOnly){scene.remove(pet);sparks.dispose();return {image};}
  animatePet(pet,id,2,false,false);renderer.render(scene,camera);
  const animated=renderer.domElement.toDataURL();
  scene.remove(pet);sparks.dispose();
  return {image,animated,mismatch,triangles,bottom:bounds.min.y,parts:pet.userData.expansionParts?.length??0};
+};
+window.renderStyleComparison=async(ids,night=false)=>{
+ await loadVoxels(ids.map(id=>`pet-${id}`));
+ const models=ids.map(id=>voxelModel(`pet-${id}`,true));
+ const bounds=models.map(p=>new T.Box3().setFromObject(p,true));
+ const extent=Math.max(...bounds.map(b=>{const s=b.getSize(new T.Vector3());return Math.max(s.x,s.y,s.z)*.82;}));
+ camera.left=-extent;camera.right=extent;camera.top=extent;camera.bottom=-extent;camera.updateProjectionMatrix();
+ const hemi=scene.children.find(o=>o.isHemisphereLight);hemi.intensity=night?.9:2.5;sun.intensity=night?.7:2.6;
+ const images=[];
+ for(let i=0;i<models.length;i++){
+  const p=models[i],center=bounds[i].getCenter(new T.Vector3());
+  camera.position.copy(center).add(new T.Vector3(3,2.4,4));camera.lookAt(center);
+  scene.add(p);renderer.render(scene,camera);images.push(renderer.domElement.toDataURL());scene.remove(p);
+ }
+ hemi.intensity=2.5;sun.intensity=2.6;
+ return images;
 };
 </script>

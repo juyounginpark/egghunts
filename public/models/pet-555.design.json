@@ -11,6 +11,30 @@
     "form": "snail",
     "motif": "icelamp",
     "prompt": "짧은 자주색 몸 위에 아이보리 틀의 둥근 얼음등을 껍질로 만들어라. 등 안의 작은 노랑 불빛과 앞쪽 점눈을 분리한다. 고개를 숙이면 등 내부의 빛이 약해졌다 다시 부드럽게 켜진다.",
+    "references": {
+      "form": {
+        "reference": "R13-05",
+        "id": 234,
+        "name": "얼음게",
+        "path": "public/models/pet-234.json",
+        "sha256": "5e5c71a0233137a4ed19a75203fa77094cf8ed6017009a88454b6c1f44a064c1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      },
+      "material": {
+        "reference": "R13-03",
+        "id": 232,
+        "name": "유리빙어",
+        "path": "public/models/pet-232.json",
+        "sha256": "ce367bc11a98cbe4812068b9f30e95504062b24c51f5d97439c86fde0ed815ab",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "polished"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

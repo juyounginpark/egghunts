@@ -11,6 +11,30 @@
     "form": "sabertooth",
     "motif": "fangs",
     "prompt": "넓은 앞가슴과 짧은 꼬리의 황갈색 고양잇과 몸을 만들라. 크림색 얼굴 아래의 큰 회색 송곳니 두 개를 분명히 하고 눈은 작고 둥글게 둔다. 앞발을 뻗어 몸을 낮추며 송곳니 옆의 수염이 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R08-10",
+        "id": 189,
+        "name": "호박빛 티라노",
+        "path": "public/models/pet-189.json",
+        "sha256": "04e22b046b97043baf96bcc4e127276f397e76290b66cb070eccfaf03f63e7d1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-02",
+        "id": 181,
+        "name": "양치 트리케라",
+        "path": "public/models/pet-181.json",
+        "sha256": "e8d2bf8e92b684a464968bd8debc4ea7c08978d26b0650153d6a03ec621e195e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#b78d53"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "snake",
     "motif": "keys",
     "prompt": "길고 낮은 검정 몸이 한 번 크게 휘는 뱀을 만들라. 등에는 크림색 건반 여섯 개를 넓은 간격으로 두고 얼굴은 둥글게 마감한다. 몸을 움직이면 건반이 앞에서 뒤로 눌리며 작은 파랑 점이 따라간다.",
+    "references": {
+      "form": {
+        "reference": "R17-03",
+        "id": 272,
+        "name": "자석문어",
+        "path": "public/models/pet-272.json",
+        "sha256": "35a2622cd7b437b211870a984248643c7f4c672c46ee50263d60fd8d2722f573",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-02",
+        "id": 271,
+        "name": "양철강아지",
+        "path": "public/models/pet-271.json",
+        "sha256": "b8cfbf04085dbeadabbc2dfc751049ab47a8df7e38f532709c1eef5e85217d96",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "millipede",
     "motif": "chestnutplates",
     "prompt": "굵은 갈색 몸 다섯 구간을 낮게 이어 붙이고 얼굴은 크림색으로 밝힌다. 등은 밤껍질 판으로 넓게 겹치며 발은 짧고 일정하게 정렬한다. 몸이 한 번 크게 휘면 판들이 차례로 들렸다 닫힌다.",
+    "references": {
+      "form": {
+        "reference": "R16-06",
+        "id": 265,
+        "name": "버섯개미",
+        "path": "public/models/pet-265.json",
+        "sha256": "bed1d185b245b224963d76bdde4fbd135eed6f4752cb7ab9192ade89b04f1852",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-04",
+        "id": 263,
+        "name": "도토리 장수풍뎅이",
+        "path": "public/models/pet-263.json",
+        "sha256": "251ac90ded07c5b0aa5acc5487e834d5ec2b48be2b14611cf3cb3a3cb4708168",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "peacock",
     "motif": "sunfan",
     "prompt": "작은 남색 몸과 금빛 부리 뒤로 큰 둥근 꼬리를 펼쳐라. 꼬리는 아이보리 깃판과 주황 태양 원무늬로 크게 나누고 눈은 크림색 얼굴 면에 둔다. 꼬리를 펼칠 때 바깥 윤곽만 순차적으로 밝아진다.",
+    "references": {
+      "form": {
+        "reference": "R07-09",
+        "id": 178,
+        "name": "해시계 매",
+        "path": "public/models/pet-178.json",
+        "sha256": "5627352de4f83bae1df1c6fc133b2594ce2449938c208e528a117f7b44817b4c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R07-09",
+        "id": 178,
+        "name": "해시계 매",
+        "path": "public/models/pet-178.json",
+        "sha256": "5627352de4f83bae1df1c6fc133b2594ce2449938c208e528a117f7b44817b4c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

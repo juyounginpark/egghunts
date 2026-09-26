@@ -11,6 +11,30 @@
     "form": "parrot",
     "motif": "cloudbeak",
     "prompt": "작은 흰 몸과 넓은 보라 날개에 몸보다 큰 곡선 부리를 달아라. 부리는 빨강·노랑·청록의 넓은 세 구획으로 나누고 눈은 검정 점으로 둔다. 부리를 살짝 열면 작은 구름 하나가 나왔다 코끝에 머문다.",
+    "references": {
+      "form": {
+        "reference": "R14-08",
+        "id": 247,
+        "name": "거울백조",
+        "path": "public/models/pet-247.json",
+        "sha256": "22909a74174d3cb58fe05854c29828e04b72f5770fc5972dbadaac4d814c5b8e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-09",
+        "id": 248,
+        "name": "별사탕 고슴도치",
+        "path": "public/models/pet-248.json",
+        "sha256": "8f2d4e70769a7391d54bc17b23e97ba93dc7ae31e396bf302da858518b90e6b8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#8566ad"
   },
   "assembly": {

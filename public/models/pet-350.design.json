@@ -11,6 +11,30 @@
     "form": "crocodile",
     "motif": "sail",
     "prompt": "길고 낮은 초록 몸과 짧은 둥근 주둥이의 악어를 만들라. 등은 목재 갑판처럼 평평하게 두고 큰 크림색 삼각 돛 하나를 세운다. 꼬리는 방향타처럼 옆으로 움직이며 돛만 반대 방향으로 늦게 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R02-08",
+        "id": 117,
+        "name": "양말뱀",
+        "path": "public/models/pet-117.json",
+        "sha256": "c2c1e3914dee0b06d0c83c6241c23a884662b710ef2a1f3c0de755e4ee9b42f6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 5,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-03",
+        "id": 112,
+        "name": "목마 조랑말",
+        "path": "public/models/pet-112.json",
+        "sha256": "02c74ab4bcd9aeb957024be2a10de7fe55a135d4329b81c9b8cbfcacd0d74207",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#669858"
   },
   "assembly": {

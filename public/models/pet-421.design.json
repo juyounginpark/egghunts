@@ -11,6 +11,30 @@
     "form": "beaver",
     "motif": "tape",
     "prompt": "둥근 남색 머리와 크림색 배, 짧은 주황 발의 펭귄을 만들라. 몸 앞에 붉은 우편함 주머니를 두고 흰 봉투 하나를 날개로 잡게 한다. 봉투를 넣으면 등 뒤의 작은 깃발이 한 번 올라간다.",
+    "references": {
+      "form": {
+        "reference": "R06-06",
+        "id": 165,
+        "name": "신호등 부엉이",
+        "path": "public/models/pet-165.json",
+        "sha256": "01f5fbacf82bcd8f6b50060ef5c1d9d1f6c2249089bc1af2acccea90d5190215",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R06-03",
+        "id": 162,
+        "name": "택배너구리",
+        "path": "public/models/pet-162.json",
+        "sha256": "9b8fedfd1393135c05554fe3ff70a530811cbc10a9b085086f356b1be1dde6ac",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

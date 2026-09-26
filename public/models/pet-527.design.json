@@ -11,6 +11,30 @@
     "form": "rhino",
     "motif": "saucer",
     "prompt": "굵고 낮은 민트색 몸과 짧은 크림색 뿔의 코뿔소를 만들라. 등에 커다란 은색 원반 두 장이 좁은 간격으로 떠 있고 가장자리만 보라색으로 둔다. 몸을 낮추면 원반이 느리게 반대 방향으로 회전한다.",
+    "references": {
+      "form": {
+        "reference": "R11-09",
+        "id": 218,
+        "name": "중력두꺼비",
+        "path": "public/models/pet-218.json",
+        "sha256": "408695f6e200ddd0f3ccff2cea3cb3dc08acfe462ed40a32462297b86fa090ab",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-03",
+        "id": 212,
+        "name": "원반문어",
+        "path": "public/models/pet-212.json",
+        "sha256": "b8ff36a3c652710d39607f1e75e629a0350c412d95f6466474095f6fa3b812d9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#a1d4c4"
   },
   "assembly": {

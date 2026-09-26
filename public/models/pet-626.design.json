@@ -11,6 +11,30 @@
     "form": "frog",
     "motif": "circuit",
     "prompt": "넓은 초록 회로판 머리와 짧게 접힌 검정 다리를 만들라. 얼굴은 아이보리 점눈 영역으로 밝히고 배에는 큰 은색 칩 하나를 둔다. 턱 아래 판이 들썩이면 굵은 회로선의 작은 점 두 개가 켜진다.",
+    "references": {
+      "form": {
+        "reference": "R17-07",
+        "id": 276,
+        "name": "태양전지 거북",
+        "path": "public/models/pet-276.json",
+        "sha256": "00ab7a433eb10024a9a9c623335be1fe2bfbcef5daa5ecdaecbd21125fbe9913",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-07",
+        "id": 276,
+        "name": "태양전지 거북",
+        "path": "public/models/pet-276.json",
+        "sha256": "00ab7a433eb10024a9a9c623335be1fe2bfbcef5daa5ecdaecbd21125fbe9913",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      }
+    },
     "color": "#669858"
   },
   "assembly": {

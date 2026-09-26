@@ -11,6 +11,30 @@
     "form": "clam",
     "motif": "rainbow",
     "prompt": "넓고 낮은 아이보리 껍질과 작은 진주 얼굴을 만들라. 껍질 안쪽은 분홍·노랑·청록 세 구획, 바깥은 단순한 큰 홈 네 줄로 둔다. 껍질을 펼치면 세 색의 빛이 짧은 한 줄로 이어졌다 다시 안으로 모인다.",
+    "references": {
+      "form": {
+        "reference": "R20-05",
+        "id": 294,
+        "name": "샘물수달",
+        "path": "public/models/pet-294.json",
+        "sha256": "73a2ea4e22902c2a8da3a02105e314ad595a5a5ac00542636cb3ecd3ee66ce3c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-08",
+        "id": 297,
+        "name": "계절나비",
+        "path": "public/models/pet-297.json",
+        "sha256": "cea39eb19a32094cf724ecb9d8a0ad8baca4e4e8b1df21f40d8c696c2d8af411",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

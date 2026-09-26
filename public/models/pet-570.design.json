@@ -11,6 +11,30 @@
     "form": "cloud",
     "motif": "buttoneyes",
     "prompt": "넓고 낮은 흰 구름 몸에 큰 크림색 단추눈 두 개와 작은 입을 달아라. 아래에는 가는 파랑 리본 두 줄을 짧은 발처럼 둔다. 한쪽 단추가 천천히 돌아가면 몸의 구름 덩어리가 반대쪽으로 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R14-10",
+        "id": 249,
+        "name": "밤하늘 양",
+        "path": "public/models/pet-249.json",
+        "sha256": "abd7f137f4dc592da7631fc401e0502912592518b27fce840a7968f304302eaa",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      }
+    },
     "color": "#e9e8dc"
   },
   "assembly": {

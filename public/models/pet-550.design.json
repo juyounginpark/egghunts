@@ -11,6 +11,30 @@
     "form": "mouse",
     "motif": "icebean",
     "prompt": "짧은 남색 몸과 크림색 볼, 큰 둥근 귀를 만들라. 두 앞발에 몸만 한 투명 청색 콩 모양 얼음 하나를 안게 한다. 얼음 안의 노랑 씨앗을 따라 고개를 돌리고 꼬리가 몸 옆으로 말린다.",
+    "references": {
+      "form": {
+        "reference": "R13-04",
+        "id": 233,
+        "name": "서리토끼",
+        "path": "public/models/pet-233.json",
+        "sha256": "edf07e95e9c204aa569abbb2c2bfa27756ef5352d4b05a9f257a0f8961896b24",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R13-03",
+        "id": 232,
+        "name": "유리빙어",
+        "path": "public/models/pet-232.json",
+        "sha256": "ce367bc11a98cbe4812068b9f30e95504062b24c51f5d97439c86fde0ed815ab",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "polished"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

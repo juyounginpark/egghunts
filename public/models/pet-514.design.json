@@ -11,6 +11,30 @@
     "form": "shrimp",
     "motif": "antenna",
     "prompt": "굽은 크림색 몸과 큰 보라 꼬리, 짧은 다리의 새우를 만들라. 이마의 긴 안테나 두 개는 끝을 원반처럼 넓히고 작은 눈은 그 아래 둔다. 안테나가 마주 닿으면 청록빛 점 하나가 잠깐 켜진다.",
+    "references": {
+      "form": {
+        "reference": "R11-02",
+        "id": 211,
+        "name": "세눈 도마뱀",
+        "path": "public/models/pet-211.json",
+        "sha256": "5bea137fa10863e936ea5ba037ac9016de4401739a7a018ec082cd48ab66e822",
+        "unit": 21.6,
+        "eyeHeightVoxels": 4,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-03",
+        "id": 212,
+        "name": "원반문어",
+        "path": "public/models/pet-212.json",
+        "sha256": "b8ff36a3c652710d39607f1e75e629a0350c412d95f6466474095f6fa3b812d9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

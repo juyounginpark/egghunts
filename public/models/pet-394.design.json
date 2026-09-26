@@ -11,6 +11,30 @@
     "form": "rhino",
     "motif": "ironplates",
     "prompt": "큰 앞가슴과 낮게 숙인 머리, 짧고 굵은 다리의 코뿔소를 만들라. 몸은 흑철, 어깨판은 청동, 코뿔 끝은 아이보리로 나눈다. 등 위의 큰 철판 두 장이 숨에 맞춰 벌어져 안쪽의 붉은 빛을 보여준다.",
+    "references": {
+      "form": {
+        "reference": "R04-08",
+        "id": 137,
+        "name": "분화구 멧돼지",
+        "path": "public/models/pet-137.json",
+        "sha256": "8b56971f6f9fac0177ca26c545b138e0e9b0a9dc349584f0ba992fd1dab3dc6e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R04-09",
+        "id": 138,
+        "name": "모루두더지",
+        "path": "public/models/pet-138.json",
+        "sha256": "6284f8a9a78bae3409cfc1f463859f989a4016ec11903dc5be07152b827052b3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      }
+    },
     "color": "#393c45"
   },
   "assembly": {

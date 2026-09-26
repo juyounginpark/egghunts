@@ -11,6 +11,30 @@
     "form": "panda",
     "motif": "starpillow",
     "prompt": "넓은 크림색 얼굴과 남색 눈가의 판다가 큰 노랑 별베개를 안게 하라. 몸은 통통하고 발은 작게 두며 등에는 짧은 보라 잠옷을 입힌다. 베개를 누르면 위로 작은 별 하나가 나와 판다 머리 주위를 돈다.",
+    "references": {
+      "form": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-09",
+        "id": 248,
+        "name": "별사탕 고슴도치",
+        "path": "public/models/pet-248.json",
+        "sha256": "8f2d4e70769a7391d54bc17b23e97ba93dc7ae31e396bf302da858518b90e6b8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

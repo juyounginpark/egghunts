@@ -11,6 +11,30 @@
     "form": "pigeon",
     "motif": "mail",
     "prompt": "둥근 아이보리 몸과 청록 날개, 짧은 갈색 부리의 비둘기를 만들라. 가슴에는 작은 가죽 우편 가방을 비스듬히 메고 날개 끝에 크림색 띠를 둔다. 가방에서 봉투 하나를 꺼내 부리로 물어 올린다.",
+    "references": {
+      "form": {
+        "reference": "R12-04",
+        "id": 223,
+        "name": "프로펠러 참새",
+        "path": "public/models/pet-223.json",
+        "sha256": "cfef9fc62907f50246680885a5a03df8f97490d1978659b7f0f1566a1f6ce909",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R12-02",
+        "id": 221,
+        "name": "비행모 강아지",
+        "path": "public/models/pet-221.json",
+        "sha256": "d5d8abb0093c42ee232f60fe0fef7ba5954b2e971a7ddb4097b08aca791195c0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "moth",
     "motif": "dewcups",
     "prompt": "작은 아이보리 몸과 둥근 청회색 날개 네 장을 만들라. 아래 날개 두 장은 위로 말려 큰 이슬 두 방울을 받치게 한다. 고개를 아래로 기울이면 물방울이 날개 안쪽을 따라 굴러왔다 멈춘다.",
+    "references": {
+      "form": {
+        "reference": "R16-09",
+        "id": 268,
+        "name": "비단나방",
+        "path": "public/models/pet-268.json",
+        "sha256": "5a4172c169e7b688cba6801c678c8c57dfb1d54e705a153022cc3437de5f11d6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-02",
+        "id": 261,
+        "name": "이슬무당벌레",
+        "path": "public/models/pet-261.json",
+        "sha256": "4425c911e5e3d7c5fbdf35399671c6e1b361422bd2717bf6c88236d3ddcfc1f8",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

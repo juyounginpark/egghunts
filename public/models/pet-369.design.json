@@ -11,6 +11,30 @@
     "form": "angler",
     "motif": "lantern",
     "prompt": "짧고 넓은 남보라색 몸에 작은 둥근 입과 크림색 배를 만들라. 이마에서 휜 줄기 끝에 커다란 금빛 등불 하나를 달고 이빨은 생략한다. 등불을 코 앞까지 내려 살피면 작은 가슴지느러미가 벌어진다.",
+    "references": {
+      "form": {
+        "reference": "R03-08",
+        "id": 127,
+        "name": "노을 돌고래",
+        "path": "public/models/pet-127.json",
+        "sha256": "5b927912bf654328641847b3b5419710b82c00686a715fdf0966f0fee82ca196",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-07",
+        "id": 126,
+        "name": "별빛해파리",
+        "path": "public/models/pet-126.json",
+        "sha256": "01892de7f4e5caae3d390f7c0820c34253f6a4a4c8440043fb603641b3924b00",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#464360"
   },
   "assembly": {

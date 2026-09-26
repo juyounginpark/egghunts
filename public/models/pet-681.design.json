@@ -11,6 +11,30 @@
     "form": "giant",
     "motif": "ribcage",
     "prompt": "작은 아이보리 얼굴과 거대한 검정 어깨, 큰 손과 발을 가진 거인을 만들라. 가슴과 배는 비우고 두꺼운 자주색 갈비형 틀 세 개로 연결한다. 얼굴은 온화한 점눈으로 두고 손을 모으면 몸의 빈 중심에서 작은 흰 점 하나가 떠올랐다 사라진다.",
+    "references": {
+      "form": {
+        "reference": "R19-10",
+        "id": 149,
+        "name": "경계의 사냥개",
+        "path": "public/models/pet-149.json",
+        "sha256": "03ca9efe48bc17aff946b0910b10c675ed344b9f4ef6b9953d0068900c0e7118",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R19-02",
+        "id": 141,
+        "name": "빈껍질 거북",
+        "path": "public/models/pet-141.json",
+        "sha256": "261a0d1afbf46694f30a1de930b77fbfe1ad564f3e909961160351c6fd015ae6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "turtle",
     "motif": "starmap",
     "prompt": "넓고 평평한 아이보리 등껍질과 짧은 남색 몸의 거북을 만들라. 등에는 청색 지도 면과 굵은 금빛 연결선 세 개를 두고 가장자리에 작은 방향표를 단다. 고개를 돌리면 지도 위 별점 하나가 방향표로 이동한다.",
+    "references": {
+      "form": {
+        "reference": "R18-03",
+        "id": 282,
+        "name": "달구덩이 거북",
+        "path": "public/models/pet-282.json",
+        "sha256": "80c08420621f45aea344e48bd725773a52ddbc2ab9c3d447c500c4c87f952615",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-07",
+        "id": 286,
+        "name": "별자리 사슴",
+        "path": "public/models/pet-286.json",
+        "sha256": "de7b2f6e4cd2eb7382f441acac4942ce5e5cc2603bf838ecdc42066d717402d5",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 14,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {

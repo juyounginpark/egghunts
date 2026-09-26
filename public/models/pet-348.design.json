@@ -11,6 +11,30 @@
     "form": "panda",
     "motif": "crayon",
     "prompt": "크림색 몸과 남색 눈가, 짧고 두꺼운 팔의 판다를 만들라. 양손에 큰 주황 크레용을 잡고 배에 같은 색의 굵은 선 하나를 남긴다. 바닥에 짧은 원을 그렸다 바라보며 귀가 살짝 내려오게 한다.",
+    "references": {
+      "form": {
+        "reference": "R02-01",
+        "id": 110,
+        "name": "단추곰",
+        "path": "public/models/pet-110.json",
+        "sha256": "ec278c8a8e2eeb63a8b5129d2466cbfb07ccfb6a9240aff2d5ebc305a868cc90",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R02-04",
+        "id": 113,
+        "name": "블록코끼리",
+        "path": "public/models/pet-113.json",
+        "sha256": "a88885fa8da9109b4ccc9bdbaabf923fec554d7b5354de777230fdb78b5ea00d",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

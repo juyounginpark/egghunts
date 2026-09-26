@@ -11,6 +11,30 @@
     "form": "raptor",
     "motif": "twincrest",
     "prompt": "길쭉한 뒷다리와 가는 목, 짧은 턱의 적갈색 공룡을 만들라. 머리 위 두 장의 청록 볏을 바깥쪽으로 기울이고 배는 크림색으로 둔다. 고개를 옆으로 돌려 두 볏의 틈을 보여주며 목이 완만하게 굽는다.",
+    "references": {
+      "form": {
+        "reference": "R08-08",
+        "id": 187,
+        "name": "나팔 볏공룡",
+        "path": "public/models/pet-187.json",
+        "sha256": "ff3def63a85dd16c858c3435b73683841316fc4c783167a5724a3b4001239154",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-08",
+        "id": 187,
+        "name": "나팔 볏공룡",
+        "path": "public/models/pet-187.json",
+        "sha256": "ff3def63a85dd16c858c3435b73683841316fc4c783167a5724a3b4001239154",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#974e40"
   },
   "assembly": {

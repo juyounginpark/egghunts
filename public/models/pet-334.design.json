@@ -11,6 +11,30 @@
     "form": "otter",
     "motif": "lily",
     "prompt": "길고 부드러운 갈색 몸에 크림색 볼과 짧은 앞발을 만들라. 넓은 진초록 수련잎 위에 등을 기대고 분홍 수련꽃 하나를 안게 한다. 발과 꼬리는 잎 밖으로 드러내며 꽃을 코 가까이 들었다 내리게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-07",
+        "id": 106,
+        "name": "꿀단지 곰",
+        "path": "public/models/pet-106.json",
+        "sha256": "8b1f5c6d64aa5fd1c5b37de32ca605d39424fa088ddb18a475adc45942d2f291",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "polished"
+      },
+      "material": {
+        "reference": "R01-03",
+        "id": 102,
+        "name": "민들레 병아리",
+        "path": "public/models/pet-102.json",
+        "sha256": "983bb790cb6c60deff3145c6b7b94421782144b240b53aff484401d62ecd1dbf",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

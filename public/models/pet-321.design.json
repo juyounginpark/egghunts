@@ -11,6 +11,30 @@
     "form": "frog",
     "motif": "pebble",
     "prompt": "낮고 넓은 청회색 몸, 짧게 접힌 뒷다리, 위로 올라간 작은 점눈을 만들라. 크림색 턱 아래에 파란 물방울 무늬 하나를 둔다. 앞발 사이의 둥근 조약돌을 굴리고 턱이 한 번 부풀게 한다.",
+    "references": {
+      "form": {
+        "reference": "R01-01",
+        "id": 100,
+        "name": "새싹이",
+        "path": "public/models/pet-100.json",
+        "sha256": "fe536293441d569c7d318250dda82a1833638850362d390d76473748876d8ce4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R01-05",
+        "id": 104,
+        "name": "도토리 거북",
+        "path": "public/models/pet-104.json",
+        "sha256": "62576c1a2a9342f692f0829c2eeb3c0feb468b6ab724f3724cde6be82bff8a65",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#899cac"
   },
   "assembly": {

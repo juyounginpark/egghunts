@@ -11,6 +11,30 @@
     "form": "cucumber",
     "motif": "coins",
     "prompt": "길고 통통한 연갈색 몸과 짧은 발의 해삼을 만들라. 등에 큰 금빛 원무늬 세 개를 놓고 얼굴은 앞쪽에 작은 눈 두 개로 표현한다. 몸을 움츠리면 등에 얹힌 동전 하나가 기울었다 제자리로 돌아온다.",
+    "references": {
+      "form": {
+        "reference": "R03-01",
+        "id": 120,
+        "name": "물방울 물개",
+        "path": "public/models/pet-120.json",
+        "sha256": "fe0dd48632a6447c9d46b38be40e72410b95e9bbefceec1356c2a9332e7e75e0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-02",
+        "id": 121,
+        "name": "소라게",
+        "path": "public/models/pet-121.json",
+        "sha256": "bf383fb0e4b49d383ddc3508f91dcda6f9b676beb8070cd39fd1fa37cc5415e0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#b58d6c"
   },
   "assembly": {

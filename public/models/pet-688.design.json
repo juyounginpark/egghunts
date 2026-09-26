@@ -11,6 +11,30 @@
     "form": "spider",
     "motif": "dewthread",
     "prompt": "작은 크림색 얼굴과 둥근 청록 배, 가는 다리 여덟 개를 만들라. 앞다리 사이에는 굵은 은색 실 한 줄과 큰 물방울 두 개를 둔다. 실을 당기면 물방울이 가운데로 모여 작은 잎 모양이 되었다 풀린다.",
+    "references": {
+      "form": {
+        "reference": "R20-08",
+        "id": 297,
+        "name": "계절나비",
+        "path": "public/models/pet-297.json",
+        "sha256": "cea39eb19a32094cf724ecb9d8a0ad8baca4e4e8b1df21f40d8c696c2d8af411",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-05",
+        "id": 294,
+        "name": "샘물수달",
+        "path": "public/models/pet-294.json",
+        "sha256": "73a2ea4e22902c2a8da3a02105e314ad595a5a5ac00542636cb3ecd3ee66ce3c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#f2e3bf"
   },
   "assembly": {

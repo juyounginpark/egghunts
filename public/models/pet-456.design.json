@@ -11,6 +11,30 @@
     "form": "frog",
     "motif": "moss",
     "prompt": "넓은 회색 머리와 짧은 뒷다리의 개구리를 만들라. 등 이끼는 짙은 초록의 큰 덩어리 두 개, 턱은 아이보리로 구분한다. 등 위 작은 물방울을 고개로 돌아보면 이끼 끝이 부드럽게 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R08-02",
+        "id": 181,
+        "name": "양치 트리케라",
+        "path": "public/models/pet-181.json",
+        "sha256": "e8d2bf8e92b684a464968bd8debc4ea7c08978d26b0650153d6a03ec621e195e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R08-09",
+        "id": 188,
+        "name": "이끼 긴목공룡",
+        "path": "public/models/pet-188.json",
+        "sha256": "d6d51c359a21d5dfcdff8030482d299da7330fbafcc9c119d9759dc9b33c1047",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

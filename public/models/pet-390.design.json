@@ -11,6 +11,30 @@
     "form": "bull",
     "motif": "bellows",
     "prompt": "굵은 어깨와 짧은 뿔, 넓은 코를 가진 짙은 갈색 황소를 만들라. 몸 옆은 붉은 주름가죽 풀무처럼 넓은 세 구간으로 표현한다. 숨을 내쉴 때 옆구리가 접히고 코앞에서 짧은 따뜻한 바람이 나온다.",
+    "references": {
+      "form": {
+        "reference": "R04-08",
+        "id": 137,
+        "name": "분화구 멧돼지",
+        "path": "public/models/pet-137.json",
+        "sha256": "8b56971f6f9fac0177ca26c545b138e0e9b0a9dc349584f0ba992fd1dab3dc6e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R04-09",
+        "id": 138,
+        "name": "모루두더지",
+        "path": "public/models/pet-138.json",
+        "sha256": "6284f8a9a78bae3409cfc1f463859f989a4016ec11903dc5be07152b827052b3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "metal"
+      }
+    },
     "color": "#654736"
   },
   "assembly": {

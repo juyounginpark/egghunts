@@ -11,6 +11,30 @@
     "form": "beetle",
     "motif": "fuse",
     "prompt": "길고 낮은 검정 몸과 짧은 여섯 발의 딱정벌레를 만들라. 등에 커다란 투명 퓨즈 한 개를 얹고 양 끝은 붉은 캡으로 마감한다. 작은 크림색 얼굴이 돌아가면 퓨즈 안의 선이 잠깐 주황으로 밝아진다.",
+    "references": {
+      "form": {
+        "reference": "R17-04",
+        "id": 273,
+        "name": "바퀴딱정벌레",
+        "path": "public/models/pet-273.json",
+        "sha256": "4ceca3da33fc010951496f7584465fbb4ef875f2457104eee7a6d8283268dc04",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-08",
+        "id": 277,
+        "name": "전구해파리",
+        "path": "public/models/pet-277.json",
+        "sha256": "914f74d05b2862d4e4fcf8eb8bfa7a7f38bfc149fd1de3da74e2949e1a9405b2",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      }
+    },
     "color": "#30303c"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "worm",
     "motif": "nails",
     "prompt": "짧고 두꺼운 갈색 몸 세 구간과 작은 크림색 얼굴을 만들라. 등에 큰 녹슨 못 두 개를 낮게 기울이고 발은 몸 아래로 모은다. 몸이 접히면 못이 서로 다른 각도로 흔들리고 앞발로 하나를 바로잡는다.",
+    "references": {
+      "form": {
+        "reference": "R15-05",
+        "id": 254,
+        "name": "쌍꼬리 도마뱀",
+        "path": "public/models/pet-254.json",
+        "sha256": "fc65aff5a0a573632f837cda7c035f4b073f21f3d1065ed1c5c53eeb6c3e1145",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-02",
+        "id": 251,
+        "name": "철통두꺼비",
+        "path": "public/models/pet-251.json",
+        "sha256": "a4e2593859d54ec7887263e02b43ce32764258a791c5926ca0c3bd20f75d488b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

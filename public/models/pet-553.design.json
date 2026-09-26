@@ -11,6 +11,30 @@
     "form": "toad",
     "motif": "snowhat",
     "prompt": "넓은 갈색 몸과 크림색 턱, 짧은 다리의 두꺼비를 만들라. 머리 위에는 두꺼운 흰 눈모자를 얹되 작은 눈은 밖으로 드러낸다. 턱이 부풀면 모자 한쪽이 내려와 앞발로 조심히 밀어 올린다.",
+    "references": {
+      "form": {
+        "reference": "R13-01",
+        "id": 230,
+        "name": "눈송이 물범",
+        "path": "public/models/pet-230.json",
+        "sha256": "302f4938b93b14f20e7e3327ddb966d0afe76a8e6164d15e7526e2c644d183d7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R13-08",
+        "id": 237,
+        "name": "털북숭이 매머드",
+        "path": "public/models/pet-237.json",
+        "sha256": "edb1ae71193945d244f9a51d49f92cf8aa3e86d26a93dcbdfeab412d3f80cf5c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

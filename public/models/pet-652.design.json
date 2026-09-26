@@ -11,6 +11,30 @@
     "form": "bee",
     "motif": "orbit",
     "prompt": "짧고 둥근 노랑 몸과 남색 띠, 작은 크림색 얼굴의 벌을 만들라. 배 주위에 비스듬한 보라 고리 하나를 두고 날개는 얇은 흰 판으로 둔다. 몸이 기울어도 고리는 느리게 방향을 유지하다 따라온다.",
+    "references": {
+      "form": {
+        "reference": "R18-05",
+        "id": 284,
+        "name": "토성고양이",
+        "path": "public/models/pet-284.json",
+        "sha256": "af1829b3aded4b2168965c61d67db78b0caa9aa2aeee458c695684f533bbdef7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-05",
+        "id": 284,
+        "name": "토성고양이",
+        "path": "public/models/pet-284.json",
+        "sha256": "af1829b3aded4b2168965c61d67db78b0caa9aa2aeee458c695684f533bbdef7",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#ead378"
   },
   "assembly": {

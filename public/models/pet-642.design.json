@@ -11,6 +11,30 @@
     "form": "hippo",
     "motif": "coils",
     "prompt": "낮고 넓은 회색 몸과 크림색 주둥이, 작은 귀의 하마를 만들라. 등에는 커다란 청색 코일통 두 개를 나란히 두고 배에 주황 점검창 하나를 둔다. 하품하면 코일 안의 빛 점이 순환하고 몸 아래 큰 발이 단단히 버틴다.",
+    "references": {
+      "form": {
+        "reference": "R17-05",
+        "id": 274,
+        "name": "유압고릴라",
+        "path": "public/models/pet-274.json",
+        "sha256": "c9409230a0364ecd6d94daac0a845bec5d3095cd865168c0c80ec71bf1a94b4e",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-07",
+        "id": 276,
+        "name": "태양전지 거북",
+        "path": "public/models/pet-276.json",
+        "sha256": "00ab7a433eb10024a9a9c623335be1fe2bfbcef5daa5ecdaecbd21125fbe9913",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

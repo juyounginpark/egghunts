@@ -11,6 +11,30 @@
     "form": "lobster",
     "motif": "moonclaws",
     "prompt": "길고 낮은 남색 몸과 크림색 큰 집게 두 개를 만들라. 집게를 닫으면 초승달 두 개의 윤곽이 되고 꼬리는 청회색으로 펼친다. 작은 눈자루가 집게 사이의 노랑 별조각을 바라보며 천천히 집어 든다.",
+    "references": {
+      "form": {
+        "reference": "R18-08",
+        "id": 287,
+        "name": "성운문어",
+        "path": "public/models/pet-287.json",
+        "sha256": "1898a34fb2e3707f879aeb10f00136fc70200aa23cc81fb7d8ea20087282b843",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R18-03",
+        "id": 282,
+        "name": "달구덩이 거북",
+        "path": "public/models/pet-282.json",
+        "sha256": "80c08420621f45aea344e48bd725773a52ddbc2ab9c3d447c500c4c87f952615",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

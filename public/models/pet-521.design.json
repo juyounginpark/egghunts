@@ -11,6 +11,30 @@
     "form": "turtle",
     "motif": "flower",
     "prompt": "낮은 회보라색 몸과 넓은 크림색 얼굴의 거북을 만들라. 등은 접힌 분홍 꽃잎 네 장이 둘러싸고 중심에 노랑 씨앗핵 하나가 보이게 한다. 숨을 쉬면 꽃잎이 열리고 거북이 편안히 고개를 든다.",
+    "references": {
+      "form": {
+        "reference": "R11-09",
+        "id": 218,
+        "name": "중력두꺼비",
+        "path": "public/models/pet-218.json",
+        "sha256": "408695f6e200ddd0f3ccff2cea3cb3dc08acfe462ed40a32462297b86fa090ab",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-10",
+        "id": 219,
+        "name": "별꽃 사마귀",
+        "path": "public/models/pet-219.json",
+        "sha256": "b466ad2644c3b12c940bf03c23819ed06cdcffb58e0d277b30a1751feae8ace6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#8566ad"
   },
   "assembly": {

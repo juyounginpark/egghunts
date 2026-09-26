@@ -11,6 +11,30 @@
     "form": "ammonite",
     "motif": "nacre",
     "prompt": "아이보리 나선 껍질 안에서 작은 청색 얼굴과 짧은 촉수가 나오게 하라. 껍질의 큰 구역만 분홍·청록 자개빛으로 나누고 눈은 어둡게 선명하게 둔다. 촉수로 조약돌을 잡았다 껍질 가까이 가져간다.",
+    "references": {
+      "form": {
+        "reference": "R03-03",
+        "id": 122,
+        "name": "진주조개",
+        "path": "public/models/pet-122.json",
+        "sha256": "905acdbdba229781b65a11844ccbe6c0dd8c10437b721d4d6c66caf8b0ffabc0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-03",
+        "id": 122,
+        "name": "진주조개",
+        "path": "public/models/pet-122.json",
+        "sha256": "905acdbdba229781b65a11844ccbe6c0dd8c10437b721d4d6c66caf8b0ffabc0",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 7,
+        "material": "matte"
+      }
+    },
     "color": "#eee7cf"
   },
   "assembly": {
@@ -66,6 +90,19 @@
       ],
       "parent": "body"
     },
+    "left_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        2,
+        -9
+      ],
+      "parent": "body"
+    },
     "prop": {
       "rotation": [
         0,
@@ -74,7 +111,20 @@
       ],
       "pivot": [
         0,
-        6,
+        1,
+        -14
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        2,
         -9
       ],
       "parent": "body"
@@ -87,8 +137,8 @@
       ],
       "pivot": [
         0,
-        5,
-        3
+        6,
+        4
       ],
       "parent": "body"
     },

@@ -11,6 +11,30 @@
     "form": "giraffe",
     "motif": "pipes",
     "prompt": "가는 다리와 긴 적갈색 목의 기린을 만들라. 목 옆에는 굵은 검정 열기 배출관 두 개를 비스듬히 달고 얼굴은 크림색으로 밝힌다. 고개를 숙일 때 관에서 작은 증기가 번갈아 나오며 목의 큰 구간이 순서대로 휜다.",
+    "references": {
+      "form": {
+        "reference": "R04-05",
+        "id": 134,
+        "name": "유황산양",
+        "path": "public/models/pet-134.json",
+        "sha256": "fe412fa2f78a3ecd80833ec992dcf403ddd0f646c5ab280d7e319b3db8be0563",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R04-03",
+        "id": 132,
+        "name": "화로거북",
+        "path": "public/models/pet-132.json",
+        "sha256": "921c8554cb9b15ba9da7ee1a23b1da24b782354b1a22aefc9fdba199cc92e94a",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      }
+    },
     "color": "#974e40"
   },
   "assembly": {

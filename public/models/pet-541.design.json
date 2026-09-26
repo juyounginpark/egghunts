@@ -11,6 +11,30 @@
     "form": "deer",
     "motif": "pendulum",
     "prompt": "가는 갈색 다리와 짧은 크림색 얼굴, 황동 가지뿔의 사슴을 만들라. 목 아래에는 큰 원형 시계추 하나를 짧게 매단다. 몸을 가만히 두고 추만 좌우로 움직이다가 고개가 같은 박자로 따라간다.",
+    "references": {
+      "form": {
+        "reference": "R12-09",
+        "id": 228,
+        "name": "망원경 기린",
+        "path": "public/models/pet-228.json",
+        "sha256": "f6a9ab2642a5a8c91f96fd2510578084078b94e852e8d4e88683c312111b7add",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R12-10",
+        "id": 229,
+        "name": "시계부엉이",
+        "path": "public/models/pet-229.json",
+        "sha256": "84a9da23bc3d58070b421eb75dfb92d91d5c9e82626cef56d1bc3630517d24bd",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "metal"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

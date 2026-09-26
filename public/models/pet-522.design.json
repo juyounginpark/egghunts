@@ -11,6 +11,30 @@
     "form": "horse",
     "motif": "tentacles",
     "prompt": "가는 청회색 다리와 짧은 얼굴의 말을 만들라. 갈기는 굵은 자주색 촉수 네 줄이 목 옆으로 흐르며 끝은 민트색으로 밝아진다. 고개를 돌린 뒤 촉수들이 서로 다른 속도로 뒤따르게 한다.",
+    "references": {
+      "form": {
+        "reference": "R11-02",
+        "id": 211,
+        "name": "세눈 도마뱀",
+        "path": "public/models/pet-211.json",
+        "sha256": "5bea137fa10863e936ea5ba037ac9016de4401739a7a018ec082cd48ab66e822",
+        "unit": 21.6,
+        "eyeHeightVoxels": 4,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-06",
+        "id": 215,
+        "name": "촉수토끼",
+        "path": "public/models/pet-215.json",
+        "sha256": "3cb47bc64c3ff4fd3a59016a2eabfd611513d7b3bf60869d17c71f5118844668",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#899cac"
   },
   "assembly": {

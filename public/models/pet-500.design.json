@@ -11,6 +11,30 @@
     "form": "duck",
     "motif": "platter",
     "prompt": "넓고 둥근 흰 몸과 주황 부리의 오리에게 짧은 자주색 어깨천을 둘러라. 한 날개에는 작은 포도 접시를 받치고 다른 날개는 옆으로 펼친다. 접시를 안정시키며 고개를 작게 숙여 인사하게 한다.",
+    "references": {
+      "form": {
+        "reference": "R10-04",
+        "id": 203,
+        "name": "두루마리 부엉이",
+        "path": "public/models/pet-203.json",
+        "sha256": "1201815d00de8ad6d80d073516c6a264974f6a8f96431c3e398cd642f4b76282",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R10-06",
+        "id": 205,
+        "name": "물항아리 수달",
+        "path": "public/models/pet-205.json",
+        "sha256": "8d07354f2deaa0bce8eeb42ee93534df8abc0e9f799e303fbde587e4061597af",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#eae9df"
   },
   "assembly": {

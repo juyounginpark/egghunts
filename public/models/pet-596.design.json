@@ -11,6 +11,30 @@
     "form": "beaver",
     "motif": "helmet",
     "prompt": "넓은 갈색 몸과 크림색 앞니, 큰 납작 꼬리의 비버를 만들라. 머리의 노란 안전모는 귀를 드러내고 앞발에는 짧은 목재 판을 쥐게 한다. 판을 맞추고 모자챙을 들어 올려 작은 눈이 보이게 한다.",
+    "references": {
+      "form": {
+        "reference": "R15-03",
+        "id": 252,
+        "name": "방독면 너구리",
+        "path": "public/models/pet-252.json",
+        "sha256": "968189d06631dfca349b7fd3cf00e84a0d6e9754f1a7e18b2ed3b7ca7cb35e78",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-02",
+        "id": 251,
+        "name": "철통두꺼비",
+        "path": "public/models/pet-251.json",
+        "sha256": "a4e2593859d54ec7887263e02b43ce32764258a791c5926ca0c3bd20f75d488b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "metal"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

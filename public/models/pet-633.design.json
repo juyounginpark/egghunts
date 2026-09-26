@@ -11,6 +11,30 @@
     "form": "bat",
     "motif": "hinges",
     "prompt": "작은 크림색 얼굴과 짙은 회색 몸 양옆에 넓은 접이식 날개를 달아라. 날개는 청색 철판 세 구간과 굵은 주황 경첩으로 구성한다. 날개를 몸 앞에 차곡차곡 접었다 펴며 귀가 밖으로 드러난다.",
+    "references": {
+      "form": {
+        "reference": "R17-02",
+        "id": 271,
+        "name": "양철강아지",
+        "path": "public/models/pet-271.json",
+        "sha256": "b8cfbf04085dbeadabbc2dfc751049ab47a8df7e38f532709c1eef5e85217d96",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "metal"
+      },
+      "material": {
+        "reference": "R17-07",
+        "id": 276,
+        "name": "태양전지 거북",
+        "path": "public/models/pet-276.json",
+        "sha256": "00ab7a433eb10024a9a9c623335be1fe2bfbcef5daa5ecdaecbd21125fbe9913",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "metal"
+      }
+    },
     "color": "#545461"
   },
   "assembly": {

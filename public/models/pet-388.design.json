@@ -11,6 +11,30 @@
     "form": "fox",
     "motif": "glassfan",
     "prompt": "가는 밤색 몸과 크림색 얼굴 뒤로 큰 반투명 꼬리를 펼쳐라. 꼬리는 뿌리의 붉은 호박색에서 끝의 밝은 금색으로 변하고 큰 면 세 개로 정리한다. 꼬리를 빛 쪽으로 기울이며 앞발로 조심히 닦는다.",
+    "references": {
+      "form": {
+        "reference": "R04-05",
+        "id": 134,
+        "name": "유황산양",
+        "path": "public/models/pet-134.json",
+        "sha256": "fe412fa2f78a3ecd80833ec992dcf403ddd0f646c5ab280d7e319b3db8be0563",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R04-07",
+        "id": 136,
+        "name": "흑요석 전갈",
+        "path": "public/models/pet-136.json",
+        "sha256": "cd2cb6329bc5e70ea056df562722c35326a08fc1f09ae90bee424b6a7352230c",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 11,
+        "material": "matte"
+      }
+    },
     "color": "#76503b"
   },
   "assembly": {

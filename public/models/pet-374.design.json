@@ -11,6 +11,30 @@
     "form": "eel",
     "motif": "vortex",
     "prompt": "긴 남색 몸이 가운데 빈 공간을 남기며 한 번 크게 감기게 하라. 배는 옅은 청록, 등지느러미는 밝은 아이보리로 두른다. 둥근 얼굴이 고리 밖으로 나오고 몸 안쪽에 얇은 물결 한 줄이 순환하게 한다.",
+    "references": {
+      "form": {
+        "reference": "R03-10",
+        "id": 129,
+        "name": "산호용",
+        "path": "public/models/pet-129.json",
+        "sha256": "19cc97191f59cdf56a9a6fbbbb7a799938c6a1f61c0efe3693019ab084c2c3c3",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 15,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R03-05",
+        "id": 124,
+        "name": "파도 가오리",
+        "path": "public/models/pet-124.json",
+        "sha256": "d8e7af9bf7bbe962758aea0a6775a209c019aaf52d2944d6d40deb126c2cafce",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#344a70"
   },
   "assembly": {

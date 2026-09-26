@@ -11,6 +11,30 @@
     "form": "goat",
     "motif": "sporehorn",
     "prompt": "굵은 회갈색 몸과 짧은 크림색 얼굴, 큰 뒤로 휜 뿔을 만들라. 뿔은 자주색 버섯처럼 넓은 판이 층을 이루고 끝만 연분홍으로 밝힌다. 고개를 털면 포자 점 세 개가 떨어지고 큰 발굽으로 몸을 지탱한다.",
+    "references": {
+      "form": {
+        "reference": "R15-05",
+        "id": 254,
+        "name": "쌍꼬리 도마뱀",
+        "path": "public/models/pet-254.json",
+        "sha256": "fc65aff5a0a573632f837cda7c035f4b073f21f3d1065ed1c5c53eeb6c3e1145",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-04",
+        "id": 253,
+        "name": "유리버섯 달팽이",
+        "path": "public/models/pet-253.json",
+        "sha256": "ba2ac29046117eff7984280ef63158e83cf4ccb4779d87f13019ade2aab9d261",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      }
+    },
     "color": "#958477"
   },
   "assembly": {

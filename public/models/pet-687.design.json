@@ -11,6 +11,30 @@
     "form": "mole",
     "motif": "sculptcloud",
     "prompt": "넓은 갈색 앞발과 크림색 짧은 얼굴, 둥근 회색 몸을 만들라. 양손 사이의 큰 흰 구름을 점토처럼 눌렀다 펴게 한다. 구름이 작은 새 모양이 되었다 다시 둥근 덩어리로 돌아오며 코가 따라 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R20-04",
+        "id": 293,
+        "name": "흙빚는 곰",
+        "path": "public/models/pet-293.json",
+        "sha256": "693427c8c2c15169cf39171c96623822a475a38988ae0b58b92b823dcaf9580b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R20-06",
+        "id": 295,
+        "name": "바람사슴",
+        "path": "public/models/pet-295.json",
+        "sha256": "eaca6c51c155952b4d741f294cd6052340dac5bf5388cd193eac457e367e59b9",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#9697a1"
   },
   "assembly": {

@@ -11,6 +11,30 @@
     "form": "firefly",
     "motif": "amber",
     "prompt": "작은 검정 머리와 긴 갈색 몸, 투명 호박색 배의 반딧불을 만들라. 배 안에는 밝은 씨앗핵 하나를 두고 날개는 아이보리 큰 판으로 접는다. 배가 부드럽게 빛나면 안쪽 나뭇잎 조각이 천천히 돌아간다.",
+    "references": {
+      "form": {
+        "reference": "R16-01",
+        "id": 260,
+        "name": "꽃꿀벌",
+        "path": "public/models/pet-260.json",
+        "sha256": "231d7182482d00ef683874dfef33f6a647908b5bcd3ca63944905528e0b84d5b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R16-08",
+        "id": 267,
+        "name": "호박빛 매미",
+        "path": "public/models/pet-267.json",
+        "sha256": "9b5663f526603cb6c27113c316deb5c32ea30b4f06b781d6e055d6496a553aba",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

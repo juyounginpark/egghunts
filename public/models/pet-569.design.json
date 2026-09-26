@@ -11,6 +11,30 @@
     "form": "chick",
     "motif": "pocket",
     "prompt": "작은 노랑 얼굴과 주황 부리, 짧은 날개가 보라 잠옷 주머니에서 나오게 하라. 주머니 아래에는 작은 발 두 개를 두고 흰 단추 하나만 강조한다. 안으로 숨었다가 주머니 반대쪽에서 고개를 다시 내민다.",
+    "references": {
+      "form": {
+        "reference": "R14-05",
+        "id": 244,
+        "name": "찻잔고양이",
+        "path": "public/models/pet-244.json",
+        "sha256": "106a535cceff0eafee2ab5cd7df0344835b618f971465934875358c8a28caaf4",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R14-01",
+        "id": 240,
+        "name": "베개강아지",
+        "path": "public/models/pet-240.json",
+        "sha256": "2f5672488542999c8f97e40ba0f902d22d12ca9767ac8af97fc07f7bc3efda68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 12,
+        "material": "matte"
+      }
+    },
     "color": "#ead378"
   },
   "assembly": {

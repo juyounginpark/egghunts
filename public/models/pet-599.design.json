@@ -11,6 +11,30 @@
     "form": "butterfly",
     "motif": "greenhouse",
     "prompt": "작은 갈색 몸과 큰 아이보리 날개 네 장을 만들라. 날개 안쪽은 투명한 온실 창처럼 나누고 작은 초록 잎 두 개만 보이게 한다. 날개를 접으면 창이 겹치고 펼치면 잎 그림자가 부드럽게 움직인다.",
+    "references": {
+      "form": {
+        "reference": "R15-07",
+        "id": 256,
+        "name": "형광나방",
+        "path": "public/models/pet-256.json",
+        "sha256": "5dbda35a2a317cba4d937dc5fe04b3bbfb42eb8fb3acbf0e7d9573ee29b52fc1",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R15-09",
+        "id": 258,
+        "name": "온실사슴",
+        "path": "public/models/pet-258.json",
+        "sha256": "bc2a4767d3d0a55689fea7cb1e00841ec1dd11126e3aabde4d716d9945db9b68",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 13,
+        "material": "matte"
+      }
+    },
     "color": "#9a7656"
   },
   "assembly": {

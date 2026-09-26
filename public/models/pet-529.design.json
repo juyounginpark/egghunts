@@ -11,6 +11,30 @@
     "form": "queen",
     "motif": "throne",
     "prompt": "넓은 진주색 흉곽과 긴 자주색 배, 큰 꽃잎형 날개 네 장의 외계 생물을 만들라. 머리는 작은 민트색 얼굴과 뒤로 휘는 감각뿔 두 개로 정리한다. 배 옆의 투명 씨앗주머니 세 개가 숨처럼 부풀고 날개가 왕좌처럼 넓게 열린다.",
+    "references": {
+      "form": {
+        "reference": "R11-10",
+        "id": 219,
+        "name": "별꽃 사마귀",
+        "path": "public/models/pet-219.json",
+        "sha256": "b466ad2644c3b12c940bf03c23819ed06cdcffb58e0d277b30a1751feae8ace6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 8,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R11-04",
+        "id": 213,
+        "name": "수정달팽이",
+        "path": "public/models/pet-213.json",
+        "sha256": "726de674263c599257177c577a081faf7e1517bd979f27e31af507ba69365a9b",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "polished"
+      }
+    },
     "color": "#e8e3df"
   },
   "assembly": {

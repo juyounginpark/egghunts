@@ -11,6 +11,30 @@
     "form": "dog",
     "motif": "sled",
     "prompt": "넓은 크림색 주둥이와 남색 등을 가진 짧은 강아지를 만들라. 붉은 목줄의 황동 방울과 몸 뒤 작은 목재 썰매를 큰 형태로 구분한다. 앞발을 들어 준비 자세를 취하면 방울과 썰매 끈이 차례로 흔들린다.",
+    "references": {
+      "form": {
+        "reference": "R13-09",
+        "id": 238,
+        "name": "오로라 여우",
+        "path": "public/models/pet-238.json",
+        "sha256": "da8f4c1c543e905d774f5ae169ec42ae5c62dae5e4bf15b418b26d5a29617258",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 10,
+        "material": "matte"
+      },
+      "material": {
+        "reference": "R13-07",
+        "id": 236,
+        "name": "설산 산양",
+        "path": "public/models/pet-236.json",
+        "sha256": "1380431c4c923fd9f9ea51f60b360941512334561a11979a31ce8449651dbaf6",
+        "unit": 21.6,
+        "eyeHeightVoxels": 2,
+        "parts": 9,
+        "material": "matte"
+      }
+    },
     "color": "#b48b51"
   },
   "assembly": {
