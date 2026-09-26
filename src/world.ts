@@ -49,7 +49,12 @@ export class World {
         for(const id of ids){const pet=petVisual(id);pet.scale.setScalar(MONGLES[id].scale);pet.position.copy(avatar.position);current.group.add(pet);}
       }).catch(err=>{if(this.peerPets.get(peer.id)===current&&current.request===request){current.key=null;current.retryAt=time+2;this.assetError=String(err);}});
     }
-    entry.trail=followPets(entry.group,entry.trail,avatar.position,{x:Math.sin(avatar.rotation.y),z:Math.cos(avatar.rotation.y)},dt,time,this.low,this.reducedMotion.matches);
+    if(peer.seat!==undefined&&peer.seat!==null&&peer.slot!==undefined){
+      this.restCompanions(entry.group,peer.slot,time);entry.trail=[];
+    }else{
+      entry.group.children.forEach(pet=>{pet.rotation.z=0;});
+      entry.trail=followPets(entry.group,entry.trail,avatar.position,{x:Math.sin(avatar.rotation.y),z:Math.cos(avatar.rotation.y)},dt,time,this.low,this.reducedMotion.matches);
+    }
   }
   playerAnchor(id?:string){
     const avatar=id?this.peers.get(id):this.player;if(!avatar||!avatar.visible)return null;
@@ -78,6 +83,14 @@ export class World {
     if(!this.reducedMotion.matches){pet.position.y+=Math.abs(Math.sin(time*(pose.moving?3:1)+pet.userData.farmIndex))*(pose.moving?.05:.015);pet.rotation.z=Math.sin(time+pet.userData.farmIndex)*.025;}
     animateEgg(pet,time,this.low);
     animatePet(pet,pet.userData.petId,time,pose.moving,this.reducedMotion.matches);
+  }
+  private restCompanions(group:T.Group,slot:number,time:number){
+    group.children.forEach((pet,index)=>{
+      pet.userData.farmSlot=slot;pet.userData.farmIndex=BALANCE.farmPetsVisible+index;
+      pet.scale.setScalar(MONGLES[pet.userData.petId].scale);
+      delete pet.userData.followScale;
+      this.animateFarmPet(pet,time);
+    });
   }
   private farmEgg(egg:Pick<Egg,'type'|'stageId'|'variant'>,slot:number,index:number,count:number){
     const model=this.eggModel(egg),at=farmEggPosition(slot,index,count);
@@ -611,7 +624,12 @@ export class World {
       game.death ? .4*fall : game.seat!==null?CAMPFIRE.sittingHeight:game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
       game.z+this.networkOffset.z,
     );
-    this.trail=followPets(this.companions,this.trail,this.player.position,game.facing,dt,time,this.low,this.reducedMotion.matches);
+    if(game.seat!==null){
+      this.restCompanions(this.companions,game.farmSlot,time);this.trail=[];
+    }else{
+      this.companions.children.forEach(pet=>{pet.rotation.z=0;});
+      this.trail=followPets(this.companions,this.trail,this.player.position,game.facing,dt,time,this.low,this.reducedMotion.matches);
+    }
     const storageKey = `${game.farmSlot}:`+game.save.eggs.map((e) => `${e.id}:${e.type}:${e.stageId}:${e.variant}`).join("|");
     if (storageKey !== this.storageKey) {
       this.storageKey = storageKey;

@@ -1,6 +1,7 @@
 // Stable slots: local +Z faces the circular public promenade.
 export const VILLAGE={x:0,z:9,radius:14,walkRadius:13.25};
-export const CAMPFIRE={x:0,z:9,seatRadius:3.2,interactionRadius:1.5,sittingHeight:.18,exitOffset:1};
+// Seat top is .66; the seated avatar's lowest limb is 3/18 above its root.
+export const CAMPFIRE={x:0,z:9,seatRadius:3.2,interactionRadius:1.5,sittingHeight:.5,exitOffset:1};
 export const CAMP_SEATS=Array.from({length:4},(_,index)=>{
  const angle=index*Math.PI/2;
  return {x:CAMPFIRE.x+Math.sin(angle)*CAMPFIRE.seatRadius,z:CAMPFIRE.z+Math.cos(angle)*CAMPFIRE.seatRadius,rotation:angle+Math.PI};
