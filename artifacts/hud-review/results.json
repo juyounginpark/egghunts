@@ -1,0 +1,1030 @@
+{
+  "rows": [
+    {
+      "width": 320,
+      "state": "day",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 110,
+        "width": 304,
+        "height": 102
+      },
+      "phase": {
+        "x": 23,
+        "y": 73.84375,
+        "right": 51.53125,
+        "bottom": 88.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 59.53125,
+        "y": 73.84375,
+        "right": 207.859375,
+        "bottom": 88.140625,
+        "width": 148.328125,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 215.859375,
+        "y": 67,
+        "right": 297,
+        "bottom": 95,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 204.203125,
+        "y": 16.796875,
+        "right": 261,
+        "bottom": 38.796875,
+        "width": 56.796875,
+        "height": 22
+      },
+      "settings": {
+        "x": 261,
+        "y": 14,
+        "right": 305,
+        "bottom": 58,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 43,
+        "y": 21.59375,
+        "right": 115,
+        "bottom": 42.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "04:00",
+      "warning": false,
+      "ratio": 84.2105,
+      "live": "off"
+    },
+    {
+      "width": 320,
+      "state": "warning",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 110,
+        "width": 304,
+        "height": 102
+      },
+      "phase": {
+        "x": 23,
+        "y": 73.84375,
+        "right": 51.53125,
+        "bottom": 88.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 63.53125,
+        "y": 73.84375,
+        "right": 203.859375,
+        "bottom": 88.140625,
+        "width": 140.328125,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 215.859375,
+        "y": 67,
+        "right": 297,
+        "bottom": 95,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 204.203125,
+        "y": 16.796875,
+        "right": 261,
+        "bottom": 38.796875,
+        "width": 56.796875,
+        "height": 22
+      },
+      "settings": {
+        "x": 261,
+        "y": 14,
+        "right": 305,
+        "bottom": 58,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 43,
+        "y": 21.59375,
+        "right": 115,
+        "bottom": 42.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "00:08",
+      "warning": true,
+      "ratio": 2.80702,
+      "live": "off"
+    },
+    {
+      "width": 320,
+      "state": "night",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 110,
+        "width": 304,
+        "height": 102
+      },
+      "phase": {
+        "x": 23,
+        "y": 73.84375,
+        "right": 48,
+        "bottom": 88.140625,
+        "width": 25,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 56,
+        "y": 73.84375,
+        "right": 207.859375,
+        "bottom": 88.140625,
+        "width": 151.859375,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 215.859375,
+        "y": 67,
+        "right": 297,
+        "bottom": 95,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 204.203125,
+        "y": 16.796875,
+        "right": 261,
+        "bottom": 38.796875,
+        "width": 56.796875,
+        "height": 22
+      },
+      "settings": {
+        "x": 261,
+        "y": 14,
+        "right": 305,
+        "bottom": 58,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 43,
+        "y": 21.59375,
+        "right": 115,
+        "bottom": 42.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "00:08",
+      "warning": false,
+      "ratio": 53.3333,
+      "live": "off"
+    },
+    {
+      "width": 320,
+      "state": "long",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 110,
+        "width": 304,
+        "height": 102
+      },
+      "phase": {
+        "x": 23,
+        "y": 73.84375,
+        "right": 51.53125,
+        "bottom": 88.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 59.53125,
+        "y": 73.84375,
+        "right": 180.96875,
+        "bottom": 88.140625,
+        "width": 121.4375,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 188.96875,
+        "y": 67,
+        "right": 297,
+        "bottom": 95,
+        "width": 108.03125,
+        "height": 28
+      },
+      "wallet": {
+        "x": 190.296875,
+        "y": 16.796875,
+        "right": 261,
+        "bottom": 38.796875,
+        "width": 70.703125,
+        "height": 22
+      },
+      "settings": {
+        "x": 261,
+        "y": 14,
+        "right": 305,
+        "bottom": 58,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 43,
+        "y": 21.59375,
+        "right": 115,
+        "bottom": 42.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "01:01:01",
+      "warning": false,
+      "ratio": 100,
+      "live": "off"
+    },
+    {
+      "width": 360,
+      "state": "day",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 352,
+        "bottom": 112,
+        "width": 344,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 53.53125,
+        "bottom": 89.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 65.53125,
+        "y": 74.84375,
+        "right": 241.859375,
+        "bottom": 89.140625,
+        "width": 176.328125,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 253.859375,
+        "y": 68,
+        "right": 335,
+        "bottom": 96,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 232.265625,
+        "y": 16.703125,
+        "right": 295,
+        "bottom": 40.890625,
+        "width": 62.734375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 299,
+        "y": 15,
+        "right": 343,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "04:00",
+      "warning": false,
+      "ratio": 84.2105,
+      "live": "off"
+    },
+    {
+      "width": 360,
+      "state": "warning",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 352,
+        "bottom": 112,
+        "width": 344,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 53.53125,
+        "bottom": 89.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 65.53125,
+        "y": 74.84375,
+        "right": 241.859375,
+        "bottom": 89.140625,
+        "width": 176.328125,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 253.859375,
+        "y": 68,
+        "right": 335,
+        "bottom": 96,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 232.265625,
+        "y": 16.703125,
+        "right": 295,
+        "bottom": 40.890625,
+        "width": 62.734375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 299,
+        "y": 15,
+        "right": 343,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "00:08",
+      "warning": true,
+      "ratio": 2.80702,
+      "live": "off"
+    },
+    {
+      "width": 360,
+      "state": "night",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 352,
+        "bottom": 112,
+        "width": 344,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 50,
+        "bottom": 89.140625,
+        "width": 25,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 62,
+        "y": 74.84375,
+        "right": 241.859375,
+        "bottom": 89.140625,
+        "width": 179.859375,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 253.859375,
+        "y": 68,
+        "right": 335,
+        "bottom": 96,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 232.265625,
+        "y": 16.703125,
+        "right": 295,
+        "bottom": 40.890625,
+        "width": 62.734375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 299,
+        "y": 15,
+        "right": 343,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "00:08",
+      "warning": false,
+      "ratio": 53.3333,
+      "live": "off"
+    },
+    {
+      "width": 360,
+      "state": "long",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 352,
+        "bottom": 112,
+        "width": 344,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 53.53125,
+        "bottom": 89.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 65.53125,
+        "y": 74.84375,
+        "right": 214.96875,
+        "bottom": 89.140625,
+        "width": 149.4375,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 226.96875,
+        "y": 68,
+        "right": 335,
+        "bottom": 96,
+        "width": 108.03125,
+        "height": 28
+      },
+      "wallet": {
+        "x": 216.890625,
+        "y": 16.703125,
+        "right": 295,
+        "bottom": 40.890625,
+        "width": 78.109375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 299,
+        "y": 15,
+        "right": 343,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "01:01:01",
+      "warning": false,
+      "ratio": 100,
+      "live": "off"
+    },
+    {
+      "width": 390,
+      "state": "day",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 382,
+        "bottom": 112,
+        "width": 374,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 53.53125,
+        "bottom": 89.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 65.53125,
+        "y": 74.84375,
+        "right": 271.859375,
+        "bottom": 89.140625,
+        "width": 206.328125,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 283.859375,
+        "y": 68,
+        "right": 365,
+        "bottom": 96,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 262.265625,
+        "y": 16.703125,
+        "right": 325,
+        "bottom": 40.890625,
+        "width": 62.734375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 329,
+        "y": 15,
+        "right": 373,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "04:00",
+      "warning": false,
+      "ratio": 84.2105,
+      "live": "off"
+    },
+    {
+      "width": 390,
+      "state": "warning",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 382,
+        "bottom": 112,
+        "width": 374,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 53.53125,
+        "bottom": 89.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 65.53125,
+        "y": 74.84375,
+        "right": 271.859375,
+        "bottom": 89.140625,
+        "width": 206.328125,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 283.859375,
+        "y": 68,
+        "right": 365,
+        "bottom": 96,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 262.265625,
+        "y": 16.703125,
+        "right": 325,
+        "bottom": 40.890625,
+        "width": 62.734375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 329,
+        "y": 15,
+        "right": 373,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "00:08",
+      "warning": true,
+      "ratio": 2.80702,
+      "live": "off"
+    },
+    {
+      "width": 390,
+      "state": "night",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 382,
+        "bottom": 112,
+        "width": 374,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 50,
+        "bottom": 89.140625,
+        "width": 25,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 62,
+        "y": 74.84375,
+        "right": 271.859375,
+        "bottom": 89.140625,
+        "width": 209.859375,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 283.859375,
+        "y": 68,
+        "right": 365,
+        "bottom": 96,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 262.265625,
+        "y": 16.703125,
+        "right": 325,
+        "bottom": 40.890625,
+        "width": 62.734375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 329,
+        "y": 15,
+        "right": 373,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "00:08",
+      "warning": false,
+      "ratio": 53.3333,
+      "live": "off"
+    },
+    {
+      "width": 390,
+      "state": "long",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 382,
+        "bottom": 112,
+        "width": 374,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 53.53125,
+        "bottom": 89.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 65.53125,
+        "y": 74.84375,
+        "right": 244.96875,
+        "bottom": 89.140625,
+        "width": 179.4375,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 256.96875,
+        "y": 68,
+        "right": 365,
+        "bottom": 96,
+        "width": 108.03125,
+        "height": 28
+      },
+      "wallet": {
+        "x": 246.890625,
+        "y": 16.703125,
+        "right": 325,
+        "bottom": 40.890625,
+        "width": 78.109375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 329,
+        "y": 15,
+        "right": 373,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "01:01:01",
+      "warning": false,
+      "ratio": 100,
+      "live": "off"
+    },
+    {
+      "width": 430,
+      "state": "day",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 422,
+        "bottom": 112,
+        "width": 414,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 53.53125,
+        "bottom": 89.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 65.53125,
+        "y": 74.84375,
+        "right": 311.859375,
+        "bottom": 89.140625,
+        "width": 246.328125,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 323.859375,
+        "y": 68,
+        "right": 405,
+        "bottom": 96,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 302.265625,
+        "y": 16.703125,
+        "right": 365,
+        "bottom": 40.890625,
+        "width": 62.734375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 369,
+        "y": 15,
+        "right": 413,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "04:00",
+      "warning": false,
+      "ratio": 84.2105,
+      "live": "off"
+    },
+    {
+      "width": 430,
+      "state": "warning",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 422,
+        "bottom": 112,
+        "width": 414,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 53.53125,
+        "bottom": 89.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 65.53125,
+        "y": 74.84375,
+        "right": 311.859375,
+        "bottom": 89.140625,
+        "width": 246.328125,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 323.859375,
+        "y": 68,
+        "right": 405,
+        "bottom": 96,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 302.265625,
+        "y": 16.703125,
+        "right": 365,
+        "bottom": 40.890625,
+        "width": 62.734375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 369,
+        "y": 15,
+        "right": 413,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "00:08",
+      "warning": true,
+      "ratio": 2.80702,
+      "live": "off"
+    },
+    {
+      "width": 430,
+      "state": "night",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 422,
+        "bottom": 112,
+        "width": 414,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 50,
+        "bottom": 89.140625,
+        "width": 25,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 62,
+        "y": 74.84375,
+        "right": 311.859375,
+        "bottom": 89.140625,
+        "width": 249.859375,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 323.859375,
+        "y": 68,
+        "right": 405,
+        "bottom": 96,
+        "width": 81.140625,
+        "height": 28
+      },
+      "wallet": {
+        "x": 302.265625,
+        "y": 16.703125,
+        "right": 365,
+        "bottom": 40.890625,
+        "width": 62.734375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 369,
+        "y": 15,
+        "right": 413,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "00:08",
+      "warning": false,
+      "ratio": 53.3333,
+      "live": "off"
+    },
+    {
+      "width": 430,
+      "state": "long",
+      "hud": {
+        "x": 8,
+        "y": 8,
+        "right": 422,
+        "bottom": 112,
+        "width": 414,
+        "height": 104
+      },
+      "phase": {
+        "x": 25,
+        "y": 74.84375,
+        "right": 53.53125,
+        "bottom": 89.140625,
+        "width": 28.53125,
+        "height": 14.296875
+      },
+      "label": {
+        "x": 65.53125,
+        "y": 74.84375,
+        "right": 284.96875,
+        "bottom": 89.140625,
+        "width": 219.4375,
+        "height": 14.296875
+      },
+      "time": {
+        "x": 296.96875,
+        "y": 68,
+        "right": 405,
+        "bottom": 96,
+        "width": 108.03125,
+        "height": 28
+      },
+      "wallet": {
+        "x": 286.890625,
+        "y": 16.703125,
+        "right": 365,
+        "bottom": 40.890625,
+        "width": 78.109375,
+        "height": 24.1875
+      },
+      "settings": {
+        "x": 369,
+        "y": 15,
+        "right": 413,
+        "bottom": 59,
+        "width": 44,
+        "height": 44
+      },
+      "level": {
+        "x": 53,
+        "y": 22.59375,
+        "right": 125,
+        "bottom": 43.390625,
+        "width": 72,
+        "height": 20.796875
+      },
+      "clock": "01:01:01",
+      "warning": false,
+      "ratio": 100,
+      "live": "off"
+    }
+  ],
+  "transitions": true,
+  "errors": []
+}

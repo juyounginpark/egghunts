@@ -1,5 +1,6 @@
 import {add,exactMoney,compare} from './money';
 import "./style.css";
+import {cycleClock} from "./cycle-clock";
 import {petReveal} from './pet-reveal';
 import {GameAudio,type GameSound} from './audio';
 import {
@@ -34,7 +35,7 @@ let hatchRevealing=false;
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
-app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header id="main-hud" aria-label="탐험가 정보"><div class="hud-player"><img class="hud-avatar" src="${import.meta.env.BASE_URL}models/alkong.png" alt="탐험가"/><div class="hud-level"><strong id="level">LV.1</strong><div id="xp-track" role="progressbar" aria-label="경험치" aria-valuemin="0"><i id="xp-fill"></i></div></div></div><div id="cycle-clock"><span id="cycle-phase"></span><span id="cycle-remaining"></span></div><div class="hud-wallet"><div class="dust"><span aria-hidden="true">${uiIcon('dust')}</span><b id="dust">0</b><small>별가루</small></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></div></header><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
+app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header id="main-hud" aria-label="탐험가 정보"><div class="hud-player"><img class="hud-avatar" src="${import.meta.env.BASE_URL}models/alkong.png" alt="탐험가"/><div class="hud-level"><strong id="level">LV.1</strong><div id="xp-track" role="progressbar" aria-label="경험치" aria-valuemin="0"><i id="xp-fill"></i></div></div></div><div id="cycle-clock" role="timer" aria-live="off"><span id="cycle-phase"></span><span id="cycle-label"></span><strong id="cycle-remaining"></strong><div id="cycle-track" aria-hidden="true"><i id="cycle-fill"></i></div></div><div class="hud-wallet"><div class="dust"><span aria-hidden="true">${uiIcon('dust')}</span><b id="dust">0</b><small>별가루</small></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></div></header><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
   icons,
 )
   .map(
@@ -54,6 +55,12 @@ buildVersion.setAttribute('aria-label',`게임 버전 ${import.meta.env.VITE_BUI
 $("shell").append(buildVersion);
 // Keep HUD rows in normal flow inside two anchored stacks.
 const topHud = document.createElement("div");
+const hudObserver=new ResizeObserver(()=>{
+  const bottom=$('main-hud').getBoundingClientRect().bottom-$('shell').getBoundingClientRect().top;
+  $('shell').style.setProperty('--main-hud-bottom',`${bottom}px`);
+  $('shell').style.setProperty('--top-hud-bottom',`${topHud.getBoundingClientRect().bottom-$('shell').getBoundingClientRect().top}px`);
+});
+hudObserver.observe($('main-hud'));hudObserver.observe(topHud);
 topHud.id = "top-hud";
 $("shell").append(topHud);
 for (const el of [
@@ -242,6 +249,7 @@ function renderPanel() {
   if(tab==='shop')$("panel").insertAdjacentHTML('afterbegin','<button data-tab="store" class="secondary">알 · 펫 판매 스토어</button>');
 }
 function updateHud() {
+  eggNotices.observeWorld(game,online.latest?.serverTime??game.now());
   eggNotices.update(online.latest?.eggNotices??[],online.latest?.serverTime??game.now());
   const outside=tab==='explore'&&!game.isAtBase;
   if(!outside){bannerStage=0;bannerUntil=0;}
@@ -299,22 +307,18 @@ function updateHud() {
   $('recommended-speed-value').textContent=num(game.recommendedSpeed,1);
   $('day-clock').setAttribute('aria-label',`권장 스피드 ${num(game.recommendedSpeed,1)}`);
   $('day-clock').title=`권장 스피드 ${num(game.recommendedSpeed,1)}`;
-  $('cycle-phase').textContent=game.isNight?'☾ 밤':'☀ 낮';
-  $('cycle-remaining').textContent=game.isNight?`아침까지 ${Math.max(0,Math.ceil((game.nightUntil-game.now())/1000))}초`:`밤까지 ${Math.floor(game.nightRemaining/60)}:${String(game.nightRemaining%60).padStart(2,'0')}`;
-  const nightCountdown=!game.isNight&&game.nightRemaining>0&&game.nightRemaining<=BALANCE.warningSeconds;
-  const countdownKey=nightCountdown?String(game.nightRemaining):'';
-  const clock=$('cycle-clock');
-  if(clock.dataset.countdown!==countdownKey){
-    clock.dataset.countdown=countdownKey;
-    $('cycle-remaining').getAnimations().forEach(animation=>animation.cancel());
-    if(nightCountdown&&game.nightRemaining<=3&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      $('cycle-remaining').animate([{transform:'scale(1.2)'},{transform:'scale(1)'}],{duration:350,easing:'ease-out'});
-    }
+  const phase=cycleClock(game.now(),game.nightAt,game.nightUntil),clock=$('cycle-clock');
+  $('cycle-phase').textContent=phase.night?'☾ 밤':'☀ 낮';
+  $('cycle-label').textContent=phase.night?'아침까지':'밤까지';
+  $('cycle-remaining').textContent=phase.text;
+  $('cycle-fill').style.width=`${phase.ratio*100}%`;
+  clock.dataset.phase=phase.night?'night':'day';
+  clock.classList.toggle('night-warning',phase.warning);
+  if(phase.warning&&clock.dataset.warned!==String(game.nightAt)){
+    clock.dataset.warned=String(game.nightAt);
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches)$('cycle-remaining').animate([{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});
   }
-  clock.classList.toggle('night-warning',nightCountdown);
-  clock.classList.toggle('night-imminent',nightCountdown&&game.nightRemaining<=3);
-  if(nightCountdown){$('cycle-phase').textContent='☾ 밤까지';$('cycle-remaining').textContent=`${game.nightRemaining}`;}
-  clock.setAttribute('aria-label',nightCountdown?`밤까지 ${game.nightRemaining}초`: `${$('cycle-phase').textContent} · ${$('cycle-remaining').textContent}`);
+  clock.setAttribute('aria-label',`${phase.night?'밤':'낮'} · ${$('cycle-label').textContent} ${phase.text}`);
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.training||!!game.carried||!!game.death||!!game.returnReward;
@@ -364,8 +368,12 @@ function updateHud() {
       game.announcement.includes("SECRET") ? 12000 : 5000,
     );
   }
-  $("dust").textContent = num(game.save.dust);
-  $('dust').style.fontSize=$('dust').textContent!.length>7?'13px':'';
+    if (!game.isNight && game.announcement.startsWith('밤에는 농장에서')) {
+      $("announcement").hidden = true;
+      clearTimeout(announcementTimer);
+    }
+    $("dust").textContent = num(game.save.dust);
+  $('dust').classList.toggle('long-number',$('dust').textContent!.length>8);
   $('dust').parentElement!.title=`별가루 ${exactMoney(game.save.dust)}`;
   $('dust').parentElement!.querySelector('small')!.textContent=`${num(game.incomePerSecond)}/초`;
   $("timer").textContent = num(game.recommendedSpeed,1);

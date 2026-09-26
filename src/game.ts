@@ -792,8 +792,7 @@ export class GameState {
     if(!this.isAtBase||this.carried)this.failExpedition('night');
     this.spawn();
     this.resetBosses();
-    const secret=this.world.some(e=>EGGS[e.type].tier===6);
-    this.announcement=secret?'SECRET · 아침에 희귀 알을 찾아보세요':'밤에는 농장에서 쉬어요 · 아침에 입구가 열려요';
+    this.announcement='밤에는 농장에서 쉬어요 · 아침에 입구가 열려요';
     this.announcementId++;this.emit('night_refresh');this.revision++;
   }
   tick(dt:number){
