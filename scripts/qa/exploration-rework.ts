@@ -24,11 +24,16 @@ for(let stage=1;stage<=20;stage++){
  const offset=(stage-1)*48,path=mainPath(stage).slice(0,-1),required=STAGE_REQUIRED_SPEED[stage-1];
  const eggs=g.world.filter(e=>e.stageId===stage);
  assert.equal(eggs.length,stage===20?6:5);
- for(const e of eggs){const t=routeProgress(stage,e.x,e.z+offset).progress;assert.ok(t>=.85&&t<=1,`egg ${stage} at ${t}`);}
- for(const b of g.bosses.filter(b=>b.stageId===stage)){const t=routeProgress(stage,b.x,b.z+offset).progress;assert.ok(t>=.6&&t<=.85,`boss ${stage} at ${t}`);}
+ const arc=eggs.filter(e=>!e.special);
+ assert.equal(arc[0].x,-arc[4].x);assert.equal(arc[1].x,-arc[3].x);
+ assert.equal(arc[0].z,arc[4].z);assert.equal(arc[1].z,arc[3].z);assert.ok(arc[2].z<arc[1].z&&arc[1].z<arc[0].z);
+ for(const e of eggs)assert.ok(g.bosses[e.guardian!].homeZ!<e.homeZ!,`guardian behind egg ${stage}`);
  g.carried=null;g.x=path[0].x;g.z=path[0].z-offset;
  for(const p of path.slice(1))walk(g,p.x,p.z-offset);
- const e=eggs[2];walk(g,e.x,e.z);stat(g,required-.01);const hp=g.hp;g.pickup(e);assert.equal(g.carried,null);assert.equal(g.hp,hp);
+ const e=eggs[2];walk(g,e.x,e.z);stat(g,required-.01);const weak=make();weak.x=e.x;weak.z=e.z;stat(weak,required-.01);weak.immunity=10;
+ const weakEgg=weak.world.find(v=>v.stageId===stage&&!v.special)!;weak.pickup(weakEgg);
+ assert.ok(weak.events.some(v=>v.name==='egg_pickup'));assert.equal(weak.hp,0);assert.ok(weak.death);
+ assert.equal(weak.bosses[weakEgg.guardian!].mode,'return');assert.equal(weak.world.filter(v=>v.id===weakEgg.id).length,1);
  stat(g,required+.000001);g.pickup(e);assert.equal(g.carried?.id,e.id);stat(g,0.5);assert.ok(g.carried,'no repeated qualification after pickup');
  for(const p of [...path].reverse())walk(g,p.x,p.z-offset);
  g.interact();assert.equal(g.carried,null);

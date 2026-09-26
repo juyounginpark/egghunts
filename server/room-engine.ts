@@ -13,7 +13,7 @@ type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
 type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
 type Player={runtime:RuntimeState;input:{x:number;z:number;slow?:boolean};seen:number;receipts:string[];chat?:{id:string;text:string;at:number};guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
-export type Room={stageOrderVersion?:2;routeVersion?:3;explorationVersion?:1;openedShortcuts?:number[];at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
+export type Room={stageOrderVersion?:2;routeVersion?:3;explorationVersion?:1|2;openedShortcuts?:number[];at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
 export type RequestInput={id:string;input?:{x:number;z:number;slow?:boolean};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
 export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number,identity?:{guest:boolean}){
@@ -34,7 +34,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const joinedNow=!previous?.players[user];
  const room:Room=previous??{stageOrderVersion:2,routeVersion:3,at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
  room.openedShortcuts??=[];
- if(room.explorationVersion!==1){migrateExploration(room.world,room.bosses);room.explorationVersion=1;}
+ if(room.explorationVersion!==2){migrateExploration(room.world,room.bosses);room.explorationVersion=2;}
  // Persisted rooms, unlike individual saves, may still contain a partial route.
  // Fill only absent guardians; a looted region with its guardian is left alone.
  const missing=Array.from({length:21},(_,i)=>i).filter(i=>!room.bosses.some(b=>i===20?b.final:!b.final&&b.stageId===i+1));
@@ -197,10 +197,8 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
    p.chat={id:c.id,text:message,at:now};break;
   }
   case 'prepare':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
-   if(!g.canPickupEgg(egg))throw Error('INSUFFICIENT_SPEED');
    p.preparation={id:egg.id,at:now,x:g.x,z:g.z,hit:Number.isFinite(g.hitAt)?g.hitAt:0};break;}
   case 'pickup':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||g.isNight||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
-   if(!g.canPickupEgg(egg))throw Error('INSUFFICIENT_SPEED');
    const seconds=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier],prep=p.preparation;
    if(seconds&&(!prep||prep.id!==egg.id||now-prep.at<seconds*1000||Math.hypot(g.x-prep.x,g.z-prep.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(prep.hit??0)))throw Error('PREPARE_EGG');
    g.pickup(egg);delete p.preparation;break;}

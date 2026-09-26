@@ -1,7 +1,7 @@
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {softenGrowth} from './growth-curve';
 import {migrateExploration} from './exploration-migration';
-import {routePoint,eggAnchor,shortcut,terrainAt} from './exploration-route';
+import {bossAnchor,specialEggAnchor,eggAnchor,shortcut,terrainAt} from './exploration-route';
 import {migrateBalance,type BalanceAdjustment} from './balance-migration';
 import {weeklyDay,validateWeekly,type WeeklyProgress} from './weekly';
 import {firstEggTarget} from './tutorial';
@@ -68,7 +68,7 @@ export type Boss = {
   loot: WorldEgg | null;
 };
 export type Save = {
-  explorationVersion?:1;
+  explorationVersion?:1|2;
   openedShortcuts?:number[];
   balanceVersion?:1;
   balanceAdjustment?:BalanceAdjustment;
@@ -566,9 +566,9 @@ export class GameState {
   immunity = 0;
   bosses: Boss[] = [];
   private resetBosses(){
-    this.bosses=this.route.map(r=>{const p=routePoint(r.stage,.72);return {x:p.x-2.6,z:p.z-r.offset,homeX:p.x-2.6,homeZ:p.z-r.offset,stageId:r.stage,mode:'idle',target:null,loot:null};});
-    const z=routePoint(20,.81).z-this.route.at(-1)!.offset;
-    this.bosses.push({x:3,z,homeX:3,homeZ:z,stageId:20,final:true,mode:'idle',target:null,loot:null});
+    this.bosses=this.route.map(r=>{const p=bossAnchor(r.stage);return {x:p.x,z:p.z-r.offset,homeX:p.x,homeZ:p.z-r.offset,stageId:r.stage,mode:'idle',target:null,loot:null};});
+    const p=bossAnchor(20,true),z=p.z-this.route.at(-1)!.offset;
+    this.bosses.push({x:p.x,z,homeX:p.x,homeZ:z,stageId:20,final:true,mode:'idle',target:null,loot:null});
   }
   x = 0;
   z = 0;
@@ -632,7 +632,7 @@ export class GameState {
       this.world = [...this.world.filter(e=>e.special?!save.bosses!.some(b=>b.final):!restoredStages.has(e.stageId)),...save.world];
       for(const boss of save.bosses){const i=this.bosses.findIndex(b=>b.stageId===boss.stageId&&!!b.final===!!boss.final);if(i>=0)this.bosses[i]=boss;}
     }
-    if(save.explorationVersion!==1){migrateExploration(this.world,this.bosses);save.explorationVersion=1;}
+    if(save.explorationVersion!==2){migrateExploration(this.world,this.bosses);save.explorationVersion=2;}
     // Older saves applied the sleeping offset only in the renderer.
     for(const boss of this.bosses){
       if(boss.homeX===undefined){
@@ -675,7 +675,7 @@ export class GameState {
     return walking*(this.carried?BALANCE.carryingMovementMultiplier:1);
   }
   eggRequiredSpeed(egg:WorldEgg){return recommendedRouteSpeed(0,egg.stageId??this.stage.id);}
-  canPickupEgg(egg:WorldEgg){return this.speed>=this.eggRequiredSpeed(egg);}
+  meetsEggSpeed(egg:WorldEgg){return this.speed>=this.eggRequiredSpeed(egg);}
   get speed() {
     return softenGrowth(
       this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
@@ -766,7 +766,7 @@ export class GameState {
     let roll=this.random()*rare.reduce((sum,r)=>sum+r.chance,0);
     const dragon=this.random()<BALANCE.secretDragonEggChance;
     const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=dragon?6:FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
-    const type=tier*REGIONS.length+REGIONS.length-1,z=-this.route.at(-1)!.end+FINAL_GUARDIAN.eggEndOffset;
+    const type=tier*REGIONS.length+REGIONS.length-1,z=specialEggAnchor().z-this.route.at(-1)!.offset;
     this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:4,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
   }
   get nightRemaining() {
@@ -993,7 +993,7 @@ export class GameState {
   }
   pickup(egg:WorldEgg){
       if(this.carried||this.knockback.remaining>0||this.death||this.now()<this.knockedUntil)return;
-      if(!this.canPickupEgg(egg)){this.message=`필요 속도 ${formatNumber(this.eggRequiredSpeed(egg))} / 현재 ${formatNumber(this.speed)}`;this.revision++;return;}
+      const qualified=this.meetsEggSpeed(egg);
       this.carried = egg;
       this.emit("egg_pickup", {type: this.carried.type});
       this.world = this.world.filter((e) => e !== this.carried);
@@ -1005,6 +1005,16 @@ export class GameState {
       if(!boss){this.revision++;return;}
       // Recovered eggs remain in the world and can be stolen during the return trip.
       boss.loot = null;
+      if(!qualified){
+        const dx=boss.x-this.x,dz=boss.z-this.z,distance=Math.hypot(dx,dz)||1;
+        boss.x=this.x+dx/distance*ROUTE.bossReach*.5;
+        boss.z=this.z+dz/distance*ROUTE.bossReach*.5;
+        boss.mode='return';boss.target=null;boss.wakeRemaining=undefined;
+        this.hp=0;this.hitAt=this.now();this.die();
+        this.message='속도가 부족해 보스에게 잡혔어요!';
+        this.emit('boss_underqualified_defeat',{stage:boss.stageId??this.stage.id,requiredSpeed:this.eggRequiredSpeed(egg)});
+        return;
+      }
       const sleeping=boss.mode==='idle';
       if(sleeping){boss.mode='waking';boss.wakeRemaining=ROUTE.bossWakeSeconds;}
       else if(boss.mode!=='waking'){boss.mode='chase';boss.wakeRemaining=undefined;}
@@ -1151,7 +1161,7 @@ export class GameState {
     return true;
   }
   snapshot(): Save {
-    this.save.explorationVersion=1;this.save.openedShortcuts=[...this.openedShortcuts];
+    this.save.explorationVersion=2;this.save.openedShortcuts=[...this.openedShortcuts];
     this.progression.hp=this.hp;this.progression.maxHP=this.maxHp;this.progression.immunity=this.immunity;this.progression.slowRemaining=this.slowRemaining;this.progression.slowMultiplier=this.slowMultiplier;
     this.save.routeVersion=3;
     this.save.death=this.death;

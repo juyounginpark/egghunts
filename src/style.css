@@ -24,7 +24,7 @@ html,body,#app { touch-action:manipulation; }
 #hazard-cue{font-size:11px;color:#533713;background:#ffe8adf0;padding:5px 8px;border-radius:6px}
 #ink-effect{position:absolute;inset:25% 10%;border-radius:35%;background:#28293b66;pointer-events:none;z-index:2}
 #level-burst{position:absolute;top:40%;width:100%;text-align:center;font-size:23px;font-weight:900;color:#ffe08b;text-shadow:2px 2px #4d5141;pointer-events:none;z-index:6}
-[data-mode="expedition"] #timer::before{content:'필요 ';font-size:9px;font-weight:400}
+[data-mode="expedition"] #timer::before{content:'권장 ';font-size:9px;font-weight:400}
 .stage-card{position:relative;background:#fff7e3;border:2px solid var(--stage,#a1b17e);border-radius:10px;padding:12px;margin:12px 0}
 .stage-card h3{margin:5px 0}.stage-card button{display:block;margin-top:8px;min-height:44px}.stage-card small{font-size:11px}
 body { margin: 0; overflow: hidden; }
@@ -672,7 +672,7 @@ nav button img { width:28px; height:28px; }
 #top-hud.compact #hud-context #speed-hud { flex-direction:row; align-items:center; gap:12px; max-width:100%; }
 #top-hud.compact #hud-context .hud-place { display:none; }
 #speed-hud .speed-heading::before { content:'속도'; font-size:11px; }
-#speed-hud #day-clock::before { content:'필요'; font-size:11px; }
+#speed-hud #day-clock::before { content:'권장'; font-size:11px; }
 #shell #top-hud.compact #main-hud { display:block; padding:0; min-height:0; height:auto; overflow:hidden; }
 #top-hud.compact #main-hud .hud-player,#top-hud.compact #main-hud .hud-wallet { display:none; }
 #top-hud.compact #main-hud #cycle-clock { margin:0; border-radius:10px; padding-top:7px; }

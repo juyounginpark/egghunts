@@ -207,7 +207,6 @@ async function action(preparedId?:string) {
     }
     const targetEgg=preparedEgg??game.near;
     if(!game.carried&&targetEgg&&!game.isAtBase){
-      if(!game.canPickupEgg(targetEgg)){toast(`필요 속도 ${num(game.eggRequiredSpeed(targetEgg))} / 현재 ${num(game.speed)}`);return;}
       if(warnAboutBoss())return;
       const egg=targetEgg,duration=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier];
       if(duration>0&&preparedId!==egg.id){
@@ -290,8 +289,8 @@ function updateHud() {
     bannerUntil=first?performance.now()+ROUTE.bannerSeconds*1000:0;
     $("region-banner-name").textContent=`${game.stage.id}단계 · ${game.stage.name}`;
     $('region-banner-speed').lastElementChild!.textContent=num(game.recommendedSpeed,1);
-    $('region-banner-speed').setAttribute('aria-label',`필요 속도 ${num(game.recommendedSpeed,1)}`);
-    $('region-banner-speed').title=`필요 속도 ${num(game.recommendedSpeed,1)}`;
+    $('region-banner-speed').setAttribute('aria-label',`권장 속도 ${num(game.recommendedSpeed,1)}`);
+    $('region-banner-speed').title=`권장 속도 ${num(game.recommendedSpeed,1)}`;
     $<HTMLImageElement>("region-banner-art").src=`${import.meta.env.BASE_URL}models/guardian-${game.stage.id}.png`;
     $<HTMLImageElement>("region-banner-object").src=eggIcon({type:0,stageId:game.stage.id,variant:0});
     $("region-banner").style.setProperty('--region-accent',`#${game.stage.accent.toString(16).padStart(6,'0')}`);
@@ -334,8 +333,8 @@ function updateHud() {
   $('speed-hud').setAttribute('aria-label',speedHelp);
   $('speed-hud').title=speedHelp;
   $('recommended-speed-value').textContent=num(game.recommendedSpeed,1);
-  $('day-clock').setAttribute('aria-label',`필요 속도 ${num(game.recommendedSpeed,1)}`);
-  $('day-clock').title=`필요 속도 ${num(game.recommendedSpeed,1)}`;
+  $('day-clock').setAttribute('aria-label',`권장 속도 ${num(game.recommendedSpeed,1)}`);
+  $('day-clock').title=`권장 속도 ${num(game.recommendedSpeed,1)}`;
   const phase=cycleClock(game.now(),game.nightAt,game.nightUntil),clock=$('cycle-clock');
   $('cycle-phase').textContent=phase.night?'☾ 밤':'☀ 낮';
   $('cycle-label').textContent=phase.night?'아침까지':'밤까지';
@@ -408,7 +407,7 @@ function updateHud() {
   $('dust').parentElement!.title=`별가루 ${exactMoney(game.save.dust)}`;
   $('dust').parentElement!.querySelector('small')!.textContent=`${num(game.incomePerSecond)}/초`;
   $("timer").textContent = num(game.recommendedSpeed,1);
-  $("timer-label").textContent = "필요 속도";
+  $("timer-label").textContent = "권장 속도";
   $("timer-fill").style.width = `${Math.min(100,game.speed/game.recommendedSpeed*100)}%`;
   $("expedition").classList.remove("urgent");
   $("hint").textContent =

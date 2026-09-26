@@ -18,7 +18,7 @@ try{
   rows.push(await page.evaluate(()=>({stage:window.__exploration.game.stage.id,...window.__qa.metrics(),assetError:window.__exploration.world.assetError})));
  }
  await page.evaluate(()=>{const {game}=window.__exploration;game.carried=null;const egg=game.world.find(e=>e.stageId===14&&!e.special);game.x=egg.x;game.z=egg.z;game.save.trainingSpeed=848;game.revision++;});
- await page.waitForFunction(()=>document.querySelector('.egg-speed-label')?.textContent==='필요 속도 1.1K / 현재 850');
+ await page.waitForFunction(()=>document.querySelector('.egg-speed-label')?.textContent==='권장 속도 1.1K / 현재 850 · 들면 즉사');
  assert.equal(await page.locator('.egg-speed-label').isVisible(),true);await page.screenshot({path:'artifacts/exploration-rework/required-speed.png'});
  await page.evaluate(async()=>{const {game}=window.__exploration,{shortcut}=await import('/src/exploration-route.ts');const p=shortcut(5);game.x=p.x;game.z=p.z-4*48;game.revision++;});
  await page.waitForFunction(()=>document.querySelector('#action-label')?.textContent==='밀기');await page.click('#action');

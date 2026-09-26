@@ -1,4 +1,5 @@
 import type {Block,Motion} from './region-layout';
+import {explorationWalls} from './exploration-walls';
 import {STAGES} from './stage-data';
 import {terrainAt,routePoint,routeLength,shortcut,EXPLORATION_MAPS} from './exploration-route';
 
@@ -73,5 +74,6 @@ export function explorationLayout(stage:number,sculpture:(stage:number,variant:n
   for(let i=0;i<3;i++){b(gate.x,.35+i*.4,gate.z+.7,1.3,.13,2.4,s.accent);blocks[blocks.length-1].gate=stage;}
  }
  if(stage===20)b(0,.4,-6-length,27,.8,1,s.color,true);
+ blocks.push(...explorationWalls(stage,length));
  return {blocks,motions,title:EXPLORATION_MAPS[stage-1][2]};
 }

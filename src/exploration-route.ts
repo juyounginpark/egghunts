@@ -75,6 +75,10 @@ export function shortcut(stage:number){
  return {...p,x:p.x+side*3,label:stage===14?'펼치기':stage===17?'치우기':'밀기'};
 }
 export function eggAnchor(stage:number,slot:number){
- const p=routePoint(stage,.9+(slot%3)*.025);
- return {x:(slot-2)*2.4,z:p.z};
+ const lane=slot-2;
+ return {x:lane*2.4,z:-6-routeLength(stage)+(stage===20?32:12)+(lane/2)**2*2.2};
 }
+export function bossAnchor(stage:number,final=false){
+ return {x:0,z:-6-routeLength(stage)+(final?8:stage===20?25:5)};
+}
+export function specialEggAnchor(){return {x:0,z:-6-routeLength(20)+17};}
