@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,10 +16,18 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
-        13,
+        17,
         2
       ],
       "parent": "head"
@@ -27,32 +35,22 @@
     "head": {
       "pivot": [
         11.5,
-        11,
+        15,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        11,
+        15,
         12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        0.22
       ]
     },
     "left_leg": {
@@ -63,35 +61,17 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        11,
+        15,
         12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        -0.22
       ]
     },
     "right_leg": {
@@ -102,66 +82,91 @@
       ],
       "parent": "body"
     },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
     "tail": {
       "pivot": [
         11.5,
         6,
-        17
+        17.0
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-188",
     "id": 188,
-    "name": "하늘 익룡",
-    "stage": 9,
-    "stageName": "태초의 공룡섬",
+    "oldStage": 9,
+    "stage": 8,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "bat",
-    "role": "신비로운 펫",
+    "previousName": "하늘 익룡",
+    "name": "이끼 긴목공룡",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "양치 막날개을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 하늘 익룡.",
-    "inspiration": "양치식물 · 화석 절벽 · 늪 / dinosaur",
-    "silhouette": [
-      "작은 얼굴과 접힌 큰 삼각 날개",
-      "양치 막날개"
-    ],
-    "feature": "양치 막날개",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "화석과 살아 있는 양치식물이 함께 자라는 섬",
-    "material": "가죽·화석",
-    "body": "작은 얼굴과 접힌 큰 삼각 날개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "양치식물 · 화석 절벽 · 늪에서 온 양치 막날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "몸의 숲색 → 배의 따뜻한 모래색; 뼈 절단면은 아이보리",
-    "colorPlacement": "몸 #4e874d; 대표 기관 #4e874d; 발·연결부 #a4553e; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#4e874d",
-      "accent": "#4e874d"
-    },
-    "idle": "무거운 몸을 옮기고 등 돛 까딱 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 작은 얼굴과 접힌 큰 삼각 날개; 몸 양옆으로 펼친 기관에 양치 막날개",
+    "prompt": "작은 머리와 완만하게 올라가는 긴 목, 둥근 몸을 가진 초식 공룡을 만들라. 몸은 밝은 갈색, 배는 아이보리이며 등 한쪽에만 깊은 초록 이끼를 넓게 얹는다. 이끼 위에는 작은 새 둥지 하나를 두되 새는 단순한 실루엣으로 처리한다. 둥지를 확인하려고 목을 뒤로 돌리는 동작을 준다.",
+    "key": "pet-188",
+    "anatomy": "giraffe",
+    "feature": "moss",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "giraffe",
+    "colors": {
+      "primary": "#9a7656"
+    },
+    "idle": "작은 머리와 완만하게 올라가는 긴 목, 둥근 몸을 가진 초식 공룡을 만들라. 몸은 밝은 갈색, 배는 아이보리이며 등 한쪽에만 깊은 초록 이끼를 넓게 얹는다. 이끼 위에는 작은 새 둥지 하나를 두되 새는 단순한 실루엣으로 처리한다. 둥지를 확인하려고 목을 뒤로 돌리는 동작을 준다."
   }
 }

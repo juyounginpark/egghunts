@@ -1,194 +1,174 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
+    44,
     24,
-    25,
-    35
+    50
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        21.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
-        11.5,
+        21.5,
         14,
-        1
+        0
       ],
       "parent": "head"
     },
     "float": {
       "pivot": [
-        11.5,
-        14,
-        15
-      ],
-      "parent": "body"
-    },
-    "head": {
-      "pivot": [
-        11.5,
+        21.5,
         12,
-        7
+        19
       ],
       "parent": "body",
       "rotation": [
-        0.02,
-        0,
-        0
+        0.15,
+        0.25,
+        0.3
       ]
     },
-    "left_ear": {
+    "head": {
       "pivot": [
-        6,
-        15,
-        12
+        21.5,
+        12,
+        10
       ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
+      "parent": "neck"
     },
-    "left_leg": {
+    "left_arm": {
       "pivot": [
-        6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_ear": {
-      "pivot": [
-        17,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        17,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        7,
+        16.5,
+        10,
         18
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        0.2,
+        0.08,
+        -0.22,
+        0.08
+      ]
+    },
+    "neck": {
+      "pivot": [
+        21.5,
+        8,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        -0.13,
+        0,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        26.5,
+        10,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "tail": {
+      "pivot": [
+        21.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        11.5,
-        7,
-        22
+        21.5,
+        6,
+        25.4
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        0.2,
+        -0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        11.5,
-        7,
-        26
+        21.5,
+        6,
+        30.8
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        0.2,
+        0.08,
+        -0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        11.5,
-        7,
-        30
+        21.5,
+        6,
+        36.2
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        0.2,
+        0.12,
+        -0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        21.5,
+        6,
+        41.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-311",
     "id": 311,
-    "name": "모선핵 성운룡",
-    "stage": 12,
-    "stageName": "외계인 51구역",
+    "oldStage": 12,
+    "stage": 11,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "모선핵 성운룡",
+    "name": "월식의 외계룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "분리된 감각판 날개·바닥에 벌어진 흡착 발을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 모선핵 성운룡.",
-    "inspiration": "UFO · 연구소 · 형광 액체 / ufo",
-    "silhouette": [
-      "넓은 접시 배의 궤도 실험룡",
-      "분리된 감각판 날개·바닥에 벌어진 흡착 발"
-    ],
-    "feature": "분리된 감각판 날개·바닥에 벌어진 흡착 발",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "다른 중력에서 몸의 균형을 시험하는 연구 구역",
-    "material": "배양막·실험 금속",
-    "body": "넓은 접시 배의 궤도 실험룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "UFO · 연구소 · 형광 액체에서 온 분리된 감각판 날개·바닥에 벌어진 흡착 발: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "배양막 중심 라임 → 가장자리 청록; 감각판 안쪽 보라빛",
-    "colorPlacement": "몸 #efaa79; 대표 기관 #7854af; 발·연결부 #87bf40; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "머리가 넓고 목이 짧으며 두 개의 큰 막날개가 몸을 둥글게 감싸는 외계 용을 만들라. 몸은 짙은 가지색, 배는 크림색, 날개 가장자리는 옅은 민트로 구분한다. 이마의 작은 제3의 눈과 등 위의 분리된 원반 한 개를 대표 특징으로 둔다. 원반이 몸 뒤로 이동하면 월식 같은 큰 윤곽이 만들어지게 한다. 막날개가 열릴 때 원반 가장자리만 얇게 빛나게 한다. 전용 알은 가지색 껍질과 민트색 원환, 눈 모양 점 하나를 사용한다.",
+    "key": "pet-311",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
+    "previewAngle": 35,
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
     "colors": {
-      "primary": "#efaa79",
-      "accent": "#7854af"
+      "primary": "#513750"
     },
-    "idle": "몸은 낮고 감각판은 반대로 떠오름 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 넓은 접시 배의 궤도 실험룡; 성체 전용 골격에 분리된 감각판 날개·바닥에 벌어진 흡착 발",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "끌어당기는 빛에서 스스로 벗어나, 배양액 너머로.",
-    "acquisitionCondition": "UFO 견인 영역에 들어갔다 탈출 + 배양액 분출 회피",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "idle": "머리가 넓고 목이 짧으며 두 개의 큰 막날개가 몸을 둥글게 감싸는 외계 용을 만들라. 몸은 짙은 가지색, 배는 크림색, 날개 가장자리는 옅은 민트로 구분한다. 이마의 작은 제3의 눈과 등 위의 분리된 원반 한 개를 대표 특징으로 둔다. 원반이 몸 뒤로 이동하면 월식 같은 큰 윤곽이 만들어지게 한다. 막날개가 열릴 때 원반 가장자리만 얇게 빛나게 한다. 전용 알은 가지색 껍질과 민트색 원환, 눈 모양 점 하나를 사용한다."
   }
 }

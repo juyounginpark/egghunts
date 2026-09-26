@@ -1,0 +1,48 @@
+<!doctype html><meta charset="utf-8"><title>World art review</title><script type="module">
+import * as T from '/node_modules/three/build/three.module.js';
+import {RegionArt} from '/src/region-art.ts';
+import {RegionArt as BeforeArt} from '/artifacts/art-rework/before/region-art.ts';
+import {loadVoxels,voxelModel} from '/src/voxel.ts';
+import {petVisual,eggVisual,animateEgg} from '/src/visuals.ts';
+import {animatePet} from '/src/pet-animation.ts';
+import {STAGES} from '/src/stage-data.ts';
+import {EGGS,MONGLES} from '/src/data.ts';
+const renderer=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});renderer.setSize(320,320);
+const scene=new T.Scene(),camera=new T.OrthographicCamera(-1,1,1,-1,.01,200);
+scene.add(new T.HemisphereLight(0xfffaee,0x92978c,2.5));const sun=new T.DirectionalLight(0xfff4df,2.6);sun.position.set(-3,6,5);scene.add(sun);
+const png=()=>{renderer.render(scene,camera);return renderer.domElement.toDataURL();};
+const disposeEffects=g=>g.traverse(o=>{if(o.isInstancedMesh)o.dispose();});
+function frame(box,angle=35){const center=box.getCenter(new T.Vector3()),size=box.getSize(new T.Vector3()),extent=Math.max(size.x,size.y,size.z)*.78;camera.left=-extent;camera.right=extent;camera.top=extent;camera.bottom=-extent;camera.updateProjectionMatrix();const a=angle*Math.PI/180;camera.position.set(center.x+Math.sin(a)*4,center.y+1,center.z+Math.cos(a)*4);camera.lookAt(center);}
+window.artReview={
+ async beforeAfter(id){
+  const old=`../artifacts/art-rework/before/pet-${id}`;await loadVoxels([old,`pet-${id}`]);
+  const models=[voxelModel(old,true),voxelModel(`pet-${id}`,true)],bounds=new T.Box3();for(const m of models)bounds.union(new T.Box3().setFromObject(m));frame(bounds,models[1].userData.previewAngle);
+  const output=[];for(const m of models){scene.add(m);output.push(png());scene.remove(m);}return output;
+ },
+ environment(stage){
+  renderer.setSize(640,640);scene.background=new T.Color('#dce3e8');camera.left=-24;camera.right=24;camera.top=24;camera.bottom=-24;camera.updateProjectionMatrix();camera.position.set(0,30,-5);camera.lookAt(0,0,-36);
+  const out=[];for(const Class of [BeforeArt,RegionArt]){const art=new Class();art.renderSection(stage,0,108,-34,2);scene.add(art.group);out.push(png());art.dispose();}
+  renderer.setSize(320,320);scene.background=null;return out;
+ },
+ async specimen(id){
+  await loadVoxels([`pet-${id}`]);const model=petVisual(id),staticModel=voxelModel(`pet-${id}`,false);
+  const box=new T.Box3().setFromObject(model.children.find(c=>c.name!=='sparks')??model);
+  const actual=new T.Box3().setFromObject(voxelModel(`pet-${id}`,true),true),baked=new T.Box3().setFromObject(staticModel,true);
+  const mismatch=Math.max(actual.min.distanceTo(baked.min),actual.max.distanceTo(baked.max));
+  frame(actual,model.userData.previewAngle);scene.add(model);animatePet(model,id,0,false,true);
+  const sparks=model.getObjectByName('sparks'),materials=[];model.traverse(o=>{if(o.isMesh&&o!==sparks)materials.push([o,o.material]);});
+  const gray=new T.MeshLambertMaterial({color:0x999999}),images=[];
+  sparks.visible=false;materials.forEach(([o])=>o.material=gray);images.push(png());materials.forEach(([o,m])=>o.material=m);images.push(png());
+  sparks.visible=true;animateEgg(model,2);images.push(png());scene.background=new T.Color('#202735');images.push(png());scene.background=null;
+  scene.remove(model);disposeEffects(model);gray.dispose();return {images,mismatch,extent:box.getSize(new T.Vector3()).toArray()};
+ },
+ async eggPair(stage){
+  const ordinary=MONGLES.findIndex(m=>m.stageId===stage&&m.species===0),dragon=MONGLES.findIndex(m=>m.stageId===stage&&m.species===10);await loadVoxels([`pet-${ordinary}`,`pet-${dragon}`]);
+  const out=[];for(const secret of [false,true]){
+   const tier=secret?6:MONGLES[ordinary].tier,type=EGGS.findIndex(e=>e.tier===tier);
+   const egg=eggVisual(type,{type,stageId:stage,variant:secret?5:0}),pet=petVisual(secret?dragon:ordinary);
+   for(const model of [egg,pet]){scene.add(model);model.getObjectByName('sparks').visible=false;frame(new T.Box3().setFromObject(model));out.push(png());scene.remove(model);disposeEffects(model);}
+  }return {name:STAGES[stage-1].name,images:out};
+ }
+};
+</script>

@@ -1,3 +1,7 @@
+import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
+import {migrateStageSave} from './stage-migration';
+import {formatNumber} from './format';
+import {ECONOMY,recommendedIncome,growthCost} from './data';
 import {
   BALANCE,
   STAGE_COLLECTION_REWARDS,
@@ -54,6 +58,7 @@ export type Boss = {
   loot: WorldEgg | null;
 };
 export type Save = {
+  stageOrderVersion?:2;
   playerName?:string;
   dragonClues?:Record<string,DragonClue>;
   visitedStages?:number[];
@@ -66,7 +71,7 @@ export type Save = {
   trails?: number[];
   equippedTrail?: number;
   trainingSpeed?: number;
-  petIncome?: { elapsed:number; pending:number };
+  petIncome?: { elapsed:number; pending:Money };
   tutorial?: number;
   bossWarningSeen?:boolean;
   claimedPets?: number[];
@@ -78,7 +83,7 @@ export type Save = {
   nightUntil?: number;
   world?: WorldEgg[];
   bosses?: Boss[];
-  dust: number;
+  dust: Money;
   upgrades: Record<Upgrade, number>;
   eggs: Egg[];
   mongles: number[];
@@ -87,6 +92,7 @@ export type Save = {
   selected: string | null;
   best: number;
   lastSavedAt: number;
+  productionAt?: number;
   expedition: {
     deadline: number;
     x: number;
@@ -100,6 +106,7 @@ export type Save = {
 export function freshSave(now: number): Save {
   return {
     version: 1,
+    stageOrderVersion:2,
     trails: [0],
     equippedTrail: 0,
     dust: 0,
@@ -120,6 +127,7 @@ export function freshSave(now: number): Save {
 export function parseSave(raw: string | null, now: number): Save {
   if (!raw) return freshSave(now);
   const s = JSON.parse(raw) as Save;
+  migrateStageSave(s);
   migrateEggHealth([...(Array.isArray(s.eggs)?s.eggs:[]),...(Array.isArray(s.world)?s.world:[]),s.expedition?.carried,...(Array.isArray(s.bosses)?s.bosses.flatMap(b=>b.loot?[b.loot]:[]):[])]);
   s.dragonClues??={};validateDragonClues(s.dragonClues);
   s.obtainedPets??=Array.isArray(s.mongles)?s.mongles.flatMap((n,i)=>n?[i]:[]):[];
@@ -137,7 +145,7 @@ export function parseSave(raw: string | null, now: number): Save {
   s.bossWarningSeen??=false;
   if(typeof s.bossWarningSeen!=='boolean')throw new Error('Invalid boss warning state');
   s.petIncome ??= {elapsed:0,pending:0};
-  if(!Number.isFinite(s.petIncome.elapsed)||s.petIncome.elapsed<0||s.petIncome.elapsed>=BALANCE.petIncomeSeconds||!Number.isFinite(s.petIncome.pending)||s.petIncome.pending<0)throw new Error('Invalid pet income');
+  if(!Number.isFinite(s.petIncome.elapsed)||s.petIncome.elapsed<0||s.petIncome.elapsed>=BALANCE.petIncomeSeconds||!validMoney(s.petIncome.pending))throw new Error('Invalid pet income');
   s.visitedStages ??= [];
   if(!Array.isArray(s.visitedStages)||!s.visitedStages.every(id=>Number.isInteger(id)&&id>=1&&id<=20))throw Error('Invalid visited stages');
   if(s.death&&(![s.death.x,s.death.z,s.death.at,s.death.remaining].every(Number.isFinite)||s.death.remaining<0||Math.abs(s.death.x)>BALANCE.baseMapX||s.death.z<BALANCE.mapFarZ||s.death.z>BALANCE.mapNearZ))throw new Error("Invalid death state");
@@ -152,7 +160,7 @@ export function parseSave(raw: string | null, now: number): Save {
   const finite = (v: unknown) =>
     typeof v === "number" && Number.isFinite(v) && v >= 0;
   if (
-    !finite(s.dust) ||
+    !validMoney(s.dust) ||
     !finite(s.trainingSpeed) || !Number.isInteger(s.tutorial) || s.tutorial < 0 || s.tutorial > 5 ||
     !finite(s.lastSavedAt) ||
     !finite(s.best) ||
@@ -298,7 +306,7 @@ export class GameState {
     if(d.effect==='ink')this.effects.ink=HAZARD_BALANCE.inkDuration;
     if(d.effect==='grab')this.effects.grab=HAZARD_BALANCE.grabDuration;
     if(d.effect==='ice')this.push(0,1);
-    if(d.effect==='dust'){const amount=Math.min(this.save.dust,HAZARD_BALANCE.dustDrop);this.save.dust-=amount;if(amount)this.dustDrops.push({x:this.x+.8,z:this.z,amount});}
+    if(d.effect==='dust'){const amount=compare(this.save.dust,HAZARD_BALANCE.dustDrop)<0?Number(this.save.dust):HAZARD_BALANCE.dustDrop;this.save.dust=subtract(this.save.dust,amount);if(amount)this.dustDrops.push({x:this.x+.8,z:this.z,amount});}
     this.emit('player_hit',{damage,hp:this.hp,stage:this.stage.id});this.revision++;
     if(this.hp<=0&&this.defenses.some(d=>d.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}
     if(this.hp<=0)this.die();return true;
@@ -325,13 +333,13 @@ export class GameState {
     const egg=this.save.eggs.find(e=>e.id===id);if(!egg)return 0;
     const price=this.eggSellPrice(egg.type);this.save.eggs=this.save.eggs.filter(e=>e.id!==id);
     if(this.save.selected===id){this.save.selected=this.save.eggs[0]?.id??null;this.autoClock=0;}
-    this.save.dust+=price;this.revision++;this.emit('egg_sold',{type:egg.type,price});return price;
+    this.save.dust=add(this.save.dust,price);this.revision++;this.emit('egg_sold',{type:egg.type,price});return price;
   }
   sellPet(id:number){
     if(!this.isAtBase||this.death||!Number.isInteger(id)||!this.save.mongles[id])return 0;
     this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(id))this.save.obtainedPets.push(id);
     this.save.mongles[id]--;if(!this.save.mongles[id])this.save.active=this.save.active.filter(i=>i!==id);
-    const price=this.petSellPrice(id);this.save.dust+=price;this.revision++;this.emit('pet_sold',{pet:id,price});return price;
+    const price=this.petSellPrice(id);this.save.dust=add(this.save.dust,price);this.revision++;this.emit('pet_sold',{pet:id,price});return price;
   }
   death:NonNullable<Save['death']>|null=null;
   private reviveAdUntil:number|null=null;
@@ -401,19 +409,31 @@ export class GameState {
     this.message=this.training?'운동 중 · 조이스틱으로 이동하면 운동을 마쳐요.':'운동을 마쳤어요.';
     this.revision++;return true;
   }
-  petIncomeStageMultiplier(id:number){const pet=MONGLES[id];return pet.stageId||BALANCE.petIncomeLegacyStageMultipliers[pet.region];}
-  petIncomeAmount(id:number){return BALANCE.petIncomeByTier[MONGLES[id].tier]*this.petIncomeStageMultiplier(id);}
+  get growthStage(){return Math.min(20,this.save.upgrades.speed+1);}
+  get productionMultiplier(){
+    const middle=ECONOMY.middleUpgrades.reduce((n,k)=>n+this.save.upgrades[k],0);
+    return ECONOMY.middleMultiplier**(middle-4*Math.min(19,this.save.upgrades.speed));
+  }
+  petIncomeStageMultiplier(id:number){const p=MONGLES[id];return 1+.02*((p.stageId||BALANCE.petIncomeLegacyStageMultipliers[p.region])-1);}
+  petIncomeAmount(id:number){return recommendedIncome(this.growthStage)*ECONOMY.tierProduction[MONGLES[id].tier]/4*this.petIncomeStageMultiplier(id)*this.productionMultiplier*BALANCE.petIncomeSeconds;}
   get petIncomePerCycle(){return this.save.active.reduce((sum,id)=>sum+this.petIncomeAmount(id),0);}
+  get incomePerSecond(){return this.petIncomePerCycle/BALANCE.petIncomeSeconds;}
+  offlineReward:Money=0;
+  settleProduction(at:number){
+    const previous=this.save.productionAt??this.save.lastSavedAt;
+    this.tickPetIncome(Math.min(BALANCE.offlineCap,Math.max(0,(at-previous)/1000)));
+    this.save.productionAt=Math.max(previous,at);
+  }
   private tickPetIncome(dt:number){
+    if(!Number.isFinite(dt)||dt<=0)return;
     const income=this.save.petIncome??={elapsed:0,pending:0};
-    if(!this.save.active.length&&income.pending<1)return;
     income.elapsed+=dt;
-    income.pending+=this.petIncomePerCycle*dt/BALANCE.petIncomeSeconds;
+    income.pending=add(income.pending,multiply(this.incomePerSecond,dt));
     if(income.elapsed+1e-9<BALANCE.petIncomeSeconds)return;
-    income.elapsed=Math.max(0,income.elapsed-BALANCE.petIncomeSeconds);
-    const amount=Math.floor(income.pending+1e-9);
-    income.pending=Math.max(0,income.pending-amount);
-    if(amount){this.save.dust+=amount;this.revision++;this.emit('pet_income',{amount});}
+    income.elapsed=(income.elapsed+1e-9)%BALANCE.petIncomeSeconds;
+    const amount=floorMoney(income.pending);
+    income.pending=subtract(income.pending,amount);
+    if(compare(amount,0)>0){this.save.dust=add(this.save.dust,amount);this.revision++;this.emit('pet_income',{amount});}
   }
   facing = { x: 0, z: -1 };
   events: { name: string; params: Record<string, string | number> }[] = [];
@@ -453,6 +473,7 @@ export class GameState {
     public random: () => number = Math.random,
     hydrateOnly=false,
   ) {
+    migrateStageSave(save);
     migrateEggHealth([...save.eggs,...(save.world??[]),save.expedition?.carried,...(save.bosses??[]).flatMap(b=>b.loot?[b.loot]:[])]);
     save.dragonClues??={};
     this.mapCollision.setFarm(villageMapColliders());
@@ -489,7 +510,7 @@ export class GameState {
     if (
       save.world &&
       save.bosses &&
-      save.routeVersion === 2 && [21-oldEntrance,22-oldEntrance].includes(save.bosses.length) &&
+      save.routeVersion === 2 && save.bosses.length>0&&save.bosses.length<=21 &&
       save.world.every(
         (e) => EGGS[e.type] && Number.isFinite(e.x) && Number.isFinite(e.z),
       ) &&
@@ -500,8 +521,9 @@ export class GameState {
           ["idle", "waking", "chase", "return"].includes(b.mode),
       )
     ) {
-      this.world = [...this.world.filter(e=>e.stageId!<oldEntrance||(e.special&&!save.bosses!.some(b=>b.final))),...save.world];
-      this.bosses.splice(oldEntrance-1,save.bosses.length,...save.bosses);
+      const restoredStages=new Set(save.bosses.filter(b=>!b.final).map(b=>b.stageId));
+      this.world = [...this.world.filter(e=>e.special?!save.bosses!.some(b=>b.final):!restoredStages.has(e.stageId)),...save.world];
+      for(const boss of save.bosses){const i=this.bosses.findIndex(b=>b.stageId===boss.stageId&&!!b.final===!!boss.final);if(i>=0)this.bosses[i]=boss;}
     }
     // Older saves applied the sleeping offset only in the renderer.
     for(const boss of this.bosses){
@@ -543,8 +565,7 @@ export class GameState {
     return (
       this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
       (BALANCE.speed *
-      (1 +
-        BALANCE.speedPerLevel * this.save.upgrades.speed) + (this.save.trainingSpeed ?? 0)) *
+      (ECONOMY.speedGrowth ** this.save.upgrades.speed) + (this.save.trainingSpeed ?? 0)) *
       (this.carried
         ? Math.min(
             1,
@@ -562,7 +583,7 @@ export class GameState {
   }
   get dps() {
     return (
-      (BALANCE.baseAutoDamage + BALANCE.autoDamagePerLevel * this.save.upgrades.damage) *
+      (BALANCE.baseAutoDamage + BALANCE.autoDamagePerLevel * this.save.upgrades.damage) * ECONOMY.hatchGrowth**this.save.upgrades.damage *
         (BALANCE.baseAutoRate + BALANCE.autoRatePerLevel * this.save.upgrades.rate) * this.autoMultiplier
     );
   }
@@ -748,7 +769,7 @@ export class GameState {
     for(let left=dt;left>1e-9&&!this.death;left-=PROGRESSION.simulationStep)this.tickStep(Math.min(left,PROGRESSION.simulationStep));
   }
   private tickStep(dt:number){
-    this.tickPetIncome(dt);
+    if(!this.roomManaged){this.tickPetIncome(dt);this.save.productionAt=this.now();}
     this.syncStage();
     if(this.knockback.remaining>0){const step=Math.min(dt,this.knockback.remaining);this.push(this.knockback.x*step,this.knockback.z*step);this.knockback.remaining-=step;}
     this.hp=Math.min(this.hp,this.maxHp);
@@ -759,11 +780,11 @@ export class GameState {
       if(near&&!this.progression.seenEggs.includes(near.type)){this.progression.seenEggs.push(near.type);this.progression.pendingXP+=PROGRESSION.discoveryXP;this.revision++;this.emit('egg_discovered',{type:near.type});}
       const reached=Math.floor(this.distance/PROGRESSION.distanceStep),old=Math.floor(this.progression.distanceRecord/PROGRESSION.distanceStep);
       if(reached>old){this.progression.pendingXP+=(reached-old)*PROGRESSION.distanceXP;this.progression.distanceRecord=this.distance;this.revision++;}
-      this.hazards.tick(dt,this.stage.id,{x:this.x,z:this.z,vx:this.velocity.x,vz:this.velocity.z,facing:this.facing,carrying:!!this.carried,metal:!!this.carried&&[2,18].includes(this.stage.id),moving:Math.hypot(this.velocity.x,this.velocity.z)>.01,stageOffset:this.stageOffset,guardianAwake:this.pursuing>=0&&Math.hypot(this.bosses[this.pursuing].x-this.x,this.bosses[this.pursuing].z-this.z)<12,guardianStage:this.bosses[this.pursuing]?.stageId,guardianOffset:((this.bosses[this.pursuing]?.stageId??this.stage.id)-this.progression.stage)*ROUTE.length},h=>this.applyHazard(h),(x,z)=>this.push(x,z),(key,seconds)=>{if(key in this.effects)this.effects[key as keyof typeof this.effects]=seconds;},!!this.carried&&EGGS[this.carried.type].tier===6);
+      this.hazards.tick(dt,this.stage.id,{x:this.x,z:this.z,vx:this.velocity.x,vz:this.velocity.z,facing:this.facing,carrying:!!this.carried,metal:!!this.carried&&[2,17].includes(this.stage.id),moving:Math.hypot(this.velocity.x,this.velocity.z)>.01,stageOffset:this.stageOffset,guardianAwake:this.pursuing>=0&&Math.hypot(this.bosses[this.pursuing].x-this.x,this.bosses[this.pursuing].z-this.z)<12,guardianStage:this.bosses[this.pursuing]?.stageId,guardianOffset:((this.bosses[this.pursuing]?.stageId??this.stage.id)-this.progression.stage)*ROUTE.length},h=>this.applyHazard(h),(x,z)=>this.push(x,z),(key,seconds)=>{if(key in this.effects)this.effects[key as keyof typeof this.effects]=seconds;},!!this.carried&&EGGS[this.carried.type].tier===6);
       const clue=this.save.dragonClues![this.stage.id]??=newDragonClue();
       observeDragon(clue,this.dragonWatch,this.stage.id,dt,{x:this.x,z:this.z,offset:this.stageOffset,hit:Number.isFinite(this.hitAt)?this.hitAt:0,egg:this.carried?.stageId===this.stage.id?this.carried.id:null,moving:Math.hypot(this.velocity.x,this.velocity.z)>.01},this.hazards.attacks);
     }else {this.hazards.reset();this.dragonWatch={stage:0,observed:{}};}
-    for(const drop of [...this.dustDrops])if(Math.hypot(drop.x-this.x,drop.z-this.z)<1){this.save.dust+=drop.amount;this.dustDrops=this.dustDrops.filter(d=>d!==drop);this.revision++;}
+    for(const drop of [...this.dustDrops])if(Math.hypot(drop.x-this.x,drop.z-this.z)<1){this.save.dust=add(this.save.dust,drop.amount);this.dustDrops=this.dustDrops.filter(d=>d!==drop);this.revision++;}
     if (this.training && this.nearGym) {
       this.save.trainingSpeed = (this.save.trainingSpeed ?? 0) + this.trainingRate*dt;
       this.trainingClock+=dt;this.trainingGain+=this.effectiveTrainingRate*dt;
@@ -816,7 +837,7 @@ export class GameState {
       const hits = Math.floor((this.autoClock + 1e-9) / interval);
       this.autoClock = Math.max(0, this.autoClock - hits * interval);
       this.damage(
-        hits * (BALANCE.baseAutoDamage + BALANCE.autoDamagePerLevel * this.save.upgrades.damage) * this.autoMultiplier,
+        hits * (BALANCE.baseAutoDamage + BALANCE.autoDamagePerLevel * this.save.upgrades.damage) * ECONOMY.hatchGrowth**this.save.upgrades.damage * this.autoMultiplier,
       );
     }
   }
@@ -886,25 +907,31 @@ export class GameState {
       this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(m))this.save.obtainedPets.push(m);
       if (!this.save.active.includes(m) && this.save.active.length < BALANCE.maxCompanions)
         this.save.active.push(m);
-      this.save.dust += EGGS[e.type].reward;
+      this.save.dust=add(this.save.dust,EGGS[e.type].reward);
       this.save.eggs = this.save.eggs.filter((v) => v.id !== e.id);
       this.save.selected = null;
       this.result = m;
-      this.message = `${MONGLES[m].name} 탄생! 별가루 +${EGGS[e.type].reward}`;
+      this.message = `${MONGLES[m].name} 탄생! 별가루 +${formatNumber(EGGS[e.type].reward)}`;
       this.revision++;
     }
     return true;
   }
   offline(seconds: number) {
-    this.damage(Math.min(BALANCE.offlineCap, Math.max(0, seconds)) * this.dps);
+    if(!Number.isFinite(seconds)||seconds<=0)return 0;
+    const elapsed=Math.min(BALANCE.offlineCap,seconds),before=this.save.dust;
+    this.tickPetIncome(elapsed);
+    this.damage(elapsed*this.dps);
+    this.offlineReward=subtract(this.save.dust,before);
+    this.save.productionAt=this.now();
+    return this.offlineReward;
   }
   buyTrail(id: number) {
     const trail = TRAILS[id];
     if (!trail || !Number.isInteger(id)) return false;
     this.save.trails ??= [0];
     if (!this.save.trails.includes(id)) {
-      if (this.save.dust < trail.cost) return false;
-      this.save.dust -= trail.cost;
+      if (compare(this.save.dust,trail.cost)<0) return false;
+      this.save.dust = subtract(this.save.dust,trail.cost);
       this.save.trails.push(id);
       this.emit("trail_purchase", {trail:id});
     }
@@ -916,36 +943,34 @@ export class GameState {
   claimPet(id: number) {
     if (!MONGLES[id] || !this.hasDiscoveredPet(id) || this.save.claimedPets?.includes(id)) return 0;
     const reward=this.discoveryReward(id);
-    (this.save.claimedPets??=[]).push(id);this.save.dust+=reward;this.revision++;
+    (this.save.claimedPets??=[]).push(id);this.save.dust=add(this.save.dust,reward);this.revision++;
     this.emit("collection_reward",{pet:id,reward});return reward;
   }
   claimRegion(region: number) {
     if (!REGIONS[region] || this.save.claimedRegions?.includes(region) || MONGLES.some((m,i)=>m.stageId===0&&m.region===region&&!this.hasDiscoveredPet(i))) return 0;
     const reward=BALANCE.regionCollectionRewards[region];
-    (this.save.claimedRegions??=[]).push(region);this.save.dust+=reward;this.revision++;return reward;
+    (this.save.claimedRegions??=[]).push(region);this.save.dust=add(this.save.dust,reward);this.revision++;return reward;
   }
   claimCollection() {
     if (this.save.claimedCollection || MONGLES.some((m,i)=>m.stageId===0&&!this.hasDiscoveredPet(i))) return 0;
-    this.save.claimedCollection=true;this.save.dust+=BALANCE.fullCollectionReward;this.revision++;return BALANCE.fullCollectionReward;
+    this.save.claimedCollection=true;this.save.dust=add(this.save.dust,BALANCE.fullCollectionReward);this.revision++;return BALANCE.fullCollectionReward;
   }
   claimStage(stage:number){
     if(!Number.isInteger(stage)||!STAGES[stage-1]||this.save.claimedStages?.includes(stage)||MONGLES.some((m,i)=>m.stageId===stage&&!this.hasDiscoveredPet(i)))return 0;
     const reward=STAGE_COLLECTION_REWARDS[stage-1];
-    (this.save.claimedStages??=[]).push(stage);this.save.dust+=reward;this.revision++;return reward;
+    (this.save.claimedStages??=[]).push(stage);this.save.dust=add(this.save.dust,reward);this.revision++;return reward;
   }
   claimStageCollection(){
     if(this.save.claimedStageCollection||MONGLES.some((m,i)=>m.stageId>0&&!this.hasDiscoveredPet(i)))return 0;
-    this.save.claimedStageCollection=true;this.save.dust+=BALANCE.fullCollectionReward;this.revision++;return BALANCE.fullCollectionReward;
+    this.save.claimedStageCollection=true;this.save.dust=add(this.save.dust,BALANCE.fullCollectionReward);this.revision++;return BALANCE.fullCollectionReward;
   }
   cost(k: Upgrade) {
-    return Math.floor(
-      UPGRADES[k].cost * UPGRADES[k].growth ** this.save.upgrades[k],
-    );
+    return growthCost(k,this.save.upgrades[k]);
   }
   upgrade(k: Upgrade) {
     const cost = this.cost(k);
-    if (this.save.dust < cost || this.save.upgrades[k] >= BALANCE.maxUpgrade) return false;
-    this.save.dust -= cost;
+    if (compare(this.save.dust,cost)<0 || this.save.upgrades[k] >= BALANCE.maxUpgrade) return false;
+    this.save.dust = subtract(this.save.dust,cost);
     this.save.upgrades[k]++;
     this.emit("upgrade_purchase", {type:k, level:this.save.upgrades[k]});
     this.revision++;

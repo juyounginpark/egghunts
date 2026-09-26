@@ -6,23 +6,15 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
         11.5,
         7,
-        12
+        14
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -32,37 +24,40 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        17
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
         8,
-        7
+        9
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
         6,
         15,
-        12
+        14
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
       "pivot": [
         6,
         7,
-        12
+        14
       ],
       "parent": "body"
     },
@@ -70,62 +65,43 @@
       "pivot": [
         17,
         15,
-        12
+        14
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
       "pivot": [
         17,
         7,
-        12
+        14
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-171",
     "id": 171,
-    "name": "오아시스 새싹",
-    "stage": 8,
-    "stageName": "황금 사막왕국",
+    "oldStage": 8,
+    "stage": 7,
     "slot": 1,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "seed",
-    "role": "작고 귀여운 펫",
+    "previousName": "오아시스 새싹",
+    "name": "물병낙타",
     "tier": 0,
-    "rarity": "C",
-    "concept": "대추야자 잎을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 오아시스 새싹.",
-    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
-    "silhouette": [
-      "폭 12칸의 낮은 씨앗과 두 뿌리 발",
-      "대추야자 잎"
-    ],
-    "feature": "대추야자 잎",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
-    "material": "사암·황동",
-    "body": "폭 12칸의 낮은 씨앗과 두 뿌리 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 대추야자 잎: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 붙인 큰 기관",
-    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
-    "colorPlacement": "몸 #93532e; 대표 기관 #d7a247; 발·연결부 #f5d48b; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#93532e",
-      "accent": "#d7a247"
-    },
-    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 양 귀를 짧게 움찔하고 고개를 숙임",
-    "reaction": "몸을 움츠렸다 작은 인사를 한다",
-    "distinction": "작고 귀여운 펫: 폭 12칸의 낮은 씨앗과 두 뿌리 발; 등에 붙인 큰 기관에 대추야자 잎",
+    "prompt": "짧고 통통한 다리와 둥근 혹 하나가 있는 낙타를 만들라. 몸은 따뜻한 황갈색, 주둥이는 크림색이고 등에 매단 큰 청색 물병을 대표 오브제로 삼는다. 안장은 붉은 천 한 장으로 간단히 만든다. 고개를 낮추어 물병을 확인하고 입을 천천히 오물거리게 한다.",
+    "key": "pet-171",
+    "anatomy": "camel",
+    "feature": "bottle",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "camel",
+    "colors": {
+      "primary": "#b78d53"
+    },
+    "idle": "짧고 통통한 다리와 둥근 혹 하나가 있는 낙타를 만들라. 몸은 따뜻한 황갈색, 주둥이는 크림색이고 등에 매단 큰 청색 물병을 대표 오브제로 삼는다. 안장은 붉은 천 한 장으로 간단히 만든다. 고개를 낮추어 물병을 확인하고 입을 천천히 오물거리게 한다."
   }
 }

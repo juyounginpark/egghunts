@@ -1,237 +1,122 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
-    24,
-    35
+    36,
+    26,
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        17.5,
         7,
         12
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        17.5,
+        12,
+        2
+      ],
+      "parent": "body",
+      "rotation": [
+        0,
+        0,
+        0.2
+      ]
+    },
     "eyes": {
       "pivot": [
-        11.5,
-        10,
-        1
+        17.5,
+        19,
+        0
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
-        11.5,
-        8,
+        17.5,
+        17,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
-        6,
-        11,
-        12
+        14.5,
+        12,
+        13
       ],
       "parent": "body",
       "rotation": [
-        0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        0.12,
+        -0.25,
+        0.18
       ]
     },
     "left_ear": {
       "pivot": [
-        6,
+        12,
         15,
         12
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
+        0.22
       ]
     },
     "right_arm": {
       "pivot": [
-        17,
-        11,
-        12
+        20.5,
+        12,
+        13
       ],
       "parent": "body",
       "rotation": [
-        0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        0.12,
+        0.25,
+        -0.18
       ]
     },
     "right_ear": {
       "pivot": [
-        17,
+        23,
         15,
         12
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        17,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        18
-      ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
+        -0.22
       ]
     }
   },
   "concept": {
-    "key": "pet-118",
     "id": 118,
-    "name": "인형극 꼭두룡",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "dragon",
-    "role": "신비로운 펫",
+    "previousName": "인형극 꼭두룡",
+    "name": "오르골 백조",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "성문 날개을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 인형극 꼭두룡.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "앞이 높은 가슴과 굵은 꼬리",
-      "성문 날개"
-    ],
-    "feature": "성문 날개",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "앞이 높은 가슴과 굵은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 성문 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #d34d35; 대표 기관 #efbb36; 발·연결부 #32a6c2; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#d34d35",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 앞이 높은 가슴과 굵은 꼬리; 몸 양옆으로 펼친 기관에 성문 날개",
+    "prompt": "넓고 단순한 흰 몸에 가늘게 휘어진 목과 작은 얼굴을 연결하라. 날개 두 장은 접힌 부채처럼 뒤로 벌어지고 몸 아래에는 짧은 금색 오르골 받침을 둔다. 부리와 작은 왕관만 연분홍으로 강조한다. 받침 위에서 느리게 반 바퀴 돌며 날개 끝이 들리는 동작을 준다.",
+    "key": "pet-118",
+    "anatomy": "swan",
+    "feature": "music",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "swan",
+    "colors": {
+      "primary": "#eae9df"
+    },
+    "idle": "넓고 단순한 흰 몸에 가늘게 휘어진 목과 작은 얼굴을 연결하라. 날개 두 장은 접힌 부채처럼 뒤로 벌어지고 몸 아래에는 짧은 금색 오르골 받침을 둔다. 부리와 작은 왕관만 연분홍으로 강조한다. 받침 위에서 느리게 반 바퀴 돌며 날개 끝이 들리는 동작을 준다."
   }
 }

@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    32
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,6 +15,14 @@
         12
       ],
       "parent": null
+    },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -30,68 +38,54 @@
         15,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     }
   },
   "concept": {
-    "key": "pet-123",
     "id": 123,
-    "name": "해초 해마",
+    "oldStage": 3,
     "stage": 3,
-    "stageName": "얕은 산호 바다",
     "slot": 3,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "seahorse",
-    "role": "장난꾸러기 펫",
+    "previousName": "해초 해마",
+    "name": "리본해마",
     "tier": 1,
-    "rarity": "B",
-    "concept": "해초 띠을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 해초 해마.",
-    "inspiration": "산호 · 물결 · 문어 / coral",
-    "silhouette": [
-      "세로로 굽은 목과 말린 꼬리",
-      "해초 띠"
-    ],
-    "feature": "해초 띠",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "얕은 물결을 거르는 산호 생태계",
-    "material": "젖은 산호·패각",
-    "body": "세로로 굽은 목과 말린 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "산호 · 물결 · 문어에서 온 해초 띠: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "앞발로 쥔 물건",
-    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
-    "colorPlacement": "몸 #6868bd; 대표 기관 #f17e6f; 발·연결부 #22a9a4; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "머리에서 꼬리까지 세로로 길게 이어지는 살구색 해마를 만들라. 짧고 둥근 주둥이와 작은 눈, 안으로 말린 꼬리를 강조하고 등에는 얇은 분홍 지느러미를 달라. 목 아래의 길게 흐르는 리본형 지느러미가 대표 특징이다. 몸을 작게 기울일 때 리본과 꼬리가 서로 다른 속도로 따라오게 한다.",
+    "key": "pet-123",
+    "anatomy": "seahorse",
+    "feature": "ribbon",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "seahorse",
     "colors": {
-      "primary": "#6868bd",
-      "accent": "#f17e6f"
+      "primary": "#e8b18f"
     },
-    "idle": "짧게 뜨고 물결에 지느러미 접기 / 꼬리를 좌우로 흔들고 고개를 갸웃",
-    "reaction": "꼬리를 두 번 흔들며 고개를 갸웃한다",
-    "distinction": "장난꾸러기 펫: 세로로 굽은 목과 말린 꼬리; 앞발로 쥔 물건에 해초 띠",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "머리에서 꼬리까지 세로로 길게 이어지는 살구색 해마를 만들라. 짧고 둥근 주둥이와 작은 눈, 안으로 말린 꼬리를 강조하고 등에는 얇은 분홍 지느러미를 달라. 목 아래의 길게 흐르는 리본형 지느러미가 대표 특징이다. 몸을 작게 기울일 때 리본과 꼬리가 서로 다른 속도로 따라오게 한다."
   }
 }

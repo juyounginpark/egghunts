@@ -2,11 +2,11 @@
   "schema": "alkong-stage-assembly-v3",
   "size": [
     24,
-    24,
+    25,
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,29 +38,27 @@
         11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
       ]
     },
     "left_leg": {
@@ -71,35 +69,25 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
       ]
     },
     "right_leg": {
@@ -109,67 +97,27 @@
         12
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
-      ],
-      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-160",
     "id": 160,
-    "name": "픽셀 삐약",
-    "stage": 7,
-    "stageName": "네온 사이버시티",
+    "oldStage": 7,
+    "stage": 6,
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "bird",
-    "role": "대표 마스코트",
+    "previousName": "픽셀 삐약",
+    "name": "안테나 토끼",
     "tier": 0,
-    "rarity": "C",
-    "concept": "접힌 드론날개을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 픽셀 삐약.",
-    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
-    "silhouette": [
-      "앞으로 나온 쐐기 부리와 낮은 양 날개",
-      "접힌 드론날개"
-    ],
-    "feature": "접힌 드론날개",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
-    "material": "전자 패널",
-    "body": "앞으로 나온 쐐기 부리와 낮은 양 날개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 접힌 드론날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
-    "colorPlacement": "몸 #263d70; 대표 기관 #26c6bb; 발·연결부 #26c6bb; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#263d70",
-      "accent": "#26c6bb"
-    },
-    "idle": "정지 후 짧은 신호 펄스와 틸트 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 앞으로 나온 쐐기 부리와 낮은 양 날개; 머리와 등에 이어지는 기관에 접힌 드론날개",
+    "prompt": "흰색의 작은 토끼에 길고 가는 귀 두 개를 세우고 끝을 바깥으로 기울여라. 귀 안쪽에 청록빛 선 한 줄, 발에는 작은 남색 패드를 둔다. 짧은 얼굴과 검정 점눈은 발광 없이 읽히게 한다. 귀 한쪽이 신호를 찾듯 돌아가고 신호를 잡으면 귀 끝만 한 번 밝아지게 한다.",
+    "key": "pet-160",
+    "anatomy": "rabbit",
+    "feature": "antenna",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "rabbit",
+    "colors": {
+      "primary": "#eae9df"
+    },
+    "idle": "흰색의 작은 토끼에 길고 가는 귀 두 개를 세우고 끝을 바깥으로 기울여라. 귀 안쪽에 청록빛 선 한 줄, 발에는 작은 남색 패드를 둔다. 짧은 얼굴과 검정 점눈은 발광 없이 읽히게 한다. 귀 한쪽이 신호를 찾듯 돌아가고 신호를 잡으면 귀 끝만 한 번 밝아지게 한다."
   }
 }

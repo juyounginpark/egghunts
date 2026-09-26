@@ -1,12 +1,12 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
+    25,
     24,
-    24,
-    24
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,40 +16,19 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        10,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
+        8,
         7
-      ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
-    },
-    "left_arm": {
-      "pivot": [
-        6,
-        7,
-        12
       ],
       "parent": "body"
     },
@@ -61,22 +40,14 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
       "pivot": [
         6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_arm": {
-      "pivot": [
-        17,
         7,
         12
       ],
@@ -90,9 +61,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -102,46 +73,92 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-221",
     "id": 221,
-    "name": "증기 주전자",
-    "stage": 13,
-    "stageName": "스팀펑크 공중도시",
+    "oldStage": 13,
+    "stage": 12,
     "slot": 1,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "mouse",
-    "role": "작고 귀여운 펫",
+    "previousName": "증기 주전자",
+    "name": "비행모 강아지",
     "tier": 0,
-    "rarity": "C",
-    "concept": "압력계 꼬리을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 증기 주전자.",
-    "inspiration": "톱니 · 증기기관 · 비행선 / gear",
-    "silhouette": [
-      "넓은 볼과 짧은 뒷발",
-      "압력계 꼬리"
-    ],
-    "feature": "압력계 꼬리",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "증기압과 프로펠러로 떠 있는 황동 도시",
-    "material": "황동·구리",
-    "body": "넓은 볼과 짧은 뒷발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "톱니 · 증기기관 · 비행선에서 온 압력계 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 붙인 큰 기관",
-    "gradient": "이음새 적갈색 → 마모된 평면 황동 → 증기 입구 크림",
-    "colorPlacement": "몸 #3c9b96; 대표 기관 #c28b37; 발·연결부 #eed79b; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#3c9b96",
-      "accent": "#c28b37"
-    },
-    "idle": "압력에 몸을 들었다 천천히 내려놓기 / 양 귀를 짧게 움찔하고 고개를 숙임",
-    "reaction": "몸을 움츠렸다 작은 인사를 한다",
-    "distinction": "작고 귀여운 펫: 넓은 볼과 짧은 뒷발; 등에 붙인 큰 기관에 압력계 꼬리",
+    "prompt": "축 처진 귀와 짧은 주둥이, 넓은 발을 가진 갈색 강아지를 만들라. 머리의 가죽 비행모는 귀를 누르지 않게 하고 고글은 이마 위로 올린다. 목에는 긴 아이보리 스카프 하나를 두른다. 주변을 살피며 고개를 돌리고 스카프가 한 박자 늦게 뒤로 흐르게 한다.",
+    "key": "pet-221",
+    "anatomy": "dog",
+    "feature": "goggles",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "dog",
+    "colors": {
+      "primary": "#9a7656"
+    },
+    "idle": "축 처진 귀와 짧은 주둥이, 넓은 발을 가진 갈색 강아지를 만들라. 머리의 가죽 비행모는 귀를 누르지 않게 하고 고글은 이마 위로 올린다. 목에는 긴 아이보리 스카프 하나를 두른다. 주변을 살피며 고개를 돌리고 스카프가 한 박자 늦게 뒤로 흐르게 한다."
   }
 }

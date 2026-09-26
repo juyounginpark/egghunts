@@ -1,3 +1,4 @@
+import {add,exactMoney,compare} from './money';
 import "./style.css";
 import {petReveal} from './pet-reveal';
 import {GameAudio,type GameSound} from './audio';
@@ -365,9 +366,10 @@ function updateHud() {
       game.announcement.includes("SECRET") ? 12000 : 5000,
     );
   }
-  $("dust").textContent = num(Math.floor(game.save.dust));
-  if(game.save.dust>=10000)$('dust').textContent=new Intl.NumberFormat('ko-KR',{notation:'compact',maximumFractionDigits:1}).format(Math.floor(game.save.dust));
-  $('dust').parentElement!.title=`별가루 ${num(Math.floor(game.save.dust))}`;
+  $("dust").textContent = num(game.save.dust);
+  $('dust').style.fontSize=$('dust').textContent!.length>7?'13px':'';
+  $('dust').parentElement!.title=`별가루 ${exactMoney(game.save.dust)}`;
+  $('dust').parentElement!.querySelector('small')!.textContent=`${num(game.incomePerSecond)}/초`;
   $("timer").textContent = num(game.recommendedSpeed,1);
   $("timer-label").textContent = "권장 스피드";
   $("timer-fill").style.width = `${Math.min(100,game.speed/game.recommendedSpeed*100)}%`;
@@ -525,7 +527,7 @@ document.addEventListener("click", async (e) => {
   if(b.id==='virtual-ad-close'&&virtualAd){
     const reward=virtualAd.claim();if(!reward)return;
     if(online.active){await remote(virtualAdPurpose==='revive'?'revive':'adClaim');}
-    else if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'밤이 되어 농장으로 돌아왔어요.');}else{game.save.dust+=reward;playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
+    else if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'밤이 되어 농장으로 돌아왔어요.');}else{game.save.dust=add(game.save.dust,reward);playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
     game.revision++;virtualAd=null;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';renderPanel();void save();
     platform.track('virtual_ad_reward',{purpose:virtualAdPurpose,amount:virtualAdPurpose==='currency'?reward:0});return;
   }
@@ -697,6 +699,7 @@ async function start() {
     renderEggQueue();
     updateHud();
     $("loading").hidden = true;
+    if(compare(game.offlineReward,0)>0)toast(`오프라인 생산 +${num(game.offlineReward)} · 강화에서 지금 살 수 있는 목표를 확인하세요`);
     platform.track("game_start");
     lastNow = performance.now();
     requestAnimationFrame(frame);

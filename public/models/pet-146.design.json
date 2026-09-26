@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,74 +16,92 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
-        17,
-        3
+        12,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        15,
+        10,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
-    "tail": {
+    "left_leg": {
       "pivot": [
-        11.5,
         6,
-        17
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        17,
+        7,
+        12
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-146",
     "id": 146,
-    "name": "해구 리본장어",
-    "stage": 5,
-    "stageName": "크라켄 심해",
+    "oldStage": 5,
+    "stage": 19,
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "eel",
-    "role": "사물 의인화 펫",
+    "previousName": "해구 리본장어",
+    "name": "먹구름문어",
     "tier": 3,
-    "rarity": "S",
-    "concept": "리본 해류을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 해구 리본장어.",
-    "inspiration": "발광 산호 · 촉수 · 해저 유적 / tentacle",
-    "silhouette": [
-      "세로 S자 몸과 낮은 꼬리 받침",
-      "리본 해류"
-    ],
-    "feature": "리본 해류",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "깊은 어둠에서 촉각과 등불로 만나는 심해",
-    "material": "심해 피부·광구",
-    "body": "세로 S자 몸과 낮은 꼬리 받침",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "발광 산호 · 촉수 · 해저 유적에서 온 리본 해류: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "몸 아래 짙은 남색 → 등 청색; 촉각 끝만 민트빛",
-    "colorPlacement": "몸 #39cebd; 대표 기관 #39cebd; 발·연결부 #223c73; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#39cebd",
-      "accent": "#39cebd"
-    },
-    "idle": "천천히 가라앉고 촉수를 순서대로 접기 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 세로 S자 몸과 낮은 꼬리 받침; 꼬리에 연결된 기관에 리본 해류",
+    "prompt": "짙은 회색의 큰 구름 머리와 아래로 늘어진 굵은 먹빛 팔 여섯 개를 만들라. 구름 덩어리는 세 개 정도로 정리하고 얼굴은 밝은 회색의 작은 앞면에 둔다. 팔끝의 얇은 흰 테두리만 남겨 배경과 분리한다. 팔을 말면 작은 검정 물방울이 위로 올라가 구름 속으로 사라지게 한다.",
+    "key": "pet-146",
+    "anatomy": "octopus",
+    "feature": "cloud",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "octopus",
+    "colors": {
+      "primary": "#545461"
+    },
+    "idle": "짙은 회색의 큰 구름 머리와 아래로 늘어진 굵은 먹빛 팔 여섯 개를 만들라. 구름 덩어리는 세 개 정도로 정리하고 얼굴은 밝은 회색의 작은 앞면에 둔다. 팔끝의 얇은 흰 테두리만 남겨 배경과 분리한다. 팔을 말면 작은 검정 물방울이 위로 올라가 구름 속으로 사라지게 한다."
   }
 }

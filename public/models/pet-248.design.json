@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,28 +16,52 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
-        11,
+        8,
         1
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
-        9,
+        6,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
-    "left_arm": {
+    "left_leg": {
       "pivot": [
         6,
         7,
@@ -45,105 +69,47 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
+    "right_leg": {
       "pivot": [
         17,
         7,
         12
       ],
       "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        18
-      ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
     }
   },
   "concept": {
-    "key": "pet-248",
     "id": 248,
-    "name": "무지개 이불고래",
-    "stage": 15,
-    "stageName": "뒤죽박죽 꿈나라",
+    "oldStage": 15,
+    "stage": 14,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "whale",
-    "role": "신비로운 펫",
+    "previousName": "무지개 이불고래",
+    "name": "별사탕 고슴도치",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "공중 침대등을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 무지개 이불고래.",
-    "inspiration": "공중 침대 · 거꾸로 시계 / hand",
-    "silhouette": [
-      "긴 둔한 머리와 수평 꼬리",
-      "공중 침대등"
-    ],
-    "feature": "공중 침대등",
-    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
-    "ecology": "시간과 위아래가 뒤집힌 잠의 세계",
-    "material": "쿠션·꿈빛",
-    "body": "긴 둔한 머리와 수평 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공중 침대 · 거꾸로 시계에서 온 공중 침대등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "쿠션 중앙 복숭아색 → 접힌 가장자리 자주색; 달 무늬만 금빛",
-    "colorPlacement": "몸 #c875ae; 대표 기관 #c875ae; 발·연결부 #63b8c9; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#c875ae",
-      "accent": "#c875ae"
-    },
-    "idle": "고개와 꼬리가 서로 반대 박자로 졸기 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 긴 둔한 머리와 수평 꼬리; 몸 양옆으로 펼친 기관에 공중 침대등",
+    "prompt": "작고 둥근 크림색 몸과 짧은 코를 가진 고슴도치를 만들라. 등에는 큰 별사탕 가시 다섯 개를 분홍·청록·노랑으로 나눠 배치하고 뿌리는 옅은 보라로 묶는다. 얼굴 주변에는 가시를 두지 않는다. 앞발로 별사탕 하나를 안았다가 등에 다시 꽂는 동작을 준다.",
+    "key": "pet-248",
+    "anatomy": "hedgehog",
+    "feature": "candy",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "hedgehog",
+    "colors": {
+      "primary": "#f2e3bf"
+    },
+    "idle": "작고 둥근 크림색 몸과 짧은 코를 가진 고슴도치를 만들라. 등에는 큰 별사탕 가시 다섯 개를 분홍·청록·노랑으로 나눠 배치하고 뿌리는 옅은 보라로 묶는다. 얼굴 주변에는 가시를 두지 않는다. 앞발로 별사탕 하나를 안았다가 등에 다시 꽂는 동작을 준다."
   }
 }

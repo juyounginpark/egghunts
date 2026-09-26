@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    37
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -30,12 +30,7 @@
         8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
@@ -45,9 +40,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -66,9 +61,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -83,49 +78,87 @@
       "pivot": [
         11.5,
         6,
-        17
+        17.0
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.096,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.6
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.096,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        24.2
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.096,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.8
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.096,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        31.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.096,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-176",
     "id": 176,
-    "name": "모래시계 여우",
-    "stage": 8,
-    "stageName": "황금 사막왕국",
+    "oldStage": 8,
+    "stage": 7,
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "fox",
-    "role": "사물 의인화 펫",
+    "previousName": "모래시계 여우",
+    "name": "붕대고양이",
     "tier": 3,
-    "rarity": "S",
-    "concept": "모래 시계꼬리을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 모래시계 여우.",
-    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
-    "silhouette": [
-      "낮은 네 발과 몸보다 높은 꼬리",
-      "모래 시계꼬리"
-    ],
-    "feature": "모래 시계꼬리",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
-    "material": "사암·황동",
-    "body": "낮은 네 발과 몸보다 높은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 모래 시계꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
-    "colorPlacement": "몸 #259c9c; 대표 기관 #d7a247; 발·연결부 #d7a247; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "귀가 크고 가슴이 좁은 짧은 고양이를 아이보리 붕대 띠로 감싼 모습으로 만들라. 붕대 사이에는 짙은 갈색 털이 조금 보이고 눈과 작은 코는 완전히 드러낸다. 한쪽 앞발의 붕대 끝만 길게 풀어 둔다. 풀린 끝을 잡으려다 살짝 놓치는 장난스러운 동작을 준다.",
+    "key": "pet-176",
+    "anatomy": "cat",
+    "feature": "bandage",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "cat",
     "colors": {
-      "primary": "#259c9c",
-      "accent": "#d7a247"
+      "primary": "#eee7cf"
     },
-    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 낮은 네 발과 몸보다 높은 꼬리; 꼬리에 연결된 기관에 모래 시계꼬리",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "귀가 크고 가슴이 좁은 짧은 고양이를 아이보리 붕대 띠로 감싼 모습으로 만들라. 붕대 사이에는 짙은 갈색 털이 조금 보이고 눈과 작은 코는 완전히 드러낸다. 한쪽 앞발의 붕대 끝만 길게 풀어 둔다. 풀린 끝을 잡으려다 살짝 놓치는 장난스러운 동작을 준다."
   }
 }

@@ -1,8 +1,18 @@
 import {GameState,migrateEggHealth,type Save,type WorldEgg,type Boss} from './game';
+import {migrateStageSave} from './stage-migration';
 import type {HazardManager} from './hazards';
 
 export type RuntimeState={save:Save;fields:Record<string,unknown>;hazards:ReturnType<HazardManager['snapshot']>};
 const omitted=new Set(['save','world','bosses','hazards','roomSnapshotTime','mapCollision','now','random','events','routeCache','routeStart']);
+export function migrateStageRuntime(state:RuntimeState){
+ if(state.save.stageOrderVersion===2)return;
+ migrateStageSave(state.save);
+ const e=state.save.expedition;
+ if(e){state.fields.x=e.x;state.fields.z=e.z;state.fields.carried=e.carried;}
+ // In-flight attack geometry belongs to the previous world layout; restart its
+ // normal telegraph rather than applying an old coordinate to a relocated player.
+ state.hazards={...state.hazards,attacks:[],next:[],stage:0};
+}
 // Only the trusted server produces this format. Clients never upload a save.
 export function exportRuntime(game:GameState):RuntimeState{
  const save=game.snapshot();delete save.world;delete save.bosses;
@@ -10,13 +20,14 @@ export function exportRuntime(game:GameState):RuntimeState{
  return structuredClone({save,fields,hazards:game.hazards.snapshot()});
 }
 export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[],bosses:Boss[]){
+ migrateStageRuntime(state);
  const known=game as unknown as Record<string,unknown>;
  for(const [key,value] of Object.entries(state.fields)){
   if(omitted.has(key)||!Object.hasOwn(game,key))continue;
   // JSON represents infinite initial timestamps as null.
   known[key]=value===null&&typeof known[key]==='number'&&!Number.isFinite(known[key])?known[key]:value;
  }
- game.save=structuredClone(state.save);game.save.dragonClues??={};game.world=world;game.bosses=bosses;game.hazards.restore(state.hazards);
+ game.save=structuredClone(state.save);migrateStageSave(game.save);game.save.dragonClues??={};game.world=world;game.bosses=bosses;game.hazards.restore(state.hazards);
  migrateEggHealth([...game.save.eggs,...world,game.carried,...bosses.flatMap(b=>b.loot?[b.loot]:[])]);
  if(game.save.progression)delete game.save.progression.traits;
  game.hp=Math.min(game.hp,game.maxHp);

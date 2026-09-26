@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "all suffix boundaries and exact rounding; invalid values; real affordability; server 24h credit, retry idempotence and 48h cap; save round trip",
+    "final special egg: actual walk, theft, guardian pursuit, return and automatic hatch"
+  ],
+  "final": {
+    "picked": 114.84999999999562,
+    "returned": 227.40000000001746,
+    "lost": false,
+    "hp": 515,
+    "minZ": -2251.933989037548,
+    "failures": [],
+    "position": [
+      0.19054433790175115,
+      -3.5582711395946185
+    ],
+    "nightInterval": 300,
+    "movementCap": 20,
+    "hatchSeconds": 0.04155290516046219,
+    "pet": 297
+  }
+}

@@ -6,13 +6,13 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
         11.5,
         7,
-        12
+        13
       ],
       "parent": null
     },
@@ -20,36 +20,52 @@
       "pivot": [
         11.5,
         13,
-        2
+        3
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        16
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
         11,
-        7
+        8
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
         7,
-        12
+        13
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        13
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
         6,
         7,
-        12
+        13
       ],
       "parent": "body"
     },
@@ -57,57 +73,51 @@
       "pivot": [
         17,
         7,
-        12
+        13
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        13
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
         17,
         7,
-        12
+        13
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-203",
     "id": 203,
-    "name": "리라 종달",
-    "stage": 11,
-    "stageName": "올림포스 신전",
+    "oldStage": 11,
+    "stage": 10,
     "slot": 3,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "mouse",
-    "role": "장난꾸러기 펫",
+    "previousName": "리라 종달",
+    "name": "두루마리 부엉이",
     "tier": 1,
-    "rarity": "B",
-    "concept": "금빛 하프을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 리라 종달.",
-    "inspiration": "대리석 · 구름다리 · 번개 / lightning",
-    "silhouette": [
-      "넓은 볼과 짧은 뒷발",
-      "금빛 하프"
-    ],
-    "feature": "금빛 하프",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "구름 위에서 대리석과 번개가 숨 쉬는 신전",
-    "material": "대리석·금",
-    "body": "넓은 볼과 짧은 뒷발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "대리석 · 구름다리 · 번개에서 온 금빛 하프: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "앞발로 쥔 물건",
-    "gradient": "기둥 아랫면 청회색 → 위쪽 상아색; 연결부만 금색",
-    "colorPlacement": "몸 #72ab8e; 대표 기관 #d6a231; 발·연결부 #d6a231; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#72ab8e",
-      "accent": "#d6a231"
-    },
-    "idle": "무게 있게 멈췄다 날개 한 번 들기 / 꼬리를 좌우로 흔들고 고개를 갸웃",
-    "reaction": "꼬리를 두 번 흔들며 고개를 갸웃한다",
-    "distinction": "장난꾸러기 펫: 넓은 볼과 짧은 뒷발; 앞발로 쥔 물건에 금빛 하프",
+    "prompt": "머리가 크고 몸이 짧은 크림색 부엉이를 만들라. 날개는 짙은 갈색이며 양 날개 사이에 몸 너비만 한 두루마리를 펼친다. 두루마리 양끝의 말린 원통과 청색 문양 한 줄을 분명하게 한다. 한쪽 눈을 잠깐 감으며 두루마리를 조금 말았다 펴는 동작을 준다.",
+    "key": "pet-203",
+    "anatomy": "owl",
+    "feature": "scroll",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "owl",
+    "colors": {
+      "primary": "#f2e3bf"
+    },
+    "idle": "머리가 크고 몸이 짧은 크림색 부엉이를 만들라. 날개는 짙은 갈색이며 양 날개 사이에 몸 너비만 한 두루마리를 펼친다. 두루마리 양끝의 말린 원통과 청색 문양 한 줄을 분명하게 한다. 한쪽 눈을 잠깐 감으며 두루마리를 조금 말았다 펴는 동작을 준다."
   }
 }

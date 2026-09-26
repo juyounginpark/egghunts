@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,22 +27,38 @@
     "eyes": {
       "pivot": [
         11.5,
-        11,
-        3
+        13,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        9,
+        11,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        6,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +68,27 @@
         12
       ],
       "parent": "body"
+    },
+    "right_arm": {
+      "pivot": [
+        17,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-130",
     "id": 130,
-    "name": "숯덩이 두두",
+    "oldStage": 4,
     "stage": 4,
-    "stageName": "화산 입구",
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ember",
-    "role": "대표 마스코트",
+    "previousName": "숯덩이 두두",
+    "name": "숯병아리",
     "tier": 0,
-    "rarity": "C",
-    "concept": "열린 화구을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 숯덩이 두두.",
-    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
-    "silhouette": [
-      "벌어진 위쪽 화구와 짧은 발",
-      "열린 화구"
-    ],
-    "feature": "열린 화구",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
-    "material": "현무암·용암",
-    "body": "벌어진 위쪽 화구와 짧은 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 열린 화구: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
-    "colorPlacement": "몸 #524251; 대표 기관 #ed622c; 발·연결부 #ffcb56; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#524251",
-      "accent": "#ed622c"
-    },
-    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 벌어진 위쪽 화구와 짧은 발; 머리와 등에 이어지는 기관에 열린 화구",
+    "prompt": "작은 석탄 덩어리 같은 몸에 짧은 부리와 두 발을 달아 병아리로 읽히게 하라. 몸은 무광 차콜, 부리와 발은 따뜻한 회색, 가슴의 작은 틈만 붉게 빛난다. 정수리에 연기 대신 짧은 불씨 깃털 하나를 세운다. 하품하듯 부리를 벌리면 깃털 끝이 잠깐 밝아지게 한다.",
+    "key": "pet-130",
+    "anatomy": "bird",
+    "feature": "ember",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bird",
+    "colors": {
+      "primary": "#39363f"
+    },
+    "idle": "작은 석탄 덩어리 같은 몸에 짧은 부리와 두 발을 달아 병아리로 읽히게 하라. 몸은 무광 차콜, 부리와 발은 따뜻한 회색, 가슴의 작은 틈만 붉게 빛난다. 정수리에 연기 대신 짧은 불씨 깃털 하나를 세운다. 하품하듯 부리를 벌리면 깃털 끝이 잠깐 밝아지게 한다."
   }
 }

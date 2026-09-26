@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,28 +16,44 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
-        11,
-        1
+        12,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        9,
+        10,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
-    "left_arm": {
+    "left_leg": {
       "pivot": [
         6,
         7,
@@ -45,105 +61,47 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
+    "right_leg": {
       "pivot": [
         17,
         7,
         12
       ],
       "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        18
-      ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
     }
   },
   "concept": {
-    "key": "pet-128",
     "id": 128,
-    "name": "노을 돌고래",
+    "oldStage": 3,
     "stage": 3,
-    "stageName": "얕은 산호 바다",
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "whale",
-    "role": "신비로운 펫",
+    "previousName": "노을 돌고래",
+    "name": "잠수문어",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "해류 부채을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 노을 돌고래.",
-    "inspiration": "산호 · 물결 · 문어 / coral",
-    "silhouette": [
-      "긴 둔한 머리와 수평 꼬리",
-      "해류 부채"
-    ],
-    "feature": "해류 부채",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "얕은 물결을 거르는 산호 생태계",
-    "material": "젖은 산호·패각",
-    "body": "긴 둔한 머리와 수평 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "산호 · 물결 · 문어에서 온 해류 부채: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
-    "colorPlacement": "몸 #f17e6f; 대표 기관 #f17e6f; 발·연결부 #f8dfaf; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#f17e6f",
-      "accent": "#f17e6f"
-    },
-    "idle": "짧게 뜨고 물결에 지느러미 접기 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 긴 둔한 머리와 수평 꼬리; 몸 양옆으로 펼친 기관에 해류 부채",
+    "prompt": "커다란 둥근 머리와 바깥으로 말린 굵은 팔 여덟 개를 가진 작은 문어를 만들라. 몸은 붉은 주황, 팔 안쪽은 연분홍이며 머리에 작은 황동 잠수모를 비스듬히 씌운다. 얼굴은 잠수모에 가리지 않게 낮게 배치한다. 한 팔로 모자를 고쳐 쓰고 다른 팔로 짧게 인사한다.",
+    "key": "pet-128",
+    "anatomy": "octopus",
+    "feature": "helmet",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "octopus",
+    "colors": {
+      "primary": "#db6544"
+    },
+    "idle": "커다란 둥근 머리와 바깥으로 말린 굵은 팔 여덟 개를 가진 작은 문어를 만들라. 몸은 붉은 주황, 팔 안쪽은 연분홍이며 머리에 작은 황동 잠수모를 비스듬히 씌운다. 얼굴은 잠수모에 가리지 않게 낮게 배치한다. 한 팔로 모자를 고쳐 쓰고 다른 팔로 짧게 인사한다."
   }
 }

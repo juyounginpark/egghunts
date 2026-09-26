@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,34 +16,42 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
-        8,
-        1
+        12,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        6,
+        10,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -53,6 +61,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -60,46 +81,35 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17
+      ],
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-243",
     "id": 243,
-    "name": "찻잔 달팽이",
-    "stage": 15,
-    "stageName": "뒤죽박죽 꿈나라",
+    "oldStage": 15,
+    "stage": 14,
     "slot": 3,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "snail",
-    "role": "장난꾸러기 펫",
+    "previousName": "찻잔 달팽이",
+    "name": "우산해파리",
     "tier": 1,
-    "rarity": "B",
-    "concept": "쿠션 나선집을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 찻잔 달팽이.",
-    "inspiration": "공중 침대 · 거꾸로 시계 / hand",
-    "silhouette": [
-      "낮은 긴 발 위 거대한 말린 집",
-      "쿠션 나선집"
-    ],
-    "feature": "쿠션 나선집",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "시간과 위아래가 뒤집힌 잠의 세계",
-    "material": "쿠션·꿈빛",
-    "body": "낮은 긴 발 위 거대한 말린 집",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공중 침대 · 거꾸로 시계에서 온 쿠션 나선집: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "앞발로 쥔 물건",
-    "gradient": "쿠션 중앙 복숭아색 → 접힌 가장자리 자주색; 달 무늬만 금빛",
-    "colorPlacement": "몸 #7663af; 대표 기관 #c875ae; 발·연결부 #efbe6e; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "우산 모양의 넓은 몸 아래에 짧은 리본 촉수 네 개와 가는 손잡이 꼬리를 달라. 우산은 하늘색과 크림색의 큰 구획 네 개, 촉수는 연분홍으로 정리한다. 작은 얼굴은 앞쪽 우산 가장자리 아래에 둔다. 우산이 조금 접히면 아래에서 위로 물방울 두세 개가 올라가는 동작을 준다.",
+    "key": "pet-243",
+    "anatomy": "jelly",
+    "feature": "umbrella",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "jelly",
     "colors": {
-      "primary": "#7663af",
-      "accent": "#c875ae"
+      "primary": "#93bfd8"
     },
-    "idle": "고개와 꼬리가 서로 반대 박자로 졸기 / 꼬리를 좌우로 흔들고 고개를 갸웃",
-    "reaction": "꼬리를 두 번 흔들며 고개를 갸웃한다",
-    "distinction": "장난꾸러기 펫: 낮은 긴 발 위 거대한 말린 집; 앞발로 쥔 물건에 쿠션 나선집",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "우산 모양의 넓은 몸 아래에 짧은 리본 촉수 네 개와 가는 손잡이 꼬리를 달라. 우산은 하늘색과 크림색의 큰 구획 네 개, 촉수는 연분홍으로 정리한다. 작은 얼굴은 앞쪽 우산 가장자리 아래에 둔다. 우산이 조금 접히면 아래에서 위로 물방울 두세 개가 올라가는 동작을 준다."
   }
 }

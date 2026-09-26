@@ -2,11 +2,11 @@
   "schema": "alkong-stage-assembly-v3",
   "size": [
     24,
-    24,
-    24
+    27,
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,6 +16,14 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
@@ -24,17 +32,33 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
         12,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -44,6 +68,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -57,49 +94,87 @@
       "pivot": [
         11.5,
         6,
-        17
+        17.0
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-286",
     "id": 286,
-    "name": "별자리 사슴",
-    "stage": 19,
-    "stageName": "은하수 천문대",
+    "oldStage": 19,
+    "stage": 18,
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "deer",
-    "role": "사물 의인화 펫",
+    "previousName": "별자리 사슴",
+    "name": "별자리 사슴",
     "tier": 3,
-    "rarity": "S",
-    "concept": "혜성 꼬리을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 별자리 사슴.",
-    "inspiration": "작은 행성 · 별자리 · 우주열차 / meteor",
-    "silhouette": [
-      "높은 가슴과 갈라진 뿔",
-      "혜성 꼬리"
-    ],
-    "feature": "혜성 꼬리",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "작은 행성과 별빛을 관측하는 은하수 역",
-    "material": "성운·관측 유리",
-    "body": "높은 가슴과 갈라진 뿔",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "작은 행성 · 별자리 · 우주열차에서 온 혜성 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "꼬리 시작 남보라 → 끝 청록; 별 원판 중앙은 아이보리",
-    "colorPlacement": "몸 #e9b84c; 대표 기관 #e9b84c; 발·연결부 #504b9b; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "긴 다리와 작은 머리, 넓게 갈라진 뿔을 가진 짙은 청색 사슴을 만들라. 배와 얼굴 옆은 청회색이며 뿔의 가지 끝에만 금색 별점 네 개를 둔다. 별점 사이의 얇은 연결선은 뿔 구조와 겹치지 않게 뒤쪽에 배치한다. 고개를 들면 별점이 순서대로 켜져 뿔의 큰 윤곽이 드러나게 한다.",
+    "key": "pet-286",
+    "anatomy": "deer",
+    "feature": "constellation",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "deer",
     "colors": {
-      "primary": "#e9b84c",
-      "accent": "#e9b84c"
+      "primary": "#658fbd"
     },
-    "idle": "몸과 궤도가 다른 속도로 기울어짐 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 높은 가슴과 갈라진 뿔; 꼬리에 연결된 기관에 혜성 꼬리",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "긴 다리와 작은 머리, 넓게 갈라진 뿔을 가진 짙은 청색 사슴을 만들라. 배와 얼굴 옆은 청회색이며 뿔의 가지 끝에만 금색 별점 네 개를 둔다. 별점 사이의 얇은 연결선은 뿔 구조와 겹치지 않게 뒤쪽에 배치한다. 고개를 들면 별점이 순서대로 켜져 뿔의 큰 윤곽이 드러나게 한다."
   }
 }

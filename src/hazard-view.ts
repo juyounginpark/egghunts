@@ -1,3 +1,4 @@
+import {legacyTheme} from './stage-order';
 import { STAGES,stagePatterns,environmentPlacement,HAZARD_BALANCE as B } from "./stage-data";
 import * as T from "three";
 import { ConnectedRegionArt } from "./region-art";
@@ -27,22 +28,22 @@ export class HazardView{
     const biome=STAGES[d.stageId-1],sourceColor=this.color.setHex(biome.color).lerp(this.sourceAccent.setHex(biome.accent),.25+charge*.65).getHex();
     // Material-specific source organs charge at the fixed emitter. Small, low
     // construction silhouettes never masquerade as the orange damage footprint.
-    if([3,5].includes(d.stageId))for(let j=0;j<12;j++){
+    if([3,5].includes(legacyTheme(d.stageId)))for(let j=0;j<12;j++){
      const a=j*Math.PI/6+time*.16,r=.65+charge*.2;
      this.put(this.actors,this.actorCount++,x+Math.cos(a)*r,.045,z+Math.sin(a)*r,.22,.06,.12,sourceColor,a);
     }
-    else if([4,14].includes(d.stageId))for(let j=0;j<5;j++)this.put(this.actors,this.actorCount++,x+(j-2)*.22,.06+charge*.12,z+(j%2)*.2,.26,.12,.16,sourceColor,j*.3);
-    else if([6,10,11].includes(d.stageId)){
+    else if([4,14].includes(legacyTheme(d.stageId)))for(let j=0;j<5;j++)this.put(this.actors,this.actorCount++,x+(j-2)*.22,.06+charge*.12,z+(j%2)*.2,.26,.12,.16,sourceColor,j*.3);
+    else if([6,10,11].includes(legacyTheme(d.stageId))){
      this.put(this.actors,this.actorCount++,x,.38,z,.6,.7,.45,biome.color);
      for(const side of [-1,1])this.put(this.actors,this.actorCount++,x+side*.38,.65+charge*.25,z,.2,.35,.22,sourceColor);
-    }else if([7,12,13,18].includes(d.stageId)){
+    }else if([7,12,13,18].includes(legacyTheme(d.stageId))){
      for(const side of [-1,1])this.put(this.actors,this.actorCount++,x+side*.4,.4,z,.22,.6,.22,biome.color);
      this.put(this.actors,this.actorCount++,x,.7,z,.45,.15+charge*.25,.45,sourceColor);
-    }else if([15,19,20].includes(d.stageId))for(let j=0;j<7;j++)this.put(this.actors,this.actorCount++,x+Math.sin(j*.7)*.35,.13+j*.12,z,.14,.18,.12,sourceColor);
+    }else if([15,19,20].includes(legacyTheme(d.stageId)))for(let j=0;j<7;j++)this.put(this.actors,this.actorCount++,x+Math.sin(j*.7)*.35,.13+j*.12,z,.14,.18,.12,sourceColor);
     if(['hay','train','book','raptor','gear','orb'].includes(d.visual)){
      for(const side of [-1,1])this.put(this.actors,this.actorCount++,0,.03,z+side*.65,B.laneHalfWidth*2,.06,.12,0x887b62);
     }else{
-     const biome=STAGES[d.stageId-1],mechanical=[2,6,7,12,13,18].includes(d.stageId);
+     const biome=STAGES[d.stageId-1],mechanical=[2,6,7,12,13,18].includes(legacyTheme(d.stageId));
      if(mechanical){
       this.put(this.actors,this.actorCount++,x,.12,z,1.4,.24,1.4,biome.color);
       for(const side of [-1,1]){this.put(this.actors,this.actorCount++,x+side*.55,.45,z,.2,.65,.7,biome.accent);this.put(this.actors,this.actorCount++,x+side*.55,.82,z,.12,.12,.15,0xffefd0);}

@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {legacyTheme} from './stage-order';
 import { ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT } from './stage-data';
 import type { GameState, Boss } from './game';
 import { voxelModel } from './voxel';
@@ -69,7 +70,7 @@ export class RegionGuardian {
    const characterKey=state.final?20:stage-1;
    let character=this.characters.get(characterKey);
    if(!character){
-    character=voxelModel(state.final?'guardian-final':`guardian-${stage}`,true);
+    character=voxelModel(state.final?'guardian-final':`guardian-${legacyTheme(stage)}`,true);
     character.userData.stage=stage;
     const meshes:T.Mesh[]=[];character.traverse(o=>{if(o instanceof T.Mesh)meshes.push(o);});
     character.userData.surfacePatches=meshes.reduce((n,m)=>n+m.geometry.getAttribute('position').count/6,0);

@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,7 +27,7 @@
     "eyes": {
       "pivot": [
         11.5,
-        11,
+        8,
         1
       ],
       "parent": "head"
@@ -35,17 +35,25 @@
     "head": {
       "pivot": [
         11.5,
-        9,
+        6,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
-    "left_arm": {
+    "left_leg": {
       "pivot": [
         6,
         7,
@@ -53,105 +61,47 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
+    "right_leg": {
       "pivot": [
         17,
         7,
         12
       ],
       "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        18
-      ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
     }
   },
   "concept": {
-    "key": "pet-125",
     "id": 125,
-    "name": "줄무늬 삐에로어",
+    "oldStage": 3,
     "stage": 3,
-    "stageName": "얕은 산호 바다",
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "fish",
-    "role": "크고 듬직한 펫",
+    "previousName": "줄무늬 삐에로어",
+    "name": "산호거북",
     "tier": 2,
-    "rarity": "A",
-    "concept": "파도 꼬리을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 줄무늬 삐에로어.",
-    "inspiration": "산호 · 물결 · 문어 / coral",
-    "silhouette": [
-      "옆으로 긴 몸과 수직 꼬리",
-      "파도 꼬리"
-    ],
-    "feature": "파도 꼬리",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "얕은 물결을 거르는 산호 생태계",
-    "material": "젖은 산호·패각",
-    "body": "옆으로 긴 몸과 수직 꼬리",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "산호 · 물결 · 문어에서 온 파도 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
-    "colorPlacement": "몸 #22a9a4; 대표 기관 #f17e6f; 발·연결부 #6868bd; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#22a9a4",
-      "accent": "#f17e6f"
-    },
-    "idle": "짧게 뜨고 물결에 지느러미 접기 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 옆으로 긴 몸과 수직 꼬리; 등과 옆구리에 이어진 기관에 파도 꼬리",
+    "prompt": "낮고 넓은 크림색 거북에 둥근 분홍 등껍질을 얹어라. 등껍질 위에는 높이가 다른 산호 세 갈래만 배치하고 머리와 앞지느러미는 시원하게 드러낸다. 산호는 진분홍 뿌리에서 살구색 끝으로 변화시킨다. 거북이 천천히 숨을 쉬면 산호 끝에서 작은 기포 두세 개만 올라오게 한다.",
+    "key": "pet-125",
+    "anatomy": "turtle",
+    "feature": "coral",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "turtle",
+    "colors": {
+      "primary": "#f2e3bf"
+    },
+    "idle": "낮고 넓은 크림색 거북에 둥근 분홍 등껍질을 얹어라. 등껍질 위에는 높이가 다른 산호 세 갈래만 배치하고 머리와 앞지느러미는 시원하게 드러낸다. 산호는 진분홍 뿌리에서 살구색 끝으로 변화시킨다. 거북이 천천히 숨을 쉬면 산호 끝에서 작은 기포 두세 개만 올라오게 한다."
   }
 }

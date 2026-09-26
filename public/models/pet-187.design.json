@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    32
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,23 +27,18 @@
     "eyes": {
       "pivot": [
         11.5,
-        17,
-        2
+        14,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        15,
+        12,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
@@ -53,9 +48,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -74,9 +69,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -91,93 +86,30 @@
       "pivot": [
         11.5,
         6,
-        18
+        17
       ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-187",
     "id": 187,
-    "name": "긴목 브라키오",
-    "stage": 9,
-    "stageName": "태초의 공룡섬",
+    "oldStage": 9,
+    "stage": 8,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "giraffe",
-    "role": "위험 요소 펫",
+    "previousName": "긴목 브라키오",
+    "name": "나팔 볏공룡",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "화석 갈비등을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 긴목 브라키오.",
-    "inspiration": "양치식물 · 화석 절벽 · 늪 / dinosaur",
-    "silhouette": [
-      "짧은 몸 위로 솟은 긴 목",
-      "화석 갈비등"
-    ],
-    "feature": "화석 갈비등",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "화석과 살아 있는 양치식물이 함께 자라는 섬",
-    "material": "가죽·화석",
-    "body": "짧은 몸 위로 솟은 긴 목",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "양치식물 · 화석 절벽 · 늪에서 온 화석 갈비등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "몸의 숲색 → 배의 따뜻한 모래색; 뼈 절단면은 아이보리",
-    "colorPlacement": "몸 #c9d39d; 대표 기관 #4e874d; 발·연결부 #d6b070; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#c9d39d",
-      "accent": "#4e874d"
-    },
-    "idle": "무거운 몸을 옮기고 등 돛 까딱 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 짧은 몸 위로 솟은 긴 목; 등에 짊어진 기관에 화석 갈비등",
+    "prompt": "뒤로 길게 휘어진 속 빈 볏과 둥근 부리, 직립에 가까운 몸을 가진 볏공룡을 만들라. 몸은 옅은 보라, 배는 크림색, 볏 끝은 진보라로 둔다. 볏의 끝 구멍이 나팔처럼 읽히게 크게 정리한다. 볼이 조금 부풀고 볏에서 둥근 공기 고리 하나가 나오는 동작을 준다.",
+    "key": "pet-187",
+    "anatomy": "spino",
+    "feature": "trumpet",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "spino",
+    "colors": {
+      "primary": "#c4b5d7"
+    },
+    "idle": "뒤로 길게 휘어진 속 빈 볏과 둥근 부리, 직립에 가까운 몸을 가진 볏공룡을 만들라. 몸은 옅은 보라, 배는 크림색, 볏 끝은 진보라로 둔다. 볏의 끝 구멍이 나팔처럼 읽히게 크게 정리한다. 볼이 조금 부풀고 볏에서 둥근 공기 고리 하나가 나오는 동작을 준다."
   }
 }

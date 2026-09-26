@@ -1,9 +1,10 @@
 import {designEgg} from "./egg-design";
 import {EGGS} from "./data";
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
+import {reorderStages} from './stage-order';
 export type EggAppearance={type:number;stageId?:number;variant?:number;special?:boolean};
 export type EggCell=[number,number,number,number];
-export const STAGE_EGG_NAMES=[
+const oldEggNames=[
  ['도토리','꽃봉오리','딸기','새싹','벌집'],['주사위','블록 성','팽이','태엽 로봇','장난감 기차'],
  ['부채 조개','진주 조개','말미잘','불가사리','물방울'],['현무암','꼬마 화산','용암 균열','불꽃 화로','운석'],
  ['앵무조개','아귀 등불','심해 진주','해파리','아기 크라켄'],['마법 책','사물함','유령','학교 종','잉크병'],
@@ -15,8 +16,11 @@ export const STAGE_EGG_NAMES=[
  ['나뭇잎','무당벌레','고치','나비','육각 벌집'],['볼트 상자','자석','무한궤도','기계 집게','고철 가시'],
  ['고리 행성','혜성','별','망원경','은하 나선'],['공허 결정','차원문','기억의 책','황금 날개','세계수'],
 ];
+export const STAGE_EGG_NAMES=reorderStages(oldEggNames);
+STAGE_EGG_NAMES[18]=['빈 고리','공백','그림자','끊어진 달','경계'];
+STAGE_EGG_NAMES[19]=['첫 씨앗','새벽','샘물','계절','세계수'];
 export function appearanceOf(e:EggAppearance){return e.stageId&&e.stageId>=1&&e.stageId<=20&&e.variant!==undefined&&e.variant>=0&&e.variant<=5?{stage:e.stageId,variant:e.variant}:null;}
-export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${a.variant===5?SECRET_DRAGON_ROWS[a.stage-1].eggName:STAGE_EGG_NAMES[a.stage-1][a.variant]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
+export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${a.variant===5?SECRET_DRAGON_ROWS.find(p=>p.stageId===a.stage)!.eggName:STAGE_EGG_NAMES[a.stage-1][a.variant]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
 export {designEgg as stageEggCells} from './egg-design';
 export function eggDesignAppearance(e:EggAppearance){
  const a=appearanceOf(e);

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,11 +38,19 @@
         6,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-132",
     "id": 132,
-    "name": "화로 꼬북",
+    "oldStage": 4,
     "stage": 4,
-    "stageName": "화산 입구",
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "furnace",
-    "role": "환경 생물 펫",
+    "previousName": "화로 꼬북",
+    "name": "화로거북",
     "tier": 1,
-    "rarity": "B",
-    "concept": "뜨거운 화로을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 화로 꼬북.",
-    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
-    "silhouette": [
-      "넓은 화로 몸과 짧은 받침 발",
-      "뜨거운 화로"
-    ],
-    "feature": "뜨거운 화로",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
-    "material": "현무암·용암",
-    "body": "넓은 화로 몸과 짧은 받침 발",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 뜨거운 화로: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
-    "colorPlacement": "몸 #ffcb56; 대표 기관 #ed622c; 발·연결부 #524251; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#ffcb56",
-      "accent": "#ed622c"
-    },
-    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 넓은 화로 몸과 짧은 받침 발; 넓은 등집에 뜨거운 화로",
+    "prompt": "낮은 회색 거북의 등껍질을 둥근 작은 화로로 만들라. 껍질 벽은 짙은 철색, 틈 안쪽은 붉은 주황이며 윗면에는 뚜껑과 손잡이 하나만 둔다. 크림색 얼굴과 눈은 밝게 드러낸다. 숨을 쉴 때 뚜껑이 조금 들리고 작은 열기 한 줄이 빠져나오게 한다.",
+    "key": "pet-132",
+    "anatomy": "turtle",
+    "feature": "furnace",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "turtle",
+    "colors": {
+      "primary": "#9697a1"
+    },
+    "idle": "낮은 회색 거북의 등껍질을 둥근 작은 화로로 만들라. 껍질 벽은 짙은 철색, 틈 안쪽은 붉은 주황이며 윗면에는 뚜껑과 손잡이 하나만 둔다. 크림색 얼굴과 눈은 밝게 드러낸다. 숨을 쉴 때 뚜껑이 조금 들리고 작은 열기 한 줄이 빠져나오게 한다."
   }
 }

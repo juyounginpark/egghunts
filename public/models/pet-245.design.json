@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    25
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,18 +16,10 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        10,
+        11,
         1
       ],
       "parent": "head"
@@ -35,17 +27,12 @@
     "head": {
       "pivot": [
         11.5,
-        8,
+        9,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_leg": {
+    "left_arm": {
       "pivot": [
         6,
         7,
@@ -53,13 +40,39 @@
       ],
       "parent": "body"
     },
-    "right_leg": {
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
+    },
+    "right_arm": {
       "pivot": [
         17,
         7,
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "tail": {
       "pivot": [
@@ -71,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-245",
     "id": 245,
-    "name": "풍선 코끼리",
-    "stage": 15,
-    "stageName": "뒤죽박죽 꿈나라",
+    "oldStage": 15,
+    "stage": 14,
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "elephant",
-    "role": "크고 듬직한 펫",
+    "previousName": "풍선 코끼리",
+    "name": "양말물고기",
     "tier": 2,
-    "rarity": "A",
-    "concept": "코끼리 침대을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 풍선 코끼리.",
-    "inspiration": "공중 침대 · 거꾸로 시계 / hand",
-    "silhouette": [
-      "큰 귀판과 아래로 굽은 코",
-      "코끼리 침대"
-    ],
-    "feature": "코끼리 침대",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "시간과 위아래가 뒤집힌 잠의 세계",
-    "material": "쿠션·꿈빛",
-    "body": "큰 귀판과 아래로 굽은 코",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "공중 침대 · 거꾸로 시계에서 온 코끼리 침대: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "쿠션 중앙 복숭아색 → 접힌 가장자리 자주색; 달 무늬만 금빛",
-    "colorPlacement": "몸 #efbe6e; 대표 기관 #c875ae; 발·연결부 #7663af; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#efbe6e",
-      "accent": "#c875ae"
-    },
-    "idle": "고개와 꼬리가 서로 반대 박자로 졸기 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 큰 귀판과 아래로 굽은 코; 등과 옆구리에 이어진 기관에 코끼리 침대",
+    "prompt": "길쭉한 줄무늬 양말이 물고기로 변한 모습을 만들라. 발끝은 둥근 머리, 뒤꿈치는 작은 등지느러미, 양말 입구는 넓은 꼬리지느러미로 표현한다. 몸은 보라와 크림색의 넓은 띠, 눈은 작은 검정 점이다. 공중을 헤엄치다가 꼬리가 살짝 접혀 양말처럼 처지는 동작을 준다.",
+    "key": "pet-245",
+    "anatomy": "fish",
+    "feature": "stripes",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "fish",
+    "colors": {
+      "primary": "#8566ad"
+    },
+    "idle": "길쭉한 줄무늬 양말이 물고기로 변한 모습을 만들라. 발끝은 둥근 머리, 뒤꿈치는 작은 등지느러미, 양말 입구는 넓은 꼬리지느러미로 표현한다. 몸은 보라와 크림색의 넓은 띠, 눈은 작은 검정 점이다. 공중을 헤엄치다가 꼬리가 살짝 접혀 양말처럼 처지는 동작을 준다."
   }
 }

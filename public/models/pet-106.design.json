@@ -6,13 +6,13 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
         11.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
@@ -20,36 +20,52 @@
       "pivot": [
         11.5,
         13,
-        2
+        5
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        18
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
         11,
-        7
+        10
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
         7,
-        12
+        15
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        15
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
         6,
         7,
-        12
+        15
       ],
       "parent": "body"
     },
@@ -57,65 +73,51 @@
       "pivot": [
         17,
         7,
-        12
+        15
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        15
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
         17,
         7,
-        12
-      ],
-      "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
+        15
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-106",
     "id": 106,
-    "name": "꿀단지 곰곰",
+    "oldStage": 1,
     "stage": 1,
-    "stageName": "몽글 초원",
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "bear",
-    "role": "사물 의인화 펫",
+    "previousName": "꿀단지 곰곰",
+    "name": "꿀단지 곰",
     "tier": 3,
-    "rarity": "S",
-    "concept": "건초 침낭을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 꿀단지 곰곰.",
-    "inspiration": "꽃밭 · 풍차 · 건초 / hay",
-    "silhouette": [
-      "넓은 얼굴과 두 개의 묵직한 앞발",
-      "건초 침낭"
-    ],
-    "feature": "건초 침낭",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "바람을 모아 씨앗을 나르는 초원",
-    "material": "식물·털",
-    "body": "넓은 얼굴과 두 개의 묵직한 앞발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "꽃밭 · 풍차 · 건초에서 온 건초 침낭: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "줄기 뿌리의 짙은 올리브 → 잎 끝의 연두; 얼굴·배는 크림",
-    "colorPlacement": "몸 #efe4b7; 대표 기관 #c99438; 발·연결부 #71a73d; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#efe4b7",
-      "accent": "#c99438"
-    },
-    "idle": "바람을 살피고 잎을 접었다 펼침 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 넓은 얼굴과 두 개의 묵직한 앞발; 꼬리에 연결된 기관에 건초 침낭",
+    "prompt": "짙은 갈색의 넓고 포근한 곰. 둥근 귀와 짧은 크림색 주둥이. 두 앞발로 배 앞의 꿀단지를 안는다. 코코아색 털, 작은 크림색 얼굴 부분, 호박색 꿀. 단지 가장자리의 꿀방울 1~2개. 단지를 끌어안고 고개를 낮추는 행동.",
+    "key": "pet-106",
+    "anatomy": "bear",
+    "feature": "honey",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bear",
+    "colors": {
+      "primary": "#694933"
+    },
+    "idle": "짙은 갈색의 넓고 포근한 곰. 둥근 귀와 짧은 크림색 주둥이. 두 앞발로 배 앞의 꿀단지를 안는다. 코코아색 털, 작은 크림색 얼굴 부분, 호박색 꿀. 단지 가장자리의 꿀방울 1~2개. 단지를 끌어안고 고개를 낮추는 행동."
   }
 }

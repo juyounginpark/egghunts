@@ -421,7 +421,7 @@ nav button img { width:28px; height:28px; }
 /* Main HUD: a single compact row, with contextual information at the edges. */
 #shell { --hud-border:2px solid #66734c; --hud-shadow:2px 3px 0 #46533b30; --hud-radius:8px; }
 #shell #top-hud { padding:calc(8px + var(--safe-top)) 8px 0; gap:8px; }
-#top-hud #main-hud { position:relative; inset:auto; display:grid; grid-template-columns:minmax(76px,1fr) minmax(82px,1.15fr) minmax(110px,1.2fr); gap:6px; align-items:center; height:72px; min-height:72px; padding:6px; border:var(--hud-border); border-radius:var(--hud-radius); box-shadow:var(--hud-shadow); background:#fff9e8f2; pointer-events:auto; }
+#top-hud #main-hud { position:relative; inset:auto; display:grid; grid-template-columns:minmax(76px,1fr) minmax(70px,.85fr) minmax(144px,1.5fr); gap:6px; align-items:center; height:72px; min-height:72px; padding:6px; border:var(--hud-border); border-radius:var(--hud-radius); box-shadow:var(--hud-shadow); background:#fff9e8f2; pointer-events:auto; }
 .hud-player { display:flex; align-items:center; gap:5px; min-width:0; }
 .hud-avatar { width:32px; height:40px; flex-shrink:0; }
 .hud-level { flex:1; min-width:0; }
@@ -434,7 +434,12 @@ nav button img { width:28px; height:28px; }
 #main-hud .dust { display:grid; grid-template-columns:12px minmax(0,1fr); gap:2px; min-width:0; padding:0; margin:0; border:0; background:none; white-space:nowrap; }
 #main-hud .dust .ui-icon { width:12px; height:16px; color:#a17c2c; }
 #main-hud .dust b { font-size:17px; line-height:20px; font-variant-numeric:tabular-nums; }
-#main-hud .dust small { grid-column:1/-1; text-align:center; font-size:10px; }
+#main-hud .dust small { display:block; grid-column:1/-1; text-align:center; font-size:10px; }
+.growth-goal { padding:14px; margin-bottom:14px; background:#f5efd8; border:2px solid #a4ae80; border-radius:8px; }
+.growth-goal h2 { margin:0 0 8px; font-size:18px; }
+.growth-goal p { line-height:1.5; overflow-wrap:anywhere; }
+.growth-goal details { padding:8px 0; font-size:12px; }
+.growth-goal button { min-height:44px; width:100%; margin:6px 0; }
 #main-hud #settings { width:44px; height:44px; margin:0; border:var(--hud-border); border-radius:var(--hud-radius); box-shadow:var(--hud-shadow); background:#eeeacb; }
 #hud-context { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
 #hud-context #speed-hud { display:flex; flex-direction:column; align-items:flex-start; flex-wrap:nowrap; gap:2px; margin:0; padding:6px 8px; max-width:46%; width:max-content; border:var(--hud-border); border-radius:var(--hud-radius); box-shadow:var(--hud-shadow); background:#fff9e8ed; color:#485b43; }
@@ -481,7 +486,7 @@ nav button img { width:28px; height:28px; }
 #volume-value { font-size:18px; font-weight:800; font-variant-numeric:tabular-nums; }
 .sound-settings small { font-size:11px; color:#637061; }
 @media(min-width:440px){#main-hud #cycle-clock{flex-direction:row;gap:5px}#cycle-phase::after{content:' ·'}#main-hud .dust b{font-size:18px}}
-@media(max-width:359px){#top-hud #main-hud{gap:4px;padding:4px;grid-template-columns:minmax(72px,1fr) minmax(78px,1fr) minmax(110px,1.15fr)}.hud-avatar{width:28px}.hud-player{gap:3px}#main-hud #level{font-size:13px}#main-hud .dust b{font-size:14px}#main-hud #cycle-clock{font-size:10px}#cycle-phase{font-size:12px}}
+@media(max-width:359px){#top-hud #main-hud{gap:4px;padding:4px;grid-template-columns:minmax(72px,1fr) minmax(64px,.85fr) minmax(144px,1.5fr)}.hud-avatar{width:28px}.hud-player{gap:3px}#main-hud #level{font-size:13px}#main-hud .dust b{font-size:14px}#main-hud #cycle-clock{font-size:10px}#cycle-phase{font-size:12px}}
 
 .speed-heading > .ui-icon { width:26px; height:26px; flex-shrink:0; color:#67763e; }
 .stat-badges { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }

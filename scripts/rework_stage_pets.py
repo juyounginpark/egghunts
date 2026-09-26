@@ -298,7 +298,7 @@ def dragon(stage):
 def export(g,row,colors):
  key=row['key'];shift=[max(0,-min(p[a] for p in g.cells)) for a in range(3)]
  voxels=[[*(p[a]+shift[a] for a in range(3)),c] for p,(c,_) in sorted(g.cells.items())];parts={}
- for part in sorted({p for _,p in g.cells.values()}|{'body','head'}):
+ for part in sorted({p for _,p in g.cells.values()}|set(g.parts)|{'body','head'}):
   cells=[[*(v[a]+shift[a] for a in range(3)),c] for v,(c,p) in sorted(g.cells.items()) if p==part]
   pivot=[11.5,7,12]
   if part=='head':pivot=[11.5,g.face[0]-1,7]

@@ -1,240 +1,211 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    26,
-    25,
-    35
+    62,
+    30,
+    62
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        12.5,
-        7,
-        12
+        30.5,
+        8,
+        15
       ],
       "parent": null
     },
     "eyes": {
       "pivot": [
-        12.5,
-        10,
-        1
+        30.5,
+        21,
+        0
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        30.5,
+        15,
+        18
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
-        12.5,
-        8,
-        7
+        30.5,
+        19,
+        10
       ],
-      "parent": "body",
-      "rotation": [
-        -0.04,
-        0,
-        0
-      ]
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
-        7,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.36,
-        0.1
-      ],
-      "scale": [
-        1.38,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        7,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        7,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        4,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        18,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.36,
-        -0.1
-      ],
-      "scale": [
-        1.38,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        18,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        18,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        21,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        12.5,
-        7,
+        25.5,
+        12,
         18
       ],
       "parent": "body",
       "rotation": [
         0.08,
-        0.15,
+        -0.22,
+        0.08
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        25,
+        8,
+        15
+      ],
+      "parent": "body"
+    },
+    "left_tip": {
+      "pivot": [
+        27.5,
+        9,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.27,
+        -0.25,
+        0.3
+      ]
+    },
+    "neck": {
+      "pivot": [
+        30.5,
+        10,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.1,
+        0,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        35.5,
+        12,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        36,
+        8,
+        15
+      ],
+      "parent": "body"
+    },
+    "right_tip": {
+      "pivot": [
+        33.5,
+        9,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.27,
+        0.25,
+        -0.3
+      ]
+    },
+    "tail": {
+      "pivot": [
+        30.5,
+        7,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        12.5,
+        30.5,
         7,
-        22
+        27.6
       ],
       "parent": "tail",
       "rotation": [
-        0.08,
-        0.15,
+        0.04,
+        0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        12.5,
+        30.5,
         7,
-        26
+        35.2
       ],
       "parent": "tail_1",
       "rotation": [
         0.08,
-        0.15,
+        0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        12.5,
+        30.5,
         7,
-        30
+        42.8
       ],
       "parent": "tail_2",
       "rotation": [
-        0.08,
-        0.15,
+        0.12,
+        0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        30.5,
+        7,
+        50.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-316",
     "id": 316,
-    "name": "왕벌집 갑충룡",
-    "stage": 17,
-    "stageName": "곤충 소인국",
+    "oldStage": 17,
+    "stage": 16,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "왕벌집 갑충룡",
+    "name": "꽃왕관 비룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "접히는 낫 앞팔·겹친 육각 덮날개을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 왕벌집 갑충룡.",
-    "inspiration": "거대한 풀잎 · 이슬 · 버섯 / mantis",
-    "silhouette": [
-      "길게 분절된 곤충룡",
-      "접히는 낫 앞팔·겹친 육각 덮날개"
-    ],
-    "feature": "접히는 낫 앞팔·겹친 육각 덮날개",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "이슬 한 방울도 집만큼 큰 풀잎 아래 나라",
-    "material": "등껍질·잎",
-    "body": "길게 분절된 곤충룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "거대한 풀잎 · 이슬 · 버섯에서 온 접히는 낫 앞팔·겹친 육각 덮날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "등갑 중심 적갈색 → 가장자리 호박색; 잎 끝은 연한 녹색",
-    "colorPlacement": "몸 #aa4a29; 대표 기관 #70a444; 발·연결부 #70a444; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#aa4a29",
-      "accent": "#70a444"
-    },
-    "idle": "더듬이 먼저 살피고 앞발 교대로 접기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 길게 분절된 곤충룡; 성체 전용 골격에 접히는 낫 앞팔·겹친 육각 덮날개",
+    "prompt": "잠자리처럼 긴 배와 네 장의 넓은 날개, 용의 짧고 당당한 머리를 결합하라. 몸은 짙은 청록, 배는 크림색, 날개는 투명한 연분홍 막과 굵은 자주색 맥으로 나눈다. 머리 뒤의 꽃잎 다섯 장은 왕관처럼 뒤로 벌어지고 긴 더듬이 두 개는 뿔의 역할을 한다. 여섯 다리는 몸 가까이 접어 윤곽을 정리한다. 날개가 차례로 펼쳐지면 꽃왕관에서 적은 양의 꽃가루가 흐르게 한다. 전용 알은 진한 청록 껍질과 꽃잎 받침, 얇은 비단띠로 구성한다.",
+    "key": "pet-316",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "거미줄에도 순찰하는 날개에도 붙잡히지 않는 작은 길.",
-    "acquisitionCondition": "거미줄과 말벌 순찰을 각각 회피",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#235b60"
+    },
+    "idle": "잠자리처럼 긴 배와 네 장의 넓은 날개, 용의 짧고 당당한 머리를 결합하라. 몸은 짙은 청록, 배는 크림색, 날개는 투명한 연분홍 막과 굵은 자주색 맥으로 나눈다. 머리 뒤의 꽃잎 다섯 장은 왕관처럼 뒤로 벌어지고 긴 더듬이 두 개는 뿔의 역할을 한다. 여섯 다리는 몸 가까이 접어 윤곽을 정리한다. 날개가 차례로 펼쳐지면 꽃왕관에서 적은 양의 꽃가루가 흐르게 한다. 전용 알은 진한 청록 껍질과 꽃잎 받침, 얇은 비단띠로 구성한다."
   }
 }

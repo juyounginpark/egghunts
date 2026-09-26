@@ -6,7 +6,7 @@
     35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,54 +16,31 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
-        10,
+        11,
         1
       ],
       "parent": "head"
     },
-    "float": {
-      "pivot": [
-        11.5,
-        14,
-        15
-      ],
-      "parent": "body"
-    },
     "head": {
       "pivot": [
         11.5,
-        8,
+        9,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
-      "pivot": [
-        6,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
-    },
-    "left_leg": {
       "pivot": [
         6,
         7,
@@ -71,68 +48,50 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
+    "left_ear": {
       "pivot": [
-        3,
-        11,
+        6,
+        15,
         12
       ],
-      "parent": "left_arm",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        0.12,
-        -0.08
+        0.22
       ]
     },
     "right_arm": {
       "pivot": [
         17,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        17,
         7,
         12
       ],
       "parent": "body"
     },
-    "right_tip": {
+    "right_ear": {
       "pivot": [
-        20,
-        11,
+        17,
+        15,
         12
       ],
-      "parent": "right_arm",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        -0.12,
-        0.08
+        -0.22
       ]
     },
     "tail": {
       "pivot": [
         11.5,
         6,
-        18
+        17.0
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
+        0.0,
+        -0.078,
         0
       ]
     },
@@ -140,12 +99,12 @@
       "pivot": [
         11.5,
         6,
-        22
+        20.4
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        -0.18,
+        -0.078,
         0
       ]
     },
@@ -153,12 +112,12 @@
       "pivot": [
         11.5,
         6,
-        26
+        23.8
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        -0.18,
+        0.08,
+        -0.078,
         0
       ]
     },
@@ -166,54 +125,48 @@
       "pivot": [
         11.5,
         6,
-        30
+        27.2
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        -0.18,
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-299",
     "id": 299,
-    "name": "첫빛 세계수룡",
+    "oldStage": 20,
     "stage": 20,
-    "stageName": "공허와 창조주의 정원",
     "slot": 9,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "dragon",
-    "role": "스테이지 인기 펫",
+    "previousName": "첫빛 세계수룡",
+    "name": "세계씨앗 고래",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "창조의 정원문을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 첫빛 세계수룡.",
-    "inspiration": "공허의 길 → 기억의 정원 → 창조자의 문 / creation",
-    "silhouette": [
-      "앞이 높은 가슴과 굵은 꼬리",
-      "창조의 정원문"
-    ],
-    "feature": "창조의 정원문",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원",
-    "material": "공허 절단면·첫빛",
-    "body": "앞이 높은 가슴과 굵은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공허의 길 → 기억의 정원 → 창조자의 문에서 온 창조의 정원문: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 전체를 감싼 대표 기관",
-    "gradient": "몸의 짙은 자주 → 열린 절단면 청록; 씨앗 중심은 따뜻한 금빛",
-    "colorPlacement": "몸 #e4b94d; 대표 기관 #48ac9e; 발·연결부 #ab658a; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#e4b94d",
-      "accent": "#48ac9e"
-    },
-    "idle": "몸이 멈춘 뒤 떨어진 기관이 늦게 따라옴 / 양쪽 대표 기관과 꼬리를 다른 박자로 펼침",
-    "reaction": "큰 대표 기관을 펼치고 짧게 인사한다",
-    "distinction": "스테이지 인기 펫: 앞이 높은 가슴과 굵은 꼬리; 몸 전체를 감싼 대표 기관에 창조의 정원문",
+    "prompt": "넓고 둥근 고래 몸의 등을 크게 벌어진 씨앗껍질처럼 표현하라. 몸은 진주색, 배는 따뜻한 회색, 껍질 안의 얕은 토양은 짙은 갈색이다. 등에 작은 언덕 하나와 나무 한 그루, 짧은 물길 하나만 넣어 작은 세계를 만든다. 고래가 숨을 쉬면 나무가 흔들리고 물길에 밝은 점 하나가 천천히 이동하게 한다.",
+    "key": "pet-299",
+    "anatomy": "whale",
+    "feature": "world",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "whale",
+    "colors": {
+      "primary": "#e8e3df"
+    },
+    "idle": "넓고 둥근 고래 몸의 등을 크게 벌어진 씨앗껍질처럼 표현하라. 몸은 진주색, 배는 따뜻한 회색, 껍질 안의 얕은 토양은 짙은 갈색이다. 등에 작은 언덕 하나와 나무 한 그루, 짧은 물길 하나만 넣어 작은 세계를 만든다. 고래가 숨을 쉬면 나무가 흔들리고 물길에 밝은 점 하나가 천천히 이동하게 한다."
   }
 }

@@ -1,16 +1,16 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
-    24,
+    36,
+    26,
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        17.5,
         7,
         12
       ],
@@ -18,88 +18,118 @@
     },
     "eyes": {
       "pivot": [
-        11.5,
-        12,
-        2
+        17.5,
+        16,
+        4
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
-        11.5,
-        10,
+        17.5,
+        14,
         7
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        14.5,
+        12,
+        13
       ],
       "parent": "body",
       "rotation": [
-        -0.035,
-        0,
-        0
+        0.12,
+        -0.25,
+        0.18
       ]
     },
-    "left_leg": {
+    "left_ear": {
       "pivot": [
-        6,
-        7,
+        12,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
-    "right_leg": {
+    "left_tip": {
       "pivot": [
-        17,
-        7,
+        14.5,
+        8,
+        15
+      ],
+      "parent": "body",
+      "rotation": [
+        0.27,
+        -0.25,
+        0.3
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        20.5,
+        12,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.12,
+        0.25,
+        -0.18
+      ]
+    },
+    "right_ear": {
+      "pivot": [
+        23,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
-    "tail": {
+    "right_tip": {
       "pivot": [
-        11.5,
-        6,
-        17
+        20.5,
+        8,
+        15
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.27,
+        0.25,
+        -0.3
+      ]
     }
   },
   "concept": {
-    "key": "pet-256",
     "id": 256,
-    "name": "변이 덩굴문어",
-    "stage": 16,
-    "stageName": "방사능 폐허",
+    "oldStage": 16,
+    "stage": 15,
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "octopus",
-    "role": "사물 의인화 펫",
+    "previousName": "변이 덩굴문어",
+    "name": "형광나방",
     "tier": 3,
-    "rarity": "S",
-    "concept": "독방울 촉수을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 변이 덩굴문어.",
-    "inspiration": "녹색 안개 · 폐허 · 변이 식물 / vine",
-    "silhouette": [
-      "넓은 맨틀과 네 방향으로 접힌 팔",
-      "독방울 촉수"
-    ],
-    "feature": "독방울 촉수",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "폐기물 틈에서 독을 걸러내는 새 생태계",
-    "material": "녹슨 통·변이 식물",
-    "body": "넓은 맨틀과 네 방향으로 접힌 팔",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "녹색 안개 · 폐허 · 변이 식물에서 온 독방울 촉수: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "녹슨 판 적갈색 → 겹친 판 황토; 여과구만 산성 연두",
-    "colorPlacement": "몸 #d5db58; 대표 기관 #718330; 발·연결부 #718330; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#d5db58",
-      "accent": "#718330"
-    },
-    "idle": "독을 들이마셨다 몸을 접어 배출 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 넓은 맨틀과 네 방향으로 접힌 팔; 꼬리에 연결된 기관에 독방울 촉수",
+    "prompt": "작고 어두운 몸 뒤로 큰 부채꼴 날개 두 쌍을 펼친 나방을 만들라. 날개 바탕은 짙은 자주색, 큰 무늬 두 개는 밝은 연두, 가장자리는 크림색으로 나눈다. 더듬이는 굵은 두 갈래로 단순화한다. 날개를 모으면 어둡게 숨고 펼치면 형광 무늬가 드러나는 동작을 준다.",
+    "key": "pet-256",
+    "anatomy": "butterfly",
+    "feature": "fluorescence",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "butterfly",
+    "colors": {
+      "primary": "#59364f"
+    },
+    "idle": "작고 어두운 몸 뒤로 큰 부채꼴 날개 두 쌍을 펼친 나방을 만들라. 날개 바탕은 짙은 자주색, 큰 무늬 두 개는 밝은 연두, 가장자리는 크림색으로 나눈다. 더듬이는 굵은 두 갈래로 단순화한다. 날개를 모으면 어둡게 숨고 펼치면 형광 무늬가 드러나는 동작을 준다."
   }
 }

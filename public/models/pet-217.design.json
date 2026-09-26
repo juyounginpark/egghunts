@@ -3,24 +3,24 @@
   "size": [
     24,
     24,
-    24
+    25
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
         11.5,
         7,
-        12
+        14
       ],
       "parent": null
     },
     "eyes": {
       "pivot": [
         11.5,
-        14,
-        2
+        10,
+        3
       ],
       "parent": "head"
     },
@@ -28,36 +28,57 @@
       "pivot": [
         11.5,
         14,
-        15
+        17
       ],
       "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        12,
-        7
+        8,
+        9
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        14
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
       "pivot": [
         6,
         7,
-        12
+        14
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        14
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
         17,
         7,
-        12
+        14
       ],
       "parent": "body"
     },
@@ -65,49 +86,30 @@
       "pivot": [
         11.5,
         6,
-        17
+        19
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-217",
     "id": 217,
-    "name": "수정 원자로봇",
-    "stage": 12,
-    "stageName": "외계인 51구역",
+    "oldStage": 12,
+    "stage": 11,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "tripod",
-    "role": "위험 요소 펫",
+    "previousName": "수정 원자로봇",
+    "name": "실험복 족제비",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "삼각 착륙선을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 수정 원자로봇.",
-    "inspiration": "UFO · 연구소 · 형광 액체 / ufo",
-    "silhouette": [
-      "세 방향으로 벌어진 받침과 높은 중심",
-      "삼각 착륙선"
-    ],
-    "feature": "삼각 착륙선",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "다른 중력에서 몸의 균형을 시험하는 연구 구역",
-    "material": "배양막·실험 금속",
-    "body": "세 방향으로 벌어진 받침과 높은 중심",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "UFO · 연구소 · 형광 액체에서 온 삼각 착륙선: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "배양막 중심 라임 → 가장자리 청록; 감각판 안쪽 보라빛",
-    "colorPlacement": "몸 #23a49d; 대표 기관 #7854af; 발·연결부 #7854af; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "길고 가는 몸과 짧은 다리, 작은 둥근 귀를 가진 청회색 족제비를 만들라. 흰 실험복은 몸 앞과 양옆의 큰 판 세 개로 표현하고 얼굴은 드러낸다. 앞발에 둥근 청록 플라스크 하나를 쥐게 한다. 플라스크를 기울여 들여다보다가 안에서 생긴 작은 기포를 놀라서 따라보게 한다.",
+    "key": "pet-217",
+    "anatomy": "otter",
+    "feature": "flask",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "otter",
     "colors": {
-      "primary": "#23a49d",
-      "accent": "#7854af"
+      "primary": "#899cac"
     },
-    "idle": "몸은 낮고 감각판은 반대로 떠오름 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 세 방향으로 벌어진 받침과 높은 중심; 등에 짊어진 기관에 삼각 착륙선",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "길고 가는 몸과 짧은 다리, 작은 둥근 귀를 가진 청회색 족제비를 만들라. 흰 실험복은 몸 앞과 양옆의 큰 판 세 개로 표현하고 얼굴은 드러낸다. 앞발에 둥근 청록 플라스크 하나를 쥐게 한다. 플라스크를 기울여 들여다보다가 안에서 생긴 작은 기포를 놀라서 따라보게 한다."
   }
 }

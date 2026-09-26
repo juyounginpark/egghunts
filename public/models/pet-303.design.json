@@ -1,248 +1,185 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    28,
-    25,
-    35
+    52,
+    26,
+    56
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        13.5,
+        25.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
     "crown": {
       "pivot": [
-        13.5,
+        25.5,
         7,
-        12
+        15
       ],
       "parent": "body"
     },
     "eyes": {
       "pivot": [
-        13.5,
-        14,
+        25.5,
+        15,
         0
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
-        13.5,
-        12,
-        7
+        25.5,
+        13,
+        10
       ],
-      "parent": "body",
-      "rotation": [
-        0.12,
-        0,
-        0
-      ]
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
-        8,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.18,
-        0.1
-      ],
-      "scale": [
-        1.18,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        8,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        8,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        5,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        19,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.18,
-        -0.1
-      ],
-      "scale": [
-        1.18,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        19,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        19,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        22,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        13.5,
-        7,
+        20.5,
+        9,
         18
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        0.18,
+        0.08,
+        -0.22,
+        0.08
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        20,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "neck": {
+      "pivot": [
+        25.5,
+        7,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.1,
+        0,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        30.5,
+        9,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        31,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        25.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        13.5,
-        7,
-        22
+        25.5,
+        6,
+        26.4
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        0.18,
+        0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        13.5,
-        7,
-        26
+        25.5,
+        6,
+        32.8
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        0.18,
+        0.08,
+        0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        13.5,
-        7,
-        30
+        25.5,
+        6,
+        39.2
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        0.18,
+        0.12,
+        0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        25.5,
+        6,
+        45.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-303",
     "id": 303,
-    "name": "분화심장 화산룡",
+    "oldStage": 4,
     "stage": 4,
-    "stageName": "화산 입구",
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "분화심장 화산룡",
+    "name": "용광로 고룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "분화구 몸통·벌어진 두 용암 판 날개을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 분화심장 화산룡.",
-    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
-    "silhouette": [
-      "등이 솟은 웅크린 화산룡",
-      "분화구 몸통·벌어진 두 용암 판 날개"
-    ],
-    "feature": "분화구 몸통·벌어진 두 용암 판 날개",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
-    "material": "현무암·용암",
-    "body": "등이 솟은 웅크린 화산룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 분화구 몸통·벌어진 두 용암 판 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
-    "colorPlacement": "몸 #ffcb56; 대표 기관 #ed622c; 발·연결부 #524251; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#ffcb56",
-      "accent": "#ed622c"
-    },
-    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 등이 솟은 웅크린 화산룡; 성체 전용 골격에 분화구 몸통·벌어진 두 용암 판 날개",
+    "prompt": "가슴이 넓고 앞다리가 굵은 사족룡을 만들고 낮게 숙인 큰 머리와 긴 꼬리로 무게를 표현하라. 몸은 무광 흑철색, 배와 관절의 깊은 틈은 붉은 주황, 뿔은 낡은 청동으로 구분한다. 가슴의 둥근 용광로 문 하나가 대표 오브제다. 등은 커다란 방열판 세 장만 사용한다. 숨을 들이쉬면 가슴 문 안쪽이 밝아지고 내쉴 때 날개 아래로 짧은 열기가 퍼진다. 전용 알은 흑철 껍질에 둥근 화로창과 얇은 주황 균열을 둔다.",
+    "key": "pet-303",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "불숨이 식는 순간 너머에 식지 않는 돌이 있다.",
-    "acquisitionCondition": "화산 불숨 회피 + 화산 길 80% 지점 도달",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#393c45"
+    },
+    "idle": "가슴이 넓고 앞다리가 굵은 사족룡을 만들고 낮게 숙인 큰 머리와 긴 꼬리로 무게를 표현하라. 몸은 무광 흑철색, 배와 관절의 깊은 틈은 붉은 주황, 뿔은 낡은 청동으로 구분한다. 가슴의 둥근 용광로 문 하나가 대표 오브제다. 등은 커다란 방열판 세 장만 사용한다. 숨을 들이쉬면 가슴 문 안쪽이 밝아지고 내쉴 때 날개 아래로 짧은 열기가 퍼진다. 전용 알은 흑철 껍질에 둥근 화로창과 얇은 주황 균열을 둔다."
   }
 }

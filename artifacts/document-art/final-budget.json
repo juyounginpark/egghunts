@@ -1,0 +1,26 @@
+{
+  "jsGzipBytes": 306086,
+  "jsBudgetBytes": 307200,
+  "mobileCalls": [
+    68,
+    77,
+    78
+  ],
+  "mobileTriangles": [
+    74962,
+    61112,
+    52854
+  ],
+  "regionMaxCalls": 33,
+  "regionMaxTriangles": 51470,
+  "before": {
+    "geometries": 309,
+    "textures": 3
+  },
+  "after": {
+    "geometries": 309,
+    "textures": 3
+  },
+  "initial4MiB": "unverified: production guest flow requires live account environment",
+  "physicalMobile": "not measured"
+}

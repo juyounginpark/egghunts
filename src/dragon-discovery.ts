@@ -1,9 +1,10 @@
 import {contains,type Hazard} from './hazards';
 import {ROUTE,STAGE_ENVIRONMENT_IDS} from './stage-data';
+import {reorderStages} from './stage-order';
 
 export type DragonClue={avoided:string[];carried:string[];escaped:string[];depth:boolean;sides:number;quiet:number;returned:boolean;claimed:boolean};
 export type DragonRule={hint:string;condition:string;avoid:string[];carry?:string[];escape?:string[];depth?:boolean;sides?:boolean;quiet?:number;returnEgg?:boolean};
-export const DRAGON_RULES:DragonRule[]=[
+const oldDragonRules:DragonRule[]=[
  {hint:'건초 바람을 비켜 간 씨앗이 둥지로 돌아오면 풍차가 돈다.',condition:'굴러오는 건초 회피 후 초원 알을 기지에 보관',avoid:['hay'],returnEgg:true},
  {hint:'기차가 지나간 길 너머, 태엽 성의 가장 깊은 곳.',condition:'태엽 기차 회피 + 왕국 길 80% 지점 도달',avoid:['train'],depth:true},
  {hint:'알을 젖지 않게 지킨 뒤 두 물가의 소리를 들어 보자.',condition:'산호 바다 알 운반 중 먹물 회피 + 위험 구간 좌우 방문',avoid:[],carry:['ink'],sides:true},
@@ -25,6 +26,9 @@ export const DRAGON_RULES:DragonRule[]=[
  {hint:'유성이 지난 뒤 별길의 양쪽에서 같은 하늘을 올려다보자.',condition:'유성 회피 + 위험 구간 좌우 방문',avoid:['meteors'],sides:true},
  {hint:'세 기억을 지나고 황금 파동의 빈틈에 서면 첫빛이 돌아온다.',condition:'기억의 촉수·번개·유성과 창조의 황금 파동을 각각 회피',avoid:['memory-tentacle','memory-lightning','memory-meteor','creation-wave']},
 ];
+export const DRAGON_RULES=reorderStages(oldDragonRules);
+DRAGON_RULES[18]={hint:'비어 있는 고리와 세 기억 사이의 틈을 찾아보자.',condition:'공허의 손과 기억의 촉수 회피',avoid:['void-hand','memory-tentacle']};
+DRAGON_RULES[19]={hint:'씨앗에서 퍼지는 황금 파동의 빈틈을 지나자.',condition:'창조의 황금 파동 회피',avoid:['creation-wave']};
 export const newDragonClue=():DragonClue=>({avoided:[],carried:[],escaped:[],depth:false,sides:0,quiet:0,returned:false,claimed:false});
 export function dragonReady(stage:number,c:DragonClue|undefined){const r=DRAGON_RULES[stage-1];return !!r&&!!c&&r.avoid.every(id=>c.avoided.includes(id))&&(r.carry??[]).every(id=>c.carried.includes(id))&&(r.escape??[]).every(id=>c.escaped.includes(id))&&(!r.depth||c.depth)&&(!r.sides||c.sides===3)&&(!r.quiet||c.quiet>=r.quiet)&&(!r.returnEgg||c.returned);}
 export function validateDragonClues(value:unknown):asserts value is Record<string,DragonClue>{

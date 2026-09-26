@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,36 +16,31 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        12,
-        3
+        11,
+        1
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        10,
+        9,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_leg": {
+    "left_arm": {
       "pivot": [
         6,
         7,
@@ -53,53 +48,68 @@
       ],
       "parent": "body"
     },
-    "right_leg": {
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
+    },
+    "right_arm": {
       "pivot": [
         17,
         7,
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17
+      ],
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-230",
     "id": 230,
-    "name": "눈송이 포포",
-    "stage": 14,
-    "stageName": "영원의 빙하",
+    "oldStage": 14,
+    "stage": 13,
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ice",
-    "role": "대표 마스코트",
+    "previousName": "눈송이 포포",
+    "name": "눈송이 물범",
     "tier": 0,
-    "rarity": "C",
-    "concept": "얼음 결정등을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 눈송이 포포.",
-    "inspiration": "빙산 · 오로라 · 수정 동굴 / ice",
-    "silhouette": [
-      "계단형 결정 세 덩이와 낮은 받침",
-      "얼음 결정등"
-    ],
-    "feature": "얼음 결정등",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "얼음층 아래 작은 온기를 품는 빙하",
-    "material": "빙층·단열 털",
-    "body": "계단형 결정 세 덩이와 낮은 받침",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "빙산 · 오로라 · 수정 동굴에서 온 얼음 결정등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "얼음 바닥 남청색 → 절단면 청록 → 꼭대기 흰색",
-    "colorPlacement": "몸 #55bcd7; 대표 기관 #55bcd7; 발·연결부 #edf6e5; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#55bcd7",
-      "accent": "#55bcd7"
-    },
-    "idle": "미끄러짐을 멈추고 몸을 짧게 털기 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 계단형 결정 세 덩이와 낮은 받침; 머리와 등에 이어지는 기관에 얼음 결정등",
+    "prompt": "낮고 넓은 몸에 작은 머리가 이어지는 둥근 물범을 만들라. 몸은 따뜻한 흰색, 등은 푸른 회색이며 코 위에 큼직한 눈송이 한 개를 올린다. 앞지느러미는 몸 양옆에 넓게 붙이고 검정 눈을 충분히 떨어뜨린다. 코를 위로 들면 눈송이가 조금 떠올랐다 다시 내려오게 한다.",
+    "key": "pet-230",
+    "anatomy": "seal",
+    "feature": "snowflake",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "seal",
+    "colors": {
+      "primary": "#eae9df"
+    },
+    "idle": "낮고 넓은 몸에 작은 머리가 이어지는 둥근 물범을 만들라. 몸은 따뜻한 흰색, 등은 푸른 회색이며 코 위에 큼직한 눈송이 한 개를 올린다. 앞지느러미는 몸 양옆에 넓게 붙이고 검정 눈을 충분히 떨어뜨린다. 코를 위로 들면 눈송이가 조금 떠올랐다 다시 내려오게 한다."
   }
 }

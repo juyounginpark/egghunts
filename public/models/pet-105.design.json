@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -19,10 +19,15 @@
     "crown": {
       "pivot": [
         11.5,
-        7,
-        12
+        12,
+        19
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0,
+        0,
+        0.2
+      ]
     },
     "eyes": {
       "pivot": [
@@ -38,29 +43,27 @@
         11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
       ]
     },
     "left_leg": {
@@ -71,35 +74,25 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
       ]
     },
     "right_leg": {
@@ -109,19 +102,6 @@
         12
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
     },
     "tail": {
       "pivot": [
@@ -133,43 +113,24 @@
     }
   },
   "concept": {
-    "key": "pet-105",
     "id": 105,
-    "name": "풍차 병아리",
+    "oldStage": 1,
     "stage": 1,
-    "stageName": "몽글 초원",
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "windbird",
-    "role": "크고 듬직한 펫",
+    "previousName": "풍차 병아리",
+    "name": "바람개비 병아리",
     "tier": 2,
-    "rarity": "A",
-    "concept": "바람개비 가슴을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 풍차 병아리.",
-    "inspiration": "꽃밭 · 풍차 · 건초 / hay",
-    "silhouette": [
-      "높은 가슴과 양옆으로 펼친 풍차 날개",
-      "바람개비 가슴"
-    ],
-    "feature": "바람개비 가슴",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "바람을 모아 씨앗을 나르는 초원",
-    "material": "식물·털",
-    "body": "높은 가슴과 양옆으로 펼친 풍차 날개",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "꽃밭 · 풍차 · 건초에서 온 바람개비 가슴: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "줄기 뿌리의 짙은 올리브 → 잎 끝의 연두; 얼굴·배는 크림",
-    "colorPlacement": "몸 #c99438; 대표 기관 #71a73d; 발·연결부 #316d47; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#c99438",
-      "accent": "#71a73d"
-    },
-    "idle": "바람을 살피고 잎을 접었다 펼침 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 높은 가슴과 양옆으로 펼친 풍차 날개; 등과 옆구리에 이어진 기관에 바람개비 가슴",
+    "prompt": "둥근 병아리의 짧은 부리와 두 발을 분명하게. 등쪽에 중심축과 네 개의 얇은 날개를 가진 바람개비 하나. 정면에서도 양옆 날개 끝이 보이게 배치. 버터색 몸, 주황 부리와 발, 밝은 나무색 중심축과 하늘색 날개 끝. 날개만 천천히 회전한다. 머리 주변에 초록 블록을 쌓지 않는다.",
+    "key": "pet-105",
+    "anatomy": "bird",
+    "feature": "windmill",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bird",
+    "colors": {
+      "primary": "#eed38b"
+    },
+    "idle": "둥근 병아리의 짧은 부리와 두 발을 분명하게. 등쪽에 중심축과 네 개의 얇은 날개를 가진 바람개비 하나. 정면에서도 양옆 날개 끝이 보이게 배치. 버터색 몸, 주황 부리와 발, 밝은 나무색 중심축과 하늘색 날개 끝. 날개만 천천히 회전한다. 머리 주변에 초록 블록을 쌓지 않는다."
   }
 }

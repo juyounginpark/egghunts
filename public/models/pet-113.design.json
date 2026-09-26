@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -19,31 +19,39 @@
     "eyes": {
       "pivot": [
         11.5,
-        14,
-        2
+        10,
+        1
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        12,
+        8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -53,13 +61,18 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -68,46 +81,35 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17
+      ],
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-113",
     "id": 113,
-    "name": "오뚝이 통통",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 3,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ghost",
-    "role": "장난꾸러기 펫",
+    "previousName": "오뚝이 통통",
+    "name": "블록코끼리",
     "tier": 1,
-    "rarity": "B",
-    "concept": "깜짝 상자을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 오뚝이 통통.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "밑단이 갈라진 빈 망토",
-      "깜짝 상자"
-    ],
-    "feature": "깜짝 상자",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "밑단이 갈라진 빈 망토",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 깜짝 상자: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "앞발로 쥔 물건",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #7255ad; 대표 기관 #efbb36; 발·연결부 #efbb36; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#7255ad",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 꼬리를 좌우로 흔들고 고개를 갸웃",
-    "reaction": "꼬리를 두 번 흔들며 고개를 갸웃한다",
-    "distinction": "장난꾸러기 펫: 밑단이 갈라진 빈 망토; 앞발로 쥔 물건에 깜짝 상자",
+    "prompt": "넓은 몸과 작은 머리, 크게 펼쳐진 귀로 코끼리의 윤곽을 만들라. 코는 세 구간을 기울여 끝이 위로 향하도록 연결한다. 밝은 파랑 몸에 짙은 파랑 귀, 노랑 코끝을 사용하고 연결 돌기는 등에만 두세 개 둔다. 코끝에 작은 블록 하나를 올렸다 내리며 놀이하는 모습을 만든다.",
+    "key": "pet-113",
+    "anatomy": "elephant",
+    "feature": "block",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "elephant",
+    "colors": {
+      "primary": "#527cad"
+    },
+    "idle": "넓은 몸과 작은 머리, 크게 펼쳐진 귀로 코끼리의 윤곽을 만들라. 코는 세 구간을 기울여 끝이 위로 향하도록 연결한다. 밝은 파랑 몸에 짙은 파랑 귀, 노랑 코끝을 사용하고 연결 돌기는 등에만 두세 개 둔다. 코끝에 작은 블록 하나를 올렸다 내리며 놀이하는 모습을 만든다."
   }
 }

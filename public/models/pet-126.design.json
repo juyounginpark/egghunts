@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,133 +27,89 @@
     "eyes": {
       "pivot": [
         11.5,
-        11,
-        1
+        12,
+        2
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        9,
+        10,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        11,
+        15,
         12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        0.22
       ]
     },
-    "left_tip": {
+    "left_leg": {
       "pivot": [
-        3,
-        11,
+        6,
+        7,
         12
       ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
+      "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        11,
+        15,
         12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        -0.22
       ]
     },
-    "right_tip": {
+    "right_leg": {
       "pivot": [
-        20,
-        11,
+        17,
+        7,
         12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-126",
     "id": 126,
-    "name": "파도 가오리",
+    "oldStage": 3,
     "stage": 3,
-    "stageName": "얕은 산호 바다",
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ray",
-    "role": "사물 의인화 펫",
+    "previousName": "파도 가오리",
+    "name": "별빛해파리",
     "tier": 3,
-    "rarity": "S",
-    "concept": "산호 정원등을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 파도 가오리.",
-    "inspiration": "산호 · 물결 · 문어 / coral",
-    "silhouette": [
-      "낮은 마름모 막과 길게 뻗은 꼬리",
-      "산호 정원등"
-    ],
-    "feature": "산호 정원등",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "얕은 물결을 거르는 산호 생태계",
-    "material": "젖은 산호·패각",
-    "body": "낮은 마름모 막과 길게 뻗은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "산호 · 물결 · 문어에서 온 산호 정원등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
-    "colorPlacement": "몸 #f8dfaf; 대표 기관 #f17e6f; 발·연결부 #f17e6f; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#f8dfaf",
-      "accent": "#f17e6f"
-    },
-    "idle": "짧게 뜨고 물결에 지느러미 접기 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 낮은 마름모 막과 길게 뻗은 꼬리; 꼬리에 연결된 기관에 산호 정원등",
+    "prompt": "넓은 우산형 몸 아래에 굵기가 다른 짧은 촉수 네 줄을 늘어뜨려라. 몸은 옅은 보라, 우산 테두리는 남색, 내부에는 밝은 별 모양 핵 하나를 둔다. 얼굴은 우산 앞쪽의 불투명한 작은 면에 배치한다. 우산이 오므라들 때 별빛이 한 번 밝아지고 촉수가 늦게 흔들리게 한다.",
+    "key": "pet-126",
+    "anatomy": "jelly",
+    "feature": "star",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "jelly",
+    "colors": {
+      "primary": "#c4b5d7"
+    },
+    "idle": "넓은 우산형 몸 아래에 굵기가 다른 짧은 촉수 네 줄을 늘어뜨려라. 몸은 옅은 보라, 우산 테두리는 남색, 내부에는 밝은 별 모양 핵 하나를 둔다. 얼굴은 우산 앞쪽의 불투명한 작은 면에 배치한다. 우산이 오므라들 때 별빛이 한 번 밝아지고 촉수가 늦게 흔들리게 한다."
   }
 }

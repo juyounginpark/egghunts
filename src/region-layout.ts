@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {legacyTheme} from './stage-order';
 import {stageLandmarks} from './world-art';
 import { STAGES, STAGE_COVERS, STAGE_STEPS,FINAL_GUARDIAN,routeStep,ROUTE,ROAD_WIDTH_SCALE } from './stage-data';
 
@@ -7,6 +8,8 @@ export type Motion = { blocks:Block[];x:number;y:number;z:number;kind:'spin'|'sw
 const cream=0xffefd0, wood=0x856048, dark=0x303344, gold=0xe9ba60;
 /** Model parts are batched cubes. A prop is a small voxel assembly, never a Mesh per voxel. */
 function sculpture(stage:number,variant:number):Block[]{
+ if(stage===19)variant%=2;
+ if(stage===20)variant=2;
  const out:Block[]=[],s=STAGES[stage-1],a=s.accent,c=s.color;
  const b=(x:number,y:number,z:number,w:number,h:number,d:number,col=c)=>out.push({x,y,z,w,h,d,c:col});
  const post=(x:number,z:number,h=1.6,col=wood)=>b(x,h/2,z,.2,h,.2,col);
@@ -24,7 +27,7 @@ function sculpture(stage:number,variant:number):Block[]{
   }
   return out;
  }
- switch(stage){
+ switch(legacyTheme(stage)){
  case 1:
   if(variant===0){post(0,0,1.3);for(let j=0;j<3;j++)b((j-1)*.35,1.2+j*.3,0,1.3,.65,1.2,0x78a459);for(let j=0;j<6;j++)b(Math.sin(j*2)*.65,1.4+(j%3)*.22,Math.cos(j*2)*.6,.18,.18,.18,0xe98870);}
   if(variant===1){b(0,.8,0,.85,1.6,.85,cream);roof(1.65,0xc18058);b(0,1,.46,.25,.4,.06,wood);}
@@ -138,7 +141,7 @@ export function buildRegionLayout(stage:number,length=ROUTE.length){
  return layoutCache.get(key)!;
 }
 function createRegionLayout(stage:number,length:number){
-  let blocks:Block[]=[];let motions:Motion[]=[];const color=new T.Color(),s=STAGES[stage-1];let seed=stage*7919;
+  const theme=legacyTheme(stage);let blocks:Block[]=[];let motions:Motion[]=[];const color=new T.Color(),s=STAGES[stage-1];let seed=stage*7919;
   const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
   const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number)=>blocks.push({x:x*ROAD_WIDTH_SCALE,y,z,w:w*ROAD_WIDTH_SCALE,h,d,c});
   const stamp=(parts:Block[],x:number,z:number,scale=1,y=0)=>{
@@ -149,17 +152,17 @@ function createRegionLayout(stage:number,length:number){
   };
   const tiles=[0xceb994,0xd4b58f,0xaddbd3,0x706971,0x426b7e,0x9b928f,0x4a5978,0xdfc38a,0x9aa17a,0x9b8294,0xdedbcd,0x8995a2,0xa48b71,0xc2e4e8,0xd0bdd8,0x849077,0xadba81,0x929393,0x8887ad,0x756d91];
   for(let z=-ROUTE.entrance;z>=-ROUTE.entrance-length;z-=2){
-   const final=stage===20&&z<-240,voidZone=stage===20&&z>-105;
+   const final=stage===20&&z<-240,voidZone=stage===19;
    for(let x=-8;x<=8;x+=2){
-    const path=Math.abs(x)<=2,col=final?(path?0xebdfbc:0xd0d4b1):path?tiles[stage-1]:s.color;
+    const path=Math.abs(x)<=2,col=final?(path?0xebdfbc:0xd0d4b1):path?tiles[theme-1]:s.color;
     const tint=color.setHex(col).multiplyScalar(.96+rand()*.08).getHex();
     b(x,-.45,z,2,.8,2,tint);
     // Inlaid tile joints, rivets, fossil seams and current lines stay flat and traversable.
-    if([2,6,7,11,12,13,18,19].includes(stage)){b(x,-.038,z-1,1.96,.018,.035,s.color);b(x-1,-.038,z,.035,.018,1.96,s.color);}
+    if([2,6,7,11,12,13,18,19].includes(theme)){b(x,-.038,z-1,1.96,.018,.035,s.color);b(x-1,-.038,z,.035,.018,1.96,s.color);}
     else if(rand()<.48)b(x+rand()-.5,-.025,z+rand()-.5,.15+rand()*.5,.02,.1,s.accent);
-    if(stage===7&&Math.abs(x)===4)b(x,-.02,z,.06,.03,1.8,s.accent);
-    if(stage===4&&Math.abs(x)>=6)b(x,-.015,z,.14,.03,1.3,0xf6a06b);
-    if((stage===19||voidZone)&&Math.abs(x)>=6)b(x,-.5,z,.9,.85,.9,0x3d3857);
+    if(theme===7&&Math.abs(x)===4)b(x,-.02,z,.06,.03,1.8,s.accent);
+    if(theme===4&&Math.abs(x)>=6)b(x,-.015,z,.14,.03,1.3,0xf6a06b);
+    if((theme===19||voidZone)&&Math.abs(x)>=6)b(x,-.5,z,.9,.85,.9,0x3d3857);
    }
    // Region-specific silhouettes replace the uniform two canyon walls.
    for(const side of [-1,1]){
@@ -168,11 +171,11 @@ function createRegionLayout(stage:number,length:number){
     b(side*8,wallHeight/2-.2,z,2.6,wallHeight+.4,2.1,s.color);
     b(side*(8.5+rand()*.6),wallHeight-.1,z+rand()*.3,1.8+rand()*.4,.6+rand()*.5,2.3,s.color);
     const x=side*(9+rand()),h=.7+rand()*2;
-    if([1,3,5,9,17].includes(stage)){b(x,h*.22,z,2.5,h*.44,2.1,s.color);if(rand()<.35)stamp(sculpture(stage,0),x,z,1+rand());}
-    else if([2,6,7,10,12,16,18].includes(stage)){if(rand()<.55)stamp(sculpture(stage,0),x,z,1.2+rand()*.8);}
-    else if([4,8,14].includes(stage)){for(let j=0;j<3;j++)b(x+side*j*.3,j*.7+.3,z,2-j*.35,.7,2.2,s.color);}
-    else if([11,13].includes(stage)){b(x,-.65,z,2.3,1.2,2.1,s.color);if(z%8===0)stamp(sculpture(stage,0),x,z,1.4);}
-    else if(rand()<.4)stamp(sculpture(stage,stage===20?(final?2:voidZone?0:1):1),x,z,1.2+rand());
+    if([1,3,5,9,17].includes(theme)){b(x,h*.22,z,2.5,h*.44,2.1,s.color);if(rand()<.35)stamp(sculpture(stage,0),x,z,1+rand());}
+    else if([2,6,7,10,12,16,18].includes(theme)){if(rand()<.55)stamp(sculpture(stage,0),x,z,1.2+rand()*.8);}
+    else if([4,8,14].includes(theme)){for(let j=0;j<3;j++)b(x+side*j*.3,j*.7+.3,z,2-j*.35,.7,2.2,s.color);}
+    else if([11,13].includes(theme)){b(x,-.65,z,2.3,1.2,2.1,s.color);if(z%8===0)stamp(sculpture(stage,0),x,z,1.4);}
+    else if(rand()<.4)stamp(sculpture(stage,stage===20?2:stage===19?0:1),x,z,1.2+rand());
    }
   }
   // Asymmetric groves and workshop clusters, with breathing room near nests and cover.
@@ -183,7 +186,7 @@ function createRegionLayout(stage:number,length:number){
    stamp(sculpture(stage,variant),x,z,.8+rand()*.6);
    if(rand()<.7)stamp(sculpture(stage,(variant+5)%15),x+side*.7,z+1.7,.45+rand()*.35);
    if(rand()<.45)stamp(sculpture(stage,(variant+9)%15),-x,z-2.5,.7);
-   if([3,5,9,17].includes(stage))for(let j=0;j<5;j++)b(x+(rand()-.5)*2,.12,z+(rand()-.5)*2,.1,.3,.1,s.accent);
+   if([3,5,9,17].includes(theme))for(let j=0;j<5;j++)b(x+(rand()-.5)*2,.12,z+(rand()-.5)*2,.1,.3,.1,s.accent);
    z-=(2.6+rand()*2.8)/STAGE_STEPS[routeStep(z,0,length)-1].density;
   }
   // Extra biome-specific clusters stay outside the central nest/escape lanes.
@@ -204,7 +207,7 @@ function createRegionLayout(stage:number,length:number){
   }
   for(const cover of STAGE_COVERS){
    b(cover.x/ROAD_WIDTH_SCALE,.28,cover.z,1.7/ROAD_WIDTH_SCALE,.56,1.7,s.color);
-   const v=stage===6?1:stage===9?2:stage===3||stage===5?0:1;
+   const v=theme===6?1:theme===9?2:theme===3||theme===5?0:1;
    stamp(sculpture(stage,v),cover.x/ROAD_WIDTH_SCALE,cover.z,.8);
   }
   // Fine ground details form patches rather than another evenly spaced prop row.
@@ -213,25 +216,25 @@ function createRegionLayout(stage:number,length:number){
    // Quiet stretches between ecological patches; detail gathers by the landmark
    // and existing groves, instead of evenly peppering the entire escape lane.
    if(Math.abs(z+Math.min(38,length*.34))>9&&Math.sin(z*.23+stage)<.35)continue;
-   if([1,9,17].includes(stage)){for(let j=0;j<3;j++)b(x+j*.1,.07,z,.06,.2+rand()*.12,.06,stage===1?0x90ad6c:0x769566);}
-   else if([3,5,14].includes(stage)){b(x,-.02,z,.3+rand()*.5,.03,.18+rand()*.3,stage===14?0xeaf5ef:s.accent);}
-   else if([4,16].includes(stage)){b(x,-.01,z,.3,.04,.3,stage===4?0xc67a55:0x9aa867);b(x+.15,.02,z,.12,.08,.15,s.color);}
-   else if(stage===8){b(x,-.018,z,.8+rand()*.8,.025,.06,0xf0d7a0);}
-   else if([6,15].includes(stage)){b(x,.015,z,.18,.025,.24,0xe8dcc5);}
-   else if([7,12,13,18].includes(stage)){b(x,.015,z,.2,.04,.15,0x8c9291);}
+   if([1,9,17].includes(theme)){for(let j=0;j<3;j++)b(x+j*.1,.07,z,.06,.2+rand()*.12,.06,theme===1?0x90ad6c:0x769566);}
+   else if([3,5,14].includes(theme)){b(x,-.02,z,.3+rand()*.5,.03,.18+rand()*.3,theme===14?0xeaf5ef:s.accent);}
+   else if([4,16].includes(theme)){b(x,-.01,z,.3,.04,.3,theme===4?0xc67a55:0x9aa867);b(x+.15,.02,z,.12,.08,.15,s.color);}
+   else if(theme===8){b(x,-.018,z,.8+rand()*.8,.025,.06,0xf0d7a0);}
+   else if([6,15].includes(theme)){b(x,.015,z,.18,.025,.24,0xe8dcc5);}
+   else if([7,12,13,18].includes(theme)){b(x,.015,z,.2,.04,.15,0x8c9291);}
    else {b(x,-.02,z,.14,.03,.14,s.accent);}
   }
   // Track sleepers, ducts and causeway rails make ground layouts recognizable.
-  if(stage===2||stage===19)for(let z=-8;z>-length-5;z-=.8){b(5.6,.03,z,1,.09,.16,wood);for(const x of [5.25,5.95])b(x,.09,z,.08,.07,.8,stage===19?gold:0x727b85);}
-  if(stage===13||stage===18)for(let z=-8;z>-length-5;z-=3)for(const x of [-7.5,7.5]){b(x,.15,z,.3,.3,3,gold);b(x,.16,z,.4,.4,.15,dark);}
+  if(theme===2||theme===19)for(let z=-8;z>-length-5;z-=.8){b(5.6,.03,z,1,.09,.16,wood);for(const x of [5.25,5.95])b(x,.09,z,.08,.07,.8,theme===19?gold:0x727b85);}
+  if(theme===13||theme===18)for(let z=-8;z>-length-5;z-=3)for(const x of [-7.5,7.5]){b(x,.15,z,.3,.3,3,gold);b(x,.16,z,.4,.4,.15,dark);}
   for(let i=0;i<Math.ceil(length/8);i++){
    const x=(i%3===0?-1:1)*(5.8+rand()*1.3),z=-12-i*7.7,phase=rand()*6;
    let parts:Block[],kind:Motion['kind'],y:number;
-   if(stage===1){parts=[{x:0,y:0,z:.6,w:2,h:.18,d:.12,c:cream},{x:0,y:0,z:.6,w:.18,h:2,d:.12,c:cream}];kind='windmill';y=2;stamp(sculpture(1,1),x,z,1.25);}
-   else if([2,13,18].includes(stage)){parts=[];for(let j=0;j<10;j++){const a=j*Math.PI/5;parts.push({x:Math.cos(a)*.6,y:0,z:Math.sin(a)*.6,w:.22,h:.18,d:.22,c:gold});}kind='spin';y=.8;}
-   else if([3,5,12,19].includes(stage)){parts=[{x:0,y:0,z:0,w:.35,h:.18,d:.5,c:s.accent},{x:.24,y:0,z:-.1,w:.15,h:.3,d:.2,c:cream}];kind='float';y=.8+i%3*.6;}
-   else if([4,7,10,14,16,20].includes(stage)){parts=[{x:0,y:0,z:0,w:.16,h:.25,d:.16,c:s.accent}];kind='float';y=.5;}
-   else {parts=sculpture(stage,stage===15?0:2);kind=stage===15?'float':'sway';y=stage===15?1.4:0;}
+   if(theme===1){parts=[{x:0,y:0,z:.6,w:2,h:.18,d:.12,c:cream},{x:0,y:0,z:.6,w:.18,h:2,d:.12,c:cream}];kind='windmill';y=2;stamp(sculpture(1,1),x,z,1.25);}
+   else if([2,13,18].includes(theme)){parts=[];for(let j=0;j<10;j++){const a=j*Math.PI/5;parts.push({x:Math.cos(a)*.6,y:0,z:Math.sin(a)*.6,w:.22,h:.18,d:.22,c:gold});}kind='spin';y=.8;}
+   else if([3,5,12,19].includes(theme)){parts=[{x:0,y:0,z:0,w:.35,h:.18,d:.5,c:s.accent},{x:.24,y:0,z:-.1,w:.15,h:.3,d:.2,c:cream}];kind='float';y=.8+i%3*.6;}
+   else if([4,7,10,14,16,20].includes(theme)){parts=[{x:0,y:0,z:0,w:.16,h:.25,d:.16,c:s.accent}];kind='float';y=.5;}
+   else {parts=sculpture(stage,theme===15?0:2);kind=theme===15?'float':'sway';y=theme===15?1.4:0;}
    motions.push({blocks:parts,x:x*ROAD_WIDTH_SCALE,y,z,kind,phase});
   }
   // Closed garden wall at the end of region 20. The movement limit stops at its front.

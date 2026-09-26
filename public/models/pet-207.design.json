@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    28
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,18 +16,10 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        14,
+        13,
         2
       ],
       "parent": "head"
@@ -35,14 +27,30 @@
     "head": {
       "pivot": [
         11.5,
-        12,
+        11,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        6,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +60,27 @@
         12
       ],
       "parent": "body"
+    },
+    "right_arm": {
+      "pivot": [
+        17,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -65,93 +94,30 @@
       "pivot": [
         11.5,
         6,
-        18
+        17
       ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-207",
     "id": 207,
-    "name": "샘물 페가수스",
-    "stage": 11,
-    "stageName": "올림포스 신전",
+    "oldStage": 11,
+    "stage": 10,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "horse",
-    "role": "위험 요소 펫",
+    "previousName": "샘물 페가수스",
+    "name": "번개독수리",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "석상 안장을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 샘물 페가수스.",
-    "inspiration": "대리석 · 구름다리 · 번개 / lightning",
-    "silhouette": [
-      "짧은 목과 긴 네 발 몸",
-      "석상 안장"
-    ],
-    "feature": "석상 안장",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "구름 위에서 대리석과 번개가 숨 쉬는 신전",
-    "material": "대리석·금",
-    "body": "짧은 목과 긴 네 발 몸",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "대리석 · 구름다리 · 번개에서 온 석상 안장: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "기둥 아랫면 청회색 → 위쪽 상아색; 연결부만 금색",
-    "colorPlacement": "몸 #72ab8e; 대표 기관 #d6a231; 발·연결부 #d6a231; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#72ab8e",
-      "accent": "#d6a231"
-    },
-    "idle": "무게 있게 멈췄다 날개 한 번 들기 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 짧은 목과 긴 네 발 몸; 등에 짊어진 기관에 석상 안장",
+    "prompt": "짧고 단단한 몸과 넓은 각진 날개를 가진 독수리를 만들라. 몸은 남색, 머리는 흰색, 부리와 날개 끝은 노랑으로 구분한다. 꼬리는 번개를 닮은 굵은 두 갈래로 만들고 발은 작게 접는다. 날개를 펼칠 때 양끝 사이에 짧은 번개 한 줄만 지나가게 한다.",
+    "key": "pet-207",
+    "anatomy": "bird",
+    "feature": "lightning",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bird",
+    "colors": {
+      "primary": "#344a70"
+    },
+    "idle": "짧고 단단한 몸과 넓은 각진 날개를 가진 독수리를 만들라. 몸은 남색, 머리는 흰색, 부리와 날개 끝은 노랑으로 구분한다. 꼬리는 번개를 닮은 굵은 두 갈래로 만들고 발은 작게 접는다. 날개를 펼칠 때 양끝 사이에 짧은 번개 한 줄만 지나가게 한다."
   }
 }

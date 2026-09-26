@@ -6,126 +6,86 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
         11.5,
         7,
-        12
+        14
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
         11.5,
         17,
-        3
+        5
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        17
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
         15,
-        7
+        9
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
         6,
         15,
-        12
+        14
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
-    },
-    "left_leg": {
-      "pivot": [
-        6,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "right_ear": {
       "pivot": [
         17,
         15,
-        12
+        14
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
-    },
-    "right_leg": {
-      "pivot": [
-        17,
-        7,
-        12
-      ],
-      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-175",
     "id": 175,
-    "name": "비단 코브라",
-    "stage": 8,
-    "stageName": "황금 사막왕국",
+    "oldStage": 8,
+    "stage": 7,
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "cobra",
-    "role": "크고 듬직한 펫",
+    "previousName": "비단 코브라",
+    "name": "항아리 코브라",
     "tier": 2,
-    "rarity": "A",
-    "concept": "코브라 목막을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 비단 코브라.",
-    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
-    "silhouette": [
-      "열린 목막과 접힌 꼬리 받침",
-      "코브라 목막"
-    ],
-    "feature": "코브라 목막",
-    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
-    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
-    "material": "사암·황동",
-    "body": "열린 목막과 접힌 꼬리 받침",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 코브라 목막: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
-    "colorPlacement": "몸 #93532e; 대표 기관 #d7a247; 발·연결부 #f5d48b; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#93532e",
-      "accent": "#d7a247"
-    },
-    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 열린 목막과 접힌 꼬리 받침; 등과 옆구리에 이어진 기관에 코브라 목막",
+    "prompt": "둥근 테라코타 항아리에서 코브라의 상체가 올라온 형태로 만들라. 뱀은 크림색 몸과 넓은 청록 목무늬를 가지며 눈은 작은 검정 점으로 둔다. 항아리에는 굵은 파랑 지그재그 띠 하나만 사용한다. 목을 좌우로 천천히 흔들다가 항아리 가장자리에 턱을 얹게 한다.",
+    "key": "pet-175",
+    "anatomy": "cobra",
+    "feature": "jar",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "cobra",
+    "colors": {
+      "primary": "#b56d55"
+    },
+    "idle": "둥근 테라코타 항아리에서 코브라의 상체가 올라온 형태로 만들라. 뱀은 크림색 몸과 넓은 청록 목무늬를 가지며 눈은 작은 검정 점으로 둔다. 항아리에는 굵은 파랑 지그재그 띠 하나만 사용한다. 목을 좌우로 천천히 흔들다가 항아리 가장자리에 턱을 얹게 한다."
   }
 }

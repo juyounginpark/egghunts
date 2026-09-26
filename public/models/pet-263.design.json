@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,43 +16,49 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        10,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
+        8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
       ]
     },
     "left_leg": {
@@ -63,35 +69,25 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
       ]
     },
     "right_leg": {
@@ -101,67 +97,27 @@
         12
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
-      ],
-      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-263",
     "id": 263,
-    "name": "꿀벌 붕붕",
-    "stage": 17,
-    "stageName": "곤충 소인국",
+    "oldStage": 17,
+    "stage": 16,
     "slot": 3,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "bee",
-    "role": "장난꾸러기 펫",
+    "previousName": "꿀벌 붕붕",
+    "name": "도토리 장수풍뎅이",
     "tier": 1,
-    "rarity": "B",
-    "concept": "꿀 저장항아리을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 꿀벌 붕붕.",
-    "inspiration": "거대한 풀잎 · 이슬 · 버섯 / mantis",
-    "silhouette": [
-      "큰 두 마디 배와 넓은 두 날개",
-      "꿀 저장항아리"
-    ],
-    "feature": "꿀 저장항아리",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "이슬 한 방울도 집만큼 큰 풀잎 아래 나라",
-    "material": "등껍질·잎",
-    "body": "큰 두 마디 배와 넓은 두 날개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "거대한 풀잎 · 이슬 · 버섯에서 온 꿀 저장항아리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "앞발로 쥔 물건",
-    "gradient": "등갑 중심 적갈색 → 가장자리 호박색; 잎 끝은 연한 녹색",
-    "colorPlacement": "몸 #e0d8a8; 대표 기관 #70a444; 발·연결부 #e3ac44; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#e0d8a8",
-      "accent": "#70a444"
-    },
-    "idle": "더듬이 먼저 살피고 앞발 교대로 접기 / 꼬리를 좌우로 흔들고 고개를 갸웃",
-    "reaction": "꼬리를 두 번 흔들며 고개를 갸웃한다",
-    "distinction": "장난꾸러기 펫: 큰 두 마디 배와 넓은 두 날개; 앞발로 쥔 물건에 꿀 저장항아리",
+    "prompt": "둥근 밤갈색 몸과 굵고 위로 휜 뿔을 가진 장수풍뎅이를 만들라. 등껍질은 도토리 열매 같은 큰 덩어리, 가슴판은 황갈색 모자 질감으로 나눈다. 뿔은 짙은 갈색으로 얼굴과 분리한다. 앞다리로 작은 도토리 한 개를 받쳐 들고 뿔을 당당하게 들어 올리게 한다.",
+    "key": "pet-263",
+    "anatomy": "beetle",
+    "feature": "acorn",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "beetle",
+    "colors": {
+      "primary": "#76503b"
+    },
+    "idle": "둥근 밤갈색 몸과 굵고 위로 휜 뿔을 가진 장수풍뎅이를 만들라. 등껍질은 도토리 열매 같은 큰 덩어리, 가슴판은 황갈색 모자 질감으로 나눈다. 뿔은 짙은 갈색으로 얼굴과 분리한다. 앞다리로 작은 도토리 한 개를 받쳐 들고 뿔을 당당하게 들어 올리게 한다."
   }
 }

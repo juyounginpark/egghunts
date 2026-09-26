@@ -1,248 +1,164 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    28,
-    25,
-    35
+    24,
+    32,
+    58
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        13.5,
+        11.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
     "crown": {
       "pivot": [
-        13.5,
-        7,
-        12
+        11.5,
+        12,
+        5
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0,
+        0,
+        0.2
+      ]
     },
     "eyes": {
       "pivot": [
-        13.5,
-        13,
+        11.5,
+        23,
         0
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
-        13.5,
-        11,
-        7
+        11.5,
+        21,
+        10
+      ],
+      "parent": "neck"
+    },
+    "left_leg": {
+      "pivot": [
+        6,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "neck": {
+      "pivot": [
+        11.5,
+        10,
+        13
       ],
       "parent": "body",
       "rotation": [
-        0.04,
+        -0.13,
         0,
         0
       ]
     },
-    "left_arm": {
-      "pivot": [
-        8,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.2,
-        0.1
-      ],
-      "scale": [
-        1.1,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        8,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        8,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        5,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        19,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.2,
-        -0.1
-      ],
-      "scale": [
-        1.1,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        19,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
     "right_leg": {
       "pivot": [
-        19,
+        17,
         7,
-        12
+        15
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        22,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
     },
     "tail": {
       "pivot": [
-        13.5,
-        7,
-        18
+        11.5,
+        6,
+        20.0
       ],
       "parent": "body",
       "rotation": [
-        0,
-        -0.22,
+        0.0,
+        -0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        13.5,
-        7,
-        22
+        11.5,
+        6,
+        26.8
       ],
       "parent": "tail",
       "rotation": [
-        0,
-        -0.22,
+        0.04,
+        -0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        13.5,
-        7,
-        26
+        11.5,
+        6,
+        33.6
       ],
       "parent": "tail_1",
       "rotation": [
-        0,
-        -0.22,
+        0.08,
+        -0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        13.5,
-        7,
-        30
+        11.5,
+        6,
+        40.4
       ],
       "parent": "tail_2",
       "rotation": [
-        0,
-        -0.22,
+        0.12,
+        -0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        47.2
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-307",
     "id": 307,
-    "name": "태양릉 사막룡",
-    "stage": 8,
-    "stageName": "황금 사막왕국",
+    "oldStage": 8,
+    "stage": 7,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "태양릉 사막룡",
+    "name": "사막의 태양룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "층진 피라미드 등·납작한 태양판 날개을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 태양릉 사막룡.",
-    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
-    "silhouette": [
-      "폭넓은 사막 보행룡",
-      "층진 피라미드 등·납작한 태양판 날개"
-    ],
-    "feature": "층진 피라미드 등·납작한 태양판 날개",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
-    "material": "사암·황동",
-    "body": "폭넓은 사막 보행룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 층진 피라미드 등·납작한 태양판 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
-    "colorPlacement": "몸 #259c9c; 대표 기관 #d7a247; 발·연결부 #d7a247; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#259c9c",
-      "accent": "#d7a247"
-    },
-    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 폭넓은 사막 보행룡; 성체 전용 골격에 층진 피라미드 등·납작한 태양판 날개",
+    "prompt": "긴 목과 넓은 가슴을 가진 날개 없는 사족룡을 모래 위에 당당히 앉혀라. 몸은 짙은 청금석색, 배는 모래색, 뿔과 턱 아래 장식은 낡은 금색으로 구분한다. 머리 뒤에 커다란 태양 원반 하나를 세우고 꼬리는 앞발 곁으로 길게 감는다. 몸 전체를 금으로 칠하지 않는다. 고개를 들면 원반의 테두리가 순서대로 밝아지고 얇은 모래띠가 발 주변으로 흐르게 한다. 전용 알은 청색 껍질과 큰 금색 태양 문양 하나로 구성한다.",
+    "key": "pet-307",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "전갈의 꼬리를 비켜 두 모래 언덕에 발자국을 남기자.",
-    "acquisitionCondition": "전갈 꼬리 회피 + 위험 구간 좌우 방문",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#365a96"
+    },
+    "idle": "긴 목과 넓은 가슴을 가진 날개 없는 사족룡을 모래 위에 당당히 앉혀라. 몸은 짙은 청금석색, 배는 모래색, 뿔과 턱 아래 장식은 낡은 금색으로 구분한다. 머리 뒤에 커다란 태양 원반 하나를 세우고 꼬리는 앞발 곁으로 길게 감는다. 몸 전체를 금으로 칠하지 않는다. 고개를 들면 원반의 테두리가 순서대로 밝아지고 얇은 모래띠가 발 주변으로 흐르게 한다. 전용 알은 청색 껍질과 큰 금색 태양 문양 하나로 구성한다."
   }
 }

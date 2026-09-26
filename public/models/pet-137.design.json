@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,11 +38,19 @@
         8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -71,43 +92,24 @@
     }
   },
   "concept": {
-    "key": "pet-137",
     "id": 137,
-    "name": "분화구 멧돼지",
+    "oldStage": 4,
     "stage": 4,
-    "stageName": "화산 입구",
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "boar",
-    "role": "위험 요소 펫",
+    "previousName": "분화구 멧돼지",
+    "name": "분화구 멧돼지",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "굴뚝 등판을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 분화구 멧돼지.",
-    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
-    "silhouette": [
-      "쐐기 코와 높이 솟은 앞어깨",
-      "굴뚝 등판"
-    ],
-    "feature": "굴뚝 등판",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
-    "material": "현무암·용암",
-    "body": "쐐기 코와 높이 솟은 앞어깨",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 굴뚝 등판: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
-    "colorPlacement": "몸 #938085; 대표 기관 #ed622c; 발·연결부 #ed622c; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#938085",
-      "accent": "#ed622c"
-    },
-    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 쐐기 코와 높이 솟은 앞어깨; 등에 짊어진 기관에 굴뚝 등판",
+    "prompt": "앞가슴이 크고 뒷다리가 짧은 멧돼지로 만들라. 짙은 적갈색 몸, 크림색 짧은 엄니, 넓은 코를 분명히 한다. 등에는 깊이가 읽히는 낮은 분화구 하나를 파고 가장자리에 굵은 바위 테두리를 둔다. 콧김을 내뿜을 때 분화구에서 작은 불씨 두세 개가 튀게 한다.",
+    "key": "pet-137",
+    "anatomy": "boar",
+    "feature": "crater",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "boar",
+    "colors": {
+      "primary": "#974e40"
+    },
+    "idle": "앞가슴이 크고 뒷다리가 짧은 멧돼지로 만들라. 짙은 적갈색 몸, 크림색 짧은 엄니, 넓은 코를 분명히 한다. 등에는 깊이가 읽히는 낮은 분화구 하나를 파고 가장자리에 굵은 바위 테두리를 둔다. 콧김을 내뿜을 때 분화구에서 작은 불씨 두세 개가 튀게 한다."
   }
 }

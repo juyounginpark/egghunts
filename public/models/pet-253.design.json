@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,6 +15,14 @@
         12
       ],
       "parent": null
+    },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -30,20 +38,20 @@
         6,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -52,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-253",
     "id": 253,
-    "name": "유리 버섯",
-    "stage": 16,
-    "stageName": "방사능 폐허",
+    "oldStage": 16,
+    "stage": 15,
     "slot": 3,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "mushroom",
-    "role": "장난꾸러기 펫",
+    "previousName": "유리 버섯",
+    "name": "유리버섯 달팽이",
     "tier": 1,
-    "rarity": "B",
-    "concept": "이중 버섯갓을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 유리 버섯.",
-    "inspiration": "녹색 안개 · 폐허 · 변이 식물 / vine",
-    "silhouette": [
-      "큰 이중 갓 아래 짧은 줄기",
-      "이중 버섯갓"
-    ],
-    "feature": "이중 버섯갓",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "폐기물 틈에서 독을 걸러내는 새 생태계",
-    "material": "녹슨 통·변이 식물",
-    "body": "큰 이중 갓 아래 짧은 줄기",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "녹색 안개 · 폐허 · 변이 식물에서 온 이중 버섯갓: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "앞발로 쥔 물건",
-    "gradient": "녹슨 판 적갈색 → 겹친 판 황토; 여과구만 산성 연두",
-    "colorPlacement": "몸 #367974; 대표 기관 #718330; 발·연결부 #a15634; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#367974",
-      "accent": "#718330"
-    },
-    "idle": "독을 들이마셨다 몸을 접어 배출 / 꼬리를 좌우로 흔들고 고개를 갸웃",
-    "reaction": "꼬리를 두 번 흔들며 고개를 갸웃한다",
-    "distinction": "장난꾸러기 펫: 큰 이중 갓 아래 짧은 줄기; 앞발로 쥔 물건에 이중 버섯갓",
+    "prompt": "길고 낮은 자주색 몸 위에 반투명한 유리버섯 껍질을 얹어라. 버섯 갓은 옅은 청록, 기둥은 크림색, 내부의 씨앗은 짙은 분홍으로 구분한다. 짧은 눈자루를 앞으로 뻗어 얼굴이 가려지지 않게 한다. 몸이 움직이면 버섯 안의 씨앗들이 느리게 흔들리고 갓 가장자리만 약하게 밝아지게 한다.",
+    "key": "pet-253",
+    "anatomy": "snail",
+    "feature": "mushroom",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "snail",
+    "colors": {
+      "primary": "#a5dacf"
+    },
+    "idle": "길고 낮은 자주색 몸 위에 반투명한 유리버섯 껍질을 얹어라. 버섯 갓은 옅은 청록, 기둥은 크림색, 내부의 씨앗은 짙은 분홍으로 구분한다. 짧은 눈자루를 앞으로 뻗어 얼굴이 가려지지 않게 한다. 몸이 움직이면 버섯 안의 씨앗들이 느리게 흔들리고 갓 가장자리만 약하게 밝아지게 한다."
   }
 }

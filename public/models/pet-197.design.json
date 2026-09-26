@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,42 +16,42 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        14,
-        2
+        10,
+        1
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        12,
+        8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -61,13 +61,18 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -76,46 +81,35 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17
+      ],
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-197",
     "id": 197,
-    "name": "도깨비 북지기",
-    "stage": 10,
-    "stageName": "도깨비 달마을",
+    "oldStage": 10,
+    "stage": 9,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "robot",
-    "role": "위험 요소 펫",
+    "previousName": "도깨비 북지기",
+    "name": "청자두꺼비",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "마을 등롱을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 도깨비 북지기.",
-    "inspiration": "기와집 · 붉은 달 · 도깨비불 / flame",
-    "silhouette": [
-      "분리된 어깨와 넓은 두 발",
-      "마을 등롱"
-    ],
-    "feature": "마을 등롱",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "기와 처마 아래 붉은 달의 불씨가 사는 마을",
-    "material": "도자기·기와",
-    "body": "분리된 어깨와 넓은 두 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "기와집 · 붉은 달 · 도깨비불에서 온 마을 등롱: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "몸 중앙 따뜻한 자주 → 처마의 짙은 보라; 불씨 중심은 살구",
-    "colorPlacement": "몸 #e7b64f; 대표 기관 #52416f; 발·연결부 #df7148; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#e7b64f",
-      "accent": "#52416f"
-    },
-    "idle": "부채를 접고 고개 숙여 장난스러운 인사 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 분리된 어깨와 넓은 두 발; 등에 짊어진 기관에 마을 등롱",
+    "prompt": "넓은 몸과 작은 앞발, 높게 올라간 눈자리를 가진 두꺼비를 만들라. 몸은 매끈한 청자색, 배는 옅은 아이보리, 등의 굵은 돌기 몇 개는 더 짙은 청록으로 둔다. 입 앞에는 작은 엽전 하나를 놓는다. 앞발로 엽전을 끌어안고 턱을 부풀리는 느린 행동을 준다.",
+    "key": "pet-197",
+    "anatomy": "frog",
+    "feature": "coin",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "frog",
+    "colors": {
+      "primary": "#86b7a5"
+    },
+    "idle": "넓은 몸과 작은 앞발, 높게 올라간 눈자리를 가진 두꺼비를 만들라. 몸은 매끈한 청자색, 배는 옅은 아이보리, 등의 굵은 돌기 몇 개는 더 짙은 청록으로 둔다. 입 앞에는 작은 엽전 하나를 놓는다. 앞발로 엽전을 끌어안고 턱을 부풀리는 느린 행동을 준다."
   }
 }

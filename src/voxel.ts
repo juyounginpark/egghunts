@@ -3,6 +3,10 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import type {MapCollider} from './map-collision';
 type Voxel = [number, number, number, number];
 type Model = {
+  artMotion?:string;
+  artStage?:number;
+  artForm?:string;
+  artMaterial?:string;
   unit?:number;
   previewAngle?:number;
   front?: '-z';
@@ -16,6 +20,11 @@ type Model = {
   >;
 };
 const mat = new T.MeshLambertMaterial({ vertexColors: true });
+const artMaterials=new Map<string,T.MeshStandardMaterial>();
+function artMaterial(kind:string){
+ if(!artMaterials.has(kind))artMaterials.set(kind,new T.MeshStandardMaterial({vertexColors:true,roughness:kind==='polished'?.32:kind==='metal'?.6:.94,metalness:kind==='metal'?.28:0}));
+ return artMaterials.get(kind)!;
+}
 const geometryCache = new Map<string, T.BufferGeometry>();
 const dataCache = new Map<string, Model>();
 const pending = new Map<string, Promise<void>>();
@@ -70,6 +79,7 @@ function geometry(key: string, voxels: Voxel[], colors: string[], origin: number
 export function voxelModel(name: string, rig = false) {
   const d = dataCache.get(name)! ,
     group = new T.Group();
+  const material=d.artMaterial?artMaterial(d.artMaterial):mat;
   if (rig || Object.values(d.parts).some(p=>p.rotation||p.scale)) {
     const groups: Record<string, T.Group> = {};
     for (const [n, p] of Object.entries(d.parts)) {
@@ -77,7 +87,7 @@ export function voxelModel(name: string, rig = false) {
       g.name = n;
       const mesh = new T.Mesh(
         geometry(`${name}:${n}`, p.voxels, d.colors, p.pivot, d.unit??d.size[1]*.9, d.front),
-        mat,
+        material,
       );
       mesh.castShadow = true;
       g.add(mesh);
@@ -106,18 +116,19 @@ export function voxelModel(name: string, rig = false) {
         const merged=mergeGeometries(pieces);pieces.forEach(g=>g.dispose());
         if(merged){merged.computeBoundingSphere();geometryCache.set(key,merged);}
       }
-      group.clear();const mesh=new T.Mesh(geometryCache.get(key)!,mat);mesh.castShadow=mesh.receiveShadow=true;group.add(mesh);
+      group.clear();const mesh=new T.Mesh(geometryCache.get(key)!,material);mesh.castShadow=mesh.receiveShadow=true;group.add(mesh);
     }
   } else {
     const mesh = new T.Mesh(
       geometry(name, d.voxels, d.colors, d.pivot, d.size[1]*.9, d.front),
-      mat,
+      material,
     );
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     group.add(mesh);
   }
   group.userData.previewAngle=d.previewAngle;
+  group.userData.artMotion=d.artMotion;group.userData.artStage=d.artStage;group.userData.artForm=d.artForm;
   return group;
 }
 

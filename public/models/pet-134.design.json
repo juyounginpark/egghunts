@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    32
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,11 +38,19 @@
         8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -71,43 +92,24 @@
     }
   },
   "concept": {
-    "key": "pet-134",
     "id": 134,
-    "name": "유황 뿔양",
+    "oldStage": 4,
     "stage": 4,
-    "stageName": "화산 입구",
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ram",
-    "role": "예상 밖의 펫",
+    "previousName": "유황 뿔양",
+    "name": "유황산양",
     "tier": 2,
-    "rarity": "A",
-    "concept": "현무암 뿔을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 유황 뿔양.",
-    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
-    "silhouette": [
-      "낮은 사각 몸과 두꺼운 감긴 뿔",
-      "현무암 뿔"
-    ],
-    "feature": "현무암 뿔",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
-    "material": "현무암·용암",
-    "body": "낮은 사각 몸과 두꺼운 감긴 뿔",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 현무암 뿔: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
-    "colorPlacement": "몸 #524251; 대표 기관 #ed622c; 발·연결부 #ffcb56; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#524251",
-      "accent": "#ed622c"
-    },
-    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 낮은 사각 몸과 두꺼운 감긴 뿔; 몸통에 연결된 덮개에 현무암 뿔",
+    "prompt": "단단한 짧은 몸과 뒤로 휘어지는 큰 뿔을 가진 산양을 만들라. 털은 옅은 황색, 코와 발굽은 짙은 회색이며 뿔은 뿌리의 갈색에서 끝의 유황색으로 밝아진다. 턱 아래에는 작은 결정 한 덩어리를 단다. 고개를 느리게 흔들 때 결정이 서로 부딪히는 듯 움직이게 한다.",
+    "key": "pet-134",
+    "anatomy": "ram",
+    "feature": "horns",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "ram",
+    "colors": {
+      "primary": "#545461"
+    },
+    "idle": "단단한 짧은 몸과 뒤로 휘어지는 큰 뿔을 가진 산양을 만들라. 털은 옅은 황색, 코와 발굽은 짙은 회색이며 뿔은 뿌리의 갈색에서 끝의 유황색으로 밝아진다. 턱 아래에는 작은 결정 한 덩어리를 단다. 고개를 느리게 흔들 때 결정이 서로 부딪히는 듯 움직이게 한다."
   }
 }

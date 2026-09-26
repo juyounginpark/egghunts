@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,34 +16,29 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        14,
+        13,
         2
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
-        12,
+        11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -52,6 +47,19 @@
         12
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -69,6 +77,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -79,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-110",
     "id": 110,
-    "name": "단추 삐봇",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "robot",
-    "role": "대표 마스코트",
+    "previousName": "단추 삐봇",
+    "name": "단추곰",
     "tier": 0,
-    "rarity": "C",
-    "concept": "태엽 열쇠을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 단추 삐봇.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "분리된 어깨와 넓은 두 발",
-      "태엽 열쇠"
-    ],
-    "feature": "태엽 열쇠",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "분리된 어깨와 넓은 두 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 태엽 열쇠: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #d34d35; 대표 기관 #efbb36; 발·연결부 #32a6c2; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#d34d35",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 분리된 어깨와 넓은 두 발; 머리와 등에 이어지는 기관에 태엽 열쇠",
+    "prompt": "작고 넓은 봉제 곰으로 만들고 귀와 손발은 모서리를 한 단계 깎은 덩어리로 표현하라. 코코아색 몸에 크림색 배, 배 중앙에 큰 붉은 단추 하나를 둔다. 눈은 서로 같은 크기의 작은 점으로 맞추고 바느질은 팔 연결부에만 넣는다. 앉은 채 단추를 두 손으로 만지작거리게 한다.",
+    "key": "pet-110",
+    "anatomy": "bear",
+    "feature": "button",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bear",
+    "colors": {
+      "primary": "#695045"
+    },
+    "idle": "작고 넓은 봉제 곰으로 만들고 귀와 손발은 모서리를 한 단계 깎은 덩어리로 표현하라. 코코아색 몸에 크림색 배, 배 중앙에 큰 붉은 단추 하나를 둔다. 눈은 서로 같은 크기의 작은 점으로 맞추고 바느질은 팔 연결부에만 넣는다. 앉은 채 단추를 두 손으로 만지작거리게 한다."
   }
 }

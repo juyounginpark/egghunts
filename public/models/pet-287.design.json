@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,126 +16,84 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        17,
-        3
+        12,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        15,
+        10,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
-    "tail": {
+    "left_leg": {
       "pivot": [
-        11.5,
         6,
-        18
+        7,
+        12
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.04,
-        -0.18,
-        0
+        0.08,
+        0,
+        -0.22
       ]
     },
-    "tail_1": {
+    "right_leg": {
       "pivot": [
-        11.5,
-        6,
-        22
+        17,
+        7,
+        12
       ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-287",
     "id": 287,
-    "name": "은하 리본용",
-    "stage": 19,
-    "stageName": "은하수 천문대",
+    "oldStage": 19,
+    "stage": 18,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "eel",
-    "role": "위험 요소 펫",
+    "previousName": "은하 리본용",
+    "name": "성운문어",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "성운 리본을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 은하 리본용.",
-    "inspiration": "작은 행성 · 별자리 · 우주열차 / meteor",
-    "silhouette": [
-      "세로 S자 몸과 낮은 꼬리 받침",
-      "성운 리본"
-    ],
-    "feature": "성운 리본",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "작은 행성과 별빛을 관측하는 은하수 역",
-    "material": "성운·관측 유리",
-    "body": "세로 S자 몸과 낮은 꼬리 받침",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "작은 행성 · 별자리 · 우주열차에서 온 성운 리본: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "꼬리 시작 남보라 → 끝 청록; 별 원판 중앙은 아이보리",
-    "colorPlacement": "몸 #b664aa; 대표 기관 #e9b84c; 발·연결부 #93d1e6; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "큰 둥근 머리와 넓게 말린 굵은 팔 여덟 개를 가진 문어를 만들라. 머리는 짙은 자주색, 팔은 푸른 보라, 팔 안쪽은 살구색으로 나눈다. 몸 전체 대신 머리의 한 면에만 옅은 성운 무늬를 넣는다. 팔을 모으면 무늬가 어둡고 펼치면 팔 안쪽의 밝은 면이 별처럼 드러나게 한다.",
+    "key": "pet-287",
+    "anatomy": "octopus",
+    "feature": "nebula",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "octopus",
     "colors": {
-      "primary": "#b664aa",
-      "accent": "#e9b84c"
+      "primary": "#59364f"
     },
-    "idle": "몸과 궤도가 다른 속도로 기울어짐 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 세로 S자 몸과 낮은 꼬리 받침; 등에 짊어진 기관에 성운 리본",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "큰 둥근 머리와 넓게 말린 굵은 팔 여덟 개를 가진 문어를 만들라. 머리는 짙은 자주색, 팔은 푸른 보라, 팔 안쪽은 살구색으로 나눈다. 몸 전체 대신 머리의 한 면에만 옅은 성운 무늬를 넣는다. 팔을 모으면 무늬가 어둡고 펼치면 팔 안쪽의 밝은 면이 별처럼 드러나게 한다."
   }
 }

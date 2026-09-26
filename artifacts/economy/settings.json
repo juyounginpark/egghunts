@@ -1,0 +1,194 @@
+{
+  "config": {
+    "displayMultiplier": 1,
+    "stageSeconds": [
+      120,
+      240,
+      540,
+      2700,
+      18000,
+      7200,
+      14400,
+      43200,
+      86400,
+      259200,
+      43200,
+      129600,
+      172800,
+      172800,
+      432000,
+      86400,
+      172800,
+      259200,
+      259200,
+      432000
+    ],
+    "stageCostFactors": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1.25,
+      1,
+      1,
+      1.2,
+      1.2,
+      1.4,
+      1,
+      1.2,
+      1.2,
+      1.2,
+      1.45
+    ],
+    "baseTeamIncome": 1000,
+    "incomeLinear": 0.3,
+    "incomeQuadratic": 0.014,
+    "middleMultiplier": 1.16,
+    "middleCostShare": 0.035,
+    "speedCostShare": 0.78,
+    "tierProduction": [
+      1,
+      1.5,
+      2.2,
+      3.2,
+      4.5,
+      6,
+      9
+    ],
+    "middleUpgrades": [
+      "training",
+      "damage",
+      "rate",
+      "health"
+    ],
+    "speedGrowth": 2,
+    "hatchGrowth": 1.75
+  },
+  "stages": [
+    {
+      "stage": 1,
+      "income": 1000,
+      "speedCost": 15000,
+      "middleCost": 4200
+    },
+    {
+      "stage": 2,
+      "income": 2060.62991327,
+      "speedCost": 385749,
+      "middleCost": 17309
+    },
+    {
+      "stage": 3,
+      "income": 4528.975799036208,
+      "speedCost": 1907604,
+      "middleCost": 85597
+    },
+    {
+      "stage": 4,
+      "income": 10616.955571987242,
+      "speedCost": 22359308,
+      "middleCost": 1003302
+    },
+    {
+      "stage": 5,
+      "income": 26546.05561975539,
+      "speedCost": 372706620,
+      "middleCost": 16724015
+    },
+    {
+      "stage": 6,
+      "income": 113271.3255014621,
+      "speedCost": 636131764,
+      "middleCost": 28544374
+    },
+    {
+      "stage": 7,
+      "income": 322195.879977982,
+      "speedCost": 3618904123,
+      "middleCost": 162386723
+    },
+    {
+      "stage": 8,
+      "income": 977507.2398489154,
+      "speedCost": 32938083953,
+      "middleCost": 1477990946
+    },
+    {
+      "stage": 9,
+      "income": 3163151.424178976,
+      "speedCost": 213171100778,
+      "middleCost": 9565369906
+    },
+    {
+      "stage": 10,
+      "income": 10917419.106266705,
+      "speedCost": 2759050156535,
+      "middleCost": 123803532665
+    },
+    {
+      "stage": 11,
+      "income": 64304292.64664532,
+      "speedCost": 2166797445021,
+      "middleCost": 97228090481
+    },
+    {
+      "stage": 12,
+      "income": 252487548.3215898,
+      "speedCost": 25523461284732,
+      "middleCost": 1145283519186
+    },
+    {
+      "stage": 13,
+      "income": 1057401605.0948124,
+      "speedCost": 171024981529319,
+      "middleCost": 7674197889136
+    },
+    {
+      "stage": 14,
+      "income": 4723239473.099454,
+      "speedCost": 763940530970684,
+      "middleCost": 34279382799966
+    },
+    {
+      "stage": 15,
+      "income": 22502976430.87068,
+      "speedCost": 10615644113404658,
+      "middleCost": 476343005088670
+    },
+    {
+      "stage": 16,
+      "income": 182961599345.03467,
+      "speedCost": 12330148103060578,
+      "middleCost": 553275876419384
+    },
+    {
+      "stage": 17,
+      "income": 991653497543.1395,
+      "speedCost": 160390830015425400,
+      "middleCost": 7197024423769089
+    },
+    {
+      "stage": 18,
+      "income": 5732709673257.455,
+      "speedCost": 1390819573080599000,
+      "middleCost": 62408570586949960
+    },
+    {
+      "stage": 19,
+      "income": 35347601316535.11,
+      "speedCost": 8575723972526163000,
+      "middleCost": 384808126972327900
+    },
+    {
+      "stage": 20,
+      "income": 232466270375341.7,
+      "speedCost": 113581159975228950000,
+      "middleCost": 5096590511708991000
+    }
+  ]
+}

@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    37
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -19,25 +19,41 @@
     "eyes": {
       "pivot": [
         11.5,
-        11,
-        1
+        13,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        9,
+        11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
+      "pivot": [
+        6,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
+    },
+    "left_leg": {
       "pivot": [
         6,
         7,
@@ -53,16 +69,37 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        17,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "tail": {
       "pivot": [
         11.5,
         6,
-        18
+        17.0
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
+        0.0,
+        -0.096,
         0
       ]
     },
@@ -70,12 +107,12 @@
       "pivot": [
         11.5,
         6,
-        22
+        20.6
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        -0.18,
+        -0.096,
         0
       ]
     },
@@ -83,12 +120,12 @@
       "pivot": [
         11.5,
         6,
-        26
+        24.2
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        -0.18,
+        0.08,
+        -0.096,
         0
       ]
     },
@@ -96,54 +133,48 @@
       "pivot": [
         11.5,
         6,
-        30
+        27.8
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        -0.18,
+        0.12,
+        -0.096,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        31.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.096,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-278",
     "id": 278,
-    "name": "폐선 우주고래",
-    "stage": 18,
-    "stageName": "고철 로봇행성",
+    "oldStage": 18,
+    "stage": 17,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "whale",
-    "role": "신비로운 펫",
+    "previousName": "폐선 우주고래",
+    "name": "굴착두더지",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "폐선 선체등을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 폐선 우주고래.",
-    "inspiration": "자석 크레인 · 고철산 / magnet",
-    "silhouette": [
-      "긴 둔한 머리와 수평 꼬리",
-      "폐선 선체등"
-    ],
-    "feature": "폐선 선체등",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "쓸모를 되찾은 고철이 스스로 조립되는 행성",
-    "material": "철·산화 구리",
-    "body": "긴 둔한 머리와 수평 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "자석 크레인 · 고철산에서 온 폐선 선체등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "철판 앞면 청회색 → 이음새 남색; 판 아래 녹슨 주황",
-    "colorPlacement": "몸 #879bac; 대표 기관 #879bac; 발·연결부 #3c526b; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#879bac",
-      "accent": "#879bac"
-    },
-    "idle": "관절을 잠갔다 집게를 벌리는 정비 동작 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 긴 둔한 머리와 수평 꼬리; 몸 양옆으로 펼친 기관에 폐선 선체등",
+    "prompt": "큰 앞발과 짧은 코, 낮고 넓은 몸을 가진 노랑 로봇 두더지를 만들라. 앞발은 굵은 굴착 버킷 두 개, 배는 짙은 회색, 얼굴은 아이보리로 구분한다. 등에 작은 검정 배기구 하나만 둔다. 버킷을 모아 작은 고철 조각을 들어 올린 뒤 정돈해서 내려놓게 한다.",
+    "key": "pet-278",
+    "anatomy": "mole",
+    "feature": "bucket",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "mole",
+    "colors": {
+      "primary": "#ead378"
+    },
+    "idle": "큰 앞발과 짧은 코, 낮고 넓은 몸을 가진 노랑 로봇 두더지를 만들라. 앞발은 굵은 굴착 버킷 두 개, 배는 짙은 회색, 얼굴은 아이보리로 구분한다. 등에 작은 검정 배기구 하나만 둔다. 버킷을 모아 작은 고철 조각을 들어 올린 뒤 정돈해서 내려놓게 한다."
   }
 }

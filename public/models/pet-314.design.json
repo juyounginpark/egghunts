@@ -1,248 +1,177 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
+    50,
     32,
-    25,
-    35
+    60
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        15.5,
+        27.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
     "eyes": {
       "pivot": [
-        15.5,
-        16,
-        1
+        27.5,
+        19,
+        0
       ],
       "parent": "head"
     },
-    "float": {
-      "pivot": [
-        15.5,
-        14,
-        15
-      ],
-      "parent": "body"
-    },
     "head": {
       "pivot": [
-        15.5,
-        14,
-        7
+        27.5,
+        17,
+        10
       ],
-      "parent": "body",
-      "rotation": [
-        0.15,
-        0,
-        0
-      ]
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
+        22.5,
         10,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.18,
-        0.1
-      ],
-      "scale": [
-        1.16,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        10,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        10,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        7,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        21,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.18,
-        -0.1
-      ],
-      "scale": [
-        1.16,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        21,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        21,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        24,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        15.5,
-        7,
         18
       ],
       "parent": "body",
       "rotation": [
+        0.08,
+        -0.22,
+        0.08
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        22,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "neck": {
+      "pivot": [
+        27.5,
+        8,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.1,
+        0,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        32.5,
+        10,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        33,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        27.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
         0.12,
-        0.28,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        15.5,
-        7,
-        22
+        27.5,
+        6,
+        27.2
       ],
       "parent": "tail",
       "rotation": [
+        0.04,
         0.12,
-        0.28,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        15.5,
-        7,
-        26
+        27.5,
+        6,
+        34.4
       ],
       "parent": "tail_1",
       "rotation": [
+        0.08,
         0.12,
-        0.28,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        15.5,
-        7,
-        30
+        27.5,
+        6,
+        41.6
       ],
       "parent": "tail_2",
       "rotation": [
         0.12,
-        0.28,
+        0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        27.5,
+        6,
+        48.8
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-314",
     "id": 314,
-    "name": "꿈베개 몽환룡",
-    "stage": 15,
-    "stageName": "뒤죽박죽 꿈나라",
+    "oldStage": 15,
+    "stage": 14,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "꿈베개 몽환룡",
+    "name": "뒤집힌 꿈룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "거꾸로 매달린 시계추 날개·구름 베개 꼬리을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 꿈베개 몽환룡.",
-    "inspiration": "공중 침대 · 거꾸로 시계 / hand",
-    "silhouette": [
-      "부푼 이불 몸의 꿈룡",
-      "거꾸로 매달린 시계추 날개·구름 베개 꼬리"
-    ],
-    "feature": "거꾸로 매달린 시계추 날개·구름 베개 꼬리",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "시간과 위아래가 뒤집힌 잠의 세계",
-    "material": "쿠션·꿈빛",
-    "body": "부푼 이불 몸의 꿈룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "공중 침대 · 거꾸로 시계에서 온 거꾸로 매달린 시계추 날개·구름 베개 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "쿠션 중앙 복숭아색 → 접힌 가장자리 자주색; 달 무늬만 금빛",
-    "colorPlacement": "몸 #63b8c9; 대표 기관 #c875ae; 발·연결부 #c875ae; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#63b8c9",
-      "accent": "#c875ae"
-    },
-    "idle": "고개와 꼬리가 서로 반대 박자로 졸기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 부푼 이불 몸의 꿈룡; 성체 전용 골격에 거꾸로 매달린 시계추 날개·구름 베개 꼬리",
+    "prompt": "둥글게 휘어진 긴 몸과 부드러운 천날개를 가진 잠든 용을 만들라. 몸은 옅은 보라, 배는 크림색, 날개 안쪽은 깊은 남색 별밤으로 나눈다. 등에 떠 있는 작은 문 하나는 몸과 반대 방향을 향하게 하고 꼬리는 베개처럼 넓게 말린다. 얼굴은 잠든 점눈과 짧은 코로 평온하게 둔다. 한 번 숨을 쉬면 몸은 그대로인데 문 속의 별만 위아래가 바뀌게 한다. 전용 알은 보라 껍질에 뒤집힌 작은 문과 별 무늬 세 개를 둔다.",
+    "key": "pet-314",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "느려지는 시계 밖으로 걸어 나와 떨어지는 침대를 기다려 보자.",
-    "acquisitionCondition": "시계 지연 영역에 들어갔다 탈출 + 떨어지는 침대 회피",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#c4b5d7"
+    },
+    "idle": "둥글게 휘어진 긴 몸과 부드러운 천날개를 가진 잠든 용을 만들라. 몸은 옅은 보라, 배는 크림색, 날개 안쪽은 깊은 남색 별밤으로 나눈다. 등에 떠 있는 작은 문 하나는 몸과 반대 방향을 향하게 하고 꼬리는 베개처럼 넓게 말린다. 얼굴은 잠든 점눈과 짧은 코로 평온하게 둔다. 한 번 숨을 쉬면 몸은 그대로인데 문 속의 별만 위아래가 바뀌게 한다. 전용 알은 보라 껍질에 뒤집힌 작은 문과 별 무늬 세 개를 둔다."
   }
 }

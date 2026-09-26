@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,29 +27,16 @@
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        10,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
+        8,
         7
-      ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
-    },
-    "left_arm": {
-      "pivot": [
-        6,
-        7,
-        12
       ],
       "parent": "body"
     },
@@ -61,22 +48,14 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
       "pivot": [
         6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_arm": {
-      "pivot": [
-        17,
         7,
         12
       ],
@@ -90,9 +69,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -102,46 +81,35 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17
+      ],
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-241",
     "id": 241,
-    "name": "별사탕 쥐",
-    "stage": 15,
-    "stageName": "뒤죽박죽 꿈나라",
+    "oldStage": 15,
+    "stage": 14,
     "slot": 1,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "mouse",
-    "role": "작고 귀여운 펫",
+    "previousName": "별사탕 쥐",
+    "name": "꿈풍선 코끼리",
     "tier": 0,
-    "rarity": "C",
-    "concept": "구름 베개을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 별사탕 쥐.",
-    "inspiration": "공중 침대 · 거꾸로 시계 / hand",
-    "silhouette": [
-      "넓은 볼과 짧은 뒷발",
-      "구름 베개"
-    ],
-    "feature": "구름 베개",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "시간과 위아래가 뒤집힌 잠의 세계",
-    "material": "쿠션·꿈빛",
-    "body": "넓은 볼과 짧은 뒷발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공중 침대 · 거꾸로 시계에서 온 구름 베개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 붙인 큰 기관",
-    "gradient": "쿠션 중앙 복숭아색 → 접힌 가장자리 자주색; 달 무늬만 금빛",
-    "colorPlacement": "몸 #efbe6e; 대표 기관 #c875ae; 발·연결부 #7663af; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#efbe6e",
-      "accent": "#c875ae"
-    },
-    "idle": "고개와 꼬리가 서로 반대 박자로 졸기 / 양 귀를 짧게 움찔하고 고개를 숙임",
-    "reaction": "몸을 움츠렸다 작은 인사를 한다",
-    "distinction": "작고 귀여운 펫: 넓은 볼과 짧은 뒷발; 등에 붙인 큰 기관에 구름 베개",
+    "prompt": "둥근 분홍 코끼리의 배를 커다란 풍선처럼 부풀려 공중에 띄워라. 귀는 옅은 보라, 발은 작고 크림색이며 아래로 늘어진 꼬리 끝에 작은 나무추를 달라. 코는 위로 부드럽게 말린다. 코로 바람을 내보내면 조금 올라갔다가 꼬리추에 이끌려 천천히 내려오게 한다.",
+    "key": "pet-241",
+    "anatomy": "elephant",
+    "feature": "balloon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "elephant",
+    "colors": {
+      "primary": "#d991af"
+    },
+    "idle": "둥근 분홍 코끼리의 배를 커다란 풍선처럼 부풀려 공중에 띄워라. 귀는 옅은 보라, 발은 작고 크림색이며 아래로 늘어진 꼬리 끝에 작은 나무추를 달라. 코는 위로 부드럽게 말린다. 코로 바람을 내보내면 조금 올라갔다가 꼬리추에 이끌려 천천히 내려오게 한다."
   }
 }

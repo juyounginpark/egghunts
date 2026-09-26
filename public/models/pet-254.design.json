@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,14 +15,6 @@
         12
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -38,11 +30,19 @@
         8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +52,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -65,49 +78,87 @@
       "pivot": [
         11.5,
         6,
-        17
+        17.0
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-254",
     "id": 254,
-    "name": "세눈 두꺼비",
-    "stage": 16,
-    "stageName": "방사능 폐허",
+    "oldStage": 16,
+    "stage": 15,
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "frog",
-    "role": "예상 밖의 펫",
+    "previousName": "세눈 두꺼비",
+    "name": "쌍꼬리 도마뱀",
     "tier": 2,
-    "rarity": "A",
-    "concept": "정화 수련잎을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 세눈 두꺼비.",
-    "inspiration": "녹색 안개 · 폐허 · 변이 식물 / vine",
-    "silhouette": [
-      "넓은 턱과 접힌 큰 뒷다리",
-      "정화 수련잎"
-    ],
-    "feature": "정화 수련잎",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "폐기물 틈에서 독을 걸러내는 새 생태계",
-    "material": "녹슨 통·변이 식물",
-    "body": "넓은 턱과 접힌 큰 뒷다리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "녹색 안개 · 폐허 · 변이 식물에서 온 정화 수련잎: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "녹슨 판 적갈색 → 겹친 판 황토; 여과구만 산성 연두",
-    "colorPlacement": "몸 #718330; 대표 기관 #718330; 발·연결부 #d5db58; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#718330",
-      "accent": "#718330"
-    },
-    "idle": "독을 들이마셨다 몸을 접어 배출 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 넓은 턱과 접힌 큰 뒷다리; 몸통에 연결된 덮개에 정화 수련잎",
+    "prompt": "넓은 머리와 낮은 몸, 끝에서 두 갈래로 나뉘는 굵은 꼬리를 가진 도마뱀을 만들라. 몸은 따뜻한 회색, 배는 살구색, 꼬리 끝은 형광 연두로 둔다. 등에는 작고 어두운 점무늬 세 개만 넣는다. 두 꼬리가 서로 다른 방향으로 움직이다가 같은 곳을 가리키면 고개도 따라 돌게 한다.",
+    "key": "pet-254",
+    "anatomy": "lizard",
+    "feature": "twin",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "lizard",
+    "colors": {
+      "primary": "#9697a1"
+    },
+    "idle": "넓은 머리와 낮은 몸, 끝에서 두 갈래로 나뉘는 굵은 꼬리를 가진 도마뱀을 만들라. 몸은 따뜻한 회색, 배는 살구색, 꼬리 끝은 형광 연두로 둔다. 등에는 작고 어두운 점무늬 세 개만 넣는다. 두 꼬리가 서로 다른 방향으로 움직이다가 같은 곳을 가리키면 고개도 따라 돌게 한다."
   }
 }

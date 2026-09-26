@@ -2,11 +2,11 @@
   "schema": "alkong-stage-assembly-v3",
   "size": [
     24,
-    24,
+    25,
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,31 +27,31 @@
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        8,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
+        6,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -61,13 +61,18 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -79,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-152",
     "id": 152,
-    "name": "책갈피 부엉",
-    "stage": 6,
-    "stageName": "유령 학교",
+    "oldStage": 6,
+    "stage": 5,
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "owl",
-    "role": "환경 생물 펫",
+    "previousName": "책갈피 부엉",
+    "name": "연필고슴도치",
     "tier": 1,
-    "rarity": "B",
-    "concept": "종 시계등을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 책갈피 부엉.",
-    "inspiration": "책상 · 사물함 · 긴 복도 / book",
-    "silhouette": [
-      "넓은 얼굴 원판과 작은 접힌 날개",
-      "종 시계등"
-    ],
-    "feature": "종 시계등",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "텅 빈 교실에서 물건이 수업을 이어가는 학교",
-    "material": "종이·낡은 목재",
-    "body": "넓은 얼굴 원판과 작은 접힌 날개",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "책상 · 사물함 · 긴 복도에서 온 종 시계등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "책등 자주갈색 → 펼친 면 아이보리; 모서리는 옅은 황토",
-    "colorPlacement": "몸 #a7774f; 대표 기관 #e1cba3; 발·연결부 #775274; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#a7774f",
-      "accent": "#e1cba3"
-    },
-    "idle": "고개를 갸웃하고 문짝을 살짝 열기 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 넓은 얼굴 원판과 작은 접힌 날개; 넓은 등집에 종 시계등",
+    "prompt": "낮고 둥근 크림색 몸 위에 굵은 연필 다섯 자루를 부채처럼 뒤로 기울여라. 연필은 노랑·청록·적갈색으로 나누고 깎인 끝이 가시 역할을 하게 한다. 작은 갈색 코와 낮은 점눈으로 소심한 표정을 만든다. 웅크릴 때 연필이 함께 모이고 고개가 조금 들어가게 한다.",
+    "key": "pet-152",
+    "anatomy": "hedgehog",
+    "feature": "pencils",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "hedgehog",
+    "colors": {
+      "primary": "#f2e3bf"
+    },
+    "idle": "낮고 둥근 크림색 몸 위에 굵은 연필 다섯 자루를 부채처럼 뒤로 기울여라. 연필은 노랑·청록·적갈색으로 나누고 깎인 끝이 가시 역할을 하게 한다. 작은 갈색 코와 낮은 점눈으로 소심한 표정을 만든다. 웅크릴 때 연필이 함께 모이고 고개가 조금 들어가게 한다."
   }
 }

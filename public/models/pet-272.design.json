@@ -1,66 +1,69 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
+    26,
     24,
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        12.5,
         7,
         12
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
-        11.5,
-        10,
-        1
+        12.5,
+        12,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
-        11.5,
-        8,
+        12.5,
+        10,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        7,
+        7,
+        12
+      ],
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
-        6,
+        7,
         15,
         12
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
       "pivot": [
-        6,
+        7,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "pivot": [
+        18,
         7,
         12
       ],
@@ -68,72 +71,45 @@
     },
     "right_ear": {
       "pivot": [
-        17,
+        18,
         15,
         12
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
       "pivot": [
-        17,
+        18,
         7,
         12
-      ],
-      "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-272",
     "id": 272,
-    "name": "고철 강아지",
-    "stage": 18,
-    "stageName": "고철 로봇행성",
+    "oldStage": 18,
+    "stage": 17,
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "dog",
-    "role": "환경 생물 펫",
+    "previousName": "고철 강아지",
+    "name": "자석문어",
     "tier": 1,
-    "rarity": "B",
-    "concept": "고철 가방을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 고철 강아지.",
-    "inspiration": "자석 크레인 · 고철산 / magnet",
-    "silhouette": [
-      "낮고 긴 몸과 앞으로 나온 주둥이",
-      "고철 가방"
-    ],
-    "feature": "고철 가방",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "쓸모를 되찾은 고철이 스스로 조립되는 행성",
-    "material": "철·산화 구리",
-    "body": "낮고 긴 몸과 앞으로 나온 주둥이",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "자석 크레인 · 고철산에서 온 고철 가방: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "철판 앞면 청회색 → 이음새 남색; 판 아래 녹슨 주황",
-    "colorPlacement": "몸 #3c526b; 대표 기관 #879bac; 발·연결부 #879bac; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#3c526b",
-      "accent": "#879bac"
-    },
-    "idle": "관절을 잠갔다 집게를 벌리는 정비 동작 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 낮고 긴 몸과 앞으로 나온 주둥이; 넓은 등집에 고철 가방",
+    "prompt": "둥근 청색 몸 아래에 굵은 팔 여섯 개가 있는 로봇 문어를 만들라. 팔 끝은 붉은색과 흰색으로 나뉜 U자 자석이며 얼굴은 몸 앞쪽의 작은 밝은 면에 둔다. 머리에 안테나나 모자를 추가하지 않는다. 팔 두 개로 주변의 볼트 세 개를 들어 작은 원을 만들었다 내려놓게 한다.",
+    "key": "pet-272",
+    "anatomy": "octopus",
+    "feature": "magnets",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "octopus",
+    "colors": {
+      "primary": "#658fbd"
+    },
+    "idle": "둥근 청색 몸 아래에 굵은 팔 여섯 개가 있는 로봇 문어를 만들라. 팔 끝은 붉은색과 흰색으로 나뉜 U자 자석이며 얼굴은 몸 앞쪽의 작은 밝은 면에 둔다. 머리에 안테나나 모자를 추가하지 않는다. 팔 두 개로 주변의 볼트 세 개를 들어 작은 원을 만들었다 내려놓게 한다."
   }
 }

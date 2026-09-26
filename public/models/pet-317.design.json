@@ -1,240 +1,185 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
-    25,
-    35
+    52,
+    32,
+    53
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        25.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
     "eyes": {
       "pivot": [
-        11.5,
-        15,
+        25.5,
+        21,
         0
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        25.5,
+        14,
+        18
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
-        11.5,
-        13,
-        7
+        25.5,
+        19,
+        10
       ],
-      "parent": "body",
-      "rotation": [
-        0.02,
-        0,
-        0
-      ]
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
-        6,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.16,
-        0.1
-      ],
-      "scale": [
-        1.08,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        6,
+        20.5,
         15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        17,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.16,
-        -0.1
-      ],
-      "scale": [
-        1.08,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        17,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        17,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        7,
         18
       ],
       "parent": "body",
       "rotation": [
+        0.08,
+        -0.22,
+        0.08
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        20,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "neck": {
+      "pivot": [
+        25.5,
+        13,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        -0.13,
         0,
-        -0.1,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        30.5,
+        15,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        31,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        25.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        11.5,
-        7,
-        22
+        25.5,
+        6,
+        26.0
       ],
       "parent": "tail",
       "rotation": [
-        0,
-        -0.1,
+        0.04,
+        -0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        11.5,
-        7,
-        26
+        25.5,
+        6,
+        32.0
       ],
       "parent": "tail_1",
       "rotation": [
-        0,
-        -0.1,
+        0.08,
+        -0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        11.5,
-        7,
-        30
+        25.5,
+        6,
+        38.0
       ],
       "parent": "tail_2",
       "rotation": [
-        0,
-        -0.1,
+        0.12,
+        -0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        25.5,
+        6,
+        44.0
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-317",
     "id": 317,
-    "name": "행성용광 고철룡",
-    "stage": 18,
-    "stageName": "고철 로봇행성",
+    "oldStage": 18,
+    "stage": 17,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "행성용광 고철룡",
+    "name": "고철 거신룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "두 거대 자석 턱·엇갈린 집게 날개을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 행성용광 고철룡.",
-    "inspiration": "자석 크레인 · 고철산 / magnet",
-    "silhouette": [
-      "무한궤도 골격의 고철룡",
-      "두 거대 자석 턱·엇갈린 집게 날개"
-    ],
-    "feature": "두 거대 자석 턱·엇갈린 집게 날개",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "쓸모를 되찾은 고철이 스스로 조립되는 행성",
-    "material": "철·산화 구리",
-    "body": "무한궤도 골격의 고철룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "자석 크레인 · 고철산에서 온 두 거대 자석 턱·엇갈린 집게 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "철판 앞면 청회색 → 이음새 남색; 판 아래 녹슨 주황",
-    "colorPlacement": "몸 #3c526b; 대표 기관 #879bac; 발·연결부 #879bac; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#3c526b",
-      "accent": "#879bac"
-    },
-    "idle": "관절을 잠갔다 집게를 벌리는 정비 동작 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 무한궤도 골격의 고철룡; 성체 전용 골격에 두 거대 자석 턱·엇갈린 집게 날개",
+    "prompt": "굵은 뒷다리와 낮게 내려온 큰 앞팔, 넓은 턱이 있는 이족 기계룡을 만들라. 몸은 짙은 철색, 오른쪽 어깨는 낡은 노랑, 왼쪽 갑판은 청색처럼 큰 교체 부품 면을 구분한다. 등에 접힌 거대한 철판 날개와 가슴의 밝은 원형 코어 하나를 둔다. 꼬리는 굵은 크레인 체인 형태로 점차 가늘어지게 한다. 몸을 일으키면 갑판이 순서대로 맞물리고 날개가 넓게 열리게 한다. 전용 알은 볼트가 박힌 철판 껍질과 둥근 코어창 하나로 구성한다.",
+    "key": "pet-317",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "자석 손에서 발을 빼고 커다란 압착기가 쉬기를 기다려 보자.",
-    "acquisitionCondition": "자석 견인 영역에 들어갔다 탈출 + 압착기 회피",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#ead378"
+    },
+    "idle": "굵은 뒷다리와 낮게 내려온 큰 앞팔, 넓은 턱이 있는 이족 기계룡을 만들라. 몸은 짙은 철색, 오른쪽 어깨는 낡은 노랑, 왼쪽 갑판은 청색처럼 큰 교체 부품 면을 구분한다. 등에 접힌 거대한 철판 날개와 가슴의 밝은 원형 코어 하나를 둔다. 꼬리는 굵은 크레인 체인 형태로 점차 가늘어지게 한다. 몸을 일으키면 갑판이 순서대로 맞물리고 날개가 넓게 열리게 한다. 전용 알은 볼트가 박힌 철판 껍질과 둥근 코어창 하나로 구성한다."
   }
 }

@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    37
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -24,36 +24,26 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        12,
+        16
+      ],
+      "parent": "body",
+      "rotation": [
+        0.15,
+        0.25,
+        0.3
+      ]
+    },
     "head": {
       "pivot": [
         11.5,
         8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
-    },
-    "left_arm": {
-      "pivot": [
-        6,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
@@ -63,9 +53,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -76,37 +66,6 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        17,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
-    },
     "right_ear": {
       "pivot": [
         17,
@@ -115,9 +74,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -128,29 +87,16 @@
       ],
       "parent": "body"
     },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
     "tail": {
       "pivot": [
         11.5,
         6,
-        18
+        17.0
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
+        0.0,
+        -0.096,
         0
       ]
     },
@@ -158,12 +104,12 @@
       "pivot": [
         11.5,
         6,
-        22
+        20.6
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        -0.18,
+        -0.096,
         0
       ]
     },
@@ -171,12 +117,12 @@
       "pivot": [
         11.5,
         6,
-        26
+        24.2
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        -0.18,
+        0.08,
+        -0.096,
         0
       ]
     },
@@ -184,54 +130,48 @@
       "pivot": [
         11.5,
         6,
-        30
+        27.8
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        -0.18,
+        0.12,
+        -0.096,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        31.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.096,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-198",
     "id": 198,
-    "name": "붉은달 해태",
-    "stage": 10,
-    "stageName": "도깨비 달마을",
+    "oldStage": 10,
+    "stage": 9,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "dragon",
-    "role": "신비로운 펫",
+    "previousName": "붉은달 해태",
+    "name": "달무늬 호랑이",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "방망이 날개을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 붉은달 해태.",
-    "inspiration": "기와집 · 붉은 달 · 도깨비불 / flame",
-    "silhouette": [
-      "앞이 높은 가슴과 굵은 꼬리",
-      "방망이 날개"
-    ],
-    "feature": "방망이 날개",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "기와 처마 아래 붉은 달의 불씨가 사는 마을",
-    "material": "도자기·기와",
-    "body": "앞이 높은 가슴과 굵은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "기와집 · 붉은 달 · 도깨비불에서 온 방망이 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "몸 중앙 따뜻한 자주 → 처마의 짙은 보라; 불씨 중심은 살구",
-    "colorPlacement": "몸 #52416f; 대표 기관 #52416f; 발·연결부 #52a38b; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#52416f",
-      "accent": "#52416f"
-    },
-    "idle": "부채를 접고 고개 숙여 장난스러운 인사 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 앞이 높은 가슴과 굵은 꼬리; 몸 양옆으로 펼친 기관에 방망이 날개",
+    "prompt": "큰 앞발과 둥근 머리, 긴 꼬리를 가진 작은 호랑이를 만들라. 몸은 따뜻한 주황, 배는 크림색, 줄무늬는 짙은 남색으로 넓게 배치한다. 이마의 초승달 무늬 하나를 대표 포인트로 둔다. 앞발을 내밀어 기지개를 켜고 꼬리 끝으로 작은 달빛 점을 따라가게 한다.",
+    "key": "pet-198",
+    "anatomy": "cat",
+    "feature": "moon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "cat",
+    "colors": {
+      "primary": "#dc9851"
+    },
+    "idle": "큰 앞발과 둥근 머리, 긴 꼬리를 가진 작은 호랑이를 만들라. 몸은 따뜻한 주황, 배는 크림색, 줄무늬는 짙은 남색으로 넓게 배치한다. 이마의 초승달 무늬 하나를 대표 포인트로 둔다. 앞발을 내밀어 기지개를 켜고 꼬리 끝으로 작은 달빛 점을 따라가게 한다."
   }
 }

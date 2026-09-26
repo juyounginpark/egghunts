@@ -1,3 +1,4 @@
+import {legacyTheme} from './stage-order';
 import * as T from 'three';
 import { ROUTE } from './stage-data';
 import { buildRegionLayout,type Block,type Motion } from './region-layout';
@@ -32,10 +33,10 @@ export class RegionArt {
   this.count=0;
   for(const m of this.motions){
    if(Math.abs(m.z-offset-playerZ)>32)continue;
-   const slow=[5,14,15,19,20].includes(stage),t=time*(slow?.45:stage===2?.8:1)+m.phase;
+   const slow=[5,14,15,19,20].includes(legacyTheme(stage)),t=time*(slow?.45:stage===2?.8:1)+m.phase;
    const turn=stage===2?Math.floor(t*4)/4:t;
    const angle=m.kind==='spin'?turn*.4:m.kind==='windmill'?0:Math.sin(t*.8)*.09;
-   const rising=[4,13,16].includes(stage),phase=(t*.22)%1;
+   const rising=[4,13,16].includes(legacyTheme(stage)),phase=(t*.22)%1;
    const y=m.y+(m.kind==='float'?(rising?Math.sin(phase*Math.PI)*.5:Math.sin(t*1.1)*.18):0);
    const x=m.x+(m.kind==='float'?Math.sin(t*.6)*.3:0);
    for(const p of m.blocks)this.put(this.moving,this.count++,p,x,y,m.z,angle,m.kind==='windmill'?t*.5:0);

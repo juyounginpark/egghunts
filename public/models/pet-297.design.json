@@ -1,40 +1,32 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
-    24,
-    35
+    36,
+    26,
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        17.5,
         7,
         12
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
-        11.5,
-        14,
-        2
+        17.5,
+        16,
+        4
       ],
       "parent": "head"
     },
     "float": {
       "pivot": [
-        11.5,
+        17.5,
         14,
         15
       ],
@@ -42,124 +34,110 @@
     },
     "head": {
       "pivot": [
-        11.5,
-        12,
+        17.5,
+        14,
         7
       ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        14.5,
+        12,
+        13
+      ],
       "parent": "body",
       "rotation": [
-        0.035,
+        0.12,
+        -0.25,
+        0.18
+      ]
+    },
+    "left_ear": {
+      "pivot": [
+        12,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
         0,
-        0
+        0.22
       ]
     },
-    "left_leg": {
+    "left_tip": {
       "pivot": [
-        6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_leg": {
-      "pivot": [
-        17,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        18
+        14.5,
+        8,
+        15
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
-        0
+        0.27,
+        -0.25,
+        0.3
       ]
     },
-    "tail_1": {
+    "right_arm": {
       "pivot": [
-        11.5,
-        6,
-        22
+        20.5,
+        12,
+        13
       ],
-      "parent": "tail",
+      "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
-        0
+        0.12,
+        0.25,
+        -0.18
       ]
     },
-    "tail_2": {
+    "right_ear": {
       "pivot": [
-        11.5,
-        6,
-        26
+        23,
+        15,
+        12
       ],
-      "parent": "tail_1",
+      "parent": "head",
       "rotation": [
-        0.04,
-        -0.18,
-        0
+        0.08,
+        0,
+        -0.22
       ]
     },
-    "tail_3": {
+    "right_tip": {
       "pivot": [
-        11.5,
-        6,
-        30
+        20.5,
+        8,
+        15
       ],
-      "parent": "tail_2",
+      "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
-        0
+        0.27,
+        0.25,
+        -0.3
       ]
     }
   },
   "concept": {
-    "key": "pet-297",
     "id": 297,
-    "name": "황금문 수호사슴",
+    "oldStage": 20,
     "stage": 20,
-    "stageName": "공허와 창조주의 정원",
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "deer",
-    "role": "위험 요소 펫",
+    "previousName": "황금문 수호사슴",
+    "name": "계절나비",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "기억의 나무뿔을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 황금문 수호사슴.",
-    "inspiration": "공허의 길 → 기억의 정원 → 창조자의 문 / creation",
-    "silhouette": [
-      "높은 가슴과 갈라진 뿔",
-      "기억의 나무뿔"
-    ],
-    "feature": "기억의 나무뿔",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원",
-    "material": "공허 절단면·첫빛",
-    "body": "높은 가슴과 갈라진 뿔",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공허의 길 → 기억의 정원 → 창조자의 문에서 온 기억의 나무뿔: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "몸의 짙은 자주 → 열린 절단면 청록; 씨앗 중심은 따뜻한 금빛",
-    "colorPlacement": "몸 #ab658a; 대표 기관 #48ac9e; 발·연결부 #e4b94d; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#ab658a",
-      "accent": "#48ac9e"
-    },
-    "idle": "몸이 멈춘 뒤 떨어진 기관이 늦게 따라옴 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 높은 가슴과 갈라진 뿔; 등에 짊어진 기관에 기억의 나무뿔",
+    "prompt": "가늘고 작은 검정 몸과 크기가 다른 네 장의 큰 날개를 가진 나비를 만들라. 날개마다 봄의 연분홍, 여름의 청록, 가을의 주황, 겨울의 청백색을 한 구획씩 배정한다. 중앙 가까운 부분은 모두 아이보리로 연결해 색을 정리한다. 날개가 천천히 접혔다 열릴 때 꽃잎·잎·낙엽·눈점 중 하나만 짧게 나타나게 한다.",
+    "key": "pet-297",
+    "anatomy": "butterfly",
+    "feature": "seasons",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "butterfly",
+    "colors": {
+      "primary": "#30303c"
+    },
+    "idle": "가늘고 작은 검정 몸과 크기가 다른 네 장의 큰 날개를 가진 나비를 만들라. 날개마다 봄의 연분홍, 여름의 청록, 가을의 주황, 겨울의 청백색을 한 구획씩 배정한다. 중앙 가까운 부분은 모두 아이보리로 연결해 색을 정리한다. 날개가 천천히 접혔다 열릴 때 꽃잎·잎·낙엽·눈점 중 하나만 짧게 나타나게 한다."
   }
 }

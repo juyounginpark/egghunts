@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,14 +15,6 @@
         12
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -38,11 +30,19 @@
         8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -53,6 +53,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -60,46 +73,92 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-240",
     "id": 240,
-    "name": "베개 꾸벅",
-    "stage": 15,
-    "stageName": "뒤죽박죽 꿈나라",
+    "oldStage": 15,
+    "stage": 14,
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "rabbit",
-    "role": "대표 마스코트",
+    "previousName": "베개 꾸벅",
+    "name": "베개강아지",
     "tier": 0,
-    "rarity": "C",
-    "concept": "접힌 이불을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 베개 꾸벅.",
-    "inspiration": "공중 침대 · 거꾸로 시계 / hand",
-    "silhouette": [
-      "좁은 몸과 몸 높이만큼 긴 귀",
-      "접힌 이불"
-    ],
-    "feature": "접힌 이불",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "시간과 위아래가 뒤집힌 잠의 세계",
-    "material": "쿠션·꿈빛",
-    "body": "좁은 몸과 몸 높이만큼 긴 귀",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공중 침대 · 거꾸로 시계에서 온 접힌 이불: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "쿠션 중앙 복숭아색 → 접힌 가장자리 자주색; 달 무늬만 금빛",
-    "colorPlacement": "몸 #c875ae; 대표 기관 #c875ae; 발·연결부 #63b8c9; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#c875ae",
-      "accent": "#c875ae"
-    },
-    "idle": "고개와 꼬리가 서로 반대 박자로 졸기 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 좁은 몸과 몸 높이만큼 긴 귀; 머리와 등에 이어지는 기관에 접힌 이불",
+    "prompt": "몸통이 넓은 사각 베개이고 앞쪽에 작은 강아지 얼굴이 붙은 형태로 만들라. 몸은 아이보리, 귀와 짧은 발은 따뜻한 갈색이며 베개 가장자리는 연분홍 천테로 마감한다. 배 위의 작은 별 자수 하나를 대표 무늬로 둔다. 누웠다가 하품하면 베개 몸이 부풀었다 천천히 가라앉게 한다.",
+    "key": "pet-240",
+    "anatomy": "dog",
+    "feature": "pillow",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "dog",
+    "colors": {
+      "primary": "#eee7cf"
+    },
+    "idle": "몸통이 넓은 사각 베개이고 앞쪽에 작은 강아지 얼굴이 붙은 형태로 만들라. 몸은 아이보리, 귀와 짧은 발은 따뜻한 갈색이며 베개 가장자리는 연분홍 천테로 마감한다. 배 위의 작은 별 자수 하나를 대표 무늬로 둔다. 누웠다가 하품하면 베개 몸이 부풀었다 천천히 가라앉게 한다."
   }
 }

@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,14 +15,6 @@
         12
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -38,11 +30,19 @@
         8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +52,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -65,93 +78,30 @@
       "pivot": [
         11.5,
         6,
-        18
+        17
       ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-107",
     "id": 107,
-    "name": "꽃갈기 사자",
+    "oldStage": 1,
     "stage": 1,
-    "stageName": "몽글 초원",
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "lion",
-    "role": "위험 요소 펫",
+    "previousName": "꽃갈기 사자",
+    "name": "꽃갈기 사자",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "민들레 갈기을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 꽃갈기 사자.",
-    "inspiration": "꽃밭 · 풍차 · 건초 / hay",
-    "silhouette": [
-      "앞이 높은 갈기와 낮은 허리",
-      "민들레 갈기"
-    ],
-    "feature": "민들레 갈기",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "바람을 모아 씨앗을 나르는 초원",
-    "material": "식물·털",
-    "body": "앞이 높은 갈기와 낮은 허리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "꽃밭 · 풍차 · 건초에서 온 민들레 갈기: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "줄기 뿌리의 짙은 올리브 → 잎 끝의 연두; 얼굴·배는 크림",
-    "colorPlacement": "몸 #316d47; 대표 기관 #71a73d; 발·연결부 #c99438; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#316d47",
-      "accent": "#71a73d"
-    },
-    "idle": "바람을 살피고 잎을 접었다 펼침 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 앞이 높은 갈기와 낮은 허리; 등에 짊어진 기관에 민들레 갈기",
+    "prompt": "낮고 단단한 사자 몸, 짧고 넓은 코, 앞발의 안정감. 얼굴을 둘러싼 큰 꽃잎 6~8개를 뒤로 살짝 젖혀 갈기를 만든다. 황갈색 몸, 산호색·주황 꽃갈기, 짙은 갈기 안쪽. 꼬리 끝은 작은 꽃봉오리. 꽃갈기 바깥 윤곽이 초록 사각 프레임처럼 보이지 않게 한다.",
+    "key": "pet-107",
+    "anatomy": "lion",
+    "feature": "mane",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "lion",
+    "colors": {
+      "primary": "#bd985a"
+    },
+    "idle": "낮고 단단한 사자 몸, 짧고 넓은 코, 앞발의 안정감. 얼굴을 둘러싼 큰 꽃잎 6~8개를 뒤로 살짝 젖혀 갈기를 만든다. 황갈색 몸, 산호색·주황 꽃갈기, 짙은 갈기 안쪽. 꼬리 끝은 작은 꽃봉오리. 꽃갈기 바깥 윤곽이 초록 사각 프레임처럼 보이지 않게 한다."
   }
 }

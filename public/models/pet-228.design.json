@@ -3,111 +3,170 @@
   "size": [
     24,
     24,
-    24
+    39
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
         11.5,
         7,
-        12
+        16
       ],
       "parent": null
     },
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        17,
+        6
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        19
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
-        7
-      ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
-    },
-    "left_arm": {
-      "pivot": [
-        6,
-        7,
-        12
+        15,
+        11
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        16
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
         6,
         7,
-        12
+        16
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
-        12
+        15,
+        16
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
         17,
         7,
-        12
+        16
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        21.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        24.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        27.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        31.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        34.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-228",
     "id": 228,
-    "name": "시계탑 올빼미",
-    "stage": 13,
-    "stageName": "스팀펑크 공중도시",
+    "oldStage": 13,
+    "stage": 12,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "owl",
-    "role": "신비로운 펫",
+    "previousName": "시계탑 올빼미",
+    "name": "망원경 기린",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "풍향 프로펠러을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 시계탑 올빼미.",
-    "inspiration": "톱니 · 증기기관 · 비행선 / gear",
-    "silhouette": [
-      "넓은 얼굴 원판과 작은 접힌 날개",
-      "풍향 프로펠러"
-    ],
-    "feature": "풍향 프로펠러",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "증기압과 프로펠러로 떠 있는 황동 도시",
-    "material": "황동·구리",
-    "body": "넓은 얼굴 원판과 작은 접힌 날개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "톱니 · 증기기관 · 비행선에서 온 풍향 프로펠러: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "이음새 적갈색 → 마모된 평면 황동 → 증기 입구 크림",
-    "colorPlacement": "몸 #c28b37; 대표 기관 #c28b37; 발·연결부 #b6532c; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#c28b37",
-      "accent": "#c28b37"
-    },
-    "idle": "압력에 몸을 들었다 천천히 내려놓기 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 넓은 얼굴 원판과 작은 접힌 날개; 몸 양옆으로 펼친 기관에 풍향 프로펠러",
+    "prompt": "가는 다리와 길게 올라가는 목, 작은 머리를 가진 기린을 만들라. 몸은 황갈색, 반점은 짙은 갈색이며 목은 길이가 다른 황동 원통 세 구간으로 표현한다. 머리의 작은 귀와 눈은 유지하고 코끝에 렌즈를 붙이지 않는다. 목이 조금 늘어났다 줄어들며 먼 곳을 살피는 동작을 준다.",
+    "key": "pet-228",
+    "anatomy": "giraffe",
+    "feature": "telescope",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "giraffe",
+    "colors": {
+      "primary": "#b78d53"
+    },
+    "idle": "가는 다리와 길게 올라가는 목, 작은 머리를 가진 기린을 만들라. 몸은 황갈색, 반점은 짙은 갈색이며 목은 길이가 다른 황동 원통 세 구간으로 표현한다. 머리의 작은 귀와 눈은 유지하고 코끝에 렌즈를 붙이지 않는다. 목이 조금 늘어났다 줄어들며 먼 곳을 살피는 동작을 준다."
   }
 }

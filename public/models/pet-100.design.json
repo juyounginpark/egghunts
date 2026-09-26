@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,11 +38,19 @@
         9,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-100",
     "id": 100,
-    "name": "새순 뽀미",
+    "oldStage": 1,
     "stage": 1,
-    "stageName": "몽글 초원",
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "seed",
-    "role": "대표 마스코트",
+    "previousName": "새순 뽀미",
+    "name": "새싹이",
     "tier": 0,
-    "rarity": "C",
-    "concept": "두 장의 새순을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 새순 뽀미.",
-    "inspiration": "꽃밭 · 풍차 · 건초 / hay",
-    "silhouette": [
-      "폭 12칸의 낮은 씨앗과 두 뿌리 발",
-      "두 장의 새순"
-    ],
-    "feature": "두 장의 새순",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "바람을 모아 씨앗을 나르는 초원",
-    "material": "식물·털",
-    "body": "폭 12칸의 낮은 씨앗과 두 뿌리 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "꽃밭 · 풍차 · 건초에서 온 두 장의 새순: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "줄기 뿌리의 짙은 올리브 → 잎 끝의 연두; 얼굴·배는 크림",
-    "colorPlacement": "몸 #71a73d; 대표 기관 #71a73d; 발·연결부 #efe4b7; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#71a73d",
-      "accent": "#71a73d"
-    },
-    "idle": "바람을 살피고 잎을 접었다 펼침 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 폭 12칸의 낮은 씨앗과 두 뿌리 발; 머리와 등에 이어지는 기관에 두 장의 새순",
+    "prompt": "짧고 통통한 몸과 작은 점눈을 유지. 머리에는 줄기 하나에서 벌어지는 큰 잎 두 장. 잎은 끝이 바깥으로 기울고 두께가 가늘어진다. 부드러운 연두 몸, 진초록 잎 뿌리, 크림색 배. 몸이 살짝 들썩일 때 잎이 늦게 따라 흔들린다. 첫 마스코트답게 단순하고 명료하게.",
+    "key": "pet-100",
+    "anatomy": "seed",
+    "feature": "leaves",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "seed",
+    "colors": {
+      "primary": "#a6c976"
+    },
+    "idle": "짧고 통통한 몸과 작은 점눈을 유지. 머리에는 줄기 하나에서 벌어지는 큰 잎 두 장. 잎은 끝이 바깥으로 기울고 두께가 가늘어진다. 부드러운 연두 몸, 진초록 잎 뿌리, 크림색 배. 몸이 살짝 들썩일 때 잎이 늦게 따라 흔들린다. 첫 마스코트답게 단순하고 명료하게."
   }
 }

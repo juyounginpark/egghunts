@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    37
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,33 +16,33 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        17,
-        2
+        10,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        15,
+        8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +52,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -65,12 +78,12 @@
       "pivot": [
         11.5,
         6,
-        18
+        17.0
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
+        0.0,
+        -0.096,
         0
       ]
     },
@@ -78,12 +91,12 @@
       "pivot": [
         11.5,
         6,
-        22
+        20.6
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        -0.18,
+        -0.096,
         0
       ]
     },
@@ -91,12 +104,12 @@
       "pivot": [
         11.5,
         6,
-        26
+        24.2
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        -0.18,
+        0.08,
+        -0.096,
         0
       ]
     },
@@ -104,54 +117,48 @@
       "pivot": [
         11.5,
         6,
-        30
+        27.8
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        -0.18,
+        0.12,
+        -0.096,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        31.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.096,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-169",
     "id": 169,
-    "name": "도시 코어기린",
-    "stage": 7,
-    "stageName": "네온 사이버시티",
+    "oldStage": 7,
+    "stage": 6,
     "slot": 9,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "giraffe",
-    "role": "스테이지 인기 펫",
+    "previousName": "도시 코어기린",
+    "name": "네온표범",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "송신탑 고리을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 도시 코어기린.",
-    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
-    "silhouette": [
-      "짧은 몸 위로 솟은 긴 목",
-      "송신탑 고리"
-    ],
-    "feature": "송신탑 고리",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
-    "material": "전자 패널",
-    "body": "짧은 몸 위로 솟은 긴 목",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 송신탑 고리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 전체를 감싼 대표 기관",
-    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
-    "colorPlacement": "몸 #d348ac; 대표 기관 #26c6bb; 발·연결부 #d6e5f1; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#d348ac",
-      "accent": "#26c6bb"
-    },
-    "idle": "정지 후 짧은 신호 펄스와 틸트 / 양쪽 대표 기관과 꼬리를 다른 박자로 펼침",
-    "reaction": "큰 대표 기관을 펼치고 짧게 인사한다",
-    "distinction": "스테이지 인기 펫: 짧은 몸 위로 솟은 긴 목; 몸 전체를 감싼 대표 기관에 송신탑 고리",
+    "prompt": "길고 날씬한 몸과 낮게 숙인 머리, 크게 휘어진 꼬리를 가진 표범을 만들라. 몸은 짙은 보라, 배는 청회색이며 몸 옆의 큰 반점 몇 개만 자홍빛으로 밝힌다. 발에는 흰 면을 넣어 어두운 배경에서 구분한다. 앞발을 길게 뻗어 기지개를 켤 때 반점의 빛이 뒤쪽으로 천천히 지나가게 한다.",
+    "key": "pet-169",
+    "anatomy": "cat",
+    "feature": "neon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "cat",
+    "colors": {
+      "primary": "#513b68"
+    },
+    "idle": "길고 날씬한 몸과 낮게 숙인 머리, 크게 휘어진 꼬리를 가진 표범을 만들라. 몸은 짙은 보라, 배는 청회색이며 몸 옆의 큰 반점 몇 개만 자홍빛으로 밝힌다. 발에는 흰 면을 넣어 어두운 배경에서 구분한다. 앞발을 길게 뻗어 기지개를 켤 때 반점의 빛이 뒤쪽으로 천천히 지나가게 한다."
   }
 }

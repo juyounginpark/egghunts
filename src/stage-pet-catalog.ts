@@ -1,1803 +1,1603 @@
-// Stable IDs, names and tiers. Visuals: scripts/rework_stage_pets.py
+// Array index is the permanent save ID. Never sort by stage.
 export const STAGE_PET_ROWS = [
   {
-    "name": "새순 뽀미",
-    "description": "두 장의 새순을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 새순 뽀미.",
+    "name": "새싹이",
     "stageId": 1,
     "slot": 0,
     "tier": 0,
-    "color": "#71a73d",
-    "shape": "plant"
+    "color": "#a6c976",
+    "shape": "seed"
   },
   {
-    "name": "클로버 토토",
-    "description": "클로버 우산을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 클로버 토토.",
+    "name": "클로버 토끼",
     "stageId": 1,
     "slot": 1,
     "tier": 0,
-    "color": "#c99438",
+    "color": "#ebe5cf",
     "shape": "rabbit"
   },
   {
-    "name": "민들레 삐삐",
-    "description": "씨앗 배달 날개을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 민들레 삐삐.",
+    "name": "민들레 병아리",
     "stageId": 1,
     "slot": 2,
     "tier": 1,
-    "color": "#efe4b7",
+    "color": "#ead16c",
     "shape": "bird"
   },
   {
-    "name": "딸기 볼쥐",
-    "description": "도토리 주머니을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 딸기 볼쥐.",
+    "name": "딸기쥐",
     "stageId": 1,
     "slot": 3,
     "tier": 1,
-    "color": "#316d47",
-    "shape": "quadruped"
+    "color": "#d84a64",
+    "shape": "mouse"
   },
   {
-    "name": "도토리 꼬북",
-    "description": "풀지붕 등집을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 도토리 꼬북.",
+    "name": "도토리 거북",
     "stageId": 1,
     "slot": 4,
     "tier": 2,
-    "color": "#71a73d",
-    "shape": "shell"
+    "color": "#87946b",
+    "shape": "turtle"
   },
   {
-    "name": "풍차 병아리",
-    "description": "바람개비 가슴을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 풍차 병아리.",
+    "name": "바람개비 병아리",
     "stageId": 1,
     "slot": 5,
     "tier": 2,
-    "color": "#c99438",
+    "color": "#eed38b",
     "shape": "bird"
   },
   {
-    "name": "꿀단지 곰곰",
-    "description": "건초 침낭을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 꿀단지 곰곰.",
+    "name": "꿀단지 곰",
     "stageId": 1,
     "slot": 6,
     "tier": 3,
-    "color": "#efe4b7",
-    "shape": "quadruped"
+    "color": "#694933",
+    "shape": "bear"
   },
   {
     "name": "꽃갈기 사자",
-    "description": "민들레 갈기을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 꽃갈기 사자.",
     "stageId": 1,
     "slot": 7,
     "tier": 4,
-    "color": "#316d47",
-    "shape": "quadruped"
+    "color": "#bd985a",
+    "shape": "lion"
   },
   {
-    "name": "무지개 나비룡",
-    "description": "꽃잎 돛을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 무지개 나비룡.",
+    "name": "무지개 나비",
     "stageId": 1,
     "slot": 8,
     "tier": 5,
-    "color": "#71a73d",
-    "shape": "dragon"
+    "color": "#b99ad5",
+    "shape": "butterfly"
   },
   {
-    "name": "사계절 정원사슴",
-    "description": "수확 나무뿔을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 사계절 정원사슴.",
+    "name": "사계절 사슴",
     "stageId": 1,
     "slot": 9,
     "tier": 6,
-    "color": "#c99438",
-    "shape": "quadruped"
+    "color": "#ba9571",
+    "shape": "deer"
   },
   {
-    "name": "단추 삐봇",
-    "description": "태엽 열쇠을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 단추 삐봇.",
+    "name": "단추곰",
     "stageId": 2,
     "slot": 0,
     "tier": 0,
-    "color": "#d34d35",
-    "shape": "machine"
+    "color": "#695045",
+    "shape": "bear"
   },
   {
-    "name": "블록 멍멍",
-    "description": "블록 손수레을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 블록 멍멍.",
+    "name": "태엽오리",
     "stageId": 2,
     "slot": 1,
     "tier": 0,
-    "color": "#efbb36",
-    "shape": "quadruped"
-  },
-  {
-    "name": "종이비행 참새",
-    "description": "종이비행기 날개을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 종이비행 참새.",
-    "stageId": 2,
-    "slot": 2,
-    "tier": 1,
-    "color": "#32a6c2",
+    "color": "#ead378",
     "shape": "bird"
   },
   {
-    "name": "오뚝이 통통",
-    "description": "깜짝 상자을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 오뚝이 통통.",
+    "name": "목마 조랑말",
+    "stageId": 2,
+    "slot": 2,
+    "tier": 1,
+    "color": "#eee7cf",
+    "shape": "horse"
+  },
+  {
+    "name": "블록코끼리",
     "stageId": 2,
     "slot": 3,
     "tier": 1,
-    "color": "#7255ad",
-    "shape": "spirit"
+    "color": "#527cad",
+    "shape": "elephant"
   },
   {
-    "name": "실타래 토끼",
-    "description": "리본 손잡이을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 실타래 토끼.",
+    "name": "구슬고양이",
     "stageId": 2,
     "slot": 4,
     "tier": 2,
-    "color": "#d34d35",
-    "shape": "rabbit"
+    "color": "#a1d4c4",
+    "shape": "cat"
   },
   {
-    "name": "주사위 거북",
-    "description": "주사위 등집을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 주사위 거북.",
+    "name": "종이배 펭귄",
     "stageId": 2,
     "slot": 5,
     "tier": 2,
-    "color": "#efbb36",
-    "shape": "shell"
+    "color": "#344a70",
+    "shape": "penguin"
   },
   {
-    "name": "팽이 발레리나",
-    "description": "회전 팽이치마을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 팽이 발레리나.",
+    "name": "깜짝상자 토끼",
     "stageId": 2,
     "slot": 6,
     "tier": 3,
-    "color": "#32a6c2",
-    "shape": "spirit"
+    "color": "#e9e8dc",
+    "shape": "rabbit"
   },
   {
-    "name": "기관차 코끼리",
-    "description": "블록 미끄럼틀 코을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 기관차 코끼리.",
+    "name": "양말뱀",
     "stageId": 2,
     "slot": 7,
     "tier": 4,
-    "color": "#7255ad",
-    "shape": "quadruped"
+    "color": "#527cad",
+    "shape": "snake"
   },
   {
-    "name": "인형극 꼭두룡",
-    "description": "성문 날개을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 인형극 꼭두룡.",
+    "name": "오르골 백조",
     "stageId": 2,
     "slot": 8,
     "tier": 5,
-    "color": "#d34d35",
-    "shape": "dragon"
+    "color": "#eae9df",
+    "shape": "swan"
   },
   {
-    "name": "왕관 태엽곰",
-    "description": "왕관 목마등을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 왕관 태엽곰.",
+    "name": "풍선강아지",
     "stageId": 2,
     "slot": 9,
     "tier": 6,
-    "color": "#efbb36",
-    "shape": "quadruped"
+    "color": "#cf5557",
+    "shape": "dog"
   },
   {
-    "name": "거품 방울어",
-    "description": "구명 부표을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 거품 방울어.",
+    "name": "물방울 물개",
     "stageId": 3,
     "slot": 0,
     "tier": 0,
-    "color": "#f17e6f",
-    "shape": "fish"
+    "color": "#899cac",
+    "shape": "seal"
   },
   {
-    "name": "소라 소곤",
-    "description": "나선 조개집을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 소라 소곤.",
+    "name": "소라게",
     "stageId": 3,
     "slot": 1,
     "tier": 0,
-    "color": "#22a9a4",
-    "shape": "shell"
+    "color": "#dc9851",
+    "shape": "crab"
   },
   {
-    "name": "산호 집게",
-    "description": "불가사리 집게을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 산호 집게.",
+    "name": "진주조개",
     "stageId": 3,
     "slot": 2,
     "tier": 1,
-    "color": "#f8dfaf",
-    "shape": "tentacle"
+    "color": "#b6a2cf",
+    "shape": "clam"
   },
   {
-    "name": "해초 해마",
-    "description": "해초 띠을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 해초 해마.",
+    "name": "리본해마",
     "stageId": 3,
     "slot": 3,
     "tier": 1,
-    "color": "#6868bd",
-    "shape": "dragon"
-  },
-  {
-    "name": "진주 조개",
-    "description": "진주 패각을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 진주 조개.",
-    "stageId": 3,
-    "slot": 4,
-    "tier": 2,
-    "color": "#f17e6f",
-    "shape": "shell"
-  },
-  {
-    "name": "줄무늬 삐에로어",
-    "description": "파도 꼬리을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 줄무늬 삐에로어.",
-    "stageId": 3,
-    "slot": 5,
-    "tier": 2,
-    "color": "#22a9a4",
-    "shape": "fish"
+    "color": "#e8b18f",
+    "shape": "seahorse"
   },
   {
     "name": "파도 가오리",
-    "description": "산호 정원등을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 파도 가오리.",
+    "stageId": 3,
+    "slot": 4,
+    "tier": 2,
+    "color": "#344a70",
+    "shape": "ray"
+  },
+  {
+    "name": "산호거북",
+    "stageId": 3,
+    "slot": 5,
+    "tier": 2,
+    "color": "#f2e3bf",
+    "shape": "turtle"
+  },
+  {
+    "name": "별빛해파리",
     "stageId": 3,
     "slot": 6,
     "tier": 3,
-    "color": "#f8dfaf",
-    "shape": "bird"
-  },
-  {
-    "name": "분홍 산호거북",
-    "description": "둥근 조약돌집을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 분홍 산호거북.",
-    "stageId": 3,
-    "slot": 7,
-    "tier": 4,
-    "color": "#6868bd",
-    "shape": "shell"
+    "color": "#c4b5d7",
+    "shape": "jelly"
   },
   {
     "name": "노을 돌고래",
-    "description": "해류 부채을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 노을 돌고래.",
+    "stageId": 3,
+    "slot": 7,
+    "tier": 4,
+    "color": "#513b68",
+    "shape": "dolphin"
+  },
+  {
+    "name": "잠수문어",
     "stageId": 3,
     "slot": 8,
     "tier": 5,
-    "color": "#f17e6f",
-    "shape": "fish"
+    "color": "#db6544",
+    "shape": "octopus"
   },
   {
-    "name": "산호궁 바다용",
-    "description": "커다란 해마 왕관을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 산호궁 바다용.",
+    "name": "산호용",
     "stageId": 3,
     "slot": 9,
     "tier": 6,
-    "color": "#22a9a4",
+    "color": "#eae9df",
     "shape": "dragon"
   },
   {
-    "name": "숯덩이 두두",
-    "description": "열린 화구을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 숯덩이 두두.",
+    "name": "숯병아리",
     "stageId": 4,
     "slot": 0,
     "tier": 0,
-    "color": "#524251",
-    "shape": "spirit"
-  },
-  {
-    "name": "불씨 도마뱀",
-    "description": "용암 꼬리을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 불씨 도마뱀.",
-    "stageId": 4,
-    "slot": 1,
-    "tier": 0,
-    "color": "#ed622c",
-    "shape": "quadruped"
-  },
-  {
-    "name": "화로 꼬북",
-    "description": "뜨거운 화로을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 화로 꼬북.",
-    "stageId": 4,
-    "slot": 2,
-    "tier": 1,
-    "color": "#ffcb56",
-    "shape": "shell"
-  },
-  {
-    "name": "재구름 박쥐",
-    "description": "증기 막날개을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 재구름 박쥐.",
-    "stageId": 4,
-    "slot": 3,
-    "tier": 1,
-    "color": "#938085",
+    "color": "#39363f",
     "shape": "bird"
   },
   {
-    "name": "유황 뿔양",
-    "description": "현무암 뿔을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 유황 뿔양.",
+    "name": "불씨도마뱀",
+    "stageId": 4,
+    "slot": 1,
+    "tier": 0,
+    "color": "#b56d55",
+    "shape": "lizard"
+  },
+  {
+    "name": "화로거북",
+    "stageId": 4,
+    "slot": 2,
+    "tier": 1,
+    "color": "#9697a1",
+    "shape": "turtle"
+  },
+  {
+    "name": "잿빛박쥐",
+    "stageId": 4,
+    "slot": 3,
+    "tier": 1,
+    "color": "#899cac",
+    "shape": "bat"
+  },
+  {
+    "name": "유황산양",
     "stageId": 4,
     "slot": 4,
     "tier": 2,
-    "color": "#524251",
-    "shape": "quadruped"
+    "color": "#545461",
+    "shape": "ram"
   },
   {
-    "name": "용암 달팽이",
-    "description": "흑요석 나선을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 용암 달팽이.",
+    "name": "용암달팽이",
     "stageId": 4,
     "slot": 5,
     "tier": 2,
-    "color": "#ed622c",
-    "shape": "shell"
+    "color": "#db6544",
+    "shape": "snail"
   },
   {
     "name": "흑요석 전갈",
-    "description": "열린 돌집게을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 흑요석 전갈.",
     "stageId": 4,
     "slot": 6,
     "tier": 3,
-    "color": "#ffcb56",
-    "shape": "tentacle"
+    "color": "#30303c",
+    "shape": "scorpion"
   },
   {
     "name": "분화구 멧돼지",
-    "description": "굴뚝 등판을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 분화구 멧돼지.",
     "stageId": 4,
     "slot": 7,
     "tier": 4,
-    "color": "#938085",
-    "shape": "quadruped"
+    "color": "#974e40",
+    "shape": "boar"
   },
   {
-    "name": "불꽃 불사조",
-    "description": "불사조 화염부채을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 불꽃 불사조.",
+    "name": "모루두더지",
     "stageId": 4,
     "slot": 8,
     "tier": 5,
-    "color": "#524251",
-    "shape": "bird"
+    "color": "#958477",
+    "shape": "mole"
   },
   {
-    "name": "심장불 화산룡",
-    "description": "분화구 날개을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 심장불 화산룡.",
+    "name": "잿불공작",
     "stageId": 4,
     "slot": 9,
     "tier": 6,
-    "color": "#ed622c",
-    "shape": "dragon"
+    "color": "#30303c",
+    "shape": "peacock"
   },
   {
-    "name": "등불 아귀",
-    "description": "낚싯대 등불을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 등불 아귀.",
-    "stageId": 5,
+    "name": "틈새고양이",
+    "stageId": 19,
     "slot": 0,
     "tier": 0,
-    "color": "#223c73",
-    "shape": "fish"
+    "color": "#39363f",
+    "shape": "cat"
   },
   {
-    "name": "유리 해파리",
-    "description": "잠수종 갓을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 유리 해파리.",
-    "stageId": 5,
+    "name": "빈껍질 거북",
+    "stageId": 19,
     "slot": 1,
     "tier": 0,
-    "color": "#70479f",
-    "shape": "tentacle"
+    "color": "#c4c9cc",
+    "shape": "turtle"
   },
   {
-    "name": "먹물 꼬마문어",
-    "description": "먹물 주머니을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 먹물 꼬마문어.",
-    "stageId": 5,
+    "name": "그림자토끼",
+    "stageId": 19,
     "slot": 2,
     "tier": 1,
-    "color": "#39cebd",
-    "shape": "tentacle"
-  },
-  {
-    "name": "해저 소라게",
-    "description": "해저 빈집을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 해저 소라게.",
-    "stageId": 5,
-    "slot": 3,
-    "tier": 1,
-    "color": "#e07bac",
-    "shape": "shell"
-  },
-  {
-    "name": "잠수함 복어",
-    "description": "발광 부표을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 잠수함 복어.",
-    "stageId": 5,
-    "slot": 4,
-    "tier": 2,
-    "color": "#223c73",
-    "shape": "fish"
-  },
-  {
-    "name": "발광 오징어",
-    "description": "길쭉한 맨틀을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 발광 오징어.",
-    "stageId": 5,
-    "slot": 5,
-    "tier": 2,
-    "color": "#70479f",
-    "shape": "tentacle"
-  },
-  {
-    "name": "해구 리본장어",
-    "description": "리본 해류을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 해구 리본장어.",
-    "stageId": 5,
-    "slot": 6,
-    "tier": 3,
-    "color": "#39cebd",
-    "shape": "dragon"
-  },
-  {
-    "name": "유적 갑옷게",
-    "description": "유적 석문등을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 유적 갑옷게.",
-    "stageId": 5,
-    "slot": 7,
-    "tier": 4,
-    "color": "#e07bac",
-    "shape": "shell"
-  },
-  {
-    "name": "달빛 만타",
-    "description": "심연 지느러미을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 달빛 만타.",
-    "stageId": 5,
-    "slot": 8,
-    "tier": 5,
-    "color": "#223c73",
-    "shape": "bird"
-  },
-  {
-    "name": "심해별 고래",
-    "description": "심해 잠수선등을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 심해별 고래.",
-    "stageId": 5,
-    "slot": 9,
-    "tier": 6,
-    "color": "#70479f",
-    "shape": "fish"
-  },
-  {
-    "name": "분필 꼬마령",
-    "description": "펼친 책을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 분필 꼬마령.",
-    "stageId": 6,
-    "slot": 0,
-    "tier": 0,
-    "color": "#775274",
-    "shape": "spirit"
-  },
-  {
-    "name": "지우개 먼지",
-    "description": "분필 주머니을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 지우개 먼지.",
-    "stageId": 6,
-    "slot": 1,
-    "tier": 0,
-    "color": "#e1cba3",
-    "shape": "quadruped"
-  },
-  {
-    "name": "책갈피 부엉",
-    "description": "종 시계등을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 책갈피 부엉.",
-    "stageId": 6,
-    "slot": 2,
-    "tier": 1,
-    "color": "#a7774f",
-    "shape": "bird"
-  },
-  {
-    "name": "사물함 숨바꼭",
-    "description": "사물함 문을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 사물함 숨바꼭.",
-    "stageId": 6,
-    "slot": 3,
-    "tier": 1,
-    "color": "#538590",
-    "shape": "machine"
-  },
-  {
-    "name": "잉크병 유령",
-    "description": "잉크 병마개을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 잉크병 유령.",
-    "stageId": 6,
-    "slot": 4,
-    "tier": 2,
-    "color": "#775274",
-    "shape": "spirit"
-  },
-  {
-    "name": "시험지 종이학",
-    "description": "접힌 공책날개을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 시험지 종이학.",
-    "stageId": 6,
-    "slot": 5,
-    "tier": 2,
-    "color": "#e1cba3",
-    "shape": "bird"
-  },
-  {
-    "name": "종지기 박쥐",
-    "description": "지우개 망토을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 종지기 박쥐.",
-    "stageId": 6,
-    "slot": 6,
-    "tier": 3,
-    "color": "#a7774f",
-    "shape": "bird"
-  },
-  {
-    "name": "교복 마법토끼",
-    "description": "책상 우산을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 교복 마법토끼.",
-    "stageId": 6,
-    "slot": 7,
-    "tier": 4,
-    "color": "#538590",
+    "color": "#464360",
     "shape": "rabbit"
   },
   {
-    "name": "칠판 낙서룡",
-    "description": "칠판 등을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 칠판 낙서룡.",
-    "stageId": 6,
-    "slot": 8,
-    "tier": 5,
-    "color": "#775274",
-    "shape": "dragon"
-  },
-  {
-    "name": "자정 교장부엉",
-    "description": "교실 문날개을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 자정 교장부엉.",
-    "stageId": 6,
-    "slot": 9,
-    "tier": 6,
-    "color": "#e1cba3",
-    "shape": "bird"
-  },
-  {
-    "name": "픽셀 삐약",
-    "description": "접힌 드론날개을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 픽셀 삐약.",
-    "stageId": 7,
-    "slot": 0,
-    "tier": 0,
-    "color": "#263d70",
-    "shape": "bird"
-  },
-  {
-    "name": "배터리 햄찌",
-    "description": "전지 꼬리을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 배터리 햄찌.",
-    "stageId": 7,
-    "slot": 1,
-    "tier": 0,
-    "color": "#d348ac",
-    "shape": "quadruped"
-  },
-  {
-    "name": "와이파이 토끼",
-    "description": "신호 안테나을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 와이파이 토끼.",
-    "stageId": 7,
-    "slot": 2,
-    "tier": 1,
-    "color": "#26c6bb",
-    "shape": "rabbit"
-  },
-  {
-    "name": "네온 신호등",
-    "description": "보안문 가슴을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 네온 신호등.",
-    "stageId": 7,
+    "name": "공백가오리",
+    "stageId": 19,
     "slot": 3,
     "tier": 1,
-    "color": "#d6e5f1",
-    "shape": "machine"
+    "color": "#30303c",
+    "shape": "ray"
   },
   {
-    "name": "홀로그램 고양",
-    "description": "광섬유 꼬리을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 홀로그램 고양.",
-    "stageId": 7,
+    "name": "조각여우",
+    "stageId": 19,
     "slot": 4,
     "tier": 2,
-    "color": "#263d70",
-    "shape": "quadruped"
+    "color": "#8566ad",
+    "shape": "fox"
   },
   {
-    "name": "회로 등딱지",
-    "description": "서버 냉각판을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 회로 등딱지.",
-    "stageId": 7,
+    "name": "침묵의 종",
+    "stageId": 19,
     "slot": 5,
     "tier": 2,
-    "color": "#d348ac",
-    "shape": "shell"
+    "color": "#30303c",
+    "shape": "ghost"
   },
   {
-    "name": "스피커 해파리",
-    "description": "홀로그램 창을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 스피커 해파리.",
-    "stageId": 7,
+    "name": "먹구름문어",
+    "stageId": 19,
     "slot": 6,
     "tier": 3,
-    "color": "#26c6bb",
-    "shape": "tentacle"
+    "color": "#545461",
+    "shape": "octopus"
   },
   {
-    "name": "호버보드 여우",
-    "description": "네온 도로꼬리을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 호버보드 여우.",
-    "stageId": 7,
+    "name": "어긋난 사슴",
+    "stageId": 19,
     "slot": 7,
     "tier": 4,
-    "color": "#d6e5f1",
-    "shape": "quadruped"
+    "color": "#f2e3bf",
+    "shape": "deer"
   },
   {
-    "name": "레이저 날개룡",
-    "description": "레이저 스캐너날개을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 레이저 날개룡.",
-    "stageId": 7,
+    "name": "검은구멍 고래",
+    "stageId": 19,
     "slot": 8,
     "tier": 5,
-    "color": "#263d70",
-    "shape": "dragon"
+    "color": "#513b68",
+    "shape": "whale"
   },
   {
-    "name": "도시 코어기린",
-    "description": "송신탑 고리을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 도시 코어기린.",
-    "stageId": 7,
+    "name": "경계의 사냥개",
+    "stageId": 19,
     "slot": 9,
     "tier": 6,
-    "color": "#d348ac",
-    "shape": "quadruped"
+    "color": "#eee7cf",
+    "shape": "dog"
   },
   {
-    "name": "모래 귀쫑",
-    "description": "햇빛 가리개을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 모래 귀쫑.",
-    "stageId": 8,
+    "name": "분필유령",
+    "stageId": 5,
     "slot": 0,
     "tier": 0,
-    "color": "#d7a247",
-    "shape": "rabbit"
+    "color": "#eae9df",
+    "shape": "ghost"
   },
   {
-    "name": "오아시스 새싹",
-    "description": "대추야자 잎을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 오아시스 새싹.",
-    "stageId": 8,
+    "name": "지우개 햄스터",
+    "stageId": 5,
     "slot": 1,
     "tier": 0,
-    "color": "#93532e",
-    "shape": "plant"
+    "color": "#d991af",
+    "shape": "mouse"
   },
   {
-    "name": "항아리 소라",
-    "description": "사암 나선집을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 항아리 소라.",
-    "stageId": 8,
+    "name": "연필고슴도치",
+    "stageId": 5,
     "slot": 2,
     "tier": 1,
-    "color": "#259c9c",
-    "shape": "shell"
+    "color": "#f2e3bf",
+    "shape": "hedgehog"
   },
   {
-    "name": "황동 풍뎅이",
-    "description": "태양 원반을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 황동 풍뎅이.",
-    "stageId": 8,
+    "name": "잉크문어",
+    "stageId": 5,
     "slot": 3,
     "tier": 1,
-    "color": "#f5d48b",
-    "shape": "shell"
+    "color": "#283851",
+    "shape": "octopus"
   },
   {
-    "name": "대추 낙타",
-    "description": "물 저장 혹을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 대추 낙타.",
-    "stageId": 8,
+    "name": "책가방 거북",
+    "stageId": 5,
     "slot": 4,
     "tier": 2,
-    "color": "#d7a247",
-    "shape": "quadruped"
+    "color": "#9a7656",
+    "shape": "turtle"
   },
   {
-    "name": "비단 코브라",
-    "description": "코브라 목막을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 비단 코브라.",
-    "stageId": 8,
+    "name": "종이학",
+    "stageId": 5,
     "slot": 5,
     "tier": 2,
-    "color": "#93532e",
-    "shape": "dragon"
+    "color": "#eee7cf",
+    "shape": "swan"
   },
   {
-    "name": "모래시계 여우",
-    "description": "모래 시계꼬리을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 모래시계 여우.",
-    "stageId": 8,
+    "name": "칠판고양이",
+    "stageId": 5,
     "slot": 6,
     "tier": 3,
-    "color": "#259c9c",
-    "shape": "quadruped"
+    "color": "#365f49",
+    "shape": "cat"
   },
   {
-    "name": "태양 매",
-    "description": "황금 신전등을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 태양 매.",
-    "stageId": 8,
+    "name": "종소리 부엉이",
+    "stageId": 5,
     "slot": 7,
     "tier": 4,
-    "color": "#f5d48b",
-    "shape": "bird"
+    "color": "#f2e3bf",
+    "shape": "owl"
   },
   {
-    "name": "피라미드 스핑크스",
-    "description": "전갈 태양갈기을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 피라미드 스핑크스.",
-    "stageId": 8,
+    "name": "커튼박쥐",
+    "stageId": 5,
     "slot": 8,
     "tier": 5,
-    "color": "#d7a247",
-    "shape": "quadruped"
+    "color": "#9697a1",
+    "shape": "bat"
   },
   {
-    "name": "황금 원반불사조",
-    "description": "피라미드 부채을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 황금 원반불사조.",
-    "stageId": 8,
+    "name": "그림자 사슴",
+    "stageId": 5,
     "slot": 9,
     "tier": 6,
-    "color": "#93532e",
-    "shape": "bird"
-  },
-  {
-    "name": "양치 새순",
-    "description": "양치 귀부채을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 양치 새순.",
-    "stageId": 9,
-    "slot": 0,
-    "tier": 0,
-    "color": "#4e874d",
-    "shape": "plant"
-  },
-  {
-    "name": "호박 송충",
-    "description": "화석 알집을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 호박 송충.",
-    "stageId": 9,
-    "slot": 1,
-    "tier": 0,
-    "color": "#d6b070",
-    "shape": "quadruped"
-  },
-  {
-    "name": "화석 암모",
-    "description": "암모나이트 집을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 화석 암모.",
-    "stageId": 9,
-    "slot": 2,
-    "tier": 1,
-    "color": "#a4553e",
-    "shape": "shell"
-  },
-  {
-    "name": "깃털 랩터",
-    "description": "나뭇잎 글라이더을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 깃털 랩터.",
-    "stageId": 9,
-    "slot": 3,
-    "tier": 1,
-    "color": "#c9d39d",
-    "shape": "bird"
-  },
-  {
-    "name": "꼬마 트리케라",
-    "description": "뼈 목깃을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 꼬마 트리케라.",
-    "stageId": 9,
-    "slot": 4,
-    "tier": 2,
-    "color": "#4e874d",
-    "shape": "quadruped"
-  },
-  {
-    "name": "바위 안킬로",
-    "description": "타르 늪받침을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 바위 안킬로.",
-    "stageId": 9,
-    "slot": 5,
-    "tier": 2,
-    "color": "#d6b070",
-    "shape": "shell"
-  },
-  {
-    "name": "돛등 스피노",
-    "description": "크고 높은 돛을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 돛등 스피노.",
-    "stageId": 9,
-    "slot": 6,
-    "tier": 3,
-    "color": "#a4553e",
-    "shape": "dragon"
-  },
-  {
-    "name": "긴목 브라키오",
-    "description": "화석 갈비등을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 긴목 브라키오.",
-    "stageId": 9,
-    "slot": 7,
-    "tier": 4,
-    "color": "#c9d39d",
-    "shape": "dragon"
-  },
-  {
-    "name": "하늘 익룡",
-    "description": "양치 막날개을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 하늘 익룡.",
-    "stageId": 9,
-    "slot": 8,
-    "tier": 5,
-    "color": "#4e874d",
-    "shape": "bird"
-  },
-  {
-    "name": "태초의 세계수룡",
-    "description": "고대 화석문을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 태초의 세계수룡.",
-    "stageId": 9,
-    "slot": 9,
-    "tier": 6,
-    "color": "#d6b070",
-    "shape": "dragon"
-  },
-  {
-    "name": "호롱 불씨",
-    "description": "도깨비 불씨을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 호롱 불씨.",
-    "stageId": 10,
-    "slot": 0,
-    "tier": 0,
-    "color": "#52416f",
-    "shape": "spirit"
-  },
-  {
-    "name": "기와 고양",
-    "description": "달 부채꼬리을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 기와 고양.",
-    "stageId": 10,
-    "slot": 1,
-    "tier": 0,
-    "color": "#df7148",
-    "shape": "quadruped"
-  },
-  {
-    "name": "방망이 콩깨비",
-    "description": "작은 방망이을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 방망이 콩깨비.",
-    "stageId": 10,
-    "slot": 2,
-    "tier": 1,
-    "color": "#52a38b",
-    "shape": "machine"
-  },
-  {
-    "name": "달떡 토끼",
-    "description": "기와 우산을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 달떡 토끼.",
-    "stageId": 10,
-    "slot": 3,
-    "tier": 1,
-    "color": "#e7b64f",
-    "shape": "rabbit"
-  },
-  {
-    "name": "장독 숨숨",
-    "description": "항아리 뚜껑을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 장독 숨숨.",
-    "stageId": 10,
-    "slot": 4,
-    "tier": 2,
-    "color": "#52416f",
-    "shape": "shell"
-  },
-  {
-    "name": "부채 까치",
-    "description": "처마 날개을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 부채 까치.",
-    "stageId": 10,
-    "slot": 5,
-    "tier": 2,
-    "color": "#df7148",
-    "shape": "bird"
-  },
-  {
-    "name": "구미호 홍련",
-    "description": "붉은 달꼬리을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 구미호 홍련.",
-    "stageId": 10,
-    "slot": 6,
-    "tier": 3,
-    "color": "#52a38b",
-    "shape": "quadruped"
-  },
-  {
-    "name": "도깨비 북지기",
-    "description": "마을 등롱을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 도깨비 북지기.",
-    "stageId": 10,
-    "slot": 7,
-    "tier": 4,
-    "color": "#e7b64f",
-    "shape": "machine"
-  },
-  {
-    "name": "붉은달 해태",
-    "description": "방망이 날개을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 붉은달 해태.",
-    "stageId": 10,
-    "slot": 8,
-    "tier": 5,
-    "color": "#52416f",
-    "shape": "quadruped"
-  },
-  {
-    "name": "소원불 기린",
-    "description": "도깨비 기와문을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 소원불 기린.",
-    "stageId": 10,
-    "slot": 9,
-    "tier": 6,
-    "color": "#df7148",
-    "shape": "dragon"
-  },
-  {
-    "name": "구름 솜양",
-    "description": "구름 털갈기을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 구름 솜양.",
-    "stageId": 11,
-    "slot": 0,
-    "tier": 0,
-    "color": "#e4e2d0",
-    "shape": "quadruped"
-  },
-  {
-    "name": "월계 새싹",
-    "description": "올리브 가지을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 월계 새싹.",
-    "stageId": 11,
-    "slot": 1,
-    "tier": 0,
-    "color": "#d6a231",
-    "shape": "plant"
-  },
-  {
-    "name": "대리석 꼬북",
-    "description": "대리석 등집을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 대리석 꼬북.",
-    "stageId": 11,
-    "slot": 2,
-    "tier": 1,
-    "color": "#4886b1",
-    "shape": "shell"
-  },
-  {
-    "name": "리라 종달",
-    "description": "금빛 하프을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 리라 종달.",
-    "stageId": 11,
-    "slot": 3,
-    "tier": 1,
-    "color": "#72ab8e",
-    "shape": "bird"
-  },
-  {
-    "name": "번개 다람",
-    "description": "번개 꼬리을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 번개 다람.",
-    "stageId": 11,
-    "slot": 4,
-    "tier": 2,
-    "color": "#e4e2d0",
-    "shape": "quadruped"
-  },
-  {
-    "name": "날개 샌들토끼",
-    "description": "구름 우산을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 날개 샌들토끼.",
-    "stageId": 11,
-    "slot": 5,
-    "tier": 2,
-    "color": "#d6a231",
-    "shape": "rabbit"
-  },
-  {
-    "name": "황금 독수리",
-    "description": "폭넓은 번개날개을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 황금 독수리.",
-    "stageId": 11,
-    "slot": 6,
-    "tier": 3,
-    "color": "#4886b1",
-    "shape": "bird"
-  },
-  {
-    "name": "샘물 페가수스",
-    "description": "석상 안장을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 샘물 페가수스.",
-    "stageId": 11,
-    "slot": 7,
-    "tier": 4,
-    "color": "#72ab8e",
-    "shape": "quadruped"
-  },
-  {
-    "name": "별갑옷 그리핀",
-    "description": "신전 기둥등을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 별갑옷 그리핀.",
-    "stageId": 11,
-    "slot": 8,
-    "tier": 5,
-    "color": "#e4e2d0",
-    "shape": "dragon"
-  },
-  {
-    "name": "천둥 왕관사자",
-    "description": "천공 신전문을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 천둥 왕관사자.",
-    "stageId": 11,
-    "slot": 9,
-    "tier": 6,
-    "color": "#d6a231",
-    "shape": "quadruped"
-  },
-  {
-    "name": "촉수 콩별",
-    "description": "배양 캡슐을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 촉수 콩별.",
-    "stageId": 12,
-    "slot": 0,
-    "tier": 0,
-    "color": "#87bf40",
-    "shape": "tentacle"
-  },
-  {
-    "name": "외눈 젤리",
-    "description": "접시 새순을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 외눈 젤리.",
-    "stageId": 12,
-    "slot": 1,
-    "tier": 0,
-    "color": "#7854af",
-    "shape": "spirit"
-  },
-  {
-    "name": "탐사 로버",
-    "description": "넓은 흡착 발을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 탐사 로버.",
-    "stageId": 12,
-    "slot": 2,
-    "tier": 1,
-    "color": "#efaa79",
-    "shape": "machine"
-  },
-  {
-    "name": "접시 달팽이",
-    "description": "거꾸로 중력추을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 접시 달팽이.",
-    "stageId": 12,
-    "slot": 3,
-    "tier": 1,
-    "color": "#23a49d",
-    "shape": "shell"
+    "color": "#464360",
+    "shape": "deer"
   },
   {
     "name": "안테나 토끼",
-    "description": "실험 센서귀을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 안테나 토끼.",
-    "stageId": 12,
-    "slot": 4,
-    "tier": 2,
-    "color": "#87bf40",
+    "stageId": 6,
+    "slot": 0,
+    "tier": 0,
+    "color": "#eae9df",
     "shape": "rabbit"
   },
   {
-    "name": "형광 우파루파",
-    "description": "외계 배양통을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 형광 우파루파.",
-    "stageId": 12,
+    "name": "배터리 햄스터",
+    "stageId": 6,
+    "slot": 1,
+    "tier": 0,
+    "color": "#ead378",
+    "shape": "mouse"
+  },
+  {
+    "name": "택배너구리",
+    "stageId": 6,
+    "slot": 2,
+    "tier": 1,
+    "color": "#9697a1",
+    "shape": "raccoon"
+  },
+  {
+    "name": "스케이트 도마뱀",
+    "stageId": 6,
+    "slot": 3,
+    "tier": 1,
+    "color": "#a1d4c4",
+    "shape": "lizard"
+  },
+  {
+    "name": "헤드폰 고양이",
+    "stageId": 6,
+    "slot": 4,
+    "tier": 2,
+    "color": "#30303c",
+    "shape": "cat"
+  },
+  {
+    "name": "신호등 부엉이",
+    "stageId": 6,
     "slot": 5,
     "tier": 2,
-    "color": "#7854af",
-    "shape": "quadruped"
+    "color": "#9697a1",
+    "shape": "owl"
   },
   {
-    "name": "무중력 오징어",
-    "description": "공중 촉각판을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 무중력 오징어.",
-    "stageId": 12,
+    "name": "홀로그램 잉어",
+    "stageId": 6,
     "slot": 6,
     "tier": 3,
-    "color": "#efaa79",
-    "shape": "tentacle"
-  },
-  {
-    "name": "수정 원자로봇",
-    "description": "삼각 착륙선을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 수정 원자로봇.",
-    "stageId": 12,
-    "slot": 7,
-    "tier": 4,
-    "color": "#23a49d",
-    "shape": "machine"
-  },
-  {
-    "name": "성운 비행가오리",
-    "description": "견인 집게을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 성운 비행가오리.",
-    "stageId": 12,
-    "slot": 8,
-    "tier": 5,
-    "color": "#87bf40",
-    "shape": "bird"
-  },
-  {
-    "name": "모선 품은 고래",
-    "description": "거대 궤도접시을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 모선 품은 고래.",
-    "stageId": 12,
-    "slot": 9,
-    "tier": 6,
-    "color": "#7854af",
+    "color": "#eee7cf",
     "shape": "fish"
   },
   {
-    "name": "리벳 참새",
-    "description": "프로펠러 날개을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 리벳 참새.",
-    "stageId": 13,
+    "name": "케이블 뱀",
+    "stageId": 6,
+    "slot": 7,
+    "tier": 4,
+    "color": "#dc9851",
+    "shape": "snake"
+  },
+  {
+    "name": "드론가오리",
+    "stageId": 6,
+    "slot": 8,
+    "tier": 5,
+    "color": "#30303c",
+    "shape": "ray"
+  },
+  {
+    "name": "네온표범",
+    "stageId": 6,
+    "slot": 9,
+    "tier": 6,
+    "color": "#513b68",
+    "shape": "cat"
+  },
+  {
+    "name": "모래여우",
+    "stageId": 7,
     "slot": 0,
     "tier": 0,
-    "color": "#c28b37",
+    "color": "#cbb88b",
+    "shape": "fox"
+  },
+  {
+    "name": "물병낙타",
+    "stageId": 7,
+    "slot": 1,
+    "tier": 0,
+    "color": "#b78d53",
+    "shape": "camel"
+  },
+  {
+    "name": "선인장 고슴도치",
+    "stageId": 7,
+    "slot": 2,
+    "tier": 1,
+    "color": "#9a7656",
+    "shape": "hedgehog"
+  },
+  {
+    "name": "모래두더지",
+    "stageId": 7,
+    "slot": 3,
+    "tier": 1,
+    "color": "#958477",
+    "shape": "mole"
+  },
+  {
+    "name": "청금석 풍뎅이",
+    "stageId": 7,
+    "slot": 4,
+    "tier": 2,
+    "color": "#365a96",
+    "shape": "beetle"
+  },
+  {
+    "name": "항아리 코브라",
+    "stageId": 7,
+    "slot": 5,
+    "tier": 2,
+    "color": "#b56d55",
+    "shape": "cobra"
+  },
+  {
+    "name": "붕대고양이",
+    "stageId": 7,
+    "slot": 6,
+    "tier": 3,
+    "color": "#eee7cf",
+    "shape": "cat"
+  },
+  {
+    "name": "보석전갈",
+    "stageId": 7,
+    "slot": 7,
+    "tier": 4,
+    "color": "#30303c",
+    "shape": "scorpion"
+  },
+  {
+    "name": "해시계 매",
+    "stageId": 7,
+    "slot": 8,
+    "tier": 5,
+    "color": "#eee7cf",
     "shape": "bird"
   },
   {
-    "name": "증기 주전자",
-    "description": "압력계 꼬리을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 증기 주전자.",
-    "stageId": 13,
-    "slot": 1,
-    "tier": 0,
-    "color": "#3c9b96",
-    "shape": "machine"
+    "name": "작은 스핑크스",
+    "stageId": 7,
+    "slot": 9,
+    "tier": 6,
+    "color": "#658fbd",
+    "shape": "lion"
   },
   {
-    "name": "톱니 햄스터",
-    "description": "기어 날개을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 톱니 햄스터.",
-    "stageId": 13,
+    "name": "알껍질 공룡",
+    "stageId": 8,
+    "slot": 0,
+    "tier": 0,
+    "color": "#a5dacf",
+    "shape": "raptor"
+  },
+  {
+    "name": "양치 트리케라",
+    "stageId": 8,
+    "slot": 1,
+    "tier": 0,
+    "color": "#a16447",
+    "shape": "triceratops"
+  },
+  {
+    "name": "꽃등 스테고",
+    "stageId": 8,
     "slot": 2,
     "tier": 1,
-    "color": "#b6532c",
-    "shape": "quadruped"
+    "color": "#8295aa",
+    "shape": "stego"
+  },
+  {
+    "name": "깃털 랩터",
+    "stageId": 8,
+    "slot": 3,
+    "tier": 1,
+    "color": "#243450",
+    "shape": "raptor"
+  },
+  {
+    "name": "조약돌 안킬로",
+    "stageId": 8,
+    "slot": 4,
+    "tier": 2,
+    "color": "#828b60",
+    "shape": "armadillo"
+  },
+  {
+    "name": "물수제비 수장룡",
+    "stageId": 8,
+    "slot": 5,
+    "tier": 2,
+    "color": "#93bfd8",
+    "shape": "plesio"
+  },
+  {
+    "name": "과일 익룡",
+    "stageId": 8,
+    "slot": 6,
+    "tier": 3,
+    "color": "#9697a1",
+    "shape": "bat"
+  },
+  {
+    "name": "나팔 볏공룡",
+    "stageId": 8,
+    "slot": 7,
+    "tier": 4,
+    "color": "#c4b5d7",
+    "shape": "spino"
+  },
+  {
+    "name": "이끼 긴목공룡",
+    "stageId": 8,
+    "slot": 8,
+    "tier": 5,
+    "color": "#9a7656",
+    "shape": "giraffe"
+  },
+  {
+    "name": "호박빛 티라노",
+    "stageId": 8,
+    "slot": 9,
+    "tier": 6,
+    "color": "#bd802f",
+    "shape": "raptor"
+  },
+  {
+    "name": "달떡토끼",
+    "stageId": 9,
+    "slot": 0,
+    "tier": 0,
+    "color": "#e9e8dc",
+    "shape": "rabbit"
+  },
+  {
+    "name": "복주머니 참새",
+    "stageId": 9,
+    "slot": 1,
+    "tier": 0,
+    "color": "#9a7656",
+    "shape": "bird"
+  },
+  {
+    "name": "초롱반딧불",
+    "stageId": 9,
+    "slot": 2,
+    "tier": 1,
+    "color": "#30303c",
+    "shape": "bee"
+  },
+  {
+    "name": "짚신너구리",
+    "stageId": 9,
+    "slot": 3,
+    "tier": 1,
+    "color": "#9a7656",
+    "shape": "raccoon"
+  },
+  {
+    "name": "장승곰",
+    "stageId": 9,
+    "slot": 4,
+    "tier": 2,
+    "color": "#303039",
+    "shape": "bear"
+  },
+  {
+    "name": "보자기 박쥐",
+    "stageId": 9,
+    "slot": 5,
+    "tier": 2,
+    "color": "#f2e3bf",
+    "shape": "bat"
+  },
+  {
+    "name": "도깨비 방망이",
+    "stageId": 9,
+    "slot": 6,
+    "tier": 3,
+    "color": "#9b7051",
+    "shape": "ghost"
+  },
+  {
+    "name": "청자두꺼비",
+    "stageId": 9,
+    "slot": 7,
+    "tier": 4,
+    "color": "#86b7a5",
+    "shape": "frog"
+  },
+  {
+    "name": "달무늬 호랑이",
+    "stageId": 9,
+    "slot": 8,
+    "tier": 5,
+    "color": "#dc9851",
+    "shape": "cat"
+  },
+  {
+    "name": "은빛 구미호",
+    "stageId": 9,
+    "slot": 9,
+    "tier": 6,
+    "color": "#e3e4dc",
+    "shape": "fox"
+  },
+  {
+    "name": "올리브 거북",
+    "stageId": 10,
+    "slot": 0,
+    "tier": 0,
+    "color": "#669858",
+    "shape": "turtle"
+  },
+  {
+    "name": "구름양",
+    "stageId": 10,
+    "slot": 1,
+    "tier": 0,
+    "color": "#8295aa",
+    "shape": "ram"
+  },
+  {
+    "name": "포도멧돼지",
+    "stageId": 10,
+    "slot": 2,
+    "tier": 1,
+    "color": "#a16447",
+    "shape": "boar"
+  },
+  {
+    "name": "두루마리 부엉이",
+    "stageId": 10,
+    "slot": 3,
+    "tier": 1,
+    "color": "#f2e3bf",
+    "shape": "owl"
+  },
+  {
+    "name": "날개샌들 강아지",
+    "stageId": 10,
+    "slot": 4,
+    "tier": 2,
+    "color": "#9a7656",
+    "shape": "dog"
+  },
+  {
+    "name": "물항아리 수달",
+    "stageId": 10,
+    "slot": 5,
+    "tier": 2,
+    "color": "#958477",
+    "shape": "otter"
+  },
+  {
+    "name": "월계관 사자",
+    "stageId": 10,
+    "slot": 6,
+    "tier": 3,
+    "color": "#b78d53",
+    "shape": "lion"
+  },
+  {
+    "name": "번개독수리",
+    "stageId": 10,
+    "slot": 7,
+    "tier": 4,
+    "color": "#344a70",
+    "shape": "bird"
+  },
+  {
+    "name": "대리석 그리핀",
+    "stageId": 10,
+    "slot": 8,
+    "tier": 5,
+    "color": "#eee7cf",
+    "shape": "griffin"
+  },
+  {
+    "name": "새벽 페가수스",
+    "stageId": 10,
+    "slot": 9,
+    "tier": 6,
+    "color": "#eae9df",
+    "shape": "horse"
+  },
+  {
+    "name": "안테나 슬라임",
+    "stageId": 11,
+    "slot": 0,
+    "tier": 0,
+    "color": "#e8b18f",
+    "shape": "slime"
+  },
+  {
+    "name": "세눈 도마뱀",
+    "stageId": 11,
+    "slot": 1,
+    "tier": 0,
+    "color": "#b6a2cf",
+    "shape": "lizard"
+  },
+  {
+    "name": "원반문어",
+    "stageId": 11,
+    "slot": 2,
+    "tier": 1,
+    "color": "#b1bac0",
+    "shape": "octopus"
+  },
+  {
+    "name": "수정달팽이",
+    "stageId": 11,
+    "slot": 3,
+    "tier": 1,
+    "color": "#449b98",
+    "shape": "snail"
+  },
+  {
+    "name": "흡착개구리",
+    "stageId": 11,
+    "slot": 4,
+    "tier": 2,
+    "color": "#f2e3bf",
+    "shape": "frog"
+  },
+  {
+    "name": "촉수토끼",
+    "stageId": 11,
+    "slot": 5,
+    "tier": 2,
+    "color": "#e8b6cb",
+    "shape": "rabbit"
+  },
+  {
+    "name": "부유해파리",
+    "stageId": 11,
+    "slot": 6,
+    "tier": 3,
+    "color": "#f2e3bf",
+    "shape": "jelly"
+  },
+  {
+    "name": "실험복 족제비",
+    "stageId": 11,
+    "slot": 7,
+    "tier": 4,
+    "color": "#899cac",
+    "shape": "otter"
+  },
+  {
+    "name": "중력두꺼비",
+    "stageId": 11,
+    "slot": 8,
+    "tier": 5,
+    "color": "#b6a2cf",
+    "shape": "frog"
+  },
+  {
+    "name": "별꽃 사마귀",
+    "stageId": 11,
+    "slot": 9,
+    "tier": 6,
+    "color": "#a1d4c4",
+    "shape": "mantis"
+  },
+  {
+    "name": "태엽생쥐",
+    "stageId": 12,
+    "slot": 0,
+    "tier": 0,
+    "color": "#654736",
+    "shape": "mouse"
+  },
+  {
+    "name": "비행모 강아지",
+    "stageId": 12,
+    "slot": 1,
+    "tier": 0,
+    "color": "#9a7656",
+    "shape": "dog"
+  },
+  {
+    "name": "찻주전자 코끼리",
+    "stageId": 12,
+    "slot": 2,
+    "tier": 1,
+    "color": "#b48b51",
+    "shape": "elephant"
+  },
+  {
+    "name": "프로펠러 참새",
+    "stageId": 12,
+    "slot": 3,
+    "tier": 1,
+    "color": "#f2e3bf",
+    "shape": "bird"
   },
   {
     "name": "나침반 거북",
-    "description": "보일러 등을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 나침반 거북.",
-    "stageId": 13,
-    "slot": 3,
-    "tier": 1,
-    "color": "#eed79b",
-    "shape": "shell"
-  },
-  {
-    "name": "고글 비행토끼",
-    "description": "기관 피스톤을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 고글 비행토끼.",
-    "stageId": 13,
+    "stageId": 12,
     "slot": 4,
     "tier": 2,
-    "color": "#c28b37",
-    "shape": "rabbit"
+    "color": "#899cac",
+    "shape": "turtle"
   },
   {
-    "name": "굴뚝 펭귄",
-    "description": "증기 굴뚝을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 굴뚝 펭귄.",
-    "stageId": 13,
+    "name": "톱니여우",
+    "stageId": 12,
     "slot": 5,
     "tier": 2,
-    "color": "#3c9b96",
-    "shape": "bird"
+    "color": "#974e40",
+    "shape": "fox"
   },
   {
-    "name": "프로펠러 여우",
-    "description": "황동 열쇠꼬리을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 프로펠러 여우.",
-    "stageId": 13,
+    "name": "풍선고래",
+    "stageId": 12,
     "slot": 6,
     "tier": 3,
-    "color": "#b6532c",
-    "shape": "quadruped"
+    "color": "#f2e3bf",
+    "shape": "whale"
   },
   {
-    "name": "비행선 고래",
-    "description": "비행선 부유낭을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 비행선 고래.",
-    "stageId": 13,
+    "name": "기관차 멧돼지",
+    "stageId": 12,
     "slot": 7,
     "tier": 4,
-    "color": "#eed79b",
-    "shape": "fish"
+    "color": "#617c63",
+    "shape": "boar"
   },
   {
-    "name": "시계탑 올빼미",
-    "description": "풍향 프로펠러을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 시계탑 올빼미.",
-    "stageId": 13,
+    "name": "망원경 기린",
+    "stageId": 12,
     "slot": 8,
     "tier": 5,
-    "color": "#c28b37",
-    "shape": "bird"
+    "color": "#b78d53",
+    "shape": "giraffe"
   },
   {
-    "name": "황동 심장용",
-    "description": "공중도시 용골을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 황동 심장용.",
-    "stageId": 13,
+    "name": "시계부엉이",
+    "stageId": 12,
     "slot": 9,
     "tier": 6,
-    "color": "#3c9b96",
-    "shape": "dragon"
+    "color": "#eee7cf",
+    "shape": "owl"
   },
   {
-    "name": "눈송이 포포",
-    "description": "얼음 결정등을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 눈송이 포포.",
-    "stageId": 14,
+    "name": "눈송이 물범",
+    "stageId": 13,
     "slot": 0,
     "tier": 0,
-    "color": "#55bcd7",
-    "shape": "spirit"
+    "color": "#eae9df",
+    "shape": "seal"
   },
   {
     "name": "목도리 펭귄",
-    "description": "빙판 썰매을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 목도리 펭귄.",
-    "stageId": 14,
+    "stageId": 13,
     "slot": 1,
     "tier": 0,
-    "color": "#9576c4",
-    "shape": "bird"
+    "color": "#344a70",
+    "shape": "penguin"
   },
   {
-    "name": "서리 토끼",
-    "description": "털 목도리을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 서리 토끼.",
-    "stageId": 14,
+    "name": "유리빙어",
+    "stageId": 13,
     "slot": 2,
     "tier": 1,
-    "color": "#edf6e5",
-    "shape": "rabbit"
-  },
-  {
-    "name": "빙판 물범",
-    "description": "빙산 등판을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 빙판 물범.",
-    "stageId": 14,
-    "slot": 3,
-    "tier": 1,
-    "color": "#356eab",
+    "color": "#a5dacf",
     "shape": "fish"
   },
   {
-    "name": "고드름 고슴",
-    "description": "넓은 고드름을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 고드름 고슴.",
-    "stageId": 14,
-    "slot": 4,
-    "tier": 2,
-    "color": "#55bcd7",
-    "shape": "quadruped"
+    "name": "서리토끼",
+    "stageId": 13,
+    "slot": 3,
+    "tier": 1,
+    "color": "#545461",
+    "shape": "rabbit"
   },
   {
-    "name": "수정 소라",
-    "description": "수정 동굴집을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 수정 소라.",
-    "stageId": 14,
+    "name": "얼음게",
+    "stageId": 13,
+    "slot": 4,
+    "tier": 2,
+    "color": "#658fbd",
+    "shape": "crab"
+  },
+  {
+    "name": "고드름 일각고래",
+    "stageId": 13,
     "slot": 5,
     "tier": 2,
-    "color": "#9576c4",
-    "shape": "shell"
+    "color": "#8566ad",
+    "shape": "whale"
+  },
+  {
+    "name": "설산 산양",
+    "stageId": 13,
+    "slot": 6,
+    "tier": 3,
+    "color": "#654736",
+    "shape": "ram"
+  },
+  {
+    "name": "털북숭이 매머드",
+    "stageId": 13,
+    "slot": 7,
+    "tier": 4,
+    "color": "#974e40",
+    "shape": "elephant"
   },
   {
     "name": "오로라 여우",
-    "description": "오로라 꼬리을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 오로라 여우.",
-    "stageId": 14,
-    "slot": 6,
-    "tier": 3,
-    "color": "#edf6e5",
-    "shape": "quadruped"
-  },
-  {
-    "name": "얼음뿔 순록",
-    "description": "결정 사슴뿔을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 얼음뿔 순록.",
-    "stageId": 14,
-    "slot": 7,
-    "tier": 4,
-    "color": "#356eab",
-    "shape": "quadruped"
-  },
-  {
-    "name": "극광 날개새",
-    "description": "눈송이 날개을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 극광 날개새.",
-    "stageId": 14,
+    "stageId": 13,
     "slot": 8,
     "tier": 5,
-    "color": "#55bcd7",
-    "shape": "bird"
+    "color": "#243450",
+    "shape": "fox"
   },
   {
-    "name": "영원빙하 백룡",
-    "description": "빙하 왕관등을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 영원빙하 백룡.",
-    "stageId": 14,
+    "name": "눈꽃부엉이",
+    "stageId": 13,
     "slot": 9,
     "tier": 6,
-    "color": "#9576c4",
-    "shape": "dragon"
+    "color": "#e9e8dc",
+    "shape": "owl"
   },
   {
-    "name": "베개 꾸벅",
-    "description": "접힌 이불을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 베개 꾸벅.",
-    "stageId": 15,
+    "name": "베개강아지",
+    "stageId": 14,
     "slot": 0,
     "tier": 0,
-    "color": "#c875ae",
-    "shape": "spirit"
+    "color": "#eee7cf",
+    "shape": "dog"
   },
   {
-    "name": "별사탕 쥐",
-    "description": "구름 베개을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 별사탕 쥐.",
-    "stageId": 15,
+    "name": "꿈풍선 코끼리",
+    "stageId": 14,
     "slot": 1,
     "tier": 0,
-    "color": "#efbe6e",
-    "shape": "quadruped"
+    "color": "#d991af",
+    "shape": "elephant"
   },
   {
-    "name": "잠옷 토끼",
-    "description": "거꾸로 시계귀을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 잠옷 토끼.",
-    "stageId": 15,
+    "name": "초승달 해마",
+    "stageId": 14,
     "slot": 2,
     "tier": 1,
-    "color": "#63b8c9",
-    "shape": "rabbit"
+    "color": "#243450",
+    "shape": "seahorse"
   },
   {
-    "name": "찻잔 달팽이",
-    "description": "쿠션 나선집을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 찻잔 달팽이.",
-    "stageId": 15,
+    "name": "우산해파리",
+    "stageId": 14,
     "slot": 3,
     "tier": 1,
-    "color": "#7663af",
-    "shape": "shell"
+    "color": "#93bfd8",
+    "shape": "jelly"
   },
   {
-    "name": "거꾸로 시계새",
-    "description": "뒤집힌 시계을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 거꾸로 시계새.",
-    "stageId": 15,
+    "name": "찻잔고양이",
+    "stageId": 14,
     "slot": 4,
     "tier": 2,
-    "color": "#c875ae",
-    "shape": "bird"
+    "color": "#9697a1",
+    "shape": "cat"
   },
   {
-    "name": "풍선 코끼리",
-    "description": "코끼리 침대을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 풍선 코끼리.",
-    "stageId": 15,
+    "name": "양말물고기",
+    "stageId": 14,
     "slot": 5,
     "tier": 2,
-    "color": "#efbe6e",
-    "shape": "quadruped"
-  },
-  {
-    "name": "꿈실 해파리",
-    "description": "꿈방울 갓을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 꿈실 해파리.",
-    "stageId": 15,
-    "slot": 6,
-    "tier": 3,
-    "color": "#63b8c9",
-    "shape": "tentacle"
-  },
-  {
-    "name": "달그네 고양",
-    "description": "밤하늘 이불꼬리을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 달그네 고양.",
-    "stageId": 15,
-    "slot": 7,
-    "tier": 4,
-    "color": "#7663af",
-    "shape": "quadruped"
-  },
-  {
-    "name": "무지개 이불고래",
-    "description": "공중 침대등을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 무지개 이불고래.",
-    "stageId": 15,
-    "slot": 8,
-    "tier": 5,
-    "color": "#c875ae",
+    "color": "#8566ad",
     "shape": "fish"
   },
   {
-    "name": "꿈을 짓는 나비룡",
-    "description": "꿈의 문날개을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 꿈을 짓는 나비룡.",
+    "name": "구름기린",
+    "stageId": 14,
+    "slot": 6,
+    "tier": 3,
+    "color": "#e8b18f",
+    "shape": "giraffe"
+  },
+  {
+    "name": "거울백조",
+    "stageId": 14,
+    "slot": 7,
+    "tier": 4,
+    "color": "#eae9df",
+    "shape": "swan"
+  },
+  {
+    "name": "별사탕 고슴도치",
+    "stageId": 14,
+    "slot": 8,
+    "tier": 5,
+    "color": "#f2e3bf",
+    "shape": "hedgehog"
+  },
+  {
+    "name": "밤하늘 양",
+    "stageId": 14,
+    "slot": 9,
+    "tier": 6,
+    "color": "#243450",
+    "shape": "ram"
+  },
+  {
+    "name": "새싹들쥐",
+    "stageId": 15,
+    "slot": 0,
+    "tier": 0,
+    "color": "#958477",
+    "shape": "mouse"
+  },
+  {
+    "name": "철통두꺼비",
+    "stageId": 15,
+    "slot": 1,
+    "tier": 0,
+    "color": "#9a7656",
+    "shape": "frog"
+  },
+  {
+    "name": "방독면 너구리",
+    "stageId": 15,
+    "slot": 2,
+    "tier": 1,
+    "color": "#9697a1",
+    "shape": "raccoon"
+  },
+  {
+    "name": "유리버섯 달팽이",
+    "stageId": 15,
+    "slot": 3,
+    "tier": 1,
+    "color": "#a5dacf",
+    "shape": "snail"
+  },
+  {
+    "name": "쌍꼬리 도마뱀",
+    "stageId": 15,
+    "slot": 4,
+    "tier": 2,
+    "color": "#9697a1",
+    "shape": "lizard"
+  },
+  {
+    "name": "깡통꽃게",
+    "stageId": 15,
+    "slot": 5,
+    "tier": 2,
+    "color": "#30303c",
+    "shape": "crab"
+  },
+  {
+    "name": "형광나방",
+    "stageId": 15,
+    "slot": 6,
+    "tier": 3,
+    "color": "#59364f",
+    "shape": "butterfly"
+  },
+  {
+    "name": "건전지 멧돼지",
+    "stageId": 15,
+    "slot": 7,
+    "tier": 4,
+    "color": "#30303c",
+    "shape": "boar"
+  },
+  {
+    "name": "온실사슴",
+    "stageId": 15,
+    "slot": 8,
+    "tier": 5,
+    "color": "#a16447",
+    "shape": "deer"
+  },
+  {
+    "name": "두머리 살쾡이",
     "stageId": 15,
     "slot": 9,
     "tier": 6,
-    "color": "#efbe6e",
-    "shape": "dragon"
+    "color": "#958477",
+    "shape": "cat"
   },
   {
-    "name": "녹슨 통통",
-    "description": "여과 방독면을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 녹슨 통통.",
+    "name": "꽃꿀벌",
     "stageId": 16,
     "slot": 0,
     "tier": 0,
-    "color": "#718330",
-    "shape": "machine"
+    "color": "#ead378",
+    "shape": "bee"
   },
   {
-    "name": "형광 이끼",
-    "description": "변이 새순을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 형광 이끼.",
+    "name": "이슬무당벌레",
     "stageId": 16,
     "slot": 1,
     "tier": 0,
-    "color": "#a15634",
-    "shape": "plant"
+    "color": "#30303c",
+    "shape": "beetle"
   },
   {
-    "name": "방독면 쥐",
-    "description": "작은 드럼통을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 방독면 쥐.",
+    "name": "잎사귀벌레",
     "stageId": 16,
     "slot": 2,
     "tier": 1,
-    "color": "#d5db58",
-    "shape": "quadruped"
+    "color": "#b9d778",
+    "shape": "mantis"
   },
   {
-    "name": "유리 버섯",
-    "description": "이중 버섯갓을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 유리 버섯.",
+    "name": "도토리 장수풍뎅이",
     "stageId": 16,
     "slot": 3,
     "tier": 1,
-    "color": "#367974",
-    "shape": "plant"
+    "color": "#76503b",
+    "shape": "beetle"
   },
   {
-    "name": "세눈 두꺼비",
-    "description": "정화 수련잎을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 세눈 두꺼비.",
+    "name": "풀잎메뚜기",
     "stageId": 16,
     "slot": 4,
     "tier": 2,
-    "color": "#718330",
-    "shape": "quadruped"
+    "color": "#a5dacf",
+    "shape": "mantis"
   },
   {
-    "name": "폐전지 거북",
-    "description": "폐허 판자집을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 폐전지 거북.",
+    "name": "버섯개미",
     "stageId": 16,
     "slot": 5,
     "tier": 2,
-    "color": "#a15634",
-    "shape": "shell"
+    "color": "#974e40",
+    "shape": "ant"
   },
   {
-    "name": "변이 덩굴문어",
-    "description": "독방울 촉수을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 변이 덩굴문어.",
+    "name": "씨앗잠자리",
     "stageId": 16,
     "slot": 6,
     "tier": 3,
-    "color": "#d5db58",
-    "shape": "tentacle"
+    "color": "#658fbd",
+    "shape": "butterfly"
   },
   {
-    "name": "독안개 까마귀",
-    "description": "여과 장갑등을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 독안개 까마귀.",
+    "name": "호박빛 매미",
     "stageId": 16,
     "slot": 7,
     "tier": 4,
-    "color": "#367974",
-    "shape": "bird"
+    "color": "#654736",
+    "shape": "beetle"
   },
   {
-    "name": "정화수 사슴",
-    "description": "휘어진 철근뿔을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 정화수 사슴.",
+    "name": "비단나방",
     "stageId": 16,
     "slot": 8,
     "tier": 5,
-    "color": "#718330",
-    "shape": "quadruped"
+    "color": "#eee7cf",
+    "shape": "butterfly"
   },
   {
-    "name": "재생의 꽃드래곤",
-    "description": "정화 온실등을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 재생의 꽃드래곤.",
+    "name": "왕관사슴벌레",
     "stageId": 16,
     "slot": 9,
     "tier": 6,
-    "color": "#a15634",
-    "shape": "dragon"
+    "color": "#30303c",
+    "shape": "beetle"
   },
   {
-    "name": "이슬 진딧",
-    "description": "접힌 풀잎을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 이슬 진딧.",
+    "name": "볼트생쥐",
     "stageId": 17,
     "slot": 0,
     "tier": 0,
-    "color": "#70a444",
-    "shape": "quadruped"
+    "color": "#b1bac0",
+    "shape": "mouse"
   },
   {
-    "name": "잎말이 꼬물",
-    "description": "이슬 주머니을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 잎말이 꼬물.",
+    "name": "양철강아지",
     "stageId": 17,
     "slot": 1,
     "tier": 0,
-    "color": "#e3ac44",
-    "shape": "shell"
+    "color": "#f2e3bf",
+    "shape": "dog"
   },
   {
-    "name": "점박 무당",
-    "description": "육각 등갑을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 점박 무당.",
+    "name": "자석문어",
     "stageId": 17,
     "slot": 2,
     "tier": 1,
-    "color": "#aa4a29",
-    "shape": "shell"
+    "color": "#658fbd",
+    "shape": "octopus"
   },
   {
-    "name": "꿀벌 붕붕",
-    "description": "꿀 저장항아리을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 꿀벌 붕붕.",
+    "name": "바퀴딱정벌레",
     "stageId": 17,
     "slot": 3,
     "tier": 1,
-    "color": "#e0d8a8",
-    "shape": "bird"
+    "color": "#30303c",
+    "shape": "beetle"
   },
   {
-    "name": "풀잎 메뚜기",
-    "description": "풀줄기 낫을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 풀잎 메뚜기.",
+    "name": "유압고릴라",
     "stageId": 17,
     "slot": 4,
     "tier": 2,
-    "color": "#70a444",
-    "shape": "rabbit"
+    "color": "#545461",
+    "shape": "gorilla"
   },
   {
-    "name": "실뽑는 거미",
-    "description": "거미줄 집을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 실뽑는 거미.",
+    "name": "스프링토끼",
     "stageId": 17,
     "slot": 5,
     "tier": 2,
-    "color": "#e3ac44",
-    "shape": "tentacle"
+    "color": "#e9e8dc",
+    "shape": "rabbit"
   },
   {
-    "name": "꽃잎 사마귀",
-    "description": "잎집게 가슴을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 꽃잎 사마귀.",
+    "name": "태양전지 거북",
     "stageId": 17,
     "slot": 6,
     "tier": 3,
-    "color": "#aa4a29",
-    "shape": "quadruped"
+    "color": "#9697a1",
+    "shape": "turtle"
   },
   {
-    "name": "장수 투구벌레",
-    "description": "단단한 나무뿔을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 장수 투구벌레.",
+    "name": "전구해파리",
     "stageId": 17,
     "slot": 7,
     "tier": 4,
-    "color": "#e0d8a8",
-    "shape": "shell"
+    "color": "#ead378",
+    "shape": "jelly"
   },
   {
-    "name": "달빛 나방",
-    "description": "큰 잎날개을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 달빛 나방.",
+    "name": "굴착두더지",
     "stageId": 17,
     "slot": 8,
     "tier": 5,
-    "color": "#70a444",
-    "shape": "bird"
+    "color": "#ead378",
+    "shape": "mole"
   },
   {
-    "name": "숲왕 유리나비",
-    "description": "이슬 왕관날개을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 숲왕 유리나비.",
+    "name": "레이더여우",
     "stageId": 17,
     "slot": 9,
     "tier": 6,
-    "color": "#e3ac44",
-    "shape": "dragon"
+    "color": "#658fbd",
+    "shape": "fox"
   },
   {
-    "name": "볼트 또각",
-    "description": "볼트 어깨을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 볼트 또각.",
+    "name": "별모래 햄스터",
     "stageId": 18,
     "slot": 0,
     "tier": 0,
-    "color": "#879bac",
-    "shape": "machine"
+    "color": "#9697a1",
+    "shape": "mouse"
   },
   {
-    "name": "너트 굴렁",
-    "description": "너트 등갑을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 너트 굴렁.",
+    "name": "혜성다람쥐",
     "stageId": 18,
     "slot": 1,
     "tier": 0,
-    "color": "#d27831",
-    "shape": "shell"
+    "color": "#dc9851",
+    "shape": "squirrel"
   },
   {
-    "name": "고철 강아지",
-    "description": "고철 가방을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 고철 강아지.",
+    "name": "달구덩이 거북",
     "stageId": 18,
     "slot": 2,
     "tier": 1,
-    "color": "#3c526b",
-    "shape": "quadruped"
+    "color": "#9697a1",
+    "shape": "turtle"
   },
   {
-    "name": "스프링 토끼",
-    "description": "스프링 귀을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 스프링 토끼.",
+    "name": "망원경 부엉이",
     "stageId": 18,
     "slot": 3,
     "tier": 1,
-    "color": "#dcd6ad",
-    "shape": "rabbit"
+    "color": "#344a70",
+    "shape": "owl"
   },
   {
-    "name": "집게 청소봇",
-    "description": "자석 집게을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 집게 청소봇.",
+    "name": "토성고양이",
     "stageId": 18,
     "slot": 4,
     "tier": 2,
-    "color": "#879bac",
-    "shape": "tentacle"
+    "color": "#f2e3bf",
+    "shape": "cat"
   },
   {
-    "name": "무한궤도 꼬북",
-    "description": "무한궤도을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 무한궤도 꼬북.",
+    "name": "유성제비",
     "stageId": 18,
     "slot": 5,
     "tier": 2,
-    "color": "#d27831",
-    "shape": "shell"
-  },
-  {
-    "name": "자석 날개새",
-    "description": "금속 부채날개을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 자석 날개새.",
-    "stageId": 18,
-    "slot": 6,
-    "tier": 3,
-    "color": "#3c526b",
+    "color": "#eae9df",
     "shape": "bird"
-  },
-  {
-    "name": "용접 불꽃사자",
-    "description": "용접 얼굴가리개을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 용접 불꽃사자.",
-    "stageId": 18,
-    "slot": 7,
-    "tier": 4,
-    "color": "#dcd6ad",
-    "shape": "quadruped"
-  },
-  {
-    "name": "폐선 우주고래",
-    "description": "폐선 선체등을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 폐선 우주고래.",
-    "stageId": 18,
-    "slot": 8,
-    "tier": 5,
-    "color": "#879bac",
-    "shape": "fish"
-  },
-  {
-    "name": "행성 재조립룡",
-    "description": "고철 크레인문을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 행성 재조립룡.",
-    "stageId": 18,
-    "slot": 9,
-    "tier": 6,
-    "color": "#d27831",
-    "shape": "dragon"
-  },
-  {
-    "name": "별가루 병아리",
-    "description": "망원경 부리을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 별가루 병아리.",
-    "stageId": 19,
-    "slot": 0,
-    "tier": 0,
-    "color": "#504b9b",
-    "shape": "bird"
-  },
-  {
-    "name": "달조각 토끼",
-    "description": "달 귀판을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 달조각 토끼.",
-    "stageId": 19,
-    "slot": 1,
-    "tier": 0,
-    "color": "#93d1e6",
-    "shape": "rabbit"
-  },
-  {
-    "name": "혜성 꼬리쥐",
-    "description": "별가루 통을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 혜성 꼬리쥐.",
-    "stageId": 19,
-    "slot": 2,
-    "tier": 1,
-    "color": "#e9b84c",
-    "shape": "quadruped"
-  },
-  {
-    "name": "고리행성 거북",
-    "description": "작은 행성등을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 고리행성 거북.",
-    "stageId": 19,
-    "slot": 3,
-    "tier": 1,
-    "color": "#b664aa",
-    "shape": "shell"
-  },
-  {
-    "name": "망원경 부엉",
-    "description": "별자리 원판을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 망원경 부엉.",
-    "stageId": 19,
-    "slot": 4,
-    "tier": 2,
-    "color": "#504b9b",
-    "shape": "bird"
-  },
-  {
-    "name": "운석 소라게",
-    "description": "우주열차 바퀴을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 운석 소라게.",
-    "stageId": 19,
-    "slot": 5,
-    "tier": 2,
-    "color": "#93d1e6",
-    "shape": "shell"
   },
   {
     "name": "별자리 사슴",
-    "description": "혜성 꼬리을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 별자리 사슴.",
-    "stageId": 19,
+    "stageId": 18,
     "slot": 6,
     "tier": 3,
-    "color": "#e9b84c",
-    "shape": "quadruped"
+    "color": "#658fbd",
+    "shape": "deer"
   },
   {
-    "name": "은하 리본용",
-    "description": "성운 리본을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 은하 리본용.",
-    "stageId": 19,
+    "name": "성운문어",
+    "stageId": 18,
     "slot": 7,
     "tier": 4,
-    "color": "#b664aa",
-    "shape": "dragon"
+    "color": "#59364f",
+    "shape": "octopus"
   },
   {
-    "name": "초신성 봉황",
-    "description": "은하 부채날개을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 초신성 봉황.",
-    "stageId": 19,
+    "name": "은하수 고래",
+    "stageId": 18,
     "slot": 8,
     "tier": 5,
-    "color": "#504b9b",
-    "shape": "bird"
+    "color": "#223550",
+    "shape": "whale"
   },
   {
-    "name": "밤하늘 유영고래",
-    "description": "천문대 고리을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 밤하늘 유영고래.",
-    "stageId": 19,
+    "name": "일식사자",
+    "stageId": 18,
     "slot": 9,
     "tier": 6,
-    "color": "#93d1e6",
-    "shape": "fish"
+    "color": "#39363f",
+    "shape": "lion"
   },
   {
-    "name": "공허 점방울",
-    "description": "비어 있는 문을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 공허 점방울.",
+    "name": "첫새싹",
     "stageId": 20,
     "slot": 0,
     "tier": 0,
-    "color": "#4a315f",
-    "shape": "spirit"
+    "color": "#eee7cf",
+    "shape": "seed"
   },
   {
-    "name": "기억의 새싹",
-    "description": "첫빛 씨앗을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 기억의 새싹.",
+    "name": "새벽토끼",
     "stageId": 20,
     "slot": 1,
     "tier": 0,
-    "color": "#e4b94d",
-    "shape": "plant"
-  },
-  {
-    "name": "차원문 꼬북",
-    "description": "어긋난 장갑을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 차원문 꼬북.",
-    "stageId": 20,
-    "slot": 2,
-    "tier": 1,
-    "color": "#48ac9e",
-    "shape": "shell"
-  },
-  {
-    "name": "시간 모래토끼",
-    "description": "끊어진 귀판을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 시간 모래토끼.",
-    "stageId": 20,
-    "slot": 3,
-    "tier": 1,
-    "color": "#ab658a",
+    "color": "#f2e3bf",
     "shape": "rabbit"
   },
   {
-    "name": "잊힌 이름새",
-    "description": "빈 조개 공간을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 잊힌 이름새.",
+    "name": "물감새",
     "stageId": 20,
-    "slot": 4,
-    "tier": 2,
-    "color": "#4a315f",
+    "slot": 2,
+    "tier": 1,
+    "color": "#eee7cf",
     "shape": "bird"
   },
   {
-    "name": "별씨 정원사",
-    "description": "거꾸로 뿌리을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 별씨 정원사.",
+    "name": "흙빚는 곰",
+    "stageId": 20,
+    "slot": 3,
+    "tier": 1,
+    "color": "#958477",
+    "shape": "bear"
+  },
+  {
+    "name": "샘물수달",
+    "stageId": 20,
+    "slot": 4,
+    "tier": 2,
+    "color": "#654736",
+    "shape": "otter"
+  },
+  {
+    "name": "바람사슴",
     "stageId": 20,
     "slot": 5,
     "tier": 2,
-    "color": "#e4b94d",
-    "shape": "plant"
+    "color": "#c4c9cc",
+    "shape": "deer"
   },
   {
-    "name": "기억실 해파리",
-    "description": "조각난 그림자을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 기억실 해파리.",
+    "name": "나무껍질 거북",
     "stageId": 20,
     "slot": 6,
     "tier": 3,
-    "color": "#48ac9e",
-    "shape": "tentacle"
+    "color": "#303039",
+    "shape": "turtle"
   },
   {
-    "name": "황금문 수호사슴",
-    "description": "기억의 나무뿔을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 황금문 수호사슴.",
+    "name": "계절나비",
     "stageId": 20,
     "slot": 7,
     "tier": 4,
-    "color": "#ab658a",
-    "shape": "quadruped"
+    "color": "#30303c",
+    "shape": "butterfly"
   },
   {
-    "name": "창조의 여섯날개",
-    "description": "열린 여섯 날개을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 창조의 여섯날개.",
+    "name": "밤낮의 사자",
     "stageId": 20,
     "slot": 8,
     "tier": 5,
-    "color": "#4a315f",
-    "shape": "dragon"
+    "color": "#eee7cf",
+    "shape": "lion"
   },
   {
-    "name": "첫빛 세계수룡",
-    "description": "창조의 정원문을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 첫빛 세계수룡.",
+    "name": "세계씨앗 고래",
     "stageId": 20,
     "slot": 9,
     "tier": 6,
-    "color": "#e4b94d",
-    "shape": "dragon"
+    "color": "#e8e3df",
+    "shape": "whale"
   }
 ];

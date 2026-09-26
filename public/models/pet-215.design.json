@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    32
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,22 +27,38 @@
     "eyes": {
       "pivot": [
         11.5,
-        10,
-        1
+        13,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        8,
+        11,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        6,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -53,7 +69,7 @@
       ],
       "parent": "body"
     },
-    "right_leg": {
+    "right_arm": {
       "pivot": [
         17,
         7,
@@ -61,97 +77,47 @@
       ],
       "parent": "body"
     },
-    "tail": {
+    "right_ear": {
       "pivot": [
-        11.5,
-        6,
-        18
+        17,
+        15,
+        12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
-        0.04,
-        -0.18,
-        0
+        0.08,
+        0,
+        -0.22
       ]
     },
-    "tail_1": {
+    "right_leg": {
       "pivot": [
-        11.5,
-        6,
-        22
+        17,
+        7,
+        12
       ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-215",
     "id": 215,
-    "name": "형광 우파루파",
-    "stage": 12,
-    "stageName": "외계인 51구역",
+    "oldStage": 12,
+    "stage": 11,
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "lizard",
-    "role": "크고 듬직한 펫",
+    "previousName": "형광 우파루파",
+    "name": "촉수토끼",
     "tier": 2,
-    "rarity": "A",
-    "concept": "외계 배양통을 이용해 다른 중력에서 몸의 균형을 시험하는 연구 구역에서 살아가는 형광 우파루파.",
-    "inspiration": "UFO · 연구소 · 형광 액체 / ufo",
-    "silhouette": [
-      "낮은 네 발과 길고 넓은 꼬리",
-      "외계 배양통"
-    ],
-    "feature": "외계 배양통",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "다른 중력에서 몸의 균형을 시험하는 연구 구역",
-    "material": "배양막·실험 금속",
-    "body": "낮은 네 발과 길고 넓은 꼬리",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "UFO · 연구소 · 형광 액체에서 온 외계 배양통: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "배양막 중심 라임 → 가장자리 청록; 감각판 안쪽 보라빛",
-    "colorPlacement": "몸 #7854af; 대표 기관 #7854af; 발·연결부 #23a49d; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "짧은 몸과 둥근 볼을 가진 연분홍 토끼를 만들되 귀는 끝이 말리는 유연한 촉수 두 개로 표현하라. 몸은 불투명하게 유지하고 귀 끝만 보랏빛 반투명으로 둔다. 배 앞에는 작은 청색 금속 구슬 하나를 잡게 한다. 촉수 귀로 구슬을 살짝 건드리고 다시 귀를 세우는 동작을 준다.",
+    "key": "pet-215",
+    "anatomy": "rabbit",
+    "feature": "tentacle",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "rabbit",
     "colors": {
-      "primary": "#7854af",
-      "accent": "#7854af"
+      "primary": "#e8b6cb"
     },
-    "idle": "몸은 낮고 감각판은 반대로 떠오름 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 낮은 네 발과 길고 넓은 꼬리; 등과 옆구리에 이어진 기관에 외계 배양통",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "짧은 몸과 둥근 볼을 가진 연분홍 토끼를 만들되 귀는 끝이 말리는 유연한 촉수 두 개로 표현하라. 몸은 불투명하게 유지하고 귀 끝만 보랏빛 반투명으로 둔다. 배 앞에는 작은 청색 금속 구슬 하나를 잡게 한다. 촉수 귀로 구슬을 살짝 건드리고 다시 귀를 세우는 동작을 준다."
   }
 }

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,18 +16,10 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        13,
+        14,
         2
       ],
       "parent": "head"
@@ -35,32 +27,22 @@
     "head": {
       "pivot": [
         11.5,
-        11,
+        12,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        11,
+        15,
         12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        0.22
       ]
     },
     "left_leg": {
@@ -71,35 +53,17 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        11,
+        15,
         12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        -0.22
       ]
     },
     "right_leg": {
@@ -109,19 +73,6 @@
         12
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
     },
     "tail": {
       "pivot": [
@@ -133,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-112",
     "id": 112,
-    "name": "종이비행 참새",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "bird",
-    "role": "환경 생물 펫",
+    "previousName": "종이비행 참새",
+    "name": "목마 조랑말",
     "tier": 1,
-    "rarity": "B",
-    "concept": "종이비행기 날개을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 종이비행 참새.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "앞으로 나온 쐐기 부리와 낮은 양 날개",
-      "종이비행기 날개"
-    ],
-    "feature": "종이비행기 날개",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "앞으로 나온 쐐기 부리와 낮은 양 날개",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 종이비행기 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #32a6c2; 대표 기관 #efbb36; 발·연결부 #d34d35; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#32a6c2",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 앞으로 나온 쐐기 부리와 낮은 양 날개; 넓은 등집에 종이비행기 날개",
+    "prompt": "길고 날씬한 다리보다 둥근 배와 짧은 목이 눈에 띄는 나무 조랑말을 만들라. 밤색 몸, 아이보리 주둥이, 붉은 천 안장을 배치하고 아래에는 양끝이 올라간 나무 받침 두 개를 둔다. 갈기는 넓은 홈 세 개로 표현한다. 받침을 중심으로 천천히 까딱이며 고개도 작게 따라 움직이게 한다.",
+    "key": "pet-112",
+    "anatomy": "horse",
+    "feature": "rocking",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "horse",
+    "colors": {
+      "primary": "#eee7cf"
+    },
+    "idle": "길고 날씬한 다리보다 둥근 배와 짧은 목이 눈에 띄는 나무 조랑말을 만들라. 밤색 몸, 아이보리 주둥이, 붉은 천 안장을 배치하고 아래에는 양끝이 올라간 나무 받침 두 개를 둔다. 갈기는 넓은 홈 세 개로 표현한다. 받침을 중심으로 천천히 까딱이며 고개도 작게 따라 움직이게 한다."
   }
 }

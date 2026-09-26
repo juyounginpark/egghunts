@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,98 +16,68 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        10,
-        1
+        17,
+        3
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        8,
+        15,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
-    "left_leg": {
-      "pivot": [
-        6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_leg": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
-      ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     }
   },
   "concept": {
-    "key": "pet-117",
     "id": 117,
-    "name": "기관차 코끼리",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "elephant",
-    "role": "위험 요소 펫",
+    "previousName": "기관차 코끼리",
+    "name": "양말뱀",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "블록 미끄럼틀 코을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 기관차 코끼리.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "큰 귀판과 아래로 굽은 코",
-      "블록 미끄럼틀 코"
-    ],
-    "feature": "블록 미끄럼틀 코",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "큰 귀판과 아래로 굽은 코",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 블록 미끄럼틀 코: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #7255ad; 대표 기관 #efbb36; 발·연결부 #efbb36; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#7255ad",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 큰 귀판과 아래로 굽은 코; 등에 짊어진 기관에 블록 미끄럼틀 코",
+    "prompt": "긴 줄무늬 양말이 살아난 작은 뱀으로 만들라. 파랑과 크림색의 넓은 띠, 둥근 발끝 모양 머리, 양옆의 작은 검정 눈을 사용한다. 꼬리 끝은 양말 입구처럼 벌어진 짧은 천 테두리로 마감한다. 몸은 세 번 접지 말고 한 번 크게 S자로 휘며, 고개를 기울여 천 라벨을 흔들게 한다.",
+    "key": "pet-117",
+    "anatomy": "snake",
+    "feature": "stripes",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "snake",
+    "colors": {
+      "primary": "#527cad"
+    },
+    "idle": "긴 줄무늬 양말이 살아난 작은 뱀으로 만들라. 파랑과 크림색의 넓은 띠, 둥근 발끝 모양 머리, 양옆의 작은 검정 눈을 사용한다. 꼬리 끝은 양말 입구처럼 벌어진 짧은 천 테두리로 마감한다. 몸은 세 번 접지 말고 한 번 크게 S자로 휘며, 고개를 기울여 천 라벨을 흔들게 한다."
   }
 }

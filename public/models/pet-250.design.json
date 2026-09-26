@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,7 +27,7 @@
     "eyes": {
       "pivot": [
         11.5,
-        14,
+        13,
         2
       ],
       "parent": "head"
@@ -35,15 +35,10 @@
     "head": {
       "pivot": [
         11.5,
-        12,
+        11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -52,6 +47,19 @@
         12
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -69,6 +77,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -79,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-250",
     "id": 250,
-    "name": "녹슨 통통",
-    "stage": 16,
-    "stageName": "방사능 폐허",
+    "oldStage": 16,
+    "stage": 15,
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "robot",
-    "role": "대표 마스코트",
+    "previousName": "녹슨 통통",
+    "name": "새싹들쥐",
     "tier": 0,
-    "rarity": "C",
-    "concept": "여과 방독면을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 녹슨 통통.",
-    "inspiration": "녹색 안개 · 폐허 · 변이 식물 / vine",
-    "silhouette": [
-      "분리된 어깨와 넓은 두 발",
-      "여과 방독면"
-    ],
-    "feature": "여과 방독면",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "폐기물 틈에서 독을 걸러내는 새 생태계",
-    "material": "녹슨 통·변이 식물",
-    "body": "분리된 어깨와 넓은 두 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "녹색 안개 · 폐허 · 변이 식물에서 온 여과 방독면: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "녹슨 판 적갈색 → 겹친 판 황토; 여과구만 산성 연두",
-    "colorPlacement": "몸 #718330; 대표 기관 #718330; 발·연결부 #d5db58; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#718330",
-      "accent": "#718330"
-    },
-    "idle": "독을 들이마셨다 몸을 접어 배출 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 분리된 어깨와 넓은 두 발; 머리와 등에 이어지는 기관에 여과 방독면",
+    "prompt": "작고 둥근 회갈색 들쥐의 등에서 잎 두 장이 달린 줄기 하나가 자라나게 하라. 얼굴과 배는 크림색, 잎은 짙은 초록이며 앞발에는 녹슨 작은 병뚜껑을 쥐게 한다. 눈과 귀는 단순하고 온순하게 둔다. 병뚜껑의 물을 등에 난 잎에 조심스럽게 부어 주는 동작을 준다.",
+    "key": "pet-250",
+    "anatomy": "mouse",
+    "feature": "leaves",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "mouse",
+    "colors": {
+      "primary": "#958477"
+    },
+    "idle": "작고 둥근 회갈색 들쥐의 등에서 잎 두 장이 달린 줄기 하나가 자라나게 하라. 얼굴과 배는 크림색, 잎은 짙은 초록이며 앞발에는 녹슨 작은 병뚜껑을 쥐게 한다. 눈과 귀는 단순하고 온순하게 둔다. 병뚜껑의 물을 등에 난 잎에 조심스럽게 부어 주는 동작을 준다."
   }
 }

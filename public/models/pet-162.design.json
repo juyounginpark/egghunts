@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    37
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,14 +16,6 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
@@ -32,18 +24,21 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
         11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -52,6 +47,19 @@
         12
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -69,6 +77,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -76,46 +97,92 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.096,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.6
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.096,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        24.2
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.096,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.8
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.096,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        31.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.096,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-162",
     "id": 162,
-    "name": "와이파이 토끼",
-    "stage": 7,
-    "stageName": "네온 사이버시티",
+    "oldStage": 7,
+    "stage": 6,
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "rabbit",
-    "role": "환경 생물 펫",
+    "previousName": "와이파이 토끼",
+    "name": "택배너구리",
     "tier": 1,
-    "rarity": "B",
-    "concept": "신호 안테나을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 와이파이 토끼.",
-    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
-    "silhouette": [
-      "좁은 몸과 몸 높이만큼 긴 귀",
-      "신호 안테나"
-    ],
-    "feature": "신호 안테나",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
-    "material": "전자 패널",
-    "body": "좁은 몸과 몸 높이만큼 긴 귀",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 신호 안테나: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
-    "colorPlacement": "몸 #26c6bb; 대표 기관 #26c6bb; 발·연결부 #263d70; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#26c6bb",
-      "accent": "#26c6bb"
-    },
-    "idle": "정지 후 짧은 신호 펄스와 틸트 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 좁은 몸과 몸 높이만큼 긴 귀; 넓은 등집에 신호 안테나",
+    "prompt": "짧은 다리와 긴 줄무늬 꼬리, 진회색 눈가 무늬를 가진 너구리를 만들라. 몸은 연회색이며 등에 밝은 주황 택배함을 단단히 멘다. 모자 대신 작은 귀를 드러내고 박스에는 굵은 화살표 하나만 넣는다. 앞발로 함의 잠금쇠를 확인한 뒤 꼬리를 균형추처럼 흔들게 한다.",
+    "key": "pet-162",
+    "anatomy": "raccoon",
+    "feature": "parcel",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "raccoon",
+    "colors": {
+      "primary": "#9697a1"
+    },
+    "idle": "짧은 다리와 긴 줄무늬 꼬리, 진회색 눈가 무늬를 가진 너구리를 만들라. 몸은 연회색이며 등에 밝은 주황 택배함을 단단히 멘다. 모자 대신 작은 귀를 드러내고 박스에는 굵은 화살표 하나만 넣는다. 앞발로 함의 잠금쇠를 확인한 뒤 꼬리를 균형추처럼 흔들게 한다."
   }
 }

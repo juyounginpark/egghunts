@@ -1,6 +1,6 @@
 import {readFile,writeFile,mkdir} from 'node:fs/promises';import assert from 'node:assert/strict';import {browserSession} from './lib.mjs';
 const sample=process.argv.includes('--sample'),sampleIds=[100,103,108,120,125,128,160,168,210,218,290,298,300,311,319];
-const refresh=process.argv.includes('--refresh');
+const secrets=process.argv.includes('--secrets'),refresh=process.argv.includes('--refresh')||secrets;
 const stages=process.argv.slice(2).filter(s=>!s.startsWith('--')).map(Number);const selected=sample?[1,3,7,12,20]:stages.length?stages:Array.from({length:20},(_,i)=>i+1);
 const rows=JSON.parse(await readFile('docs/art/stage-pet-designs.json','utf8'));const session=await browserSession(),stats=refresh?JSON.parse(await readFile('docs/art/stage-render-all-audit.json','utf8')).stats:[],errors=[];
 const png=s=>Buffer.from(s.split(',')[1],'base64');
@@ -8,7 +8,7 @@ try{
  const page=await session.browser.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto(`${session.url}/scripts/qa/stage-pet-review.html`);await page.waitForFunction(()=>!!window.reviewStage);
  await mkdir('docs/art/previews/stages',{recursive:true});await mkdir('public/models/stage-previews',{recursive:true});
  for(const stage of selected){
-  const batch=rows.filter(r=>r.stage===stage&&(!sample||sampleIds.includes(r.id))&&(!refresh||[3,6].includes(r.slot)));const result=await page.evaluate(rows=>window.reviewStage(rows),batch);
+  const batch=rows.filter(r=>r.stage===stage&&(!sample||sampleIds.includes(r.id))&&(!refresh||(secrets?r.secretDragon:[3,6].includes(r.slot))));const result=await page.evaluate(rows=>window.reviewStage(rows),batch);
   if(!refresh)await writeFile(`docs/art/previews/stages/${sample?'sample-':''}stage-${stage}.png`,png(result.sheet));
   for(const r of result.output){
    await writeFile(`public/models/pet-${r.id}.png`,png(r.images[0]));

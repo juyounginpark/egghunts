@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,26 +16,34 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        12,
+        2
+      ],
+      "parent": "body",
+      "rotation": [
+        0,
+        0,
+        0.2
+      ]
+    },
     "eyes": {
       "pivot": [
         11.5,
-        10,
-        1
+        13,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        8,
+        11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -53,9 +61,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -82,9 +90,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -99,93 +107,30 @@
       "pivot": [
         11.5,
         6,
-        18
+        17
       ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-178",
     "id": 178,
-    "name": "피라미드 스핑크스",
-    "stage": 8,
-    "stageName": "황금 사막왕국",
+    "oldStage": 8,
+    "stage": 7,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "lion",
-    "role": "신비로운 펫",
+    "previousName": "피라미드 스핑크스",
+    "name": "해시계 매",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "전갈 태양갈기을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 피라미드 스핑크스.",
-    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
-    "silhouette": [
-      "앞이 높은 갈기와 낮은 허리",
-      "전갈 태양갈기"
-    ],
-    "feature": "전갈 태양갈기",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
-    "material": "사암·황동",
-    "body": "앞이 높은 갈기와 낮은 허리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 전갈 태양갈기: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
-    "colorPlacement": "몸 #d7a247; 대표 기관 #d7a247; 발·연결부 #259c9c; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#d7a247",
-      "accent": "#d7a247"
-    },
-    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 앞이 높은 갈기와 낮은 허리; 몸 양옆으로 펼친 기관에 전갈 태양갈기",
+    "prompt": "짧고 단단한 몸과 뒤로 모인 큰 날개를 가진 매를 만들라. 머리와 가슴은 아이보리, 날개는 짙은 남색, 발은 금빛으로 구분한다. 등에 얇은 반원 해시계 판을 하나 달고 그 위의 작은 바늘이 그림자를 만든다. 고개를 돌린 뒤 날개를 조금 벌려 판을 드러내게 한다.",
+    "key": "pet-178",
+    "anatomy": "bird",
+    "feature": "sundial",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bird",
+    "colors": {
+      "primary": "#eee7cf"
+    },
+    "idle": "짧고 단단한 몸과 뒤로 모인 큰 날개를 가진 매를 만들라. 머리와 가슴은 아이보리, 날개는 짙은 남색, 발은 금빛으로 구분한다. 등에 얇은 반원 해시계 판을 하나 달고 그 위의 작은 바늘이 그림자를 만든다. 고개를 돌린 뒤 날개를 조금 벌려 판을 드러내게 한다."
   }
 }

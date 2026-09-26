@@ -1,248 +1,190 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    30,
-    25,
-    35
+    56,
+    28,
+    62
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        14.5,
+        27.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        14.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
-        14.5,
+        27.5,
         16,
-        1
+        0
       ],
       "parent": "head"
     },
-    "head": {
+    "float": {
       "pivot": [
-        14.5,
-        14,
-        7
+        27.5,
+        12,
+        19
       ],
       "parent": "body",
       "rotation": [
-        -0.18,
-        0,
-        0
+        0.15,
+        0.25,
+        0.3
       ]
+    },
+    "head": {
+      "pivot": [
+        27.5,
+        14,
+        10
+      ],
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
+        22.5,
         9,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.36,
-        0.1
-      ],
-      "scale": [
-        1.25,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        9,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        9,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        6,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.36,
-        -0.1
-      ],
-      "scale": [
-        1.25,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        20,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        20,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        23,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        14.5,
-        7,
         18
       ],
       "parent": "body",
       "rotation": [
-        0.16,
-        -0.28,
+        0.08,
+        -0.22,
+        0.08
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        22,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "neck": {
+      "pivot": [
+        27.5,
+        7,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        -0.13,
+        0,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        32.5,
+        9,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        33,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        27.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        14.5,
-        7,
-        22
+        27.5,
+        6,
+        27.6
       ],
       "parent": "tail",
       "rotation": [
-        0.16,
-        -0.28,
+        0.04,
+        -0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        14.5,
-        7,
-        26
+        27.5,
+        6,
+        35.2
       ],
       "parent": "tail_1",
       "rotation": [
-        0.16,
-        -0.28,
+        0.08,
+        -0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        14.5,
-        7,
-        30
+        27.5,
+        6,
+        42.8
       ],
       "parent": "tail_2",
       "rotation": [
+        0.12,
+        -0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        27.5,
+        6,
+        50.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
         0.16,
-        -0.28,
+        -0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-304",
     "id": 304,
-    "name": "해구왕 크라켄룡",
-    "stage": 5,
-    "stageName": "크라켄 심해",
+    "oldStage": 5,
+    "stage": 19,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "해구왕 크라켄룡",
+    "name": "심연의 공허룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "네 굵은 촉수 다리·굽은 거대 등불 뿔을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 해구왕 크라켄룡.",
-    "inspiration": "발광 산호 · 촉수 · 해저 유적 / tentacle",
-    "silhouette": [
-      "아래로 긴 크라켄룡",
-      "네 굵은 촉수 다리·굽은 거대 등불 뿔"
-    ],
-    "feature": "네 굵은 촉수 다리·굽은 거대 등불 뿔",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "깊은 어둠에서 촉각과 등불로 만나는 심해",
-    "material": "심해 피부·광구",
-    "body": "아래로 긴 크라켄룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "발광 산호 · 촉수 · 해저 유적에서 온 네 굵은 촉수 다리·굽은 거대 등불 뿔: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "몸 아래 짙은 남색 → 등 청색; 촉각 끝만 민트빛",
-    "colorPlacement": "몸 #39cebd; 대표 기관 #39cebd; 발·연결부 #223c73; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#39cebd",
-      "accent": "#39cebd"
-    },
-    "idle": "천천히 가라앉고 촉수를 순서대로 접기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 아래로 긴 크라켄룡; 성체 전용 골격에 네 굵은 촉수 다리·굽은 거대 등불 뿔",
+    "prompt": "낮게 웅크린 거대한 사족룡과 길게 돌아 나오는 꼬리로 무게감을 만들라. 몸은 무광 차콜, 배는 짙은 보라, 얼굴 주변의 밝은 면과 작은 눈은 분명히 보이게 한다. 머리 뒤로 크게 젖힌 뿔 세 갈래와 가슴의 비어 있는 공간을 대표 구조로 삼는다. 몸 양옆에는 끊어진 금빛 초승달 고리 두 조각을 두고 꼬리 끝에만 자홍빛을 제한한다. 일어설 때 고리 조각이 몸의 곡선을 따라 정렬되며 가슴의 공백은 그대로 남는다. 전용 알은 검정 껍질에 비어 있는 초승달 틈과 얇은 금빛 테두리를 둔다.",
+    "key": "pet-304",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "내려오는 팔과 가로지르는 팔, 둘 다 지나가면 등불이 답한다.",
-    "acquisitionCondition": "촉수 내려찍기와 가로 휩쓸기를 각각 회피",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#39363f"
+    },
+    "idle": "낮게 웅크린 거대한 사족룡과 길게 돌아 나오는 꼬리로 무게감을 만들라. 몸은 무광 차콜, 배는 짙은 보라, 얼굴 주변의 밝은 면과 작은 눈은 분명히 보이게 한다. 머리 뒤로 크게 젖힌 뿔 세 갈래와 가슴의 비어 있는 공간을 대표 구조로 삼는다. 몸 양옆에는 끊어진 금빛 초승달 고리 두 조각을 두고 꼬리 끝에만 자홍빛을 제한한다. 일어설 때 고리 조각이 몸의 곡선을 따라 정렬되며 가슴의 공백은 그대로 남는다. 전용 알은 검정 껍질에 비어 있는 초승달 틈과 얇은 금빛 테두리를 둔다."
   }
 }

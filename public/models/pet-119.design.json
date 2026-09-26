@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,31 +27,31 @@
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        10,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
+        8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -61,13 +61,18 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -76,46 +81,92 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-119",
     "id": 119,
-    "name": "왕관 태엽곰",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 9,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "bear",
-    "role": "스테이지 인기 펫",
+    "previousName": "왕관 태엽곰",
+    "name": "풍선강아지",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "왕관 목마등을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 왕관 태엽곰.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "넓은 얼굴과 두 개의 묵직한 앞발",
-      "왕관 목마등"
-    ],
-    "feature": "왕관 목마등",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "넓은 얼굴과 두 개의 묵직한 앞발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 왕관 목마등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 전체를 감싼 대표 기관",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #efbb36; 대표 기관 #efbb36; 발·연결부 #7255ad; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#efbb36",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 양쪽 대표 기관과 꼬리를 다른 박자로 펼침",
-    "reaction": "큰 대표 기관을 펼치고 짧게 인사한다",
-    "distinction": "스테이지 인기 펫: 넓은 얼굴과 두 개의 묵직한 앞발; 몸 전체를 감싼 대표 기관에 왕관 목마등",
+    "prompt": "길쭉한 풍선 덩어리를 묶은 듯한 강아지로 만들되 복셀의 평평한 면을 유지하라. 몸은 선명한 빨강, 코는 짙은 빨강, 목 매듭은 작은 아이보리 띠로 표현한다. 긴 귀 두 개와 짧은 꼬리만 크게 구분하고 눈은 작게 찍는다. 발이 바닥에서 잠깐 가볍게 들렸다 내려오며 귀가 늦게 따라오게 한다.",
+    "key": "pet-119",
+    "anatomy": "dog",
+    "feature": "balloon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "dog",
+    "colors": {
+      "primary": "#cf5557"
+    },
+    "idle": "길쭉한 풍선 덩어리를 묶은 듯한 강아지로 만들되 복셀의 평평한 면을 유지하라. 몸은 선명한 빨강, 코는 짙은 빨강, 목 매듭은 작은 아이보리 띠로 표현한다. 긴 귀 두 개와 짧은 꼬리만 크게 구분하고 눈은 작게 찍는다. 발이 바닥에서 잠깐 가볍게 들렸다 내려오며 귀가 늦게 따라오게 한다."
   }
 }

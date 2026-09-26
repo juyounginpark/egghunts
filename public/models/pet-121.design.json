@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,25 +27,41 @@
     "eyes": {
       "pivot": [
         11.5,
-        8,
-        1
+        12,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        6,
+        10,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
+      "pivot": [
+        6,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
+    },
+    "left_leg": {
       "pivot": [
         6,
         7,
@@ -60,46 +76,48 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        17,
+        7,
+        12
+      ],
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-121",
     "id": 121,
-    "name": "소라 소곤",
+    "oldStage": 3,
     "stage": 3,
-    "stageName": "얕은 산호 바다",
     "slot": 1,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "snail",
-    "role": "작고 귀여운 펫",
+    "previousName": "소라 소곤",
+    "name": "소라게",
     "tier": 0,
-    "rarity": "C",
-    "concept": "나선 조개집을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 소라 소곤.",
-    "inspiration": "산호 · 물결 · 문어 / coral",
-    "silhouette": [
-      "낮은 긴 발 위 거대한 말린 집",
-      "나선 조개집"
-    ],
-    "feature": "나선 조개집",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "얕은 물결을 거르는 산호 생태계",
-    "material": "젖은 산호·패각",
-    "body": "낮은 긴 발 위 거대한 말린 집",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "산호 · 물결 · 문어에서 온 나선 조개집: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 붙인 큰 기관",
-    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
-    "colorPlacement": "몸 #22a9a4; 대표 기관 #f17e6f; 발·연결부 #6868bd; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "작은 주황 게와 몸보다 큰 아이보리 소라껍데기를 결합하라. 껍데기는 굵은 회전 계단 세 구간으로 소용돌이를 만들고 끝은 옆으로 기울인다. 눈자루 두 개는 짧게, 집게는 한쪽만 조금 크게 만든다. 놀라면 눈과 집게를 껍데기 안으로 반쯤 숨겼다가 다시 내민다.",
+    "key": "pet-121",
+    "anatomy": "crab",
+    "feature": "spiral",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "crab",
     "colors": {
-      "primary": "#22a9a4",
-      "accent": "#f17e6f"
+      "primary": "#dc9851"
     },
-    "idle": "짧게 뜨고 물결에 지느러미 접기 / 양 귀를 짧게 움찔하고 고개를 숙임",
-    "reaction": "몸을 움츠렸다 작은 인사를 한다",
-    "distinction": "작고 귀여운 펫: 낮은 긴 발 위 거대한 말린 집; 등에 붙인 큰 기관에 나선 조개집",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "작은 주황 게와 몸보다 큰 아이보리 소라껍데기를 결합하라. 껍데기는 굵은 회전 계단 세 구간으로 소용돌이를 만들고 끝은 옆으로 기울인다. 눈자루 두 개는 짧게, 집게는 한쪽만 조금 크게 만든다. 놀라면 눈과 집게를 껍데기 안으로 반쯤 숨겼다가 다시 내민다."
   }
 }

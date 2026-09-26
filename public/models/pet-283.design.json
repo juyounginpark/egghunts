@@ -6,108 +6,118 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
         11.5,
         7,
-        12
+        16
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
         11.5,
-        8,
-        1
+        13,
+        6
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        19
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        6,
-        7
+        11,
+        11
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
         7,
-        12
+        16
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        16
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
         6,
         7,
-        12
+        16
       ],
       "parent": "body"
+    },
+    "right_arm": {
+      "pivot": [
+        17,
+        7,
+        16
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        16
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
         17,
         7,
-        12
+        16
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-283",
     "id": 283,
-    "name": "고리행성 거북",
-    "stage": 19,
-    "stageName": "은하수 천문대",
+    "oldStage": 19,
+    "stage": 18,
     "slot": 3,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "turtle",
-    "role": "장난꾸러기 펫",
+    "previousName": "고리행성 거북",
+    "name": "망원경 부엉이",
     "tier": 1,
-    "rarity": "B",
-    "concept": "작은 행성등을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 고리행성 거북.",
-    "inspiration": "작은 행성 · 별자리 · 우주열차 / meteor",
-    "silhouette": [
-      "머리보다 넓은 낮은 등집과 네 발",
-      "작은 행성등"
-    ],
-    "feature": "작은 행성등",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "작은 행성과 별빛을 관측하는 은하수 역",
-    "material": "성운·관측 유리",
-    "body": "머리보다 넓은 낮은 등집과 네 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "작은 행성 · 별자리 · 우주열차에서 온 작은 행성등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "앞발로 쥔 물건",
-    "gradient": "꼬리 시작 남보라 → 끝 청록; 별 원판 중앙은 아이보리",
-    "colorPlacement": "몸 #b664aa; 대표 기관 #e9b84c; 발·연결부 #93d1e6; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "넓은 얼굴과 짧은 몸을 가진 남색 부엉이를 만들라. 얼굴은 크림색, 날개 끝은 청회색이며 앞에 놓인 짧은 황동 망원경을 두 날개로 받친다. 망원경이 얼굴 전체를 가리지 않게 옆으로 기울인다. 한쪽 눈으로 렌즈를 들여다본 뒤 고개를 들어 같은 방향의 하늘을 보게 한다.",
+    "key": "pet-283",
+    "anatomy": "owl",
+    "feature": "telescope",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "owl",
     "colors": {
-      "primary": "#b664aa",
-      "accent": "#e9b84c"
+      "primary": "#344a70"
     },
-    "idle": "몸과 궤도가 다른 속도로 기울어짐 / 꼬리를 좌우로 흔들고 고개를 갸웃",
-    "reaction": "꼬리를 두 번 흔들며 고개를 갸웃한다",
-    "distinction": "장난꾸러기 펫: 머리보다 넓은 낮은 등집과 네 발; 앞발로 쥔 물건에 작은 행성등",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "넓은 얼굴과 짧은 몸을 가진 남색 부엉이를 만들라. 얼굴은 크림색, 날개 끝은 청회색이며 앞에 놓인 짧은 황동 망원경을 두 날개로 받친다. 망원경이 얼굴 전체를 가리지 않게 옆으로 기울인다. 한쪽 눈으로 렌즈를 들여다본 뒤 고개를 들어 같은 방향의 하늘을 보게 한다."
   }
 }

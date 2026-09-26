@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,33 +16,41 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        8,
-        1
+        13,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        6,
+        11,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        6,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +60,27 @@
         12
       ],
       "parent": "body"
+    },
+    "right_arm": {
+      "pivot": [
+        17,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +92,24 @@
     }
   },
   "concept": {
-    "key": "pet-115",
     "id": 115,
-    "name": "주사위 거북",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "dice",
-    "role": "크고 듬직한 펫",
+    "previousName": "주사위 거북",
+    "name": "종이배 펭귄",
     "tier": 2,
-    "rarity": "A",
-    "concept": "주사위 등집을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 주사위 거북.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "주사위 등집과 네 작은 발",
-      "주사위 등집"
-    ],
-    "feature": "주사위 등집",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "주사위 등집과 네 작은 발",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 주사위 등집: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #efbb36; 대표 기관 #efbb36; 발·연결부 #7255ad; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#efbb36",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 주사위 등집과 네 작은 발; 등과 옆구리에 이어진 기관에 주사위 등집",
+    "prompt": "작은 남색 펭귄을 넓은 아이보리 종이배 안에 앉혀라. 흰 얼굴과 작은 주황 부리, 배 밖으로 살짝 나온 날개 두 개를 분명히 한다. 종이배는 접힌 큰 면과 파랑 모서리 선만 남긴다. 펭귄이 한쪽 날개로 작은 종이 깃발을 들어 보이고 배가 느리게 흔들리게 한다.",
+    "key": "pet-115",
+    "anatomy": "penguin",
+    "feature": "boat",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "penguin",
+    "colors": {
+      "primary": "#344a70"
+    },
+    "idle": "작은 남색 펭귄을 넓은 아이보리 종이배 안에 앉혀라. 흰 얼굴과 작은 주황 부리, 배 밖으로 살짝 나온 날개 두 개를 분명히 한다. 종이배는 접힌 큰 면과 파랑 모서리 선만 남긴다. 펭귄이 한쪽 날개로 작은 종이 깃발을 들어 보이고 배가 느리게 흔들리게 한다."
   }
 }

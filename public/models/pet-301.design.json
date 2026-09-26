@@ -1,248 +1,190 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
-    25,
-    35
+    52,
+    28,
+    49
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        25.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
     "crown": {
       "pivot": [
-        11.5,
-        7,
-        12
+        25.5,
+        12,
+        22
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0,
+        0,
+        0.2
+      ]
     },
     "eyes": {
       "pivot": [
-        11.5,
-        15,
+        25.5,
+        16,
         0
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
-        11.5,
-        13,
-        7
+        25.5,
+        14,
+        10
       ],
-      "parent": "body",
-      "rotation": [
-        0.02,
-        0,
-        0
-      ]
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
-        6,
+        20.5,
         11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.12,
-        0.1
-      ],
-      "scale": [
-        1.05,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        6,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        17,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.12,
-        -0.1
-      ],
-      "scale": [
-        1.05,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        17,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        17,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        7,
         18
       ],
       "parent": "body",
       "rotation": [
+        0.08,
+        -0.22,
+        0.08
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        20,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "neck": {
+      "pivot": [
+        25.5,
+        9,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.1,
         0,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        30.5,
+        11,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        31,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        25.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
         0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        11.5,
-        7,
-        22
+        25.5,
+        6,
+        25.2
       ],
       "parent": "tail",
       "rotation": [
-        0,
+        0.04,
         0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        11.5,
-        7,
-        26
+        25.5,
+        6,
+        30.4
       ],
       "parent": "tail_1",
       "rotation": [
-        0,
+        0.08,
         0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        11.5,
-        7,
-        30
+        25.5,
+        6,
+        35.6
       ],
       "parent": "tail_2",
       "rotation": [
-        0,
+        0.12,
+        0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        25.5,
+        6,
+        40.8
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
         0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-301",
     "id": 301,
-    "name": "태엽기관 거룡",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "태엽기관 거룡",
+    "name": "태엽 비룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "세 쌍의 바퀴 발·앞으로 솟은 블록 성 목을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 태엽기관 거룡.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "기관차처럼 긴 육중한 기룡",
-      "세 쌍의 바퀴 발·앞으로 솟은 블록 성 목"
-    ],
-    "feature": "세 쌍의 바퀴 발·앞으로 솟은 블록 성 목",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "기관차처럼 긴 육중한 기룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 세 쌍의 바퀴 발·앞으로 솟은 블록 성 목: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #32a6c2; 대표 기관 #efbb36; 발·연결부 #d34d35; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#32a6c2",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 기관차처럼 긴 육중한 기룡; 성체 전용 골격에 세 쌍의 바퀴 발·앞으로 솟은 블록 성 목",
+    "prompt": "나무·천·황동이 결합된 넓은 날개의 장난감 용을 만들라. 몸은 짙은 청색의 둥근 흉곽, 얼굴은 아이보리의 짧고 당당한 형태, 날개는 붉은 천막처럼 크게 펼친다. 가슴의 큰 황동 태엽과 분절된 나무 꼬리가 정체성이다. 관절에만 기계 연결을 드러내고 온몸에 기어를 붙이지 않는다. 가슴 태엽이 감기며 날개가 순서대로 열리는 전용 동작을 준다. 전용 알은 청색 껍질 중앙에 황동 태엽 문양과 붉은 천 리본 하나를 둔다.",
+    "key": "pet-301",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "기차가 지나간 길 너머, 태엽 성의 가장 깊은 곳.",
-    "acquisitionCondition": "태엽 기차 회피 + 왕국 길 80% 지점 도달",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#b48b51"
+    },
+    "idle": "나무·천·황동이 결합된 넓은 날개의 장난감 용을 만들라. 몸은 짙은 청색의 둥근 흉곽, 얼굴은 아이보리의 짧고 당당한 형태, 날개는 붉은 천막처럼 크게 펼친다. 가슴의 큰 황동 태엽과 분절된 나무 꼬리가 정체성이다. 관절에만 기계 연결을 드러내고 온몸에 기어를 붙이지 않는다. 가슴 태엽이 감기며 날개가 순서대로 열리는 전용 동작을 준다. 전용 알은 청색 껍질 중앙에 황동 태엽 문양과 붉은 천 리본 하나를 둔다."
   }
 }

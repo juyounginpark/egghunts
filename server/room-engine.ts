@@ -1,6 +1,8 @@
+import {add} from '../src/money';
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
 import {BALANCE,EGGS,MONGLES,UPGRADES} from '../src/data';
-import {exportRuntime,restoreRuntime,type RuntimeState} from '../src/online-state';
+import {exportRuntime,restoreRuntime,migrateStageRuntime,type RuntimeState} from '../src/online-state';
+import {migrateStageWorld} from '../src/stage-migration';
 import {playerName} from '../src/player-identity';
 import type {EggNotice} from '../src/egg-notices';
 export {snapshotSections} from '../src/snapshot-stream';
@@ -9,10 +11,12 @@ type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
 type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
 type Player={runtime:RuntimeState;input:{x:number;z:number;slow?:boolean};seen:number;receipts:string[];chat?:{id:string;text:string;at:number};guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
-export type Room={at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
+export type Room={stageOrderVersion?:2;at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
 export type RequestInput={id:string;input?:{x:number;z:number;slow?:boolean};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
 export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number,identity?:{guest:boolean}){
+ if(previous&&previous.stageOrderVersion!==2){migrateStageWorld(previous.world,previous.bosses);for(const p of Object.values(previous.players))migrateStageRuntime(p.runtime);previous.stageOrderVersion=2;}
+ for(const p of profiles)if(p.state)migrateStageRuntime(p.state);
  if(!members.some(m=>m.user_id===user))throw Error('ROOM_EXPIRED');
  if(!request||typeof request.id!=='string'||request.id.length>80||!Array.isArray(request.commands??[])||(request.commands?.length??0)>16)throw Error('INVALID_REQUEST');
  const vector=request.input??{x:0,z:0};
@@ -21,7 +25,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const cycle=Math.floor(now/BALANCE.nightInterval);
  const fresh=!previous||cycle!==previous.cycle?new GameState(freshSave(now),()=>now,random):null;
  const joinedNow=!previous?.players[user];
- const room:Room=previous??{at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
+ const room:Room=previous??{stageOrderVersion:2,at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
  // Disconnected players cannot keep an egg or operate an unoccupied plot.
  for(const [id,p] of Object.entries(room.players))if(!members.some(m=>m.user_id===id)){
   const egg=p.runtime.fields.carried as WorldEgg|null;
@@ -35,6 +39,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   if(!p){
    const stored=profiles.find(p=>p.user_id===m.user_id)?.state;
    const g=new GameState(stored?structuredClone(stored.save):freshSave(now),()=>now,random);
+   if(stored)g.offline(Math.max(0,(now-(stored.save.productionAt??stored.save.lastSavedAt))/1000));
    // Local saves are kept on the device; only a previously committed server save is loaded.
    g.x=g.z=0;g.carried=null;g.deadline=0;g.death=null;g.hp=g.maxHp;g.training=false;
    g.roomManaged=true;g.farmSlot=m.slot;
@@ -42,6 +47,8 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   }
   const g=new GameState(structuredClone(p.runtime.save),()=>simTime,random,true);
   restoreRuntime(g,p.runtime,room.world,room.bosses);g.farmSlot=m.slot;g.events=[];
+  g.settleProduction(Math.min(now,p.seen+BALANCE.offlineCap*1000));
+  if(m.user_id===user)g.save.productionAt=now;
   games.set(m.user_id,g);
  }
  const self=games.get(user)!,player=room.players[user];
@@ -184,7 +191,7 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number){
   case 'reviveAd':if(!g.beginReviveAd())throw Error('CANNOT_REVIVE');break;
   case 'revive':g.revive(true);break;
   case 'adStart':atBase();if(p.adAt===undefined)p.adAt=now;break;
-  case 'adClaim':atBase();if(p.adAt===undefined||now-p.adAt<BALANCE.virtualAdDuration)throw Error('WAIT_FOR_AD');g.save.dust+=BALANCE.virtualAdReward;delete p.adAt;break;
+  case 'adClaim':atBase();if(p.adAt===undefined||now-p.adAt<BALANCE.virtualAdDuration)throw Error('WAIT_FOR_AD');g.save.dust=add(g.save.dust,BALANCE.virtualAdReward);delete p.adAt;break;
   case 'result':g.result=null;break;
   case 'reward':g.returnReward=null;break;
   case 'tutorial':g.save.tutorial=5;break;

@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,22 +27,30 @@
     "eyes": {
       "pivot": [
         11.5,
-        10,
-        1
+        12,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        8,
+        10,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -53,6 +61,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -60,98 +81,27 @@
         12
       ],
       "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        18
-      ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
     }
   },
   "concept": {
-    "key": "pet-277",
     "id": 277,
-    "name": "용접 불꽃사자",
-    "stage": 18,
-    "stageName": "고철 로봇행성",
+    "oldStage": 18,
+    "stage": 17,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "lion",
-    "role": "위험 요소 펫",
+    "previousName": "용접 불꽃사자",
+    "name": "전구해파리",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "용접 얼굴가리개을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 용접 불꽃사자.",
-    "inspiration": "자석 크레인 · 고철산 / magnet",
-    "silhouette": [
-      "앞이 높은 갈기와 낮은 허리",
-      "용접 얼굴가리개"
-    ],
-    "feature": "용접 얼굴가리개",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "쓸모를 되찾은 고철이 스스로 조립되는 행성",
-    "material": "철·산화 구리",
-    "body": "앞이 높은 갈기와 낮은 허리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "자석 크레인 · 고철산에서 온 용접 얼굴가리개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "철판 앞면 청회색 → 이음새 남색; 판 아래 녹슨 주황",
-    "colorPlacement": "몸 #dcd6ad; 대표 기관 #879bac; 발·연결부 #d27831; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#dcd6ad",
-      "accent": "#879bac"
-    },
-    "idle": "관절을 잠갔다 집게를 벌리는 정비 동작 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 앞이 높은 갈기와 낮은 허리; 등에 짊어진 기관에 용접 얼굴가리개",
+    "prompt": "큰 둥근 전구 안에 작은 얼굴이 보이고 아래로 짧은 전선 촉수 네 개가 늘어진 생물을 만들라. 전구는 따뜻한 옅은 노랑, 소켓은 짙은 회색, 전선 끝은 청색으로 둔다. 얼굴 뒤의 굵은 필라멘트 하나만 보여준다. 몸의 빛이 부드럽게 켜졌다 낮아지고 촉수가 뒤늦게 흔들리게 한다.",
+    "key": "pet-277",
+    "anatomy": "jelly",
+    "feature": "bulb",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "jelly",
+    "colors": {
+      "primary": "#ead378"
+    },
+    "idle": "큰 둥근 전구 안에 작은 얼굴이 보이고 아래로 짧은 전선 촉수 네 개가 늘어진 생물을 만들라. 전구는 따뜻한 옅은 노랑, 소켓은 짙은 회색, 전선 끝은 청색으로 둔다. 얼굴 뒤의 굵은 필라멘트 하나만 보여준다. 몸의 빛이 부드럽게 켜졌다 낮아지고 촉수가 뒤늦게 흔들리게 한다."
   }
 }

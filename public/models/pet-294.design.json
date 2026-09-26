@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,42 +16,42 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        14,
-        2
+        10,
+        1
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        12,
+        8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -61,13 +61,18 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -76,46 +81,35 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17
+      ],
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-294",
     "id": 294,
-    "name": "잊힌 이름새",
+    "oldStage": 20,
     "stage": 20,
-    "stageName": "공허와 창조주의 정원",
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "clam",
-    "role": "예상 밖의 펫",
+    "previousName": "잊힌 이름새",
+    "name": "샘물수달",
     "tier": 2,
-    "rarity": "A",
-    "concept": "빈 조개 공간을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 잊힌 이름새.",
-    "inspiration": "공허의 길 → 기억의 정원 → 창조자의 문 / creation",
-    "silhouette": [
-      "넓게 열린 두 패각과 작은 진주 얼굴",
-      "빈 조개 공간"
-    ],
-    "feature": "빈 조개 공간",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원",
-    "material": "공허 절단면·첫빛",
-    "body": "넓게 열린 두 패각과 작은 진주 얼굴",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공허의 길 → 기억의 정원 → 창조자의 문에서 온 빈 조개 공간: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "몸의 짙은 자주 → 열린 절단면 청록; 씨앗 중심은 따뜻한 금빛",
-    "colorPlacement": "몸 #4a315f; 대표 기관 #48ac9e; 발·연결부 #48ac9e; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#4a315f",
-      "accent": "#48ac9e"
-    },
-    "idle": "몸이 멈춘 뒤 떨어진 기관이 늦게 따라옴 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 넓게 열린 두 패각과 작은 진주 얼굴; 몸통에 연결된 덮개에 빈 조개 공간",
+    "prompt": "길고 둥근 몸과 작은 앞발, 넓은 꼬리를 가진 짙은 갈색 수달을 만들라. 얼굴과 배는 아이보리이며 가슴 앞에 커다란 맑은 물방울 하나를 두 손으로 받친다. 물방울 안에는 잎 한 장만 떠 있게 한다. 물방울을 살짝 들어 올리면 꼬리 옆으로 짧은 물결이 퍼졌다 사라지게 한다.",
+    "key": "pet-294",
+    "anatomy": "otter",
+    "feature": "drop",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "otter",
+    "colors": {
+      "primary": "#654736"
+    },
+    "idle": "길고 둥근 몸과 작은 앞발, 넓은 꼬리를 가진 짙은 갈색 수달을 만들라. 얼굴과 배는 아이보리이며 가슴 앞에 커다란 맑은 물방울 하나를 두 손으로 받친다. 물방울 안에는 잎 한 장만 떠 있게 한다. 물방울을 살짝 들어 올리면 꼬리 옆으로 짧은 물결이 퍼졌다 사라지게 한다."
   }
 }

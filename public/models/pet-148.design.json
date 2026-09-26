@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -24,128 +24,154 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        12,
+        16
+      ],
+      "parent": "body",
+      "rotation": [
+        0.15,
+        0.25,
+        0.3
+      ]
+    },
     "head": {
       "pivot": [
         11.5,
         9,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
+      "parent": "body"
     },
-    "left_tip": {
+    "left_ear": {
       "pivot": [
-        3,
-        11,
+        6,
+        15,
         12
       ],
-      "parent": "left_arm",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        0.12,
-        -0.08
+        0.22
       ]
     },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
+      "parent": "body"
     },
-    "right_tip": {
+    "right_ear": {
       "pivot": [
-        20,
-        11,
+        17,
+        15,
         12
       ],
-      "parent": "right_arm",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        -0.12,
-        0.08
+        -0.22
       ]
     },
     "tail": {
       "pivot": [
         11.5,
         6,
-        17
+        17.0
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-148",
     "id": 148,
-    "name": "달빛 만타",
-    "stage": 5,
-    "stageName": "크라켄 심해",
+    "oldStage": 5,
+    "stage": 19,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ray",
-    "role": "신비로운 펫",
+    "previousName": "달빛 만타",
+    "name": "검은구멍 고래",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "심연 지느러미을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 달빛 만타.",
-    "inspiration": "발광 산호 · 촉수 · 해저 유적 / tentacle",
-    "silhouette": [
-      "낮은 마름모 막과 길게 뻗은 꼬리",
-      "심연 지느러미"
-    ],
-    "feature": "심연 지느러미",
-    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
-    "ecology": "깊은 어둠에서 촉각과 등불로 만나는 심해",
-    "material": "심해 피부·광구",
-    "body": "낮은 마름모 막과 길게 뻗은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "발광 산호 · 촉수 · 해저 유적에서 온 심연 지느러미: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "몸 아래 짙은 남색 → 등 청색; 촉각 끝만 민트빛",
-    "colorPlacement": "몸 #223c73; 대표 기관 #39cebd; 발·연결부 #39cebd; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#223c73",
-      "accent": "#39cebd"
-    },
-    "idle": "천천히 가라앉고 촉수를 순서대로 접기 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 낮은 마름모 막과 길게 뻗은 꼬리; 몸 양옆으로 펼친 기관에 심연 지느러미",
+    "prompt": "넓고 짧은 고래 몸의 옆구리에 크고 깊은 원형 구멍을 하나 만들라. 몸은 짙은 보라, 배는 회색, 구멍의 두꺼운 테두리는 옅은 금빛으로 둔다. 얼굴과 꼬리는 온전한 형태를 유지하고 구멍에 가리지 않는다. 작은 돌 두 개가 구멍 주위를 돌다가 뒤로 가려졌다 다시 나타나게 한다.",
+    "key": "pet-148",
+    "anatomy": "whale",
+    "feature": "blackhole",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "whale",
+    "colors": {
+      "primary": "#513b68"
+    },
+    "idle": "넓고 짧은 고래 몸의 옆구리에 크고 깊은 원형 구멍을 하나 만들라. 몸은 짙은 보라, 배는 회색, 구멍의 두꺼운 테두리는 옅은 금빛으로 둔다. 얼굴과 꼬리는 온전한 형태를 유지하고 구멍에 가리지 않는다. 작은 돌 두 개가 구멍 주위를 돌다가 뒤로 가려졌다 다시 나타나게 한다."
   }
 }

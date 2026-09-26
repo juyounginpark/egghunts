@@ -1,12 +1,12 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
+    25,
     24,
-    24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -19,7 +19,7 @@
     "eyes": {
       "pivot": [
         11.5,
-        10,
+        11,
         1
       ],
       "parent": "head"
@@ -27,33 +27,18 @@
     "head": {
       "pivot": [
         11.5,
-        8,
+        9,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
@@ -63,49 +48,18 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
+        0.22
       ]
     },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
+      "parent": "body"
     },
     "right_ear": {
       "pivot": [
@@ -115,123 +69,39 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        17,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
+        -0.22
       ]
     },
     "tail": {
       "pivot": [
         11.5,
         6,
-        18
+        17
       ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-168",
     "id": 168,
-    "name": "레이저 날개룡",
-    "stage": 7,
-    "stageName": "네온 사이버시티",
+    "oldStage": 7,
+    "stage": 6,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "dragon",
-    "role": "신비로운 펫",
+    "previousName": "레이저 날개룡",
+    "name": "드론가오리",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "레이저 스캐너날개을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 레이저 날개룡.",
-    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
-    "silhouette": [
-      "앞이 높은 가슴과 굵은 꼬리",
-      "레이저 스캐너날개"
-    ],
-    "feature": "레이저 스캐너날개",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
-    "material": "전자 패널",
-    "body": "앞이 높은 가슴과 굵은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 레이저 스캐너날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
-    "colorPlacement": "몸 #263d70; 대표 기관 #26c6bb; 발·연결부 #26c6bb; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#263d70",
-      "accent": "#26c6bb"
-    },
-    "idle": "정지 후 짧은 신호 펄스와 틸트 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 앞이 높은 가슴과 굵은 꼬리; 몸 양옆으로 펼친 기관에 레이저 스캐너날개",
+    "prompt": "얇고 넓은 검정 가오리 몸의 양옆 끝에 둥근 덕트 두 개를 통합하라. 윗면은 흰색 큰 판으로 나누고 앞쪽 중앙에 작은 눈 두 개를 둔다. 아래쪽 청록빛은 짧은 부양 표시만 남긴다. 몸이 기울어지는 방향에 따라 덕트가 조금 돌아가며 조용히 떠 있게 한다.",
+    "key": "pet-168",
+    "anatomy": "ray",
+    "feature": "ducts",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "ray",
+    "colors": {
+      "primary": "#30303c"
+    },
+    "idle": "얇고 넓은 검정 가오리 몸의 양옆 끝에 둥근 덕트 두 개를 통합하라. 윗면은 흰색 큰 판으로 나누고 앞쪽 중앙에 작은 눈 두 개를 둔다. 아래쪽 청록빛은 짧은 부양 표시만 남긴다. 몸이 기울어지는 방향에 따라 덕트가 조금 돌아가며 조용히 떠 있게 한다."
   }
 }

@@ -1,240 +1,185 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
+    56,
     30,
-    25,
-    35
+    62
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        14.5,
+        27.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        27.5,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
-        14.5,
-        13,
+        27.5,
+        21,
         0
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
-        14.5,
-        11,
-        7
+        27.5,
+        19,
+        10
       ],
-      "parent": "body",
-      "rotation": [
-        -0.14,
-        0,
-        0
-      ]
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
-        9,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.32,
-        0.1
-      ],
-      "scale": [
-        1.3,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        9,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        9,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        6,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.32,
-        -0.1
-      ],
-      "scale": [
-        1.3,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        20,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        20,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        23,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        14.5,
-        7,
+        22.5,
+        10,
         18
       ],
       "parent": "body",
       "rotation": [
-        0.12,
-        -0.24,
+        0.08,
+        -0.22,
+        0.08
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        22,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "neck": {
+      "pivot": [
+        27.5,
+        8,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        -0.13,
+        0,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        32.5,
+        10,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        33,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        27.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        14.5,
-        7,
-        22
+        27.5,
+        6,
+        27.6
       ],
       "parent": "tail",
       "rotation": [
-        0.12,
-        -0.24,
+        0.04,
+        -0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        14.5,
-        7,
-        26
+        27.5,
+        6,
+        35.2
       ],
       "parent": "tail_1",
       "rotation": [
-        0.12,
-        -0.24,
+        0.08,
+        -0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        14.5,
-        7,
-        30
+        27.5,
+        6,
+        42.8
       ],
       "parent": "tail_2",
       "rotation": [
         0.12,
-        -0.24,
+        -0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        27.5,
+        6,
+        50.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-302",
     "id": 302,
-    "name": "산호궁 해룡",
+    "oldStage": 3,
     "stage": 3,
-    "stageName": "얕은 산호 바다",
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "산호궁 해룡",
+    "name": "진주궁 해룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "가지형 산호 뿔·패각 세 겹의 수중 날개을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 산호궁 해룡.",
-    "inspiration": "산호 · 물결 · 문어 / coral",
-    "silhouette": [
-      "납작한 가슴의 해룡",
-      "가지형 산호 뿔·패각 세 겹의 수중 날개"
-    ],
-    "feature": "가지형 산호 뿔·패각 세 겹의 수중 날개",
-    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
-    "ecology": "얕은 물결을 거르는 산호 생태계",
-    "material": "젖은 산호·패각",
-    "body": "납작한 가슴의 해룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "산호 · 물결 · 문어에서 온 가지형 산호 뿔·패각 세 겹의 수중 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
-    "colorPlacement": "몸 #f8dfaf; 대표 기관 #f17e6f; 발·연결부 #f17e6f; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#f8dfaf",
-      "accent": "#f17e6f"
-    },
-    "idle": "짧게 뜨고 물결에 지느러미 접기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 납작한 가슴의 해룡; 성체 전용 골격에 가지형 산호 뿔·패각 세 겹의 수중 날개",
+    "prompt": "넓은 가슴과 길게 이어지는 몸을 가진 장엄한 해룡을 만들라. 짙은 남색 몸, 진주색 배, 투명한 청록 지느러미 끝을 분리한다. 등에는 작은 궁전을 여러 개 얹지 말고 거대한 부채 산호 한 쌍이 왕좌처럼 펼쳐지게 한다. 목 아래의 큰 진주 하나와 뒤로 흐르는 긴 수염이 시선을 잡는다. 지느러미가 차례로 열리고 진주 주위로 얇은 물결 고리 하나가 퍼지는 동작을 준다. 전용 알은 진주색 껍질과 남색 파도띠, 작은 산호 받침으로 구성한다.",
+    "key": "pet-302",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "알을 젖지 않게 지킨 뒤 두 물가의 소리를 들어 보자.",
-    "acquisitionCondition": "산호 바다 알 운반 중 먹물 회피 + 위험 구간 좌우 방문",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#243450"
+    },
+    "idle": "넓은 가슴과 길게 이어지는 몸을 가진 장엄한 해룡을 만들라. 짙은 남색 몸, 진주색 배, 투명한 청록 지느러미 끝을 분리한다. 등에는 작은 궁전을 여러 개 얹지 말고 거대한 부채 산호 한 쌍이 왕좌처럼 펼쳐지게 한다. 목 아래의 큰 진주 하나와 뒤로 흐르는 긴 수염이 시선을 잡는다. 지느러미가 차례로 열리고 진주 주위로 얇은 물결 고리 하나가 퍼지는 동작을 준다. 전용 알은 진주색 껍질과 남색 파도띠, 작은 산호 받침으로 구성한다."
   }
 }

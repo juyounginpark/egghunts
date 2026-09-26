@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -19,23 +19,26 @@
     "eyes": {
       "pivot": [
         11.5,
-        14,
+        13,
         2
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
-        12,
+        11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -44,6 +47,19 @@
         12
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -61,6 +77,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -68,54 +97,27 @@
         12
       ],
       "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
-      ],
-      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-116",
     "id": 116,
-    "name": "팽이 발레리나",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "dancer",
-    "role": "사물 의인화 펫",
+    "previousName": "팽이 발레리나",
+    "name": "깜짝상자 토끼",
     "tier": 3,
-    "rarity": "S",
-    "concept": "회전 팽이치마을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 팽이 발레리나.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "좁은 허리와 넓게 펼친 치마",
-      "회전 팽이치마"
-    ],
-    "feature": "회전 팽이치마",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "좁은 허리와 넓게 펼친 치마",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 회전 팽이치마: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #32a6c2; 대표 기관 #efbb36; 발·연결부 #d34d35; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#32a6c2",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 좁은 허리와 넓게 펼친 치마; 꼬리에 연결된 기관에 회전 팽이치마",
+    "prompt": "낮고 넓은 붉은 상자에서 흰 토끼의 상반신이 올라오는 형태로 만들라. 긴 귀 한쪽은 접히고 양쪽 점눈은 같은 높이에 둔다. 상자 앞에는 큰 노랑 별 하나, 몸 아래에는 굵은 코일 몇 구간만 표현한다. 짧게 숨었다가 부드럽게 올라오게 하며 갑작스러운 점프 공포 연출은 피한다.",
+    "key": "pet-116",
+    "anatomy": "rabbit",
+    "feature": "jackbox",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "rabbit",
+    "colors": {
+      "primary": "#e9e8dc"
+    },
+    "idle": "낮고 넓은 붉은 상자에서 흰 토끼의 상반신이 올라오는 형태로 만들라. 긴 귀 한쪽은 접히고 양쪽 점눈은 같은 높이에 둔다. 상자 앞에는 큰 노랑 별 하나, 몸 아래에는 굵은 코일 몇 구간만 표현한다. 짧게 숨었다가 부드럽게 올라오게 하며 갑작스러운 점프 공포 연출은 피한다."
   }
 }

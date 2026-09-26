@@ -1,12 +1,12 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
+    25,
     24,
-    24,
-    35
+    37
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,14 +15,6 @@
         12
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -38,11 +30,19 @@
         8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +52,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -65,12 +78,12 @@
       "pivot": [
         11.5,
         6,
-        18
+        17.0
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
+        0.0,
+        -0.096,
         0
       ]
     },
@@ -78,12 +91,12 @@
       "pivot": [
         11.5,
         6,
-        22
+        20.6
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        -0.18,
+        -0.096,
         0
       ]
     },
@@ -91,12 +104,12 @@
       "pivot": [
         11.5,
         6,
-        26
+        24.2
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        -0.18,
+        0.08,
+        -0.096,
         0
       ]
     },
@@ -104,54 +117,48 @@
       "pivot": [
         11.5,
         6,
-        30
+        27.8
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        -0.18,
+        0.12,
+        -0.096,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        31.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.096,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-164",
     "id": 164,
-    "name": "홀로그램 고양",
-    "stage": 7,
-    "stageName": "네온 사이버시티",
+    "oldStage": 7,
+    "stage": 6,
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "fox",
-    "role": "예상 밖의 펫",
+    "previousName": "홀로그램 고양",
+    "name": "헤드폰 고양이",
     "tier": 2,
-    "rarity": "A",
-    "concept": "광섬유 꼬리을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 홀로그램 고양.",
-    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
-    "silhouette": [
-      "낮은 네 발과 몸보다 높은 꼬리",
-      "광섬유 꼬리"
-    ],
-    "feature": "광섬유 꼬리",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
-    "material": "전자 패널",
-    "body": "낮은 네 발과 몸보다 높은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 광섬유 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
-    "colorPlacement": "몸 #263d70; 대표 기관 #26c6bb; 발·연결부 #26c6bb; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "짧고 넓은 검정 고양이 얼굴 양옆에 큰 원형 헤드폰을 배치하라. 귀는 헤드폰 위로 드러내고 입 주변은 작게 크림색으로 밝힌다. 헤드폰 바깥면만 선명한 보라, 목 아래 재킷 깃은 청록으로 구분한다. 눈을 잠깐 감고 박자에 맞춰 고개와 꼬리 끝을 작게 움직이게 한다.",
+    "key": "pet-164",
+    "anatomy": "cat",
+    "feature": "headphones",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "cat",
     "colors": {
-      "primary": "#263d70",
-      "accent": "#26c6bb"
+      "primary": "#30303c"
     },
-    "idle": "정지 후 짧은 신호 펄스와 틸트 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 낮은 네 발과 몸보다 높은 꼬리; 몸통에 연결된 덮개에 광섬유 꼬리",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "짧고 넓은 검정 고양이 얼굴 양옆에 큰 원형 헤드폰을 배치하라. 귀는 헤드폰 위로 드러내고 입 주변은 작게 크림색으로 밝힌다. 헤드폰 바깥면만 선명한 보라, 목 아래 재킷 깃은 청록으로 구분한다. 눈을 잠깐 감고 박자에 맞춰 고개와 꼬리 끝을 작게 움직이게 한다."
   }
 }

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,14 +16,6 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
@@ -32,18 +24,21 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
         11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -61,9 +56,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -90,9 +85,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -105,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-161",
     "id": 161,
-    "name": "배터리 햄찌",
-    "stage": 7,
-    "stageName": "네온 사이버시티",
+    "oldStage": 7,
+    "stage": 6,
     "slot": 1,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "mouse",
-    "role": "작고 귀여운 펫",
+    "previousName": "배터리 햄찌",
+    "name": "배터리 햄스터",
     "tier": 0,
-    "rarity": "C",
-    "concept": "전지 꼬리을 이용해 신호를 따라 길과 생물이 재배열되는 도시에서 살아가는 배터리 햄찌.",
-    "inspiration": "전자 도로 · 드론 · 홀로그램 / laser",
-    "silhouette": [
-      "넓은 볼과 짧은 뒷발",
-      "전지 꼬리"
-    ],
-    "feature": "전지 꼬리",
-    "personality": "높게 놓인 세로 눈과 밝은 안쪽 눈동자",
-    "ecology": "신호를 따라 길과 생물이 재배열되는 도시",
-    "material": "전자 패널",
-    "body": "넓은 볼과 짧은 뒷발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "전자 도로 · 드론 · 홀로그램에서 온 전지 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 붙인 큰 기관",
-    "gradient": "패널 면 남청색 → 모서리 차가운 청록; 창 안쪽에 집중된 발광",
-    "colorPlacement": "몸 #d348ac; 대표 기관 #26c6bb; 발·연결부 #d6e5f1; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#d348ac",
-      "accent": "#26c6bb"
-    },
-    "idle": "정지 후 짧은 신호 펄스와 틸트 / 양 귀를 짧게 움찔하고 고개를 숙임",
-    "reaction": "몸을 움츠렸다 작은 인사를 한다",
-    "distinction": "작고 귀여운 펫: 넓은 볼과 짧은 뒷발; 등에 붙인 큰 기관에 전지 꼬리",
+    "prompt": "넓고 통통한 노랑 햄스터의 옆구리에 큰 배터리 잔량창 하나를 넣어라. 얼굴과 배는 크림색, 작은 발과 귀 끝은 짙은 회색으로 정리한다. 잔량창은 세 칸의 굵은 초록 면으로 만들고 얼굴과 겹치지 않게 한다. 두 앞발로 작은 충전 플러그를 들었다 내려놓는 동작을 준다.",
+    "key": "pet-161",
+    "anatomy": "mouse",
+    "feature": "battery",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "mouse",
+    "colors": {
+      "primary": "#ead378"
+    },
+    "idle": "넓고 통통한 노랑 햄스터의 옆구리에 큰 배터리 잔량창 하나를 넣어라. 얼굴과 배는 크림색, 작은 발과 귀 끝은 짙은 회색으로 정리한다. 잔량창은 세 칸의 굵은 초록 면으로 만들고 얼굴과 겹치지 않게 한다. 두 앞발로 작은 충전 플러그를 들었다 내려놓는 동작을 준다."
   }
 }

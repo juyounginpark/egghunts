@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -24,18 +24,21 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
         10,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -44,6 +47,19 @@
         12
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -60,6 +76,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -79,43 +108,24 @@
     }
   },
   "concept": {
-    "key": "pet-136",
     "id": 136,
-    "name": "흑요석 전갈",
+    "oldStage": 4,
     "stage": 4,
-    "stageName": "화산 입구",
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "scorpion",
-    "role": "사물 의인화 펫",
+    "previousName": "흑요석 전갈",
+    "name": "흑요석 전갈",
     "tier": 3,
-    "rarity": "S",
-    "concept": "열린 돌집게을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 흑요석 전갈.",
-    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
-    "silhouette": [
-      "낮은 여섯 발과 머리 위로 굽은 꼬리",
-      "열린 돌집게"
-    ],
-    "feature": "열린 돌집게",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
-    "material": "현무암·용암",
-    "body": "낮은 여섯 발과 머리 위로 굽은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 열린 돌집게: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
-    "colorPlacement": "몸 #ffcb56; 대표 기관 #ed622c; 발·연결부 #524251; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#ffcb56",
-      "accent": "#ed622c"
-    },
-    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 낮은 여섯 발과 머리 위로 굽은 꼬리; 꼬리에 연결된 기관에 열린 돌집게",
+    "prompt": "낮은 검정 몸, 넓은 집게 두 개, 위로 크게 굽은 꼬리로 전갈을 만들라. 흑요석 면은 보랏빛을 아주 약하게 반사하고 집게 안쪽만 밝은 적갈색으로 표시한다. 꼬리 독침은 작은 붉은 결정 하나로 마감한다. 집게를 한 번 벌리고 꼬리 끝이 뒤늦게 따라 흔들리는 동작을 준다.",
+    "key": "pet-136",
+    "anatomy": "scorpion",
+    "feature": "gem",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "scorpion",
+    "colors": {
+      "primary": "#30303c"
+    },
+    "idle": "낮은 검정 몸, 넓은 집게 두 개, 위로 크게 굽은 꼬리로 전갈을 만들라. 흑요석 면은 보랏빛을 아주 약하게 반사하고 집게 안쪽만 밝은 적갈색으로 표시한다. 꼬리 독침은 작은 붉은 결정 하나로 마감한다. 집게를 한 번 벌리고 꼬리 끝이 뒤늦게 따라 흔들리는 동작을 준다."
   }
 }

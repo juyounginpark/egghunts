@@ -1,248 +1,174 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    32,
-    25,
-    35
+    54,
+    39,
+    69
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        15.5,
+        26.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        15.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
-        15.5,
-        19,
+        26.5,
+        30,
         0
       ],
       "parent": "head"
     },
-    "head": {
+    "float": {
       "pivot": [
-        15.5,
-        17,
-        7
+        26.5,
+        12,
+        19
       ],
       "parent": "body",
       "rotation": [
-        -0.16,
-        0,
-        0
+        0.15,
+        0.25,
+        0.3
       ]
+    },
+    "head": {
+      "pivot": [
+        26.5,
+        28,
+        10
+      ],
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
-        10,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.42,
-        0.1
-      ],
-      "scale": [
-        1.4,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        10,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        10,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        7,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        21,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.42,
-        -0.1
-      ],
-      "scale": [
-        1.4,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        21,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        21,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        24,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        15.5,
-        7,
+        21.5,
+        13,
         18
       ],
       "parent": "body",
       "rotation": [
-        0.18,
-        -0.3,
+        0.08,
+        -0.22,
+        0.08
+      ]
+    },
+    "neck": {
+      "pivot": [
+        26.5,
+        11,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.1,
+        0,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        31.5,
+        13,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "tail": {
+      "pivot": [
+        26.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        15.5,
-        7,
-        22
+        26.5,
+        6,
+        28.8
       ],
       "parent": "tail",
       "rotation": [
-        0.18,
-        -0.3,
+        0.04,
+        0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        15.5,
-        7,
-        26
+        26.5,
+        6,
+        37.6
       ],
       "parent": "tail_1",
       "rotation": [
-        0.18,
-        -0.3,
+        0.08,
+        0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        15.5,
-        7,
-        30
+        26.5,
+        6,
+        46.4
       ],
       "parent": "tail_2",
       "rotation": [
-        0.18,
-        -0.3,
+        0.12,
+        0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        26.5,
+        6,
+        55.2
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-318",
     "id": 318,
-    "name": "성좌천문 은하룡",
-    "stage": 19,
-    "stageName": "은하수 천문대",
+    "oldStage": 19,
+    "stage": 18,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "성좌천문 은하룡",
+    "name": "별고리 천룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "열린 궤도 두 날개·혜성 세 갈래 꼬리을 이용해 작은 행성과 별빛을 관측하는 은하수 역에서 살아가는 성좌천문 은하룡.",
-    "inspiration": "작은 행성 · 별자리 · 우주열차 / meteor",
-    "silhouette": [
-      "길게 감긴 은하룡",
-      "열린 궤도 두 날개·혜성 세 갈래 꼬리"
-    ],
-    "feature": "열린 궤도 두 날개·혜성 세 갈래 꼬리",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "작은 행성과 별빛을 관측하는 은하수 역",
-    "material": "성운·관측 유리",
-    "body": "길게 감긴 은하룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "작은 행성 · 별자리 · 우주열차에서 온 열린 궤도 두 날개·혜성 세 갈래 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "꼬리 시작 남보라 → 끝 청록; 별 원판 중앙은 아이보리",
-    "colorPlacement": "몸 #e9b84c; 대표 기관 #e9b84c; 발·연결부 #504b9b; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "길고 유연한 몸이 큰 원호를 그리는 천룡을 만들라. 등은 깊은 남색, 배는 진주색, 뿔과 목 아래 긴 수염은 금빛으로 구분한다. 넓은 지느러미형 날개 한 쌍을 어깨 뒤에 배치하고 몸 중앙을 비스듬히 감싸는 큰 천체 고리 하나를 둔다. 고리의 작은 행성은 두 개만 사용한다. 용의 머리가 움직인 뒤 고리와 행성이 느리게 따라 돌고 날개에 짧은 별띠가 드러나게 한다. 전용 알은 남색 껍질과 비스듬한 진주빛 고리, 작은 금색 별 하나로 만든다.",
+    "key": "pet-318",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
+    "previewAngle": 35,
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
     "colors": {
-      "primary": "#e9b84c",
-      "accent": "#e9b84c"
+      "primary": "#223550"
     },
-    "idle": "몸과 궤도가 다른 속도로 기울어짐 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 길게 감긴 은하룡; 성체 전용 골격에 열린 궤도 두 날개·혜성 세 갈래 꼬리",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "유성이 지난 뒤 별길의 양쪽에서 같은 하늘을 올려다보자.",
-    "acquisitionCondition": "유성 회피 + 위험 구간 좌우 방문",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "idle": "길고 유연한 몸이 큰 원호를 그리는 천룡을 만들라. 등은 깊은 남색, 배는 진주색, 뿔과 목 아래 긴 수염은 금빛으로 구분한다. 넓은 지느러미형 날개 한 쌍을 어깨 뒤에 배치하고 몸 중앙을 비스듬히 감싸는 큰 천체 고리 하나를 둔다. 고리의 작은 행성은 두 개만 사용한다. 용의 머리가 움직인 뒤 고리와 행성이 느리게 따라 돌고 날개에 짧은 별띠가 드러나게 한다. 전용 알은 남색 껍질과 비스듬한 진주빛 고리, 작은 금색 별 하나로 만든다."
   }
 }

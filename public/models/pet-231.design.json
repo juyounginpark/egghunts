@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,14 +16,6 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
@@ -32,18 +24,21 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
         11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -52,6 +47,19 @@
         12
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -69,6 +77,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -79,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-231",
     "id": 231,
-    "name": "목도리 펭귄",
-    "stage": 14,
-    "stageName": "영원의 빙하",
+    "oldStage": 14,
+    "stage": 13,
     "slot": 1,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "penguin",
-    "role": "작고 귀여운 펫",
+    "previousName": "목도리 펭귄",
+    "name": "목도리 펭귄",
     "tier": 0,
-    "rarity": "C",
-    "concept": "빙판 썰매을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 목도리 펭귄.",
-    "inspiration": "빙산 · 오로라 · 수정 동굴 / ice",
-    "silhouette": [
-      "넓은 배와 짧은 노 날개",
-      "빙판 썰매"
-    ],
-    "feature": "빙판 썰매",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "얼음층 아래 작은 온기를 품는 빙하",
-    "material": "빙층·단열 털",
-    "body": "넓은 배와 짧은 노 날개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "빙산 · 오로라 · 수정 동굴에서 온 빙판 썰매: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 붙인 큰 기관",
-    "gradient": "얼음 바닥 남청색 → 절단면 청록 → 꼭대기 흰색",
-    "colorPlacement": "몸 #9576c4; 대표 기관 #55bcd7; 발·연결부 #356eab; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#9576c4",
-      "accent": "#55bcd7"
-    },
-    "idle": "미끄러짐을 멈추고 몸을 짧게 털기 / 양 귀를 짧게 움찔하고 고개를 숙임",
-    "reaction": "몸을 움츠렸다 작은 인사를 한다",
-    "distinction": "작고 귀여운 펫: 넓은 배와 짧은 노 날개; 등에 붙인 큰 기관에 빙판 썰매",
+    "prompt": "키가 작고 배가 둥근 남색 펭귄을 만들라. 얼굴과 배는 크림색, 부리와 발은 주황이며 목에는 굵은 붉은 목도리를 두른다. 목도리 끝은 한쪽으로만 짧게 빼고 눈과 부리를 가리지 않는다. 작은 날개로 목도리를 끌어안으며 발을 번갈아 드는 동작을 준다.",
+    "key": "pet-231",
+    "anatomy": "penguin",
+    "feature": "scarf",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "penguin",
+    "colors": {
+      "primary": "#344a70"
+    },
+    "idle": "키가 작고 배가 둥근 남색 펭귄을 만들라. 얼굴과 배는 크림색, 부리와 발은 주황이며 목에는 굵은 붉은 목도리를 두른다. 목도리 끝은 한쪽으로만 짧게 빼고 눈과 부리를 가리지 않는다. 작은 날개로 목도리를 끌어안으며 발을 번갈아 드는 동작을 준다."
   }
 }

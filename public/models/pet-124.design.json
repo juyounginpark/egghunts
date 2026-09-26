@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    32
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,23 +27,18 @@
     "eyes": {
       "pivot": [
         11.5,
-        14,
-        2
+        11,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        12,
+        9,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -53,6 +48,19 @@
       ],
       "parent": "body"
     },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
+    },
     "right_arm": {
       "pivot": [
         17,
@@ -60,46 +68,48 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17
+      ],
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-124",
     "id": 124,
-    "name": "진주 조개",
+    "oldStage": 3,
     "stage": 3,
-    "stageName": "얕은 산호 바다",
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "clam",
-    "role": "예상 밖의 펫",
+    "previousName": "진주 조개",
+    "name": "파도 가오리",
     "tier": 2,
-    "rarity": "A",
-    "concept": "진주 패각을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 진주 조개.",
-    "inspiration": "산호 · 물결 · 문어 / coral",
-    "silhouette": [
-      "넓게 열린 두 패각과 작은 진주 얼굴",
-      "진주 패각"
-    ],
-    "feature": "진주 패각",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "얕은 물결을 거르는 산호 생태계",
-    "material": "젖은 산호·패각",
-    "body": "넓게 열린 두 패각과 작은 진주 얼굴",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "산호 · 물결 · 문어에서 온 진주 패각: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
-    "colorPlacement": "몸 #f17e6f; 대표 기관 #f17e6f; 발·연결부 #f8dfaf; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#f17e6f",
-      "accent": "#f17e6f"
-    },
-    "idle": "짧게 뜨고 물결에 지느러미 접기 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 넓게 열린 두 패각과 작은 진주 얼굴; 몸통에 연결된 덮개에 진주 패각",
+    "prompt": "넓은 다이아몬드 몸과 가늘고 긴 꼬리로 가오리를 표현하라. 등은 선명한 남색, 배는 밝은 회색, 양쪽 날개 끝은 청록으로 두 단계 밝아지게 한다. 얼굴은 앞쪽 중앙에 작게 모으고 등에는 커다란 흰 물결 한 줄만 둔다. 날개 뿌리부터 끝까지 순서대로 굽혀 파도를 타는 움직임을 만든다.",
+    "key": "pet-124",
+    "anatomy": "ray",
+    "feature": "wave",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "ray",
+    "colors": {
+      "primary": "#344a70"
+    },
+    "idle": "넓은 다이아몬드 몸과 가늘고 긴 꼬리로 가오리를 표현하라. 등은 선명한 남색, 배는 밝은 회색, 양쪽 날개 끝은 청록으로 두 단계 밝아지게 한다. 얼굴은 앞쪽 중앙에 작게 모으고 등에는 커다란 흰 물결 한 줄만 둔다. 날개 뿌리부터 끝까지 순서대로 굽혀 파도를 타는 움직임을 만든다."
   }
 }

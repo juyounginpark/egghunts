@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,14 +15,6 @@
         12
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -38,12 +30,7 @@
         11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -61,9 +48,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -90,9 +77,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -105,43 +92,24 @@
     }
   },
   "concept": {
-    "key": "pet-151",
     "id": 151,
-    "name": "지우개 먼지",
-    "stage": 6,
-    "stageName": "유령 학교",
+    "oldStage": 6,
+    "stage": 5,
     "slot": 1,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "mouse",
-    "role": "작고 귀여운 펫",
+    "previousName": "지우개 먼지",
+    "name": "지우개 햄스터",
     "tier": 0,
-    "rarity": "C",
-    "concept": "분필 주머니을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 지우개 먼지.",
-    "inspiration": "책상 · 사물함 · 긴 복도 / book",
-    "silhouette": [
-      "넓은 볼과 짧은 뒷발",
-      "분필 주머니"
-    ],
-    "feature": "분필 주머니",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "텅 빈 교실에서 물건이 수업을 이어가는 학교",
-    "material": "종이·낡은 목재",
-    "body": "넓은 볼과 짧은 뒷발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "책상 · 사물함 · 긴 복도에서 온 분필 주머니: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 붙인 큰 기관",
-    "gradient": "책등 자주갈색 → 펼친 면 아이보리; 모서리는 옅은 황토",
-    "colorPlacement": "몸 #e1cba3; 대표 기관 #e1cba3; 발·연결부 #538590; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#e1cba3",
-      "accent": "#e1cba3"
-    },
-    "idle": "고개를 갸웃하고 문짝을 살짝 열기 / 양 귀를 짧게 움찔하고 고개를 숙임",
-    "reaction": "몸을 움츠렸다 작은 인사를 한다",
-    "distinction": "작고 귀여운 펫: 넓은 볼과 짧은 뒷발; 등에 붙인 큰 기관에 분필 주머니",
+    "prompt": "둥근 볼과 짧은 귀를 가진 햄스터를 두꺼운 지우개 같은 몸으로 만들라. 위쪽은 분홍, 아래쪽은 아이보리, 배 가운데에는 파란 종이띠를 감는다. 눈은 종이띠 위에 두고 작은 앞발을 드러낸다. 볼을 부풀린 뒤 앞발로 분필 얼룩을 살짝 문지르게 한다.",
+    "key": "pet-151",
+    "anatomy": "mouse",
+    "feature": "eraser",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "mouse",
+    "colors": {
+      "primary": "#d991af"
+    },
+    "idle": "둥근 볼과 짧은 귀를 가진 햄스터를 두꺼운 지우개 같은 몸으로 만들라. 위쪽은 분홍, 아래쪽은 아이보리, 배 가운데에는 파란 종이띠를 감는다. 눈은 종이띠 위에 두고 작은 앞발을 드러낸다. 볼을 부풀린 뒤 앞발로 분필 얼룩을 살짝 문지르게 한다."
   }
 }

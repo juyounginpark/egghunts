@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -19,22 +19,46 @@
     "eyes": {
       "pivot": [
         11.5,
-        14,
-        1
+        13,
+        2
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        12,
+        11,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        6,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -44,6 +68,27 @@
         12
       ],
       "parent": "body"
+    },
+    "right_arm": {
+      "pivot": [
+        17,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +108,24 @@
     }
   },
   "concept": {
-    "key": "pet-186",
     "id": 186,
-    "name": "돛등 스피노",
-    "stage": 9,
-    "stageName": "태초의 공룡섬",
+    "oldStage": 9,
+    "stage": 8,
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "spino",
-    "role": "사물 의인화 펫",
+    "previousName": "돛등 스피노",
+    "name": "과일 익룡",
     "tier": 3,
-    "rarity": "S",
-    "concept": "크고 높은 돛을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 돛등 스피노.",
-    "inspiration": "양치식물 · 화석 절벽 · 늪 / dinosaur",
-    "silhouette": [
-      "큰 뒷다리와 높은 돛",
-      "크고 높은 돛"
-    ],
-    "feature": "크고 높은 돛",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "화석과 살아 있는 양치식물이 함께 자라는 섬",
-    "material": "가죽·화석",
-    "body": "큰 뒷다리와 높은 돛",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "양치식물 · 화석 절벽 · 늪에서 온 크고 높은 돛: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "몸의 숲색 → 배의 따뜻한 모래색; 뼈 절단면은 아이보리",
-    "colorPlacement": "몸 #a4553e; 대표 기관 #4e874d; 발·연결부 #4e874d; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#a4553e",
-      "accent": "#4e874d"
-    },
-    "idle": "무거운 몸을 옮기고 등 돛 까딱 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 큰 뒷다리와 높은 돛; 꼬리에 연결된 기관에 크고 높은 돛",
+    "prompt": "큰 날개와 짧은 몸, 아래로 살짝 휜 부리를 가진 익룡을 만들라. 몸은 따뜻한 회색, 날개막은 망고색, 머리 볏은 적갈색으로 분리한다. 두 발 사이에 작은 붉은 열매 하나를 쥐게 한다. 날개를 천천히 움직이며 열매를 내려다보는 행동으로 온순한 인상을 준다.",
+    "key": "pet-186",
+    "anatomy": "bat",
+    "feature": "fruit",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bat",
+    "colors": {
+      "primary": "#9697a1"
+    },
+    "idle": "큰 날개와 짧은 몸, 아래로 살짝 휜 부리를 가진 익룡을 만들라. 몸은 따뜻한 회색, 날개막은 망고색, 머리 볏은 적갈색으로 분리한다. 두 발 사이에 작은 붉은 열매 하나를 쥐게 한다. 날개를 천천히 움직이며 열매를 내려다보는 행동으로 온순한 인상을 준다."
   }
 }

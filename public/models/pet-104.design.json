@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,11 +38,19 @@
         6,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-104",
     "id": 104,
-    "name": "도토리 꼬북",
+    "oldStage": 1,
     "stage": 1,
-    "stageName": "몽글 초원",
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "turtle",
-    "role": "예상 밖의 펫",
+    "previousName": "도토리 꼬북",
+    "name": "도토리 거북",
     "tier": 2,
-    "rarity": "A",
-    "concept": "풀지붕 등집을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 도토리 꼬북.",
-    "inspiration": "꽃밭 · 풍차 · 건초 / hay",
-    "silhouette": [
-      "머리보다 넓은 낮은 등집과 네 발",
-      "풀지붕 등집"
-    ],
-    "feature": "풀지붕 등집",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "바람을 모아 씨앗을 나르는 초원",
-    "material": "식물·털",
-    "body": "머리보다 넓은 낮은 등집과 네 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "꽃밭 · 풍차 · 건초에서 온 풀지붕 등집: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "줄기 뿌리의 짙은 올리브 → 잎 끝의 연두; 얼굴·배는 크림",
-    "colorPlacement": "몸 #71a73d; 대표 기관 #c99438; 발·연결부 #efe4b7; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#71a73d",
-      "accent": "#c99438"
-    },
-    "idle": "바람을 살피고 잎을 접었다 펼침 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 머리보다 넓은 낮은 등집과 네 발; 몸통에 연결된 덮개에 풀지붕 등집",
+    "prompt": "낮고 넓은 거북. 등껍질을 큰 도토리 열매 형태로 만들고 위쪽에는 짧은 꼭지와 도토리 모자의 띠를 둔다. 얼굴은 짧게 돌출. 밤갈색 등껍질, 황갈색 모자, 옅은 올리브 몸. 모자의 격자 홈은 넓은 간격으로 몇 개만. 천천히 고개를 꺼내는 행동.",
+    "key": "pet-104",
+    "anatomy": "turtle",
+    "feature": "acorn",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "turtle",
+    "colors": {
+      "primary": "#87946b"
+    },
+    "idle": "낮고 넓은 거북. 등껍질을 큰 도토리 열매 형태로 만들고 위쪽에는 짧은 꼭지와 도토리 모자의 띠를 둔다. 얼굴은 짧게 돌출. 밤갈색 등껍질, 황갈색 모자, 옅은 올리브 몸. 모자의 격자 홈은 넓은 간격으로 몇 개만. 천천히 고개를 꺼내는 행동."
   }
 }

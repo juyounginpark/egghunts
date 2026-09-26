@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,42 +16,42 @@
       ],
       "parent": null
     },
-    "eyes": {
+    "crown": {
       "pivot": [
         11.5,
-        14,
-        2
-      ],
-      "parent": "head"
-    },
-    "float": {
-      "pivot": [
-        11.5,
-        14,
-        15
-      ],
-      "parent": "body"
-    },
-    "head": {
-      "pivot": [
-        11.5,
-        12,
-        7
-      ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
-    },
-    "left_arm": {
-      "pivot": [
-        6,
         7,
         12
       ],
       "parent": "body"
+    },
+    "eyes": {
+      "pivot": [
+        11.5,
+        12,
+        3
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "pivot": [
+        11.5,
+        10,
+        7
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -61,13 +61,18 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -79,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-290",
     "id": 290,
-    "name": "공허 점방울",
+    "oldStage": 20,
     "stage": 20,
-    "stageName": "공허와 창조주의 정원",
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ghost",
-    "role": "대표 마스코트",
+    "previousName": "공허 점방울",
+    "name": "첫새싹",
     "tier": 0,
-    "rarity": "C",
-    "concept": "비어 있는 문을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 공허 점방울.",
-    "inspiration": "공허의 길 → 기억의 정원 → 창조자의 문 / creation",
-    "silhouette": [
-      "밑단이 갈라진 빈 망토",
-      "비어 있는 문"
-    ],
-    "feature": "비어 있는 문",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원",
-    "material": "공허 절단면·첫빛",
-    "body": "밑단이 갈라진 빈 망토",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공허의 길 → 기억의 정원 → 창조자의 문에서 온 비어 있는 문: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "몸의 짙은 자주 → 열린 절단면 청록; 씨앗 중심은 따뜻한 금빛",
-    "colorPlacement": "몸 #4a315f; 대표 기관 #48ac9e; 발·연결부 #48ac9e; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#4a315f",
-      "accent": "#48ac9e"
-    },
-    "idle": "몸이 멈춘 뒤 떨어진 기관이 늦게 따라옴 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 밑단이 갈라진 빈 망토; 머리와 등에 이어지는 기관에 비어 있는 문",
+    "prompt": "둥근 아이보리 씨앗 몸에서 큰 잎 두 장과 짧은 두 발이 나온 작은 정령을 만들라. 얼굴은 씨앗 앞쪽의 작은 점눈과 짧은 입으로 두고 껍질의 검정 이음매 하나를 남긴다. 잎은 뿌리의 청록에서 끝의 밝은 연두로 변화시킨다. 잠깐 웅크린 뒤 잎이 열리며 발밑에 작은 새싹 하나가 나타났다가 사라지게 한다.",
+    "key": "pet-290",
+    "anatomy": "seed",
+    "feature": "leaves",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "seed",
+    "colors": {
+      "primary": "#eee7cf"
+    },
+    "idle": "둥근 아이보리 씨앗 몸에서 큰 잎 두 장과 짧은 두 발이 나온 작은 정령을 만들라. 얼굴은 씨앗 앞쪽의 작은 점눈과 짧은 입으로 두고 껍질의 검정 이음매 하나를 남긴다. 잎은 뿌리의 청록에서 끝의 밝은 연두로 변화시킨다. 잠깐 웅크린 뒤 잎이 열리며 발밑에 작은 새싹 하나가 나타났다가 사라지게 한다."
   }
 }

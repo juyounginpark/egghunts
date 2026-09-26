@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -30,30 +30,15 @@
         8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
@@ -63,9 +48,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -76,36 +61,13 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
+      "parent": "body"
     },
     "right_ear": {
       "pivot": [
@@ -115,9 +77,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -127,19 +89,6 @@
         12
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
     },
     "tail": {
       "pivot": [
@@ -151,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-208",
     "id": 208,
-    "name": "별갑옷 그리핀",
-    "stage": 11,
-    "stageName": "올림포스 신전",
+    "oldStage": 11,
+    "stage": 10,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "griffin",
-    "role": "신비로운 펫",
+    "previousName": "별갑옷 그리핀",
+    "name": "대리석 그리핀",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "신전 기둥등을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 별갑옷 그리핀.",
-    "inspiration": "대리석 · 구름다리 · 번개 / lightning",
-    "silhouette": [
-      "네 발 몸 위 넓은 사각 날개",
-      "신전 기둥등"
-    ],
-    "feature": "신전 기둥등",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "구름 위에서 대리석과 번개가 숨 쉬는 신전",
-    "material": "대리석·금",
-    "body": "네 발 몸 위 넓은 사각 날개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "대리석 · 구름다리 · 번개에서 온 신전 기둥등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "기둥 아랫면 청회색 → 위쪽 상아색; 연결부만 금색",
-    "colorPlacement": "몸 #e4e2d0; 대표 기관 #d6a231; 발·연결부 #4886b1; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#e4e2d0",
-      "accent": "#d6a231"
-    },
-    "idle": "무게 있게 멈췄다 날개 한 번 들기 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 네 발 몸 위 넓은 사각 날개; 몸 양옆으로 펼친 기관에 신전 기둥등",
+    "prompt": "사자의 앞가슴과 독수리 머리, 뒤로 접힌 날개가 읽히는 작은 그리핀을 만들라. 몸은 대리석 아이보리, 부리와 발은 청동색, 날개 안쪽은 옅은 청회색으로 둔다. 이마에 장식 대신 큰 면의 명암을 사용한다. 석상처럼 가만히 있다가 눈을 깜박이고 한쪽 날개를 정리하게 한다.",
+    "key": "pet-208",
+    "anatomy": "griffin",
+    "feature": "marble",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "griffin",
+    "colors": {
+      "primary": "#eee7cf"
+    },
+    "idle": "사자의 앞가슴과 독수리 머리, 뒤로 접힌 날개가 읽히는 작은 그리핀을 만들라. 몸은 대리석 아이보리, 부리와 발은 청동색, 날개 안쪽은 옅은 청회색으로 둔다. 이마에 장식 대신 큰 면의 명암을 사용한다. 석상처럼 가만히 있다가 눈을 깜박이고 한쪽 날개를 정리하게 한다."
   }
 }

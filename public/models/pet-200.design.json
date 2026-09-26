@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,22 +27,38 @@
     "eyes": {
       "pivot": [
         11.5,
-        10,
+        8,
         1
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
-        8,
+        6,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -53,6 +69,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -60,54 +89,27 @@
         12
       ],
       "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
-      ],
-      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-200",
     "id": 200,
-    "name": "구름 솜양",
-    "stage": 11,
-    "stageName": "올림포스 신전",
+    "oldStage": 11,
+    "stage": 10,
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ram",
-    "role": "대표 마스코트",
+    "previousName": "구름 솜양",
+    "name": "올리브 거북",
     "tier": 0,
-    "rarity": "C",
-    "concept": "구름 털갈기을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 구름 솜양.",
-    "inspiration": "대리석 · 구름다리 · 번개 / lightning",
-    "silhouette": [
-      "낮은 사각 몸과 두꺼운 감긴 뿔",
-      "구름 털갈기"
-    ],
-    "feature": "구름 털갈기",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "구름 위에서 대리석과 번개가 숨 쉬는 신전",
-    "material": "대리석·금",
-    "body": "낮은 사각 몸과 두꺼운 감긴 뿔",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "대리석 · 구름다리 · 번개에서 온 구름 털갈기: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "기둥 아랫면 청회색 → 위쪽 상아색; 연결부만 금색",
-    "colorPlacement": "몸 #e4e2d0; 대표 기관 #d6a231; 발·연결부 #4886b1; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#e4e2d0",
-      "accent": "#d6a231"
-    },
-    "idle": "무게 있게 멈췄다 날개 한 번 들기 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 낮은 사각 몸과 두꺼운 감긴 뿔; 머리와 등에 이어지는 기관에 구름 털갈기",
+    "prompt": "둥근 대리석 등껍질과 작은 초록 머리, 짧은 발을 가진 거북을 만들라. 껍질은 아이보리, 가장자리만 옅은 회색이며 등 위에는 낮은 올리브 가지 한 개를 두른다. 열매는 짙은 보라색 점 몇 개로 표현한다. 고개를 들어 가지 끝의 잎을 한 번 바라보고 천천히 숨 쉬게 한다.",
+    "key": "pet-200",
+    "anatomy": "turtle",
+    "feature": "olive",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "turtle",
+    "colors": {
+      "primary": "#669858"
+    },
+    "idle": "둥근 대리석 등껍질과 작은 초록 머리, 짧은 발을 가진 거북을 만들라. 껍질은 아이보리, 가장자리만 옅은 회색이며 등 위에는 낮은 올리브 가지 한 개를 두른다. 열매는 짙은 보라색 점 몇 개로 표현한다. 고개를 들어 가지 끝의 잎을 한 번 바라보고 천천히 숨 쉬게 한다."
   }
 }

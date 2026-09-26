@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,22 +27,30 @@
     "eyes": {
       "pivot": [
         11.5,
-        11,
-        3
+        14,
+        2
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        9,
+        12,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -53,6 +61,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -60,46 +81,92 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-295",
     "id": 295,
-    "name": "별씨 정원사",
+    "oldStage": 20,
     "stage": 20,
-    "stageName": "공허와 창조주의 정원",
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "sprout",
-    "role": "크고 듬직한 펫",
+    "previousName": "별씨 정원사",
+    "name": "바람사슴",
     "tier": 2,
-    "rarity": "A",
-    "concept": "거꾸로 뿌리을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 별씨 정원사.",
-    "inspiration": "공허의 길 → 기억의 정원 → 창조자의 문 / creation",
-    "silhouette": [
-      "두 갈래 줄기와 낮은 뿌리",
-      "거꾸로 뿌리"
-    ],
-    "feature": "거꾸로 뿌리",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원",
-    "material": "공허 절단면·첫빛",
-    "body": "두 갈래 줄기와 낮은 뿌리",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "공허의 길 → 기억의 정원 → 창조자의 문에서 온 거꾸로 뿌리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "몸의 짙은 자주 → 열린 절단면 청록; 씨앗 중심은 따뜻한 금빛",
-    "colorPlacement": "몸 #e4b94d; 대표 기관 #48ac9e; 발·연결부 #ab658a; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#e4b94d",
-      "accent": "#48ac9e"
-    },
-    "idle": "몸이 멈춘 뒤 떨어진 기관이 늦게 따라옴 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 두 갈래 줄기와 낮은 뿌리; 등과 옆구리에 이어진 기관에 거꾸로 뿌리",
+    "prompt": "가는 다리와 작은 얼굴, 뒤로 길게 흐르는 가지뿔을 가진 밝은 회색 사슴을 만들라. 몸 옆은 크림색, 뿔은 옅은 청록이며 목 아래에는 긴 잎 모양 갈기 두 장을 둔다. 깃발이나 천을 추가하지 않는다. 고개를 돌리면 갈기와 뿔 끝의 작은 잎들이 순서대로 흔들리고 얇은 바람선 하나가 지나가게 한다.",
+    "key": "pet-295",
+    "anatomy": "deer",
+    "feature": "wind",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "deer",
+    "colors": {
+      "primary": "#c4c9cc"
+    },
+    "idle": "가는 다리와 작은 얼굴, 뒤로 길게 흐르는 가지뿔을 가진 밝은 회색 사슴을 만들라. 몸 옆은 크림색, 뿔은 옅은 청록이며 목 아래에는 긴 잎 모양 갈기 두 장을 둔다. 깃발이나 천을 추가하지 않는다. 고개를 돌리면 갈기와 뿔 끝의 작은 잎들이 순서대로 흔들리고 얇은 바람선 하나가 지나가게 한다."
   }
 }

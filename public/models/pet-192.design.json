@@ -1,121 +1,117 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
-    24,
+    36,
+    26,
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        17.5,
         7,
         12
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
-        11.5,
-        13,
-        2
+        17.5,
+        16,
+        4
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        17.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
-        11.5,
-        11,
+        17.5,
+        14,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
-        6,
-        7,
-        12
+        14.5,
+        12,
+        13
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.12,
+        -0.25,
+        0.18
+      ]
     },
-    "left_leg": {
+    "left_ear": {
       "pivot": [
-        6,
-        7,
+        12,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "right_arm": {
       "pivot": [
-        17,
-        7,
-        12
+        20.5,
+        12,
+        13
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.12,
+        0.25,
+        -0.18
+      ]
     },
-    "right_leg": {
+    "right_ear": {
       "pivot": [
-        17,
-        7,
+        23,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     }
   },
   "concept": {
-    "key": "pet-192",
     "id": 192,
-    "name": "방망이 콩깨비",
-    "stage": 10,
-    "stageName": "도깨비 달마을",
+    "oldStage": 10,
+    "stage": 9,
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "goblin",
-    "role": "환경 생물 펫",
+    "previousName": "방망이 콩깨비",
+    "name": "초롱반딧불",
     "tier": 1,
-    "rarity": "B",
-    "concept": "작은 방망이을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 방망이 콩깨비.",
-    "inspiration": "기와집 · 붉은 달 · 도깨비불 / flame",
-    "silhouette": [
-      "벌어진 두 뿔과 낮은 배",
-      "작은 방망이"
-    ],
-    "feature": "작은 방망이",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "기와 처마 아래 붉은 달의 불씨가 사는 마을",
-    "material": "도자기·기와",
-    "body": "벌어진 두 뿔과 낮은 배",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "기와집 · 붉은 달 · 도깨비불에서 온 작은 방망이: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "몸 중앙 따뜻한 자주 → 처마의 짙은 보라; 불씨 중심은 살구",
-    "colorPlacement": "몸 #52a38b; 대표 기관 #52416f; 발·연결부 #52416f; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#52a38b",
-      "accent": "#52416f"
-    },
-    "idle": "부채를 접고 고개 숙여 장난스러운 인사 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 벌어진 두 뿔과 낮은 배; 넓은 등집에 작은 방망이",
+    "prompt": "작은 검정 머리와 둥근 청사초롱 모양 배를 가진 반딧불을 만들라. 배 위쪽은 붉은 천, 아래는 청색 천으로 크게 나누고 내부의 빛은 따뜻한 크림색으로 둔다. 짧은 더듬이와 얇은 날개 두 장을 명료하게 표현한다. 배의 밝기가 천천히 오르내리며 조용히 떠 있게 한다.",
+    "key": "pet-192",
+    "anatomy": "bee",
+    "feature": "lantern",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bee",
+    "colors": {
+      "primary": "#30303c"
+    },
+    "idle": "작은 검정 머리와 둥근 청사초롱 모양 배를 가진 반딧불을 만들라. 배 위쪽은 붉은 천, 아래는 청색 천으로 크게 나누고 내부의 빛은 따뜻한 크림색으로 둔다. 짧은 더듬이와 얇은 날개 두 장을 명료하게 표현한다. 배의 밝기가 천천히 오르내리며 조용히 떠 있게 한다."
   }
 }

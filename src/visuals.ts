@@ -101,7 +101,7 @@ export function petVisual(id:number,rig=true){
   pet.userData.effectRadius=Math.max(bounds.max.x,-bounds.min.x,bounds.max.z,-bounds.min.z);
   pet.userData.bodyWidth=bounds.max.x-bounds.min.x;
   pet.userData.bodyDepth=bounds.max.z-bounds.min.z;
-  const stage=id>=300?id-299:Math.floor((id-100)/10)+1;
+  const stage=MONGLES[id].stageId;
   if(id>=100)pet.userData.petAccent=MONGLES[id].color;
   return aura(pet,MONGLES[id].tier,id,id>=100?EGG_EFFECT_FAMILIES[stage-1]:(MONGLES[id].species+MONGLES[id].region)%5);
 }

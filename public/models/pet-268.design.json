@@ -1,16 +1,16 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
-    24,
+    38,
+    26,
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        18.5,
         7,
         12
       ],
@@ -18,150 +18,126 @@
     },
     "eyes": {
       "pivot": [
-        11.5,
-        13,
-        2
+        18.5,
+        16,
+        4
       ],
       "parent": "head"
     },
-    "head": {
+    "float": {
       "pivot": [
-        11.5,
-        11,
-        7
-      ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
-    },
-    "left_arm": {
-      "pivot": [
-        6,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        6,
-        7,
-        12
+        18.5,
+        14,
+        15
       ],
       "parent": "body"
     },
-    "left_tip": {
+    "head": {
       "pivot": [
-        3,
-        11,
+        18.5,
+        14,
+        7
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        15.5,
+        12,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.12,
+        -0.25,
+        0.18
+      ]
+    },
+    "left_ear": {
+      "pivot": [
+        13,
+        15,
         12
       ],
-      "parent": "left_arm",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        0.12,
-        -0.08
+        0.22
+      ]
+    },
+    "left_tip": {
+      "pivot": [
+        15.5,
+        8,
+        15
+      ],
+      "parent": "body",
+      "rotation": [
+        0.27,
+        -0.25,
+        0.3
       ]
     },
     "right_arm": {
       "pivot": [
-        17,
-        11,
-        12
+        21.5,
+        12,
+        13
       ],
       "parent": "body",
       "rotation": [
-        0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        0.12,
+        0.25,
+        -0.18
       ]
     },
-    "right_leg": {
+    "right_ear": {
       "pivot": [
-        17,
-        7,
+        24,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_tip": {
       "pivot": [
-        20,
-        11,
-        12
+        21.5,
+        8,
+        15
       ],
-      "parent": "right_arm",
+      "parent": "body",
       "rotation": [
-        0,
-        -0.12,
-        0.08
+        0.27,
+        0.25,
+        -0.3
       ]
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
-      ],
-      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-268",
     "id": 268,
-    "name": "달빛 나방",
-    "stage": 17,
-    "stageName": "곤충 소인국",
+    "oldStage": 17,
+    "stage": 16,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "butterfly",
-    "role": "신비로운 펫",
+    "previousName": "달빛 나방",
+    "name": "비단나방",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "큰 잎날개을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 달빛 나방.",
-    "inspiration": "거대한 풀잎 · 이슬 · 버섯 / mantis",
-    "silhouette": [
-      "작은 배와 위아래 크기가 다른 네 날개",
-      "큰 잎날개"
-    ],
-    "feature": "큰 잎날개",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "이슬 한 방울도 집만큼 큰 풀잎 아래 나라",
-    "material": "등껍질·잎",
-    "body": "작은 배와 위아래 크기가 다른 네 날개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "거대한 풀잎 · 이슬 · 버섯에서 온 큰 잎날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "등갑 중심 적갈색 → 가장자리 호박색; 잎 끝은 연한 녹색",
-    "colorPlacement": "몸 #70a444; 대표 기관 #70a444; 발·연결부 #aa4a29; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#70a444",
-      "accent": "#70a444"
-    },
-    "idle": "더듬이 먼저 살피고 앞발 교대로 접기 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 작은 배와 위아래 크기가 다른 네 날개; 몸 양옆으로 펼친 기관에 큰 잎날개",
+    "prompt": "작은 몸과 풍성한 가슴털, 넓고 둥근 날개를 가진 나방을 만들라. 몸은 아이보리, 날개는 옅은 분홍, 가장자리만 짙은 자주색으로 두른다. 앞발에는 짧은 흰 비단실 꾸러미를 안게 한다. 실 한 줄을 가볍게 풀었다 감으며 날개가 숨처럼 천천히 움직이게 한다.",
+    "key": "pet-268",
+    "anatomy": "butterfly",
+    "feature": "silk",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "butterfly",
+    "colors": {
+      "primary": "#eee7cf"
+    },
+    "idle": "작은 몸과 풍성한 가슴털, 넓고 둥근 날개를 가진 나방을 만들라. 몸은 아이보리, 날개는 옅은 분홍, 가장자리만 짙은 자주색으로 두른다. 앞발에는 짧은 흰 비단실 꾸러미를 안게 한다. 실 한 줄을 가볍게 풀었다 감으며 날개가 숨처럼 천천히 움직이게 한다."
   }
 }

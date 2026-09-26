@@ -1,3 +1,4 @@
+import {legacyTheme} from './stage-order';
 import { buildRegionLayout,type Block } from './region-layout';
 import { routeSegments,stagePatterns,environmentPlacement,ROAD_WIDTH_SCALE } from './stage-data';
 import {villageArt} from './world-art';
@@ -47,7 +48,7 @@ export class MapCollision{
     for(const [lane,hazard] of stagePatterns(r.stage).entries()){
      if(['hay','train','book','raptor','gear','orb'].includes(hazard.visual))continue;
      const {x,z}=environmentPlacement(r.stage,lane,r.offset);
-     if([2,6,7,12,13,18].includes(r.stage))for(const side of [-1,1]){
+     if([2,6,7,12,13,18].includes(legacyTheme(r.stage)))for(const side of [-1,1]){
       boxes.push({minX:x+side*.55-.1,maxX:x+side*.55+.1,minZ:z-.35,maxZ:z+.35});
      }
     }

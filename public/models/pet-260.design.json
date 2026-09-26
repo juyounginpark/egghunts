@@ -1,105 +1,125 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
-    24,
+    36,
+    26,
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        17.5,
         7,
         12
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
-        11.5,
-        10,
-        1
+        17.5,
+        16,
+        4
       ],
       "parent": "head"
     },
-    "head": {
+    "float": {
       "pivot": [
-        11.5,
-        8,
-        7
-      ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        6,
-        7,
-        12
+        17.5,
+        14,
+        15
       ],
       "parent": "body"
     },
-    "right_leg": {
+    "head": {
       "pivot": [
-        17,
-        7,
+        17.5,
+        14,
+        7
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        14.5,
+        12,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.12,
+        -0.25,
+        0.18
+      ]
+    },
+    "left_ear": {
+      "pivot": [
+        12,
+        15,
         12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        20.5,
+        12,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.12,
+        0.25,
+        -0.18
+      ]
+    },
+    "right_ear": {
+      "pivot": [
+        23,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
+    "tail": {
+      "pivot": [
+        17.5,
+        6,
+        17
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-260",
     "id": 260,
-    "name": "이슬 진딧",
-    "stage": 17,
-    "stageName": "곤충 소인국",
+    "oldStage": 17,
+    "stage": 16,
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "caterpillar",
-    "role": "대표 마스코트",
+    "previousName": "이슬 진딧",
+    "name": "꽃꿀벌",
     "tier": 0,
-    "rarity": "C",
-    "concept": "접힌 풀잎을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 이슬 진딧.",
-    "inspiration": "거대한 풀잎 · 이슬 · 버섯 / mantis",
-    "silhouette": [
-      "크기가 다른 세 마디와 작은 발",
-      "접힌 풀잎"
-    ],
-    "feature": "접힌 풀잎",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "이슬 한 방울도 집만큼 큰 풀잎 아래 나라",
-    "material": "등껍질·잎",
-    "body": "크기가 다른 세 마디와 작은 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "거대한 풀잎 · 이슬 · 버섯에서 온 접힌 풀잎: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "등갑 중심 적갈색 → 가장자리 호박색; 잎 끝은 연한 녹색",
-    "colorPlacement": "몸 #70a444; 대표 기관 #70a444; 발·연결부 #aa4a29; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#70a444",
-      "accent": "#70a444"
-    },
-    "idle": "더듬이 먼저 살피고 앞발 교대로 접기 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 크기가 다른 세 마디와 작은 발; 머리와 등에 이어지는 기관에 접힌 풀잎",
+    "prompt": "둥근 머리와 짧은 타원형 배가 붙은 작은 꿀벌을 만들라. 몸은 노랑과 짙은 갈색의 넓은 띠, 날개는 크림색 반투명 판 두 장으로 둔다. 두 앞발 사이에는 몸보다 작은 분홍 꽃 하나를 쥐게 한다. 꽃에 코를 가까이 대고 꽃가루 점 두세 개가 얼굴에 묻는 동작을 준다.",
+    "key": "pet-260",
+    "anatomy": "bee",
+    "feature": "flower",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bee",
+    "colors": {
+      "primary": "#ead378"
+    },
+    "idle": "둥근 머리와 짧은 타원형 배가 붙은 작은 꿀벌을 만들라. 몸은 노랑과 짙은 갈색의 넓은 띠, 날개는 크림색 반투명 판 두 장으로 둔다. 두 앞발 사이에는 몸보다 작은 분홍 꽃 하나를 쥐게 한다. 꽃에 코를 가까이 대고 꽃가루 점 두세 개가 얼굴에 묻는 동작을 준다."
   }
 }

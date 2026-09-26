@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,43 +16,41 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        8,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
+        6,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        11,
+        15,
         12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        0.22
       ]
     },
     "left_leg": {
@@ -63,35 +61,17 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        11,
+        15,
         12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
+        0.08,
         0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
+        -0.22
       ]
     },
     "right_leg": {
@@ -101,67 +81,27 @@
         12
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        17
-      ],
-      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-276",
     "id": 276,
-    "name": "자석 날개새",
-    "stage": 18,
-    "stageName": "고철 로봇행성",
+    "oldStage": 18,
+    "stage": 17,
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "bird",
-    "role": "사물 의인화 펫",
+    "previousName": "자석 날개새",
+    "name": "태양전지 거북",
     "tier": 3,
-    "rarity": "S",
-    "concept": "금속 부채날개을 이용해 쓸모를 되찾은 고철이 스스로 조립되는 행성에서 살아가는 자석 날개새.",
-    "inspiration": "자석 크레인 · 고철산 / magnet",
-    "silhouette": [
-      "앞으로 나온 쐐기 부리와 낮은 양 날개",
-      "금속 부채날개"
-    ],
-    "feature": "금속 부채날개",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "쓸모를 되찾은 고철이 스스로 조립되는 행성",
-    "material": "철·산화 구리",
-    "body": "앞으로 나온 쐐기 부리와 낮은 양 날개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "자석 크레인 · 고철산에서 온 금속 부채날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "철판 앞면 청회색 → 이음새 남색; 판 아래 녹슨 주황",
-    "colorPlacement": "몸 #3c526b; 대표 기관 #879bac; 발·연결부 #879bac; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#3c526b",
-      "accent": "#879bac"
-    },
-    "idle": "관절을 잠갔다 집게를 벌리는 정비 동작 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 앞으로 나온 쐐기 부리와 낮은 양 날개; 꼬리에 연결된 기관에 금속 부채날개",
+    "prompt": "넓고 낮은 회색 거북의 등껍질을 큰 남색 태양전지 판 세 장으로 만들라. 패널의 선은 굵은 격자 몇 개만 남기고 얼굴은 크림색으로 밝힌다. 앞발에는 작은 초록 표시등 하나를 둔다. 빛을 받는 방향으로 등판의 양옆이 살짝 열리고 표시등이 천천히 켜지게 한다.",
+    "key": "pet-276",
+    "anatomy": "turtle",
+    "feature": "solar",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "turtle",
+    "colors": {
+      "primary": "#9697a1"
+    },
+    "idle": "넓고 낮은 회색 거북의 등껍질을 큰 남색 태양전지 판 세 장으로 만들라. 패널의 선은 굵은 격자 몇 개만 남기고 얼굴은 크림색으로 밝힌다. 앞발에는 작은 초록 표시등 하나를 둔다. 빛을 받는 방향으로 등판의 양옆이 살짝 열리고 표시등이 천천히 켜지게 한다."
   }
 }

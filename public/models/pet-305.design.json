@@ -1,240 +1,169 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    28,
-    25,
-    35
+    56,
+    35,
+    59
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        13.5,
+        27.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
     "eyes": {
       "pivot": [
-        13.5,
-        16,
-        1
+        27.5,
+        26,
+        0
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        27.5,
+        14,
+        18
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
-        13.5,
-        14,
-        7
+        27.5,
+        24,
+        10
       ],
-      "parent": "body",
-      "rotation": [
-        0.08,
-        0,
-        0
-      ]
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
-        8,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.12,
-        0.1
-      ],
-      "scale": [
-        1.08,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        8,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        8,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        5,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        19,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.12,
-        -0.1
-      ],
-      "scale": [
-        1.08,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        19,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        19,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        22,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        13.5,
-        7,
+        22.5,
+        14,
         18
       ],
       "parent": "body",
       "rotation": [
-        0.04,
+        0.08,
+        -0.22,
+        0.08
+      ]
+    },
+    "neck": {
+      "pivot": [
+        27.5,
+        12,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
         -0.13,
+        0,
+        0
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        32.5,
+        14,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.08,
+        0.22,
+        -0.08
+      ]
+    },
+    "tail": {
+      "pivot": [
+        27.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        13.5,
-        7,
-        22
+        27.5,
+        6,
+        27.0
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        -0.13,
+        -0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        13.5,
-        7,
-        26
+        27.5,
+        6,
+        34.0
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        -0.13,
+        0.08,
+        -0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        13.5,
-        7,
-        30
+        27.5,
+        6,
+        41.0
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        -0.13,
+        0.12,
+        -0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        27.5,
+        6,
+        48.0
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-305",
     "id": 305,
-    "name": "자정서고 유령룡",
-    "stage": 6,
-    "stageName": "유령 학교",
+    "oldStage": 6,
+    "stage": 5,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "자정서고 유령룡",
+    "name": "자정의 유령룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "사물함 문 날개·책등이 접히는 계단 꼬리을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 자정서고 유령룡.",
-    "inspiration": "책상 · 사물함 · 긴 복도 / book",
-    "silhouette": [
-      "좁고 높은 교실 수호룡",
-      "사물함 문 날개·책등이 접히는 계단 꼬리"
-    ],
-    "feature": "사물함 문 날개·책등이 접히는 계단 꼬리",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "텅 빈 교실에서 물건이 수업을 이어가는 학교",
-    "material": "종이·낡은 목재",
-    "body": "좁고 높은 교실 수호룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "책상 · 사물함 · 긴 복도에서 온 사물함 문 날개·책등이 접히는 계단 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "책등 자주갈색 → 펼친 면 아이보리; 모서리는 옅은 황토",
-    "colorPlacement": "몸 #a7774f; 대표 기관 #e1cba3; 발·연결부 #775274; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#a7774f",
-      "accent": "#e1cba3"
-    },
-    "idle": "고개를 갸웃하고 문짝을 살짝 열기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 좁고 높은 교실 수호룡; 성체 전용 골격에 사물함 문 날개·책등이 접히는 계단 꼬리",
+    "prompt": "찢어진 천처럼 흐르는 날개와 가늘고 긴 목을 가진 유령 비룡을 만들라. 몸은 푸른 백색, 날개 안쪽은 짙은 남색, 얼굴은 불투명하게 유지한다. 가슴에는 작은 학교 종 하나가 매달리고 꼬리는 잉크가 풀리듯 넓게 갈라진다. 머리의 두 뿔은 뒤로 젖혀 용의 인상을 분명히 한다. 날개를 접으면 망토처럼 보이고 종이 흔들릴 때만 가장자리에 푸른 빛이 지나가게 한다. 전용 알은 분필빛 껍질에 검푸른 창문 무늬와 종고리 하나를 둔다.",
+    "key": "pet-305",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "날아오는 책을 피하고 사물함 앞에서는 잠깐 조용히.",
-    "acquisitionCondition": "책·사물함 습격 회피 + 학교 위험 구간에서 2초 정지",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#243450"
+    },
+    "idle": "찢어진 천처럼 흐르는 날개와 가늘고 긴 목을 가진 유령 비룡을 만들라. 몸은 푸른 백색, 날개 안쪽은 짙은 남색, 얼굴은 불투명하게 유지한다. 가슴에는 작은 학교 종 하나가 매달리고 꼬리는 잉크가 풀리듯 넓게 갈라진다. 머리의 두 뿔은 뒤로 젖혀 용의 인상을 분명히 한다. 날개를 접으면 망토처럼 보이고 종이 흔들릴 때만 가장자리에 푸른 빛이 지나가게 한다. 전용 알은 분필빛 껍질에 검푸른 창문 무늬와 종고리 하나를 둔다."
   }
 }

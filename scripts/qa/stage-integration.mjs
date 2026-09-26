@@ -17,15 +17,36 @@ try{
  const {MapCollision,villageMapColliders}=await load('map-collision');
  const {exportRuntime}=await load('online-state');
  const {runRoom}=await server.ssrLoadModule('/server/room-engine.ts');
+ const {OLD_TO_STAGE}=await load('stage-order');
+ const {migrateStageSave}=await load('stage-migration');
  const now=1800000060000,make=()=>new GameState(freshSave(now),()=>now,()=>.25);
  const test=(name,fn)=>{fn();passed.push(name);console.log('PASS',name);};
- test('320 stable IDs; stage, species, tier and name match pre-rework catalogue',()=>{
+ test('320 stable IDs; document stage permutation preserves species and tier',()=>{
   assert.equal(MONGLES.length,320);
   for(const [path,offset]of [['src/stage-pet-catalog.ts',100],['src/secret-dragon-catalog.ts',300]]){
-   const old=execFileSync('git',['-c',`safe.directory=${process.cwd().replaceAll('\\','/')}`,'show',`HEAD:${path}`],{encoding:'utf8'});
+   const old=execFileSync('git',['-c',`safe.directory=${process.cwd().replaceAll('\\','/')}`,'show',`ed1b66f:${path}`],{encoding:'utf8'});
    const rows=JSON.parse(old.slice(old.indexOf('['),old.lastIndexOf(']')+1));
-   rows.forEach((r,i)=>{const m=MONGLES[offset+i];assert.equal(m.name,r.name);assert.equal(m.tier,r.tier);assert.equal(m.stageId,r.stageId);assert.equal(m.species,r.slot);});
+   rows.forEach((r,i)=>{const m=MONGLES[offset+i];assert.equal(m.tier,r.tier);assert.equal(m.stageId,OLD_TO_STAGE[r.stageId]);assert.equal(m.species,r.slot);});
   }
+ });
+ test('legacy stage migration is idempotent and preserves ownership and stored eggs',()=>{
+  const s=make().save;delete s.stageOrderVersion;s.mongles=Array.from({length:320},(_,i)=>i%5);s.active=[140,304];s.obtainedPets=[140,304];s.claimedPets=[304];
+  s.eggs=Array.from({length:20},(_,i)=>({id:`old-${i}`,stageId:i+1,type:0,hp:123,distance:7,variant:0}));
+  s.visitedStages=[5,6,19,20];s.claimedStages=[5,20];s.progression.completedStages=[5,6,19,20];
+  s.dragonClues={5:{...newDragonClue(),avoided:['tentacle','sweep'],claimed:true},20:{...newDragonClue(),avoided:['memory-tentacle','memory-lightning','memory-meteor','creation-wave'],claimed:true}};
+  const counts=[...s.mongles];migrateStageSave(s);
+  assert.deepEqual(s.mongles,counts);assert.deepEqual(s.active,[140,304]);assert.deepEqual(s.claimedPets,[304]);
+  s.eggs.forEach((e,i)=>{assert.equal(e.stageId,OLD_TO_STAGE[i+1]);assert.equal(e.id,`old-${i}`);assert.equal(e.hp,123);assert.equal(e.type,0);});
+  assert.deepEqual(s.visitedStages,[19,5,18,20]);assert.deepEqual(s.claimedStages,[19,20]);assert.deepEqual(s.progression.completedStages,[19,5,18,20]);
+  validateDragonClues(s.dragonClues);assert.equal(s.dragonClues[19].claimed,true);assert.equal(s.dragonClues[20].claimed,true);assert.deepEqual(s.dragonClues[20].avoided,['creation-wave']);assert.ok(s.dragonClues[19].avoided.includes('memory-meteor'));
+  const once=JSON.stringify(s);migrateStageSave(s);assert.equal(JSON.stringify(s),once);
+ });
+ test('older short routes and aliased boss loot migrate once; partial worlds retain their eggs',()=>{
+  const s=make().snapshot();delete s.stageOrderVersion;s.routeVersion=1;
+  const egg={...s.world.find(e=>e.stageId===5),z:-144,homeZ:-144};s.world=[egg];s.bosses=[{stageId:5,x:0,z:-148,homeZ:-148,mode:'return',target:null,loot:egg}];
+  s.expedition={x:0,z:-144,deadline:now+10000,carried:egg};
+  migrateStageSave(s);assert.equal(egg.stageId,19);assert.equal(egg.z,-1764);assert.equal(s.expedition.z,-1764);assert.equal(s.bosses[0].loot.stageId,19);assert.equal(s.routeVersion,2);
+  const restored=new GameState(s,()=>now,()=>.25);assert.ok(restored.world.some(e=>e.id===egg.id));assert.equal(restored.bosses.length,21);assert.equal(restored.carried.id,egg.id);
  });
  test('100 / 300 / 320 saves preserve counts, equipment, sold discoveries and claimed rewards',()=>{
   for(const length of [100,300,320]){
@@ -83,7 +104,7 @@ try{
   for(let stage=1;stage<=20;stage++)for(let tier=0;tier<7;tier++){
    const g=make(),type=EGGS.findIndex(e=>e.region===Math.floor((stage-1)/4)&&e.tier===tier);
    g.save.eggs=[{id:'old',type,hp:1,distance:10,stageId:stage,variant:0}];g.save.selected='old';g.damage(1);g.claimHatch(g.save.selected);assert.equal(MONGLES[g.result].stageId,stage);assert.equal(MONGLES[g.result].tier,tier);assert.notEqual(MONGLES[g.result].species,10);
-   if(tier===6){g.result=null;g.save.eggs=[{id:'old-secret',type,hp:1,distance:10,stageId:stage,variant:5}];g.save.selected='old-secret';g.damage(1);g.claimHatch(g.save.selected);assert.equal(g.result,299+stage);}
+   if(tier===6){g.result=null;g.save.eggs=[{id:'old-secret',type,hp:1,distance:10,stageId:stage,variant:5}];g.save.selected='old-secret';g.damage(1);g.claimHatch(g.save.selected);assert.equal(g.result,MONGLES.findIndex(m=>m.stageId===stage&&m.species===10));}
    assert.ok(g.world.every(e=>Number.isInteger(e.variant)&&e.variant>=0&&e.variant<=5));
   }
  });

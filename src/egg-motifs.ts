@@ -1,4 +1,5 @@
 import {STAGES} from "./stage-data";
+import {legacyTheme} from './stage-order';
 type EggCell=[number,number,number,number];
 // Existing named egg motifs retained as large shell features in the redesign.
 const cache=new Map<string,{cells:EggCell[];colors:string[]}>();
@@ -17,7 +18,7 @@ export function stageEggMotif(stage:number,v:number){
  const eye=(x=10,y=10,z=15)=>{orb(x,y,z,2,2,1,3);box(x,y,z+1,1,2,1,4);};
  if(v===5){
   // A sealed stage relic: its outer structure foreshadows the dragon inside.
-  switch(stage){
+  switch(legacyTheme(stage)){
    case 1: orb(10,6,10,5,5,5);box(10,12,10,2,10,2,5);for(const [x,y,w,h] of [[6,14,7,2],[14,14,7,2],[10,10,2,7],[10,17,2,5]])box(x,y,13,w,h,2,6);break;
    case 2: box(10,7,10,10,10,12,5);box(10,14,7,8,6,7,2);for(const x of [4,16])for(const z of [6,14])orb(x,3,z,2,3,3,4);box(10,16,15,3,5,3,5);break;
    case 3: orb(10,4,10,8,3,7,3);for(const x of [4,10,16]){box(x,10,10,3,10,4,2);orb(x,16-Math.abs(x-10)/2,10,3,3,3,2);}orb(10,8,15,3,3,2,3);break;
@@ -47,7 +48,7 @@ export function stageEggMotif(stage:number,v:number){
  // Different proportions give the five eggs a distinct outline even at icon size.
  if([2,6,7,18].includes(stage)&&v%2===0)box(10,8,10,11-v,11,10+v,1);
  else orb(10,7,10,[5.5,6.5,4.5,6,5][v],[7,5,8,6,6.5][v],[5,5.5,4,6,4.5][v],1);
- switch(stage){
+ switch(legacyTheme(stage)){
  case 1:
   if(v===0){orb(10,12,10,6,2,5.5,5);box(10,16,10,2,4,2,5);}
   if(v===1){for(let j=0;j<6;j++){const a=j*Math.PI/3;orb(10+Math.cos(a)*4,13,10+Math.sin(a)*4,3,4,3,2);}orb(10,14,10,2,3,2,3);}

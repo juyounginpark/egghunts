@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,11 +38,19 @@
         6,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-135",
     "id": 135,
-    "name": "용암 달팽이",
+    "oldStage": 4,
     "stage": 4,
-    "stageName": "화산 입구",
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "snail",
-    "role": "크고 듬직한 펫",
+    "previousName": "용암 달팽이",
+    "name": "용암달팽이",
     "tier": 2,
-    "rarity": "A",
-    "concept": "흑요석 나선을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 용암 달팽이.",
-    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
-    "silhouette": [
-      "낮은 긴 발 위 거대한 말린 집",
-      "흑요석 나선"
-    ],
-    "feature": "흑요석 나선",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
-    "material": "현무암·용암",
-    "body": "낮은 긴 발 위 거대한 말린 집",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 흑요석 나선: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
-    "colorPlacement": "몸 #ed622c; 대표 기관 #ed622c; 발·연결부 #938085; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "낮고 긴 붉은 주황 몸에 크고 검은 소용돌이 껍질을 얹어라. 껍질의 나선 홈 한 줄만 주황으로 빛나게 하고 눈자루는 짧고 둥글게 만든다. 몸 아래에는 얇은 금빛 테두리를 두어 껍질과 분리한다. 눈자루를 서로 다른 방향으로 기울이며 나선의 빛이 느리게 안쪽으로 이동한다.",
+    "key": "pet-135",
+    "anatomy": "snail",
+    "feature": "spiral",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "snail",
     "colors": {
-      "primary": "#ed622c",
-      "accent": "#ed622c"
+      "primary": "#db6544"
     },
-    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 낮은 긴 발 위 거대한 말린 집; 등과 옆구리에 이어진 기관에 흑요석 나선",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "낮고 긴 붉은 주황 몸에 크고 검은 소용돌이 껍질을 얹어라. 껍질의 나선 홈 한 줄만 주황으로 빛나게 하고 눈자루는 짧고 둥글게 만든다. 몸 아래에는 얇은 금빛 테두리를 두어 껍질과 분리한다. 눈자루를 서로 다른 방향으로 기울이며 나선의 빛이 느리게 안쪽으로 이동한다."
   }
 }

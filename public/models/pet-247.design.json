@@ -1,157 +1,109 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
+    26,
     24,
-    24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        11.5,
+        12.5,
         7,
         12
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
-        11.5,
-        10,
-        1
+        12.5,
+        19,
+        0
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
-        11.5,
-        8,
+        12.5,
+        17,
         7
       ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        9.5,
+        12,
+        13
+      ],
       "parent": "body",
       "rotation": [
-        0.035,
+        0.12,
+        -0.25,
+        0.18
+      ]
+    },
+    "left_ear": {
+      "pivot": [
+        7,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
         0,
-        0
+        0.22
       ]
     },
-    "left_leg": {
+    "right_arm": {
       "pivot": [
-        6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_leg": {
-      "pivot": [
-        17,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        18
+        15.5,
+        12,
+        13
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
-        0
+        0.12,
+        0.25,
+        -0.18
       ]
     },
-    "tail_1": {
+    "right_ear": {
       "pivot": [
-        11.5,
-        6,
-        22
+        18,
+        15,
+        12
       ],
-      "parent": "tail",
+      "parent": "head",
       "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
+        0.08,
+        0,
+        -0.22
       ]
     }
   },
   "concept": {
-    "key": "pet-247",
     "id": 247,
-    "name": "달그네 고양",
-    "stage": 15,
-    "stageName": "뒤죽박죽 꿈나라",
+    "oldStage": 15,
+    "stage": 14,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "fox",
-    "role": "위험 요소 펫",
+    "previousName": "달그네 고양",
+    "name": "거울백조",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "밤하늘 이불꼬리을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 달그네 고양.",
-    "inspiration": "공중 침대 · 거꾸로 시계 / hand",
-    "silhouette": [
-      "낮은 네 발과 몸보다 높은 꼬리",
-      "밤하늘 이불꼬리"
-    ],
-    "feature": "밤하늘 이불꼬리",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "시간과 위아래가 뒤집힌 잠의 세계",
-    "material": "쿠션·꿈빛",
-    "body": "낮은 네 발과 몸보다 높은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공중 침대 · 거꾸로 시계에서 온 밤하늘 이불꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "쿠션 중앙 복숭아색 → 접힌 가장자리 자주색; 달 무늬만 금빛",
-    "colorPlacement": "몸 #7663af; 대표 기관 #c875ae; 발·연결부 #efbe6e; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "낮고 넓은 백조 몸과 크게 휘어진 목을 만들라. 몸은 따뜻한 흰색, 부리는 짙은 보라, 날개 안쪽은 청회색의 매끈한 거울 면으로 둔다. 얼굴에는 작은 점눈만 사용한다. 날개를 펼치면 별 모양 반사 무늬가 한 번 지나가고 다시 접혀 부드러운 깃털 면이 보이게 한다.",
+    "key": "pet-247",
+    "anatomy": "swan",
+    "feature": "mirror",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "swan",
     "colors": {
-      "primary": "#7663af",
-      "accent": "#c875ae"
+      "primary": "#eae9df"
     },
-    "idle": "고개와 꼬리가 서로 반대 박자로 졸기 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 낮은 네 발과 몸보다 높은 꼬리; 등에 짊어진 기관에 밤하늘 이불꼬리",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "낮고 넓은 백조 몸과 크게 휘어진 목을 만들라. 몸은 따뜻한 흰색, 부리는 짙은 보라, 날개 안쪽은 청회색의 매끈한 거울 면으로 둔다. 얼굴에는 작은 점눈만 사용한다. 날개를 펼치면 별 모양 반사 무늬가 한 번 지나가고 다시 접혀 부드러운 깃털 면이 보이게 한다."
   }
 }

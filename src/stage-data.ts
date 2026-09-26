@@ -1,3 +1,4 @@
+import {reorderStages,OLD_TO_STAGE} from './stage-order';
 export const ROAD_WIDTH_SCALE=2;
 export type Shape='ellipse'|'line'|'cone'|'ring';
 export type Targeting='predict'|'fixed'|'track'|'sweep';
@@ -27,7 +28,12 @@ const rows:StageRow[]=[
  ['은하수 천문대',0x565380,0xb8daff,'작은 행성 · 별자리 · 우주열차','meteor',47,57],
  ['공허와 창조주의 정원',0x393145,0xf9da87,'공허의 길 → 기억의 정원 → 창조자의 문','creation',60,60],
 ];
-export const STAGES=rows.map(([name,color,accent,description,kit,minLevel,maxLevel],i)=>({id:i+1,name,color,accent,description,kit,minLevel,maxLevel,safe:i<4}));
+const documentRows=reorderStages(rows);
+documentRows[2]=['심해 산호숲',0x6eb4bd,0xe6a0a5,'산호 아치 · 진주 · 해류','coral',1,10];
+documentRows[3]=['화산 대장간',0x62545b,0xf29b58,'모루 · 풀무 · 용암 수로','steam',1,10];
+documentRows[18]=['공허의 틈',0x373343,0xd5cbb7,'빈 돌 고리 · 끊긴 암반 · 공백','void',47,57];
+documentRows[19]=['창조주의 정원',0xc3cab7,0xe2c685,'최초의 나무 · 흑토 · 씨앗','creation',60,60];
+export const STAGES=documentRows.map(([name,color,accent,description,kit,minLevel,maxLevel],i)=>({id:i+1,name,color,accent,description,kit,minLevel,maxLevel,safe:i<4}));
 export const STAGE_DIFFICULTY={minimumDamage:40,damagePerStage:20,recommendedSpeedMultiplier:2};
 export const STAGE_STEPS=[{damage:1,cooldown:1,density:1,tint:1.08},{damage:1.25,cooldown:.85,density:1.2,tint:1},{damage:1.5,cooldown:.7,density:1.4,tint:.88}];
 export const FINAL_GUARDIAN={stage:20,scale:3,bossEndOffset:12,eggEndOffset:23,minimumEggTier:4};
@@ -103,13 +109,18 @@ export const HAZARDS:HazardDefinition[]=[
  attack(19,'comet-crossing','혜성 횡단로',50,1.5,'ellipse',{visual:'orb'}),
  attack(19,'constellation-ray','별자리 광선',40,1.4,'line',{visual:'laser'}),
 ];
-export const STAGE_ENVIRONMENT_IDS=[
+// Keep attack values/timing; relocate their visual causes with the authored worlds.
+for(const hazard of HAZARDS)hazard.stageId=hazard.stageId===5?3:hazard.stageId===20&&hazard.id!=='creation-wave'?19:OLD_TO_STAGE[hazard.stageId];
+const oldEnvironmentIds=[
  ['hay'],['train'],['ink'],['lava-breath'],
  ['tentacle','sweep'],['locker','book'],['laser','drone'],['scorpion','sandstorm'],
  ['stomp','raptor','tar-pool'],['wisps','club','moon-bell'],['lightning','medusa','fallen-column'],['ufo','turret','alien-acid'],
  ['steam','gear','pressure-piston','boiler-coil'],['icicle','thin-ice','blizzard-vent','ice-boulder'],['nightmare','clock','dream-spindle','falling-bed'],['vine','puddle','spore-burst','toxic-drum'],
  ['mantis','web','wasp-patrol','falling-dew','thorn-snap'],['magnet','crusher','scrap-gear','scrap-cart','arc-coil'],['meteors','solar','gravity-well','comet-crossing','constellation-ray'],['void-hand','memory-tentacle','memory-lightning','memory-meteor','creation-wave'],
 ];
+export const STAGE_ENVIRONMENT_IDS=reorderStages(oldEnvironmentIds);
+STAGE_ENVIRONMENT_IDS[18]=['void-hand','memory-tentacle','memory-lightning','memory-meteor'];
+STAGE_ENVIRONMENT_IDS[19]=['creation-wave'];
 export function stagePatterns(stage:number,_z=0){return STAGE_ENVIRONMENT_IDS[stage-1].map(id=>HAZARDS.find(d=>d.stageId===stage&&d.id===id)!);}
 export function environmentPlacement(stage:number,lane:number,offset=0){
  const count=STAGE_ENVIRONMENT_IDS[stage-1].length,length=stage===20?ROUTE.finalLength:ROUTE.length;

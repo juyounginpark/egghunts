@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    37
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,6 +15,14 @@
         12
       ],
       "parent": null
+    },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -30,29 +38,27 @@
         11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
       ]
     },
     "left_leg": {
@@ -63,35 +69,25 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
       ]
     },
     "right_leg": {
@@ -102,66 +98,91 @@
       ],
       "parent": "body"
     },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
     "tail": {
       "pivot": [
         11.5,
         6,
-        17
+        17.0
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.096,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.6
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.096,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        24.2
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.096,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.8
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.096,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        31.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.096,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-138",
     "id": 138,
-    "name": "불꽃 불사조",
+    "oldStage": 4,
     "stage": 4,
-    "stageName": "화산 입구",
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "phoenix",
-    "role": "신비로운 펫",
+    "previousName": "불꽃 불사조",
+    "name": "모루두더지",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "불사조 화염부채을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 불꽃 불사조.",
-    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
-    "silhouette": [
-      "큰 부채 날개와 두 갈래 긴 꼬리",
-      "불사조 화염부채"
-    ],
-    "feature": "불사조 화염부채",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
-    "material": "현무암·용암",
-    "body": "큰 부채 날개와 두 갈래 긴 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 불사조 화염부채: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
-    "colorPlacement": "몸 #524251; 대표 기관 #ed622c; 발·연결부 #ffcb56; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#524251",
-      "accent": "#ed622c"
-    },
-    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 큰 부채 날개와 두 갈래 긴 꼬리; 몸 양옆으로 펼친 기관에 불사조 화염부채",
+    "prompt": "넓은 어깨와 큰 앞발, 작고 짧은 코를 가진 회갈색 두더지를 만들라. 배에는 짙은 가죽 앞치마를 두르고 등은 낮은 모루 형태로 단단하게 잡는다. 앞발 하나에는 둥근 짧은 망치, 머리에는 작은 보호 안경을 올리되 눈은 가리지 않는다. 망치를 몸 옆에 두드리는 작은 작업 동작을 준다.",
+    "key": "pet-138",
+    "anatomy": "mole",
+    "feature": "anvil",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "mole",
+    "colors": {
+      "primary": "#958477"
+    },
+    "idle": "넓은 어깨와 큰 앞발, 작고 짧은 코를 가진 회갈색 두더지를 만들라. 배에는 짙은 가죽 앞치마를 두르고 등은 낮은 모루 형태로 단단하게 잡는다. 앞발 하나에는 둥근 짧은 망치, 머리에는 작은 보호 안경을 올리되 눈은 가리지 않는다. 망치를 몸 옆에 두드리는 작은 작업 동작을 준다."
   }
 }

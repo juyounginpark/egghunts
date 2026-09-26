@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    37
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,42 +16,42 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        10,
+        1
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
+        8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -61,13 +61,18 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -76,46 +81,92 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.096,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.6
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.096,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        24.2
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.096,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.8
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.096,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        31.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.096,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-114",
     "id": 114,
-    "name": "실타래 토끼",
+    "oldStage": 2,
     "stage": 2,
-    "stageName": "장난감 왕국",
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "rabbit",
-    "role": "예상 밖의 펫",
+    "previousName": "실타래 토끼",
+    "name": "구슬고양이",
     "tier": 2,
-    "rarity": "A",
-    "concept": "리본 손잡이을 이용해 태엽이 풀리면 쉬어가는 장난감 나라에서 살아가는 실타래 토끼.",
-    "inspiration": "블록 성 · 태엽길 · 기차 / train",
-    "silhouette": [
-      "좁은 몸과 몸 높이만큼 긴 귀",
-      "리본 손잡이"
-    ],
-    "feature": "리본 손잡이",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "태엽이 풀리면 쉬어가는 장난감 나라",
-    "material": "칠한 목재",
-    "body": "좁은 몸과 몸 높이만큼 긴 귀",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "블록 성 · 태엽길 · 기차에서 온 리본 손잡이: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "접합부 적갈색 → 넓은 블록 면의 선명한 원색; 앞면만 밝게",
-    "colorPlacement": "몸 #d34d35; 대표 기관 #efbb36; 발·연결부 #32a6c2; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#d34d35",
-      "accent": "#efbb36"
-    },
-    "idle": "멈칫하고 정해진 각도로 회전 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 좁은 몸과 몸 높이만큼 긴 귀; 몸통에 연결된 덮개에 리본 손잡이",
+    "prompt": "둥근 머리와 배가 붙은 작은 고양이에 짧은 귀와 크게 휘어진 꼬리를 달라. 겉은 옅은 민트색 유리 느낌을 주되 얼굴 주변은 불투명하게 유지한다. 배 안쪽의 분홍 구슬 하나가 대표 오브제다. 몸을 기울이면 구슬이 배 안에서 천천히 따라 굴러가며, 복잡한 실시간 굴절 없이도 읽히게 한다.",
+    "key": "pet-114",
+    "anatomy": "cat",
+    "feature": "bead",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "cat",
+    "colors": {
+      "primary": "#a1d4c4"
+    },
+    "idle": "둥근 머리와 배가 붙은 작은 고양이에 짧은 귀와 크게 휘어진 꼬리를 달라. 겉은 옅은 민트색 유리 느낌을 주되 얼굴 주변은 불투명하게 유지한다. 배 안쪽의 분홍 구슬 하나가 대표 오브제다. 몸을 기울이면 구슬이 배 안에서 천천히 따라 굴러가며, 복잡한 실시간 굴절 없이도 읽히게 한다."
   }
 }

@@ -2,10 +2,12 @@ import {STAGES} from './stage-data';
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 import {stageEggMotif} from './egg-motifs';
+import {reorderStages,legacyTheme} from './stage-order';
 
 type Cell=[number,number,number,number];
 // These are material motions, not rarity colours: garden / mechanism / water / heat / sky.
-export const EGG_EFFECT_FAMILIES=[0,1,2,3,2,4,1,3,0,4,4,4,1,2,4,0,0,1,4,4];
+export const EGG_EFFECT_FAMILIES=reorderStages([0,1,2,3,2,4,1,3,0,4,4,4,1,2,4,0,0,1,4,4]);
+EGG_EFFECT_FAMILIES[18]=4;EGG_EFFECT_FAMILIES[19]=0;
 const cache=new Map<string,{cells:Cell[];colors:string[]}>();
 const blend=(a:number,b:number,t:number)=>{
  const ch=(shift:number)=>Math.round(((a>>shift)&255)*(1-t)+((b>>shift)&255)*t);
@@ -20,10 +22,10 @@ export function designEgg(stage:number,variant:number,tier=0){
  const key=`${stage}:${variant}:${tier}`,cached=cache.get(key);if(cached)return cached;
  const s=STAGES[stage-1],dragon=variant===5,rank=dragon?3:tier>=5?2:tier>=3?1:0;
  const candidates=STAGE_PET_ROWS.filter(p=>p.stageId===stage&&p.tier===tier);
- const pet=dragon?SECRET_DRAGON_ROWS[stage-1]:candidates[variant%Math.max(1,candidates.length)];
+ const pet=dragon?SECRET_DRAGON_ROWS.find(p=>p.stageId===stage):candidates[variant%Math.max(1,candidates.length)];
  const petColor=pet?parseInt(pet.color.slice(1),16):s.color;
  const shell=blend(petColor,0xffefd4,.12),accent=s.accent;
- const material=[4,7,12,16,18,20].includes(stage)?0x394753:[8,11,13].includes(stage)?0xb99154:0x806b53;
+ const material=[4,7,12,16,18,20].includes(legacyTheme(stage))?0x394753:[8,11,13].includes(legacyTheme(stage))?0xb99154:0x806b53;
  const colors=[shell,accent,0xfff0d6,material,blend(shell,material,.38),blend(shell,0xffffff,.38),blend(accent,0xffffff,.45),petColor].map(c=>`#${c.toString(16).padStart(6,'0')}`);
  const cells=new Map<number,Cell>();
  const put=(x:number,y:number,z:number,c:number)=>{if(x>=0&&x<20&&y>=0&&y<20&&z>=0&&z<20)cells.set(x+y*20+z*400,[x,y,z,c]);};
@@ -43,7 +45,7 @@ export function designEgg(stage:number,variant:number,tier=0){
  const leaf=(x:number,y:number,c:number)=>{
   for(let i=0;i<5;i++)pair(x-i*.5,y+i*.5,9.5,4,2,Math.max(2,6-i),c);
  };
- const mechanical=[2,6,7,13,16,18].includes(stage),mineral=[4,8,14,20].includes(stage);
+ const mechanical=[2,6,7,13,16,18].includes(legacyTheme(stage)),mineral=[4,8,14,20].includes(legacyTheme(stage));
  const rx=[5.7,6.4,5,6.1,5.5,5.8][variant],ry=[6.8,5.6,7.2,6.2,6.8,7][variant],rz=[5,5.6,4.7,5.4,5.2,5.6][variant];
  const cy=8,top=cy+ry;
  for(let x=0;x<20;x++)for(let y=1;y<17;y++)for(let z=0;z<20;z++){
@@ -61,9 +63,28 @@ export function designEgg(stage:number,variant:number,tier=0){
   put(x,y,z,color);
  }
  const crown=Math.min(15,Math.round(top)),wide=rank>=2?1:0;
+ if(dragon){
+  // Document seals use one large motif, all inside the existing shell footprint.
+  const disk=(color:number,gap=false)=>{for(let j=0;j<32;j++){const t=j*Math.PI/16;if(gap&&j>4&&j<14)continue;box(9.5+Math.cos(t)*5,9+Math.sin(t)*5,15,2,2,2,color);}};
+  if([1,8,15,16,20].includes(stage)){
+   leaf(6.5,13,stage===20?4:8);ring(3,6,5,4);box(9.5,9,15,3,4,2,7);
+  }else if([2,4,5,7,9,11,12,17,18,19].includes(stage)){
+   disk([4,17,19].includes(stage)?4:2,stage===19);
+   if([2,12].includes(stage)){box(9.5,10,16,2,6,1,4);box(11,9,16,5,2,1,4);}
+   else if(stage===5){box(9.5,9,16,4,4,1,4);box(9.5,6,16,6,2,1,4);}
+   else if(stage===17){for(const x of [5.5,13.5])for(const y of [5,13])box(x,y,14.5,2,2,2,3);}
+   else if(stage===19){for(const [key,[x,y]]of cells)if((x-8)**2+(y-10)**2<12)cells.delete(key);}
+   else box(9.5,9,16,3,3,1,7);
+  }else if(stage===3){ring(3,6,5,2);for(let j=0;j<3;j++)pair(5.5-j,4+j*2,10,2,4,2,2);box(9.5,9,15,4,4,2,3);}
+  else if(stage===6){box(9.5,9,15,2,12,1,2);ring(8,6,5,3);}
+  else if(stage===10){for(let j=0;j<5;j++)box(8+j%2*3,5+j*2,15,4,3,1,2);}
+  else if(stage===13){for(let j=0;j<3;j++)box(5.5+j*4,12,10,2,8-j,4,j%2?3:2);}
+  else if(stage===14){pair(6.5,10,15,2,8,2,4);box(9.5,13,15,8,2,2,4);box(9.5,10,15,2,2,2,7);}
+  const result={cells:[...cells.values()],colors};cache.set(key,result);return result;
+ }
  // The stage's strongest construction frames mascot and dragon eggs. The other
  // named variants retain their own shell/lantern/key/etc. outline, not the same hat.
- if(variant===0||dragon)switch(stage){
+ if(variant===0||dragon)switch(legacyTheme(stage)){
   case 1: // Seed husk with two broad leaves; acorn cap / blossom cup / sprout.
    ring(crown-2,rx+1,rz+1,variant===0?4:8);leaf(6.5,crown,8);
    if(rank>=2)leaf(5.5,5,2);break;
@@ -151,9 +172,9 @@ export function designEgg(stage:number,variant:number,tier=0){
  // Dragon seals have large paired horns and an inset diamond, not rainbow particles.
  if(dragon){
   // The crest previews the same wing ecology as the hatched dragon.
-  if([3,5,14].includes(stage))for(let i=0;i<3;i++)pair(4.5-i,11-i,9.5,2,5-i,4,i===2?7:2);
-  else if([1,9,17].includes(stage))leaf(6.5,14,8);
-  else if([7,12,19,20].includes(stage)){
+  if([3,5,14].includes(legacyTheme(stage)))for(let i=0;i<3;i++)pair(4.5-i,11-i,9.5,2,5-i,4,i===2?7:2);
+  else if([1,9,17].includes(legacyTheme(stage)))leaf(6.5,14,8);
+  else if([7,12,19,20].includes(legacyTheme(stage))){
    for(let j=0;j<20;j++){const a=j*Math.PI/10;if(stage===20&&j%7<2)continue;box(9.5+Math.cos(a)*8,10+Math.sin(a)*7,9.5,2,2,2,j%4===0?7:2);}
   }else pair(5.5,17,9.5,2,4,4,4);
   box(9.5,9,15.5,4,4,2,7);
@@ -165,7 +186,7 @@ const nests=new Map<number,{cells:Cell[];colors:string[]}>();
 /** Low stage-specific cradles share the old nest's footprint and egg contact height. */
 export function designNest(stage:number){
  const cached=nests.get(stage);if(cached)return cached;
- const s=STAGES[stage-1],mechanical=[2,6,7,12,13,18].includes(stage),mineral=[4,8,11,14,19,20].includes(stage);
+ const s=STAGES[stage-1],mechanical=[2,6,7,12,13,18].includes(legacyTheme(stage)),mineral=[4,8,11,14,19,20].includes(legacyTheme(stage));
  const material=mechanical?0x58606b:mineral?blend(s.color,0x383b4b,.35):blend(s.color,0x735839,.4);
  const colors=[material,blend(s.color,0xf5e2b5,.15),blend(s.accent,material,.3)].map(c=>`#${c.toString(16).padStart(6,'0')}`),cells:Cell[]=[];
  for(let x=1;x<19;x++)for(let z=1;z<19;z++){

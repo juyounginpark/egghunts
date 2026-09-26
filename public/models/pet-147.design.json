@@ -2,11 +2,11 @@
   "schema": "alkong-stage-assembly-v3",
   "size": [
     24,
-    24,
-    24
+    31,
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,22 +27,38 @@
     "eyes": {
       "pivot": [
         11.5,
-        8,
-        1
+        14,
+        2
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        6,
+        12,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -53,6 +69,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -60,46 +89,92 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-147",
     "id": 147,
-    "name": "유적 갑옷게",
-    "stage": 5,
-    "stageName": "크라켄 심해",
+    "oldStage": 5,
+    "stage": 19,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "turtle",
-    "role": "위험 요소 펫",
+    "previousName": "유적 갑옷게",
+    "name": "어긋난 사슴",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "유적 석문등을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 유적 갑옷게.",
-    "inspiration": "발광 산호 · 촉수 · 해저 유적 / tentacle",
-    "silhouette": [
-      "머리보다 넓은 낮은 등집과 네 발",
-      "유적 석문등"
-    ],
-    "feature": "유적 석문등",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "깊은 어둠에서 촉각과 등불로 만나는 심해",
-    "material": "심해 피부·광구",
-    "body": "머리보다 넓은 낮은 등집과 네 발",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "발광 산호 · 촉수 · 해저 유적에서 온 유적 석문등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "몸 아래 짙은 남색 → 등 청색; 촉각 끝만 민트빛",
-    "colorPlacement": "몸 #e07bac; 대표 기관 #39cebd; 발·연결부 #70479f; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#e07bac",
-      "accent": "#39cebd"
-    },
-    "idle": "천천히 가라앉고 촉수를 순서대로 접기 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 머리보다 넓은 낮은 등집과 네 발; 등에 짊어진 기관에 유적 석문등",
+    "prompt": "가느다란 다리와 작은 머리를 가진 크림색 사슴을 만들라. 몸의 한쪽 옆면은 짙은 회색, 뿔은 검정으로 두고 가지의 끝 두 개만 살짝 떨어져 떠 있게 한다. 눈과 다리는 정상적으로 정렬하여 고장 난 모델처럼 보이지 않게 한다. 고개를 움직인 뒤 떠 있는 뿔 끝이 한 박자 늦게 맞춰지게 한다.",
+    "key": "pet-147",
+    "anatomy": "deer",
+    "feature": "antlers",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "deer",
+    "colors": {
+      "primary": "#f2e3bf"
+    },
+    "idle": "가느다란 다리와 작은 머리를 가진 크림색 사슴을 만들라. 몸의 한쪽 옆면은 짙은 회색, 뿔은 검정으로 두고 가지의 끝 두 개만 살짝 떨어져 떠 있게 한다. 눈과 다리는 정상적으로 정렬하여 고장 난 모델처럼 보이지 않게 한다. 고개를 움직인 뒤 떠 있는 뿔 끝이 한 박자 늦게 맞춰지게 한다."
   }
 }

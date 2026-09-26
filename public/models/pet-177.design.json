@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,52 +16,37 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        13,
+        12,
         2
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
-        11,
+        10,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
@@ -71,9 +56,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -84,36 +69,13 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
-      ],
-      "scale": [
-        1.12,
-        1,
-        1
-      ]
+      "parent": "body"
     },
     "right_ear": {
       "pivot": [
@@ -123,9 +85,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -135,19 +97,6 @@
         12
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
     },
     "tail": {
       "pivot": [
@@ -159,43 +108,24 @@
     }
   },
   "concept": {
-    "key": "pet-177",
     "id": 177,
-    "name": "태양 매",
-    "stage": 8,
-    "stageName": "황금 사막왕국",
+    "oldStage": 8,
+    "stage": 7,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "bird",
-    "role": "위험 요소 펫",
+    "previousName": "태양 매",
+    "name": "보석전갈",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "황금 신전등을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 태양 매.",
-    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
-    "silhouette": [
-      "앞으로 나온 쐐기 부리와 낮은 양 날개",
-      "황금 신전등"
-    ],
-    "feature": "황금 신전등",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
-    "material": "사암·황동",
-    "body": "앞으로 나온 쐐기 부리와 낮은 양 날개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 황금 신전등: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
-    "colorPlacement": "몸 #f5d48b; 대표 기관 #d7a247; 발·연결부 #93532e; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#f5d48b",
-      "accent": "#d7a247"
-    },
-    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 앞으로 나온 쐐기 부리와 낮은 양 날개; 등에 짊어진 기관에 황금 신전등",
+    "prompt": "낮고 넓은 검정 몸과 굵은 집게, 위로 말린 꼬리를 가진 전갈을 만들라. 집게 위에는 청록 보석 면을 크게 두고 꼬리 끝에는 붉은 보석 하나를 박는다. 금색은 관절의 얇은 고리로 제한한다. 꼬리를 낮추어 보석을 집게로 닦는 동작으로 위험함보다 수집품의 정교함을 강조한다.",
+    "key": "pet-177",
+    "anatomy": "scorpion",
+    "feature": "gems",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "scorpion",
+    "colors": {
+      "primary": "#30303c"
+    },
+    "idle": "낮고 넓은 검정 몸과 굵은 집게, 위로 말린 꼬리를 가진 전갈을 만들라. 집게 위에는 청록 보석 면을 크게 두고 꼬리 끝에는 붉은 보석 하나를 박는다. 금색은 관절의 얇은 고리로 제한한다. 꼬리를 낮추어 보석을 집게로 닦는 동작으로 위험함보다 수집품의 정교함을 강조한다."
   }
 }

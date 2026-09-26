@@ -3,119 +3,113 @@
   "size": [
     24,
     24,
-    24
+    25
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
         11.5,
         7,
-        12
+        14
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        10,
+        3
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        17
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
-        7
-      ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
-    },
-    "left_arm": {
-      "pivot": [
-        6,
-        7,
-        12
+        8,
+        9
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        14
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
         6,
         7,
-        12
+        14
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
-        12
+        15,
+        14
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
         17,
         7,
-        12
+        14
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        19
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-205",
     "id": 205,
-    "name": "날개 샌들토끼",
-    "stage": 11,
-    "stageName": "올림포스 신전",
+    "oldStage": 11,
+    "stage": 10,
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "rabbit",
-    "role": "크고 듬직한 펫",
+    "previousName": "날개 샌들토끼",
+    "name": "물항아리 수달",
     "tier": 2,
-    "rarity": "A",
-    "concept": "구름 우산을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 날개 샌들토끼.",
-    "inspiration": "대리석 · 구름다리 · 번개 / lightning",
-    "silhouette": [
-      "좁은 몸과 몸 높이만큼 긴 귀",
-      "구름 우산"
-    ],
-    "feature": "구름 우산",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "구름 위에서 대리석과 번개가 숨 쉬는 신전",
-    "material": "대리석·금",
-    "body": "좁은 몸과 몸 높이만큼 긴 귀",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "대리석 · 구름다리 · 번개에서 온 구름 우산: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "기둥 아랫면 청회색 → 위쪽 상아색; 연결부만 금색",
-    "colorPlacement": "몸 #d6a231; 대표 기관 #d6a231; 발·연결부 #72ab8e; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#d6a231",
-      "accent": "#d6a231"
-    },
-    "idle": "무게 있게 멈췄다 날개 한 번 들기 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 좁은 몸과 몸 높이만큼 긴 귀; 등과 옆구리에 이어진 기관에 구름 우산",
+    "prompt": "길고 둥근 몸과 짧은 앞발을 가진 회갈색 수달을 만들라. 얼굴과 배는 크림색이며 두 앞발로 큰 청색 물항아리를 안게 한다. 항아리 옆에는 아이보리 물결 무늬 하나를 넣는다. 항아리를 살짝 기울여 작은 물줄기가 나왔다 다시 안으로 들어가는 짧은 마법 동작을 준다.",
+    "key": "pet-205",
+    "anatomy": "otter",
+    "feature": "jar",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "otter",
+    "colors": {
+      "primary": "#958477"
+    },
+    "idle": "길고 둥근 몸과 짧은 앞발을 가진 회갈색 수달을 만들라. 얼굴과 배는 크림색이며 두 앞발로 큰 청색 물항아리를 안게 한다. 항아리 옆에는 아이보리 물결 무늬 하나를 넣는다. 항아리를 살짝 기울여 작은 물줄기가 나왔다 다시 안으로 들어가는 짧은 마법 동작을 준다."
   }
 }

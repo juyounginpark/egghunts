@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -19,87 +19,86 @@
     "crown": {
       "pivot": [
         11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "eyes": {
-      "pivot": [
-        11.5,
-        12,
-        2
-      ],
-      "parent": "head"
-    },
-    "head": {
-      "pivot": [
-        11.5,
-        10,
-        7
+        8,
+        20
       ],
       "parent": "body",
       "rotation": [
-        -0.035,
+        -0.45,
         0,
         0
       ]
     },
-    "left_arm": {
+    "eyes": {
       "pivot": [
-        6,
-        7,
-        12
+        11.5,
+        9,
+        6
+      ],
+      "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "head": {
       "pivot": [
-        17,
+        11.5,
         7,
-        12
+        7
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     }
   },
   "concept": {
-    "key": "pet-122",
     "id": 122,
-    "name": "산호 집게",
+    "oldStage": 3,
     "stage": 3,
-    "stageName": "얕은 산호 바다",
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "crab",
-    "role": "환경 생물 펫",
+    "previousName": "산호 집게",
+    "name": "진주조개",
     "tier": 1,
-    "rarity": "B",
-    "concept": "불가사리 집게을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 산호 집게.",
-    "inspiration": "산호 · 물결 · 문어 / coral",
-    "silhouette": [
-      "넓은 몸 옆의 두 큰 집게",
-      "불가사리 집게"
-    ],
-    "feature": "불가사리 집게",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "얕은 물결을 거르는 산호 생태계",
-    "material": "젖은 산호·패각",
-    "body": "넓은 몸 옆의 두 큰 집게",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "산호 · 물결 · 문어에서 온 불가사리 집게: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
-    "colorPlacement": "몸 #f8dfaf; 대표 기관 #f17e6f; 발·연결부 #f17e6f; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#f8dfaf",
-      "accent": "#f17e6f"
-    },
-    "idle": "짧게 뜨고 물결에 지느러미 접기 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 넓은 몸 옆의 두 큰 집게; 넓은 등집에 불가사리 집게",
+    "prompt": "낮고 넓은 두 장의 조개껍데기가 살짝 벌어진 형태로 만들라. 바깥은 연보라, 안쪽은 크림색이며 가운데 큰 진주에 작은 점눈을 붙여 얼굴로 사용한다. 껍데기의 방사형 홈은 네다섯 줄만 넣는다. 진주가 고개를 돌리듯 좌우로 움직이고 조개가 천천히 닫혔다 다시 열린다.",
+    "key": "pet-122",
+    "anatomy": "clam",
+    "feature": "pearl",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "clam",
+    "colors": {
+      "primary": "#b6a2cf"
+    },
+    "idle": "낮고 넓은 두 장의 조개껍데기가 살짝 벌어진 형태로 만들라. 바깥은 연보라, 안쪽은 크림색이며 가운데 큰 진주에 작은 점눈을 붙여 얼굴로 사용한다. 껍데기의 방사형 홈은 네다섯 줄만 넣는다. 진주가 고개를 돌리듯 좌우로 움직이고 조개가 천천히 닫혔다 다시 열린다."
   }
 }

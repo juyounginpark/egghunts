@@ -1,248 +1,203 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    32,
-    25,
-    35
+    54,
+    38,
+    56
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        15.5,
+        26.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
     "eyes": {
       "pivot": [
-        15.5,
-        13,
+        26.5,
+        29,
         0
       ],
       "parent": "head"
     },
-    "float": {
-      "pivot": [
-        15.5,
-        14,
-        15
-      ],
-      "parent": "body"
-    },
     "head": {
       "pivot": [
-        15.5,
-        11,
-        7
+        26.5,
+        27,
+        10
       ],
-      "parent": "body",
-      "rotation": [
-        -0.18,
-        0,
-        0
-      ]
+      "parent": "neck"
     },
     "left_arm": {
       "pivot": [
-        10,
-        11,
-        12
+        21.5,
+        15,
+        18
       ],
       "parent": "body",
       "rotation": [
-        0,
-        0.26,
-        0.1
-      ],
-      "scale": [
-        1.32,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        10,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
+        0.08,
+        -0.22,
+        0.08
       ]
     },
     "left_leg": {
       "pivot": [
-        10,
+        21,
         7,
-        12
+        15
       ],
       "parent": "body"
     },
     "left_tip": {
       "pivot": [
-        7,
-        11,
-        12
+        23.5,
+        8,
+        18
       ],
-      "parent": "left_arm",
+      "parent": "body",
       "rotation": [
+        0.27,
+        -0.25,
+        0.3
+      ]
+    },
+    "neck": {
+      "pivot": [
+        26.5,
+        13,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        0.1,
         0,
-        0.12,
-        -0.08
+        0
       ]
     },
     "right_arm": {
       "pivot": [
-        21,
-        11,
-        12
+        31.5,
+        15,
+        18
       ],
       "parent": "body",
       "rotation": [
-        0,
-        -0.26,
-        -0.1
-      ],
-      "scale": [
-        1.32,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        21,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
+        0.08,
+        0.22,
+        -0.08
       ]
     },
     "right_leg": {
       "pivot": [
-        21,
+        32,
         7,
-        12
+        15
       ],
       "parent": "body"
     },
     "right_tip": {
       "pivot": [
-        24,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
-    "tail": {
-      "pivot": [
-        15.5,
-        7,
+        29.5,
+        8,
         18
       ],
       "parent": "body",
       "rotation": [
-        0.15,
-        -0.18,
+        0.27,
+        0.25,
+        -0.3
+      ]
+    },
+    "tail": {
+      "pivot": [
+        26.5,
+        6,
+        20.0
+      ],
+      "parent": "body",
+      "rotation": [
+        0.0,
+        0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        15.5,
-        7,
-        22
+        26.5,
+        6,
+        26.4
       ],
       "parent": "tail",
       "rotation": [
-        0.15,
-        -0.18,
+        0.04,
+        0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        15.5,
-        7,
-        26
+        26.5,
+        6,
+        32.8
       ],
       "parent": "tail_1",
       "rotation": [
-        0.15,
-        -0.18,
+        0.08,
+        0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        15.5,
-        7,
-        30
+        26.5,
+        6,
+        39.2
       ],
       "parent": "tail_2",
       "rotation": [
-        0.15,
-        -0.18,
+        0.12,
+        0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        26.5,
+        6,
+        45.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-310",
     "id": 310,
-    "name": "천뢰신전 성룡",
-    "stage": 11,
-    "stageName": "올림포스 신전",
+    "oldStage": 11,
+    "stage": 10,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "천뢰신전 성룡",
+    "name": "천둥의 왕룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "대리석 기둥 앞발·끊어진 번개 날개을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 천뢰신전 성룡.",
-    "inspiration": "대리석 · 구름다리 · 번개 / lightning",
-    "silhouette": [
-      "석상처럼 묵직한 신전룡",
-      "대리석 기둥 앞발·끊어진 번개 날개"
-    ],
-    "feature": "대리석 기둥 앞발·끊어진 번개 날개",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "구름 위에서 대리석과 번개가 숨 쉬는 신전",
-    "material": "대리석·금",
-    "body": "석상처럼 묵직한 신전룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "대리석 · 구름다리 · 번개에서 온 대리석 기둥 앞발·끊어진 번개 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "기둥 아랫면 청회색 → 위쪽 상아색; 연결부만 금색",
-    "colorPlacement": "몸 #4886b1; 대표 기관 #d6a231; 발·연결부 #e4e2d0; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#4886b1",
-      "accent": "#d6a231"
-    },
-    "idle": "무게 있게 멈췄다 날개 한 번 들기 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 석상처럼 묵직한 신전룡; 성체 전용 골격에 대리석 기둥 앞발·끊어진 번개 날개",
+    "prompt": "높은 가슴과 길게 올라가는 목, 네 개의 넓은 날개를 가진 용을 만들라. 몸은 흰 대리석색, 배와 날개 안쪽은 짙은 청색, 뿔과 발톱만 청동색으로 둔다. 등 위의 큰 번개 모양 능선 하나를 상징으로 삼고 왕관은 추가하지 않는다. 앞날개는 위로, 뒷날개는 낮게 펼쳐 층을 만든다. 가슴의 숨과 함께 날개가 순서대로 열리고 뿔 사이에 짧은 빛이 지나가게 한다. 전용 알은 흰 껍질과 청색 번개띠, 청동 받침으로 구성한다.",
+    "key": "pet-310",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "하늘의 번개를 피하고 돌이 되는 시선에 등을 돌려 보자.",
-    "acquisitionCondition": "번개와 메두사의 시선을 각각 회피",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#e9e8dc"
+    },
+    "idle": "높은 가슴과 길게 올라가는 목, 네 개의 넓은 날개를 가진 용을 만들라. 몸은 흰 대리석색, 배와 날개 안쪽은 짙은 청색, 뿔과 발톱만 청동색으로 둔다. 등 위의 큰 번개 모양 능선 하나를 상징으로 삼고 왕관은 추가하지 않는다. 앞날개는 위로, 뒷날개는 낮게 펼쳐 층을 만든다. 가슴의 숨과 함께 날개가 순서대로 열리고 뿔 사이에 짧은 빛이 지나가게 한다. 전용 알은 흰 껍질과 청색 번개띠, 청동 받침으로 구성한다."
   }
 }

@@ -6,7 +6,7 @@
     35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,14 +15,6 @@
         12
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -38,12 +30,7 @@
         8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
@@ -53,9 +40,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -74,9 +61,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -91,12 +78,12 @@
       "pivot": [
         11.5,
         6,
-        18
+        17.0
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
+        0.0,
+        -0.078,
         0
       ]
     },
@@ -104,12 +91,12 @@
       "pivot": [
         11.5,
         6,
-        22
+        20.4
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        -0.18,
+        -0.078,
         0
       ]
     },
@@ -117,12 +104,12 @@
       "pivot": [
         11.5,
         6,
-        26
+        23.8
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        -0.18,
+        0.08,
+        -0.078,
         0
       ]
     },
@@ -130,54 +117,48 @@
       "pivot": [
         11.5,
         6,
-        30
+        27.2
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        -0.18,
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-131",
     "id": 131,
-    "name": "불씨 도마뱀",
+    "oldStage": 4,
     "stage": 4,
-    "stageName": "화산 입구",
     "slot": 1,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "lizard",
-    "role": "작고 귀여운 펫",
+    "previousName": "불씨 도마뱀",
+    "name": "불씨도마뱀",
     "tier": 0,
-    "rarity": "C",
-    "concept": "용암 꼬리을 이용해 갈라진 현무암 사이로 열을 내보내는 생명에서 살아가는 불씨 도마뱀.",
-    "inspiration": "현무암 · 붉은 틈 · 증기 / steam",
-    "silhouette": [
-      "낮은 네 발과 길고 넓은 꼬리",
-      "용암 꼬리"
-    ],
-    "feature": "용암 꼬리",
-    "personality": "세 칸 길이의 반쯤 감긴 눈과 넓은 주둥이",
-    "ecology": "갈라진 현무암 사이로 열을 내보내는 생명",
-    "material": "현무암·용암",
-    "body": "낮은 네 발과 길고 넓은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "현무암 · 붉은 틈 · 증기에서 온 용암 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 붙인 큰 기관",
-    "gradient": "돌 표면은 보랏빛 회색층; 열린 화구 안쪽은 주황 → 밝은 노랑",
-    "colorPlacement": "몸 #ed622c; 대표 기관 #ed622c; 발·연결부 #938085; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#ed622c",
-      "accent": "#ed622c"
-    },
-    "idle": "숨을 모은 뒤 등판을 들고 식힘 / 양 귀를 짧게 움찔하고 고개를 숙임",
-    "reaction": "몸을 움츠렸다 작은 인사를 한다",
-    "distinction": "작고 귀여운 펫: 낮은 네 발과 길고 넓은 꼬리; 등에 붙인 큰 기관에 용암 꼬리",
+    "prompt": "낮고 길쭉한 몸, 넓은 머리, 바닥을 짚는 짧은 네 다리로 만들라. 등은 테라코타색, 배는 크림색이며 꼬리 끝에 굵은 불꽃 한 덩어리를 붙인다. 눈은 머리 양쪽에 작고 멀찍이 배치한다. 꼬리를 앞으로 말아 불씨를 바라보다가 가볍게 고개를 기울이게 한다.",
+    "key": "pet-131",
+    "anatomy": "lizard",
+    "feature": "flame",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "lizard",
+    "colors": {
+      "primary": "#b56d55"
+    },
+    "idle": "낮고 길쭉한 몸, 넓은 머리, 바닥을 짚는 짧은 네 다리로 만들라. 등은 테라코타색, 배는 크림색이며 꼬리 끝에 굵은 불꽃 한 덩어리를 붙인다. 눈은 머리 양쪽에 작고 멀찍이 배치한다. 꼬리를 앞으로 말아 불씨를 바라보다가 가볍게 고개를 기울이게 한다."
   }
 }

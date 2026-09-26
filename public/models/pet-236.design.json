@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -24,17 +24,33 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
         8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -44,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +92,24 @@
     }
   },
   "concept": {
-    "key": "pet-236",
     "id": 236,
-    "name": "오로라 여우",
-    "stage": 14,
-    "stageName": "영원의 빙하",
+    "oldStage": 14,
+    "stage": 13,
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "fox",
-    "role": "사물 의인화 펫",
+    "previousName": "오로라 여우",
+    "name": "설산 산양",
     "tier": 3,
-    "rarity": "S",
-    "concept": "오로라 꼬리을 이용해 얼음층 아래 작은 온기를 품는 빙하에서 살아가는 오로라 여우.",
-    "inspiration": "빙산 · 오로라 · 수정 동굴 / ice",
-    "silhouette": [
-      "낮은 네 발과 몸보다 높은 꼬리",
-      "오로라 꼬리"
-    ],
-    "feature": "오로라 꼬리",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "얼음층 아래 작은 온기를 품는 빙하",
-    "material": "빙층·단열 털",
-    "body": "낮은 네 발과 몸보다 높은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "빙산 · 오로라 · 수정 동굴에서 온 오로라 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "얼음 바닥 남청색 → 절단면 청록 → 꼭대기 흰색",
-    "colorPlacement": "몸 #edf6e5; 대표 기관 #55bcd7; 발·연결부 #55bcd7; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "작고 단단한 몸과 큰 발굽, 뒤로 말린 굵은 뿔을 가진 산양을 만들라. 털은 짙은 갈색, 가슴은 아이보리, 뿔의 위쪽만 하얀 눈이 쌓이게 한다. 목에는 작은 구리 방울 하나를 달라. 앞발로 눈을 한 번 긁고 고개를 흔들어 뿔 위의 눈을 조금 떨어뜨리게 한다.",
+    "key": "pet-236",
+    "anatomy": "ram",
+    "feature": "bell",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "ram",
     "colors": {
-      "primary": "#edf6e5",
-      "accent": "#55bcd7"
+      "primary": "#654736"
     },
-    "idle": "미끄러짐을 멈추고 몸을 짧게 털기 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 낮은 네 발과 몸보다 높은 꼬리; 꼬리에 연결된 기관에 오로라 꼬리",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "작고 단단한 몸과 큰 발굽, 뒤로 말린 굵은 뿔을 가진 산양을 만들라. 털은 짙은 갈색, 가슴은 아이보리, 뿔의 위쪽만 하얀 눈이 쌓이게 한다. 목에는 작은 구리 방울 하나를 달라. 앞발로 눈을 한 번 긁고 고개를 흔들어 뿔 위의 눈을 조금 떨어뜨리게 한다."
   }
 }

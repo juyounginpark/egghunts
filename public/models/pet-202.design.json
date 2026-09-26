@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,33 +16,41 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        8,
+        10,
         1
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
-        6,
+        8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -53,6 +61,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -60,46 +81,35 @@
         12
       ],
       "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17
+      ],
+      "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-202",
     "id": 202,
-    "name": "대리석 꼬북",
-    "stage": 11,
-    "stageName": "올림포스 신전",
+    "oldStage": 11,
+    "stage": 10,
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "turtle",
-    "role": "환경 생물 펫",
+    "previousName": "대리석 꼬북",
+    "name": "포도멧돼지",
     "tier": 1,
-    "rarity": "B",
-    "concept": "대리석 등집을 이용해 구름 위에서 대리석과 번개가 숨 쉬는 신전에서 살아가는 대리석 꼬북.",
-    "inspiration": "대리석 · 구름다리 · 번개 / lightning",
-    "silhouette": [
-      "머리보다 넓은 낮은 등집과 네 발",
-      "대리석 등집"
-    ],
-    "feature": "대리석 등집",
-    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
-    "ecology": "구름 위에서 대리석과 번개가 숨 쉬는 신전",
-    "material": "대리석·금",
-    "body": "머리보다 넓은 낮은 등집과 네 발",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "대리석 · 구름다리 · 번개에서 온 대리석 등집: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "기둥 아랫면 청회색 → 위쪽 상아색; 연결부만 금색",
-    "colorPlacement": "몸 #4886b1; 대표 기관 #d6a231; 발·연결부 #e4e2d0; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#4886b1",
-      "accent": "#d6a231"
-    },
-    "idle": "무게 있게 멈췄다 날개 한 번 들기 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 머리보다 넓은 낮은 등집과 네 발; 넓은 등집에 대리석 등집",
+    "prompt": "둥근 배와 짧은 주둥이, 작은 엄니를 가진 멧돼지를 만들라. 몸은 붉은 갈색, 배는 크림색이며 등 뒤에 짙은 보라 포도송이와 큰 잎 하나를 단다. 포도는 굵은 알 네다섯 개로 표현한다. 코로 바닥의 포도 한 알을 밀다가 앞발로 붙잡는 동작을 준다.",
+    "key": "pet-202",
+    "anatomy": "boar",
+    "feature": "grapes",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "boar",
+    "colors": {
+      "primary": "#a16447"
+    },
+    "idle": "둥근 배와 짧은 주둥이, 작은 엄니를 가진 멧돼지를 만들라. 몸은 붉은 갈색, 배는 크림색이며 등 뒤에 짙은 보라 포도송이와 큰 잎 하나를 단다. 포도는 굵은 알 네다섯 개로 표현한다. 코로 바닥의 포도 한 알을 밀다가 앞발로 붙잡는 동작을 준다."
   }
 }

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -19,39 +19,44 @@
     "crown": {
       "pivot": [
         11.5,
-        7,
-        12
+        12,
+        2
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0,
+        0,
+        0.2
+      ]
     },
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        8,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
+        6,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
-    "left_arm": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -61,13 +66,18 @@
       ],
       "parent": "body"
     },
-    "right_arm": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -79,43 +89,24 @@
     }
   },
   "concept": {
-    "key": "pet-224",
     "id": 224,
-    "name": "고글 비행토끼",
-    "stage": 13,
-    "stageName": "스팀펑크 공중도시",
+    "oldStage": 13,
+    "stage": 12,
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "rabbit",
-    "role": "예상 밖의 펫",
+    "previousName": "고글 비행토끼",
+    "name": "나침반 거북",
     "tier": 2,
-    "rarity": "A",
-    "concept": "기관 피스톤을 이용해 증기압과 프로펠러로 떠 있는 황동 도시에서 살아가는 고글 비행토끼.",
-    "inspiration": "톱니 · 증기기관 · 비행선 / gear",
-    "silhouette": [
-      "좁은 몸과 몸 높이만큼 긴 귀",
-      "기관 피스톤"
-    ],
-    "feature": "기관 피스톤",
-    "personality": "안쪽이 높은 눈썹과 집중하는 눈동자",
-    "ecology": "증기압과 프로펠러로 떠 있는 황동 도시",
-    "material": "황동·구리",
-    "body": "좁은 몸과 몸 높이만큼 긴 귀",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "톱니 · 증기기관 · 비행선에서 온 기관 피스톤: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "이음새 적갈색 → 마모된 평면 황동 → 증기 입구 크림",
-    "colorPlacement": "몸 #c28b37; 대표 기관 #c28b37; 발·연결부 #b6532c; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#c28b37",
-      "accent": "#c28b37"
-    },
-    "idle": "압력에 몸을 들었다 천천히 내려놓기 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 좁은 몸과 몸 높이만큼 긴 귀; 몸통에 연결된 덮개에 기관 피스톤",
+    "prompt": "낮고 둥근 몸과 큰 원형 등껍질을 가진 청회색 거북을 만들라. 등껍질을 황동 나침반으로 구성하고 굵은 붉은 바늘 하나가 중심에서 움직이게 한다. 문자 대신 네 방향의 큰 눈금만 넣는다. 거북이 고개를 돌리면 바늘이 조금 늦게 방향을 맞추게 한다.",
+    "key": "pet-224",
+    "anatomy": "turtle",
+    "feature": "compass",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "turtle",
+    "colors": {
+      "primary": "#899cac"
+    },
+    "idle": "낮고 둥근 몸과 큰 원형 등껍질을 가진 청회색 거북을 만들라. 등껍질을 황동 나침반으로 구성하고 굵은 붉은 바늘 하나가 중심에서 움직이게 한다. 문자 대신 네 방향의 큰 눈금만 넣는다. 거북이 고개를 돌리면 바늘이 조금 늦게 방향을 맞추게 한다."
   }
 }

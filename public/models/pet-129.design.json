@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    48
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,85 +38,76 @@
         8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
       ]
     },
-    "left_tip": {
+    "left_leg": {
       "pivot": [
-        3,
-        11,
+        6,
+        7,
         12
       ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
+      "parent": "body"
     },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
       ]
     },
-    "right_tip": {
+    "right_leg": {
       "pivot": [
-        20,
-        11,
+        17,
+        7,
         12
       ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
+      "parent": "body"
     },
     "tail": {
       "pivot": [
         11.5,
         6,
-        18
+        17.0
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
+        0.0,
+        -0.078,
         0
       ]
     },
@@ -124,12 +115,12 @@
       "pivot": [
         11.5,
         6,
-        22
+        22.6
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        -0.18,
+        -0.078,
         0
       ]
     },
@@ -137,12 +128,12 @@
       "pivot": [
         11.5,
         6,
-        26
+        28.2
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        -0.18,
+        0.08,
+        -0.078,
         0
       ]
     },
@@ -150,54 +141,48 @@
       "pivot": [
         11.5,
         6,
-        30
+        33.8
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        -0.18,
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        39.4
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-129",
     "id": 129,
-    "name": "산호궁 바다용",
+    "oldStage": 3,
     "stage": 3,
-    "stageName": "얕은 산호 바다",
     "slot": 9,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "dragon",
-    "role": "스테이지 인기 펫",
+    "previousName": "산호궁 바다용",
+    "name": "산호용",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "커다란 해마 왕관을 이용해 얕은 물결을 거르는 산호 생태계에서 살아가는 산호궁 바다용.",
-    "inspiration": "산호 · 물결 · 문어 / coral",
-    "silhouette": [
-      "앞이 높은 가슴과 굵은 꼬리",
-      "커다란 해마 왕관"
-    ],
-    "feature": "커다란 해마 왕관",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "얕은 물결을 거르는 산호 생태계",
-    "material": "젖은 산호·패각",
-    "body": "앞이 높은 가슴과 굵은 꼬리",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "산호 · 물결 · 문어에서 온 커다란 해마 왕관: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 전체를 감싼 대표 기관",
-    "gradient": "물에 잠긴 아랫면 청록 → 윗면 밝은 산호; 패각 끝은 진주빛",
-    "colorPlacement": "몸 #22a9a4; 대표 기관 #f17e6f; 발·연결부 #6868bd; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#22a9a4",
-      "accent": "#f17e6f"
-    },
-    "idle": "짧게 뜨고 물결에 지느러미 접기 / 양쪽 대표 기관과 꼬리를 다른 박자로 펼침",
-    "reaction": "큰 대표 기관을 펼치고 짧게 인사한다",
-    "distinction": "스테이지 인기 펫: 앞이 높은 가슴과 굵은 꼬리; 몸 전체를 감싼 대표 기관에 커다란 해마 왕관",
+    "prompt": "짧고 둥근 머리에서 긴 몸으로 이어지는 소형 바다용을 만들라. 흰 몸에 짙은 청록 등선을 두고 머리 뒤에는 분홍 산호뿔 두 갈래를 옆으로 펼친다. 날개 대신 부채꼴 지느러미 한 쌍과 넓은 꼬리지느러미를 사용한다. 목과 꼬리가 서로 반대 방향으로 휘며 느리게 헤엄치게 한다.",
+    "key": "pet-129",
+    "anatomy": "dragon",
+    "feature": "coralhorn",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "dragon",
+    "colors": {
+      "primary": "#eae9df"
+    },
+    "idle": "짧고 둥근 머리에서 긴 몸으로 이어지는 소형 바다용을 만들라. 흰 몸에 짙은 청록 등선을 두고 머리 뒤에는 분홍 산호뿔 두 갈래를 옆으로 펼친다. 날개 대신 부채꼴 지느러미 한 쌍과 넓은 꼬리지느러미를 사용한다. 목과 꼬리가 서로 반대 방향으로 휘며 느리게 헤엄치게 한다."
   }
 }

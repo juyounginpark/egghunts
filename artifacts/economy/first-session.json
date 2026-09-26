@@ -1,0 +1,440 @@
+{
+  "firstPickup": 13.100000000000051,
+  "firstReturn": 25.250000000000224,
+  "firstHatch": 48.54999999999938,
+  "firstPurchase": 74.89999999999789,
+  "stage": 3,
+  "purchases": [
+    {
+      "at": 74.89999999999789,
+      "key": "training"
+    },
+    {
+      "at": 89.99999999999703,
+      "key": "damage"
+    },
+    {
+      "at": 121.59999999999523,
+      "key": "rate"
+    },
+    {
+      "at": 121.59999999999523,
+      "key": "health"
+    },
+    {
+      "at": 162.1000000000026,
+      "key": "speed"
+    },
+    {
+      "at": 189.85000000000892,
+      "key": "training"
+    },
+    {
+      "at": 210.0000000000135,
+      "key": "damage"
+    },
+    {
+      "at": 240.00000000002032,
+      "key": "rate"
+    },
+    {
+      "at": 260.00000000002484,
+      "key": "health"
+    },
+    {
+      "at": 679.9999999999293,
+      "key": "speed"
+    },
+    {
+      "at": 749.9999999998656,
+      "key": "training"
+    },
+    {
+      "at": 819.999999999802,
+      "key": "damage"
+    },
+    {
+      "at": 879.9999999997474,
+      "key": "rate"
+    }
+  ],
+  "events": [
+    {
+      "at": 25.250000000000224,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-0-1800000016000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 0,
+        "special": 0
+      }
+    },
+    {
+      "at": 48.49999999999938,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 74.84999999999789,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-1-1800000016000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 1,
+        "special": 0
+      }
+    },
+    {
+      "at": 74.89999999999789,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "training",
+        "level": 1
+      }
+    },
+    {
+      "at": 89.99999999999703,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "damage",
+        "level": 1
+      }
+    },
+    {
+      "at": 94.74999999999676,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 121.54999999999524,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-2-1800000016000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 2,
+        "special": 0
+      }
+    },
+    {
+      "at": 121.59999999999523,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "rate",
+        "level": 1
+      }
+    },
+    {
+      "at": 121.59999999999523,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "health",
+        "level": 1
+      }
+    },
+    {
+      "at": 135.6999999999966,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 162.0500000000026,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-3-1800000016000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 3,
+        "special": 0
+      }
+    },
+    {
+      "at": 162.1000000000026,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "speed",
+        "level": 1
+      }
+    },
+    {
+      "at": 176.35000000000585,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 189.8000000000089,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-4-1800000016000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 4,
+        "special": 0
+      }
+    },
+    {
+      "at": 189.85000000000892,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "training",
+        "level": 2
+      }
+    },
+    {
+      "at": 204.2500000000122,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 210.0000000000135,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "damage",
+        "level": 2
+      }
+    },
+    {
+      "at": 240.00000000002032,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "rate",
+        "level": 2
+      }
+    },
+    {
+      "at": 260.00000000002484,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "health",
+        "level": 2
+      }
+    },
+    {
+      "at": 312.5500000000368,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-0-1800000300000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 0,
+        "special": 0
+      }
+    },
+    {
+      "at": 319.2000000000383,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 333.40000000004153,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-1-1800000300000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 1,
+        "special": 0
+      }
+    },
+    {
+      "at": 340.2000000000431,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 354.60000000004635,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-2-1800000300000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 2,
+        "special": 0
+      }
+    },
+    {
+      "at": 361.20000000004785,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 375.4500000000511,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-3-1800000300000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 3,
+        "special": 0
+      }
+    },
+    {
+      "at": 382.2000000000526,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 395.7500000000557,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-4-1800000300000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 4,
+        "special": 0
+      }
+    },
+    {
+      "at": 402.7000000000573,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 612.4999999999907,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-0-1800000600000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 0,
+        "special": 0
+      }
+    },
+    {
+      "at": 619.1999999999846,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 633.3999999999717,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-1-1800000600000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 1,
+        "special": 0
+      }
+    },
+    {
+      "at": 640.1999999999655,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 654.4499999999525,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-2-1800000600000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 2,
+        "special": 0
+      }
+    },
+    {
+      "at": 661.1999999999464,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 675.2999999999336,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-3-1800000600000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 3,
+        "special": 0
+      }
+    },
+    {
+      "at": 679.9999999999293,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "speed",
+        "level": 2
+      }
+    },
+    {
+      "at": 682.1999999999273,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 689.8999999999203,
+      "name": "egg_saved",
+      "params": {
+        "id": "1-4-1800000600000-0.2",
+        "type": 0,
+        "stageId": 1,
+        "variant": 4,
+        "special": 0
+      }
+    },
+    {
+      "at": 696.6999999999141,
+      "name": "mongle_obtained",
+      "params": {
+        "mongle": 100
+      }
+    },
+    {
+      "at": 749.9999999998656,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "training",
+        "level": 3
+      }
+    },
+    {
+      "at": 819.999999999802,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "damage",
+        "level": 3
+      }
+    },
+    {
+      "at": 879.9999999997474,
+      "name": "upgrade_purchase",
+      "params": {
+        "type": "rate",
+        "level": 3
+      }
+    }
+  ],
+  "dust": 49746,
+  "income": 1767.3150522031046,
+  "scope": "Actual GameState movement, collisions, boss pursuit, night, hatch taps and upgrades, deterministic common roll; no ads or grants."
+}

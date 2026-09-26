@@ -6,7 +6,7 @@
     35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,19 +38,6 @@
         12,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
-    },
-    "left_arm": {
-      "pivot": [
-        6,
-        7,
-        12
-      ],
       "parent": "body"
     },
     "left_ear": {
@@ -61,22 +48,14 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
       "pivot": [
         6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_arm": {
-      "pivot": [
-        17,
         7,
         12
       ],
@@ -90,9 +69,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -107,12 +86,12 @@
       "pivot": [
         11.5,
         6,
-        18
+        17.0
       ],
       "parent": "body",
       "rotation": [
-        0.04,
-        -0.18,
+        0.0,
+        -0.078,
         0
       ]
     },
@@ -120,12 +99,12 @@
       "pivot": [
         11.5,
         6,
-        22
+        20.4
       ],
       "parent": "tail",
       "rotation": [
         0.04,
-        -0.18,
+        -0.078,
         0
       ]
     },
@@ -133,12 +112,12 @@
       "pivot": [
         11.5,
         6,
-        26
+        23.8
       ],
       "parent": "tail_1",
       "rotation": [
-        0.04,
-        -0.18,
+        0.08,
+        -0.078,
         0
       ]
     },
@@ -146,54 +125,48 @@
       "pivot": [
         11.5,
         6,
-        30
+        27.2
       ],
       "parent": "tail_2",
       "rotation": [
-        0.04,
-        -0.18,
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-258",
     "id": 258,
-    "name": "정화수 사슴",
-    "stage": 16,
-    "stageName": "방사능 폐허",
+    "oldStage": 16,
+    "stage": 15,
     "slot": 8,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "deer",
-    "role": "신비로운 펫",
+    "previousName": "정화수 사슴",
+    "name": "온실사슴",
     "tier": 5,
-    "rarity": "SSS",
-    "concept": "휘어진 철근뿔을 이용해 폐기물 틈에서 독을 걸러내는 새 생태계에서 살아가는 정화수 사슴.",
-    "inspiration": "녹색 안개 · 폐허 · 변이 식물 / vine",
-    "silhouette": [
-      "높은 가슴과 갈라진 뿔",
-      "휘어진 철근뿔"
-    ],
-    "feature": "휘어진 철근뿔",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "폐기물 틈에서 독을 걸러내는 새 생태계",
-    "material": "녹슨 통·변이 식물",
-    "body": "높은 가슴과 갈라진 뿔",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "녹색 안개 · 폐허 · 변이 식물에서 온 휘어진 철근뿔: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸 양옆으로 펼친 기관",
-    "gradient": "녹슨 판 적갈색 → 겹친 판 황토; 여과구만 산성 연두",
-    "colorPlacement": "몸 #718330; 대표 기관 #718330; 발·연결부 #d5db58; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#718330",
-      "accent": "#718330"
-    },
-    "idle": "독을 들이마셨다 몸을 접어 배출 / 고개를 뒤로 돌렸다 정면으로 돌아옴",
-    "reaction": "뒤를 보다가 플레이어 쪽으로 고개를 돌린다",
-    "distinction": "신비로운 펫: 높은 가슴과 갈라진 뿔; 몸 양옆으로 펼친 기관에 휘어진 철근뿔",
+    "prompt": "가느다란 다리와 짧은 머리, 낮게 갈라지는 뿔을 가진 붉은 갈색 사슴을 만들라. 등에는 녹슨 틀과 밝은 유리판으로 된 작은 온실 하나를 통합하고 안에 초록 묘목 한 그루를 둔다. 얼굴과 가슴은 크림색으로 밝힌다. 온실 창이 살짝 열리면 고개를 뒤로 돌려 묘목을 확인하게 한다.",
+    "key": "pet-258",
+    "anatomy": "deer",
+    "feature": "greenhouse",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "deer",
+    "colors": {
+      "primary": "#a16447"
+    },
+    "idle": "가느다란 다리와 짧은 머리, 낮게 갈라지는 뿔을 가진 붉은 갈색 사슴을 만들라. 등에는 녹슨 틀과 밝은 유리판으로 된 작은 온실 하나를 통합하고 안에 초록 묘목 한 그루를 둔다. 얼굴과 가슴은 크림색으로 밝힌다. 온실 창이 살짝 열리면 고개를 뒤로 돌려 묘목을 확인하게 한다."
   }
 }

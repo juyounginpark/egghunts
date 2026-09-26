@@ -6,13 +6,13 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
         11.5,
         7,
-        12
+        14
       ],
       "parent": null
     },
@@ -20,36 +20,52 @@
       "pivot": [
         11.5,
         13,
-        2
+        4
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        17
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
         11,
-        7
+        9
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
         7,
-        12
+        14
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        14
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
         6,
         7,
-        12
+        14
       ],
       "parent": "body"
     },
@@ -57,57 +73,51 @@
       "pivot": [
         17,
         7,
-        12
+        14
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        14
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
         17,
         7,
-        12
+        14
       ],
       "parent": "body"
     }
   },
   "concept": {
-    "key": "pet-293",
     "id": 293,
-    "name": "시간 모래토끼",
+    "oldStage": 20,
     "stage": 20,
-    "stageName": "공허와 창조주의 정원",
     "slot": 3,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "rabbit",
-    "role": "장난꾸러기 펫",
+    "previousName": "시간 모래토끼",
+    "name": "흙빚는 곰",
     "tier": 1,
-    "rarity": "B",
-    "concept": "끊어진 귀판을 이용해 잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원에서 살아가는 시간 모래토끼.",
-    "inspiration": "공허의 길 → 기억의 정원 → 창조자의 문 / creation",
-    "silhouette": [
-      "좁은 몸과 몸 높이만큼 긴 귀",
-      "끊어진 귀판"
-    ],
-    "feature": "끊어진 귀판",
-    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
-    "ecology": "잊힌 모양 사이에 첫 씨앗이 자라는 공허 정원",
-    "material": "공허 절단면·첫빛",
-    "body": "좁은 몸과 몸 높이만큼 긴 귀",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공허의 길 → 기억의 정원 → 창조자의 문에서 온 끊어진 귀판: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "앞발로 쥔 물건",
-    "gradient": "몸의 짙은 자주 → 열린 절단면 청록; 씨앗 중심은 따뜻한 금빛",
-    "colorPlacement": "몸 #ab658a; 대표 기관 #48ac9e; 발·연결부 #e4b94d; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#ab658a",
-      "accent": "#48ac9e"
-    },
-    "idle": "몸이 멈춘 뒤 떨어진 기관이 늦게 따라옴 / 꼬리를 좌우로 흔들고 고개를 갸웃",
-    "reaction": "꼬리를 두 번 흔들며 고개를 갸웃한다",
-    "distinction": "장난꾸러기 펫: 좁은 몸과 몸 높이만큼 긴 귀; 앞발로 쥔 물건에 끊어진 귀판",
+    "prompt": "넓은 손과 둥근 배, 짧은 코를 가진 따뜻한 회갈색 곰을 만들라. 얼굴과 배는 크림색이며 앞발에는 몸보다 작은 붉은 점토 덩어리를 안게 한다. 발끝과 손바닥에만 흙색 얼룩을 넣는다. 점토를 두 번 누르면 작은 산 모양이 되고 다시 둥근 덩어리로 돌아오는 동작을 준다.",
+    "key": "pet-293",
+    "anatomy": "bear",
+    "feature": "clay",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bear",
+    "colors": {
+      "primary": "#958477"
+    },
+    "idle": "넓은 손과 둥근 배, 짧은 코를 가진 따뜻한 회갈색 곰을 만들라. 얼굴과 배는 크림색이며 앞발에는 몸보다 작은 붉은 점토 덩어리를 안게 한다. 발끝과 손바닥에만 흙색 얼룩을 넣는다. 점토를 두 번 누르면 작은 산 모양이 되고 다시 둥근 덩어리로 돌아오는 동작을 준다."
   }
 }

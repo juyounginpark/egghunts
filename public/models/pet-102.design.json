@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,14 +15,6 @@
         12
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -38,29 +30,27 @@
         11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
         6,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.15,
-        0.1
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
       ]
     },
     "left_leg": {
@@ -71,35 +61,25 @@
       ],
       "parent": "body"
     },
-    "left_tip": {
-      "pivot": [
-        3,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
     "right_arm": {
       "pivot": [
         17,
-        11,
+        7,
         12
       ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.15,
-        -0.1
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
       ],
-      "scale": [
-        1.12,
-        1,
-        1
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
       ]
     },
     "right_leg": {
@@ -109,19 +89,6 @@
         12
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        20,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
     },
     "tail": {
       "pivot": [
@@ -133,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-102",
     "id": 102,
-    "name": "민들레 삐삐",
+    "oldStage": 1,
     "stage": 1,
-    "stageName": "몽글 초원",
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "bird",
-    "role": "환경 생물 펫",
+    "previousName": "민들레 삐삐",
+    "name": "민들레 병아리",
     "tier": 1,
-    "rarity": "B",
-    "concept": "씨앗 배달 날개을 이용해 바람을 모아 씨앗을 나르는 초원에서 살아가는 민들레 삐삐.",
-    "inspiration": "꽃밭 · 풍차 · 건초 / hay",
-    "silhouette": [
-      "앞으로 나온 쐐기 부리와 낮은 양 날개",
-      "씨앗 배달 날개"
-    ],
-    "feature": "씨앗 배달 날개",
-    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
-    "ecology": "바람을 모아 씨앗을 나르는 초원",
-    "material": "식물·털",
-    "body": "앞으로 나온 쐐기 부리와 낮은 양 날개",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "꽃밭 · 풍차 · 건초에서 온 씨앗 배달 날개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "줄기 뿌리의 짙은 올리브 → 잎 끝의 연두; 얼굴·배는 크림",
-    "colorPlacement": "몸 #efe4b7; 대표 기관 #c99438; 발·연결부 #71a73d; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#efe4b7",
-      "accent": "#c99438"
-    },
-    "idle": "바람을 살피고 잎을 접었다 펼침 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 앞으로 나온 쐐기 부리와 낮은 양 날개; 넓은 등집에 씨앗 배달 날개",
+    "prompt": "작고 둥근 병아리 몸. 짧은 부리와 작은 발. 볼 옆부터 뒤통수까지 짧은 꽃잎이 둘러져 민들레 꽃처럼 읽히고 꼬리는 작은 하얀 홀씨 덩어리. 밝은 노랑 몸, 꽃잎 뿌리의 짙은 황금색, 흰 꼬리. 고개를 갸웃하고 드물게 홀씨 하나가 날린다. 꽃잎이 얼굴을 덮지 않는다.",
+    "key": "pet-102",
+    "anatomy": "bird",
+    "feature": "petals",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bird",
+    "colors": {
+      "primary": "#ead16c"
+    },
+    "idle": "작고 둥근 병아리 몸. 짧은 부리와 작은 발. 볼 옆부터 뒤통수까지 짧은 꽃잎이 둘러져 민들레 꽃처럼 읽히고 꼬리는 작은 하얀 홀씨 덩어리. 밝은 노랑 몸, 꽃잎 뿌리의 짙은 황금색, 흰 꼬리. 고개를 갸웃하고 드물게 홀씨 하나가 날린다. 꽃잎이 얼굴을 덮지 않는다."
   }
 }

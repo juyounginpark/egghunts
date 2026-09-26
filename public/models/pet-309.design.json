@@ -1,248 +1,148 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    32,
-    25,
-    35
+    24,
+    34,
+    69
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        15.5,
+        11.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        15.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
-        15.5,
-        13,
+        11.5,
+        25,
         0
       ],
       "parent": "head"
     },
-    "head": {
+    "float": {
       "pivot": [
-        15.5,
-        11,
-        7
+        11.5,
+        12,
+        19
       ],
       "parent": "body",
       "rotation": [
-        -0.06,
+        0.15,
+        0.25,
+        0.3
+      ]
+    },
+    "head": {
+      "pivot": [
+        11.5,
+        23,
+        10
+      ],
+      "parent": "neck"
+    },
+    "neck": {
+      "pivot": [
+        11.5,
+        8,
+        13
+      ],
+      "parent": "body",
+      "rotation": [
+        -0.13,
         0,
         0
       ]
     },
-    "left_arm": {
-      "pivot": [
-        10,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.3,
-        0.1
-      ],
-      "scale": [
-        1.24,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        10,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        10,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        7,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        21,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.3,
-        -0.1
-      ],
-      "scale": [
-        1.24,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        21,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
-    "right_leg": {
-      "pivot": [
-        21,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        24,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
-    },
     "tail": {
       "pivot": [
-        15.5,
-        7,
-        18
+        11.5,
+        6,
+        20.0
       ],
       "parent": "body",
       "rotation": [
-        0.08,
-        0.25,
+        0.0,
+        -0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        15.5,
-        7,
-        22
+        11.5,
+        6,
+        28.8
       ],
       "parent": "tail",
       "rotation": [
-        0.08,
-        0.25,
+        0.04,
+        -0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        15.5,
-        7,
-        26
+        11.5,
+        6,
+        37.6
       ],
       "parent": "tail_1",
       "rotation": [
         0.08,
-        0.25,
+        -0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        15.5,
-        7,
-        30
+        11.5,
+        6,
+        46.4
       ],
       "parent": "tail_2",
       "rotation": [
-        0.08,
-        0.25,
+        0.12,
+        -0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        55.2
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-309",
     "id": 309,
-    "name": "월궁기와 도깨비룡",
-    "stage": 10,
-    "stageName": "도깨비 달마을",
+    "oldStage": 10,
+    "stage": 9,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "월궁기와 도깨비룡",
+    "name": "달맞이 청룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "들린 처마 날개·두 갈래 도깨비불 뿔을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 월궁기와 도깨비룡.",
-    "inspiration": "기와집 · 붉은 달 · 도깨비불 / flame",
-    "silhouette": [
-      "기와 지붕을 짊어진 도깨비룡",
-      "들린 처마 날개·두 갈래 도깨비불 뿔"
-    ],
-    "feature": "들린 처마 날개·두 갈래 도깨비불 뿔",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "기와 처마 아래 붉은 달의 불씨가 사는 마을",
-    "material": "도자기·기와",
-    "body": "기와 지붕을 짊어진 도깨비룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "기와집 · 붉은 달 · 도깨비불에서 온 들린 처마 날개·두 갈래 도깨비불 뿔: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "몸 중앙 따뜻한 자주 → 처마의 짙은 보라; 불씨 중심은 살구",
-    "colorPlacement": "몸 #52a38b; 대표 기관 #52416f; 발·연결부 #52416f; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#52a38b",
-      "accent": "#52416f"
-    },
-    "idle": "부채를 접고 고개 숙여 장난스러운 인사 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 기와 지붕을 짊어진 도깨비룡; 성체 전용 골격에 들린 처마 날개·두 갈래 도깨비불 뿔",
+    "prompt": "날개 없이 길게 흐르는 청색 용을 낮은 원을 그리는 자세로 만들라. 크림색 배, 뒤로 젖힌 나뭇가지 뿔, 길고 가는 수염을 분리하고 네 발은 몸 가까이에 작게 둔다. 목 아래의 붉은 여의주 한 개가 대표 오브제다. 큰 달빛 고리는 몸 뒤에 하나만 배치한다. 고개를 들면 수염이 늦게 흐르고 여의주가 가슴 앞을 짧게 따라 움직인다. 전용 알은 옅은 청자색 껍질에 달무늬와 붉은 구슬 장식 하나를 둔다.",
+    "key": "pet-309",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "불씨를 피해 알을 지키면 달 종소리 사이에 기와가 열린다.",
-    "acquisitionCondition": "달마을 알 운반 중 도깨비불 회피 + 달 종 충격 회피",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#658fbd"
+    },
+    "idle": "날개 없이 길게 흐르는 청색 용을 낮은 원을 그리는 자세로 만들라. 크림색 배, 뒤로 젖힌 나뭇가지 뿔, 길고 가는 수염을 분리하고 네 발은 몸 가까이에 작게 둔다. 목 아래의 붉은 여의주 한 개가 대표 오브제다. 큰 달빛 고리는 몸 뒤에 하나만 배치한다. 고개를 들면 수염이 늦게 흐르고 여의주가 가슴 앞을 짧게 따라 움직인다. 전용 알은 옅은 청자색 껍질에 달무늬와 붉은 구슬 장식 하나를 둔다."
   }
 }

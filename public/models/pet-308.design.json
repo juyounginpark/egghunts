@@ -1,248 +1,159 @@
 {
   "schema": "alkong-stage-assembly-v3",
   "size": [
-    26,
-    25,
-    35
+    24,
+    38,
+    60
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
-        12.5,
+        11.5,
         7,
-        12
+        15
       ],
       "parent": null
     },
     "crown": {
       "pivot": [
-        12.5,
+        11.5,
         7,
-        12
+        15
       ],
       "parent": "body"
     },
     "eyes": {
       "pivot": [
-        12.5,
-        19,
+        11.5,
+        29,
         0
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
-        12.5,
-        17,
-        7
+        11.5,
+        27,
+        10
+      ],
+      "parent": "neck"
+    },
+    "left_leg": {
+      "pivot": [
+        6,
+        7,
+        15
+      ],
+      "parent": "body"
+    },
+    "neck": {
+      "pivot": [
+        11.5,
+        9,
+        13
       ],
       "parent": "body",
       "rotation": [
-        -0.12,
+        0.1,
         0,
         0
       ]
     },
-    "left_arm": {
-      "pivot": [
-        7,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        0.14,
-        0.1
-      ],
-      "scale": [
-        1.18,
-        1,
-        1
-      ]
-    },
-    "left_ear": {
-      "pivot": [
-        7,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        0.12
-      ]
-    },
-    "left_leg": {
-      "pivot": [
-        7,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "left_tip": {
-      "pivot": [
-        4,
-        11,
-        12
-      ],
-      "parent": "left_arm",
-      "rotation": [
-        0,
-        0.12,
-        -0.08
-      ]
-    },
-    "right_arm": {
-      "pivot": [
-        18,
-        11,
-        12
-      ],
-      "parent": "body",
-      "rotation": [
-        0,
-        -0.14,
-        -0.1
-      ],
-      "scale": [
-        1.18,
-        1,
-        1
-      ]
-    },
-    "right_ear": {
-      "pivot": [
-        18,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.06,
-        0,
-        -0.12
-      ]
-    },
     "right_leg": {
       "pivot": [
-        18,
+        17,
         7,
-        12
+        15
       ],
       "parent": "body"
-    },
-    "right_tip": {
-      "pivot": [
-        21,
-        11,
-        12
-      ],
-      "parent": "right_arm",
-      "rotation": [
-        0,
-        -0.12,
-        0.08
-      ]
     },
     "tail": {
       "pivot": [
-        12.5,
-        7,
-        18
+        11.5,
+        6,
+        20.0
       ],
       "parent": "body",
       "rotation": [
+        0.0,
         0.12,
-        -0.12,
         0
       ]
     },
     "tail_1": {
       "pivot": [
-        12.5,
-        7,
-        22
+        11.5,
+        6,
+        27.2
       ],
       "parent": "tail",
       "rotation": [
+        0.04,
         0.12,
-        -0.12,
         0
       ]
     },
     "tail_2": {
       "pivot": [
-        12.5,
-        7,
-        26
+        11.5,
+        6,
+        34.4
       ],
       "parent": "tail_1",
       "rotation": [
+        0.08,
         0.12,
-        -0.12,
         0
       ]
     },
     "tail_3": {
       "pivot": [
-        12.5,
-        7,
-        30
+        11.5,
+        6,
+        41.6
       ],
       "parent": "tail_2",
       "rotation": [
         0.12,
-        -0.12,
+        0.12,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        48.8
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        0.12,
         0
       ]
     }
   },
   "concept": {
-    "key": "pet-308",
     "id": 308,
-    "name": "세계수 원시룡",
-    "stage": 9,
-    "stageName": "태초의 공룡섬",
+    "oldStage": 9,
+    "stage": 8,
     "slot": 10,
-    "boss": false,
-    "secretDragon": true,
-    "grid": 24,
-    "anatomy": "secret-dragon",
-    "role": "시크릿 상징",
+    "previousName": "세계수 원시룡",
+    "name": "태초의 수목룡",
     "tier": 6,
-    "rarity": "SECRET",
-    "concept": "목을 감싼 세 갈비·높은 양치 돛 꼬리을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 세계수 원시룡.",
-    "inspiration": "양치식물 · 화석 절벽 · 늪 / dinosaur",
-    "silhouette": [
-      "긴 목의 화석 고대룡",
-      "목을 감싼 세 갈비·높은 양치 돛 꼬리"
-    ],
-    "feature": "목을 감싼 세 갈비·높은 양치 돛 꼬리",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "화석과 살아 있는 양치식물이 함께 자라는 섬",
-    "material": "가죽·화석",
-    "body": "긴 목의 화석 고대룡",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "양치식물 · 화석 절벽 · 늪에서 온 목을 감싼 세 갈비·높은 양치 돛 꼬리: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "지형을 본뜬 몸통과 양 날개",
-    "gradient": "몸의 숲색 → 배의 따뜻한 모래색; 뼈 절단면은 아이보리",
-    "colorPlacement": "몸 #a4553e; 대표 기관 #4e874d; 발·연결부 #4e874d; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#a4553e",
-      "accent": "#4e874d"
-    },
-    "idle": "무거운 몸을 옮기고 등 돛 까딱 / 양 날개와 꼬리를 서로 다른 박자로 편다",
-    "reaction": "스테이지 문양이 펼쳐지고 날개를 들어 인사한다",
-    "distinction": "시크릿 상징: 긴 목의 화석 고대룡; 성체 전용 골격에 목을 감싼 세 갈비·높은 양치 돛 꼬리",
+    "prompt": "굵은 사족 몸통에서 매우 긴 목이 올라가고 꼬리가 넓게 휘는 고대 용을 만들라. 몸은 깊은 청록, 배는 따뜻한 회색, 뿔은 오래된 나무색이다. 등의 큰 나무 한 그루가 날개 같은 수관을 이루고 뿌리는 갑판을 감싸게 한다. 얼굴은 수관 아래에서도 드러나게 앞으로 내민다. 목을 낮추면 나뭇잎이 차례로 흔들리고 작은 씨앗 하나가 떨어진다. 전용 알은 바위 껍질에 굵은 나뭇결과 새싹 틈 하나를 둔다.",
+    "key": "pet-308",
+    "anatomy": "secret-dragon",
+    "feature": "dragon",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭",
-    "discoveryHint": "알을 든 채 작은 사냥꾼을 피하고, 늪의 숨도 살펴보자.",
-    "acquisitionCondition": "공룡섬 알 운반 중 랩터 회피 + 타르 늪 회피",
-    "reveal": "2.4초 동안 해당 스테이지 문양 여섯 개가 본체 바깥으로 펼쳐짐"
+    "secretDragon": true,
+    "stageName": "",
+    "role": "secret-dragon",
+    "colors": {
+      "primary": "#449b98"
+    },
+    "idle": "굵은 사족 몸통에서 매우 긴 목이 올라가고 꼬리가 넓게 휘는 고대 용을 만들라. 몸은 깊은 청록, 배는 따뜻한 회색, 뿔은 오래된 나무색이다. 등의 큰 나무 한 그루가 날개 같은 수관을 이루고 뿌리는 갑판을 감싸게 한다. 얼굴은 수관 아래에서도 드러나게 앞으로 내민다. 목을 낮추면 나뭇잎이 차례로 흔들리고 작은 씨앗 하나가 떨어진다. 전용 알은 바위 껍질에 굵은 나뭇결과 새싹 틈 하나를 둔다."
   }
 }

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,33 +16,49 @@
       ],
       "parent": null
     },
-    "crown": {
+    "eyes": {
       "pivot": [
         11.5,
+        13,
+        2
+      ],
+      "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
+    "head": {
+      "pivot": [
+        11.5,
+        11,
+        7
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        6,
         7,
         12
       ],
       "parent": "body"
     },
-    "eyes": {
+    "left_ear": {
       "pivot": [
-        11.5,
-        8,
-        1
-      ],
-      "parent": "head"
-    },
-    "head": {
-      "pivot": [
-        11.5,
         6,
-        7
+        15,
+        12
       ],
-      "parent": "body",
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +68,27 @@
         12
       ],
       "parent": "body"
+    },
+    "right_arm": {
+      "pivot": [
+        17,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-194",
     "id": 194,
-    "name": "장독 숨숨",
-    "stage": 10,
-    "stageName": "도깨비 달마을",
+    "oldStage": 10,
+    "stage": 9,
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "pot",
-    "role": "예상 밖의 펫",
+    "previousName": "장독 숨숨",
+    "name": "장승곰",
     "tier": 2,
-    "rarity": "A",
-    "concept": "항아리 뚜껑을 이용해 기와 처마 아래 붉은 달의 불씨가 사는 마을에서 살아가는 장독 숨숨.",
-    "inspiration": "기와집 · 붉은 달 · 도깨비불 / flame",
-    "silhouette": [
-      "넓은 항아리 배와 들린 뚜껑",
-      "항아리 뚜껑"
-    ],
-    "feature": "항아리 뚜껑",
-    "personality": "크림색 눈 가장자리와 색이 있는 세로 눈동자",
-    "ecology": "기와 처마 아래 붉은 달의 불씨가 사는 마을",
-    "material": "도자기·기와",
-    "body": "넓은 항아리 배와 들린 뚜껑",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "기와집 · 붉은 달 · 도깨비불에서 온 항아리 뚜껑: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "몸 중앙 따뜻한 자주 → 처마의 짙은 보라; 불씨 중심은 살구",
-    "colorPlacement": "몸 #52416f; 대표 기관 #52416f; 발·연결부 #52a38b; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#52416f",
-      "accent": "#52416f"
-    },
-    "idle": "부채를 접고 고개 숙여 장난스러운 인사 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 넓은 항아리 배와 들린 뚜껑; 몸통에 연결된 덮개에 항아리 뚜껑",
+    "prompt": "두툼한 나무 몸통과 짧은 팔, 둥근 귀를 가진 곰 형태의 작은 장승을 만들라. 나뭇결은 넓은 세로 홈으로만 넣고 얼굴은 검은 점눈과 짧은 입으로 온화하게 둔다. 이마에 붉은 천 한 줄, 배에 큰 흰 소용돌이 문양 하나를 넣는다. 몸을 조금 숙여 인사하고 나무 귀가 작게 흔들리게 한다.",
+    "key": "pet-194",
+    "anatomy": "bear",
+    "feature": "wood",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "bear",
+    "colors": {
+      "primary": "#303039"
+    },
+    "idle": "두툼한 나무 몸통과 짧은 팔, 둥근 귀를 가진 곰 형태의 작은 장승을 만들라. 나뭇결은 넓은 세로 홈으로만 넣고 얼굴은 검은 점눈과 짧은 입으로 온화하게 둔다. 이마에 붉은 천 한 줄, 배에 큰 흰 소용돌이 문양 하나를 넣는다. 몸을 조금 숙여 인사하고 나무 귀가 작게 흔들리게 한다."
   }
 }

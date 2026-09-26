@@ -1,4 +1,4 @@
-import {ROAD_WIDTH_SCALE} from './stage-data';
+import {ROAD_WIDTH_SCALE,STAGES} from './stage-data';
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:1,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
@@ -65,7 +65,7 @@ export const BALANCE = {
   maxCarrySlow: .7,
   rareEggPickupSeconds: [0,0,0,1.5,3,5,7],
   timePerLevel: 5,
-  baseTap: 1,
+  baseTap: 3,
   tapPerLevel: 2,
   baseAutoDamage: 1,
   autoDamagePerLevel: 2,
@@ -75,7 +75,9 @@ export const BALANCE = {
   mapNearZ: 22,
   baseMinZ:-4.4,
   mapFarZ: -2277,
-  nightInterval: 180000,
+  // The 2,280-unit final route needs ~228s round trip at the existing 20-unit cap.
+  // Keep forced night return, but allow a complete expedition between nights.
+  nightInterval: 300000,
   nightDuration: 15000,
   warningSeconds: 10,
   windSeconds: 5,
@@ -94,9 +96,30 @@ export const BALANCE = {
   interaction: 1.4,
   returnRadius: 2.2,
   inventory: 6,
-  offlineCap: 7200,
+  offlineCap: 172800,
   tapInterval: 80,
 };
+// Economy goals are upgrades/readiness, never paid stage admission or date locks.
+export const ECONOMY = {
+  displayMultiplier: 1,
+  stageSeconds: [120,240,540,2700,18000,7200,14400,43200,86400,259200,43200,129600,172800,172800,432000,86400,172800,259200,259200,432000],
+  // Account for login cadence and purchases inside each interval, not date locks.
+  stageCostFactors: [1,1,1,1,1,1,1,1,1,1.25,1,1,1.2,1.2,1.4,1,1.2,1.2,1.2,1.45],
+  baseTeamIncome: 1000, incomeLinear: .30, incomeQuadratic: .014,
+  middleMultiplier: 1.16, middleCostShare: .035, speedCostShare: .78,
+  tierProduction: [1,1.5,2.2,3.2,4.5,6,9],
+  middleUpgrades: ['training','damage','rate','health'] as const,
+  speedGrowth: 2, hatchGrowth: 1.75,
+};
+export function recommendedIncome(stage:number){
+  const n=Math.max(0,Math.min(19,stage-1));
+  return ECONOMY.baseTeamIncome*10**(ECONOMY.incomeLinear*n+ECONOMY.incomeQuadratic*n*n)*1.6**Math.floor(n/5);
+}
+export function growthCost(kind:string,level:number){
+  const stage=Math.min(20,level+1);
+  if(stage===1&&kind==='speed')return 15000;
+  return Math.floor(recommendedIncome(stage)*ECONOMY.stageSeconds[stage-1]*ECONOMY.stageCostFactors[stage-1]*(kind==='speed'?ECONOMY.speedCostShare:ECONOMY.middleCostShare));
+}
 export const REGIONS = [
   {
     name: "풀숲",
@@ -300,6 +323,7 @@ export const MONGLES = [...LEGACY_MONGLES, ...[...STAGE_PET_ROWS,...SECRET_DRAGO
   const ability=pet.slot%3;
   return {
     ...pet,id:`mongle-${100+i}`,region:Math.floor((pet.stageId-1)/4),species:pet.slot,
+    description:`${pet.name} · ${STAGES[pet.stageId-1].name}에서 온 수집 생물`,
     clickMultiplier:ability===0?bonus:1,autoMultiplier:ability===2?bonus:1,speedMultiplier:ability===1?bonus:1,
     effect:`${['클릭','스피드','오토'][ability]} ×${bonus.toFixed(1)}`,
     grid:24,scale:pet.slot===10?BALANCE.secretDragonScale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
@@ -308,17 +332,17 @@ export const MONGLES = [...LEGACY_MONGLES, ...[...STAGE_PET_ROWS,...SECRET_DRAGO
 export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>100+(i+1)*50);
 export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.png`;}
 export const UPGRADES = {
-  health: {name:"든든한 체력",description:"최대 HP +20",icon:"pack",cost:30,growth:1.6},
+  health: {name:"든든한 체력",description:"최대 HP +20 · 생산 +16%",icon:"pack",cost:30,growth:1.6},
   training: {
     name: "러닝머신 모터",
-    description: "운동 증가량 +0.01 /초",
+    description: "운동 증가량 +0.01 /초 · 생산 +16%",
     icon: "gym",
     cost: 45,
     growth: 1.65,
   },
   speed: {
     name: "가벼운 발걸음",
-    description: "이동속도 +12%",
+    description: "기본 스피드 ×2 · 다음 생산 단계",
     icon: "alkong",
     cost: 25,
     growth: 1.6,
@@ -339,14 +363,14 @@ export const UPGRADES = {
   },
   damage: {
     name: "병아리 부리",
-    description: "자동 타격 피해 +2",
+    description: "자동 피해 성장 ×1.75 · 생산 +16%",
     icon: "pet-9",
     cost: 30,
     growth: 1.65,
   },
   rate: {
     name: "태엽 감기",
-    description: "초당 타격 +0.5회",
+    description: "초당 타격 +0.5회 · 생산 +16%",
     icon: "egg-3",
     cost: 50,
     growth: 1.8,

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,34 +16,29 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        12,
+        14,
         2
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
-        10,
+        12,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -52,6 +47,19 @@
         12
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -69,6 +77,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -79,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-145",
     "id": 145,
-    "name": "발광 오징어",
-    "stage": 5,
-    "stageName": "크라켄 심해",
+    "oldStage": 5,
+    "stage": 19,
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "squid",
-    "role": "크고 듬직한 펫",
+    "previousName": "발광 오징어",
+    "name": "침묵의 종",
     "tier": 2,
-    "rarity": "A",
-    "concept": "길쭉한 맨틀을 이용해 깊은 어둠에서 촉각과 등불로 만나는 심해에서 살아가는 발광 오징어.",
-    "inspiration": "발광 산호 · 촉수 · 해저 유적 / tentacle",
-    "silhouette": [
-      "좁고 높은 맨틀과 두 긴 팔",
-      "길쭉한 맨틀"
-    ],
-    "feature": "길쭉한 맨틀",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "깊은 어둠에서 촉각과 등불로 만나는 심해",
-    "material": "심해 피부·광구",
-    "body": "좁고 높은 맨틀과 두 긴 팔",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "발광 산호 · 촉수 · 해저 유적에서 온 길쭉한 맨틀: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "몸 아래 짙은 남색 → 등 청색; 촉각 끝만 민트빛",
-    "colorPlacement": "몸 #70479f; 대표 기관 #39cebd; 발·연결부 #e07bac; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#70479f",
-      "accent": "#39cebd"
-    },
-    "idle": "천천히 가라앉고 촉수를 순서대로 접기 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 좁고 높은 맨틀과 두 긴 팔; 등과 옆구리에 이어진 기관에 길쭉한 맨틀",
+    "prompt": "낮고 넓은 검정 종에 작은 점눈 두 개와 짧은 천 팔 한 쌍을 달아 정령으로 만들라. 종 아래는 종추가 없이 비어 있고 안쪽 면만 밝은 회색으로 둔다. 손잡이는 깨진 원의 형태지만 뿌리는 본체에 단단히 연결한다. 종이 흔들려도 소리 대신 얇은 흰 고리 하나만 조용히 퍼지게 한다.",
+    "key": "pet-145",
+    "anatomy": "ghost",
+    "feature": "bell",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "ghost",
+    "colors": {
+      "primary": "#30303c"
+    },
+    "idle": "낮고 넓은 검정 종에 작은 점눈 두 개와 짧은 천 팔 한 쌍을 달아 정령으로 만들라. 종 아래는 종추가 없이 비어 있고 안쪽 면만 밝은 회색으로 둔다. 손잡이는 깨진 원의 형태지만 뿌리는 본체에 단단히 연결한다. 종이 흔들려도 소리 대신 얇은 흰 고리 하나만 조용히 퍼지게 한다."
   }
 }

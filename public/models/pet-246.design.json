@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    24
+    35
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,10 +16,18 @@
       ],
       "parent": null
     },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
     "eyes": {
       "pivot": [
         11.5,
-        12,
+        17,
         2
       ],
       "parent": "head"
@@ -27,14 +35,22 @@
     "head": {
       "pivot": [
         11.5,
-        10,
+        15,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -44,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -57,49 +86,87 @@
       "pivot": [
         11.5,
         6,
-        17
+        17.0
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.0,
+        -0.078,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        20.4
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.078,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        23.8
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.08,
+        -0.078,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        27.2
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.12,
+        -0.078,
+        0
+      ]
+    },
+    "tail_4": {
+      "pivot": [
+        11.5,
+        6,
+        30.6
+      ],
+      "parent": "tail_3",
+      "rotation": [
+        0.16,
+        -0.078,
+        0
+      ]
     }
   },
   "concept": {
-    "key": "pet-246",
     "id": 246,
-    "name": "꿈실 해파리",
-    "stage": 15,
-    "stageName": "뒤죽박죽 꿈나라",
+    "oldStage": 15,
+    "stage": 14,
     "slot": 6,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "jelly",
-    "role": "사물 의인화 펫",
+    "previousName": "꿈실 해파리",
+    "name": "구름기린",
     "tier": 3,
-    "rarity": "S",
-    "concept": "꿈방울 갓을 이용해 시간과 위아래가 뒤집힌 잠의 세계에서 살아가는 꿈실 해파리.",
-    "inspiration": "공중 침대 · 거꾸로 시계 / hand",
-    "silhouette": [
-      "큰 갓 아래 네 굵은 촉수",
-      "꿈방울 갓"
-    ],
-    "feature": "꿈방울 갓",
-    "personality": "아래쪽에 모인 작은 눈동자와 숙인 입",
-    "ecology": "시간과 위아래가 뒤집힌 잠의 세계",
-    "material": "쿠션·꿈빛",
-    "body": "큰 갓 아래 네 굵은 촉수",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "공중 침대 · 거꾸로 시계에서 온 꿈방울 갓: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "꼬리에 연결된 기관",
-    "gradient": "쿠션 중앙 복숭아색 → 접힌 가장자리 자주색; 달 무늬만 금빛",
-    "colorPlacement": "몸 #63b8c9; 대표 기관 #c875ae; 발·연결부 #c875ae; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#63b8c9",
-      "accent": "#c875ae"
-    },
-    "idle": "고개와 꼬리가 서로 반대 박자로 졸기 / 대표 기관을 열고 고개를 옆으로 기울임",
-    "reaction": "문짝 기관을 열었다 닫고 몸을 세운다",
-    "distinction": "사물 의인화 펫: 큰 갓 아래 네 굵은 촉수; 꼬리에 연결된 기관에 꿈방울 갓",
+    "prompt": "짧은 몸 위로 가늘고 긴 목이 올라가는 작은 기린을 만들라. 몸은 옅은 살구색, 반점은 밝은 갈색이고 목 중간에는 작고 둥근 흰 구름 한 덩어리가 끼어 있게 한다. 머리는 구름 위로 확실히 드러낸다. 목을 내리면 구름이 조금 늦게 따라 내려와 머리를 잠깐 가리게 한다.",
+    "key": "pet-246",
+    "anatomy": "giraffe",
+    "feature": "cloud",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "giraffe",
+    "colors": {
+      "primary": "#e8b18f"
+    },
+    "idle": "짧은 몸 위로 가늘고 긴 목이 올라가는 작은 기린을 만들라. 몸은 옅은 살구색, 반점은 밝은 갈색이고 목 중간에는 작고 둥근 흰 구름 한 덩어리가 끼어 있게 한다. 머리는 구름 위로 확실히 드러낸다. 목을 내리면 구름이 조금 늦게 따라 내려와 머리를 잠깐 가리게 한다."
   }
 }

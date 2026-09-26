@@ -3,10 +3,10 @@
   "size": [
     24,
     24,
-    35
+    24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,12 +38,15 @@
         8,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
+    },
+    "left_arm": {
+      "pivot": [
+        6,
+        7,
+        12
+      ],
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
@@ -53,14 +56,22 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
       "pivot": [
         6,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "pivot": [
+        17,
         7,
         12
       ],
@@ -74,9 +85,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -86,98 +97,27 @@
         12
       ],
       "parent": "body"
-    },
-    "tail": {
-      "pivot": [
-        11.5,
-        6,
-        18
-      ],
-      "parent": "body",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_1": {
-      "pivot": [
-        11.5,
-        6,
-        22
-      ],
-      "parent": "tail",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_2": {
-      "pivot": [
-        11.5,
-        6,
-        26
-      ],
-      "parent": "tail_1",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
-    },
-    "tail_3": {
-      "pivot": [
-        11.5,
-        6,
-        30
-      ],
-      "parent": "tail_2",
-      "rotation": [
-        0.04,
-        -0.18,
-        0
-      ]
     }
   },
   "concept": {
-    "key": "pet-174",
     "id": 174,
-    "name": "대추 낙타",
-    "stage": 8,
-    "stageName": "황금 사막왕국",
+    "oldStage": 8,
+    "stage": 7,
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "camel",
-    "role": "예상 밖의 펫",
+    "previousName": "대추 낙타",
+    "name": "청금석 풍뎅이",
     "tier": 2,
-    "rarity": "A",
-    "concept": "물 저장 혹을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 대추 낙타.",
-    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
-    "silhouette": [
-      "길고 낮은 몸 위 저장 혹",
-      "물 저장 혹"
-    ],
-    "feature": "물 저장 혹",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
-    "material": "사암·황동",
-    "body": "길고 낮은 몸 위 저장 혹",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 물 저장 혹: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
-    "colorPlacement": "몸 #d7a247; 대표 기관 #d7a247; 발·연결부 #259c9c; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#d7a247",
-      "accent": "#d7a247"
-    },
-    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 길고 낮은 몸 위 저장 혹; 몸통에 연결된 덮개에 물 저장 혹",
+    "prompt": "넓은 타원형 몸과 낮게 벌어진 여섯 다리를 가진 풍뎅이를 만들라. 등껍질은 깊은 청금석색, 몸 아래는 검정, 껍질 중앙의 이음매만 금색으로 강조한다. 머리 앞에는 작은 둥근 사암 구슬을 둔다. 구슬을 앞다리로 한 번 굴린 뒤 더듬이가 번갈아 움직이게 한다.",
+    "key": "pet-174",
+    "anatomy": "beetle",
+    "feature": "lapis",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "beetle",
+    "colors": {
+      "primary": "#365a96"
+    },
+    "idle": "넓은 타원형 몸과 낮게 벌어진 여섯 다리를 가진 풍뎅이를 만들라. 등껍질은 깊은 청금석색, 몸 아래는 검정, 껍질 중앙의 이음매만 금색으로 강조한다. 머리 앞에는 작은 둥근 사암 구슬을 둔다. 구슬을 앞다리로 한 번 굴린 뒤 더듬이가 번갈아 움직이게 한다."
   }
 }

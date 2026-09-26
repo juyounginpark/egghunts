@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,22 +27,38 @@
     "eyes": {
       "pivot": [
         11.5,
-        14,
-        2
+        8,
+        1
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        12,
+        6,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        -0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +68,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +92,24 @@
     }
   },
   "concept": {
-    "key": "pet-154",
     "id": 154,
-    "name": "잉크병 유령",
-    "stage": 6,
-    "stageName": "유령 학교",
+    "oldStage": 6,
+    "stage": 5,
     "slot": 4,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ink",
-    "role": "예상 밖의 펫",
+    "previousName": "잉크병 유령",
+    "name": "책가방 거북",
     "tier": 2,
-    "rarity": "A",
-    "concept": "잉크 병마개을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 잉크병 유령.",
-    "inspiration": "책상 · 사물함 · 긴 복도 / book",
-    "silhouette": [
-      "아래가 넓은 병과 두꺼운 마개",
-      "잉크 병마개"
-    ],
-    "feature": "잉크 병마개",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "텅 빈 교실에서 물건이 수업을 이어가는 학교",
-    "material": "종이·낡은 목재",
-    "body": "아래가 넓은 병과 두꺼운 마개",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "책상 · 사물함 · 긴 복도에서 온 잉크 병마개: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "몸통에 연결된 덮개",
-    "gradient": "책등 자주갈색 → 펼친 면 아이보리; 모서리는 옅은 황토",
-    "colorPlacement": "몸 #775274; 대표 기관 #e1cba3; 발·연결부 #a7774f; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#775274",
-      "accent": "#e1cba3"
-    },
-    "idle": "고개를 갸웃하고 문짝을 살짝 열기 / 부유 기관이 머리보다 한 박자 늦게 기울어짐",
-    "reaction": "부유 기관이 먼저 솟고 몸이 따라온다",
-    "distinction": "예상 밖의 펫: 아래가 넓은 병과 두꺼운 마개; 몸통에 연결된 덮개에 잉크 병마개",
+    "prompt": "작은 갈색 거북 위에 붉은 책가방을 등껍질처럼 얹어라. 가방은 둥근 모서리와 큰 잠금쇠 하나를 사용하고 양옆 주머니는 최소화한다. 얼굴과 짧은 앞발은 크림색으로 밝게 드러낸다. 가방 뚜껑이 살짝 열려 종이 한 장이 올라왔다가 들어가게 한다.",
+    "key": "pet-154",
+    "anatomy": "turtle",
+    "feature": "backpack",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "turtle",
+    "colors": {
+      "primary": "#9a7656"
+    },
+    "idle": "작은 갈색 거북 위에 붉은 책가방을 등껍질처럼 얹어라. 가방은 둥근 모서리와 큰 잠금쇠 하나를 사용하고 양옆 주머니는 최소화한다. 얼굴과 짧은 앞발은 크림색으로 밝게 드러낸다. 가방 뚜껑이 살짝 열려 종이 한 장이 올라왔다가 들어가게 한다."
   }
 }

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,14 +16,6 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
@@ -32,18 +24,21 @@
       ],
       "parent": "head"
     },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
+    },
     "head": {
       "pivot": [
         11.5,
         11,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -52,6 +47,19 @@
         12
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -69,6 +77,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -79,43 +100,24 @@
     }
   },
   "concept": {
-    "key": "pet-157",
     "id": 157,
-    "name": "교복 마법토끼",
-    "stage": 6,
-    "stageName": "유령 학교",
+    "oldStage": 6,
+    "stage": 5,
     "slot": 7,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "rabbit",
-    "role": "위험 요소 펫",
+    "previousName": "교복 마법토끼",
+    "name": "종소리 부엉이",
     "tier": 4,
-    "rarity": "SS",
-    "concept": "책상 우산을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 교복 마법토끼.",
-    "inspiration": "책상 · 사물함 · 긴 복도 / book",
-    "silhouette": [
-      "좁은 몸과 몸 높이만큼 긴 귀",
-      "책상 우산"
-    ],
-    "feature": "책상 우산",
-    "personality": "안쪽으로 향한 눈동자와 들린 눈썹·웃는 입",
-    "ecology": "텅 빈 교실에서 물건이 수업을 이어가는 학교",
-    "material": "종이·낡은 목재",
-    "body": "좁은 몸과 몸 높이만큼 긴 귀",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "책상 · 사물함 · 긴 복도에서 온 책상 우산: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등에 짊어진 기관",
-    "gradient": "책등 자주갈색 → 펼친 면 아이보리; 모서리는 옅은 황토",
-    "colorPlacement": "몸 #538590; 대표 기관 #e1cba3; 발·연결부 #e1cba3; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#538590",
-      "accent": "#e1cba3"
-    },
-    "idle": "고개를 갸웃하고 문짝을 살짝 열기 / 양 앞팔을 벌렸다 접고 고개를 듦",
-    "reaction": "두 앞팔을 벌렸다 몸쪽으로 당긴다",
-    "distinction": "위험 요소 펫: 좁은 몸과 몸 높이만큼 긴 귀; 등에 짊어진 기관에 책상 우산",
+    "prompt": "둥근 머리와 아래로 넓어지는 종 형태의 몸을 가진 작은 부엉이를 만들라. 얼굴은 크림색, 몸은 어두운 청동색, 날개는 짙은 파랑으로 분리한다. 몸 아래의 작은 종추가 발 사이에서 보이게 한다. 고개를 갸웃하면 몸이 한 번 흔들리고 종추가 뒤늦게 따라오게 한다.",
+    "key": "pet-157",
+    "anatomy": "owl",
+    "feature": "bell",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "owl",
+    "colors": {
+      "primary": "#f2e3bf"
+    },
+    "idle": "둥근 머리와 아래로 넓어지는 종 형태의 몸을 가진 작은 부엉이를 만들라. 얼굴은 크림색, 몸은 어두운 청동색, 날개는 짙은 파랑으로 분리한다. 몸 아래의 작은 종추가 발 사이에서 보이게 한다. 고개를 갸웃하면 몸이 한 번 흔들리고 종추가 뒤늦게 따라오게 한다."
   }
 }

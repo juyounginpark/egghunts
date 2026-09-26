@@ -1,58 +1,58 @@
 {
   "stats": [
     {
-      "id": 230,
-      "triangles": 492,
+      "id": 100,
+      "triangles": 420,
       "animated": true
     },
     {
-      "id": 231,
-      "triangles": 552,
+      "id": 101,
+      "triangles": 458,
       "animated": true
     },
     {
-      "id": 232,
-      "triangles": 434,
+      "id": 102,
+      "triangles": 584,
       "animated": true
     },
     {
-      "id": 233,
-      "triangles": 520,
+      "id": 103,
+      "triangles": 1180,
       "animated": true
     },
     {
-      "id": 234,
-      "triangles": 582,
+      "id": 104,
+      "triangles": 494,
       "animated": true
     },
     {
-      "id": 235,
-      "triangles": 644,
+      "id": 105,
+      "triangles": 536,
       "animated": true
     },
     {
-      "id": 236,
-      "triangles": 628,
+      "id": 106,
+      "triangles": 564,
       "animated": true
     },
     {
-      "id": 237,
-      "triangles": 1104,
+      "id": 107,
+      "triangles": 724,
       "animated": true
     },
     {
-      "id": 238,
-      "triangles": 680,
+      "id": 108,
+      "triangles": 1154,
       "animated": true
     },
     {
-      "id": 239,
-      "triangles": 794,
+      "id": 109,
+      "triangles": 1096,
       "animated": true
     },
     {
-      "id": 313,
-      "triangles": 1392,
+      "id": 300,
+      "triangles": 5410,
       "animated": true
     }
   ],

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -38,12 +38,7 @@
         6,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_ear": {
       "pivot": [
@@ -53,9 +48,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
@@ -74,9 +69,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -89,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-172",
     "id": 172,
-    "name": "항아리 소라",
-    "stage": 8,
-    "stageName": "황금 사막왕국",
+    "oldStage": 8,
+    "stage": 7,
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "snail",
-    "role": "환경 생물 펫",
+    "previousName": "항아리 소라",
+    "name": "선인장 고슴도치",
     "tier": 1,
-    "rarity": "B",
-    "concept": "사암 나선집을 이용해 모래와 햇빛을 몸에 저장하는 사막 왕국에서 살아가는 항아리 소라.",
-    "inspiration": "피라미드 · 모래 · 황금 신전 / scorpion",
-    "silhouette": [
-      "낮은 긴 발 위 거대한 말린 집",
-      "사암 나선집"
-    ],
-    "feature": "사암 나선집",
-    "personality": "위로 향한 두 칸 눈동자와 양끝이 들린 입",
-    "ecology": "모래와 햇빛을 몸에 저장하는 사막 왕국",
-    "material": "사암·황동",
-    "body": "낮은 긴 발 위 거대한 말린 집",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "피라미드 · 모래 · 황금 신전에서 온 사암 나선집: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "발의 붉은 사암 → 몸의 황토 → 닳은 윗면 금빛",
-    "colorPlacement": "몸 #259c9c; 대표 기관 #d7a247; 발·연결부 #d7a247; 얼굴 #fff1cf; 눈 #253143",
+    "prompt": "짧은 얼굴과 작은 발을 가진 옅은 갈색 고슴도치의 등을 둥근 선인장처럼 만들라. 등은 짙은 초록, 가시는 크림색의 짧은 굵은 돌기 몇 개, 옆구리 꽃 하나는 진분홍으로 둔다. 꽃은 얼굴보다 작게 유지한다. 몸을 움츠렸다 펴면 꽃이 살짝 열리는 동작을 준다.",
+    "key": "pet-172",
+    "anatomy": "hedgehog",
+    "feature": "cactus",
+    "previewAngle": 35,
+    "secretDragon": false,
+    "stageName": "",
+    "role": "hedgehog",
     "colors": {
-      "primary": "#259c9c",
-      "accent": "#d7a247"
+      "primary": "#9a7656"
     },
-    "idle": "모래를 털고 몸을 낮춰 열 피하기 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 낮은 긴 발 위 거대한 말린 집; 넓은 등집에 사암 나선집",
-    "previewAngle": -35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "idle": "짧은 얼굴과 작은 발을 가진 옅은 갈색 고슴도치의 등을 둥근 선인장처럼 만들라. 등은 짙은 초록, 가시는 크림색의 짧은 굵은 돌기 몇 개, 옆구리 꽃 하나는 진분홍으로 둔다. 꽃은 얼굴보다 작게 유지한다. 몸을 움츠렸다 펴면 꽃이 살짝 열리는 동작을 준다."
   }
 }

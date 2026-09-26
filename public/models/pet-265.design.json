@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,22 +27,30 @@
     "eyes": {
       "pivot": [
         11.5,
-        12,
-        2
+        10,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        10,
+        8,
         7
       ],
-      "parent": "body",
+      "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
       "rotation": [
-        0.035,
+        0.08,
         0,
-        0
+        0.22
       ]
     },
     "left_leg": {
@@ -52,6 +60,19 @@
         12
       ],
       "parent": "body"
+    },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     },
     "right_leg": {
       "pivot": [
@@ -63,43 +84,24 @@
     }
   },
   "concept": {
-    "key": "pet-265",
     "id": 265,
-    "name": "실뽑는 거미",
-    "stage": 17,
-    "stageName": "곤충 소인국",
+    "oldStage": 17,
+    "stage": 16,
     "slot": 5,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "spider",
-    "role": "크고 듬직한 펫",
+    "previousName": "실뽑는 거미",
+    "name": "버섯개미",
     "tier": 2,
-    "rarity": "A",
-    "concept": "거미줄 집을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 실뽑는 거미.",
-    "inspiration": "거대한 풀잎 · 이슬 · 버섯 / mantis",
-    "silhouette": [
-      "낮은 둥근 배와 네 쌍의 굵은 다리",
-      "거미줄 집"
-    ],
-    "feature": "거미줄 집",
-    "personality": "세 칸 가로 눈꺼풀과 낮게 닫힌 입",
-    "ecology": "이슬 한 방울도 집만큼 큰 풀잎 아래 나라",
-    "material": "등껍질·잎",
-    "body": "낮은 둥근 배와 네 쌍의 굵은 다리",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "거대한 풀잎 · 이슬 · 버섯에서 온 거미줄 집: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "등과 옆구리에 이어진 기관",
-    "gradient": "등갑 중심 적갈색 → 가장자리 호박색; 잎 끝은 연한 녹색",
-    "colorPlacement": "몸 #e3ac44; 대표 기관 #70a444; 발·연결부 #e0d8a8; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#e3ac44",
-      "accent": "#70a444"
-    },
-    "idle": "더듬이 먼저 살피고 앞발 교대로 접기 / 양 발을 번갈아 들고 고개를 돌림",
-    "reaction": "발을 번갈아 디디고 머리를 돌린다",
-    "distinction": "크고 듬직한 펫: 낮은 둥근 배와 네 쌍의 굵은 다리; 등과 옆구리에 이어진 기관에 거미줄 집",
+    "prompt": "머리·가슴·배의 세 덩어리가 분명한 적갈색 개미를 만들라. 등에 작은 크림색 버섯을 우산처럼 들고, 여섯 다리는 길이가 읽히는 굵은 구간으로 단순화한다. 더듬이는 앞쪽으로 부드럽게 휘게 한다. 버섯을 한쪽으로 기울여 떨어지는 이슬을 피하는 동작을 준다.",
+    "key": "pet-265",
+    "anatomy": "ant",
+    "feature": "mushroom",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "ant",
+    "colors": {
+      "primary": "#974e40"
+    },
+    "idle": "머리·가슴·배의 세 덩어리가 분명한 적갈색 개미를 만들라. 등에 작은 크림색 버섯을 우산처럼 들고, 여섯 다리는 길이가 읽히는 굵은 구간으로 단순화한다. 더듬이는 앞쪽으로 부드럽게 휘게 한다. 버섯을 한쪽으로 기울여 떨어지는 이슬을 피하는 동작을 준다."
   }
 }

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -15,14 +15,6 @@
         12
       ],
       "parent": null
-    },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
     },
     "eyes": {
       "pivot": [
@@ -38,12 +30,7 @@
         12,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
@@ -52,6 +39,19 @@
         12
       ],
       "parent": "body"
+    },
+    "left_ear": {
+      "pivot": [
+        6,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "left_leg": {
       "pivot": [
@@ -69,6 +69,19 @@
       ],
       "parent": "body"
     },
+    "right_ear": {
+      "pivot": [
+        17,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
+    },
     "right_leg": {
       "pivot": [
         17,
@@ -79,43 +92,24 @@
     }
   },
   "concept": {
-    "key": "pet-150",
     "id": 150,
-    "name": "분필 꼬마령",
-    "stage": 6,
-    "stageName": "유령 학교",
+    "oldStage": 6,
+    "stage": 5,
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "ghost",
-    "role": "대표 마스코트",
+    "previousName": "분필 꼬마령",
+    "name": "분필유령",
     "tier": 0,
-    "rarity": "C",
-    "concept": "펼친 책을 이용해 텅 빈 교실에서 물건이 수업을 이어가는 학교에서 살아가는 분필 꼬마령.",
-    "inspiration": "책상 · 사물함 · 긴 복도 / book",
-    "silhouette": [
-      "밑단이 갈라진 빈 망토",
-      "펼친 책"
-    ],
-    "feature": "펼친 책",
-    "personality": "밝은 눈판 안에 색이 있는 사각 센서",
-    "ecology": "텅 빈 교실에서 물건이 수업을 이어가는 학교",
-    "material": "종이·낡은 목재",
-    "body": "밑단이 갈라진 빈 망토",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "책상 · 사물함 · 긴 복도에서 온 펼친 책: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "책등 자주갈색 → 펼친 면 아이보리; 모서리는 옅은 황토",
-    "colorPlacement": "몸 #775274; 대표 기관 #e1cba3; 발·연결부 #a7774f; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#775274",
-      "accent": "#e1cba3"
-    },
-    "idle": "고개를 갸웃하고 문짝을 살짝 열기 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 밑단이 갈라진 빈 망토; 머리와 등에 이어지는 기관에 펼친 책",
+    "prompt": "짧고 통통한 분필 막대의 아래쪽이 구름처럼 세 갈래로 나뉜 유령을 만들라. 몸은 분필 흰색, 밑부분은 옅은 하늘색이며 얼굴은 작은 점눈과 짧은 입으로 단순하게 둔다. 몸 한쪽에 지워진 작은 별 낙서 하나를 남긴다. 공중에서 이름을 쓰려다 분필가루 한 점만 떨어뜨리는 행동을 준다.",
+    "key": "pet-150",
+    "anatomy": "ghost",
+    "feature": "chalk",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "ghost",
+    "colors": {
+      "primary": "#eae9df"
+    },
+    "idle": "짧고 통통한 분필 막대의 아래쪽이 구름처럼 세 갈래로 나뉜 유령을 만들라. 몸은 분필 흰색, 밑부분은 옅은 하늘색이며 얼굴은 작은 점눈과 짧은 입으로 단순하게 둔다. 몸 한쪽에 지워진 작은 별 낙서 하나를 남긴다. 공중에서 이름을 쓰려다 분필가루 한 점만 떨어뜨리는 행동을 준다."
   }
 }

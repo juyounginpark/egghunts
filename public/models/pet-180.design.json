@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -27,29 +27,16 @@
     "eyes": {
       "pivot": [
         11.5,
-        13,
-        2
+        10,
+        1
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        11,
+        8,
         7
-      ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
-    },
-    "left_arm": {
-      "pivot": [
-        6,
-        7,
-        12
       ],
       "parent": "body"
     },
@@ -61,22 +48,14 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        0.12
+        0.22
       ]
     },
     "left_leg": {
       "pivot": [
         6,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
-    "right_arm": {
-      "pivot": [
-        17,
         7,
         12
       ],
@@ -90,9 +69,9 @@
       ],
       "parent": "head",
       "rotation": [
-        0.06,
+        0.08,
         0,
-        -0.12
+        -0.22
       ]
     },
     "right_leg": {
@@ -113,43 +92,24 @@
     }
   },
   "concept": {
-    "key": "pet-180",
     "id": 180,
-    "name": "양치 새순",
-    "stage": 9,
-    "stageName": "태초의 공룡섬",
+    "oldStage": 9,
+    "stage": 8,
     "slot": 0,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "rabbit",
-    "role": "대표 마스코트",
+    "previousName": "양치 새순",
+    "name": "알껍질 공룡",
     "tier": 0,
-    "rarity": "C",
-    "concept": "양치 귀부채을 이용해 화석과 살아 있는 양치식물이 함께 자라는 섬에서 살아가는 양치 새순.",
-    "inspiration": "양치식물 · 화석 절벽 · 늪 / dinosaur",
-    "silhouette": [
-      "좁은 몸과 몸 높이만큼 긴 귀",
-      "양치 귀부채"
-    ],
-    "feature": "양치 귀부채",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "화석과 살아 있는 양치식물이 함께 자라는 섬",
-    "material": "가죽·화석",
-    "body": "좁은 몸과 몸 높이만큼 긴 귀",
-    "locomotion": "작은 발로 걷기 또는 부유 기관으로 균형 잡기",
-    "objectUse": "양치식물 · 화석 절벽 · 늪에서 온 양치 귀부채: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "머리와 등에 이어지는 기관",
-    "gradient": "몸의 숲색 → 배의 따뜻한 모래색; 뼈 절단면은 아이보리",
-    "colorPlacement": "몸 #4e874d; 대표 기관 #4e874d; 발·연결부 #a4553e; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#4e874d",
-      "accent": "#4e874d"
-    },
-    "idle": "무거운 몸을 옮기고 등 돛 까딱 / 고개를 좌우로 천천히 돌려 주변을 확인",
-    "reaction": "고개를 들고 양쪽 기관을 펼친다",
-    "distinction": "대표 마스코트: 좁은 몸과 몸 높이만큼 긴 귀; 머리와 등에 이어지는 기관에 양치 귀부채",
+    "prompt": "큰 머리와 짧은 뒷다리, 균형을 잡는 굵은 꼬리가 있는 아기 공룡을 만들라. 몸은 옅은 청록, 배는 크림색이며 하반신에 깨진 아이보리 알껍질을 바지처럼 걸친다. 작은 앞발과 넓게 떨어진 점눈을 드러낸다. 알껍질을 양손으로 끌어올린 뒤 꼬리가 가볍게 흔들리게 한다.",
+    "key": "pet-180",
+    "anatomy": "raptor",
+    "feature": "eggshell",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "raptor",
+    "colors": {
+      "primary": "#a5dacf"
+    },
+    "idle": "큰 머리와 짧은 뒷다리, 균형을 잡는 굵은 꼬리가 있는 아기 공룡을 만들라. 몸은 옅은 청록, 배는 크림색이며 하반신에 깨진 아이보리 알껍질을 바지처럼 걸친다. 작은 앞발과 넓게 떨어진 점눈을 드러낸다. 알껍질을 양손으로 끌어올린 뒤 꼬리가 가볍게 흔들리게 한다."
   }
 }

@@ -6,7 +6,7 @@
     24
   ],
   "unit": 21.6,
-  "source": "scripts/rework_stage_pets.py",
+  "source": "scripts/document_models.py",
   "assembly": {
     "body": {
       "pivot": [
@@ -16,106 +16,102 @@
       ],
       "parent": null
     },
-    "crown": {
-      "pivot": [
-        11.5,
-        7,
-        12
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "pivot": [
         11.5,
-        10,
-        1
+        16,
+        4
       ],
       "parent": "head"
+    },
+    "float": {
+      "pivot": [
+        11.5,
+        14,
+        15
+      ],
+      "parent": "body"
     },
     "head": {
       "pivot": [
         11.5,
-        8,
+        14,
         7
       ],
-      "parent": "body",
-      "rotation": [
-        -0.035,
-        0,
-        0
-      ]
+      "parent": "body"
     },
     "left_arm": {
       "pivot": [
-        6,
-        7,
-        12
+        8.5,
+        12,
+        13
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.12,
+        -0.25,
+        0.18
+      ]
     },
-    "left_leg": {
+    "left_ear": {
       "pivot": [
         6,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        0.22
+      ]
     },
     "right_arm": {
       "pivot": [
-        17,
-        7,
-        12
+        14.5,
+        12,
+        13
       ],
-      "parent": "body"
+      "parent": "body",
+      "rotation": [
+        0.12,
+        0.25,
+        -0.18
+      ]
     },
-    "right_leg": {
+    "right_ear": {
       "pivot": [
         17,
-        7,
+        15,
         12
       ],
-      "parent": "body"
+      "parent": "head",
+      "rotation": [
+        0.08,
+        0,
+        -0.22
+      ]
     }
   },
   "concept": {
-    "key": "pet-262",
     "id": 262,
-    "name": "점박 무당",
-    "stage": 17,
-    "stageName": "곤충 소인국",
+    "oldStage": 17,
+    "stage": 16,
     "slot": 2,
-    "boss": false,
-    "secretDragon": false,
-    "grid": 24,
-    "anatomy": "beetle",
-    "role": "환경 생물 펫",
+    "previousName": "점박 무당",
+    "name": "잎사귀벌레",
     "tier": 1,
-    "rarity": "B",
-    "concept": "육각 등갑을 이용해 이슬 한 방울도 집만큼 큰 풀잎 아래 나라에서 살아가는 점박 무당.",
-    "inspiration": "거대한 풀잎 · 이슬 · 버섯 / mantis",
-    "silhouette": [
-      "갈라진 큰 등갑과 앞으로 나온 뿔",
-      "육각 등갑"
-    ],
-    "feature": "육각 등갑",
-    "personality": "위를 보는 눈동자와 양끝이 들린 자신 있는 입",
-    "ecology": "이슬 한 방울도 집만큼 큰 풀잎 아래 나라",
-    "material": "등껍질·잎",
-    "body": "갈라진 큰 등갑과 앞으로 나온 뿔",
-    "locomotion": "느리게 체중 이동",
-    "objectUse": "거대한 풀잎 · 이슬 · 버섯에서 온 육각 등갑: 몸의 균형·이동·숨기·열 교환을 돕는 대표 기관",
-    "objectAttachment": "넓은 등집",
-    "gradient": "등갑 중심 적갈색 → 가장자리 호박색; 잎 끝은 연한 녹색",
-    "colorPlacement": "몸 #aa4a29; 대표 기관 #70a444; 발·연결부 #70a444; 얼굴 #fff1cf; 눈 #253143",
-    "colors": {
-      "primary": "#aa4a29",
-      "accent": "#70a444"
-    },
-    "idle": "더듬이 먼저 살피고 앞발 교대로 접기 / 무게를 좌우로 옮기며 고개를 꾸벅임",
-    "reaction": "앞발로 바닥을 누르고 가슴을 든다",
-    "distinction": "환경 생물 펫: 갈라진 큰 등갑과 앞으로 나온 뿔; 넓은 등집에 육각 등갑",
+    "prompt": "넓고 납작한 몸과 얇게 펼쳐진 다리로 나뭇잎 같은 벌레를 만들라. 몸은 밝은 연두, 중앙 잎맥은 짙은 초록, 가장자리 한쪽만 따뜻한 노랑으로 둔다. 작은 눈은 잎 끝에 가까운 머리에 모은다. 평소에는 잎처럼 가만히 있다가 앞다리와 머리만 살짝 움직이게 한다.",
+    "key": "pet-262",
+    "anatomy": "mantis",
+    "feature": "leaf",
     "previewAngle": 35,
-    "symmetry": "눈과 대칭 팔다리는 x ↔ 23-x; 3번 슬롯의 손에 든 오브제, 굽은 몸통과 19번 시크릿 궤도 날개는 의도적 비대칭"
+    "secretDragon": false,
+    "stageName": "",
+    "role": "mantis",
+    "colors": {
+      "primary": "#b9d778"
+    },
+    "idle": "넓고 납작한 몸과 얇게 펼쳐진 다리로 나뭇잎 같은 벌레를 만들라. 몸은 밝은 연두, 중앙 잎맥은 짙은 초록, 가장자리 한쪽만 따뜻한 노랑으로 둔다. 작은 눈은 잎 끝에 가까운 머리에 모은다. 평소에는 잎처럼 가만히 있다가 앞다리와 머리만 살짝 움직이게 한다."
   }
 }
