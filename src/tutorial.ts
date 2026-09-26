@@ -1,4 +1,11 @@
 import type {GameState} from './game';
+import {EGGS} from './data';
+
+export function firstEggTarget(game:GameState){
+  if((game.save.tutorial??0)>=3||game.carried||game.isNight||game.death)return undefined;
+  return game.world.filter(e=>e.stageId===1&&!e.special&&!game.bosses.some(b=>b.loot?.id===e.id))
+    .sort((a,b)=>EGGS[a.type].tier-EGGS[b.type].tier||Math.hypot(a.x-game.x,a.z-game.z)-Math.hypot(b.x-game.x,b.z-game.z))[0];
+}
 
 // Keep the existing saved 0..5 milestones. Reading a hint never advances them.
 export function advanceTutorial(step:number,event:string){
@@ -14,7 +21,7 @@ export function tutorialHint(game:GameState,tab:string){
   if(step<3){
     if(game.carried)return {step:3,title:'농장으로 돌아오기',copy:'↓ 알을 들고 아래쪽 농장으로',target:'#joystick'};
     if(game.isAtBase)return {step:1,title:'첫 알을 만나러',copy:'↑ 조이스틱을 위로 밀어요',target:'#joystick'};
-    return {step:2,title:game.near?'알 가져오기':'알에 다가가기',copy:game.near?'오른쪽 알 버튼을 눌러요':'길 위의 알을 찾아요',target:game.near?'#action':'#joystick'};
+    return {step:2,title:game.near?'알 가져오기':'작은 알에 다가가기',copy:game.near?'오른쪽 알 버튼을 눌러요':'화살표가 가리키는 작은 알을 찾아요',target:game.near?'#action':'#joystick'};
   }
   if(step===3){
     if(!game.save.eggs.length)return {step:2,title:'알을 다시 가져와요',copy:'탐험에서 알을 농장으로',target:'[data-tab="explore"]'};

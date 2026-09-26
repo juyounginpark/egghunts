@@ -2,6 +2,7 @@ import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './
 import {softenGrowth} from './growth-curve';
 import {migrateBalance,type BalanceAdjustment} from './balance-migration';
 import {weeklyDay,validateWeekly,type WeeklyProgress} from './weekly';
+import {firstEggTarget} from './tutorial';
 import {WEEKLY_EVENT} from './data';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
@@ -650,6 +651,8 @@ export class GameState {
     return Math.hypot(e.x-this.x,e.z-this.z)<BALANCE.interaction+shell+approach+BALANCE.roomVisualOffsetMax;
   }
   get near() {
+    const first=firstEggTarget(this);
+    if(first&&this.canReachEgg(first))return first;
     const behind = (e: WorldEgg) => (e.x-this.x)*this.facing.x + (e.z-this.z)*this.facing.z < -0.001 ? 1 : 0;
     return this.world
       .filter(
@@ -977,7 +980,9 @@ export class GameState {
   get weeklyIndex(){return (this.save.weekly?.claimed??0)%7;}
   get canClaimWeekly(){return weeklyDay(this.now())>(this.save.weekly?.lastDay??-1);}
   claimWeekly(){
-    if(!this.isAtBase||this.death||this.result!==null||!this.canClaimWeekly)return false;
+    if(!this.isAtBase||this.death){this.message='농장으로 돌아오면 받을 수 있어요';return false;}
+    if(this.result!==null){this.message='부화 결과를 확인한 뒤 받아 주세요';return false;}
+    if(!this.canClaimWeekly){this.message='오늘 보상은 이미 받았어요';return false;}
     const index=this.weeklyIndex;
     if(index===6&&this.save.eggs.length>=BALANCE.inventory){this.message='알 보관함 한 칸을 비워 주세요';return false;}
     const day=weeklyDay(this.now()),claimed=this.save.weekly?.claimed??0;

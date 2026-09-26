@@ -638,10 +638,19 @@ nav button img { width:28px; height:28px; }
 .weekly-special img { width:84px; height:84px; }
 .weekly-special strong,.weekly-special small { width:100%; }
 #weekly-claim { width:100%; min-height:44px; margin-bottom:8px; }
+#first-egg-arrow { position:absolute; z-index:4; transform:translate(-50%,-100%); pointer-events:none; text-align:center; color:#715118; text-shadow:0 1px 3px #fff; }
+#first-egg-arrow span { display:block; border-radius:12px; padding:4px 8px; background:#fff4cf; font-size:12px; font-weight:800; }
+#first-egg-arrow b { display:block; font-size:36px; animation:first-egg-bob .8s ease-in-out infinite alternate; }
+@keyframes first-egg-bob { to { transform:translateY(8px); } }
+@media(prefers-reduced-motion:reduce) { #first-egg-arrow b { animation:none; } }
 /* The time row is the one control for collapsing and reopening the upper HUD. */
 #main-hud #cycle-clock { width:100%; cursor:pointer; min-height:44px; }
 #main-hud #cycle-phase::after { content:' · 접기 ⌃'; font-size:10px; font-weight:400; }
-#shell #top-hud.compact > :not(#main-hud) { display:none!important; }
+#shell #top-hud.compact > :not(#main-hud):not(#hud-context):not(#region-banner):not(#tutorial) { display:none!important; }
+#top-hud.compact #hud-context #speed-hud { flex-direction:row; align-items:center; gap:12px; max-width:100%; }
+#top-hud.compact #hud-context .hud-place { display:none; }
+#speed-hud .speed-heading::before { content:'속도'; font-size:11px; }
+#speed-hud #day-clock::before { content:'권장'; font-size:11px; }
 #shell #top-hud.compact #main-hud { display:block; padding:0; min-height:0; height:auto; overflow:hidden; }
 #top-hud.compact #main-hud .hud-player,#top-hud.compact #main-hud .hud-wallet { display:none; }
 #top-hud.compact #main-hud #cycle-clock { margin:0; border-radius:10px; padding-top:7px; }

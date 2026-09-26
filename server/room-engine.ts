@@ -32,6 +32,23 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const fresh=!previous||cycle!==previous.cycle?new GameState(freshSave(now),()=>now,random):null;
  const joinedNow=!previous?.players[user];
  const room:Room=previous??{stageOrderVersion:2,routeVersion:3,at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
+ // Persisted rooms, unlike individual saves, may still contain a partial route.
+ // Fill only absent guardians; a looted region with its guardian is left alone.
+ const missing=Array.from({length:21},(_,i)=>i).filter(i=>!room.bosses.some(b=>i===20?b.final:!b.final&&b.stageId===i+1));
+ if(missing.length){
+  const complete=fresh??new GameState(freshSave(now),()=>now,random);
+  const carried=Object.values(room.players).flatMap(p=>p.runtime.fields.carried?[p.runtime.fields.carried as WorldEgg]:[]);
+  for(const index of missing){
+   const boss=complete.bosses[index];room.bosses.push(boss);
+   const matches=(e:WorldEgg)=>index===20?!!e.special:!e.special&&e.stageId===boss.stageId;
+   if(![...room.world,...carried].some(matches))room.world.push(...complete.world.filter(matches));
+  }
+  room.bosses.sort((a,b)=>(a.final?21:a.stageId??0)-(b.final?21:b.stageId??0));
+  for(const egg of [...room.world,...carried,...room.bosses.flatMap(b=>b.loot?[b.loot]:[])]){
+   const guardian=room.bosses.findIndex(b=>egg.special?b.final:!b.final&&b.stageId===egg.stageId);
+   if(guardian>=0)egg.guardian=guardian;
+  }
+ }
  // Disconnected players cannot keep an egg or operate an unoccupied plot.
  for(const [id,p] of Object.entries(room.players))if(!members.some(m=>m.user_id===id)){
   const egg=p.runtime.fields.carried as WorldEgg|null;

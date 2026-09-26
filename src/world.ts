@@ -15,6 +15,7 @@ import {villageArt} from './world-art';
 import {animatePet,greetPet} from './pet-animation';
 import {followPets} from './pet-followers';
 import {GuardianMotion} from './guardian-motion';
+import {firstEggTarget} from './tutorial';
 import {HatchBurst} from './hatch-burst';
 import {EnvironmentVisualController} from './environment-visual';
 import {dioramaMaterial} from './diorama-material';
@@ -386,6 +387,7 @@ export class World {
       this.hatch.add(m);
     }
   }
+  shakeHatch(){this.hitAt=performance.now();}
   showHatchHit(amount:number,point?:{x:number;y:number}){
     if(!Number.isFinite(amount)||amount<=0||this.birth)return;
     this.hitAt=performance.now();
@@ -642,8 +644,10 @@ export class World {
       animateEgg(this.hatchModel, time, this.low);
       if(shownResult!==null){animatePet(this.hatchModel,shownResult,time,false,this.reducedMotion.matches);this.hatchModel.userData.greetingAt??=time;greetPet(this.hatchModel,shownResult,time-this.hatchModel.userData.greetingAt,this.reducedMotion.matches);}
       this.hatchModel.visible = !!game.selected || game.result !== null || isReward;
-      const kick = Math.max(0, 1 - (performance.now() - this.hitAt) / 220);
-      this.hatchModel.rotation.z = this.reducedMotion.matches?0:Math.sin(time * 70) * kick * 0.12;
+      const hitAge=(performance.now()-this.hitAt)/1000;
+      const kick = Math.max(0, 1 - hitAge / .36);
+      this.hatchModel.rotation.z = this.reducedMotion.matches?0:Math.sin(hitAge * 48) * kick * 0.23;
+      this.hatchModel.position.x=this.reducedMotion.matches?0:Math.sin(hitAge*48)*kick*.1;
       this.hatchModel.rotation.y = birthEgg&&!this.reducedMotion.matches&&birthAge>=0 ? birthAge*birthAge*30 : isReward ? time*.8 : isHatch ? -0.25 : 0;
       this.hatchModel.position.y =
         shownResult !== null ? Math.abs(Math.sin(time * 3)) * 0.2 : 0;
@@ -663,6 +667,16 @@ export class World {
     this.camera.zoom = isHatch ? 1.4 : .78;
     this.camera.updateProjectionMatrix();
     this.camera.updateMatrixWorld();this.positionHatchTouch();
+    const guide=document.getElementById('first-egg-arrow');
+    const guideEgg=mode==='explore'&&!isHatch&&document.getElementById('modal')!.hidden?firstEggTarget(game):undefined;
+    if(guide){
+      guide.hidden=!guideEgg;
+      if(guideEgg){
+        const p=new T.Vector3(guideEgg.x,2,guideEgg.z).project(this.camera);
+        guide.style.left=`${Math.max(40,Math.min(this.host.clientWidth-40,(p.x+1)*this.host.clientWidth/2))}px`;
+        guide.style.top=`${Math.max(180,Math.min(this.host.clientHeight-180,(1-p.y)*this.host.clientHeight/2))}px`;
+      }
+    }
     const hit=game.hitSource,hitAge=hit?(game.now()-hit.at)/1000:Infinity;
     this.damageDirection.hidden=isHatch||game.isAtBase||hitAge<0||hitAge>DAMAGE_OVER_TIME.directionSeconds;
     if(hit&&!this.damageDirection.hidden){

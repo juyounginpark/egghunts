@@ -279,5 +279,17 @@ function createRegionLayout(stage:number,length:number){
   }
   blocks=blocks.flatMap(p=>{const lo=Math.max(end,p.z-p.d/2),hi=Math.min(-ROUTE.entrance,p.z+p.d/2);return hi>lo?[{...p,z:(lo+hi)/2,d:hi-lo}]:[];});
   motions=motions.filter(m=>m.z<-ROUTE.entrance-2&&m.z>end+2);
+  // Keep both new and migrated nests clear, including the largest egg shell.
+  // This shared layout feeds visual geometry and player collision together.
+  const nests=[{x:0,z:-17,hx:8,hz:9},...(stage===20?[{x:0,z:end+FINAL_GUARDIAN.eggEndOffset,hx:9,hz:9}]:[])];
+  const overlapsNest=(p:Block)=>{
+    const a=p.angle??0,r=p.roll??0,w=Math.abs(Math.cos(r))*p.w+Math.abs(Math.sin(r))*p.h;
+    const hx=(Math.abs(Math.cos(a))*w+Math.abs(Math.sin(a))*p.d)/2;
+    const hz=(Math.abs(Math.sin(a))*w+Math.abs(Math.cos(a))*p.d)/2;
+    const top=p.y+(Math.abs(Math.cos(r))*p.h+Math.abs(Math.sin(r))*p.w)/2;
+    return top>.15&&nests.some(n=>Math.abs(p.x-n.x)<hx+n.hx&&Math.abs(p.z-n.z)<hz+n.hz);
+  };
+  blocks=blocks.filter(p=>!overlapsNest(p));
+  motions=motions.filter(m=>!m.blocks.some(p=>overlapsNest({...p,x:p.x+m.x,y:p.y+m.y,z:p.z+m.z})));
   return {blocks,motions};
 }

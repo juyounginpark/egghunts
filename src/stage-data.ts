@@ -125,11 +125,12 @@ STAGE_ENVIRONMENT_IDS[19]=['creation-wave'];
 export function stagePatterns(stage:number,_z=0){return STAGE_ENVIRONMENT_IDS[stage-1].map(id=>HAZARDS.find(d=>d.stageId===stage&&d.id===id)!);}
 export function environmentPlacement(stage:number,lane:number,offset=0){
  const count=STAGE_ENVIRONMENT_IDS[stage-1].length,length=stage===20?ROUTE.finalLength:ROUTE.length;
- return {x:lane%3===2?0:(lane%2?-1:1)*HAZARD_BALANCE.environmentX,z:-offset-ROUTE.entrance-length*(lane+1)/(count+1)};
+ const depth=28+(length+ROUTE.entrance-28)*(lane+1)/(count+1);
+ return {x:lane%3===2?0:(lane%2?-1:1)*HAZARD_BALANCE.environmentX,z:-offset-depth};
 }
 export type Cover={x:number;z:number;radius:number};
 export const MAP_OBSTACLES={scale:1.5,outline:0xff3939,outlineWidth:.035};
-export const STAGE_COVERS:Cover[]=Array.from({length:8},(_,i)=>({x:(i%2?1:-1)*HAZARD_BALANCE.coverX,z:-9-i*HAZARD_BALANCE.coverSpacing/2,radius:HAZARD_BALANCE.coverRadius}));
+export const STAGE_COVERS:Cover[]=Array.from({length:4},(_,i)=>({x:(i%2?1:-1)*HAZARD_BALANCE.coverX,z:-30-i*HAZARD_BALANCE.coverSpacing/2,radius:HAZARD_BALANCE.coverRadius}));
 
 // Connected expedition: selected stage is the entrance, not a repeated full map.
 export const ROUTE={entrance:6,length:48,finalLength:225,bossKnockback:2.4,bossKnockbackPerSpeed:2.4,bossMaxKnockback:24,bossKnockbackSeconds:.28,bossReach:2,bossBaseScale:1.5,bossAngryScale:1.5,bossWindup:.65,bossWakeSeconds:2,bossRecoverySpeedMultiplier:3,bossDamage:STAGE_DIFFICULTY.minimumDamage,bossDamagePerStage:STAGE_DIFFICULTY.damagePerStage,bannerSeconds:3,recommendedCarryRatio:.65,targetTravelSeconds:20,baseRecommendedSpeed:1.5};
@@ -137,7 +138,7 @@ export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{cons
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
-export const BOSS_MOVEMENT={maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,catchupTargetGap:3,catchupMinSpeed:48,catchupMaxSpeed:120,catchupGain:10};
+export const BOSS_MOVEMENT={maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,catchupTargetGap:1.2,catchupMinSpeed:90,catchupMaxSpeed:180,catchupGain:16};
 export function guardianSpeed(stage:number){
  const progress=(Math.max(1,Math.min(STAGES.length,stage))-1)/(STAGES.length-1);
  return ROUTE.baseRecommendedSpeed+(BOSS_MOVEMENT.qualifiedChaseMaxSpeed-ROUTE.baseRecommendedSpeed)*progress;

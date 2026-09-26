@@ -35,6 +35,7 @@ import type {EggAppearance} from './stage-eggs';
 let hatchEgg:EggAppearance|undefined;
 let hatchClaiming=false;
 let hatchRevealing=false;
+let weeklyClaiming=false;
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
@@ -52,6 +53,7 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const eggNotices=new EggNotices($("shell"));
 $('world').insertAdjacentHTML('beforeend','<button id="hatch-touch" hidden aria-label="알 두드리기"><span>알을 클릭하여 깨뜨리기</span></button>');
+$('world').insertAdjacentHTML('beforeend','<div id="first-egg-arrow" hidden><span>작은 알부터!</span><b>↓</b></div>');
 const buildVersion=document.createElement('small');
 buildVersion.id='build-version';buildVersion.textContent=import.meta.env.VITE_BUILD_VERSION;
 buildVersion.setAttribute('aria-label',`게임 버전 ${import.meta.env.VITE_BUILD_VERSION}`);
@@ -258,8 +260,10 @@ function setTab(next: string) {
   void save();
 }
 function renderPanel() {
-  $("panel").innerHTML = panelHTML(tab, game);
-  if(tab==='shop')$("panel").insertAdjacentHTML('afterbegin','<button data-tab="store" class="secondary">알 · 펫 판매 스토어</button>');
+  if(tab==='weekly'&&weeklyClaiming)return;
+  const html=(tab==='shop'?'<button data-tab="store" class="secondary">알 · 펫 판매 스토어</button>':'')+panelHTML(tab, game);
+  // Preserve pressed buttons and focus across unchanged network snapshots.
+  if($('panel').dataset.html!==html){$('panel').dataset.html=html;$('panel').innerHTML=html;}
 }
 function updateHud() {
   weeklyEntry.hidden=!game.isAtBase||tab!=='explore'||!!game.returnReward||game.result!==null;
@@ -501,7 +505,7 @@ async function onlineButton(b:HTMLElement):Promise<boolean>{
   if(b.id==='respawn-base'){await remote('return');paused=false;$("modal").hidden=true;$("modal").dataset.kind='';return true;}
   if(b.id==='result-ok'){await remote('result');lastResult=null;$("modal").hidden=true;setTab('hatchery');return true;}
   if(b.id==='reward-ok'){await remote('reward');$("return-reward").hidden=true;return true;}
-  const commands:Record<string,string>={'weekly-claim':'weekly','tutorial-skip':'tutorial','claim-stage-all':'claimStageCollection','claim-all':'claimCollection'};
+  const commands:Record<string,string>={'tutorial-skip':'tutorial','claim-stage-all':'claimStageCollection','claim-all':'claimCollection'};
   if(commands[b.id]){await remote(commands[b.id]);return true;}
   if(b.id==='multiplayer-connect'){toast(`농장 ${game.farmSlot+1} · ${online.latest?.count??1}/5`);return true;}
   return false;
@@ -525,7 +529,8 @@ function showSettings() {
 }
 const hatchTouches:{egg:string;x:number;y:number;at:number}[]=[];
 document.addEventListener("click", async (e) => {
-  const b = (e.target as HTMLElement).closest<HTMLElement>("button");
+  const target=e.target as HTMLElement;
+  const b = target.closest<HTMLElement>("button")??(tab==='hatchery'&&target.closest('#world')?$('hatch-touch'):null);
   if (!b || !ready) return;
   if(b.id==='cycle-clock'){setHudCompact(!hudCompact);return;}
   if(b.id==='leave-room'){paused=true;input.reset();b.setAttribute('disabled','');await online.leave();location.reload();return;}
@@ -533,6 +538,7 @@ document.addEventListener("click", async (e) => {
     if(tab!=='hatchery'||paused||hatchRevealing||!$('modal').hidden||game.returnReward||game.death)return;
     if(game.selected&&game.selected.hp>0){
       const point={egg:game.selected.id,x:e.clientX,y:e.clientY,at:performance.now()};
+      world.shakeHatch();
       if(e.detail>0){hatchTouches.push(point);if(hatchTouches.length>20)hatchTouches.shift();}
       const ok=online.active?await remote('tap'):game.tap();
       if(!ok){const index=hatchTouches.indexOf(point);if(index>=0)hatchTouches.splice(index,1);}
@@ -547,9 +553,17 @@ document.addEventListener("click", async (e) => {
     return;
   }
   if(hatchRevealing)return;
+  if(b.id==='weekly-claim'){
+    if(weeklyClaiming)return;
+    weeklyClaiming=true;b.setAttribute('disabled','');b.textContent='받는 중…';input.reset();online.halt();
+    try{
+      const ok=online.active?await remote('weekly'):game.claimWeekly();
+      if(ok){toast(game.message);void save();}else if(!online.active)toast(game.message);
+    }finally{weeklyClaiming=false;delete $('panel').dataset.html;renderPanel();}
+    return;
+  }
   if(b.dataset.petView!==undefined){input.reset();const {openPetViewer}=await import('./pet-viewer');await openPetViewer(Number(b.dataset.petView));return;}
   if(online.active&&await onlineButton(b))return;
-  if(b.id==='weekly-claim'){if(game.claimWeekly()){toast(game.message);renderPanel();void save();}else toast(game.message);return;}
   if(b.id==='boss-warning-ok'){
     game.save.bossWarningSeen=true;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();void save();return;
   }

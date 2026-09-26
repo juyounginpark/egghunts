@@ -32,10 +32,10 @@ export class RegionGuardian {
    let sample=this.samples.get(k);
    const serverAt=game.roomSnapshotTime||time;
    const gap=sample?Math.max(0,serverAt-sample.serverAt):0;
-   const teleported=sample&&sample.state!==state&&Math.hypot(sample.state.x-state.x,sample.state.z-state.z)>Math.max(30,BOSS_MOVEMENT.maxSpeed*gap*1.5+2);
+   const teleported=sample&&sample.state!==state&&Math.hypot(sample.state.x-state.x,sample.state.z-state.z)>Math.max(30,BOSS_MOVEMENT.catchupMaxSpeed*gap*1.5+2);
    const reset=!Number.isFinite(root.x)||sample?.stage!==stage||!!teleported;
    if(reset){root.x=state.x;root.z=state.z;this.headings[k]=NaN;this.motion[k].reset();}
-   if(!sample||sample.state!==state||reset){
+   if(!sample||sample.serverAt!==serverAt||reset){
     sample={state,stage,at:time,serverAt};
     this.samples.set(k,sample);
     if(game.roomManaged)this.motion[k].sample(state.x,state.z,game.roomSnapshotTime||time,time);
