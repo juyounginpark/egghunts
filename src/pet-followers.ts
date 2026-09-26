@@ -2,6 +2,7 @@ import * as T from 'three';
 import {animateEgg} from './visuals';
 import {animatePet} from './pet-animation';
 import {MONGLES} from './data';
+import {explorationHeight} from './exploration-route';
 
 /** Shared local/remote trail spacing and articulated companion animation. */
 export function followPets(companions:T.Group,trail:T.Vector3[],position:T.Vector3,facing:{x:number;z:number},dt:number,time:number,low:boolean,reducedMotion:boolean,maxSize=Infinity){
@@ -41,7 +42,7 @@ export function followPets(companions:T.Group,trail:T.Vector3[],position:T.Vecto
       if (walking){const angle=Math.atan2(delta.x,delta.z),diff=Math.atan2(Math.sin(angle-pet.rotation.y),Math.cos(angle-pet.rotation.y));pet.rotation.y+=diff*(1-Math.exp(-dt*10));}
       if(pet.position.distanceTo(target)>15)pet.position.copy(target);
       pet.position.lerp(target, 1 - Math.exp(-dt * 12));
-      pet.position.y = walking ? Math.abs(Math.sin(time * 11 - i)) * 0.13 : 0;
+      pet.position.y = explorationHeight(pet.position.x,pet.position.z)+(walking ? Math.abs(Math.sin(time * 11 - i)) * 0.13 : 0);
       for (const [j, name] of ["left_leg", "right_leg"].entries()) {
         const leg = pet.getObjectByName(name);
         if (leg)

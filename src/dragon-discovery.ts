@@ -1,5 +1,5 @@
 import {contains,type Hazard} from './hazards';
-import {ROUTE,STAGE_ENVIRONMENT_IDS} from './stage-data';
+import {ROUTE,STAGE_ENVIRONMENT_IDS,LEGACY_STAGE_ENVIRONMENT_IDS} from './stage-data';
 import {reorderStages} from './stage-order';
 
 export type DragonClue={avoided:string[];carried:string[];escaped:string[];depth:boolean;sides:number;quiet:number;returned:boolean;claimed:boolean};
@@ -34,7 +34,8 @@ export function dragonReady(stage:number,c:DragonClue|undefined){const r=DRAGON_
 export function validateDragonClues(value:unknown):asserts value is Record<string,DragonClue>{
  if(!value||typeof value!=='object'||Array.isArray(value))throw Error('Invalid dragon clues');
  for(const [key,c]of Object.entries(value as Record<string,DragonClue>)){
-  const s=Number(key),ids=STAGE_ENVIRONMENT_IDS[s-1];if(!Number.isInteger(s)||!ids||!c)throw Error('Invalid dragon stage');
+  const s=Number(key);if(!Number.isInteger(s)||!STAGE_ENVIRONMENT_IDS[s-1]||!c)throw Error('Invalid dragon stage');
+  const ids=[...LEGACY_STAGE_ENVIRONMENT_IDS[s-1],...STAGE_ENVIRONMENT_IDS[s-1]];
   for(const list of [c.avoided,c.carried,c.escaped])if(!Array.isArray(list)||list.length>ids.length||new Set(list).size!==list.length||!list.every(id=>ids.includes(id)))throw Error('Invalid dragon observations');
   if(![c.depth,c.returned,c.claimed].every(v=>typeof v==='boolean')||!Number.isInteger(c.sides)||c.sides<0||c.sides>3||!Number.isFinite(c.quiet)||c.quiet<0||c.quiet>3)throw Error('Invalid dragon progress');
  }

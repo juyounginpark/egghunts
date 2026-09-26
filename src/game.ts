@@ -1,5 +1,7 @@
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {softenGrowth} from './growth-curve';
+import {migrateExploration} from './exploration-migration';
+import {routePoint,eggAnchor,shortcut,terrainAt} from './exploration-route';
 import {migrateBalance,type BalanceAdjustment} from './balance-migration';
 import {weeklyDay,validateWeekly,type WeeklyProgress} from './weekly';
 import {firstEggTarget} from './tutorial';
@@ -66,6 +68,8 @@ export type Boss = {
   loot: WorldEgg | null;
 };
 export type Save = {
+  explorationVersion?:1;
+  openedShortcuts?:number[];
   balanceVersion?:1;
   balanceAdjustment?:BalanceAdjustment;
   weekly?:WeeklyProgress;
@@ -265,6 +269,7 @@ export class GameState {
   private inputHistory:{at:number;x:number;z:number}[]=[];
   private motionTime=0;
   velocity={x:0,z:0};
+  private iceDrift={x:0,z:0};
   get progression(){return this.save.progression!;}
   private routeStart=0;private routeCache:ReturnType<typeof routeSegments>=[];
   get route(){if(!this.routeCache.length||this.routeStart!==this.progression.stage){this.routeStart=this.progression.stage;this.routeCache=routeSegments(this.routeStart);}return this.routeCache;}
@@ -366,7 +371,17 @@ export class GameState {
   farmSlot=0;
   get gym(){return farmGym(this.farmSlot);}
   readonly mapCollision=new MapCollision();
+  openedShortcuts:number[]=[];
+  get nearShortcut(){
+    if(this.carried||this.isAtBase||this.openedShortcuts.includes(this.stage.id))return null;
+    const p=shortcut(this.stage.id);return p&&Math.hypot(this.x-p.x,this.z+this.stageOffset-p.z)<3.4?p:null;
+  }
+  openShortcut(){
+    if(this.death||this.knockback.remaining>0||this.now()<this.knockedUntil||!this.nearShortcut)return false;
+    this.openedShortcuts.push(this.stage.id);this.message='지름길이 열렸어요!';this.revision++;return true;
+  }
   push(x:number,z:number){
+    this.mapCollision.opened=this.openedShortcuts;
     const width=this.z+z>=BALANCE.baseMinZ?BALANCE.baseMapX:BALANCE.mapX;
     const targetX=Math.max(-width,Math.min(width,this.x+x)),targetZ=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,this.z+z));
     const position=this.mapCollision.move(this.x,this.z,targetX-this.x,targetZ-this.z,this.progression.stage);
@@ -551,9 +566,9 @@ export class GameState {
   immunity = 0;
   bosses: Boss[] = [];
   private resetBosses(){
-    this.bosses=this.route.map(r=>({x:-2.6,z:-r.home-7,homeX:-2.6,homeZ:-r.home-7,stageId:r.stage,mode:'idle',target:null,loot:null}));
-    const z=-this.route.at(-1)!.end+FINAL_GUARDIAN.bossEndOffset;
-    this.bosses.push({x:0,z,homeX:0,homeZ:z,stageId:20,final:true,mode:'idle',target:null,loot:null});
+    this.bosses=this.route.map(r=>{const p=routePoint(r.stage,.72);return {x:p.x-2.6,z:p.z-r.offset,homeX:p.x-2.6,homeZ:p.z-r.offset,stageId:r.stage,mode:'idle',target:null,loot:null};});
+    const z=routePoint(20,.81).z-this.route.at(-1)!.offset;
+    this.bosses.push({x:3,z,homeX:3,homeZ:z,stageId:20,final:true,mode:'idle',target:null,loot:null});
   }
   x = 0;
   z = 0;
@@ -581,6 +596,7 @@ export class GameState {
     if(!save.progression){save.progression=newProgression();save.progression.seenEggs=[...save.discovered];save.progression.hatchedPets=save.mongles.flatMap((n,i)=>n?[i]:[]);save.progression.distanceRecord=save.best;}
     validateProgression(save.progression);
     if(hydrateOnly)return;
+    this.openedShortcuts=save.openedShortcuts??[];
     const oldEntrance=save.progression.stage;
     if(oldEntrance!==1){
       const offset=(oldEntrance-1)*ROUTE.length;save.progression.stage=1;
@@ -616,6 +632,7 @@ export class GameState {
       this.world = [...this.world.filter(e=>e.special?!save.bosses!.some(b=>b.final):!restoredStages.has(e.stageId)),...save.world];
       for(const boss of save.bosses){const i=this.bosses.findIndex(b=>b.stageId===boss.stageId&&!!b.final===!!boss.final);if(i>=0)this.bosses[i]=boss;}
     }
+    if(save.explorationVersion!==1){migrateExploration(this.world,this.bosses);save.explorationVersion=1;}
     // Older saves applied the sleeping offset only in the renderer.
     for(const boss of this.bosses){
       if(boss.homeX===undefined){
@@ -652,7 +669,13 @@ export class GameState {
   get clickMultiplier() { return equippedPetMultiplier(this.save.active,'clickMultiplier'); }
   get autoMultiplier() { return equippedPetMultiplier(this.save.active,'autoMultiplier'); }
   get speedMultiplier() { return equippedPetMultiplier(this.save.active,'speedMultiplier'); }
-  get movementSpeed() { return this.isAtBase ? BALANCE.baseWalkSpeed : Math.min(BALANCE.maxMovementSpeed,this.speed); }
+  get movementSpeed() {
+    const stat=this.speed;
+    const walking=this.isAtBase?BALANCE.baseWalkSpeed:Math.min(BALANCE.maxMovementSpeed,stat<=2?stat:2+Math.log2(stat/2));
+    return walking*(this.carried?BALANCE.carryingMovementMultiplier:1);
+  }
+  eggRequiredSpeed(egg:WorldEgg){return recommendedRouteSpeed(0,egg.stageId??this.stage.id);}
+  canPickupEgg(egg:WorldEgg){return this.speed>=this.eggRequiredSpeed(egg);}
   get speed() {
     return softenGrowth(
       this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
@@ -710,6 +733,7 @@ export class GameState {
         : "safe";
   }
   get action() {
+    if(this.nearShortcut)return this.nearShortcut.label;
     if(!this.carried&&this.nearSeat>=0)return this.seat!==null?'일어나기':'앉기';
     if(this.nearStore&&!this.carried&&!this.near&&!this.training)return "판매하기";
     if (this.nearGym && !this.carried) return this.training ? "운동 내리기" : "운동 시작";
@@ -721,8 +745,7 @@ export class GameState {
         const region=Math.floor((boss.stage-1)/4);
         const dragon = this.random()<BALANCE.secretDragonEggChance;
         const type = dragon?6*REGIONS.length+region:rollEgg(region, this.random);
-        const x = (slot - 2) * BALANCE.eggNestSpacing,
-          z = -boss.home + ((slot - 2) / 2) ** 2 * BALANCE.eggNestArcDepth;
+        const anchor=eggAnchor(boss.stage,slot),x=anchor.x,z=anchor.z-boss.offset;
         return {
           id: `${boss.stage}-${slot}-${this.now()}-${this.random()}`,
           type,
@@ -830,14 +853,22 @@ export class GameState {
     if(this.effects.grab>0&&l)this.effects.grab=Math.max(0,this.effects.grab-dt*HAZARD_BALANCE.escapeInputBonus);
     if(this.effects.grab>0||this.effects.stone>0)return;
     this.updateNight();
-    if (!l || this.knockback.remaining>0 || this.launch || this.death || this.now()<this.knockedUntil) return;
+    const surface=this.isAtBase?null:terrainAt(this.stage.id,this.x,this.z+this.stageOffset);
+    if(this.knockback.remaining>0||this.launch||this.death||this.now()<this.knockedUntil){this.iceDrift={x:0,z:0};return;}
+    if(!surface?.ice)this.iceDrift={x:0,z:0};
+    if(!l){
+      if(surface?.ice){const decay=Math.exp(-dt*6);this.push(this.iceDrift.x*(1-decay)/6,this.iceDrift.z*(1-decay)/6);this.iceDrift.x*=decay;this.iceDrift.z*=decay;}
+      return;
+    }
     if(this.seat!==null)this.standUp();
     if(this.training)this.toggleTraining();
-    const speed=slow?Math.min(BALANCE.slowWalkSpeed,this.movementSpeed):this.movementSpeed;
+    const speed=(slow?Math.min(BALANCE.slowWalkSpeed,this.movementSpeed):this.movementSpeed)*(surface?.slow??1);
     this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*speed,z:dz/Math.max(1,l)*speed};
     const scale = l > 1 ? 1 / l : 1;
     const beforeX=this.x,beforeZ=this.z;
     this.push(dx*scale*speed*dt,dz*scale*speed*dt);
+    if(surface?.bridge&&this.stage.id===17)this.push(0,(this.x<surface.center?1:-1)*Math.min(.5,speed*.25)*dt);
+    if(surface?.ice){const glide=Math.min(1.2,speed*.3);this.iceDrift={x:this.facing.x*glide,z:this.facing.z*glide};}
     if(dt>0)this.velocity={x:(this.x-beforeX)/dt,z:(this.z-beforeZ)/dt};
     if (!this.deadline && !this.isAtBase) {
       this.deadline = this.now() + this.duration * 1000;
@@ -854,6 +885,7 @@ export class GameState {
     this.nightUntil = onset + BALANCE.nightDuration;
     // Night closes the expedition, including dropped field eggs.
     if(!this.isAtBase||this.carried)this.failExpedition('night');
+    this.openedShortcuts=[];
     this.spawn();
     this.resetBosses();
     this.announcement='밤에는 농장에서 쉬어요 · 아침에 입구가 열려요';
@@ -878,7 +910,7 @@ export class GameState {
       if(near&&!this.progression.seenEggs.includes(near.type)){this.progression.seenEggs.push(near.type);this.progression.pendingXP+=PROGRESSION.discoveryXP;this.revision++;this.emit('egg_discovered',{type:near.type});}
       const reached=Math.floor(this.distance/PROGRESSION.distanceStep),old=Math.floor(this.progression.distanceRecord/PROGRESSION.distanceStep);
       if(reached>old){this.progression.pendingXP+=(reached-old)*PROGRESSION.distanceXP;this.progression.distanceRecord=this.distance;this.revision++;}
-      this.hazards.tick(dt,this.stage.id,{x:this.x,z:this.z,vx:this.velocity.x,vz:this.velocity.z,facing:this.facing,carrying:!!this.carried,metal:!!this.carried&&[2,17].includes(this.stage.id),moving:Math.hypot(this.velocity.x,this.velocity.z)>.01,stageOffset:this.stageOffset,guardianAwake:this.pursuing>=0&&Math.hypot(this.bosses[this.pursuing].x-this.x,this.bosses[this.pursuing].z-this.z)<12,guardianStage:this.bosses[this.pursuing]?.stageId,guardianOffset:((this.bosses[this.pursuing]?.stageId??this.stage.id)-this.progression.stage)*ROUTE.length},h=>this.applyHazard(h),(x,z)=>this.push(x,z),(key,seconds)=>{if(key in this.effects)this.effects[key as keyof typeof this.effects]=seconds;},!!this.carried&&EGGS[this.carried.type].tier===6);
+      this.hazards.tick(dt,this.stage.id,{x:this.x,z:this.z,vx:this.velocity.x,vz:this.velocity.z,facing:this.facing,carrying:!!this.carried,metal:!!this.carried&&[2,17].includes(this.stage.id),moving:Math.hypot(this.velocity.x,this.velocity.z)>.01,stageOffset:this.stageOffset,guardianAwake:this.pursuing>=0&&Math.hypot(this.bosses[this.pursuing].x-this.x,this.bosses[this.pursuing].z-this.z)<12,guardianStage:this.bosses[this.pursuing]?.stageId,guardianOffset:((this.bosses[this.pursuing]?.stageId??this.stage.id)-this.progression.stage)*ROUTE.length},h=>this.applyHazard(h),(x,z)=>this.push(x,z),(key,seconds)=>{if(key in this.effects)this.effects[key as keyof typeof this.effects]=seconds;},!!this.carried&&EGGS[this.carried.type].tier===6,this.now());
       const clue=this.save.dragonClues![this.stage.id]??=newDragonClue();
       observeDragon(clue,this.dragonWatch,this.stage.id,dt,{x:this.x,z:this.z,offset:this.stageOffset,hit:Number.isFinite(this.hitAt)?this.hitAt:0,egg:this.carried?.stageId===this.stage.id?this.carried.id:null,moving:Math.hypot(this.velocity.x,this.velocity.z)>.01},this.hazards.attacks);
     }else {this.hazards.reset();this.dragonWatch={stage:0,observed:{}};}
@@ -943,6 +975,7 @@ export class GameState {
   interact() {
     this.updateNight();
     if(this.death)return;
+    if(this.nearShortcut){this.openShortcut();return;}
     if(!this.carried&&this.nearSeat>=0){this.toggleSeat();return;}
     if (this.nearGym && !this.carried) { this.toggleTraining(); return; }
     if (this.launch || this.now()<this.knockedUntil) return;
@@ -960,6 +993,7 @@ export class GameState {
   }
   pickup(egg:WorldEgg){
       if(this.carried||this.knockback.remaining>0||this.death||this.now()<this.knockedUntil)return;
+      if(!this.canPickupEgg(egg)){this.message=`필요 속도 ${formatNumber(this.eggRequiredSpeed(egg))} / 현재 ${formatNumber(this.speed)}`;this.revision++;return;}
       this.carried = egg;
       this.emit("egg_pickup", {type: this.carried.type});
       this.world = this.world.filter((e) => e !== this.carried);
@@ -971,19 +1005,6 @@ export class GameState {
       if(!boss){this.revision++;return;}
       // Recovered eggs remain in the world and can be stolen during the return trip.
       boss.loot = null;
-      const requiredSpeed=recommendedRouteSpeed(0,boss.stageId??this.carried.stageId);
-      if(this.speed<requiredSpeed){
-        // Judge the carrying stat at theft time; armour and hit immunity do not
-        // turn an underqualified theft into a free escape window.
-        const dx=boss.x-this.x,dz=boss.z-this.z,distance=Math.hypot(dx,dz);
-        boss.x=this.x+(distance?dx/distance:1)*ROUTE.bossReach*.5;
-        boss.z=this.z+(distance?dz/distance:0)*ROUTE.bossReach*.5;
-        boss.mode='return';boss.target=null;boss.wakeRemaining=undefined;
-        this.hp=0;this.hitAt=this.now();this.die();
-        this.message='운반 스피드가 부족해 보스에게 잡혔어요.';
-        this.emit('boss_underqualified_defeat',{stage:boss.stageId??this.stage.id,requiredSpeed});
-        return;
-      }
       const sleeping=boss.mode==='idle';
       if(sleeping){boss.mode='waking';boss.wakeRemaining=ROUTE.bossWakeSeconds;}
       else if(boss.mode!=='waking'){boss.mode='chase';boss.wakeRemaining=undefined;}
@@ -1130,6 +1151,7 @@ export class GameState {
     return true;
   }
   snapshot(): Save {
+    this.save.explorationVersion=1;this.save.openedShortcuts=[...this.openedShortcuts];
     this.progression.hp=this.hp;this.progression.maxHP=this.maxHp;this.progression.immunity=this.immunity;this.progression.slowRemaining=this.slowRemaining;this.progression.slowMultiplier=this.slowMultiplier;
     this.save.routeVersion=3;
     this.save.death=this.death;

@@ -63,6 +63,16 @@ export class HazardView{
   for(const h of game.hazards.attacks){
    if(!['Telegraph','Active','Recovery'].includes(h.phase)||h.elapsed<0)continue;
    const d=h.definition,active=h.phase==='Active',recover=h.phase==='Recovery',color=d.damage+d.damagePercent===0?0x7bcfe3:d.visual==='creation'?0xffd454:active?0xff654c:0xffbd65;
+   if(d.shape==='wall'){
+    const gap=Math.sin(h.elapsed*.45)*1.2;
+    for(const [lo,hi] of [[-d.length/2,gap-1.6],[gap+1.6,d.length/2]]){
+     const x=h.target.x+(lo+hi)/2,w=hi-lo;
+     for(const side of [-1,1])this.put(this.warnings,this.warningCount++,x,.08,h.target.z+side*d.width,w,.06,.08,color);
+     if(active)this.put(this.actors,this.actorCount++,x,.8,h.target.z,w,1.6,d.width*2,d.visual==='void'?0x695574:color);
+    }
+    this.put(this.warnings,this.warningCount++,h.target.x+gap,.04,h.target.z,3.2,.03,d.width*2,0xbde2b6);
+    continue;
+   }
    // Compact world-space exclamation mark instead of projected attack outlines.
    if(!recover){
     this.put(this.warnings,this.warningCount++,h.target.x,3.7,h.target.z,.16,.55,.16,color);

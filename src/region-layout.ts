@@ -1,9 +1,8 @@
-import * as T from 'three';
 import {legacyTheme} from './stage-order';
-import {stageLandmarks} from './world-art';
-import { STAGES, STAGE_COVERS, STAGE_STEPS,FINAL_GUARDIAN,routeStep,ROUTE,ROAD_WIDTH_SCALE,MAP_OBSTACLES } from './stage-data';
+import {explorationLayout} from './exploration-layout';
+import {STAGES,ROUTE} from './stage-data';
 
-export type Block = { x:number;y:number;z:number;w:number;h:number;d:number;c:number;angle?:number;roll?:number;obstacle?:boolean };
+export type Block = { x:number;y:number;z:number;w:number;h:number;d:number;c:number;angle?:number;roll?:number;obstacle?:boolean;solid?:boolean;gate?:number };
 export type Motion = { blocks:Block[];x:number;y:number;z:number;kind:'spin'|'sway'|'float'|'windmill';phase:number };
 const cream=0xffefd0, wood=0x856048, dark=0x303344, gold=0xe9ba60;
 /** Model parts are batched cubes. A prop is a small voxel assembly, never a Mesh per voxel. */
@@ -135,161 +134,8 @@ const layoutCache=new Map<string,{blocks:Block[];motions:Motion[]}>();
 export function buildRegionLayout(stage:number,length=ROUTE.length){
  const key=`${stage}:${length}`;
  if(!layoutCache.has(key)){
-  layoutCache.set(key,createRegionLayout(stage,length));
+  layoutCache.set(key,explorationLayout(stage,sculpture));
   if(layoutCache.size>4)layoutCache.delete(layoutCache.keys().next().value!);
  }
  return layoutCache.get(key)!;
-}
-function createRegionLayout(stage:number,length:number){
-  const theme=legacyTheme(stage);let blocks:Block[]=[];let motions:Motion[]=[];const color=new T.Color(),s=STAGES[stage-1];let seed=stage*7919;
-  const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
-  const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number)=>blocks.push({x:x*ROAD_WIDTH_SCALE,y,z,w:w*ROAD_WIDTH_SCALE,h,d,c});
-  const stamp=(parts:Block[],x:number,z:number,scale=1,y=0,scenery=false)=>{
-   const obstacle=!scenery&&Math.abs(x)<=7.5;
-   if(obstacle)scale*=MAP_OBSTACLES.scale;
-   const angle=rand()*Math.PI*2,roll=(rand()-.5)*.12,cs=Math.cos(angle),sn=Math.sin(angle);
-   // Account for the whole rotated assembly, not just its centre, when clearing lanes.
-   if(scenery){const radius=Math.max(...parts.map(p=>Math.hypot(p.x,p.y*.12,p.z)+Math.hypot(p.w,p.d)/2))*scale;x=Math.sign(x)*(8.2+radius/ROAD_WIDTH_SCALE);}
-   for(const p of parts){const px=(p.x*Math.cos(roll)-p.y*Math.sin(roll))*scale,py=(p.x*Math.sin(roll)+p.y*Math.cos(roll))*scale,pz=p.z*scale;
-    blocks.push({x:x*ROAD_WIDTH_SCALE+px*cs-pz*sn,y:y+py,z:z+px*sn+pz*cs,w:p.w*scale,h:p.h*scale,d:p.d*scale,c:p.c,angle,roll,obstacle});
-   }
-  };
-  const tiles=[0xceb994,0xd4b58f,0xaddbd3,0x706971,0x426b7e,0x9b928f,0x4a5978,0xdfc38a,0x9aa17a,0x9b8294,0xdedbcd,0x8995a2,0xa48b71,0xc2e4e8,0xd0bdd8,0x849077,0xadba81,0x929393,0x8887ad,0x756d91];
-  for(let z=-ROUTE.entrance;z>=-ROUTE.entrance-length;z-=2){
-   const final=stage===20&&z<-ROUTE.entrance-length*.52,voidZone=stage===19;
-   for(let x=-8;x<=8;x+=2){
-    const path=Math.abs(x)<=2,col=final?(path?0xebdfbc:0xd0d4b1):path?tiles[theme-1]:s.color;
-    const tint=color.setHex(col).multiplyScalar(.96+rand()*.08).getHex();
-    b(x,-.45,z,2,.8,2,tint);
-    // Inlaid tile joints, rivets, fossil seams and current lines stay flat and traversable.
-    if([2,6,7,11,12,13,18,19].includes(theme)){b(x,-.038,z-1,1.96,.018,.035,s.color);b(x-1,-.038,z,.035,.018,1.96,s.color);}
-    else if(rand()<.48)b(x+rand()-.5,-.025,z+rand()-.5,.15+rand()*.5,.02,.1,s.accent);
-    if(theme===7&&Math.abs(x)===4)b(x,-.02,z,.06,.03,1.8,s.accent);
-    if(theme===4&&Math.abs(x)>=6)b(x,-.015,z,.14,.03,1.3,0xf6a06b);
-    if((theme===19||voidZone)&&Math.abs(x)>=6)b(x,-.5,z,.9,.85,.9,0x3d3857);
-   }
-   // Region-specific silhouettes replace the uniform two canyon walls.
-   for(const side of [-1,1]){
-    // A continuous core meets the movement boundary; irregular shoulders hide the seams.
-    const wallHeight=1.5+rand()*.8;
-    b(side*8,wallHeight/2-.2,z,2.6,wallHeight+.4,2.1,s.color);
-    b(side*(8.5+rand()*.6),wallHeight-.1,z+rand()*.3,1.8+rand()*.4,.6+rand()*.5,2.3,s.color);
-    const x=side*(9+rand()),h=.7+rand()*2;
-    if([1,3,5,9,17].includes(theme)){b(x,h*.22,z,2.5,h*.44,2.1,s.color);if(rand()<.35)stamp(sculpture(stage,0),x,z,1+rand());}
-    else if([2,6,7,10,12,16,18].includes(theme)){if(rand()<.55)stamp(sculpture(stage,0),x,z,1.2+rand()*.8);}
-    else if([4,8,14].includes(theme)){for(let j=0;j<3;j++)b(x+side*j*.3,j*.7+.3,z,2-j*.35,.7,2.2,s.color);}
-    else if([11,13].includes(theme)){b(x,-.65,z,2.3,1.2,2.1,s.color);if(z%8===0)stamp(sculpture(stage,0),x,z,1.4);}
-    else if(rand()<.4)stamp(sculpture(stage,stage===20?2:stage===19?0:1),x,z,1.2+rand());
-   }
-  }
-  // Asymmetric groves and workshop clusters, with breathing room near nests and cover.
-  let z=-9;
-  let element=0;
-  while(z>-length-3){
-   const side=rand()<.5?-1:1,x=side*(4.8+rand()*1.2),variant=element++%15;
-   stamp(sculpture(stage,variant),x,z,.8+rand()*.6);
-   if(rand()<.7)stamp(sculpture(stage,(variant+5)%15),x+side*.7,z+1.7,.45+rand()*.35);
-   if(rand()<.45)stamp(sculpture(stage,(variant+9)%15),-x,z-2.5,.7);
-   // Half the route, four assemblies per former one: about twice the old prop count.
-   for(let extra=0;extra<6;extra++)stamp(sculpture(stage,(variant+extra*3)%15),(extra%2?-1:1)*9,z+(rand()-.5)*3,.45+rand()*1.15,0,true);
-   if([3,5,9,17].includes(theme))for(let j=0;j<5;j++)b(x+(rand()-.5)*2,.12,z+(rand()-.5)*2,.1,.3,.1,s.accent);
-   z-=(2.6+rand()*2.8)/STAGE_STEPS[routeStep(z,0,length)-1].density;
-  }
-  // Extra biome-specific clusters stay outside the central nest/escape lanes.
-  // Reuse the batched sculptures and distance buckets instead of adding meshes.
-  for(let patch=0;patch<Math.ceil(length/3);patch++){
-   const side=patch%2?1:-1,z=-9-patch*3,x=side*(9+rand()*.5);
-   stamp(sculpture(stage,patch%3),x,z,.8+rand()*.75,0,true);
-   stamp(sculpture(stage,(patch+1)%3),x+side*.65,z+1,.4+rand()*.4,0,true);
-   stamp(sculpture(stage,(patch+2)%3),-x,z-1,.6+rand()*.55,0,true);
-   // Low themed footing ties each cluster to its terrain without hiding players.
-   for(let j=0;j<3;j++)b(x+side*j*.25,.035,z+1+j*.35,.45,.07,.35,j%2?s.accent:s.color);
-  }
-  // Four set pieces per expedition, intentionally not identical on both sides.
-  for(const [i,depth] of [.15,.37,.63,.88].map(t=>ROUTE.entrance+t*length).entries()){
-   const side=i%2?1:-1,v=i*4;
-   stamp(sculpture(stage,v),side*5.8,-depth,1.8);
-   stamp(sculpture(stage,(v+1)%15),-side*5.2,-depth-3,1.1);
-  }
-  for(const cover of STAGE_COVERS){
-   const scale=MAP_OBSTACLES.scale;
-   b(cover.x/ROAD_WIDTH_SCALE,.28*scale,cover.z,1.7*scale/ROAD_WIDTH_SCALE,.56*scale,1.7*scale,s.color);
-   blocks[blocks.length-1].obstacle=true;
-   const v=theme===6?1:theme===9?2:theme===3||theme===5?0:1;
-   stamp(sculpture(stage,v),cover.x/ROAD_WIDTH_SCALE,cover.z,.8);
-  }
-  // Fine ground details form patches rather than another evenly spaced prop row.
-  for(let i=0;i<Math.ceil(length*1.5);i++){
-   const x=(rand()<.5?-1:1)*(3.2+rand()*3.5),z=-8-rand()*(length-4);
-   // Quiet stretches between ecological patches; detail gathers by the landmark
-   // and existing groves, instead of evenly peppering the entire escape lane.
-   if(Math.abs(z+Math.min(38,length*.34))>9&&Math.sin(z*.23+stage)<.35)continue;
-   if([1,9,17].includes(theme)){for(let j=0;j<3;j++)b(x+j*.1,.07,z,.06,.2+rand()*.12,.06,theme===1?0x90ad6c:0x769566);}
-   else if([3,5,14].includes(theme)){b(x,-.02,z,.3+rand()*.5,.03,.18+rand()*.3,theme===14?0xeaf5ef:s.accent);}
-   else if([4,16].includes(theme)){b(x,-.01,z,.3,.04,.3,theme===4?0xc67a55:0x9aa867);b(x+.15,.02,z,.12,.08,.15,s.color);}
-   else if(theme===8){b(x,-.018,z,.8+rand()*.8,.025,.06,0xf0d7a0);}
-   else if([6,15].includes(theme)){b(x,.015,z,.18,.025,.24,0xe8dcc5);}
-   else if([7,12,13,18].includes(theme)){b(x,.015,z,.2,.04,.15,0x8c9291);}
-   else {b(x,-.02,z,.14,.03,.14,s.accent);}
-  }
-  // Track sleepers, ducts and causeway rails make ground layouts recognizable.
-  if(theme===2||theme===19)for(let z=-8;z>-length-5;z-=.8){b(5.6,.03,z,1,.09,.16,wood);for(const x of [5.25,5.95])b(x,.09,z,.08,.07,.8,theme===19?gold:0x727b85);}
-  if(theme===13||theme===18)for(let z=-8;z>-length-5;z-=3)for(const x of [-7.5,7.5]){b(x,.15,z,.3,.3,3,gold);b(x,.16,z,.4,.4,.15,dark);}
-  for(let i=0;i<Math.ceil(length/8);i++){
-   const x=(i%3===0?-1:1)*(5.8+rand()*1.3),z=-12-i*7.7,phase=rand()*6;
-   let parts:Block[],kind:Motion['kind'],y:number;
-   if(theme===1){parts=[{x:0,y:0,z:.6,w:2,h:.18,d:.12,c:cream},{x:0,y:0,z:.6,w:.18,h:2,d:.12,c:cream}];kind='windmill';y=2;stamp(sculpture(1,1),x,z,1.25);}
-   else if([2,13,18].includes(theme)){parts=[];for(let j=0;j<10;j++){const a=j*Math.PI/5;parts.push({x:Math.cos(a)*.6,y:0,z:Math.sin(a)*.6,w:.22,h:.18,d:.22,c:gold});}kind='spin';y=.8;}
-   else if([3,5,12,19].includes(theme)){parts=[{x:0,y:0,z:0,w:.35,h:.18,d:.5,c:s.accent},{x:.24,y:0,z:-.1,w:.15,h:.3,d:.2,c:cream}];kind='float';y=.8+i%3*.6;}
-   else if([4,7,10,14,16,20].includes(theme)){parts=[{x:0,y:0,z:0,w:.16,h:.25,d:.16,c:s.accent}];kind='float';y=.5;}
-   else {parts=sculpture(stage,theme===15?0:2);kind=theme===15?'float':'sway';y=theme===15?1.4:0;}
-   if(kind==='sway')parts=parts.map(p=>({...p,x:p.x*MAP_OBSTACLES.scale,y:p.y*MAP_OBSTACLES.scale,z:p.z*MAP_OBSTACLES.scale,w:p.w*MAP_OBSTACLES.scale,h:p.h*MAP_OBSTACLES.scale,d:p.d*MAP_OBSTACLES.scale,obstacle:true}));
-   motions.push({blocks:parts,x:x*ROAD_WIDTH_SCALE,y,z,kind,phase});
-  }
-  // Closed garden wall at the end of region 20. The movement limit stops at its front.
-  if(stage===20){
-   // A clear gold-ringed arena frames one special nest in front of the final guardian.
-   const nestZ=-ROUTE.entrance-length+FINAL_GUARDIAN.eggEndOffset;
-   for(let j=0;j<24;j++){const a=j*Math.PI/12;b(Math.cos(a)*4.5,.015,nestZ+Math.sin(a)*4.5,.4,.05,.4,gold);}
-   for(const x of [-5.7,5.7]){b(x,1.5,nestZ-8,.6,3,.6,cream);b(x,3.2,nestZ-8,.9,.3,.9,gold);}
-   const wall=-ROUTE.entrance-length+1;
-   b(0,.28,wall+.2,18,.56,1.8,0x9a9b8e);
-   for(let row=0;row<4;row++)for(let x=-8;x<=8;x+=2)b(x+(row%2?.2:0),.7+row*.58,wall,1.96,.55,1.2,row%2?0xe7dec2:0xd7cfb5);
-   b(0,3,wall,18,.3,1.6,0xc4a66a);
-   for(const x of [-8,0,8]){b(x,1.7,wall+.2,.65,3.4,1.7,0xb4aa8d);b(x,3.45,wall+.2,.95,.2,1.9,gold);}
-   for(let i=-2;i<=2;i++){b(i*.22,2,wall+.88,.2,.2,.08,gold);b(0,2+i*.22,wall+.88,.2,.2,.08,gold);}
-  }
-  blocks.push(...stageLandmarks(stage,length));
-  // Cut each themed section at its own boundary; neighbours stay visible across it.
-  const end=-ROUTE.entrance-length;
-  // Three equal steps have their own palette, density and boundary marker.
-  for(const p of blocks){
-   const depth=Math.max(0,-p.z-ROUTE.entrance),position=depth/(length/3),step=Math.min(2,Math.floor(position));
-   const blend=Math.min(1,(position-step)*8),previous=STAGE_STEPS[Math.max(0,step-1)].tint;
-   const tint=previous+(STAGE_STEPS[step].tint-previous)*blend;
-   p.c=color.setHex(p.c).multiplyScalar(tint).getHex();
-  }
-  for(let step=1;step<=3;step++){
-   const z=-ROUTE.entrance-(step-1)*length/3-1;
-   for(const side of [-1,1]){
-    b(side*6,.55,z,.45,1.1,.45,s.color);
-    for(let mark=0;mark<step;mark++)b(side*6,.4+mark*.23,z+.26,.22,.08,.05,s.accent);
-   }
-   if(step>1)for(let x=-5;x<=5;x+=1)b(x,-.015,z,.45,.025,.16,s.accent);
-  }
-  blocks=blocks.flatMap(p=>{const lo=Math.max(end,p.z-p.d/2),hi=Math.min(-ROUTE.entrance,p.z+p.d/2);return hi>lo?[{...p,z:(lo+hi)/2,d:hi-lo}]:[];});
-  motions=motions.filter(m=>m.z<-ROUTE.entrance-2&&m.z>end+2);
-  // Keep both new and migrated nests clear, including the largest egg shell.
-  // This shared layout feeds visual geometry and player collision together.
-  const nests=[{x:0,z:-17,hx:8,hz:9},...(stage===20?[{x:0,z:end+FINAL_GUARDIAN.eggEndOffset,hx:9,hz:9}]:[])];
-  const overlapsNest=(p:Block)=>{
-    const a=p.angle??0,r=p.roll??0,w=Math.abs(Math.cos(r))*p.w+Math.abs(Math.sin(r))*p.h;
-    const hx=(Math.abs(Math.cos(a))*w+Math.abs(Math.sin(a))*p.d)/2;
-    const hz=(Math.abs(Math.sin(a))*w+Math.abs(Math.cos(a))*p.d)/2;
-    const top=p.y+(Math.abs(Math.cos(r))*p.h+Math.abs(Math.sin(r))*p.w)/2;
-    return top>.15&&nests.some(n=>Math.abs(p.x-n.x)<hx+n.hx&&Math.abs(p.z-n.z)<hz+n.hz);
-  };
-  blocks=blocks.filter(p=>!overlapsNest(p));
-  motions=motions.filter(m=>!m.blocks.some(p=>overlapsNest({...p,x:p.x+m.x,y:p.y+m.y,z:p.z+m.z})));
-  return {blocks,motions};
 }

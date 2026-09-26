@@ -29,13 +29,16 @@ export class RegionArt {
   this.buckets.clear();this.visibleBand=Infinity;
   for(const p of this.blocks){const key=Math.floor(p.z/16);if(!this.buckets.has(key))this.buckets.set(key,[]);this.buckets.get(key)!.push(p);}
  }
- renderSection(stage:number,offset:number,length:number,playerZ:number,time:number){
+ private gates='';
+ renderSection(stage:number,offset:number,length:number,playerZ:number,time:number,opened:number[]=[]){
   this.group.visible=true;this.group.position.z=-offset;
   if(this.stage!==stage)this.build(stage,length);
   const band=Math.floor((playerZ+offset)/16);
-  if(band!==this.visibleBand){
+  const gates=opened.join(',');
+  if(band!==this.visibleBand||gates!==this.gates){
+   this.gates=gates;
    this.visibleBand=band;let count=0,outlines=0;
-   for(let key=band-3;key<=band+3;key++)for(const p of this.buckets.get(key)??[]){this.put(this.ground,count++,p);if(p.obstacle)this.outline(this.outlines,outlines++);}
+   for(let key=band-3;key<=band+3;key++)for(const p of this.buckets.get(key)??[]){if(p.gate&&opened.includes(p.gate))continue;this.put(this.ground,count++,p);if(p.obstacle)this.outline(this.outlines,outlines++);}
    this.outlines.count=outlines;this.outlines.instanceMatrix.needsUpdate=true;
    this.ground.count=count;this.ground.instanceMatrix.needsUpdate=true;if(this.ground.instanceColor)this.ground.instanceColor.needsUpdate=true;
   }
@@ -66,7 +69,7 @@ export class ConnectedRegionArt {
   this.group.visible=visible;if(!visible)return;this.active=game.stage.id;
   const nearby=game.route.filter(r=>r.stage>=this.active-1&&r.stage<=this.active+1);
   for(const s of this.sections)s.group.visible=false;
-  for(const r of nearby)this.sections[r.stage%3].renderSection(r.stage,r.offset,r.end-r.start,game.z,time);
+  for(const r of nearby)this.sections[r.stage%3].renderSection(r.stage,r.offset,r.end-r.start,game.z,time,game.openedShortcuts);
   this.fog.render(game,time);
  }
  metrics(){const current=this.sections[this.active%3].metrics();return {...current,sections:this.sections.filter(s=>s.group.visible).map(s=>s.metrics().stage)};}

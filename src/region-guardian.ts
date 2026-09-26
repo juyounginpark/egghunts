@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {explorationHeight} from './exploration-route';
 import {legacyTheme} from './stage-order';
 import { ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT } from './stage-data';
 import type { GameState, Boss } from './game';
@@ -79,6 +80,7 @@ export class RegionGuardian {
    }
    character.visible=true;
    character.position.set(x,(breath+bounce+(hover&&!reduced?Math.sin(time*1.2+k)*.14*rise:0))*scale,z);
+   character.position.y+=explorationHeight(x,z,game.progression.stage);
    character.rotation.set(-charge*.1,angle,0);
    character.scale.set(2.8*scale,2.8*scale*(sleeping?.78+.22*rise:1),2.8*scale);
    character.traverse(part=>{

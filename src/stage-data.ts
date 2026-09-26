@@ -1,7 +1,7 @@
 import {reorderStages,OLD_TO_STAGE} from './stage-order';
-import {softenGrowth} from './growth-curve';
+import {routePoint} from './exploration-route';
 export const ROAD_WIDTH_SCALE=2;
-export type Shape='ellipse'|'line'|'cone'|'ring';
+export type Shape='ellipse'|'line'|'cone'|'ring'|'wall';
 export type Targeting='predict'|'fixed'|'track'|'sweep';
 export type Effect='hit'|'wind'|'ink'|'pull'|'stone'|'grab'|'delay'|'dot'|'ice'|'dust'|'web';
 export type HazardDefinition={id:string;displayName:string;stageId:number;damage:number;damagePercent:number;telegraphDuration:number;activeDuration:number;cooldown:number;knockback:number;slowMultiplier:number;slowDuration:number;shape:Shape;targetingType:Targeting;carryTelegraphBonus:number;radius:number;width:number;length:number;blockable:boolean;effect:Effect;count:number;freezeBefore:number;visual:string;minTelegraph:number};
@@ -122,11 +122,12 @@ const oldEnvironmentIds=[
 export const STAGE_ENVIRONMENT_IDS=reorderStages(oldEnvironmentIds);
 STAGE_ENVIRONMENT_IDS[18]=['void-hand','memory-tentacle','memory-lightning','memory-meteor'];
 STAGE_ENVIRONMENT_IDS[19]=['creation-wave'];
+export const LEGACY_STAGE_ENVIRONMENT_IDS=STAGE_ENVIRONMENT_IDS.map(ids=>[...ids]);
 export function stagePatterns(stage:number,_z=0){return STAGE_ENVIRONMENT_IDS[stage-1].map(id=>HAZARDS.find(d=>d.stageId===stage&&d.id===id)!);}
 export function environmentPlacement(stage:number,lane:number,offset=0){
- const count=STAGE_ENVIRONMENT_IDS[stage-1].length,length=stage===20?ROUTE.finalLength:ROUTE.length;
- const depth=28+(length+ROUTE.entrance-28)*(lane+1)/(count+1);
- return {x:lane%3===2?0:(lane%2?-1:1)*HAZARD_BALANCE.environmentX,z:-offset-depth};
+ const count=STAGE_ENVIRONMENT_IDS[stage-1].length;
+ const p=routePoint(stage,stage===6?.23:.5+lane*.11/Math.max(1,count-1));
+ return {x:p.x+(stage<=5?3:0),z:p.z-offset};
 }
 export type Cover={x:number;z:number;radius:number};
 export const MAP_OBSTACLES={scale:1.5,outline:0xff3939,outlineWidth:.035};
@@ -143,10 +144,9 @@ export function guardianSpeed(stage:number){
  const progress=(Math.max(1,Math.min(STAGES.length,stage))-1)/(STAGES.length-1);
  return ROUTE.baseRecommendedSpeed+(BOSS_MOVEMENT.qualifiedChaseMaxSpeed-ROUTE.baseRecommendedSpeed)*progress;
 }
-// Compare the uncapped displayed stat, including carry penalties, not movementSpeed.
-export function guardianChaseSpeed(stage:number,playerSpeed:number){
- return playerSpeed>recommendedRouteSpeed(0,stage)
-  ?guardianSpeed(stage):Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(stage)*BOSS_MOVEMENT.underqualifiedMultiplier);
+// Qualification is checked only before pickup; pursuit never rechecks the table.
+export function guardianChaseSpeed(stage:number,_playerSpeed:number){
+ return guardianSpeed(stage);
 }
 /** Outside the close chase band, rush independently of stage/player speed stats. */
 export function guardianPursuitSpeed(stage:number,playerSpeed:number,distance:number,escapeSpeed:number,reach:number){
@@ -154,6 +154,23 @@ export function guardianPursuitSpeed(stage:number,playerSpeed:number,distance:nu
  if(excess<=0)return guardianChaseSpeed(stage,playerSpeed);
  return Math.min(BOSS_MOVEMENT.catchupMaxSpeed,Math.max(0,escapeSpeed)+BOSS_MOVEMENT.catchupMinSpeed+excess*BOSS_MOVEMENT.catchupGain);
 }
-export function recommendedRouteSpeed(_depth:number,stage:number){return softenGrowth(ROUTE.baseRecommendedSpeed*STAGE_DIFFICULTY.recommendedSpeedMultiplier**(stage-1),STAGE_DIFFICULTY.speedSoftThreshold);}
+export const STAGE_REQUIRED_SPEED=[2,3,5,7,10,15,25,40,65,100,180,320,600,1100,2000,4000,7500,14000,26000,50000] as const;
+export function recommendedRouteSpeed(_depth:number,stage:number){return STAGE_REQUIRED_SPEED[Math.max(0,Math.min(19,stage-1))];}
 export const GUARDIAN_ATTACKS=new Set(['hay','train','ink','lava-breath','tentacle','sweep','locker','book','drone','scorpion','stomp','raptor','wisps','club','lightning','medusa','ufo','nightmare','vine','mantis','magnet','void-hand','memory-tentacle','memory-lightning','memory-ufo','memory-meteor','creation-wave']);
+
+// Environmental patterns are distinct from existing guardian attacks and use room time.
+const explorationHazards:[string,string][]=[
+ ['진흙 웅덩이','puddle'],['장난감 공','orb'],['거품 분출구','coral'],['외곽 불꽃','steam'],['복도 유령','flame'],
+ ['배달 로봇','train'],['구르는 바위','orb'],['공룡 발 그림자','dinosaur'],['도깨비불','flame'],['번개 테라스','lightning'],
+ ['빈칸 레이저 벽','laser'],['증기 배관','steam'],['눈덩이 경사','orb'],['내려오는 베개','crusher'],['가스 배관','steam'],
+ ['개미 횡단로','raptor'],['압착기','crusher'],['운석 관측 바닥','meteor'],['빈칸 검은 벽','void'],['씨앗 언덕','orb'],
+];
+for(let i=0;i<20;i++){
+ const stage=i+1,entries=[explorationHazards[i],...(stage===16?[['거대 이슬','icicle']]:stage===20?[['물줄기 정원','coral']]:[])];
+ STAGE_ENVIRONMENT_IDS[i]=entries.map(([name,visual],lane)=>{
+  const id=`explore-${stage}-${lane}`,wall=stage===11||stage===19;
+  HAZARDS.push({id,displayName:name,stageId:stage,damage:0,damagePercent:stage<=5?0:.08,telegraphDuration:2.6,activeDuration:['orb','train','raptor','flame'].includes(visual)?7:wall?5:1.2,cooldown:8,knockback:stage<=5?.15:.4,slowMultiplier:.8,slowDuration:.5,shape:wall?'wall':'ellipse',targetingType:'fixed',carryTelegraphBonus:0,radius:stage<=5?.8:1.5,width:.45,length:10,blockable:false,effect:'hit',count:1,freezeBefore:0,visual,minTelegraph:2.6});
+  return id;
+ });
+}
 

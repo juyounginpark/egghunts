@@ -1,4 +1,5 @@
 import {eggMaxHp,farmPetIds} from './data';
+import {explorationHeight} from './exploration-route';
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage,DAMAGE_OVER_TIME } from "./data";
@@ -178,7 +179,7 @@ export class World {
         if(arm)arm.rotation.x=down?-.35:seated?-.5:peer.carried!==null?-2.4:-stride*.3*sign;
       }
       const flight=(frameAt-(avatar.userData.hitReceived??-Infinity))/(BALANCE.batFlightSeconds*1000);
-      avatar.position.y=seated?CAMPFIRE.sittingHeight:down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0;
+      avatar.position.y=explorationHeight(avatar.position.x,avatar.position.z)+(seated?CAMPFIRE.sittingHeight:down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0);
       avatar.rotation.y+=Math.atan2(Math.sin(peer.rotation-avatar.rotation.y),Math.cos(peer.rotation-avatar.rotation.y))*blend;
       avatar.rotation.z+=( (down?Math.PI/2:0)-avatar.rotation.z)*blend;
       this.animateBat(avatar,frameAt-(avatar.userData.swingReceived??-Infinity));
@@ -200,6 +201,7 @@ export class World {
   farmPets = new T.Group();
   private farmKey = "";
   private petLabels = document.createElement("div");
+  private eggSpeedLabel=document.createElement('div');
   private peerPetLabels = document.createElement('div');
   private farmPetLabels = document.createElement('div');
   private farmPetLabelEntries=new Map<string,{id:number;label:HTMLElement}>();
@@ -266,6 +268,7 @@ export class World {
     host.append(this.renderer.domElement);
     this.damageDirection.id='damage-direction';this.damageDirection.hidden=true;this.damageDirection.setAttribute('aria-hidden','true');host.append(this.damageDirection);
     this.petLabels.id="pet-labels";host.append(this.petLabels);
+    this.eggSpeedLabel.className='egg-speed-label';this.eggSpeedLabel.hidden=true;host.append(this.eggSpeedLabel);
     this.peerPetLabels.id='peer-pet-labels';host.append(this.peerPetLabels);
     this.farmPetLabels.id='farm-pet-labels';host.append(this.farmPetLabels);
     this.scene.add(this.farm,this.farmPets,this.roomFarmPets,this.roomFarmEggs,this.footTrail);
@@ -598,7 +601,7 @@ export class World {
       if(egg){
         const held=game.bosses.some(b=>b.loot?.id===egg.id);
         const atNest=egg.x===egg.homeX&&egg.z===egg.homeZ;
-        m.position.set(egg.x,held?1.2:atNest?.02+2.5/18*m.scale.x*1.45:.03,egg.z);
+        m.position.set(egg.x,explorationHeight(egg.x,egg.z,game.progression.stage)+(held?1.2:atNest?.02+2.5/18*m.scale.x*1.45:.03),egg.z);
       }
       m.getObjectByName("selection-outline")!.visible=!game.carried&&game.near?.id===m.userData.id;
       m.visible = Math.abs(m.position.z - game.z) < 22;
@@ -628,6 +631,7 @@ export class World {
       game.death ? .4*fall : game.seat!==null?CAMPFIRE.sittingHeight:game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
       game.z+this.networkOffset.z,
     );
+    this.player.position.y+=explorationHeight(game.x,game.z,game.progression.stage);
     if(game.seat!==null){
       this.restCompanions(this.companions,game.farmSlot,time);this.trail=[];
     }else{
@@ -681,6 +685,8 @@ export class World {
     const near = game.near;
     this.highlight.visible = false;
     if (near) this.highlight.position.set(near.x, 0.055, near.z);
+    const gate=game.nearShortcut;
+    if(gate){this.highlight.visible=true;this.highlight.position.set(gate.x,.06,gate.z-game.stageOffset);}
     const birthAge=this.birth?(performance.now()-this.birth.at)/1000:-1;
     const birthEgg=this.birth&&birthAge<1.05?this.birth.egg:undefined;
     const shownResult=birthEgg?null:game.result;
@@ -787,6 +793,13 @@ export class World {
       gain.el.hidden=isHatch;
     }
     this.sun.target.position.set(game.x, 0, game.z);
+    this.eggSpeedLabel.hidden=isHatch||!!game.carried||!near||game.canPickupEgg(near);
+    if(!this.eggSpeedLabel.hidden&&near){
+      const p=new T.Vector3(near.x,1.6,near.z).project(this.camera);
+      this.eggSpeedLabel.textContent=`필요 속도 ${formatNumber(game.eggRequiredSpeed(near))} / 현재 ${formatNumber(game.speed)}`;
+      this.eggSpeedLabel.style.left=`${(p.x+1)/2*this.host.clientWidth}px`;
+      this.eggSpeedLabel.style.top=`${(1-p.y)/2*this.host.clientHeight}px`;
+    }
     const labelIds=game.save.active.join(',');
     if(this.petLabels.dataset.ids!==labelIds){
       this.petLabels.dataset.ids=labelIds;

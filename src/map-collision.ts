@@ -4,16 +4,17 @@ import { routeSegments,stagePatterns,environmentPlacement,ROAD_WIDTH_SCALE,MAP_O
 import {villageArt} from './world-art';
 import {villageColliders,clampVillage} from './village';
 
-export type MapCollider={minX:number;maxX:number;minZ:number;maxZ:number};
+export type MapCollider={minX:number;maxX:number;minZ:number;maxZ:number;gate?:number};
 const radius=.24,epsilon=.0001,bandSize=4;
 export function blockCollider(p:Block,offset=0):MapCollider|null{
+ if(p.solid===false)return null;
  const roll=p.roll??0,angle=p.angle??0;
  const halfY=(Math.abs(Math.sin(roll))*p.w+Math.abs(Math.cos(roll))*p.h)/2;
  if(p.y+halfY<.3||p.y-halfY>1.1||p.w*p.d<.012)return null;
  const width=Math.abs(Math.cos(roll))*p.w+Math.abs(Math.sin(roll))*p.h;
  const hx=(Math.abs(Math.cos(angle))*width+Math.abs(Math.sin(angle))*p.d)/2;
  const hz=(Math.abs(Math.sin(angle))*width+Math.abs(Math.cos(angle))*p.d)/2;
- return {minX:p.x-hx,maxX:p.x+hx,minZ:p.z-offset-hz,maxZ:p.z-offset+hz};
+ return {minX:p.x-hx,maxX:p.x+hx,minZ:p.z-offset-hz,maxZ:p.z-offset+hz,gate:p.gate};
 }
 function buckets(boxes:MapCollider[]){
  const bands=new Map<number,MapCollider[]>();
@@ -28,6 +29,7 @@ let villageBoxes:MapCollider[]|undefined;
 export function villageMapColliders(){return villageBoxes??= [...villageColliders(),...villageArt().flatMap(p=>{const box=blockCollider(p,0);return box?[box]:[];})];}
 /** Swept player footprint: even a fast move or knockback cannot skip a thin prop. */
 export class MapCollision{
+ opened:number[]=[];
  private farm=buckets([]);
  private sections=sharedSections;
  setFarm(boxes:MapCollider[]){let cached=farmBuckets.get(boxes);if(!cached){cached=buckets(boxes);farmBuckets.set(boxes,cached);}this.farm=cached;}
@@ -46,6 +48,7 @@ export class MapCollision{
      const box=blockCollider({...p,x:p.x+motion.x,y:p.y+motion.y,z:p.z+motion.z},r.offset);if(box)boxes.push(box);
     }
     for(const [lane,hazard] of stagePatterns(r.stage).entries()){
+     if(hazard.id.startsWith('explore-'))continue;
      if(['hay','train','book','raptor','gear','orb'].includes(hazard.visual))continue;
      const {x,z}=environmentPlacement(r.stage,lane,r.offset);
      if([2,6,7,12,13,18].includes(legacyTheme(r.stage)))for(const side of [-1,1]){
@@ -62,7 +65,7 @@ export class MapCollision{
   for(const source of sources)for(let k=Math.floor(minZ/bandSize);k<=Math.floor(maxZ/bandSize);k++)for(const box of source.get(k)??[]){
    if(box.maxX>=minX&&box.minX<=maxX)result.add(box);
   }
-  return [...result];
+  return [...result].filter(b=>!b.gate||!this.opened.includes(b.gate));
  }
  move(x:number,z:number,dx:number,dz:number,start:number){
   const boxes=this.nearby(x,z,dx,dz,start);

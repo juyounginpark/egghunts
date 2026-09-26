@@ -199,6 +199,7 @@ async function action(preparedId?:string) {
       $("action").dataset.hit = String(game.lastTap);
     }
   } else if (tab === "explore") {
+    if(game.nearShortcut){if(online.active)await remote('shortcut');else game.openShortcut();updateHud();return;}
     if(!game.carried&&game.nearSeat>=0){
       input.reset();online.halt();
       if(online.active)await remote('sit');else{game.toggleSeat();void save();}
@@ -206,6 +207,7 @@ async function action(preparedId?:string) {
     }
     const targetEgg=preparedEgg??game.near;
     if(!game.carried&&targetEgg&&!game.isAtBase){
+      if(!game.canPickupEgg(targetEgg)){toast(`필요 속도 ${num(game.eggRequiredSpeed(targetEgg))} / 현재 ${num(game.speed)}`);return;}
       if(warnAboutBoss())return;
       const egg=targetEgg,duration=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier];
       if(duration>0&&preparedId!==egg.id){
@@ -288,8 +290,8 @@ function updateHud() {
     bannerUntil=first?performance.now()+ROUTE.bannerSeconds*1000:0;
     $("region-banner-name").textContent=`${game.stage.id}단계 · ${game.stage.name}`;
     $('region-banner-speed').lastElementChild!.textContent=num(game.recommendedSpeed,1);
-    $('region-banner-speed').setAttribute('aria-label',`권장 스피드 ${num(game.recommendedSpeed,1)}`);
-    $('region-banner-speed').title=`권장 스피드 ${num(game.recommendedSpeed,1)}`;
+    $('region-banner-speed').setAttribute('aria-label',`필요 속도 ${num(game.recommendedSpeed,1)}`);
+    $('region-banner-speed').title=`필요 속도 ${num(game.recommendedSpeed,1)}`;
     $<HTMLImageElement>("region-banner-art").src=`${import.meta.env.BASE_URL}models/guardian-${game.stage.id}.png`;
     $<HTMLImageElement>("region-banner-object").src=eggIcon({type:0,stageId:game.stage.id,variant:0});
     $("region-banner").style.setProperty('--region-accent',`#${game.stage.accent.toString(16).padStart(6,'0')}`);
@@ -328,12 +330,12 @@ function updateHud() {
   $("night-curtain").hidden = true;
   $("night-count").textContent = String(Math.max(0, Math.ceil((game.nightUntil-game.now())/1000)));
   $("speed-value").textContent = num(game.speed,2);
-  const speedHelp=`현재 스피드 ${num(game.speed,2)} · 실제 이동 ${num(input.slow?Math.min(BALANCE.slowWalkSpeed,game.movementSpeed):game.movementSpeed,2)}${input.slow?' · 슬로우 모드':game.isAtBase?'':` · 최대 ${BALANCE.maxMovementSpeed}`}`;
+  const speedHelp=`현재 스피드 ${num(game.speed,2)}`;
   $('speed-hud').setAttribute('aria-label',speedHelp);
   $('speed-hud').title=speedHelp;
   $('recommended-speed-value').textContent=num(game.recommendedSpeed,1);
-  $('day-clock').setAttribute('aria-label',`권장 스피드 ${num(game.recommendedSpeed,1)}`);
-  $('day-clock').title=`권장 스피드 ${num(game.recommendedSpeed,1)}`;
+  $('day-clock').setAttribute('aria-label',`필요 속도 ${num(game.recommendedSpeed,1)}`);
+  $('day-clock').title=`필요 속도 ${num(game.recommendedSpeed,1)}`;
   const phase=cycleClock(game.now(),game.nightAt,game.nightUntil),clock=$('cycle-clock');
   $('cycle-phase').textContent=phase.night?'☾ 밤':'☀ 낮';
   $('cycle-label').textContent=phase.night?'아침까지':'밤까지';
@@ -406,7 +408,7 @@ function updateHud() {
   $('dust').parentElement!.title=`별가루 ${exactMoney(game.save.dust)}`;
   $('dust').parentElement!.querySelector('small')!.textContent=`${num(game.incomePerSecond)}/초`;
   $("timer").textContent = num(game.recommendedSpeed,1);
-  $("timer-label").textContent = "권장 스피드";
+  $("timer-label").textContent = "필요 속도";
   $("timer-fill").style.width = `${Math.min(100,game.speed/game.recommendedSpeed*100)}%`;
   $("expedition").classList.remove("urgent");
   $("hint").textContent =
@@ -431,14 +433,14 @@ function updateHud() {
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
   const weightHint=$('action-weight');weightHint.hidden=true;weightHint.textContent='';
-  $('action-label').hidden=!game.carried&&((!game.nearGym&&game.nearSeat<0)||!!actionEgg);
-  $('action-icon').hidden=!!game.carried;
+  $('action-label').hidden=!game.carried&&!game.nearShortcut&&((!game.nearGym&&game.nearSeat<0)||!!actionEgg);
+  $('action-icon').hidden=!!game.carried||!!game.nearShortcut;
   const actionModel=game.nearStore?'shop':game.nearGym?'gym':null;
   const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:game.nearSeat>=0?'<span aria-hidden="true">🪵</span>':actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
   if($("action-icon").dataset.icon!==actionIcon){$("action-icon").dataset.icon=actionIcon;$("action-icon").innerHTML=actionIcon;}
   $("action").classList.toggle(
     "available",
-    tab === "hatchery" || !!game.near || !!game.carried || game.nearGym || game.nearStore || game.nearSeat>=0,
+    tab === "hatchery" || !!game.near || !!game.carried || !!game.nearShortcut || game.nearGym || game.nearStore || game.nearSeat>=0,
   );
   ($("action") as HTMLButtonElement).disabled =
     (tab === "hatchery" && (!game.selected || game.selected.hp===0));
