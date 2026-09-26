@@ -35,7 +35,8 @@
         "material": "matte"
       }
     },
-    "color": "#9a7656"
+    "artRevision": "2026-09-27-selected-rework",
+    "color": "#98704e"
   },
   "assembly": {
     "abdomen_1": {
@@ -47,35 +48,9 @@
       "pivot": [
         0,
         5,
-        0
+        1
       ],
       "parent": "body"
-    },
-    "abdomen_2": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        5,
-        5
-      ],
-      "parent": "abdomen_1"
-    },
-    "antennae": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        9,
-        -8
-      ],
-      "parent": "head"
     },
     "body": {
       "rotation": [
@@ -90,19 +65,6 @@
       ],
       "parent": null
     },
-    "crest": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        10,
-        3
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "rotation": [
         0,
@@ -111,8 +73,8 @@
       ],
       "pivot": [
         0,
-        7,
-        -10.5
+        10,
+        -7
       ],
       "parent": "head"
     },
@@ -124,10 +86,36 @@
       ],
       "pivot": [
         0,
-        5,
-        -6
+        7,
+        -2
       ],
       "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        6,
+        -2
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        11,
+        -4
+      ],
+      "parent": "head"
     },
     "left_leg_0": {
       "rotation": [
@@ -138,24 +126,11 @@
       "pivot": [
         -2,
         5,
-        -3
+        0
       ],
       "parent": "body"
     },
     "left_leg_1": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        -2,
-        5,
-        0
-      ],
-      "parent": "body"
-    },
-    "left_leg_2": {
       "rotation": [
         0,
         0,
@@ -176,10 +151,36 @@
       ],
       "pivot": [
         0,
-        6,
-        -9
+        4,
+        -10
       ],
       "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        6,
+        -2
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        11,
+        -4
+      ],
+      "parent": "head"
     },
     "right_leg_0": {
       "rotation": [
@@ -190,7 +191,7 @@
       "pivot": [
         2,
         5,
-        -3
+        0
       ],
       "parent": "body"
     },
@@ -203,35 +204,9 @@
       "pivot": [
         2,
         5,
-        0
-      ],
-      "parent": "body"
-    },
-    "right_leg_2": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        2,
-        5,
         3
       ],
       "parent": "body"
-    },
-    "token": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        8,
-        -10
-      ],
-      "parent": "prop"
     }
   }
 }

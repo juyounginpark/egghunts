@@ -2,24 +2,24 @@
   {
     "name": "pet-321",
     "grid": [
-      21,
-      10,
-      24
+      19,
+      15,
+      18
     ],
     "paletteCount": 12,
-    "voxelCount": 2648,
+    "voxelCount": 2157,
     "bounds": [
       [
-        -10,
-        10
-      ],
-      [
-        0,
+        -9,
         9
       ],
       [
-        -13,
-        10
+        0,
+        14
+      ],
+      [
+        -10,
+        7
       ]
     ],
     "anatomy": "frog"
@@ -77,24 +77,24 @@
   {
     "name": "pet-324",
     "grid": [
-      13,
       11,
-      29
+      15,
+      23
     ],
     "paletteCount": 12,
-    "voxelCount": 2368,
+    "voxelCount": 1320,
     "bounds": [
       [
-        -6,
-        6
+        -5,
+        5
       ],
       [
         0,
-        10
+        14
       ],
       [
-        -11,
-        17
+        -9,
+        13
       ]
     ],
     "anatomy": "caterpillar"
@@ -1302,24 +1302,24 @@
   {
     "name": "pet-373",
     "grid": [
-      25,
-      12,
-      34
+      15,
+      16,
+      26
     ],
     "paletteCount": 12,
-    "voxelCount": 3622,
+    "voxelCount": 3369,
     "bounds": [
       [
-        -12,
-        12
+        -7,
+        7
       ],
       [
-        0,
-        11
+        1,
+        16
       ],
       [
-        -14,
-        19
+        -11,
+        14
       ]
     ],
     "anatomy": "walrus"
@@ -2902,24 +2902,24 @@
   {
     "name": "pet-437",
     "grid": [
-      25,
-      12,
-      34
+      21,
+      16,
+      17
     ],
     "paletteCount": 12,
-    "voxelCount": 4020,
+    "voxelCount": 1469,
     "bounds": [
       [
-        -12,
-        12
+        -10,
+        10
       ],
       [
         0,
-        11
+        15
       ],
       [
-        -14,
-        19
+        -9,
+        7
       ]
     ],
     "anatomy": "crab"
@@ -2952,24 +2952,24 @@
   {
     "name": "pet-439",
     "grid": [
-      17,
-      14,
+      13,
+      13,
       25
     ],
     "paletteCount": 12,
-    "voxelCount": 2231,
+    "voxelCount": 1574,
     "bounds": [
       [
-        -8,
-        8
+        -6,
+        6
       ],
       [
         0,
-        13
+        12
       ],
       [
-        -13,
-        11
+        -14,
+        10
       ]
     ],
     "anatomy": "beetle"
@@ -5327,24 +5327,24 @@
   {
     "name": "pet-534",
     "grid": [
-      21,
-      10,
-      25
+      19,
+      15,
+      17
     ],
     "paletteCount": 12,
-    "voxelCount": 2709,
+    "voxelCount": 2126,
     "bounds": [
       [
-        -10,
-        10
-      ],
-      [
-        0,
+        -9,
         9
       ],
       [
-        -14,
-        10
+        0,
+        14
+      ],
+      [
+        -9,
+        7
       ]
     ],
     "anatomy": "toad"
@@ -7127,24 +7127,24 @@
   {
     "name": "pet-606",
     "grid": [
-      17,
+      13,
       14,
-      30
+      24
     ],
     "paletteCount": 12,
-    "voxelCount": 2027,
+    "voxelCount": 1647,
     "bounds": [
       [
-        -8,
-        8
+        -6,
+        6
       ],
       [
-        0,
-        13
+        1,
+        14
       ],
       [
-        -14,
-        15
+        -13,
+        10
       ]
     ],
     "anatomy": "ant"
@@ -9028,11 +9028,11 @@
     "name": "pet-682",
     "grid": [
       11,
-      12,
-      17
+      21,
+      11
     ],
     "paletteCount": 12,
-    "voxelCount": 1463,
+    "voxelCount": 1316,
     "bounds": [
       [
         -5,
@@ -9040,10 +9040,10 @@
       ],
       [
         0,
-        11
+        20
       ],
       [
-        -11,
+        -5,
         5
       ]
     ],

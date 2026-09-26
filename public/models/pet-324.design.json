@@ -35,7 +35,8 @@
         "material": "matte"
       }
     },
-    "color": "#a3c674"
+    "artRevision": "2026-09-27-selected-rework",
+    "color": "#b4d87b"
   },
   "assembly": {
     "abdomen_1": {
@@ -59,21 +60,8 @@
       ],
       "pivot": [
         0,
-        4,
-        7
-      ],
-      "parent": "body"
-    },
-    "abdomen_3": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        4,
-        12
+        3,
+        8
       ],
       "parent": "body"
     },
@@ -99,9 +87,9 @@
       "pivot": [
         0,
         10,
-        3
+        -4
       ],
-      "parent": "body"
+      "parent": "head"
     },
     "eyes": {
       "rotation": [
@@ -111,8 +99,8 @@
       ],
       "pivot": [
         0,
-        6,
-        -10
+        8,
+        -9
       ],
       "parent": "head"
     },
@@ -124,25 +112,90 @@
       ],
       "pivot": [
         0,
-        4,
+        5,
         -5
       ],
       "parent": "body"
     },
-    "prop": {
+    "left_leg_0": {
       "rotation": [
         0,
         0,
         0
       ],
       "pivot": [
-        0,
-        6,
-        -9
+        -2,
+        3,
+        -5
       ],
       "parent": "body"
     },
-    "token": {
+    "left_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        3,
+        2
+      ],
+      "parent": "body"
+    },
+    "left_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        3,
+        8
+      ],
+      "parent": "body"
+    },
+    "right_leg_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        3,
+        -5
+      ],
+      "parent": "body"
+    },
+    "right_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        3,
+        2
+      ],
+      "parent": "body"
+    },
+    "right_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        3,
+        8
+      ],
+      "parent": "body"
+    },
+    "shell": {
       "rotation": [
         0,
         0,
@@ -150,10 +203,10 @@
       ],
       "pivot": [
         0,
-        8,
-        -10
+        2,
+        2
       ],
-      "parent": "prop"
+      "parent": "body"
     }
   }
 }

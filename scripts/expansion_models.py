@@ -10,6 +10,7 @@ from document_models import Sculpt, palette, COLORS
 from expansion_recipes import FORMS, MOTIFS
 from expansion_details import details
 from expansion_references import references
+from expansion_reworks import sculpt as rework
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'public/models'
@@ -617,7 +618,7 @@ def catalog(file):
  s=(ROOT/file).read_text(encoding='utf8');return json.loads(s[s.index('['):s.rindex(']')+1])
 
 def main():
- parser=argparse.ArgumentParser();parser.add_argument('--stages',nargs='+',type=int);args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--stages',nargs='+',type=int);parser.add_argument('--ids',nargs='+',type=int);args=parser.parse_args()
  existing=catalog('src/stage-pet-catalog.ts')+catalog('src/secret-dragon-catalog.ts')
  names={p['name'] for p in existing};rows=[]
  allocations={}
@@ -646,8 +647,13 @@ def main():
  records=[]
  for row in rows:
   if args.stages and row['stageId'] not in args.stages:continue
-  g=Pet();anatomy(g,row['form'],row['slot']);attachment(g,row['motif'],row['form'],row['slot']-11);details(g,row);g.eyes(row['form'])
-  colors=new_palette(row['prompt']);dark=['#'+''.join(f'{round(int(c[i:i+2],16)*.85):02x}' for i in [1,3,5]) for c in colors]
+  if args.ids and row['id'] not in args.ids:continue
+  g=Pet();colors=rework(g,row['id'])
+  if colors is None:
+   anatomy(g,row['form'],row['slot']);attachment(g,row['motif'],row['form'],row['slot']-11);details(g,row);g.eyes(row['form'])
+   colors=new_palette(row['prompt'])
+  else:row['artRevision']='2026-09-27-selected-rework'
+  dark=['#'+''.join(f'{round(int(c[i:i+2],16)*.85):02x}' for i in [1,3,5]) for c in colors]
   for xyz,(c,p) in list(g.cells.items()):
    # Local material direction only; no universal dark stripe on every body.
    if c!=5 and (p.startswith('tail') or p in {'shell','crest','mane'}) and xyz[2]>8:g.cells[xyz]=(c+6,p)
@@ -655,8 +661,12 @@ def main():
   print(row['key'],row['id'],flush=True)
  if not args.stages:
   manifestpath=OUT/'manifest.json';manifest=json.loads(manifestpath.read_text(encoding='utf8'));replacements={r['name']:r for r in records}
-  manifest['models']=[r for r in manifest['models'] if r['name'] not in replacements]+records
+  known={r['name'] for r in manifest['models']}
+  manifest['models']=[replacements.get(r['name'],r) for r in manifest['models']]+[r for r in records if r['name'] not in known]
   manifestpath.write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf8')
-  (ROOT/'docs/art/expansion-models-audit.json').write_text(json.dumps(records,indent=2)+'\n',encoding='utf8')
+  auditpath=ROOT/'docs/art/expansion-models-audit.json'
+  audit=json.loads(auditpath.read_text(encoding='utf8')) if args.ids else records
+  if args.ids:audit=[replacements.get(r['name'],r) for r in audit]
+  auditpath.write_text(json.dumps(audit,indent=2)+'\n',encoding='utf8')
 
 if __name__=='__main__':main()

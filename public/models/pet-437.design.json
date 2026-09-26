@@ -35,7 +35,8 @@
         "material": "matte"
       }
     },
-    "color": "#974e40"
+    "artRevision": "2026-09-27-selected-rework",
+    "color": "#b86f50"
   },
   "assembly": {
     "body": {
@@ -51,19 +52,6 @@
       ],
       "parent": null
     },
-    "crest": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        10,
-        3
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "rotation": [
         0,
@@ -72,8 +60,8 @@
       ],
       "pivot": [
         0,
-        6,
-        -10
+        10,
+        -5
       ],
       "parent": "head"
     },
@@ -86,7 +74,7 @@
       "pivot": [
         0,
         4,
-        -5
+        -1
       ],
       "parent": "body"
     },
@@ -99,33 +87,46 @@
       "pivot": [
         -4,
         5,
-        -3
+        -2
       ],
       "parent": "body"
     },
-    "legs": {
+    "left_leg_0": {
       "rotation": [
         0,
         0,
         0
       ],
       "pivot": [
-        0,
+        -4,
         4,
         0
       ],
       "parent": "body"
     },
-    "prop": {
+    "left_leg_1": {
       "rotation": [
         0,
         0,
         0
       ],
       "pivot": [
+        -4,
+        4,
+        3
+      ],
+      "parent": "body"
+    },
+    "left_leg_2": {
+      "rotation": [
         0,
-        6,
-        -9
+        0,
+        0
+      ],
+      "pivot": [
+        -4,
+        4,
+        5
       ],
       "parent": "body"
     },
@@ -138,48 +139,61 @@
       "pivot": [
         4,
         5,
-        -3
+        -2
       ],
       "parent": "body"
     },
-    "tail": {
+    "right_leg_0": {
       "rotation": [
         0,
         0,
         0
       ],
       "pivot": [
-        0,
-        5,
-        7
-      ],
-      "parent": "body"
-    },
-    "tail_1": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
         4,
-        13
+        4,
+        0
       ],
-      "parent": "tail"
+      "parent": "body"
     },
-    "token": {
+    "right_leg_1": {
       "rotation": [
         0,
         0,
         0
       ],
       "pivot": [
-        0,
-        8,
-        -10
+        4,
+        4,
+        3
       ],
-      "parent": "prop"
+      "parent": "body"
+    },
+    "right_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        4,
+        4,
+        5
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        0,
+        0,
+        0.12
+      ],
+      "pivot": [
+        0,
+        6,
+        2
+      ],
+      "parent": "body"
     }
   }
 }

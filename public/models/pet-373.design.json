@@ -35,7 +35,8 @@
         "material": "matte"
       }
     },
-    "color": "#899cac"
+    "artRevision": "2026-09-27-selected-rework",
+    "color": "#7e9eae"
   },
   "assembly": {
     "body": {
@@ -51,19 +52,6 @@
       ],
       "parent": null
     },
-    "crest": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        10,
-        3
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "rotation": [
         0,
@@ -72,8 +60,8 @@
       ],
       "pivot": [
         0,
-        6,
-        -10
+        13,
+        -8
       ],
       "parent": "head"
     },
@@ -85,21 +73,21 @@
       ],
       "pivot": [
         0,
-        4,
-        -5
+        10,
+        -3
       ],
       "parent": "body"
     },
     "left_arm": {
       "rotation": [
-        0.1,
         0,
-        -0.17
+        0,
+        0
       ],
       "pivot": [
-        -4,
-        5,
-        0
+        -5,
+        6,
+        -1
       ],
       "parent": "body"
     },
@@ -111,21 +99,21 @@
       ],
       "pivot": [
         0,
-        6,
-        -9
+        3,
+        -8
       ],
       "parent": "body"
     },
     "right_arm": {
       "rotation": [
-        0.1,
         0,
-        0.17
+        0,
+        0
       ],
       "pivot": [
-        4,
         5,
-        0
+        6,
+        -1
       ],
       "parent": "body"
     },
@@ -137,36 +125,10 @@
       ],
       "pivot": [
         0,
-        5,
-        7
+        3,
+        9
       ],
       "parent": "body"
-    },
-    "tail_1": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        4,
-        13
-      ],
-      "parent": "tail"
-    },
-    "token": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        8,
-        -10
-      ],
-      "parent": "prop"
     }
   }
 }

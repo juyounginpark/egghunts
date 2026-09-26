@@ -35,7 +35,8 @@
         "material": "matte"
       }
     },
-    "color": "#899cac"
+    "artRevision": "2026-09-27-selected-rework",
+    "color": "#7cabb2"
   },
   "assembly": {
     "body": {
@@ -51,19 +52,6 @@
       ],
       "parent": null
     },
-    "crest": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        10,
-        3
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "rotation": [
         0,
@@ -72,8 +60,8 @@
       ],
       "pivot": [
         0,
-        6,
-        -9
+        12,
+        -6
       ],
       "parent": "head"
     },
@@ -85,7 +73,20 @@
       ],
       "pivot": [
         0,
-        4,
+        7,
+        -1
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -4,
+        7,
         -3
       ],
       "parent": "body"
@@ -97,22 +98,9 @@
         0
       ],
       "pivot": [
-        -5,
-        3,
-        -4
-      ],
-      "parent": "body"
-    },
-    "left_leg_back": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        -5,
-        3,
-        5
+        -4,
+        5,
+        3
       ],
       "parent": "body"
     },
@@ -124,8 +112,21 @@
       ],
       "pivot": [
         0,
-        6,
-        -9
+        2,
+        -8
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        4,
+        7,
+        -3
       ],
       "parent": "body"
     },
@@ -136,37 +137,11 @@
         0
       ],
       "pivot": [
+        4,
         5,
-        3,
-        -4
+        3
       ],
       "parent": "body"
-    },
-    "right_leg_back": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        5,
-        3,
-        5
-      ],
-      "parent": "body"
-    },
-    "token": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        8,
-        -10
-      ],
-      "parent": "prop"
     }
   }
 }
