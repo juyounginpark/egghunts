@@ -55,6 +55,11 @@ export class World {
     const p=avatar.position.clone();p.y+=1.85;p.project(this.camera);
     return Math.abs(p.x)<.95&&Math.abs(p.y)<.95&&p.z<1?{x:(p.x+1)/2*this.host.clientWidth,y:(1-p.y)/2*this.host.clientHeight}:null;
   }
+  farmAnchor(slot:number){
+    if(!this.farm.visible||!FARM_PLOTS[slot])return null;
+    const at=farmLocal(slot,0,3.25),p=new T.Vector3(at.x,.85,at.z).project(this.camera);
+    return Math.abs(p.x)<.95&&Math.abs(p.y)<.95&&p.z>=-1&&p.z<1?{x:(p.x+1)/2*this.host.clientWidth,y:(1-p.y)/2*this.host.clientHeight}:null;
+  }
   private roomFarmKey='';
   private roomFarmPets=new T.Group();
   private roomFarmEggs=new T.Group();

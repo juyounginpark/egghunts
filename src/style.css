@@ -540,6 +540,8 @@ nav button img { width:28px; height:28px; }
 .room-speed { display:flex; align-items:center; gap:3px; justify-content:flex-end; }
 .room-speed .ui-icon { width:14px; height:14px; }
 #player-labels { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.farm-owner-label { position:absolute; left:0; top:0; max-width:200px; padding:5px 9px; border:2px solid var(--player-color); border-radius:6px; background:#fff9e8f2; color:#39482d; box-shadow:0 2px 3px #253a3633; font-size:11px; font-weight:800; line-height:1.4; text-align:center; overflow-wrap:anywhere; }
+.farm-owner-label.self { background:#f8edcc; }
 .player-nameplate { position:absolute; transform:translate(-50%,-100%); padding:3px 6px; max-width:210px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#39482d; background:#fff9e8e8; border:1px solid var(--player-color); border-radius:4px; font-size:11px; line-height:16px; font-weight:700; }
 .player-nameplate.self { background:#f8edcce8; }
 .player-nameplate { overflow:visible; left:0; top:0; background:#fff9e8; will-change:transform; backface-visibility:hidden; text-shadow:none; transition:none; }
