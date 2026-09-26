@@ -1,9 +1,9 @@
-"""Authored replacements for the eight pets requested on 2026-09-27.
+"""Authored replacements for pets requested on 2026-09-27.
 
 Palette slots: body, secondary, accent, object, eyes, light.
 Faces sit above held objects; all coordinates use the existing voxel unit.
 """
-IDS={321,324,373,437,439,534,606,682}
+IDS={321,324,368,373,380,381,437,439,534,606,682}
 
 def sculpt(g,id):
  if id not in IDS:return None
@@ -14,6 +14,62 @@ def sculpt(g,id):
  def limb(name,root,end,r=1.5,color=1):
   l(root,end,r,color,name);g.part(name,root)
  def head(y,z,w=5,h=4,d=3):g.head(y=y,z=z,w=w,h=h,d=d)
+ if id==368:
+  # Tapered sea squirt with two real siphons and a small inset glass belly.
+  o(0,5,1,6,5,5,1);o(0,10,1,4,4,4,1)
+  head(10,-1,4,3,3);eyes(11,-4,2)
+  for i,(x,y,z) in enumerate([(-2,15,0),(3,12,2)]):
+   p=f'plate_{i}';g.part(p,(x,y-3,z))
+   o(x,y-1,z,2,3,2,2,p)
+   for xx in range(x-1,x+2):
+    for zz in range(z-1,z+2):
+     for yy in range(y,y+3):g.cells.pop((xx,yy,zz),None)
+   b(x-1,x+1,y-1,y-1,z-1,z+1,4,p)
+  # Recess the amber core; only the thin front window is translucent.
+  for xyz in list(g.cells):
+   x,y,z=xyz
+   if abs(x)<=2 and 3<=y<=7 and -4<=z<=-2:del g.cells[xyz]
+  g.part('token',(0,5,-2));o(0,5,-2,1.5,1.5,1,3,'token')
+  g.part('window',(0,5,-4));b(-2,2,3,7,-4,-4,2,'window')
+  b(-2,-2,6,7,-5,-5,6,'window')
+  return ['#91c9bb','#c4e4d8','#e7a054','#4b918b','#2b4147','#edf3df']
+ if id==380:
+  # Two broad copper wing cases, a visible face and six short charcoal legs.
+  o(0,5,2,5,3,6,2)
+  g.part('shell',(0,6,1))
+  for sign in [-1,1]:o(sign*3,8,3,2.5,4,6,1,'shell')
+  b(0,0,8,11,-1,8,2,'shell')
+  o(-4,10,5,1,1,2,3,'shell')
+  head(7,-5,4,3,3);eyes(8,-8,2)
+  for sign,side in [(-1,'left'),(1,'right')]:
+   for i,z in enumerate([-1,3,6]):
+    limb(f'{side}_leg_{i}',(sign*4,4,z),(sign*7,1,z+1),1,2)
+   p=side+'_ear';g.part(p,(sign*2,9,-5),'head')
+   g.curve([(sign*2,9,-5),(sign*4,12,-5),(sign*5,12,-7)],.8,2,p)
+   limb(side+'_arm',(sign*3,5,-4),(sign*3,3,-9),1,1)
+  g.part('prop',(0,2,-10));o(0,2,-10,2,2,2,4,'prop')
+  b(-1,-1,3,3,-12,-12,6,'prop')
+  return ['#bc7954','#4e4542','#589e92','#99abb1','#252f33','#efd9b5']
+ if id==381:
+  # Long, lifted weasel torso, small round ears and a sweeping dark tail.
+  o(0,4,4,3,3,7,1);o(0,8,-1,3,5,3,1)
+  head(13,-3,4,3,3)
+  o(0,11,-6,2,1,1,6,'head');b(0,0,12,12,-7,-7,5,'head')
+  eyes(14,-6,2)
+  for sign,side in [(-1,'left'),(1,'right')]:
+   p=side+'_ear';g.part(p,(sign*3,15,-2),'head')
+   o(sign*3,16,-2,1.5,2,1,2,p)
+   limb(side+'_leg',(sign*2,3,6),(sign*3,1,5),1.2,2)
+   limb(side+'_arm',(sign*3,8,-1),(sign*2,6,-5),1,1)
+  pts=[(0,4,9),(2,3,13),(6,3,15),(9,5,14),(10,7,12)]
+  for i in range(len(pts)-1):
+   p='tail' if i==0 else f'tail_{i}'
+   l(pts[i],pts[i+1],1.7-i*.25,4,p)
+   g.part(p,pts[i],'body' if i==0 else 'tail' if i==1 else f'tail_{i-1}')
+  g.part('prop',(0,6,-5));o(0,5,-5,2,2,1.5,3,'prop')
+  b(-1,1,7,7,-6,-5,2,'prop')
+  g.part('token',(0,8,-5),'prop');o(0,8,-5,1,1,1,6,'token')
+  return ['#e9dec0','#927052','#b95744','#555967','#302d32','#efb568']
  if id in {321,534}:
   # A raised frog face and broad folded haunches, not a flat lid with a muzzle.
   o(0,6,2,6,4,5,1);head(9,-3,6 if id==321 else 5,3,3)

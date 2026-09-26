@@ -11558,24 +11558,24 @@
     {
       "name": "pet-368",
       "grid": [
-        11,
-        12,
-        17
+        13,
+        17,
+        12
       ],
       "paletteCount": 12,
-      "voxelCount": 1557,
+      "voxelCount": 1637,
       "bounds": [
         [
-          -5,
-          5
+          -6,
+          6
         ],
         [
           0,
-          11
+          16
         ],
         [
-          -11,
-          5
+          -5,
+          6
         ]
       ],
       "anatomy": "tunicate"
@@ -11859,11 +11859,11 @@
       "name": "pet-380",
       "grid": [
         17,
-        14,
-        23
+        13,
+        22
       ],
       "paletteCount": 12,
-      "voxelCount": 2025,
+      "voxelCount": 1891,
       "bounds": [
         [
           -8,
@@ -11871,11 +11871,11 @@
         ],
         [
           0,
-          13
+          12
         ],
         [
-          -11,
-          11
+          -12,
+          9
         ]
       ],
       "anatomy": "beetle"
@@ -11883,24 +11883,24 @@
     {
       "name": "pet-381",
       "grid": [
-        14,
-        11,
-        35
+        15,
+        19,
+        24
       ],
       "paletteCount": 12,
-      "voxelCount": 1902,
+      "voxelCount": 1386,
       "bounds": [
         [
-          -5,
-          8
-        ],
-        [
-          0,
+          -4,
           10
         ],
         [
-          -14,
-          20
+          0,
+          18
+        ],
+        [
+          -7,
+          16
         ]
       ],
       "anatomy": "weasel"

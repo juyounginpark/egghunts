@@ -35,7 +35,8 @@
         "material": "matte"
       }
     },
-    "color": "#a1d4c4"
+    "artRevision": "2026-09-27-selected-rework",
+    "color": "#91c9bb"
   },
   "assembly": {
     "body": {
@@ -51,19 +52,6 @@
       ],
       "parent": null
     },
-    "crest": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "pivot": [
-        0,
-        10,
-        3
-      ],
-      "parent": "body"
-    },
     "eyes": {
       "rotation": [
         0,
@@ -72,8 +60,8 @@
       ],
       "pivot": [
         0,
-        7,
-        -6
+        11,
+        -4
       ],
       "parent": "head"
     },
@@ -85,38 +73,25 @@
       ],
       "pivot": [
         0,
-        5,
-        -1
+        8,
+        1
       ],
       "parent": "body"
     },
-    "left_leg": {
+    "plate_0": {
       "rotation": [
         0,
         0,
         0
       ],
       "pivot": [
-        -3,
-        2,
-        -1
-      ],
-      "parent": "body"
-    },
-    "prop": {
-      "rotation": [
-        0,
-        0,
+        -2,
+        12,
         0
       ],
-      "pivot": [
-        0,
-        6,
-        -9
-      ],
       "parent": "body"
     },
-    "right_leg": {
+    "plate_1": {
       "rotation": [
         0,
         0,
@@ -124,8 +99,8 @@
       ],
       "pivot": [
         3,
-        2,
-        -1
+        9,
+        2
       ],
       "parent": "body"
     },
@@ -137,10 +112,23 @@
       ],
       "pivot": [
         0,
-        8,
-        -10
+        5,
+        -2
       ],
-      "parent": "prop"
+      "parent": "body"
+    },
+    "window": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -4
+      ],
+      "parent": "body"
     }
   }
 }

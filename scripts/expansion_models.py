@@ -610,6 +610,7 @@ def export_model(g,row,colors):
   # Faces and principal bodies remain opaque even for glass-inspired species.
   model['partOpacity']={p:.78 for p in glass_parts[row['motif']] if p in parts and p not in {'body','head','eyes'}}
  if row['motif']=='shadowless':model['castShadow']=False
+ if row['id']==368:model['partOpacity']={'window':.55}
  path=OUT/f"pet-{row['id']}.json";path.write_text(json.dumps(model,separators=(',',':')),encoding='utf8')
  (OUT/f"pet-{row['id']}.design.json").write_text(json.dumps({'source':'scripts/expansion_models.py','brief':row,'assembly':{n:{k:v for k,v in p.items() if k!='voxels'} for n,p in parts.items()}},ensure_ascii=False,indent=2)+'\n',encoding='utf8')
  return {'name':f"pet-{row['id']}",'grid':model['size'],'paletteCount':len(colors),'voxelCount':len(voxels),'bounds':[[min(p[a] for p in g.cells),max(p[a] for p in g.cells)] for a in range(3)],'anatomy':row['form']}
