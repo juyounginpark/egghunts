@@ -103,6 +103,7 @@ export const BALANCE = {
 };
 // Economy goals are upgrades/readiness, never paid stage admission or date locks.
 export const ECONOMY = {
+  migrationWalletGoals:2,migrationWalletMinimum:500,migrationTrainingMultiple:4,
   displayMultiplier: 1,
   stageSeconds: [120,240,540,2700,18000,7200,14400,43200,86400,259200,43200,129600,172800,172800,432000,86400,172800,259200,259200,432000],
   // Account for login cadence and purchases inside each interval, not date locks.
@@ -226,6 +227,7 @@ function stageEggHp(stage:number,tier:number,legacy=false){
   return Math.round(EGG_HEALTH.stageBase[Math.max(0,Math.min(19,stage-1))]*multiplier);
 }
 export function eggMaxHp(egg:{type:number;stageId?:number;hpVersion?:2|3|4}){
+  if(egg.type===35)return 32;
   const def=EGGS[egg.type];
   // A client may briefly receive a snapshot from the previous server release.
   if(egg.hpVersion===2)return Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6));
@@ -245,6 +247,8 @@ export const EGGS = RARITIES.flatMap((r, tier) =>
     color: r.color,
   })),
 );
+EGGS.push({name:'칠색 별리본 알',rarity:'S',tier:3,region:0,hp:32,weight:.8,reward:10,color:'#ffc879'});
+export const WEEKLY_EVENT={eggType:35,petId:320,rewards:[10,15,20,25,35,50,75],dayOffsetMs:9*3600000};
 export function rarityChances(region: number) {
   const weights = RARITIES.map((r, tier) => r.chance * (1 + region * tier * BALANCE.rarityRegionBonus));
   const sum = weights.reduce((a, b) => a + b, 0);
@@ -349,7 +353,8 @@ export const MONGLES = [...LEGACY_MONGLES, ...[...STAGE_PET_ROWS,...SECRET_DRAGO
   };
 })];
 export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>10+(i+1)*5);
-export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.png`;}
+MONGLES.push({...MONGLES[0],id:'mongle-320',name:'별리본 루미',description:'일곱 번의 만남을 기억하는 주간 보상 전용 S급 친구',effect:'오토 ×1.4',tier:3,stageId:0,region:0,species:0,clickMultiplier:1,autoMultiplier:1.4,speedMultiplier:1,scale:1.1,icon:'pet-320',color:'#ffc879'});
+export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id===WEEKLY_EVENT.petId?'svg':'png'}`;}
 export const UPGRADES = {
   health: {name:"든든한 체력",description:"최대 HP +20 · 생산 강화 (1K 이후 증가 완화)",icon:"pack",cost:30,growth:1.6},
   training: {

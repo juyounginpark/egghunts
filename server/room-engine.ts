@@ -195,6 +195,7 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number){
   case 'result':g.result=null;break;
   case 'reward':g.returnReward=null;break;
   case 'tutorial':g.save.tutorial=5;break;
+  case 'weekly':if(!g.claimWeekly())throw Error(g.message==='알 보관함 한 칸을 비워 주세요'?'WEEKLY_INVENTORY_FULL':'WEEKLY_UNAVAILABLE');break;
   case 'warning':g.save.bossWarningSeen=true;break;
   case 'appearance':if(integer()>2)throw Error('INVALID_APPEARANCE');g.save.appearance=integer();break;
   default:throw Error('UNKNOWN_ACTION');

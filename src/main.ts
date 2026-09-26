@@ -1,5 +1,6 @@
 import {eggMaxHp} from './data';
 import {advanceTutorial,tutorialHint} from './tutorial';
+import {weeklyDay} from './weekly';
 import {add,exactMoney,compare} from './money';
 import "./style.css";
 import {cycleClock} from "./cycle-clock";
@@ -99,6 +100,8 @@ const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
 tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">×</button>`;
 topHud.append(tutorial);
+const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='weekly';topHud.append(weeklyEntry);
+let renderedWeeklyDay=-1;
 $("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 15초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
 $("action").insertAdjacentHTML('beforebegin',`<button id="train-now" class="secondary" aria-label="운동하기" title="운동하기" hidden><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><span class="sr-only">운동하기</span></button>`);
@@ -251,6 +254,9 @@ function renderPanel() {
   if(tab==='shop')$("panel").insertAdjacentHTML('afterbegin','<button data-tab="store" class="secondary">알 · 펫 판매 스토어</button>');
 }
 function updateHud() {
+  weeklyEntry.hidden=!game.isAtBase||tab!=='explore'||!!game.returnReward||game.result!==null;
+  weeklyEntry.textContent=game.canClaimWeekly?'🎁 주간 보상 받기':'🎁 주간 보상';
+  if(tab==='weekly'&&renderedWeeklyDay!==weeklyDay(game.now())){renderedWeeklyDay=weeklyDay(game.now());renderPanel();}
   eggNotices.observeWorld(game,online.latest?.serverTime??game.now());
   eggNotices.update(online.latest?.eggNotices??[],online.latest?.serverTime??game.now());
   const outside=tab==='explore'&&!game.isAtBase;
@@ -439,7 +445,7 @@ function updateHud() {
     const resultId=game.result;
     const m = MONGLES[game.result];
     const resultHTML =
-      `<div class="result-card" style="--reward:${m.color}">${petReveal(m.stageId,game.result>=300,m.tier)}${game.result>=100?`<div class="result-pet-motion"><div class="result-idle" role="img" aria-label="${m.name}" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-idle.png')"></div><div class="result-greeting" aria-hidden="true" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-greeting.png')"></div></div>`:`<img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}"/>`}<span class="tag">${game.result>=300?'SECRET DRAGON':RARITIES[m.tier].name}</span><h1>${m.name}</h1><div class="benefit stat-badges">${petAbilities(m)}</div><details><summary>이 친구는?</summary><p>${m.description}</p></details><button id="result-ok" class="primary">함께 모험하기</button></div>`;
+      `<div class="result-card" style="--reward:${m.color}">${petReveal(m.stageId,(game.result>=300&&game.result<320),m.tier)}${game.result>=100&&game.result<320?`<div class="result-pet-motion"><div class="result-idle" role="img" aria-label="${m.name}" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-idle.png')"></div><div class="result-greeting" aria-hidden="true" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-greeting.png')"></div></div>`:`<img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}"/>`}<span class="tag">${(game.result>=300&&game.result<320)?'SECRET DRAGON':RARITIES[m.tier].name}</span><h1>${m.name}</h1><div class="benefit stat-badges">${petAbilities(m)}</div><details><summary>이 친구는?</summary><p>${m.description}</p></details><button id="result-ok" class="primary">함께 모험하기</button></div>`;
     hatchRevealing=true;touch.hidden=true;$('shell').classList.add('hatch-revealing');
     const appearance=hatchEgg??{type:Math.max(0,EGGS.findIndex(e=>e.tier===m.tier)),stageId:m.stageId};
     hatchEgg=undefined;
@@ -485,7 +491,7 @@ async function onlineButton(b:HTMLElement):Promise<boolean>{
   if(b.id==='respawn-base'){await remote('return');paused=false;$("modal").hidden=true;$("modal").dataset.kind='';return true;}
   if(b.id==='result-ok'){await remote('result');lastResult=null;$("modal").hidden=true;setTab('hatchery');return true;}
   if(b.id==='reward-ok'){await remote('reward');$("return-reward").hidden=true;return true;}
-  const commands:Record<string,string>={'tutorial-skip':'tutorial','claim-stage-all':'claimStageCollection','claim-all':'claimCollection'};
+  const commands:Record<string,string>={'weekly-claim':'weekly','tutorial-skip':'tutorial','claim-stage-all':'claimStageCollection','claim-all':'claimCollection'};
   if(commands[b.id]){await remote(commands[b.id]);return true;}
   if(b.id==='multiplayer-connect'){toast(`농장 ${game.farmSlot+1} · ${online.latest?.count??1}/5`);return true;}
   return false;
@@ -532,6 +538,7 @@ document.addEventListener("click", async (e) => {
   if(hatchRevealing)return;
   if(b.dataset.petView!==undefined){input.reset();const {openPetViewer}=await import('./pet-viewer');await openPetViewer(Number(b.dataset.petView));return;}
   if(online.active&&await onlineButton(b))return;
+  if(b.id==='weekly-claim'){if(game.claimWeekly()){toast(game.message);renderPanel();void save();}else toast(game.message);return;}
   if(b.id==='boss-warning-ok'){
     game.save.bossWarningSeen=true;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();void save();return;
   }
@@ -775,6 +782,7 @@ function frame(now: number) {
       world.showHatchHit(Number(event.params.damage),hatchTouches.shift());feedback(null);
     }
     if(event.name==='boss_wake'){bossAlertUntil=now+3000;if(!paused&&!game.death&&tab==='explore')feedback(null);}
+    if(event.name==='weekly_reward'){toast(game.message);renderPanel();}
     if(event.name==='expedition_start'){$("toast").hidden=true;clearTimeout(toastTimer);}
     if(['level_up','player_hit','health_unlocked','player_death'].includes(event.name)){feedback(null);void save();}
     if(event.name.startsWith('expedition_fail_')){playSound('return');toast(game.message);void save();}

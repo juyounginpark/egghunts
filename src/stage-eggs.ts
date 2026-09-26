@@ -23,6 +23,7 @@ export function appearanceOf(e:EggAppearance){return e.stageId&&e.stageId>=1&&e.
 export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${a.variant===5?SECRET_DRAGON_ROWS.find(p=>p.stageId===a.stage)!.eggName:STAGE_EGG_NAMES[a.stage-1][a.variant]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
 export {designEgg as stageEggCells} from './egg-design';
 export function eggDesignAppearance(e:EggAppearance){
+ if(e.type===35)return {stage:1,variant:6,tier:3};
  const a=appearanceOf(e);
  return {stage:a?.stage??EGGS[e.type].region*4+1,variant:a?.variant??EGGS[e.type].tier%5,tier:EGGS[e.type].tier};
 }

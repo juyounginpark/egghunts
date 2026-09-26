@@ -1,5 +1,8 @@
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {softenGrowth} from './growth-curve';
+import {migrateBalance,type BalanceAdjustment} from './balance-migration';
+import {weeklyDay,validateWeekly,type WeeklyProgress} from './weekly';
+import {WEEKLY_EVENT} from './data';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
 import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp} from './data';
@@ -61,6 +64,9 @@ export type Boss = {
   loot: WorldEgg | null;
 };
 export type Save = {
+  balanceVersion?:1;
+  balanceAdjustment?:BalanceAdjustment;
+  weekly?:WeeklyProgress;
   stageOrderVersion?:2;
   playerName?:string;
   dragonClues?:Record<string,DragonClue>;
@@ -109,6 +115,7 @@ export type Save = {
 };
 export function freshSave(now: number): Save {
   return {
+    balanceVersion:1,
     version: 1,
     stageOrderVersion:2,
     trails: [0],
@@ -131,6 +138,7 @@ export function freshSave(now: number): Save {
 export function parseSave(raw: string | null, now: number): Save {
   if (!raw) return freshSave(now);
   const s = JSON.parse(raw) as Save;
+  migrateBalance(s,now);validateWeekly(s.weekly);
   migrateStageSave(s);
   migrateEggHealth([...(Array.isArray(s.eggs)?s.eggs:[]),...(Array.isArray(s.world)?s.world:[]),s.expedition?.carried,...(Array.isArray(s.bosses)?s.bosses.flatMap(b=>b.loot?[b.loot]:[]):[])]);
   s.dragonClues??={};validateDragonClues(s.dragonClues);
@@ -187,7 +195,7 @@ export function parseSave(raw: string | null, now: number): Save {
     ) ||
     new Set(s.eggs.map(e => e.id)).size !== s.eggs.length ||
     !Array.isArray(s.mongles) ||
-    ![3, 100, 300, MONGLES.length].includes(s.mongles.length) ||
+    ![3, 100, 300, 320, MONGLES.length].includes(s.mongles.length) ||
     !s.mongles.every((v) => Number.isInteger(v) && v >= 0) ||
     !Array.isArray(s.active) ||
     s.active.length > 3 ||
@@ -513,6 +521,8 @@ export class GameState {
     public random: () => number = Math.random,
     hydrateOnly=false,
   ) {
+    migrateBalance(save,this.now());validateWeekly(save.weekly);
+    save.mongles=Array.from({length:MONGLES.length},(_,i)=>save.mongles[i]??0);
     migrateStageSave(save);
     migrateEggHealth([...save.eggs,...(save.world??[]),save.expedition?.carried,...(save.bosses??[]).flatMap(b=>b.loot?[b.loot]:[])]);
     save.dragonClues??={};
@@ -945,7 +955,7 @@ export class GameState {
     if (!this.isAtBase || this.death || this.result !== null || !e || e.hp !== 0) return false;
     if (e.hp === 0) {
       const pool = MONGLES.map((m, i) => ({ ...m, index: i })).filter(
-        (m) => m.tier === EGGS[e.type].tier && (e.stageId?m.stageId===e.stageId&&(e.variant===5?m.species===10:m.species!==10):m.stageId===0&&m.region===EGGS[e.type].region),
+        (m) => e.type===WEEKLY_EVENT.eggType?m.index===WEEKLY_EVENT.petId:m.index!==WEEKLY_EVENT.petId&&m.tier === EGGS[e.type].tier && (e.stageId?m.stageId===e.stageId&&(e.variant===5?m.species===10:m.species!==10):m.stageId===0&&m.region===EGGS[e.type].region),
       );
       const m =
         pool[Math.min(pool.length - 1, Math.floor(this.random() * pool.length))]
@@ -964,6 +974,26 @@ export class GameState {
       this.revision++;
     }
     return true;
+  }
+  get weeklyIndex(){return (this.save.weekly?.claimed??0)%7;}
+  get canClaimWeekly(){return weeklyDay(this.now())>(this.save.weekly?.lastDay??-1);}
+  claimWeekly(){
+    if(!this.isAtBase||this.death||this.result!==null||!this.canClaimWeekly)return false;
+    const index=this.weeklyIndex;
+    if(index===6&&this.save.eggs.length>=BALANCE.inventory){this.message='알 보관함 한 칸을 비워 주세요';return false;}
+    const day=weeklyDay(this.now()),claimed=this.save.weekly?.claimed??0;
+    this.save.dust=add(this.save.dust,WEEKLY_EVENT.rewards[index]);
+    if(index===6){
+      const id=`weekly-${claimed+1}-${day}`,type=WEEKLY_EVENT.eggType,pet=WEEKLY_EVENT.petId;
+      this.save.eggs.push({id,type,hp:eggMaxHp({type}),hpVersion:4,distance:0});
+      this.save.selected??=id;
+      if(!this.save.discovered.includes(type))this.save.discovered.push(type);
+      this.save.mongles[pet]=(this.save.mongles[pet]??0)+1;
+      this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(pet))this.save.obtainedPets.push(pet);
+    }
+    this.save.weekly={claimed:claimed+1,lastDay:day};
+    this.message=index===6?'S급 별리본 루미와 전용 알을 받았어요!':`${index+1}일차 보상을 받았어요`;
+    this.emit('weekly_reward',{day:index+1});this.revision++;return true;
   }
   offline(seconds: number) {
     if(!Number.isFinite(seconds)||seconds<=0)return 0;
@@ -996,12 +1026,12 @@ export class GameState {
     this.emit("collection_reward",{pet:id,reward});return reward;
   }
   claimRegion(region: number) {
-    if (!REGIONS[region] || this.save.claimedRegions?.includes(region) || MONGLES.some((m,i)=>m.stageId===0&&m.region===region&&!this.hasDiscoveredPet(i))) return 0;
+    if (!REGIONS[region] || this.save.claimedRegions?.includes(region) || MONGLES.some((m,i)=>i<100&&m.stageId===0&&m.region===region&&!this.hasDiscoveredPet(i))) return 0;
     const reward=BALANCE.regionCollectionRewards[region];
     (this.save.claimedRegions??=[]).push(region);this.save.dust=add(this.save.dust,reward);this.revision++;return reward;
   }
   claimCollection() {
-    if (this.save.claimedCollection || MONGLES.some((m,i)=>m.stageId===0&&!this.hasDiscoveredPet(i))) return 0;
+    if (this.save.claimedCollection || MONGLES.some((m,i)=>i<100&&m.stageId===0&&!this.hasDiscoveredPet(i))) return 0;
     this.save.claimedCollection=true;this.save.dust=add(this.save.dust,BALANCE.fullCollectionReward);this.revision++;return BALANCE.fullCollectionReward;
   }
   claimStage(stage:number){

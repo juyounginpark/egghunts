@@ -3,6 +3,13 @@ import {MONGLES} from './data';
 
 /** Small authored poses on the existing voxel pivot hierarchy; never move the root. */
 export function animatePet(pet:Object3D,id:number,time:number,walking=false,reduced=false){
+ if(id===320){
+  if(reduced)return;
+  const head=pet.getObjectByName('head'),tail=pet.getObjectByName('tail');
+  if(head)head.rotation.z=Math.sin(time*1.2)*.08;
+  if(tail)tail.rotation.y=Math.sin(time*1.7)*.2;
+  return;
+ }
  if(id>=100&&id<320){animateStagePet(pet,id,time,walking,reduced);return;}
  if(id<0||id>5)return;
  const parts=pet.userData.idleParts??=Object.fromEntries(['body','head','left_ear','right_ear','tail','eyes'].map(n=>[n,pet.getObjectByName(n)]));

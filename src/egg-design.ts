@@ -20,6 +20,17 @@ const blend=(a:number,b:number,t:number)=>{
  */
 export function designEgg(stage:number,variant:number,tier=0){
  const key=`${stage}:${variant}:${tier}`,cached=cache.get(key);if(cached)return cached;
+ if(variant===6){
+  const cells:Cell[]=[],colors=['#fff1bf','#e5a74e','#9d87df','#fff9eb'];
+  for(let x=2;x<18;x++)for(let y=1;y<19;y++)for(let z=2;z<18;z++){
+   const radius=7.5-(y/20)*1.5;
+   if(((x-9.5)**2+(z-9.5)**2)/(radius*radius)+(y-9)**2/85>1)continue;
+   const ribbon=Math.abs(x-9.5)<1.1||Math.abs(y-9)<1.1;
+   cells.push([x,y,z,ribbon?3:y>14?4:1]);
+  }
+  for(let x=6;x<=13;x++)for(let y=16;y<=19;y++)if(Math.abs(x-9.5)+Math.abs(y-18)<4)cells.push([x,y,9,2]);
+  const design={cells,colors};cache.set(key,design);return design;
+ }
  const s=STAGES[stage-1],dragon=variant===5,rank=dragon?3:tier>=5?2:tier>=3?1:0;
  const candidates=STAGE_PET_ROWS.filter(p=>p.stageId===stage&&p.tier===tier);
  const pet=dragon?SECRET_DRAGON_ROWS.find(p=>p.stageId===stage):candidates[variant%Math.max(1,candidates.length)];

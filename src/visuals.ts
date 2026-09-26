@@ -103,7 +103,7 @@ export function petVisual(id:number,rig=true){
   pet.userData.bodyDepth=bounds.max.z-bounds.min.z;
   const stage=MONGLES[id].stageId;
   if(id>=100)pet.userData.petAccent=MONGLES[id].color;
-  return aura(pet,MONGLES[id].tier,id,id>=100?EGG_EFFECT_FAMILIES[stage-1]:(MONGLES[id].species+MONGLES[id].region)%5);
+  return aura(pet,MONGLES[id].tier,id,id>=100?(EGG_EFFECT_FAMILIES[stage-1]??4):(MONGLES[id].species+MONGLES[id].region)%5);
 }
 export function nestVisual(appearance:EggAppearance){
  const {stage}=eggDesignAppearance(appearance),data=designNest(stage);

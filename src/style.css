@@ -629,3 +629,12 @@ nav button img { width:28px; height:28px; }
 .egg-health-numbers span { display:inline-flex; align-items:center; gap:4px; }
 .egg-health-numbers .ui-icon { width:16px; height:16px; }
 #shell #inventory-count { font-size:12px; }
+#weekly-entry { justify-self:end; padding:7px 12px; min-height:44px; background:#fff4d9; border:1px solid #a1a77b; font-size:12px; pointer-events:auto; }
+.weekly-days { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin:16px 0; }
+.weekly-days article { display:flex; flex-direction:column; align-items:center; gap:6px; padding:10px 3px; border:1px solid #bac29b; border-radius:8px; font-size:12px; }
+.weekly-days article.current { background:#eee4ba; border-color:#a78332; }
+.weekly-days article:last-child { grid-column:span 2; }
+.weekly-special { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; text-align:center; margin:16px 0; }
+.weekly-special img { width:84px; height:84px; }
+.weekly-special strong,.weekly-special small { width:100%; }
+#weekly-claim { width:100%; min-height:44px; margin-bottom:8px; }
