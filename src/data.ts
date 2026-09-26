@@ -311,26 +311,32 @@ const colors = [
   "#9385dc",
   "#b0eee7",
 ];
+// The bonus above ×1 scales linearly with the CURRENT source egg's full HP.
+// Never use remaining HP or a historical hpVersion: already-owned pets grow too.
+export const PET_ABILITIES={referenceHp:12,referenceBonus:.15};
+function abilitiesFromEgg(egg:{type:number;stageId?:number},ability:number){
+  const sourceEggHp=eggMaxHp(egg);
+  const bonus=sourceEggHp/PET_ABILITIES.referenceHp*PET_ABILITIES.referenceBonus;
+  const multiplier=1+bonus;
+  return {sourceEggHp,
+    clickMultiplier:ability===0?multiplier:1,
+    speedMultiplier:ability===1?multiplier:1,
+    autoMultiplier:ability===2?multiplier:1,
+    effect:`${['터치','스피드','자동'][ability]} ×${Number(multiplier.toFixed(2))} · 알 HP ${sourceEggHp}`,
+  };
+}
 const LEGACY_MONGLES = Array.from({ length: 100 }, (_, i) => {
   const variant = Math.floor(i / 10),
     speciesId = i % 10;
   const tier = [0, 0, 0, 1, 1, 2, 2, 3, 4, 5, 0, 1, 2, 3, 3, 4, 4, 5, 5, 6][
     i % 20
   ];
-  const power = tier + 1;
-  const bonus = Math.round((1 + power * .1) * 10) / 10;
-  const clickMultiplier = speciesId % 3 === 0 ? bonus : 1;
-  const autoMultiplier = speciesId % 3 === 2 ? bonus : 1;
-  const speedMultiplier = speciesId % 3 === 1 ? bonus : 1;
   return {
     id: `mongle-${i}`,
     stageId: 0,
     name: `${variants[variant]} ${species[speciesId]}`,
     description: `${REGIONS[Math.floor(i / 20)].name}에서 태어난 ${RARITIES[tier].name} 등급 친구`,
-    effect: `${["클릭", "스피드", "오토"][speciesId % 3]} ×${bonus.toFixed(1)}`,
-    clickMultiplier,
-    autoMultiplier,
-    speedMultiplier,
+    ...abilitiesFromEgg({type:tier*REGIONS.length+Math.floor(i/20)},speciesId%3),
     tier,
     region: Math.floor(i / 20),
     species: speciesId,
@@ -342,18 +348,20 @@ const LEGACY_MONGLES = Array.from({ length: 100 }, (_, i) => {
 });
 // Append stage-exclusive IDs; existing pets, equipment and rewards never change identity.
 export const MONGLES = [...LEGACY_MONGLES, ...[...STAGE_PET_ROWS,...SECRET_DRAGON_ROWS].map((pet,i)=>{
-  const bonus=Math.round((1+(pet.tier+1)*.1)*10)/10;
   const ability=pet.slot%3;
   return {
     ...pet,id:`mongle-${100+i}`,region:Math.floor((pet.stageId-1)/4),species:pet.slot,
     description:`${pet.name} · ${STAGES[pet.stageId-1].name}에서 온 수집 생물`,
-    clickMultiplier:ability===0?bonus:1,autoMultiplier:ability===2?bonus:1,speedMultiplier:ability===1?bonus:1,
-    effect:`${['클릭','스피드','오토'][ability]} ×${bonus.toFixed(1)}`,
+    ...abilitiesFromEgg({type:pet.tier*REGIONS.length+Math.floor((pet.stageId-1)/4),stageId:pet.stageId},ability),
     grid:24,scale:pet.slot===10?BALANCE.secretDragonScale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
   };
 })];
 export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>10+(i+1)*5);
-MONGLES.push({...MONGLES[0],id:'mongle-320',name:'별리본 루미',description:'일곱 번의 만남을 기억하는 주간 보상 전용 S급 친구',effect:'오토 ×1.4',tier:3,stageId:0,region:0,species:0,clickMultiplier:1,autoMultiplier:1.4,speedMultiplier:1,scale:1.1,icon:'pet-320',color:'#ffc879'});
+MONGLES.push({...MONGLES[0],id:'mongle-320',name:'별리본 루미',description:'일곱 번의 만남을 기억하는 주간 보상 전용 S급 친구',...abilitiesFromEgg({type:WEEKLY_EVENT.eggType},2),tier:3,stageId:0,region:0,species:0,scale:1.1,icon:'pet-320',color:'#ffc879'});
+/** Add only each pet's bonus; multiplying HP-scaled pets would compound stage growth. */
+export function equippedPetMultiplier(ids:readonly number[],kind:'clickMultiplier'|'autoMultiplier'|'speedMultiplier'){
+  return 1+ids.reduce((sum,id)=>sum+MONGLES[id][kind]-1,0);
+}
 export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id===WEEKLY_EVENT.petId?'svg':'png'}`;}
 export const UPGRADES = {
   health: {name:"든든한 체력",description:"최대 HP +20 · 생산 강화 (1K 이후 증가 완화)",icon:"pack",cost:30,growth:1.6},

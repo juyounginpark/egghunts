@@ -5,7 +5,7 @@ import {weeklyDay,validateWeekly,type WeeklyProgress} from './weekly';
 import {WEEKLY_EVENT} from './data';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
-import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp} from './data';
+import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp,equippedPetMultiplier} from './data';
 import {
   BALANCE,
   DAMAGE_OVER_TIME,
@@ -606,9 +606,9 @@ export class GameState {
   get selected() {
     return this.save.eggs.find((e) => e.id === this.save.selected);
   }
-  get clickMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].clickMultiplier,1); }
-  get autoMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].autoMultiplier,1); }
-  get speedMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].speedMultiplier,1); }
+  get clickMultiplier() { return equippedPetMultiplier(this.save.active,'clickMultiplier'); }
+  get autoMultiplier() { return equippedPetMultiplier(this.save.active,'autoMultiplier'); }
+  get speedMultiplier() { return equippedPetMultiplier(this.save.active,'speedMultiplier'); }
   get movementSpeed() { return this.isAtBase ? BALANCE.baseWalkSpeed : Math.min(BALANCE.maxMovementSpeed,this.speed); }
   get speed() {
     return softenGrowth(
