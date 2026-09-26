@@ -47,11 +47,11 @@ try{
  }
  await ready(page,session.url,'base');
  await page.evaluate(()=>{const {game}=window.__art;game.save.dust='125e398';game.save.mongles[100]=1;game.save.active=[100];game.offlineReward=12345;game.revision++;});
- await page.locator('[data-tab="upgrade"]').click();await page.locator('.growth-goal').waitFor();
- assert.ok((await page.locator('.growth-goal').innerText()).includes('48시간'));
- await page.locator('.growth-goal summary').click();
+ await page.locator('[data-tab="upgrade"]').click();await page.locator('.upgrade').first().waitFor();
+ assert.equal(await page.locator('.growth-goal').count(),0,'growth goal panel removed at user request');
+ assert.equal(await page.locator('.upgrade [data-upgrade="speed"]').count(),1,'regular speed upgrade remains available');
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth),false);
- assert.equal(/NaN|Infinity/.test(await page.locator('.growth-goal').innerText()),false);
+ assert.equal(/NaN|Infinity/.test(await page.locator('#panel').innerText()),false);
  await mkdir('artifacts/economy',{recursive:true});await page.screenshot({path:'artifacts/economy/mobile-growth.png'});
  assert.deepEqual(errors,[]);await writeFile(`${root}/visual-audit.json`,JSON.stringify({checks,gameplay,errors},null,2));
  const files=['before-after','environment-before-after','twenty-dragons','egg-hatch-correspondence','gray-color-effects-dark'];
