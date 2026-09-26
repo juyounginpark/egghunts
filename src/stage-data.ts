@@ -35,10 +35,11 @@ documentRows[18]=['공허의 틈',0x373343,0xd5cbb7,'빈 돌 고리 · 끊긴 �
 documentRows[19]=['창조주의 정원',0xc3cab7,0xe2c685,'최초의 나무 · 흑토 · 씨앗','creation',60,60];
 export const STAGES=documentRows.map(([name,color,accent,description,kit,minLevel,maxLevel],i)=>({id:i+1,name,color,accent,description,kit,minLevel,maxLevel,safe:i<4}));
 export const STAGE_DIFFICULTY={minimumDamage:40,damagePerStage:20};
-// Displayed speed targets, already softened above 1K. Baseline: 1.7 * 1.4^(stage-1)
-// with three previous-stage B speed pets (HP / 80 bonus each), rounded upward.
+// Preserve stages 1–3; accelerate the ratio thereafter to reach exactly 1B.
+// Rounded targets from 1.5 * 1.4^(s-1) * exp(k * ((s-3)/17)^2),
+// k = log(1e9 / (1.5 * 1.4^19)). These are final targets, without softening.
 // Keep these separate from boss movement speed and the player's movement cap.
-export const STAGE_RECOMMENDED_SPEED=[1.7,3.6,6.7,14,38,86,200,450,1010,1360,1710,2060,2400,2750,3090,3440,3780,4130,4480,4820] as const;
+export const STAGE_RECOMMENDED_SPEED=[1.5,2.1,2.94,4.4,7,13,25,53,130,330,950,3100,11000,41000,180000,810000,4200000,24000000,150000000,1000000000] as const;
 export const STAGE_STEPS=[{damage:1,cooldown:1,density:1,tint:1.08},{damage:1.25,cooldown:.85,density:1.2,tint:1},{damage:1.5,cooldown:.7,density:1.4,tint:.88}];
 export const FINAL_GUARDIAN={stage:20,scale:3,bossEndOffset:12,eggEndOffset:23,minimumEggTier:4};
 export function stageDamage(stage:number,step=1){return Math.round((STAGE_DIFFICULTY.minimumDamage+(stage-1)*STAGE_DIFFICULTY.damagePerStage)*STAGE_STEPS[step-1].damage);}
