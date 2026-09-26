@@ -316,13 +316,16 @@ const colors = [
   "#9385dc",
   "#b0eee7",
 ];
-// The bonus above ×1 scales linearly with the CURRENT source egg's full HP.
+// Damage bonuses scale linearly with source HP; speed uses a normalized log curve.
 // Never use remaining HP or a historical hpVersion: already-owned pets grow too.
-export const PET_ABILITIES={referenceHp:12,referenceBonus:.15};
+export const PET_ABILITIES={referenceHp:12,referenceBonus:.15,maxSpeedMultiplier:5,speedReferenceHp:stageEggHp(STAGES.length,RARITIES.length-1)};
 function abilitiesFromEgg(egg:{type:number;stageId?:number},ability:number){
   const sourceEggHp=eggMaxHp(egg);
   const bonus=sourceEggHp/PET_ABILITIES.referenceHp*PET_ABILITIES.referenceBonus;
-  const multiplier=1+bonus;
+  const speedReferenceBonus=PET_ABILITIES.speedReferenceHp/PET_ABILITIES.referenceHp*PET_ABILITIES.referenceBonus;
+  const multiplier=ability===1
+    ?1+(PET_ABILITIES.maxSpeedMultiplier-1)*Math.min(1,Math.log1p(bonus)/Math.log1p(speedReferenceBonus))
+    :1+bonus;
   return {sourceEggHp,
     clickMultiplier:ability===0?multiplier:1,
     speedMultiplier:ability===1?multiplier:1,
