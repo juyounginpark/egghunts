@@ -6,7 +6,7 @@ import {firstEggTarget} from './tutorial';
 import {WEEKLY_EVENT} from './data';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
-import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp,equippedPetMultiplier} from './data';
+import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp,equippedPetMultiplier,eggCarryMultiplier} from './data';
 import {
   BALANCE,
   DAMAGE_OVER_TIME,
@@ -201,8 +201,7 @@ export function parseSave(raw: string | null, now: number): Save {
     !s.mongles.every((v) => Number.isInteger(v) && v >= 0) ||
     !Array.isArray(s.active) ||
     s.active.length > 3 ||
-    new Set(s.active).size !== s.active.length ||
-    !s.active.every((i) => !!MONGLES[i] && s.mongles[i] > 0) ||
+    !s.active.every((i) => Number.isInteger(i) && !!MONGLES[i] && s.active.filter(id=>id===i).length <= s.mongles[i]) ||
     !Array.isArray(s.discovered) ||
     !s.discovered.every((i) => !!EGGS[i]) ||
     !s.settings ||
@@ -379,8 +378,18 @@ export class GameState {
   sellPet(id:number){
     if(!this.isAtBase||this.death||!Number.isInteger(id)||!this.save.mongles[id])return 0;
     this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(id))this.save.obtainedPets.push(id);
-    this.save.mongles[id]--;if(!this.save.mongles[id])this.save.active=this.save.active.filter(i=>i!==id);
+    this.save.mongles[id]--;
+    if(this.equippedCount(id)>this.save.mongles[id])this.unequipPet(id);
     const price=this.petSellPrice(id);this.save.dust=add(this.save.dust,price);this.revision++;this.emit('pet_sold',{pet:id,price});return price;
+  }
+  equippedCount(id:number){return this.save.active.filter(p=>p===id).length;}
+  equipPet(id:number){
+    if(!Number.isInteger(id)||!MONGLES[id]||this.save.active.length>=BALANCE.maxCompanions||this.equippedCount(id)>=(this.save.mongles[id]??0))return false;
+    this.save.active.push(id);this.revision++;return true;
+  }
+  unequipPet(id:number){
+    const index=this.save.active.lastIndexOf(id);if(index<0)return false;
+    this.save.active.splice(index,1);this.revision++;return true;
   }
   death:NonNullable<Save['death']>|null=null;
   private reviveAdUntil:number|null=null;
@@ -617,11 +626,7 @@ export class GameState {
       (BALANCE.speed *
       (ECONOMY.speedGrowth ** this.save.upgrades.speed) + (this.save.trainingSpeed ?? 0)) *
       (this.carried
-        ? Math.min(
-            1,
-            EGGS[this.carried.type].weight *
-              (1 + BALANCE.carryPerLevel * this.save.upgrades.carry),
-          )
+        ? eggCarryMultiplier(this.carried.type,this.save.upgrades.carry)
         : 1)
     ,ECONOMY.softThreshold);
   }

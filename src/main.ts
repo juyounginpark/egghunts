@@ -1,4 +1,4 @@
-import {eggMaxHp} from './data';
+import {eggMaxHp,eggWeightLabel} from './data';
 import {advanceTutorial,tutorialHint} from './tutorial';
 import {weeklyDay} from './weekly';
 import {add,exactMoney,compare} from './money';
@@ -54,6 +54,7 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
 const eggNotices=new EggNotices($("shell"));
 $('world').insertAdjacentHTML('beforeend','<button id="hatch-touch" hidden aria-label="알 두드리기"><span>알을 클릭하여 깨뜨리기</span></button>');
 $('world').insertAdjacentHTML('beforeend','<div id="first-egg-arrow" hidden><span>작은 알부터!</span><b>↓</b></div>');
+$('action').insertAdjacentHTML('beforeend','<small id="action-weight" hidden></small>');
 const buildVersion=document.createElement('small');
 buildVersion.id='build-version';buildVersion.textContent=import.meta.env.VITE_BUILD_VERSION;
 buildVersion.setAttribute('aria-label',`게임 버전 ${import.meta.env.VITE_BUILD_VERSION}`);
@@ -411,7 +412,7 @@ function updateHud() {
   $("carry-chip").hidden = !game.carried || tab !== "explore";
   if (game.carried)
     $("carry-chip").textContent =
-      '알 운반중';
+      `알 운반 중 · ${eggWeightLabel(game.carried.type,game.save.upgrades.carry)}`;
   $("risk").className = game.risk;
   $("risk").querySelector("span")!.textContent = !game.isAtBase
     ? `기지 ${Math.round(game.distance)}m · ${game.risk==='safe'?'스피드 충분':game.risk==='warning'?'스피드 강화 추천':'먼 지역 · 스피드를 더 키워요'}`
@@ -425,6 +426,8 @@ function updateHud() {
   $('action').title=$('action-label').textContent??'행동';
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
+  const weightHint=$('action-weight');weightHint.hidden=!actionEgg;
+  if(actionEgg)weightHint.textContent=eggWeightLabel(actionEgg.type,game.save.upgrades.carry);
   const actionModel=game.nearStore?'shop':game.nearGym?'gym':null;
   const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
   if($("action-icon").dataset.icon!==actionIcon){$("action-icon").dataset.icon=actionIcon;$("action-icon").innerHTML=actionIcon;}
@@ -437,7 +440,7 @@ function updateHud() {
   if (tab === "hatchery") {
     const e = game.selected;
     $("egg-health").innerHTML = e
-      ? `<div class="track" role="progressbar" aria-label="${eggName(e)} 남은 알 내구도" aria-valuenow="${e.hp}" aria-valuemin="0" aria-valuemax="${eggMaxHp(e)}"><i style="width:${(e.hp / eggMaxHp(e)) * 100}%"></i></div><small class="egg-health-numbers"><span aria-label="체력 ${num(e.hp)} / ${num(eggMaxHp(e))}">♡ ${num(e.hp)} / ${num(eggMaxHp(e))}</span><span aria-label="클릭 피해 ${num(Math.min(e.hp,game.tapDamage))}">${uiIcon('tap')} −${num(Math.min(e.hp,game.tapDamage))}</span></small>`
+      ? `<div class="track" role="progressbar" aria-label="${eggName(e)} 남은 알 내구도" aria-valuenow="${e.hp}" aria-valuemin="0" aria-valuemax="${eggMaxHp(e)}"><i style="width:${(e.hp / eggMaxHp(e)) * 100}%"></i></div><small class="egg-health-numbers"><span aria-label="체력 ${num(e.hp)} / ${num(eggMaxHp(e))}">♡ ${num(e.hp)} / ${num(eggMaxHp(e))}</span><span aria-label="클릭 피해 ${num(Math.min(e.hp,game.tapDamage))}">${uiIcon('tap')} −${num(Math.min(e.hp,game.tapDamage))}</span></small><small class="egg-weight">${eggWeightLabel(e.type,game.save.upgrades.carry)}</small>`
       : '<span aria-label="보관 중인 알이 없어요">🥚 0</span>';
   }
   const touch=$<HTMLButtonElement>('hatch-touch');
@@ -486,14 +489,14 @@ function renderEggQueue() {
     if (!e)
       return '<div class="egg-slot empty" aria-label="빈 보관 칸"><span>＋</span></div>';
     const def = EGGS[e.type];
-    return `<button data-egg="${e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""} ${def.tier >= 4 ? "rare" : ""}" style="--egg:${def.color}"><b>${def.rarity}</b><img class="egg-icon" src="${eggIcon(e)}" alt="" /><small>${e.hp===0?'획득 준비 완료':eggName(e)}</small></button>`;
+    return `<button data-egg="${e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""} ${def.tier >= 4 ? "rare" : ""}" style="--egg:${def.color}"><b>${def.rarity}</b><img class="egg-icon" src="${eggIcon(e)}" alt="" /><small>${e.hp===0?'획득 준비 완료':eggName(e)}</small><small class="egg-slot-weight">무게 감속 ${Math.round((1-def.weight)*100)}%</small></button>`;
   }).join("");
   $("pet-effects").innerHTML = game.save.active.length
     ? `<div class="stat-badges"><span>${game.save.active.length}/${BALANCE.maxCompanions}</span>${petAbilities(game,true)}</div>`
     : "알을 부화하면 펫이 함께 걸어요";
 }
 async function onlineButton(b:HTMLElement):Promise<boolean>{
-  const bindings:Record<string,string>={claimStage:'claimStage',claimPet:'claimPet',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'equip'};
+  const bindings:Record<string,string>={claimStage:'claimStage',claimPet:'claimPet',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'unequip'};
   for(const [attribute,kind] of Object.entries(bindings))if(b.dataset[attribute]!==undefined){
     const raw=b.dataset[attribute]!;await remote(kind,['upgrade','select'].includes(kind)?raw:Number(raw));return true;
   }
@@ -632,14 +635,11 @@ document.addEventListener("click", async (e) => {
   if (b.dataset.companion || b.dataset.unequip) {
     const i = Number(b.dataset.companion??b.dataset.unequip);
     if (!game.save.mongles[i]) return;
-    if (!game.save.active.includes(i) && game.save.active.length >= BALANCE.maxCompanions) {
+    if (b.dataset.companion!==undefined && game.save.active.length >= BALANCE.maxCompanions) {
       toast("최대 3마리까지 동행해요. 먼저 한 마리를 해제해 주세요.");
       return;
     }
-    game.save.active = game.save.active.includes(i)
-      ? game.save.active.filter((n) => n !== i)
-      : [...game.save.active, i].slice(0, BALANCE.maxCompanions);
-    game.revision++;
+    if(b.dataset.unequip!==undefined)game.unequipPet(i);else game.equipPet(i);
     renderPanel();
   }
   if (b.id === "result-ok") {

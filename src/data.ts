@@ -248,6 +248,11 @@ export const EGGS = RARITIES.flatMap((r, tier) =>
   })),
 );
 EGGS.push({name:'칠색 별리본 알',rarity:'S',tier:3,region:0,hp:32,weight:.8,reward:10,color:'#ffc879'});
+export function eggCarryMultiplier(type:number,carryLevel=0){return Math.min(1,EGGS[type].weight*(1+BALANCE.carryPerLevel*carryLevel));}
+export function eggWeightLabel(type:number,carryLevel=0){
+  const base=Math.round((1-EGGS[type].weight)*100),adjusted=Math.round((1-eggCarryMultiplier(type,carryLevel))*100);
+  return `무게 감속 ${base}% · 운반 강화 후 ${adjusted}%`;
+}
 export const WEEKLY_EVENT={eggType:35,petId:320,rewards:[10,15,20,25,35,50,75],dayOffsetMs:9*3600000};
 export function rarityChances(region: number) {
   const weights = RARITIES.map((r, tier) => r.chance * (1 + region * tier * BALANCE.rarityRegionBonus));
@@ -361,6 +366,17 @@ MONGLES.push({...MONGLES[0],id:'mongle-320',name:'별리본 루미',description:
 /** Add only each pet's bonus; multiplying HP-scaled pets would compound stage growth. */
 export function equippedPetMultiplier(ids:readonly number[],kind:'clickMultiplier'|'autoMultiplier'|'speedMultiplier'){
   return 1+ids.reduce((sum,id)=>sum+MONGLES[id][kind]-1,0);
+}
+/** Bounded display of individual un-equipped copies; never expand a large inventory. */
+export function farmPetIds(owned:readonly number[],active:readonly number[],now:number){
+  const counts=owned.map((n,id)=>Math.max(0,n-active.filter(p=>p===id).length));
+  const total=counts.reduce((sum,n)=>sum+n,0),limit=BALANCE.farmPetsVisible;
+  if(!total)return [];
+  const start=total>limit?Math.floor(now/12000)*limit%total:0;
+  return Array.from({length:Math.min(limit,total)},(_,i)=>{
+    let index=(start+i)%total;
+    return counts.findIndex(n=>{if(index<n)return true;index-=n;return false;});
+  });
 }
 export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id===WEEKLY_EVENT.petId?'svg':'png'}`;}
 export const UPGRADES = {

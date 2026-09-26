@@ -1,5 +1,5 @@
 import type {Block} from './region-layout';
-import {FARM_PLOTS,farmLocal,VILLAGE} from './village';
+import {FARM_PLOTS,farmLocal,VILLAGE,FARM_PEN} from './village';
 import {ROAD_WIDTH_SCALE} from './stage-data';
 let cached:Block[]|undefined;
 export function circularVillageArt(){
@@ -39,18 +39,31 @@ export function circularVillageArt(){
  const roofs=[0x78915c,0xb77f62,0x809daa,0x9b84a6,0xb0a05b];
  for(const [slot,plot]of FARM_PLOTS.entries()){
   const local=(x:number,y:number,z:number,w:number,h:number,d:number,c:number)=>{const p=farmLocal(slot,x,z);b(p.x,y,p.z,w,h,d,c,plot.rotation);};
-  local(0,.13,0,3.2,.26,3,stone);local(0,1.15,0,2.6,2,2.4,cream);
-  for(const side of [-1,1]){local(side*1.2,1.1,1.25,.15,2,.15,wood);local(side*.8,1.45,1.26,.5,.6,.12,wood);local(side*.8,1.45,1.34,.35,.42,.08,gold);}
-  local(0,.94,1.26,.72,1.65,.12,wood);local(0,.94,1.34,.52,1.4,.08,0x526f53);local(0,.15,1.65,1.05,.2,.75,stone);
-  for(let n=0;n<5;n++)local(0,2.2+n*.23,0,3.4-n*.58,.26,3.1,roofs[slot]);
-  if(slot===0){local(0,3.6,-.3,.7,1.1,.7,cream);local(0,4.2,-.3,1,.16,1,roofs[slot]);}
-  if(slot===1){local(-.8,3.1,-.5,.45,1.8,.5,wood);local(-.8,4,-.5,.65,.16,.7,stone);}
-  if(slot===2)for(let n=0;n<3;n++)local(1.5,1.7+n*.2,0,1.3-n*.3,.23,2,roofs[slot]);
-  if(slot===3){local(0,3.1,.4,1,.8,.9,cream);local(0,3.6,.4,1.35,.2,1.2,roofs[slot]);}
-  if(slot===4){local(0,3.35,-.3,.7,.75,.7,gold);local(0,3.8,-.3,1.1,.15,1.1,roofs[slot]);}
-  local(-2.1,.18,2.3,1.25,.36,1.7,wood);local(-2.1,.38,2.3,1.05,.08,1.5,0x78654b);
-  for(const z of [1.8,2.3,2.8]){local(-2.1,.57,z,.65,.35,.3,0x829953);local(-2.1,.78,z,.25,.15,.22,slot%2?0xd5b173:0xbf8162);}
-  for(const x of [-1.35,1.35]){local(x,.4,3.65,.12,.8,.18,wood);local(x,.6,3.65,.6,.13,.15,cream);}
+  const {halfWidth:w,back,front,gateHalfWidth:gate}=FARM_PEN;
+  // Short rails keep rotated collision boxes close to the visible fence.
+  const rail=(x:number,z:number,length:number,sideways:boolean,y:number)=>{
+   const pieces=Math.ceil(length/.25),step=length/pieces;
+   for(let i=0;i<pieces;i++){const along=-length/2+(i+.5)*step;local(x+(sideways?along:0),y,z+(sideways?0:along),sideways?step+.01:.1,.1,sideways?.1:step+.01,cream);}
+  };
+  local(0,-.005,(back+front)/2,w*2,.08,front-back,slot%2?0xb9cf91:0xc5d99d);
+  // Low split rails enclose each farm; the promenade-facing gate stays open.
+  for(const x of [-w,w]){
+   for(let z=back;z<=front+.01;z+=(front-back)/5)local(x,.43,z,.16,.86,.16,wood);
+   for(const y of [.28,.65])rail(x,(back+front)/2,front-back,false,y);
+  }
+  for(const z of [back,front]){
+   for(let i=0;i<=6;i++){const x=-w+i*w/3;if(z===front&&Math.abs(x)<gate)continue;local(x,.43,z,.16,.86,.16,wood);}
+   for(const y of [.28,.65]){
+    if(z===back)rail(0,z,w*2,true,y);
+    else for(const side of [-1,1])rail(side*(w+gate)/2,z,w-gate,true,y);
+   }
+  }
+  for(const x of [-gate,gate]){local(x,.5,front,.22,1,.22,wood);local(x,1.04,front,.3,.12,.3,roofs[slot]);}
+  // Separate egg beds remain low enough to walk through and see every shell.
+  local(-1.55,.035,-.1,2,.05,3.9,0xdfcea0);
+  for(const x of [-2.65,-.45])local(x,.08,-.1,.08,.14,3.9,stone);
+  for(const z of [-2.05,1.85])local(-1.55,.08,z,2.2,.14,.08,stone);
+
  }
  // Both market buildings present their doors and awnings to the approach road.
  for(const side of [-1,1]){

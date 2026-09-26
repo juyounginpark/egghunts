@@ -640,7 +640,12 @@ nav button img { width:28px; height:28px; }
 #weekly-claim { width:100%; min-height:44px; margin-bottom:8px; }
 #first-egg-arrow { position:absolute; z-index:4; transform:translate(-50%,-100%); pointer-events:none; text-align:center; color:#715118; text-shadow:0 1px 3px #fff; }
 #first-egg-arrow span { display:block; border-radius:12px; padding:4px 8px; background:#fff4cf; font-size:12px; font-weight:800; }
-#first-egg-arrow b { display:block; font-size:36px; animation:first-egg-bob .8s ease-in-out infinite alternate; }
+#first-egg-arrow b { display:block; width:0; height:0; margin:5px auto 0; border-left:9px solid transparent; border-right:9px solid transparent; border-top:18px solid #e5a627; filter:drop-shadow(0 1px 1px #fff); }
+.friend > .pet-actions { display:flex; flex:0 0 108px; flex-direction:column; gap:6px; }
+@media(max-width:480px) { .friend { flex-wrap:wrap; } .friend > .pet-actions { flex:1 0 100%; flex-direction:row; } .pet-actions > button { flex:1; } }
+#action-weight { display:block; max-width:150px; font-size:10px; line-height:1.3; white-space:normal; }
+.egg-weight { display:block; margin-top:5px; font-size:11px; }
+[data-mode="hatchery"] .egg-slot .egg-slot-weight { display:block; font-size:8px; line-height:1.2; }
 @keyframes first-egg-bob { to { transform:translateY(8px); } }
 @media(prefers-reduced-motion:reduce) { #first-egg-arrow b { animation:none; } }
 /* The time row is the one control for collapsing and reopening the upper HUD. */

@@ -1,7 +1,7 @@
 import {add} from '../src/money';
 import {advanceTutorial} from '../src/tutorial';
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
-import {BALANCE,EGGS,MONGLES,UPGRADES} from '../src/data';
+import {BALANCE,EGGS,MONGLES,UPGRADES,farmPetIds} from '../src/data';
 import {exportRuntime,restoreRuntime,migrateStageRuntime,type RuntimeState} from '../src/online-state';
 import {migrateStageWorld,compactRouteWorld} from '../src/stage-migration';
 import {playerName} from '../src/player-identity';
@@ -166,7 +166,8 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   id,at:now,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
   speed:g.speed,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,chat:room.players[id].chat??null,
   activePets:g.save.active.filter(id=>g.save.mongles[id]>0).slice(0,BALANCE.maxCompanions),
-  pets:g.save.mongles.flatMap((n,i)=>n&&!g.save.active.includes(i)?[i]:[]).slice(0,6),
+  pets:farmPetIds(g.save.mongles,g.save.active,now),
+  farmEggs:g.save.eggs.map(({id,type,stageId,variant,special})=>({id,type,stageId,variant,special})),
  }));
  // Notice IDs start with the authenticated owner's UUID, not the nickname.
  const eggNotices=room.eggNotices.filter(notice=>!notice.id.startsWith(`${user}:`));
@@ -195,9 +196,8 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number){
   case 'tap':atBase();g.tap();break;
   case 'claimHatch':atBase();if(!g.claimHatch(text()))throw Error('EGG_NOT_READY');break;
   case 'select':atBase();if(!g.save.eggs.some(e=>e.id===text()))throw Error('NOT_OWNED');g.save.selected=text();g.revision++;break;
-  case 'equip':{atBase();const id=integer();if(!g.save.mongles[id])throw Error('NOT_OWNED');
-   if(g.save.active.includes(id))g.save.active=g.save.active.filter(i=>i!==id);
-   else if(g.save.active.length<BALANCE.maxCompanions)g.save.active.push(id);g.revision++;break;}
+  case 'equip':{atBase();if(!g.equipPet(integer()))throw Error('CANNOT_EQUIP');break;}
+  case 'unequip':{atBase();if(!g.unequipPet(integer()))throw Error('NOT_OWNED');break;}
   case 'upgrade':atBase();if(!Object.hasOwn(UPGRADES,text()))throw Error('INVALID_UPGRADE');g.upgrade(text() as keyof typeof UPGRADES);break;
   case 'name':g.save.playerName=playerName(c.value);break;
   case 'trail':atBase();g.buyTrail(integer());break;

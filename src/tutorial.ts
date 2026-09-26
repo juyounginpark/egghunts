@@ -1,10 +1,15 @@
 import type {GameState} from './game';
 import {EGGS} from './data';
+const firstTargets=new WeakMap<GameState,string>();
 
 export function firstEggTarget(game:GameState){
   if((game.save.tutorial??0)>=3||game.carried||game.isNight||game.death)return undefined;
-  return game.world.filter(e=>e.stageId===1&&!e.special&&!game.bosses.some(b=>b.loot?.id===e.id))
-    .sort((a,b)=>EGGS[a.type].tier-EGGS[b.type].tier||Math.hypot(a.x-game.x,a.z-game.z)-Math.hypot(b.x-game.x,b.z-game.z))[0];
+  const available=game.world.filter(e=>e.stageId===1&&!e.special&&!game.bosses.some(b=>b.loot?.id===e.id));
+  const smallest=Math.min(...available.map(e=>EGGS[e.type].tier));
+  const previous=available.find(e=>e.id===firstTargets.get(game)&&EGGS[e.type].tier===smallest);
+  const target=previous??available.sort((a,b)=>EGGS[a.type].tier-EGGS[b.type].tier||Math.hypot(a.x-game.x,a.z-game.z)-Math.hypot(b.x-game.x,b.z-game.z))[0];
+  if(target)firstTargets.set(game,target.id);else firstTargets.delete(game);
+  return target;
 }
 
 // Keep the existing saved 0..5 milestones. Reading a hint never advances them.

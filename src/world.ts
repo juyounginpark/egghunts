@@ -1,4 +1,4 @@
-import {eggMaxHp} from './data';
+import {eggMaxHp,farmPetIds} from './data';
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage,DAMAGE_OVER_TIME } from "./data";
@@ -10,7 +10,7 @@ import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
 import {petAbilities} from './pet-stats';
 import {HazardView} from "./hazard-view";
-import {FARM_PLOTS,farmPlot,farmGym,farmLocal} from './village';
+import {FARM_PLOTS,farmPlot,farmGym,farmLocal,farmEggPosition,farmPetPose} from './village';
 import {villageArt} from './world-art';
 import {animatePet,greetPet} from './pet-animation';
 import {followPets} from './pet-followers';
@@ -57,12 +57,40 @@ export class World {
   }
   private roomFarmKey='';
   private roomFarmPets=new T.Group();
+  private roomFarmEggs=new T.Group();
+  private roomEggKey='';
+  private farmPet(id:number,slot:number,index:number){
+    // Resting herds reuse merged bodies instead of one draw call per animated limb.
+    const pet=petVisual(id,false);
+    pet.scale.setScalar(Math.min(.85,.85/Math.max(pet.userData.bodyWidth,pet.userData.bodyDepth,.01)));
+    pet.userData.farmSlot=slot;pet.userData.farmIndex=index;
+    return pet;
+  }
+  private animateFarmPet(pet:T.Object3D,time:number){
+    const pose=farmPetPose(pet.userData.farmSlot,pet.userData.farmIndex,time,this.reducedMotion.matches);
+    pet.position.set(pose.x,.06,pose.z);pet.rotation.y=pose.rotation;
+    if(!this.reducedMotion.matches){pet.position.y+=Math.abs(Math.sin(time*(pose.moving?3:1)+pet.userData.farmIndex))*(pose.moving?.05:.015);pet.rotation.z=Math.sin(time+pet.userData.farmIndex)*.025;}
+    animateEgg(pet,time,this.low);
+    animatePet(pet,pet.userData.petId,time,pose.moving,this.reducedMotion.matches);
+  }
+  private farmEgg(egg:Pick<Egg,'type'|'stageId'|'variant'>,slot:number,index:number,count:number){
+    const model=this.eggModel(egg),at=farmEggPosition(slot,index,count);
+    const rowSpacing=Math.min(.7,2.9/Math.max(1,Math.ceil(count/3)-1));
+    model.scale.setScalar(Math.min(.45,rowSpacing*.65));model.position.set(at.x,.08,at.z);model.rotation.y=farmPlot(slot).rotation;
+    return model;
+  }
   private async showRoomFarms(players:Peer[]){
-    const entries=players.filter(p=>p.slot!==undefined).flatMap(p=>(p.pets??[]).slice(0,3).map((id,i)=>({id,i,slot:p.slot!})));
+    const farms=players.filter(p=>p.slot!==undefined);
+    const eggKey=JSON.stringify(farms.map(p=>({slot:p.slot,eggs:p.farmEggs??[]})));
+    if(eggKey!==this.roomEggKey){
+      this.roomEggKey=eggKey;this.clearPetInstances(this.roomFarmEggs);
+      for(const p of farms){const eggs=p.farmEggs??[];eggs.forEach((egg,i)=>this.roomFarmEggs.add(this.farmEgg(egg,p.slot!,i,eggs.length)));}
+    }
+    const entries=farms.flatMap(p=>(p.pets??[]).slice(0,BALANCE.farmPetsVisible).map((id,i)=>({id,i,slot:p.slot!})));
     const key=JSON.stringify(entries);if(key===this.roomFarmKey)return;this.roomFarmKey=key;
-    await loadVoxels(entries.map(p=>`pet-${p.id}`));if(key!==this.roomFarmKey)return;
-    this.roomFarmPets.clear();
-    for(const p of entries){const pet=petVisual(p.id,p.id<6||p.id>=100),plot=farmPlot(p.slot);pet.scale.setScalar(Math.min(1.5,MONGLES[p.id].scale));const at=farmLocal(p.slot,-.6+p.i*.6,3);pet.position.set(at.x,0,at.z);pet.rotation.y=plot.rotation;this.roomFarmPets.add(pet);}
+    try{await loadVoxels(entries.map(p=>`pet-${p.id}`));}catch(error){if(key===this.roomFarmKey)this.roomFarmKey='';throw error;}if(key!==this.roomFarmKey)return;
+    this.clearPetInstances(this.roomFarmPets);
+    for(const p of entries)this.roomFarmPets.add(this.farmPet(p.id,p.slot,p.i));
   }
   private appearance=-1;
   private batGeometry=new T.BoxGeometry(.13,.13,1.25);
@@ -84,7 +112,7 @@ export class World {
   }
   updatePeers(players:Peer[],visible:boolean,now:number){
     const frameAt=performance.now(),dt=Math.min(.1,Math.max(0,(frameAt-this.peerFrameAt)/1000)),blend=1-Math.exp(-dt*12);this.peerFrameAt=frameAt;
-    this.roomFarmPets.visible=visible;void this.showRoomFarms(players).catch(err=>{this.assetError=String(err);});
+    this.roomFarmPets.visible=this.roomFarmEggs.visible=visible&&this.farm.visible;if(this.farm.visible)void this.showRoomFarms(players).catch(err=>{this.assetError=String(err);});
     for(const [id,avatar] of this.peers)if(!players.some(p=>p.id===id)){
       const accessory=avatar.getObjectByName('avatar-accessory') as T.Mesh;
       if(accessory){accessory.geometry.dispose();(accessory.material as T.Material).dispose();}
@@ -212,7 +240,7 @@ export class World {
     this.damageDirection.id='damage-direction';this.damageDirection.hidden=true;this.damageDirection.setAttribute('aria-hidden','true');host.append(this.damageDirection);
     this.petLabels.id="pet-labels";host.append(this.petLabels);
     this.peerPetLabels.id='peer-pet-labels';host.append(this.peerPetLabels);
-    this.scene.add(this.farm,this.farmPets,this.roomFarmPets,this.footTrail);
+    this.scene.add(this.farm,this.farmPets,this.roomFarmPets,this.roomFarmEggs,this.footTrail);
     this.scene.add(this.hazardsView.group);
     this.scene.add(this.nestGroup);
     this.nightBarrier.position.set(0,.65,BALANCE.baseMinZ-.25);
@@ -325,7 +353,7 @@ export class World {
     mesh.castShadow = true;
     this.terrain.add(mesh);
     for(const [slot,plot] of FARM_PLOTS.entries()){
-      const feed=farmLocal(slot,-1,2.5),bowl=model('feed');bowl.position.set(feed.x,0,feed.z);bowl.scale.setScalar(.7);bowl.rotation.y=plot.rotation;this.farm.add(bowl);
+      const feed=farmLocal(slot,.35,1.55),bowl=model('feed');bowl.position.set(feed.x,0,feed.z);bowl.scale.setScalar(.5);bowl.rotation.y=plot.rotation;this.farm.add(bowl);
       const position=farmGym(slot),gym=new T.Group();gym.name=`gym-${slot}`;gym.position.set(position.x,0,position.z);gym.rotation.y=plot.rotation;
       const material=new T.MeshLambertMaterial({color:[0x859e5d,0xc59566,0x7ca3ad,0xac8ab2,0xb8a35a][slot]});
       for(const [w,h,d,x,y,z] of [[1.2,.15,1.6,0,.08,0],[.85,.04,1.35,0,.18,0],[.12,1,.12,-.5,.6,-.7],[.12,1,.12,.5,.6,-.7],[1.1,.12,.12,0,1.05,-.7]]){
@@ -367,12 +395,10 @@ export class World {
     });
   }
   async showFarmPets(game: GameState) {
-    const all=game.save.mongles.flatMap((count,i)=>count&&!game.save.active.includes(i)?[i]:[]);
-    const page=Math.floor(game.now()/12000);
-    const ids=all.length<=BALANCE.farmPetsVisible?all:Array.from({length:BALANCE.farmPetsVisible},(_,i)=>all[(page*BALANCE.farmPetsVisible+i)%all.length]);
-    const key=ids.join(',');if(key===this.farmKey)return;this.farmKey=key;
-    await loadVoxels(ids.map(i=>`pet-${i}`));if(key!==this.farmKey)return;
-    this.farmPets.clear();ids.forEach((id,i)=>{const m=petVisual(id,id<6||id>=100);m.scale.setScalar(Math.min(1.5,MONGLES[id].scale));m.userData.slot=i;this.farmPets.add(m);});
+    const ids=farmPetIds(game.save.mongles,game.save.active,game.now());
+    const key=`${game.farmSlot}:${ids.join(',')}`;if(key===this.farmKey)return;this.farmKey=key;
+    try{await loadVoxels(ids.map(i=>`pet-${i}`));}catch(error){if(key===this.farmKey)this.farmKey='';throw error;}if(key!==this.farmKey)return;
+    this.clearPetInstances(this.farmPets);ids.forEach((id,i)=>this.farmPets.add(this.farmPet(id,game.farmSlot,i)));
   }
   async updateHatch(key: string, type: number, result: number | null, appearance?:Pick<Egg,'type'|'stageId'|'variant'>) {
     this.hatchKey = key;
@@ -461,13 +487,11 @@ export class World {
     this.nestGroup.visible=!isHatch;
     this.farm.visible=this.farmPets.visible=!isHatch && game.z>-22;
     if(this.farm.visible)void this.showFarmPets(game).catch(err=>{this.assetError=String(err);});
-    this.farmPets.children.forEach((pet,i)=>{
-      const plot=farmPlot(game.farmSlot);
-      const at=farmLocal(game.farmSlot,Math.sin(i*2.4+time*.12),2.8+Math.cos(i*2.4+time*.12)*.35);pet.position.set(at.x,0,at.z);
-      pet.rotation.y=plot.rotation-i*2.4-time*.12;pet.position.y=Math.abs(Math.sin(time*2+i))*.05;animateEgg(pet,time,this.low);
-      animatePet(pet,pet.userData.petId,time,false,this.reducedMotion.matches);
-    });
-    this.roomFarmPets.children.forEach(pet=>animatePet(pet,pet.userData.petId,time,false,this.reducedMotion.matches));
+    if(this.farm.visible){
+      this.farmPets.children.forEach(pet=>this.animateFarmPet(pet,time));
+      this.roomFarmPets.children.forEach(pet=>this.animateFarmPet(pet,time));
+      this.roomFarmEggs.children.forEach(egg=>animateEgg(egg,time,this.low));
+    }
     this.terrain.visible =
       this.player.visible =
       this.eggs.visible =
@@ -561,18 +585,16 @@ export class World {
       game.z+this.networkOffset.z,
     );
     this.trail=followPets(this.companions,this.trail,this.player.position,game.facing,dt,time,this.low,this.reducedMotion.matches);
-    const storageKey = game.save.eggs.map((e) => e.id).join("|");
+    const storageKey = `${game.farmSlot}:`+game.save.eggs.map((e) => `${e.id}:${e.type}:${e.stageId}:${e.variant}`).join("|");
     if (storageKey !== this.storageKey) {
       this.storageKey = storageKey;
       this.clearPetInstances(this.storage);
       game.save.eggs.forEach((e, i) => {
-        const m = this.eggModel(e);
-        m.scale.setScalar(0.55*BALANCE.eggPresentationScale);
-        m.position.set(-4 + (i % 3) * 0.7*BALANCE.eggPresentationScale, 0.8, 0.3 + Math.floor(i / 3) * 0.65*BALANCE.eggPresentationScale);
-        this.storage.add(m);
+        this.storage.add(this.farmEgg(e,game.farmSlot,i,game.save.eggs.length));
       });
     }
-    this.storage.children.forEach((m) => animateEgg(m, time, this.low));
+    this.storage.visible=this.farm.visible;
+    if(this.storage.visible)this.storage.children.forEach((m) => animateEgg(m, time, this.low));
     this.environment.update(game,isHatch,this.low,this.player,this.peers.values());
     const moving = !game.death&&(game.training || Boolean(this.player.userData.moving));
     if(game.training)this.player.rotation.y=farmPlot(game.farmSlot).rotation+Math.PI;
@@ -672,9 +694,28 @@ export class World {
     if(guide){
       guide.hidden=!guideEgg;
       if(guideEgg){
-        const p=new T.Vector3(guideEgg.x,2,guideEgg.z).project(this.camera);
-        guide.style.left=`${Math.max(40,Math.min(this.host.clientWidth-40,(p.x+1)*this.host.clientWidth/2))}px`;
-        guide.style.top=`${Math.max(180,Math.min(this.host.clientHeight-180,(1-p.y)*this.host.clientHeight/2))}px`;
+        const model=this.eggs.children.find(m=>m.userData.id===guideEgg.id);
+        const shell=model?.children.find(child=>child instanceof T.Mesh&&!(child instanceof T.InstancedMesh)) as T.Mesh|undefined;
+        const point=new T.Vector3(guideEgg.x,1,guideEgg.z);
+        if(shell){
+          model!.updateMatrixWorld(true);if(!shell.geometry.boundingBox)shell.geometry.computeBoundingBox();
+          const box=shell.geometry.boundingBox!;
+          shell.localToWorld(point.set((box.min.x+box.max.x)/2,box.max.y,(box.min.z+box.max.z)/2));
+          point.y+=.12;
+        }
+        const p=point.project(this.camera),w=this.host.clientWidth,h=this.host.clientHeight;
+        const x=(p.x+1)*w/2,y=(1-p.y)*h/2,onScreen=!!model?.visible&&p.z>=-1&&p.z<=1&&x>=0&&x<=w&&y>=0&&y<=h;
+        const arrow=guide.querySelector<HTMLElement>('b')!;
+        arrow.textContent='';
+        guide.querySelector('span')!.textContent=onScreen?'작은 알부터!':'작은 알은 이쪽';
+        guide.dataset.offscreen=String(!onScreen);
+        if(onScreen){guide.style.left=`${x}px`;guide.style.top=`${y}px`;arrow.style.transform='';}
+        else{
+          const dx=x-w/2,dy=y-h/2,rx=Math.max(1,w/2-70),ry=Math.max(1,h/2-140);
+          const scale=1/Math.max(1,Math.abs(dx)/rx,Math.abs(dy)/ry);
+          guide.style.left=`${w/2+dx*scale}px`;guide.style.top=`${h/2+dy*scale}px`;
+          arrow.style.transform=`rotate(${Math.atan2(dy,dx)-Math.PI/2}rad)`;
+        }
       }
     }
     const hit=game.hitSource,hitAge=hit?(game.now()-hit.at)/1000:Infinity;

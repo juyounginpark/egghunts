@@ -1,5 +1,5 @@
 export type ChatMessage={id:string;text:string;at:number};
-export type Peer={id:string;at?:number;speed?:number;name:string;level?:number;isGuest?:boolean;x:number;z:number;rotation:number;appearance:number;downUntil:number;attackAt:number;hitAt?:number;velocity?:{x:number;z:number};carried:number|null;slot?:number;pets?:number[];activePets?:number[];egg?:import('./game').WorldEgg|null;chat?:ChatMessage|null};
+export type Peer={id:string;at?:number;speed?:number;name:string;level?:number;isGuest?:boolean;x:number;z:number;rotation:number;appearance:number;downUntil:number;attackAt:number;hitAt?:number;velocity?:{x:number;z:number};carried:number|null;slot?:number;pets?:number[];farmEggs?:Pick<import('./game').Egg,'id'|'type'|'stageId'|'variant'|'special'>[];activePets?:number[];egg?:import('./game').WorldEgg|null;chat?:ChatMessage|null};
 export type NetworkEgg={id:string;type:number;x:number;z:number};
 export class Multiplayer {
   peers:Peer[]=[];
