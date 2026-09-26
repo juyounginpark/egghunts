@@ -419,7 +419,7 @@ function updateHud() {
     : "기지 · 시간 제한 없이 탐험해요";
   $("world-label").style.opacity = game.distance < 4 ? "1" : "0";
   $("action").hidden = tab==='hatchery'||!game.action||game.training;
-  $("action-label").textContent = game.carried?'알 운반중':pickupPreparation?'꺼내는 중':tab === "hatchery" ? "두드리기" : game.near&&BALANCE.rareEggPickupSeconds[EGGS[game.near.type].tier]>0?'알 꺼내기':game.action;
+  $("action-label").textContent = game.carried?'내려놓기':pickupPreparation?'꺼내는 중':tab === "hatchery" ? "두드리기" : game.near&&BALANCE.rareEggPickupSeconds[EGGS[game.near.type].tier]>0?'알 꺼내기':game.action;
   $("action").classList.toggle('preparing',!!pickupPreparation);
   $("action").style.setProperty('--pickup-progress',`${pickupPreparation?(1-pickupPreparation.remaining/pickupPreparation.duration)*100:0}%`);
   $("action").setAttribute('aria-label',pickupPreparation?'희귀 알 꺼내는 중, 이동하면 취소':$("action-label").textContent??'행동');
@@ -427,7 +427,8 @@ function updateHud() {
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
   const weightHint=$('action-weight');weightHint.hidden=!actionEgg||!!game.carried;
-  if(actionEgg)weightHint.textContent=eggWeightLabel(actionEgg.type,game.save.upgrades.carry);
+  weightHint.textContent=actionEgg&&!game.carried?eggWeightLabel(actionEgg.type,game.save.upgrades.carry):'';
+  $('action-icon').hidden=!!game.carried;
   const actionModel=game.nearStore?'shop':game.nearGym?'gym':null;
   const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
   if($("action-icon").dataset.icon!==actionIcon){$("action-icon").dataset.icon=actionIcon;$("action-icon").innerHTML=actionIcon;}
