@@ -62,7 +62,7 @@ export class World {
   private farmPet(id:number,slot:number,index:number){
     // Resting herds reuse merged bodies instead of one draw call per animated limb.
     const pet=petVisual(id,false);
-    pet.scale.setScalar(Math.min(.85,.85/Math.max(pet.userData.bodyWidth,pet.userData.bodyDepth,.01)));
+    pet.scale.setScalar(MONGLES[id].scale);
     pet.userData.farmSlot=slot;pet.userData.farmIndex=index;
     return pet;
   }
@@ -176,6 +176,8 @@ export class World {
   private farmKey = "";
   private petLabels = document.createElement("div");
   private peerPetLabels = document.createElement('div');
+  private farmPetLabels = document.createElement('div');
+  private farmPetLabelEntries=new Map<string,{id:number;label:HTMLElement}>();
   private peerPetLabelEntries=new Map<string,{id:number;label:HTMLDivElement}>();
   private trainingGains:{el:HTMLDivElement;at:number}[]=[];
   showTrainingGain(amount:number,at:number){
@@ -240,6 +242,7 @@ export class World {
     this.damageDirection.id='damage-direction';this.damageDirection.hidden=true;this.damageDirection.setAttribute('aria-hidden','true');host.append(this.damageDirection);
     this.petLabels.id="pet-labels";host.append(this.petLabels);
     this.peerPetLabels.id='peer-pet-labels';host.append(this.peerPetLabels);
+    this.farmPetLabels.id='farm-pet-labels';host.append(this.farmPetLabels);
     this.scene.add(this.farm,this.farmPets,this.roomFarmPets,this.roomFarmEggs,this.footTrail);
     this.scene.add(this.hazardsView.group);
     this.scene.add(this.nestGroup);
@@ -744,7 +747,7 @@ export class World {
     }
     this.petLabels.hidden=isHatch;
     const labelBoxes:{x:number;y:number;height:number;width:number}[]=[];
-    const positionPetLabel=(pet:T.Object3D,label:HTMLElement)=>{
+    const positionPetLabel=(pet:T.Object3D,label:HTMLElement,avoidOverlap=true)=>{
       const p=pet.position.clone();p.y+=(pet.userData.labelHeight??.8)*pet.scale.x+.06;p.project(this.camera);
       label.hidden=p.z>1||Math.abs(p.x)>.95||Math.abs(p.y)>.85;
       if(label.hidden)return;
@@ -754,7 +757,7 @@ export class World {
       // Keep the label attached to its pet. Crowded labels yield in stable order
       // instead of pushing each other around; extra release space prevents flicker.
       const gap=label.dataset.occluded==='true'?8:2;
-      const occluded=labelBoxes.some(box=>Math.abs(box.x-lx)<halfWidth+box.width+gap&&ly-height<box.y+gap&&ly>box.y-box.height-gap);
+      const occluded=avoidOverlap&&labelBoxes.some(box=>Math.abs(box.x-lx)<halfWidth+box.width+gap&&ly-height<box.y+gap&&ly>box.y-box.height-gap);
       label.dataset.occluded=String(occluded);label.hidden=occluded;
       if(!occluded)labelBoxes.push({x:lx,y:ly,height,width:halfWidth});
       label.style.left=`${lx}px`;label.style.top=`${ly}px`;
@@ -778,6 +781,22 @@ export class World {
       positionPetLabel(pet,row.label);
     });
     for(const [key,row] of this.peerPetLabelEntries)if(!peerLabelKeys.has(key)){row.label.remove();this.peerPetLabelEntries.delete(key);}
+    this.farmPetLabels.hidden=!this.farm.visible||isHatch;
+    const farmLabelKeys=new Set<string>();
+    for(const group of [this.farmPets,this.roomFarmPets])for(const pet of group.children){
+      const id=pet.userData.petId as number,definition=MONGLES[id];if(!definition)continue;
+      const key=`${pet.userData.farmSlot}:${pet.userData.farmIndex}`;farmLabelKeys.add(key);
+      let row=this.farmPetLabelEntries.get(key);
+      if(!row||row.id!==id){
+        row?.label.remove();const label=document.createElement('div'),name=document.createElement('b'),tier=document.createElement('small');
+        label.className='pet-label farm-pet-label';name.textContent=definition.name;
+        tier.textContent=RARITIES[definition.tier].name;tier.style.color=RARITIES[definition.tier].color;
+        label.append(name,tier);this.farmPetLabels.append(label);row={id,label};this.farmPetLabelEntries.set(key,row);
+      }
+      if(!group.visible||this.farmPetLabels.hidden){row.label.hidden=true;continue;}
+      positionPetLabel(pet,row.label,false);
+    }
+    for(const [key,row] of this.farmPetLabelEntries)if(!farmLabelKeys.has(key)){row.label.remove();this.farmPetLabelEntries.delete(key);}
     const trailDef=TRAILS[game.save.equippedTrail??0];
     this.footTrail.visible=!isHatch&&moving&&trailDef.multiplier>1;
     (this.footTrail.material as T.MeshBasicMaterial).color.set(trailDef.color);

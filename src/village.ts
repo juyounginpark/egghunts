@@ -8,18 +8,23 @@ export const farmPlot=(slot:number)=>FARM_PLOTS[slot]??FARM_PLOTS[0];
 export function farmLocal(slot:number,x:number,z:number){const p=farmPlot(slot),c=Math.cos(p.rotation),s=Math.sin(p.rotation);return {x:p.x+x*c+z*s,z:p.z-x*s+z*c};}
 export const farmGym=(slot:number)=>farmLocal(slot,2.1,2.3);
 export const FARM_PEN={halfWidth:2.85,back:-2.35,front:3.25,gateHalfWidth:.85};
-// Eggs occupy the left beds; pets roam the right lawn, away from the front gym.
+// Eggs occupy the left beds; resting pets may roam throughout their owner's pen.
 export function farmEggPosition(slot:number,index:number,count:number){
  const columns=3,rows=Math.max(1,Math.ceil(count/columns));
  return farmLocal(slot,-2.15+(index%columns)*.58,-1.55+Math.floor(index/columns)*Math.min(.7,2.9/Math.max(1,rows-1)));
 }
 export function farmPetPose(slot:number,index:number,time:number,reduced=false){
- const phase=index*2.399,cycle=(time+index*1.7)%12;
- const moving=!reduced&&cycle<8;
- const travel=reduced?0:Math.floor((time+index*1.7)/12)*8+Math.min(8,cycle);
- const a=phase+travel*.22,rx=.45+(index%3)*.19,rz=.55+(index%4)*.19;
- const p=farmLocal(slot,1.15+Math.sin(a)*rx,-.5+Math.cos(a)*rz);
- return {...p,rotation:farmPlot(slot).rotation+Math.atan2(Math.cos(a)*rx,-Math.sin(a)*rz),moving};
+ const seed=slot*131+index*37,elapsed=reduced?0:time+index*2.7;
+ const leg=Math.floor(elapsed/6),phase=elapsed%6,t=Math.min(1,phase/5);
+ const random=(n:number)=>{const value=Math.sin(n*127.1+seed*311.7)*43758.5453;return value-Math.floor(value);};
+ const point=(step:number)=>({x:(random(step*2)-.5)*(FARM_PEN.halfWidth*2-.9),z:FARM_PEN.back+.45+random(step*2+1)*(FARM_PEN.front-FARM_PEN.back-.9)});
+ const from=point(leg),to=point(leg+1),blend=t*t*(3-2*t);
+ // Interpolate inside the rectangle: even a long frame cannot cross a fence.
+ const p=farmLocal(slot,from.x+(to.x-from.x)*blend,from.z+(to.z-from.z)*blend);
+ const heading=Math.atan2(to.x-from.x,to.z-from.z),previous=point(leg-1);
+ const oldHeading=Math.atan2(from.x-previous.x,from.z-previous.z);
+ const turn=Math.atan2(Math.sin(heading-oldHeading),Math.cos(heading-oldHeading));
+ return {...p,rotation:farmPlot(slot).rotation+oldHeading+turn*Math.min(1,t*5),moving:!reduced&&t<1};
 }
 // Segment diagonal rails instead of filling their entire bounding rectangle.
 export const villageColliders=()=>FARM_PLOTS.flatMap((_,slot)=>Array.from({length:7},(_,i)=>{
