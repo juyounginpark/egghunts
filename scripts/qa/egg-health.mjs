@@ -7,16 +7,18 @@ try{
  const {exportRuntime,restoreRuntime}=await vite.ssrLoadModule('/src/online-state.ts');
  const {EGGS,EGG_HEALTH,eggMaxHp}=await vite.ssrLoadModule('/src/data.ts');
  const now=1800000060000;
- for(let type=0;type<EGGS.length;type++)for(const stageId of [undefined,1,2,4,5,10,20])for(const hpVersion of [undefined,2]){
-  const def=EGGS[type],oldMax=Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6))/(hpVersion===2?1:10);
+ for(let type=0;type<EGGS.length;type++)for(const stageId of [undefined,1,2,3,4,5,10,20])for(const hpVersion of [undefined,2,3]){
+  const def=EGGS[type],oldMax=hpVersion===3?eggMaxHp({type,stageId,hpVersion}):Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6))/(hpVersion===2?1:10);
   const save=freshSave(now);save.eggs=[{id:'half',type,stageId,hpVersion,hp:oldMax/2,distance:30},{id:'ready',type,stageId,hpVersion,hp:0,distance:30}];save.selected='half';
   const restored=parseSave(JSON.stringify(save),now);
   assert.equal(restored.eggs[0].hp,eggMaxHp({type,stageId})/2);assert.equal(restored.eggs[1].hp,0);
-  assert.equal(restored.selected,'half');assert.equal(restored.eggs[0].hpVersion,3);
+  assert.equal(restored.selected,'half');assert.equal(restored.eggs[0].hpVersion,4);
   assert.deepEqual(parseSave(JSON.stringify(restored),now).eggs,restored.eggs,'reload must not rescale again');
  }
  for(let stageId=2;stageId<=20;stageId++)assert.ok(eggMaxHp({type:0,stageId})>eggMaxHp({type:0,stageId:stageId-1}));
  assert.equal(eggMaxHp({type:0,stageId:1}),12);
+ const earlyExpected=[[12,13,14,16,18,21,24],[24,26,29,32,36,42,48],[45,50,54,61,68,79,90]];
+ for(let stageId=1;stageId<=20;stageId++)for(let type=0;type<EGGS.length;type++){const before=eggMaxHp({type,stageId,hpVersion:3});assert.equal(eggMaxHp({type,stageId,hpVersion:4}),stageId<=3?earlyExpected[stageId-1][EGGS[type].tier]:before);}
  const g=new GameState(freshSave(now),()=>now,()=>.5);assert.equal(g.speed,2);assert.equal(g.movementSpeed,2);
  const state=exportRuntime(g),world=structuredClone(g.world),bosses=structuredClone(g.bosses);
  for(const egg of world){const def=EGGS[egg.type];egg.hp=Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6))/10;delete egg.hpVersion;}
@@ -26,6 +28,6 @@ try{
  assert.equal(world[0].hp,eggMaxHp(world[0]));
  migrateEggHealth([world[0],world[0]]);assert.equal(world[0].hp,eggMaxHp(world[0]));
  assert.throws(()=>migrateEggHealth([{id:'bad',type:0,hp:31,distance:0}]),'invalid old health is not silently clamped');
- const starter=new GameState(freshSave(now),()=>now,()=>.5);starter.save.eggs=[{id:'first',type:0,stageId:1,hp:12,hpVersion:3,distance:14}];starter.save.selected='first';for(let i=0;i<4;i++)starter.damage(starter.tapDamage);assert.equal(starter.selected.hp,0);
+ const starter=new GameState(freshSave(now),()=>now,()=>.5);starter.save.eggs=[{id:'first',type:0,stageId:1,hp:12,hpVersion:4,distance:14}];starter.save.selected='first';for(let i=0;i<4;i++)starter.damage(starter.tapDamage);assert.equal(starter.selected.hp,0);
  console.log('PASS: egg progress migration, zero HP, repeated load, runtime/world/carried eggs and initial speed');
 }finally{await vite.close();}

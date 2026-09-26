@@ -1,4 +1,5 @@
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
+import {softenGrowth} from './growth-curve';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
 import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp} from './data';
@@ -23,16 +24,17 @@ import {farmGym} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianPursuitSpeed,stageDamage,type HazardDefinition} from "./stage-data";
-export type Egg = { id: string; type: number; hp: number; hpVersion?:2|3; distance: number; stageId?:number; variant?:number; special?:boolean };
+export type Egg = { id: string; type: number; hp: number; hpVersion?:2|3|4; distance: number; stageId?:number; variant?:number; special?:boolean };
 // Version each egg because stored, carried and shared-room eggs have separate lifetimes.
 export function migrateEggHealth(eggs:(Egg|null|undefined)[]){
   for(const egg of eggs){
-    if(!egg||egg.hpVersion===3)continue;
-    if((egg.hpVersion!==undefined&&egg.hpVersion!==2)||!EGGS[egg.type]||!Number.isFinite(egg.hp)||egg.hp<0)throw Error('Invalid egg health');
+    if(!egg||egg.hpVersion===4)continue;
+    if((egg.hpVersion!==undefined&&egg.hpVersion!==2&&egg.hpVersion!==3)||!EGGS[egg.type]||!Number.isFinite(egg.hp)||egg.hp<0)throw Error('Invalid egg health');
     const def=EGGS[egg.type];
-    const oldMax=Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6))/(egg.hpVersion===2?1:10);
+    const oldMax=egg.hpVersion===3?eggMaxHp(egg):Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6))/(egg.hpVersion===2?1:10);
     if(egg.hp>oldMax+Number.EPSILON*oldMax*8)throw Error('Invalid legacy egg health');
-    egg.hp=Math.min(1,egg.hp/oldMax)*eggMaxHp({...egg,hpVersion:3});egg.hpVersion=3;
+    const max=eggMaxHp({...egg,hpVersion:4});
+    egg.hp=max===oldMax?Math.min(max,egg.hp):Math.min(1,egg.hp/oldMax)*max;egg.hpVersion=4;
   }
 }
 export type WorldEgg = Egg & {
@@ -423,8 +425,13 @@ export class GameState {
   private trainingClock=0;
   private trainingGain=0;
   get movementMultiplier(){return TRAILS[this.save.equippedTrail??0].multiplier*this.speedMultiplier;}
-  get effectiveTrainingRate(){return this.trainingRate*this.movementMultiplier*levelSpeed(this.level);}
-  get trainingSpeedBonus(){return (this.save.trainingSpeed??0)*this.movementMultiplier;}
+  private get trainingBaseSpeed(){return BALANCE.speed*ECONOMY.speedGrowth**this.save.upgrades.speed*this.movementMultiplier*levelSpeed(this.level);}
+  private get trainingRawBonus(){return (this.save.trainingSpeed??0)*this.movementMultiplier*levelSpeed(this.level);}
+  get effectiveTrainingRate(){
+    const before=this.trainingBaseSpeed+this.trainingRawBonus;
+    return softenGrowth(before+this.trainingRate*this.movementMultiplier*levelSpeed(this.level),ECONOMY.softThreshold)-softenGrowth(before,ECONOMY.softThreshold);
+  }
+  get trainingSpeedBonus(){return softenGrowth(this.trainingBaseSpeed+this.trainingRawBonus,ECONOMY.softThreshold)-softenGrowth(this.trainingBaseSpeed,ECONOMY.softThreshold);}
   returnReward: { type: number; distance: number; stageId?:number;variant?:number;special?:boolean } | null = null;
   get nearGym() { return Math.hypot(this.x-this.gym.x,this.z-this.gym.z)<BALANCE.gymRadius; }
   get trainingRate() { return BALANCE.trainingPerSecond + BALANCE.trainingPerLevel*this.save.upgrades.training; }
@@ -442,7 +449,13 @@ export class GameState {
     return ECONOMY.middleMultiplier**(middle-4*Math.min(19,this.save.upgrades.speed));
   }
   petIncomeStageMultiplier(id:number){const p=MONGLES[id];return 1+.02*((p.stageId||BALANCE.petIncomeLegacyStageMultipliers[p.region])-1);}
-  petIncomeAmount(id:number){return recommendedIncome(this.growthStage)*ECONOMY.tierProduction[MONGLES[id].tier]/4*this.petIncomeStageMultiplier(id)*this.productionMultiplier*BALANCE.petIncomeSeconds;}
+  private rawPetIncome(id:number){return recommendedIncome(this.growthStage)*ECONOMY.tierProduction[MONGLES[id].tier]/4*this.petIncomeStageMultiplier(id)*this.productionMultiplier;}
+  petIncomeAmount(id:number){
+    const raw=this.save.active.reduce((sum,pet)=>sum+this.rawPetIncome(pet),0);
+    const individual=this.rawPetIncome(id);
+    // Equipped pets share one team soft limit; equipping more never lowers team income.
+    return (this.save.active.includes(id)&&raw>0?individual*softenGrowth(raw,ECONOMY.softThreshold)/raw:softenGrowth(individual,ECONOMY.softThreshold))*BALANCE.petIncomeSeconds;
+  }
   get petIncomePerCycle(){return this.save.active.reduce((sum,id)=>sum+this.petIncomeAmount(id),0);}
   get incomePerSecond(){return this.petIncomePerCycle/BALANCE.petIncomeSeconds;}
   offlineReward:Money=0;
@@ -590,7 +603,7 @@ export class GameState {
   get speedMultiplier() { return this.save.active.reduce((n,i)=>n*MONGLES[i].speedMultiplier,1); }
   get movementSpeed() { return this.isAtBase ? BALANCE.baseWalkSpeed : Math.min(BALANCE.maxMovementSpeed,this.speed); }
   get speed() {
-    return (
+    return softenGrowth(
       this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
       (BALANCE.speed *
       (ECONOMY.speedGrowth ** this.save.upgrades.speed) + (this.save.trainingSpeed ?? 0)) *
@@ -601,7 +614,7 @@ export class GameState {
               (1 + BALANCE.carryPerLevel * this.save.upgrades.carry),
           )
         : 1)
-    );
+    ,ECONOMY.softThreshold);
   }
   get duration() {
     return (
@@ -610,10 +623,10 @@ export class GameState {
     );
   }
   get dps() {
-    return (
+    return softenGrowth(
       (BALANCE.baseAutoDamage + BALANCE.autoDamagePerLevel * this.save.upgrades.damage) * ECONOMY.hatchGrowth**this.save.upgrades.damage *
         (BALANCE.baseAutoRate + BALANCE.autoRatePerLevel * this.save.upgrades.rate) * this.autoMultiplier
-    );
+    ,ECONOMY.softThreshold);
   }
   get remaining() {
     return this.deadline
@@ -664,7 +677,7 @@ export class GameState {
           id: `${boss.stage}-${slot}-${this.now()}-${this.random()}`,
           type,
           hp: eggMaxHp({type,stageId:boss.stage}),
-          hpVersion:3 as const,
+          hpVersion:4 as const,
           distance: Math.abs(z),
           x,
           z,
@@ -681,7 +694,7 @@ export class GameState {
     const dragon=this.random()<BALANCE.secretDragonEggChance;
     const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=dragon?6:FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
     const type=tier*REGIONS.length+REGIONS.length-1,z=-this.route.at(-1)!.end+FINAL_GUARDIAN.eggEndOffset;
-    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:3,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
+    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:4,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
   }
   get nightRemaining() {
     return Math.max(0, Math.ceil((this.nightAt - this.now()) / 1000));
@@ -871,7 +884,7 @@ export class GameState {
       const hits = Math.floor((this.autoClock + 1e-9) / interval);
       this.autoClock = Math.max(0, this.autoClock - hits * interval);
       this.damage(
-        hits * (BALANCE.baseAutoDamage + BALANCE.autoDamagePerLevel * this.save.upgrades.damage) * ECONOMY.hatchGrowth**this.save.upgrades.damage * this.autoMultiplier,
+        hits * this.dps * interval,
       );
     }
   }
@@ -912,7 +925,7 @@ export class GameState {
       this.message = sleeping?'보스가 잠에서 깼어요!':'알을 들었어요. 기지로 돌아가세요!';
     this.revision++;
   }
-  get tapDamage(){return (BALANCE.baseTap+BALANCE.tapPerLevel*this.save.upgrades.tap)*this.clickMultiplier;}
+  get tapDamage(){return softenGrowth((BALANCE.baseTap+BALANCE.tapPerLevel*this.save.upgrades.tap)*this.clickMultiplier,ECONOMY.softThreshold);}
   tap() {
     if (!this.selected || this.selected.hp === 0 || this.result !== null || this.now() - this.lastTap < BALANCE.tapInterval) return false;
     this.lastTap = this.now();

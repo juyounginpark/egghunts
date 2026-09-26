@@ -209,7 +209,7 @@ async function action(preparedId?:string) {
     }
     if(!game.carried&&targetEgg?.id.startsWith('net-')){
       claiming=true;
-      try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:eggMaxHp(egg),hpVersion:3,distance:Math.abs(egg.z),expires:game.nightAt});}
+      try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:eggMaxHp(egg),hpVersion:4,distance:Math.abs(egg.z),expires:game.nightAt});}
       catch(err){toast(String(err));}finally{claiming=false;}return;
     }
     if(!game.carried&&!game.near&&!game.nearGym){world.swingBat(game.now());feedback('swing');return;}
@@ -815,7 +815,7 @@ function frame(now: number) {
   void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null);
   if(multiplayer.connected){
     game.world=game.world.filter(e=>!e.id.startsWith('net-')||multiplayer.drops.some(d=>d.id===e.id));
-    for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:eggMaxHp(egg),hpVersion:3,distance:Math.abs(egg.z),expires:game.nightAt});
+    for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:eggMaxHp(egg),hpVersion:4,distance:Math.abs(egg.z),expires:game.nightAt});
   }
   world.updatePeers(online.active?online.peers:multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
   world.networkOffset=online.active?online.visualOffset:{x:0,z:0};

@@ -1,3 +1,4 @@
+import {softenGrowth} from './growth-curve';
 import {ROAD_WIDTH_SCALE,STAGES} from './stage-data';
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
@@ -20,9 +21,9 @@ export const BALANCE = {
   chatMaxLength:80,
   roomStopRewindMs:500,
   virtualAdDuration:10000,
-  virtualAdReward:30,
+  virtualAdReward:3,
   eggSellRatio:.4,
-  petSellPrices:[10,20,45,100,220,500,1500],
+  petSellPrices:[1,2,5,10,22,50,150],
   petIncomeSeconds:10,
   petIncomeByTier:[1,2,4,8,16,32,64],
   petIncomeLegacyStageMultipliers:[1,5,9,13,17],
@@ -67,11 +68,11 @@ export const BALANCE = {
   rareEggPickupSeconds: [0,0,0,1.5,3,5,7],
   timePerLevel: 5,
   baseTap: 3,
-  tapPerLevel: 2,
+  tapPerLevel: 1,
   baseAutoDamage: 1,
-  autoDamagePerLevel: 2,
+  autoDamagePerLevel: 1,
   baseAutoRate: 1,
-  autoRatePerLevel: 0.5,
+  autoRatePerLevel: 0.25,
   mapX: 6.5*ROAD_WIDTH_SCALE,
   mapNearZ: 22,
   baseMinZ:-4.4,
@@ -90,9 +91,9 @@ export const BALANCE = {
   gymX: 2.1,
   gymZ: 0.6,
   gymRadius: 1.1,
-  discoveryRewards: [5, 10, 20, 45, 100, 250, 1000],
-  regionCollectionRewards: [100, 250, 600, 1200, 2500],
-  fullCollectionReward: 5000,
+  discoveryRewards: [1, 1, 2, 5, 10, 25, 100],
+  regionCollectionRewards: [10, 25, 60, 120, 250],
+  fullCollectionReward: 500,
   speed: 2,
   interaction: 1.4,
   returnRadius: 2.2,
@@ -106,11 +107,11 @@ export const ECONOMY = {
   stageSeconds: [120,240,540,2700,18000,7200,14400,43200,86400,259200,43200,129600,172800,172800,432000,86400,172800,259200,259200,432000],
   // Account for login cadence and purchases inside each interval, not date locks.
   stageCostFactors: [1,1,1,1,1,1,1,1,1,1.25,1,1,1.2,1.2,1.4,1,1.2,1.2,1.2,1.45],
-  baseTeamIncome: 1000, incomeLinear: .30, incomeQuadratic: .014,
+  baseTeamIncome: 10, incomeLinear: .12, incomeQuadratic: .002,
   middleMultiplier: 1.16, middleCostShare: .035, speedCostShare: .78,
-  tierProduction: [1,1.5,2.2,3.2,4.5,6,9],
+  tierProduction: [1,1.2,1.45,1.75,2.1,2.5,3],
   middleUpgrades: ['training','damage','rate','health'] as const,
-  speedGrowth: 2, hatchGrowth: 1.75,
+  speedGrowth: 1.4, hatchGrowth: 1.25, softThreshold:1000,
 };
 export function recommendedIncome(stage:number){
   const n=Math.max(0,Math.min(19,stage-1));
@@ -118,8 +119,8 @@ export function recommendedIncome(stage:number){
 }
 export function growthCost(kind:string,level:number){
   const stage=Math.min(20,level+1);
-  if(stage===1&&kind==='speed')return 15000;
-  return Math.floor(recommendedIncome(stage)*ECONOMY.stageSeconds[stage-1]*ECONOMY.stageCostFactors[stage-1]*(kind==='speed'?ECONOMY.speedCostShare:ECONOMY.middleCostShare));
+  if(stage===1&&kind==='speed')return 150;
+  return Math.floor(softenGrowth(recommendedIncome(stage),ECONOMY.softThreshold)*ECONOMY.stageSeconds[stage-1]*ECONOMY.stageCostFactors[stage-1]*(kind==='speed'?ECONOMY.speedCostShare:ECONOMY.middleCostShare));
 }
 export const REGIONS = [
   {
@@ -217,13 +218,19 @@ const eggNames = ["풀잎", "버섯", "수정", "화석", "우주"];
 export const EGG_HEALTH = {
   legacyRegionBase: [300,4000,15000,75000,400000],
   stageBase: [12,24,45,80,140,240,400,650,1050,1700,2700,4300,6800,10800,17000,27000,43000,68000,108000,170000],
+  earlyStageEnd:3,
+  earlyTierMultipliers:[1,1.1,1.2,1.35,1.5,1.75,2],
 };
-export function eggMaxHp(egg:{type:number;stageId?:number;hpVersion?:2|3}){
+function stageEggHp(stage:number,tier:number,legacy=false){
+  const multiplier=!legacy&&stage<=EGG_HEALTH.earlyStageEnd?EGG_HEALTH.earlyTierMultipliers[tier]:1+tier*.6;
+  return Math.round(EGG_HEALTH.stageBase[Math.max(0,Math.min(19,stage-1))]*multiplier);
+}
+export function eggMaxHp(egg:{type:number;stageId?:number;hpVersion?:2|3|4}){
   const def=EGGS[egg.type];
   // A client may briefly receive a snapshot from the previous server release.
   if(egg.hpVersion===2)return Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6));
   const stage=egg.stageId??(def.region*4+1);
-  return Math.round(EGG_HEALTH.stageBase[Math.max(0,Math.min(19,stage-1))]*(1+def.tier*.6));
+  return stageEggHp(stage,def.tier,egg.hpVersion===3);
 }
 // Keep the first five egg IDs compatible with existing saves.
 export const EGGS = RARITIES.flatMap((r, tier) =>
@@ -232,9 +239,9 @@ export const EGGS = RARITIES.flatMap((r, tier) =>
     rarity: r.name,
     tier,
     region,
-    hp: Math.round(EGG_HEALTH.stageBase[region*4] * (1 + tier * 0.6)),
+    hp: stageEggHp(region*4+1,tier),
     weight: 1-Math.min(BALANCE.maxCarrySlow,BALANCE.carrySlowByTier[tier]),
-    reward: Math.round([30, 100, 300, 800, 2400][region] * (1 + tier * tier)),
+    reward: Math.round([3, 10, 30, 80, 240][region] * (1 + tier * tier)),
     color: r.color,
   })),
 );
@@ -341,20 +348,20 @@ export const MONGLES = [...LEGACY_MONGLES, ...[...STAGE_PET_ROWS,...SECRET_DRAGO
     grid:24,scale:pet.slot===10?BALANCE.secretDragonScale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
   };
 })];
-export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>100+(i+1)*50);
+export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>10+(i+1)*5);
 export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.png`;}
 export const UPGRADES = {
-  health: {name:"든든한 체력",description:"최대 HP +20 · 생산 +16%",icon:"pack",cost:30,growth:1.6},
+  health: {name:"든든한 체력",description:"최대 HP +20 · 생산 강화 (1K 이후 증가 완화)",icon:"pack",cost:30,growth:1.6},
   training: {
     name: "러닝머신 모터",
-    description: "운동 증가량 +0.01 /초 · 생산 +16%",
+    description: "기본 운동량 +0.01 /초 · 생산 강화",
     icon: "gym",
     cost: 45,
     growth: 1.65,
   },
   speed: {
     name: "가벼운 발걸음",
-    description: "기본 스피드 ×2 · 다음 생산 단계",
+    description: "기본 스피드 ×1.4 · 1K 이후 증가 완화",
     icon: "alkong",
     cost: 25,
     growth: 1.6,
@@ -368,21 +375,21 @@ export const UPGRADES = {
   },
   tap: {
     name: "통통 망치",
-    description: "터치 피해 +2",
+    description: "기본 터치 피해 +1 · 1K 이후 증가 완화",
     icon: "hammer",
     cost: 20,
     growth: 1.5,
   },
   damage: {
     name: "병아리 부리",
-    description: "자동 피해 성장 ×1.75 · 생산 +16%",
+    description: "자동 피해 성장 ×1.25 · 1K 이후 증가 완화",
     icon: "pet-9",
     cost: 30,
     growth: 1.65,
   },
   rate: {
     name: "태엽 감기",
-    description: "초당 타격 +0.5회 · 생산 +16%",
+    description: "초당 타격 +0.25회 · 생산 강화",
     icon: "egg-3",
     cost: 50,
     growth: 1.8,
@@ -399,7 +406,7 @@ export type Upgrade = keyof typeof UPGRADES;
 
 export const TRAILS = [
   {name:"맨발 산책", multiplier:1, cost:0, color:"#dbe9a8", model:"compass"},
-  {name:"민들레 바람", multiplier:1.15, cost:60, color:"#f8dc83", model:"flower"},
-  {name:"반딧불 행진", multiplier:1.35, cost:220, color:"#a4f2c4", model:"lantern"},
-  {name:"별똥별 질주", multiplier:1.65, cost:650, color:"#c4adff", model:"meteor"},
+  {name:"민들레 바람", multiplier:1.15, cost:6, color:"#f8dc83", model:"flower"},
+  {name:"반딧불 행진", multiplier:1.35, cost:22, color:"#a4f2c4", model:"lantern"},
+  {name:"별똥별 질주", multiplier:1.65, cost:65, color:"#c4adff", model:"meteor"},
 ];
