@@ -16,6 +16,7 @@ import {
   type Upgrade,
 } from "./data";
 import { ROUTE, FINAL_GUARDIAN } from "./stage-data";
+import {legacyTheme} from './stage-order';
 import {eggName,eggIcon} from "./stage-eggs";
 import { GameState, freshSave } from "./game";
 import { Platform } from "./platform";
@@ -291,7 +292,7 @@ function updateHud() {
     $('region-banner-speed').lastElementChild!.textContent=num(game.recommendedSpeed,1);
     $('region-banner-speed').setAttribute('aria-label',`권장 속도 ${num(game.recommendedSpeed,1)}`);
     $('region-banner-speed').title=`권장 속도 ${num(game.recommendedSpeed,1)}`;
-    $<HTMLImageElement>("region-banner-art").src=`${import.meta.env.BASE_URL}models/guardian-${game.stage.id}.png`;
+    $<HTMLImageElement>("region-banner-art").src=`${import.meta.env.BASE_URL}models/guardian-${legacyTheme(game.stage.id)}.png`;
     $<HTMLImageElement>("region-banner-object").src=eggIcon({type:0,stageId:game.stage.id,variant:0});
     $("region-banner").style.setProperty('--region-accent',`#${game.stage.accent.toString(16).padStart(6,'0')}`);
   }
