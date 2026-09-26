@@ -440,7 +440,7 @@ function updateHud() {
   if (tab === "hatchery") {
     const e = game.selected;
     $("egg-health").innerHTML = e
-      ? `<div class="track" role="progressbar" aria-label="${eggName(e)} 남은 알 내구도" aria-valuenow="${e.hp}" aria-valuemin="0" aria-valuemax="${eggMaxHp(e)}"><i style="width:${(e.hp / eggMaxHp(e)) * 100}%"></i></div><small class="egg-health-numbers"><span aria-label="체력 ${num(e.hp)} / ${num(eggMaxHp(e))}">♡ ${num(e.hp)} / ${num(eggMaxHp(e))}</span><span aria-label="클릭 피해 ${num(Math.min(e.hp,game.tapDamage))}">${uiIcon('tap')} −${num(Math.min(e.hp,game.tapDamage))}</span></small><small class="egg-weight">${eggWeightLabel(e.type,game.save.upgrades.carry)}</small>`
+      ? `<div class="track" role="progressbar" aria-label="${eggName(e)} 남은 알 내구도" aria-valuenow="${e.hp}" aria-valuemin="0" aria-valuemax="${eggMaxHp(e)}"><i style="width:${(e.hp / eggMaxHp(e)) * 100}%"></i></div><small class="egg-health-numbers"><span aria-label="체력 ${num(e.hp)} / ${num(eggMaxHp(e))}">♡ ${num(e.hp)} / ${num(eggMaxHp(e))}</span><span aria-label="클릭 피해 ${num(Math.min(e.hp,game.tapDamage))}">${uiIcon('tap')} −${num(Math.min(e.hp,game.tapDamage))}</span></small>`
       : '<span aria-label="보관 중인 알이 없어요">🥚 0</span>';
   }
   const touch=$<HTMLButtonElement>('hatch-touch');
@@ -489,7 +489,7 @@ function renderEggQueue() {
     if (!e)
       return '<div class="egg-slot empty" aria-label="빈 보관 칸"><span>＋</span></div>';
     const def = EGGS[e.type];
-    return `<button data-egg="${e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""} ${def.tier >= 4 ? "rare" : ""}" style="--egg:${def.color}"><b>${def.rarity}</b><img class="egg-icon" src="${eggIcon(e)}" alt="" /><small>${e.hp===0?'획득 준비 완료':eggName(e)}</small><small class="egg-slot-weight">무게 감속 ${Math.round((1-def.weight)*100)}%</small></button>`;
+    return `<button data-egg="${e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""} ${def.tier >= 4 ? "rare" : ""}" style="--egg:${def.color}"><b>${def.rarity}</b><img class="egg-icon" src="${eggIcon(e)}" alt="" /><small>${e.hp===0?'획득 준비 완료':eggName(e)}</small></button>`;
   }).join("");
   $("pet-effects").innerHTML = game.save.active.length
     ? `<div class="stat-badges"><span>${game.save.active.length}/${BALANCE.maxCompanions}</span>${petAbilities(game,true)}</div>`
