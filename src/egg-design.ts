@@ -22,7 +22,7 @@ export function designEgg(stage:number,variant:number,tier=0){
  const candidates=STAGE_PET_ROWS.filter(p=>p.stageId===stage&&p.tier===tier);
  const pet=dragon?SECRET_DRAGON_ROWS[stage-1]:candidates[variant%Math.max(1,candidates.length)];
  const petColor=pet?parseInt(pet.color.slice(1),16):s.color;
- const shell=blend(petColor,0xffefd4,.22),accent=s.accent;
+ const shell=blend(petColor,0xffefd4,.12),accent=s.accent;
  const material=[4,7,12,16,18,20].includes(stage)?0x394753:[8,11,13].includes(stage)?0xb99154:0x806b53;
  const colors=[shell,accent,0xfff0d6,material,blend(shell,material,.38),blend(shell,0xffffff,.38),blend(accent,0xffffff,.45),petColor].map(c=>`#${c.toString(16).padStart(6,'0')}`);
  const cells=new Map<number,Cell>();
@@ -149,6 +149,31 @@ export function designEgg(stage:number,variant:number,tier=0){
   else if(pet?.shape==='plant')leaf(7.5,14,8);
  }
  // Dragon seals have large paired horns and an inset diamond, not rainbow particles.
- if(dragon){pair(5.5,17,9.5,2,4,4,4);box(9.5,9,15.5,4,4,2,7);}
+ if(dragon){
+  // The crest previews the same wing ecology as the hatched dragon.
+  if([3,5,14].includes(stage))for(let i=0;i<3;i++)pair(4.5-i,11-i,9.5,2,5-i,4,i===2?7:2);
+  else if([1,9,17].includes(stage))leaf(6.5,14,8);
+  else if([7,12,19,20].includes(stage)){
+   for(let j=0;j<20;j++){const a=j*Math.PI/10;if(stage===20&&j%7<2)continue;box(9.5+Math.cos(a)*8,10+Math.sin(a)*7,9.5,2,2,2,j%4===0?7:2);}
+  }else pair(5.5,17,9.5,2,4,4,4);
+  box(9.5,9,15.5,4,4,2,7);
+ }
  const result={cells:[...cells.values()],colors};cache.set(key,result);return result;
+}
+
+const nests=new Map<number,{cells:Cell[];colors:string[]}>();
+/** Low stage-specific cradles share the old nest's footprint and egg contact height. */
+export function designNest(stage:number){
+ const cached=nests.get(stage);if(cached)return cached;
+ const s=STAGES[stage-1],mechanical=[2,6,7,12,13,18].includes(stage),mineral=[4,8,11,14,19,20].includes(stage);
+ const material=mechanical?0x58606b:mineral?blend(s.color,0x383b4b,.35):blend(s.color,0x735839,.4);
+ const colors=[material,blend(s.color,0xf5e2b5,.15),blend(s.accent,material,.3)].map(c=>`#${c.toString(16).padStart(6,'0')}`),cells:Cell[]=[];
+ for(let x=1;x<19;x++)for(let z=1;z<19;z++){
+  const dx=x-9.5,dz=z-9.5,r=Math.hypot(dx,dz),edge=mechanical?Math.max(Math.abs(dx),Math.abs(dz)):r;
+  if(edge>8)continue;
+  const band=edge>6,height=band?3:1;
+  for(let y=0;y<height;y++)cells.push([x,y,z,band?(y===2?2:1):1]);
+  if(band&&((mechanical&&(x%5===0||z%5===0))||(!mechanical&&Math.sin(Math.atan2(dz,dx)*(mineral?6:5))>.8)))cells.push([x,3,z,3]);
+ }
+ const result={cells,colors};nests.set(stage,result);return result;
 }

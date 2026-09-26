@@ -14,46 +14,14 @@ function sculpture(stage:number,variant:number):Block[]{
  const ring=(y:number,r:number,col=a)=>{for(let j=0;j<12;j++){const t=j*Math.PI/6;b(Math.cos(t)*r,y,Math.sin(t)*r,.23,.2,.23,col);}};
  const crystal=(x:number,z:number,h:number,col=a)=>{b(x,h/2,z,.35,h,.35,col);b(x,h+.08,z,.16,.16,.16,cream);};
  if(variant>=3){
-  const organic=[1,3,5,9,16,17].includes(stage),metal=[2,7,12,13,18,19].includes(stage);
-  const material=organic?c:metal?dark:cream,trim=metal?gold:a;
-  switch(variant){
-   case 3: // Broken arches, coral gates or gantries.
-    for(const x of [-.65,.65]){b(x,.85,0,.35,1.7,.5,material);b(x,1.6,0,.55,.2,.7,trim);}b(0,1.85,0,1.7,.3,.6,trim);break;
-   case 4: // Uneven growths, pylons and crystal organs.
-    for(let j=0;j<5;j++){const x=(j-2)*.32,h=.5+(j%3)*.45;post(x,Math.sin(j)*.3,h,material);b(x,h,Math.sin(j)*.3,organic?.65:.28,.25,.5,trim);}break;
-   case 5: // Branch lamps, signal posts and lanterns.
-    post(0,0,1.9,material);b(.35,1.8,0,.9,.16,.18,trim);b(.7,1.4,0,.35,.6,.35,a);b(.7,1.75,0,.6,.1,.6,material);break;
-   case 6: // Recessed pools, fountains and reactor basins.
-    ring(.15,.8,material);b(0,.04,0,1.1,.06,1.1,a);b(0,.45,0,.2,.8,.2,trim);ring(.85,.3,cream);break;
-   case 7: // Carts, seed carriers and transport sleds.
-    b(0,.4,0,1.3,.3,.9,material);for(const x of [-.5,.5])for(const z of [-.5,.5])b(x,.18,z,.3,.35,.18,dark);
-    for(let j=0;j<3;j++)b((j-1)*.35,.7,0,.3,.4+j*.12,.65,trim);b(.8,.55,0,.6,.1,.12,material);break;
-   case 8: // Totems with deliberately missing blocks.
-    for(let j=0;j<4;j++)b(Math.sin(j+stage)*.15,.25+j*.38,0,.75-j*.1,.32,.6,j%2?trim:material);b(.5,.8,0,.5,.2,.4,a);break;
-   case 9: // Small regional idols with wings, horns or control arms.
-    b(0,.65,0,.65,1,.6,material);b(0,1.4,0,.7,.55,.6,trim);
-    for(const x of [-.55,.55]){b(x,1,0,.45,.18,.2,material);b(x,1.6,0,.12,.5,.15,a);}b(0,.12,0,1.2,.24,1,material);break;
-   case 10: // Open jars, shells and pressurised tanks.
-    ring(.2,.5,material);ring(.5,.6,material);ring(.85,.45,trim);b(0,.08,0,.8,.1,.8,a);
-    for(const x of [-.65,.65])b(x,.65,0,.18,.35,.3,trim);break;
-   case 11: // Timber, bone, ice or metal stepping bridges.
-    for(let j=0;j<7;j++)b((j-3)*.25,.15+Math.sin(j*Math.PI/6)*.25,0,.23,.15,.9,j%2?trim:material);
-    for(const x of [-.7,.7])for(const z of [-.5,.5])post(x,z,.55,material);break;
-   case 12: // Hanging leaves, cloth banners or neon displays.
-    for(const x of [-.7,.7])post(x,0,1.5,material);b(0,1.6,0,1.7,.15,.15,trim);
-    for(let j=0;j<5;j++)b((j-2)*.25,1.2-(j%2)*.1,0,.24,.65+(j%2)*.2,.1,j%2?a:cream);break;
-   case 13: // Sheltered gardens, kiosks and miniature shrines.
-    for(const x of [-.6,.6])post(x,0,1.15,material);roof(1.2,trim);b(0,.2,0,1.4,.35,1,material);b(0,.7,0,.4,.65,.4,a);break;
-   case 14: // Shell spirals, stacked gears and celestial instruments.
-    for(let j=0;j<18;j++){const t=j*.55,r=.7-j*.025;b(Math.cos(t)*r,.15+j*.07,Math.sin(t)*r,.24,.18,.24,j%3?trim:cream);}break;
+  // Assemble native biome props, not the same generic cart/gate in every world.
+  const count=variant%3===0?3:2;
+  for(let i=0;i<count;i++){
+   const scale=i===0?1:.38+(variant%4)*.08,side=i%2?-1:1;
+   for(const p of sculpture(stage,(variant+i)%3))out.push({...p,
+    x:p.x*scale+(i?side*.8:0),y:p.y*scale,z:p.z*scale+(i?.5:0),
+    w:p.w*scale,h:p.h*scale,d:p.d*scale,roll:(p.roll??0)+(i?side*.08:0)});
   }
-  // Each biome adds its own landmark language to the shared construction forms.
-  if(organic){for(let j=0;j<3;j++)b((j-1)*.45,.2+variant%3*.08,.5,.3,.13,.45,a);}
-  else if(metal){for(const x of [-.4,.4])b(x,.35,.51,.12,.12,.08,a);}
-  else if([4,8,14].includes(stage)){crystal(.65,-.4,.45+variant%3*.2,a);}
-  else {b(0,.4,.51,.12,.3,.08,gold);}
-  // A small biome sculpture makes each construction specific to its world.
-  for(const p of sculpture(stage,variant%3))b(p.x*.28,1.9+p.y*.28,p.z*.28,p.w*.28,p.h*.28,p.d*.28,p.c);
   return out;
  }
  switch(stage){
@@ -242,6 +210,9 @@ function createRegionLayout(stage:number,length:number){
   // Fine ground details form patches rather than another evenly spaced prop row.
   for(let i=0;i<Math.ceil(length*1.5);i++){
    const x=(rand()<.5?-1:1)*(3.2+rand()*3.5),z=-8-rand()*(length-4);
+   // Quiet stretches between ecological patches; detail gathers by the landmark
+   // and existing groves, instead of evenly peppering the entire escape lane.
+   if(Math.abs(z+Math.min(38,length*.34))>9&&Math.sin(z*.23+stage)<.35)continue;
    if([1,9,17].includes(stage)){for(let j=0;j<3;j++)b(x+j*.1,.07,z,.06,.2+rand()*.12,.06,stage===1?0x90ad6c:0x769566);}
    else if([3,5,14].includes(stage)){b(x,-.02,z,.3+rand()*.5,.03,.18+rand()*.3,stage===14?0xeaf5ef:s.accent);}
    else if([4,16].includes(stage)){b(x,-.01,z,.3,.04,.3,stage===4?0xc67a55:0x9aa867);b(x+.15,.02,z,.12,.08,.15,s.color);}

@@ -9,7 +9,7 @@ export class HazardView{
  regions=new ConnectedRegionArt();guardians=new RegionGuardian();
  private warnings=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({transparent:true,opacity:.75,depthWrite:false,depthTest:false}),1536);
  private actors=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshLambertMaterial(),1024);
- private dummy=new T.Object3D();private color=new T.Color();private warningCount=0;private actorCount=0;
+ private dummy=new T.Object3D();private color=new T.Color();private sourceAccent=new T.Color();private warningCount=0;private actorCount=0;
  constructor(){this.group.add(this.regions.group,this.guardians.group,this.warnings,this.actors);for(const m of [this.warnings,this.actors])m.frustumCulled=false;this.warnings.renderOrder=10;this.actors.castShadow=true;}
  private put(mesh:T.InstancedMesh,index:number,x:number,y:number,z:number,w:number,h:number,d:number,color:number,rotation=0){
   if(index>=mesh.instanceMatrix.count)return;
@@ -22,6 +22,23 @@ export class HazardView{
    for(const [lane,d] of stagePatterns(game.stage.id,game.z+game.stageOffset).entries()){
     const {x,z}=environmentPlacement(game.stage.id,lane,game.stageOffset);
     if(Math.abs(z-game.z)>36)continue;
+    const attack=game.hazards.attacks.find(h=>h.definition.id===d.id&&['Telegraph','Active','Recovery'].includes(h.phase));
+    const charge=attack?.phase==='Telegraph'?Math.min(1,attack.elapsed/attack.warning):attack?.phase==='Active'?1:0;
+    const biome=STAGES[d.stageId-1],sourceColor=this.color.setHex(biome.color).lerp(this.sourceAccent.setHex(biome.accent),.25+charge*.65).getHex();
+    // Material-specific source organs charge at the fixed emitter. Small, low
+    // construction silhouettes never masquerade as the orange damage footprint.
+    if([3,5].includes(d.stageId))for(let j=0;j<12;j++){
+     const a=j*Math.PI/6+time*.16,r=.65+charge*.2;
+     this.put(this.actors,this.actorCount++,x+Math.cos(a)*r,.045,z+Math.sin(a)*r,.22,.06,.12,sourceColor,a);
+    }
+    else if([4,14].includes(d.stageId))for(let j=0;j<5;j++)this.put(this.actors,this.actorCount++,x+(j-2)*.22,.06+charge*.12,z+(j%2)*.2,.26,.12,.16,sourceColor,j*.3);
+    else if([6,10,11].includes(d.stageId)){
+     this.put(this.actors,this.actorCount++,x,.38,z,.6,.7,.45,biome.color);
+     for(const side of [-1,1])this.put(this.actors,this.actorCount++,x+side*.38,.65+charge*.25,z,.2,.35,.22,sourceColor);
+    }else if([7,12,13,18].includes(d.stageId)){
+     for(const side of [-1,1])this.put(this.actors,this.actorCount++,x+side*.4,.4,z,.22,.6,.22,biome.color);
+     this.put(this.actors,this.actorCount++,x,.7,z,.45,.15+charge*.25,.45,sourceColor);
+    }else if([15,19,20].includes(d.stageId))for(let j=0;j<7;j++)this.put(this.actors,this.actorCount++,x+Math.sin(j*.7)*.35,.13+j*.12,z,.14,.18,.12,sourceColor);
     if(['hay','train','book','raptor','gear','orb'].includes(d.visual)){
      for(const side of [-1,1])this.put(this.actors,this.actorCount++,0,.03,z+side*.65,B.laneHalfWidth*2,.06,.12,0x887b62);
     }else{
@@ -43,6 +60,33 @@ export class HazardView{
    if(!recover){
     this.put(this.warnings,this.warningCount++,h.target.x,3.7,h.target.z,.16,.55,.16,color);
     this.put(this.warnings,this.warningCount++,h.target.x,3.28,h.target.z,.16,.14,.16,color);
+   }
+   // Same dimensions and orientation as contains(): ellipse z radius=.75r,
+   // line half-width=d.width, cone opening=120 degrees, ring escape gap=B.waveGap.
+   // A thin broken edge distinguishes telegraph, solid active edge and fading residue.
+   const mark=(x:number,z:number,angle=0)=>this.put(this.warnings,this.warningCount++,x,.075,z,.13,recover?.025:.045,.06,color,angle);
+   const segments=48;
+   for(let j=0;j<segments;j++){
+    if(h.phase==='Telegraph'&&j%3===2)continue;
+    if(recover&&j%2)continue;
+    const angle=j/segments*Math.PI*2;
+    if(d.shape==='ellipse')mark(h.target.x+Math.cos(angle)*d.radius,h.target.z+Math.sin(angle)*d.radius*.75,-angle);
+    else if(d.shape==='line'){
+     const t=j/(segments-1),along=(t-.5)*d.length,cs=Math.cos(h.angle),sn=Math.sin(h.angle);
+     for(const side of [-1,1])mark(h.target.x+along*cs-side*d.width*sn,h.target.z+along*sn+side*d.width*cs,-h.angle);
+    }else if(d.shape==='cone'){
+     const a=h.angle-Math.PI/3+j/(segments-1)*Math.PI*2/3;
+     mark(h.origin.x+Math.cos(a)*d.radius,h.origin.z+Math.sin(a)*d.radius,-a);
+    }else{
+     const gap=Math.abs(Math.atan2(Math.sin(angle-h.angle),Math.cos(angle-h.angle)))<B.waveGap;
+     const radius=d.radius*(active?Math.min(1,h.elapsed/d.activeDuration):1);
+     if(!gap)for(const edge of [-.3,.3])mark(h.target.x+Math.cos(angle)*Math.max(0,radius+edge),h.target.z+Math.sin(angle)*Math.max(0,radius+edge),-angle);
+    }
+   }
+   if(d.shape==='cone'||d.shape==='line')for(let j=0;j<=12;j++)for(const side of [-1,1]){
+    const t=j/12;
+    if(d.shape==='cone'){const a=h.angle+side*Math.PI/3;mark(h.origin.x+Math.cos(a)*d.radius*t,h.origin.z+Math.sin(a)*d.radius*t,-a);}
+    else {const along=side*d.length/2,cross=(t*2-1)*d.width,cs=Math.cos(h.angle),sn=Math.sin(h.angle);mark(h.target.x+along*cs-cross*sn,h.target.z+along*sn+cross*cs,-h.angle);}
    }
    const progress=Math.min(1,h.elapsed/h.warning),fall=T.MathUtils.smoothstep(progress,.65,1),a=active||recover?1:Math.max(.15,progress),y=active||recover?.3:1.8*(1-fall)+.3;
    const fade=recover?Math.max(0,1-h.elapsed/.4):1;

@@ -37,12 +37,12 @@ export function greetPet(pet:Object3D,id:number,elapsed:number,reduced=false){
 
 function animateStagePet(pet:Object3D,id:number,time:number,walking:boolean,reduced:boolean){
  const stage=id>=300?id-299:Math.floor((id-100)/10)+1,slot=id>=300?10:(id-100)%10;
- const parts=pet.userData.stageParts??=Object.fromEntries(['body','head','eyes','left_ear','right_ear','left_arm','right_arm','left_leg','right_leg','tail','crown','float'].map(n=>[n,pet.getObjectByName(n)]));
- for(const part of Object.values(parts) as (Object3D|undefined)[])if(part){part.rotation.set(0,0,0);part.scale.set(1,1,1);}
+ const parts=pet.userData.stageParts??=Object.fromEntries(['body','head','eyes','left_ear','right_ear','left_arm','right_arm','left_leg','right_leg','tail','tail_1','tail_2','tail_3','left_tip','right_tip','crown','float'].map(n=>[n,pet.getObjectByName(n)]));
+ for(const part of Object.values(parts) as (Object3D|undefined)[])if(part){const r=part.userData.restRotation??[0,0,0],s=part.userData.restScale??[1,1,1];part.rotation.set(r[0],r[1],r[2]);part.scale.set(s[0],s[1],s[2]);}
  if(reduced)return;
  const t=time*(.65+(stage%5)*.13)+slot*.43,weight=walking?.35:1;
  const wave=Math.sin(t),beat=Math.max(0,Math.sin(t*.7))**6;
- const pose=(name:string,x=0,y=0,z=0)=>parts[name]?.rotation.set(x*weight,y*weight,z*weight);
+ const pose=(name:string,x=0,y=0,z=0)=>{const p=parts[name];if(p){const r=p.userData.restRotation??[0,0,0];p.rotation.set(r[0]+x*weight,r[1]+y*weight,r[2]+z*weight);}};
  // Environment cadence: stepped mechanisms, drifting water, delayed void parts.
  const cadence=[2,7,18].includes(stage)?Math.round(wave*3)/3:[3,5,12,19,20].includes(stage)?Math.sin(t*.65):wave;
  if(slot===0)pose('head',-.06*cadence,.14*Math.sin(t*.6));
@@ -57,4 +57,6 @@ function animateStagePet(pet:Object3D,id:number,time:number,walking:boolean,redu
  if(slot===9||slot===10){pose('left_arm',.05*wave,0,.13*cadence);pose('right_arm',-.05*wave,0,-.13*cadence);pose('tail',0,.12*Math.sin(t*.6));pose('head',-.06*beat,.08*wave);}
  pose('crown',.05*cadence,slot===6?.18*beat:0,stage===1?.07*wave:0);
  pose('float',.06*Math.sin(t*.6-.8),.08*Math.sin(t*.4-.8),stage===20?.08*Math.sin(t-1):0);
+ for(let i=1;i<=3;i++)pose(`tail_${i}`,0,.07*Math.sin(t*.85-i*.65));
+ pose('left_tip',0,.05*Math.sin(t-.6),.045*cadence);pose('right_tip',0,-.05*Math.sin(t-.6),-.045*cadence);
 }

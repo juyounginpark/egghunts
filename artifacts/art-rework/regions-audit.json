@@ -1,0 +1,952 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "art": {
+        "terrain": {
+          "stage": 1,
+          "blocks": 2661,
+          "moving": 10,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            1,
+            2
+          ]
+        },
+        "guardian": {
+          "stage": 1,
+          "parts": 382,
+          "visibleParts": 382,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 23,
+      "triangles": 43012,
+      "memory": {
+        "geometries": 49,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 2,
+      "art": {
+        "terrain": {
+          "stage": 2,
+          "blocks": 3009,
+          "moving": 50,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            3,
+            2
+          ]
+        },
+        "guardian": {
+          "stage": 2,
+          "parts": 373,
+          "visibleParts": 373,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 23,
+      "triangles": 46360,
+      "memory": {
+        "geometries": 66,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 3,
+      "art": {
+        "terrain": {
+          "stage": 3,
+          "blocks": 3346,
+          "moving": 10,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            3,
+            4
+          ]
+        },
+        "guardian": {
+          "stage": 3,
+          "parts": 400,
+          "visibleParts": 400,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 23,
+      "triangles": 50902,
+      "memory": {
+        "geometries": 79,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 4,
+      "art": {
+        "terrain": {
+          "stage": 4,
+          "blocks": 2647,
+          "moving": 5,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            4,
+            5
+          ]
+        },
+        "guardian": {
+          "stage": 4,
+          "parts": 363,
+          "visibleParts": 363,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 23,
+      "triangles": 42974,
+      "memory": {
+        "geometries": 95,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 5,
+      "art": {
+        "terrain": {
+          "stage": 5,
+          "blocks": 2353,
+          "moving": 10,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            6,
+            5
+          ]
+        },
+        "guardian": {
+          "stage": 5,
+          "parts": 475,
+          "visibleParts": 475,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 26,
+      "triangles": 40250,
+      "memory": {
+        "geometries": 109,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 6,
+      "art": {
+        "terrain": {
+          "stage": 6,
+          "blocks": 3295,
+          "moving": 40,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            6,
+            7
+          ]
+        },
+        "guardian": {
+          "stage": 6,
+          "parts": 300,
+          "visibleParts": 300,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 26,
+      "triangles": 50512,
+      "memory": {
+        "geometries": 123,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 7,
+      "art": {
+        "terrain": {
+          "stage": 7,
+          "blocks": 2744,
+          "moving": 5,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            7,
+            8
+          ]
+        },
+        "guardian": {
+          "stage": 7,
+          "parts": 330,
+          "visibleParts": 330,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 26,
+      "triangles": 43974,
+      "memory": {
+        "geometries": 136,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 8,
+      "art": {
+        "terrain": {
+          "stage": 8,
+          "blocks": 1985,
+          "moving": 25,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            9,
+            8
+          ]
+        },
+        "guardian": {
+          "stage": 8,
+          "parts": 446,
+          "visibleParts": 446,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 27,
+      "triangles": 36388,
+      "memory": {
+        "geometries": 150,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 9,
+      "art": {
+        "terrain": {
+          "stage": 9,
+          "blocks": 2988,
+          "moving": 25,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            9,
+            10
+          ]
+        },
+        "guardian": {
+          "stage": 9,
+          "parts": 427,
+          "visibleParts": 427,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 28,
+      "triangles": 48766,
+      "memory": {
+        "geometries": 165,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 10,
+      "art": {
+        "terrain": {
+          "stage": 10,
+          "blocks": 1829,
+          "moving": 5,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            10,
+            11
+          ]
+        },
+        "guardian": {
+          "stage": 10,
+          "parts": 251,
+          "visibleParts": 251,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 28,
+      "triangles": 34318,
+      "memory": {
+        "geometries": 178,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 11,
+      "art": {
+        "terrain": {
+          "stage": 11,
+          "blocks": 2125,
+          "moving": 25,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            12,
+            11
+          ]
+        },
+        "guardian": {
+          "stage": 11,
+          "parts": 411,
+          "visibleParts": 411,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 28,
+      "triangles": 38014,
+      "memory": {
+        "geometries": 192,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 12,
+      "art": {
+        "terrain": {
+          "stage": 12,
+          "blocks": 2261,
+          "moving": 10,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            12,
+            13
+          ]
+        },
+        "guardian": {
+          "stage": 12,
+          "parts": 361,
+          "visibleParts": 361,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 28,
+      "triangles": 39774,
+      "memory": {
+        "geometries": 206,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 13,
+      "art": {
+        "terrain": {
+          "stage": 13,
+          "blocks": 2263,
+          "moving": 50,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            13,
+            14
+          ]
+        },
+        "guardian": {
+          "stage": 13,
+          "parts": 332,
+          "visibleParts": 332,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 30,
+      "triangles": 39956,
+      "memory": {
+        "geometries": 220,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 14,
+      "art": {
+        "terrain": {
+          "stage": 14,
+          "blocks": 1792,
+          "moving": 5,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            15,
+            14
+          ]
+        },
+        "guardian": {
+          "stage": 14,
+          "parts": 486,
+          "visibleParts": 486,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 30,
+      "triangles": 35346,
+      "memory": {
+        "geometries": 236,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 15,
+      "art": {
+        "terrain": {
+          "stage": 15,
+          "blocks": 1729,
+          "moving": 35,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            15,
+            16
+          ]
+        },
+        "guardian": {
+          "stage": 15,
+          "parts": 358,
+          "visibleParts": 358,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 30,
+      "triangles": 34122,
+      "memory": {
+        "geometries": 250,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 16,
+      "art": {
+        "terrain": {
+          "stage": 16,
+          "blocks": 2164,
+          "moving": 5,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            16,
+            17
+          ]
+        },
+        "guardian": {
+          "stage": 16,
+          "parts": 336,
+          "visibleParts": 336,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 30,
+      "triangles": 38016,
+      "memory": {
+        "geometries": 263,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 17,
+      "art": {
+        "terrain": {
+          "stage": 17,
+          "blocks": 2194,
+          "moving": 40,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            18,
+            17
+          ]
+        },
+        "guardian": {
+          "stage": 17,
+          "parts": 432,
+          "visibleParts": 432,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 33,
+      "triangles": 40618,
+      "memory": {
+        "geometries": 277,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 18,
+      "art": {
+        "terrain": {
+          "stage": 18,
+          "blocks": 2485,
+          "moving": 50,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            18,
+            19
+          ]
+        },
+        "guardian": {
+          "stage": 18,
+          "parts": 402,
+          "visibleParts": 402,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 32,
+      "triangles": 43102,
+      "memory": {
+        "geometries": 290,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 19,
+      "art": {
+        "terrain": {
+          "stage": 19,
+          "blocks": 3423,
+          "moving": 10,
+          "assemblies": 12,
+          "elementTypes": 15,
+          "endWall": false,
+          "sections": [
+            19,
+            20
+          ]
+        },
+        "guardian": {
+          "stage": 19,
+          "parts": 513,
+          "visibleParts": 513,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 33,
+      "triangles": 55258,
+      "memory": {
+        "geometries": 303,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    },
+    {
+      "id": 20,
+      "art": {
+        "terrain": {
+          "stage": 20,
+          "blocks": 2125,
+          "moving": 5,
+          "assemblies": 57,
+          "elementTypes": 15,
+          "endWall": true,
+          "sections": [
+            20
+          ]
+        },
+        "guardian": {
+          "stage": 20,
+          "parts": 421,
+          "visibleParts": 421,
+          "pose": [
+            4.199999999999999,
+            0,
+            0,
+            0,
+            0,
+            3.2759999999999994,
+            0,
+            0,
+            0,
+            0,
+            4.199999999999999,
+            0,
+            -2.6,
+            0.007408800423143029,
+            -37,
+            1
+          ]
+        }
+      },
+      "calls": 32,
+      "triangles": 39922,
+      "memory": {
+        "geometries": 317,
+        "textures": 3
+      },
+      "movement": 0.007850180909918356
+    }
+  ],
+  "memory": {
+    "geometries": 317,
+    "textures": 3
+  },
+  "after": {
+    "geometries": 317,
+    "textures": 3
+  },
+  "errors": []
+}

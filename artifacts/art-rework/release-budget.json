@@ -1,0 +1,70 @@
+{
+  "initialBytes": 341546,
+  "jsGzipBytes": 306892,
+  "resources": [
+    {
+      "name": "/assets/index-CYIAOpVq.js",
+      "bytes": 76990
+    },
+    {
+      "name": "/assets/stage-eggs-CRUVkDB1.js",
+      "bytes": 8269
+    },
+    {
+      "name": "/assets/pet-animation-94tqp17H.js",
+      "bytes": 21563
+    },
+    {
+      "name": "/assets/three-CLIZvOxX.js",
+      "bytes": 119857
+    },
+    {
+      "name": "/assets/index-D4MUebN1.css",
+      "bytes": 11700
+    },
+    {
+      "name": "/assets/toss-DS2sntbW.js",
+      "bytes": 19898
+    },
+    {
+      "name": "/models/alkong.png",
+      "bytes": 2019
+    },
+    {
+      "name": "/models/barn.png",
+      "bytes": 2559
+    },
+    {
+      "name": "/models/egg-0.png",
+      "bytes": 1845
+    },
+    {
+      "name": "/models/hammer.png",
+      "bytes": 1255
+    },
+    {
+      "name": "/models/pet-0.png",
+      "bytes": 11891
+    },
+    {
+      "name": "/models/shop.png",
+      "bytes": 2357
+    },
+    {
+      "name": "/models/gym.png",
+      "bytes": 1884
+    },
+    {
+      "name": "/assets/index-HvvPIjmY.js",
+      "bytes": 59159
+    },
+    {
+      "name": "/favicon.ico",
+      "bytes": 300
+    }
+  ],
+  "errors": [],
+  "loadError": "locator.waitFor: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#loading') to be hidden\u001b[22m\n\u001b[2m    121 × locator resolved to visible <div id=\"loading\">…</div>\u001b[22m\n",
+  "loadingText": "알콩 원정대\n이메일\n로그인 메일 받기\n게스트로 시작\n게스트 기록은 이 브라우저에서 이어집니다. 로그아웃·브라우저 데이터 삭제 시 복구할 수 없어요.\n\n최대 5명 · 함께 탐험해요",
+  "scope": "Local production preview, cold browser cache, 390x844 desktop Edge. Incomplete transfer if loadError is set. Not physical mobile FPS."
+}

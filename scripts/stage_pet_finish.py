@@ -251,16 +251,20 @@ def expressive_face(g,slot,stage):
  y,z=g.face;style=(slot+stage)%10
  for xyz,(_,p)in list(g.cells.items()):
   if p=='eyes':del g.cells[xyz]
- # Face plane and muzzle use a separate light material, rather than black patches.
- g.box(6,17,y-2,y+2,z+1,z+2,6,'head')
+ # Keep the early catalogue's compact eyes. Pale face masks belong only to
+ # owlish/sleepy expressions, never a universal muzzle or cheek treatment.
+ if style in [2,5]:g.box(7,16,y-1,y+2,z+1,z+2,6,'head')
  def pair(x0,x1,y0,y1,c,p='eyes'):g.pair(x0,x1,y0,y1,z,z,c,p)
  if style in [0,1,4,6,9]:
-  pair(5,8,y,y+3,6);pair(6 if style!=1 else 5,7 if style!=1 else 6,y+(1 if style in [0,9] else 0),y+2,7 if style in [4,6] else 5)
+  if style==6 and stage in [2,7,12,18]:
+   pair(6,8,y,y+2,3);pair(7,8,y+1,y+1,7)
+  else:
+   pair(7,8,y,y+1,5)
+   if style in [0,9]:pair(7,7,y+1,y+1,6)
  elif style in [2,5]:pair(5,8,y+1,y+1,5);pair(5,8,y,y,6)
- elif style in [3,7]:pair(5,8,y,y+2,6);pair(6,8,y+1,y+2,5);pair(4,6,y+3,y+3,3,'head')
- else:pair(5,7,y+1,y+3,5);pair(6,7,y+2,y+3,7)
- # Broad blush/muzzle marks are anatomical color planes, not confetti.
- pair(4,6,y-2,y-1,8,'head');g.box(10,13,y-2,y-2,z-1,z,5,'head')
+ elif style in [3,7]:pair(6,8,y+1,y+1,5);pair(5,6,y+2,y+2,3,'head')
+ else:pair(7,8,y,y+2,5);pair(7,7,y+2,y+2,6)
+ g.box(11,12,y-2,y-2,z,z,5,'head')
  if style in [0,3,9]:g.box(10,10,y-1,y-1,z-1,z,5,'head');g.box(13,13,y-1,y-1,z-1,z,5,'head')
  if style in [2,5]:g.box(10,13,y-2,y-2,z-1,z,3,'head')
 

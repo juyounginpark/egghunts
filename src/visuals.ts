@@ -1,7 +1,7 @@
 ﻿import * as T from "three";
-import { EGGS, RARITIES, MONGLES } from "./data";
+import { RARITIES, MONGLES } from "./data";
 import {eggDesignAppearance,stageEggCells,type EggAppearance} from "./stage-eggs";
-import {EGG_EFFECT_FAMILIES} from './egg-design';
+import {EGG_EFFECT_FAMILIES,designNest} from './egg-design';
 import { voxelModel, proceduralVoxelModel } from "./voxel";
 const cube = new T.BoxGeometry(1, 1, 1);
 const materials = RARITIES.map(() => new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.8,blending:T.AdditiveBlending,depthWrite:false}));
@@ -16,6 +16,7 @@ function aura(g:T.Group,tier:number,seed:number,family:number) {
   for(let i=0;i<sparks.instanceMatrix.count;i++){
     tint.set(RARITIES[tier].color).lerp(accent.setHex(palettes[family][(i+seed)%3]),tier>=3?.65:.2);
     if(g.userData.eggAccent)tint.set(g.userData.eggAccent).lerp(accent.setHex(0xfff5de),i%3*.2);
+    else if(g.userData.petAccent)tint.set(g.userData.petAccent).lerp(accent.setHex(palettes[family][i%3]),.2);
     else if(tier===6&&i%5===0)tint.setHSL((i*.13+seed*.07)%1,.85,.72);
     sparks.setColorAt(i,tint);
   }
@@ -64,7 +65,16 @@ export function animateEgg(g:T.Object3D,time:number,low=false){
         const crown=i/count*Math.PI*8+t*.35;x=Math.cos(crown)*.5;z=Math.sin(crown)*.5;y=body*1.6+.1*Math.sin(crown*3);sx=.06;sy=i%3===0?.2:.08;sz=.06;
       }
     }
-    if(g.userData.petId>=100){x=Math.cos(a)*.95;z=Math.sin(a)*.95;y=.04+(i%3)*.035;sy=.025;}
+    if(g.userData.petId>=100){
+      const radius=(g.userData.effectRadius??.7)+.12;
+      x=Math.cos(a*.45)*radius;z=Math.sin(a*.45)*radius;y=.08+phase*body*.65;
+      const fade=Math.sin(phase*Math.PI);sx=sz=size*fade;sy=sx;
+      if(family===0){sx*=2;sy*=.4;y=.08+phase*.3;}
+      if(family===1){y=body*.35+Math.sin(a*.45)*.12;sx=size*.7;sy=size*1.7;}
+      if(family===2){y=.08+phase*body*.85;sy*=1.6;}
+      if(family===3){x*=1-phase*.35;z*=1-phase*.35;sy*=2.3;}
+      if(family===4){y=body*.4+Math.sin(a*.45)*body*.32;sx*=1.6;}
+    }
     if(g.userData.eggDesign){
       // Small material-specific motions remain outside the silhouette. No beams,
       // generic luminous wings or crowns covering the egg's actual structure.
@@ -88,6 +98,15 @@ export function petVisual(id:number,rig=true){
   // Measure the actual body before adding tall beams and particles.
   const bounds=new T.Box3().setFromObject(pet);
   pet.userData.labelHeight=bounds.max.y;
-  return aura(pet,MONGLES[id].tier,id,(MONGLES[id].species+MONGLES[id].region)%5);
+  pet.userData.effectRadius=Math.max(bounds.max.x,-bounds.min.x,bounds.max.z,-bounds.min.z);
+  pet.userData.bodyWidth=bounds.max.x-bounds.min.x;
+  pet.userData.bodyDepth=bounds.max.z-bounds.min.z;
+  const stage=id>=300?id-299:Math.floor((id-100)/10)+1;
+  if(id>=100)pet.userData.petAccent=MONGLES[id].color;
+  return aura(pet,MONGLES[id].tier,id,id>=100?EGG_EFFECT_FAMILIES[stage-1]:(MONGLES[id].species+MONGLES[id].region)%5);
+}
+export function nestVisual(appearance:EggAppearance){
+ const {stage}=eggDesignAppearance(appearance),data=designNest(stage);
+ return proceduralVoxelModel(`nest:${stage}`,data.cells,data.colors);
 }
 export function bossVisual(region:number){const g=voxelModel(`boss-${region}`,true);g.scale.setScalar(2.1);return g;}

@@ -1,11 +1,51 @@
 {
-  "schema": "alkong-stage-24-v2",
+  "schema": "alkong-stage-assembly-v3",
   "size": [
     24,
     24,
     24
   ],
+  "unit": 21.6,
   "source": "scripts/rework_stage_pets.py",
+  "assembly": {
+    "body": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": null
+    },
+    "eyes": {
+      "pivot": [
+        11.5,
+        17,
+        3
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "pivot": [
+        11.5,
+        15,
+        7
+      ],
+      "parent": "body",
+      "rotation": [
+        -0.035,
+        0,
+        0
+      ]
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        17
+      ],
+      "parent": "body"
+    }
+  },
   "concept": {
     "key": "pet-146",
     "id": 146,

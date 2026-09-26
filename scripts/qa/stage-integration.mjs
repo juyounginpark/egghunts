@@ -106,12 +106,16 @@ try{
   assert.ok(Math.hypot(clampVillage(14,22).x,clampVillage(14,22).z-9)<=13.250001);
  });
  const rows=JSON.parse(await readFile('docs/art/stage-pet-designs.json','utf8')),hashes=new Set(),geometry=[];
- test('220 distinct 24³ geometries, exact rig partition and symmetric facial eyes',()=>{
+ test('220 distinct bounded assemblies, stable body scale, exact rig partition and symmetric facial eyes',()=>{
   for(const row of rows){const m=JSON.parse(readFileSync(`public/models/${row.key}.json`,'utf8'));
-   assert.deepEqual(m.size,[24,24,24]);const cells=new Map(m.voxels.map(v=>[v.slice(0,3).join(','),v[3]]));assert.equal(cells.size,m.voxels.length);
-   assert.ok(m.voxels.every(v=>v.slice(0,3).every(n=>Number.isInteger(n)&&n>=0&&n<24)));
+   assert.equal(m.unit,21.6);assert.ok(m.size.every(n=>Number.isInteger(n)&&n>=24&&n<=100));const cells=new Map(m.voxels.map(v=>[v.slice(0,3).join(','),v[3]]));assert.equal(cells.size,m.voxels.length);
+   assert.ok(m.voxels.every(v=>v.slice(0,3).every((n,a)=>Number.isInteger(n)&&n>=0&&n<m.size[a])));
+   for(const [name,part]of Object.entries(m.parts)){
+    const seen=new Set();let p=name;while(p){assert.ok(!seen.has(p),'acyclic hierarchy');seen.add(p);assert.ok(m.parts[p]);p=m.parts[p].parent;}
+    for(const key of ['pivot','rotation','scale'])if(part[key])assert.ok(part[key].length===3&&part[key].every(Number.isFinite));
+   }
    const parts=Object.values(m.parts).flatMap(p=>p.voxels);assert.equal(parts.length,m.voxels.length);for(const v of parts)assert.equal(cells.get(v.slice(0,3).join(',')),v[3]);
-   const eyes=m.parts.eyes.voxels;assert.ok(eyes.length>=4);for(const [x,y,z,c]of eyes)assert.equal(cells.get([23-x,y,z].join(',')),c,`${row.key} eyes`);
+   const eyes=m.parts.eyes.voxels;assert.ok(eyes.length>=4);for(const [x,y,z,c]of eyes)assert.equal(cells.get([m.pivot[0]*2-x,y,z].join(',')),c,`${row.key} eyes`);
    const hash=createHash('sha256').update(JSON.stringify(m.voxels.map(v=>v.slice(0,3)))).digest('hex');assert.ok(!hashes.has(hash),`${row.key} duplicate shape`);hashes.add(hash);geometry.push({id:row.id,voxels:m.voxels.length,eyes:eyes.length});
   }
  });

@@ -1,11 +1,119 @@
 {
-  "schema": "alkong-stage-24-v2",
+  "schema": "alkong-stage-assembly-v3",
   "size": [
     24,
     24,
-    24
+    35
   ],
+  "unit": 21.6,
   "source": "scripts/rework_stage_pets.py",
+  "assembly": {
+    "body": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": null
+    },
+    "crown": {
+      "pivot": [
+        11.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "pivot": [
+        11.5,
+        14,
+        2
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "pivot": [
+        11.5,
+        12,
+        7
+      ],
+      "parent": "body",
+      "rotation": [
+        0.035,
+        0,
+        0
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        6,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_leg": {
+      "pivot": [
+        17,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "pivot": [
+        11.5,
+        6,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.04,
+        -0.18,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        11.5,
+        6,
+        22
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.04,
+        -0.18,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        11.5,
+        6,
+        26
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.04,
+        -0.18,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        11.5,
+        6,
+        30
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.04,
+        -0.18,
+        0
+      ]
+    }
+  },
   "concept": {
     "key": "pet-207",
     "id": 207,

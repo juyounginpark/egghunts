@@ -1,7 +1,9 @@
 import * as T from "three";
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import type {MapCollider} from './map-collision';
 type Voxel = [number, number, number, number];
 type Model = {
+  unit?:number;
   previewAngle?:number;
   front?: '-z';
   colors: string[];
@@ -10,7 +12,7 @@ type Model = {
   voxels: Voxel[];
   parts: Record<
     string,
-    { pivot: number[]; parent: string | null; voxels: Voxel[] }
+    { pivot: number[]; parent: string | null; voxels: Voxel[]; rotation?:number[]; scale?:number[] }
   >;
 };
 const mat = new T.MeshLambertMaterial({ vertexColors: true });
@@ -68,13 +70,13 @@ function geometry(key: string, voxels: Voxel[], colors: string[], origin: number
 export function voxelModel(name: string, rig = false) {
   const d = dataCache.get(name)! ,
     group = new T.Group();
-  if (rig) {
+  if (rig || Object.values(d.parts).some(p=>p.rotation||p.scale)) {
     const groups: Record<string, T.Group> = {};
     for (const [n, p] of Object.entries(d.parts)) {
       const g = new T.Group();
       g.name = n;
       const mesh = new T.Mesh(
-        geometry(`${name}:${n}`, p.voxels, d.colors, p.pivot, d.size[1]*.9, d.front),
+        geometry(`${name}:${n}`, p.voxels, d.colors, p.pivot, d.unit??d.size[1]*.9, d.front),
         mat,
       );
       mesh.castShadow = true;
@@ -84,11 +86,27 @@ export function voxelModel(name: string, rig = false) {
     for (const [n, p] of Object.entries(d.parts)) {
       const parent = p.parent ? d.parts[p.parent].pivot : d.pivot;
       groups[n].position.set(
-        (p.pivot[0] - parent[0]) / (d.size[1]*.9) * (d.front==='-z'?-1:1),
-        (p.pivot[1] - parent[1]) / (d.size[1]*.9),
-        (p.pivot[2] - parent[2]) / (d.size[1]*.9) * (d.front==='-z'?-1:1),
+        (p.pivot[0] - parent[0]) / (d.unit??d.size[1]*.9) * (d.front==='-z'?-1:1),
+        (p.pivot[1] - parent[1]) / (d.unit??d.size[1]*.9),
+        (p.pivot[2] - parent[2]) / (d.unit??d.size[1]*.9) * (d.front==='-z'?-1:1),
       );
       (p.parent ? groups[p.parent] : group).add(groups[n]);
+      const rotation=p.rotation??[0,0,0],scale=p.scale??[1,1,1];
+      groups[n].rotation.set(rotation[0],rotation[1],rotation[2]);
+      groups[n].scale.set(scale[0],scale[1],scale[2]);
+      groups[n].userData.restRotation=rotation;
+      groups[n].userData.restScale=scale;
+    }
+    // Bake the same authored pose for static/farm rendering: one draw, identical silhouette.
+    if(!rig){
+      const key=`${name}:posed`;
+      if(!geometryCache.has(key)){
+        group.updateMatrixWorld(true);const pieces:T.BufferGeometry[]=[];
+        group.traverse(o=>{if(o instanceof T.Mesh)pieces.push(o.geometry.clone().applyMatrix4(o.matrixWorld));});
+        const merged=mergeGeometries(pieces);pieces.forEach(g=>g.dispose());
+        if(merged){merged.computeBoundingSphere();geometryCache.set(key,merged);}
+      }
+      group.clear();const mesh=new T.Mesh(geometryCache.get(key)!,mat);mesh.castShadow=mesh.receiveShadow=true;group.add(mesh);
     }
   } else {
     const mesh = new T.Mesh(

@@ -16,7 +16,12 @@ export function followPets(companions:T.Group,trail:T.Vector3[],position:T.Vecto
     }
     let followerDistance=0;
     companions.children.forEach((pet, i) => {
-      followerDistance+=Math.max(1.2,pet.scale.x*.6)+(i?Math.max(.4,companions.children[i-1].scale.x*.35):.3);
+      if(pet.userData.petId>=100&&!pet.userData.followScale){
+        pet.userData.followScale=Math.min(pet.scale.x,3.2/Math.max(1,pet.userData.bodyWidth??1));
+        pet.scale.setScalar(pet.userData.followScale);
+      }
+      const radius=(p:T.Object3D)=>p.scale.x*Math.max(.6,(p.userData.bodyDepth??1)*.5);
+      followerDistance+=Math.max(1.2,radius(pet))+(i?Math.max(.4,radius(companions.children[i-1])):.6);
       let length = 0,
         target = trail.at(-1)!;
       for (let j = 1; j < trail.length; j++) {

@@ -4238,18 +4238,18 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 1942,
+      "voxelCount": 1872,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           19
         ],
         [
-          2,
+          3,
           19
         ]
       ],
@@ -4263,11 +4263,11 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2046,
+      "voxelCount": 2014,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -4288,7 +4288,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2520,
+      "voxelCount": 2450,
       "bounds": [
         [
           3,
@@ -4313,18 +4313,18 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 1826,
+      "voxelCount": 1764,
       "bounds": [
         [
           0,
-          19
+          17
         ],
         [
           1,
           15
         ],
         [
-          1,
+          2,
           16
         ]
       ],
@@ -4338,7 +4338,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2270,
+      "voxelCount": 2228,
       "bounds": [
         [
           4,
@@ -4363,7 +4363,7 @@
         24
       ],
       "paletteCount": 20,
-      "voxelCount": 2078,
+      "voxelCount": 1996,
       "bounds": [
         [
           1,
@@ -4388,7 +4388,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 3070,
+      "voxelCount": 3020,
       "bounds": [
         [
           3,
@@ -4399,7 +4399,7 @@
           15
         ],
         [
-          1,
+          2,
           23
         ]
       ],
@@ -4410,10 +4410,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 20,
-      "voxelCount": 2888,
+      "paletteCount": 21,
+      "voxelCount": 2876,
       "bounds": [
         [
           2,
@@ -4424,8 +4424,8 @@
           21
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "lion"
@@ -4438,7 +4438,7 @@
         24
       ],
       "paletteCount": 21,
-      "voxelCount": 2758,
+      "voxelCount": 2676,
       "bounds": [
         [
           0,
@@ -4460,22 +4460,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 20,
-      "voxelCount": 2674,
+      "paletteCount": 21,
+      "voxelCount": 1858,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
-          23
+          20
         ],
         [
           1,
-          22
+          34
         ]
       ],
       "anatomy": "deer"
@@ -4488,7 +4488,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2284,
+      "voxelCount": 2262,
       "bounds": [
         [
           2,
@@ -4513,7 +4513,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2874,
+      "voxelCount": 2814,
       "bounds": [
         [
           4,
@@ -4538,7 +4538,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2016,
+      "voxelCount": 1950,
       "bounds": [
         [
           3,
@@ -4563,7 +4563,7 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 2172,
+      "voxelCount": 2152,
       "bounds": [
         [
           0,
@@ -4588,18 +4588,18 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1678,
+      "voxelCount": 1636,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           17
         ],
         [
-          1,
+          2,
           20
         ]
       ],
@@ -4613,7 +4613,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2508,
+      "voxelCount": 2440,
       "bounds": [
         [
           4,
@@ -4624,7 +4624,7 @@
           19
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -4638,7 +4638,7 @@
         24
       ],
       "paletteCount": 20,
-      "voxelCount": 3414,
+      "voxelCount": 3380,
       "bounds": [
         [
           2,
@@ -4649,7 +4649,7 @@
           16
         ],
         [
-          1,
+          2,
           23
         ]
       ],
@@ -4663,11 +4663,11 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2894,
+      "voxelCount": 2828,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -4685,10 +4685,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 20,
-      "voxelCount": 3156,
+      "voxelCount": 3120,
       "bounds": [
         [
           0,
@@ -4700,7 +4700,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -4713,7 +4713,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2944,
+      "voxelCount": 2902,
       "bounds": [
         [
           3,
@@ -4724,7 +4724,7 @@
           18
         ],
         [
-          1,
+          2,
           21
         ]
       ],
@@ -4738,7 +4738,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 3344,
+      "voxelCount": 3286,
       "bounds": [
         [
           0,
@@ -4762,8 +4762,8 @@
         24,
         24
       ],
-      "paletteCount": 17,
-      "voxelCount": 3410,
+      "paletteCount": 16,
+      "voxelCount": 1658,
       "bounds": [
         [
           1,
@@ -4771,11 +4771,11 @@
         ],
         [
           3,
-          21
+          19
         ],
         [
-          0,
-          20
+          1,
+          22
         ]
       ],
       "anatomy": "snail"
@@ -4788,7 +4788,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2770,
+      "voxelCount": 2730,
       "bounds": [
         [
           0,
@@ -4813,7 +4813,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 1715,
+      "voxelCount": 1627,
       "bounds": [
         [
           0,
@@ -4821,10 +4821,10 @@
         ],
         [
           2,
-          19
+          18
         ],
         [
-          2,
+          3,
           20
         ]
       ],
@@ -4838,7 +4838,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 4266,
+      "voxelCount": 3870,
       "bounds": [
         [
           1,
@@ -4849,7 +4849,7 @@
           19
         ],
         [
-          1,
+          2,
           20
         ]
       ],
@@ -4860,10 +4860,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 18,
-      "voxelCount": 2568,
+      "voxelCount": 2440,
       "bounds": [
         [
           1,
@@ -4874,8 +4874,8 @@
           18
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "fish"
@@ -4888,7 +4888,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 3160,
+      "voxelCount": 3174,
       "bounds": [
         [
           1,
@@ -4896,7 +4896,7 @@
         ],
         [
           3,
-          14
+          20
         ],
         [
           0,
@@ -4913,7 +4913,7 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 2440,
+      "voxelCount": 2360,
       "bounds": [
         [
           1,
@@ -4935,10 +4935,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 3138,
+      "paletteCount": 17,
+      "voxelCount": 3004,
       "bounds": [
         [
           0,
@@ -4949,8 +4949,8 @@
           18
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "whale"
@@ -4960,10 +4960,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 15,
-      "voxelCount": 2980,
+      "paletteCount": 16,
+      "voxelCount": 2354,
       "bounds": [
         [
           1,
@@ -4971,11 +4971,11 @@
         ],
         [
           3,
-          23
+          20
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -4988,7 +4988,7 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 2694,
+      "voxelCount": 2624,
       "bounds": [
         [
           4,
@@ -4999,7 +4999,7 @@
           23
         ],
         [
-          2,
+          3,
           21
         ]
       ],
@@ -5010,14 +5010,14 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 16,
-      "voxelCount": 2244,
+      "voxelCount": 2230,
       "bounds": [
         [
           4,
-          19
+          18
         ],
         [
           1,
@@ -5025,7 +5025,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "lizard"
@@ -5038,7 +5038,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2050,
+      "voxelCount": 1978,
       "bounds": [
         [
           4,
@@ -5049,7 +5049,7 @@
           17
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -5063,7 +5063,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2259,
+      "voxelCount": 2199,
       "bounds": [
         [
           0,
@@ -5088,7 +5088,7 @@
         24
       ],
       "paletteCount": 14,
-      "voxelCount": 2142,
+      "voxelCount": 2072,
       "bounds": [
         [
           4,
@@ -5099,7 +5099,7 @@
           17
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -5112,8 +5112,8 @@
         24,
         24
       ],
-      "paletteCount": 15,
-      "voxelCount": 2516,
+      "paletteCount": 14,
+      "voxelCount": 1724,
       "bounds": [
         [
           4,
@@ -5121,11 +5121,11 @@
         ],
         [
           1,
-          20
+          19
         ],
         [
           0,
-          21
+          22
         ]
       ],
       "anatomy": "snail"
@@ -5138,7 +5138,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 3284,
+      "voxelCount": 3214,
       "bounds": [
         [
           0,
@@ -5163,11 +5163,11 @@
         24
       ],
       "paletteCount": 14,
-      "voxelCount": 2464,
+      "voxelCount": 2382,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -5188,7 +5188,7 @@
         24
       ],
       "paletteCount": 13,
-      "voxelCount": 2574,
+      "voxelCount": 2524,
       "bounds": [
         [
           0,
@@ -5210,10 +5210,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 15,
-      "voxelCount": 3126,
+      "voxelCount": 3086,
       "bounds": [
         [
           1,
@@ -5225,7 +5225,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -5238,7 +5238,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2628,
+      "voxelCount": 2578,
       "bounds": [
         [
           1,
@@ -5263,7 +5263,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 3504,
+      "voxelCount": 3452,
       "bounds": [
         [
           1,
@@ -5274,7 +5274,7 @@
           20
         ],
         [
-          1,
+          2,
           20
         ]
       ],
@@ -5288,7 +5288,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2686,
+      "voxelCount": 2628,
       "bounds": [
         [
           1,
@@ -5299,7 +5299,7 @@
           17
         ],
         [
-          1,
+          2,
           22
         ]
       ],
@@ -5313,7 +5313,7 @@
         24
       ],
       "paletteCount": 14,
-      "voxelCount": 2482,
+      "voxelCount": 2433,
       "bounds": [
         [
           0,
@@ -5324,7 +5324,7 @@
           14
         ],
         [
-          1,
+          2,
           20
         ]
       ],
@@ -5335,22 +5335,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 2216,
+      "paletteCount": 17,
+      "voxelCount": 2070,
       "bounds": [
         [
           1,
           22
         ],
         [
-          5,
+          4,
           15
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "fish"
@@ -5363,7 +5363,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2914,
+      "voxelCount": 2844,
       "bounds": [
         [
           1,
@@ -5388,18 +5388,18 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1476,
+      "voxelCount": 1388,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           2,
-          19
+          18
         ],
         [
-          2,
+          3,
           21
         ]
       ],
@@ -5413,7 +5413,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1862,
+      "voxelCount": 1820,
       "bounds": [
         [
           4,
@@ -5438,7 +5438,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2812,
+      "voxelCount": 2736,
       "bounds": [
         [
           0,
@@ -5460,22 +5460,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 17,
-      "voxelCount": 3398,
+      "voxelCount": 3278,
       "bounds": [
         [
           1,
           22
         ],
         [
-          5,
+          4,
           23
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "whale"
@@ -5488,7 +5488,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2488,
+      "voxelCount": 2436,
       "bounds": [
         [
           2,
@@ -5499,7 +5499,7 @@
           22
         ],
         [
-          1,
+          2,
           18
         ]
       ],
@@ -5513,7 +5513,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2022,
+      "voxelCount": 1974,
       "bounds": [
         [
           4,
@@ -5524,7 +5524,7 @@
           20
         ],
         [
-          1,
+          2,
           19
         ]
       ],
@@ -5538,7 +5538,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2398,
+      "voxelCount": 2374,
       "bounds": [
         [
           3,
@@ -5549,7 +5549,7 @@
           16
         ],
         [
-          1,
+          2,
           20
         ]
       ],
@@ -5563,11 +5563,11 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 1482,
+      "voxelCount": 1430,
       "bounds": [
         [
           0,
-          19
+          17
         ],
         [
           1,
@@ -5588,11 +5588,11 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2514,
+      "voxelCount": 2462,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -5613,7 +5613,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2130,
+      "voxelCount": 2064,
       "bounds": [
         [
           3,
@@ -5638,7 +5638,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2790,
+      "voxelCount": 2756,
       "bounds": [
         [
           1,
@@ -5663,7 +5663,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2340,
+      "voxelCount": 2292,
       "bounds": [
         [
           4,
@@ -5685,10 +5685,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 18,
-      "voxelCount": 2370,
+      "paletteCount": 19,
+      "voxelCount": 2334,
       "bounds": [
         [
           0,
@@ -5699,8 +5699,8 @@
           17
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "lizard"
@@ -5713,7 +5713,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2489,
+      "voxelCount": 2477,
       "bounds": [
         [
           3,
@@ -5738,7 +5738,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2178,
+      "voxelCount": 2116,
       "bounds": [
         [
           3,
@@ -5763,7 +5763,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2532,
+      "voxelCount": 2498,
       "bounds": [
         [
           4,
@@ -5774,7 +5774,7 @@
           21
         ],
         [
-          1,
+          2,
           21
         ]
       ],
@@ -5788,11 +5788,11 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 1866,
+      "voxelCount": 1814,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -5813,7 +5813,7 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 2270,
+      "voxelCount": 2218,
       "bounds": [
         [
           0,
@@ -5835,22 +5835,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 18,
-      "voxelCount": 2503,
+      "voxelCount": 2006,
       "bounds": [
         [
           4,
-          19
+          18
         ],
         [
           1,
-          20
+          15
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "fox"
@@ -5863,7 +5863,7 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 2522,
+      "voxelCount": 2488,
       "bounds": [
         [
           4,
@@ -5888,7 +5888,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2286,
+      "voxelCount": 2238,
       "bounds": [
         [
           1,
@@ -5910,10 +5910,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 17,
-      "voxelCount": 3024,
+      "voxelCount": 2720,
       "bounds": [
         [
           4,
@@ -5921,11 +5921,11 @@
         ],
         [
           1,
-          20
+          19
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "fox"
@@ -5935,10 +5935,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 2830,
+      "paletteCount": 17,
+      "voxelCount": 2832,
       "bounds": [
         [
           0,
@@ -5950,7 +5950,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -5960,22 +5960,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 15,
-      "voxelCount": 2744,
+      "paletteCount": 16,
+      "voxelCount": 1828,
       "bounds": [
         [
-          4,
-          19
-        ],
-        [
-          1,
-          23
+          5,
+          18
         ],
         [
           1,
           22
+        ],
+        [
+          2,
+          34
         ]
       ],
       "anatomy": "giraffe"
@@ -5988,7 +5988,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 3326,
+      "voxelCount": 3282,
       "bounds": [
         [
           0,
@@ -5999,7 +5999,7 @@
           22
         ],
         [
-          1,
+          2,
           22
         ]
       ],
@@ -6013,7 +6013,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2730,
+      "voxelCount": 2660,
       "bounds": [
         [
           0,
@@ -6038,7 +6038,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 3030,
+      "voxelCount": 2346,
       "bounds": [
         [
           0,
@@ -6046,11 +6046,11 @@
         ],
         [
           1,
-          17
+          19
         ],
         [
           0,
-          21
+          22
         ]
       ],
       "anatomy": "snail"
@@ -6063,7 +6063,7 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 3562,
+      "voxelCount": 3477,
       "bounds": [
         [
           0,
@@ -6074,7 +6074,7 @@
           15
         ],
         [
-          0,
+          1,
           20
         ]
       ],
@@ -6085,10 +6085,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 3218,
+      "paletteCount": 19,
+      "voxelCount": 3278,
       "bounds": [
         [
           0,
@@ -6100,7 +6100,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "camel"
@@ -6113,7 +6113,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 2722,
+      "voxelCount": 2646,
       "bounds": [
         [
           0,
@@ -6138,7 +6138,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 3292,
+      "voxelCount": 3230,
       "bounds": [
         [
           0,
@@ -6149,7 +6149,7 @@
           20
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -6163,7 +6163,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 3260,
+      "voxelCount": 3210,
       "bounds": [
         [
           0,
@@ -6185,10 +6185,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 18,
-      "voxelCount": 3568,
+      "paletteCount": 20,
+      "voxelCount": 3546,
       "bounds": [
         [
           0,
@@ -6199,8 +6199,8 @@
           18
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "lion"
@@ -6213,7 +6213,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 3520,
+      "voxelCount": 3450,
       "bounds": [
         [
           0,
@@ -6237,8 +6237,8 @@
         24,
         24
       ],
-      "paletteCount": 21,
-      "voxelCount": 2759,
+      "paletteCount": 19,
+      "voxelCount": 2088,
       "bounds": [
         [
           2,
@@ -6246,7 +6246,7 @@
         ],
         [
           1,
-          21
+          20
         ],
         [
           1,
@@ -6262,8 +6262,8 @@
         24,
         24
       ],
-      "paletteCount": 18,
-      "voxelCount": 3304,
+      "paletteCount": 19,
+      "voxelCount": 2026,
       "bounds": [
         [
           2,
@@ -6271,7 +6271,7 @@
         ],
         [
           1,
-          21
+          16
         ],
         [
           2,
@@ -6288,7 +6288,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2758,
+      "voxelCount": 2074,
       "bounds": [
         [
           2,
@@ -6296,10 +6296,10 @@
         ],
         [
           1,
-          17
+          19
         ],
         [
-          0,
+          1,
           23
         ]
       ],
@@ -6313,7 +6313,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2421,
+      "voxelCount": 2371,
       "bounds": [
         [
           0,
@@ -6338,7 +6338,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 3138,
+      "voxelCount": 3076,
       "bounds": [
         [
           2,
@@ -6363,7 +6363,7 @@
         24
       ],
       "paletteCount": 20,
-      "voxelCount": 2948,
+      "voxelCount": 2868,
       "bounds": [
         [
           2,
@@ -6374,7 +6374,7 @@
           19
         ],
         [
-          0,
+          1,
           23
         ]
       ],
@@ -6388,7 +6388,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2888,
+      "voxelCount": 2838,
       "bounds": [
         [
           2,
@@ -6410,10 +6410,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 22,
-      "voxelCount": 3282,
+      "paletteCount": 24,
+      "voxelCount": 3204,
       "bounds": [
         [
           2,
@@ -6424,8 +6424,8 @@
           21
         ],
         [
-          1,
-          23
+          2,
+          34
         ]
       ],
       "anatomy": "giraffe"
@@ -6438,7 +6438,7 @@
         24
       ],
       "paletteCount": 20,
-      "voxelCount": 3208,
+      "voxelCount": 3138,
       "bounds": [
         [
           0,
@@ -6460,10 +6460,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 19,
-      "voxelCount": 3950,
+      "paletteCount": 21,
+      "voxelCount": 3890,
       "bounds": [
         [
           1,
@@ -6474,8 +6474,8 @@
           23
         ],
         [
-          0,
-          23
+          1,
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -6488,11 +6488,11 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2292,
+      "voxelCount": 2222,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -6510,22 +6510,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 17,
-      "voxelCount": 2794,
+      "paletteCount": 16,
+      "voxelCount": 1924,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
-          20
+          23
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "fox"
@@ -6538,11 +6538,11 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 2050,
+      "voxelCount": 2010,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -6563,11 +6563,11 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 1614,
+      "voxelCount": 1560,
       "bounds": [
         [
           0,
-          19
+          18
         ],
         [
           1,
@@ -6588,7 +6588,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2954,
+      "voxelCount": 2882,
       "bounds": [
         [
           4,
@@ -6599,7 +6599,7 @@
           16
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -6613,7 +6613,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2618,
+      "voxelCount": 2568,
       "bounds": [
         [
           3,
@@ -6638,18 +6638,18 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2528,
+      "voxelCount": 2620,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
-          20
+          23
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -6663,7 +6663,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2526,
+      "voxelCount": 2468,
       "bounds": [
         [
           2,
@@ -6674,7 +6674,7 @@
           21
         ],
         [
-          1,
+          2,
           21
         ]
       ],
@@ -6685,10 +6685,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 17,
-      "voxelCount": 2840,
+      "paletteCount": 18,
+      "voxelCount": 2806,
       "bounds": [
         [
           0,
@@ -6699,8 +6699,8 @@
           18
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -6710,10 +6710,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 3084,
+      "paletteCount": 17,
+      "voxelCount": 3032,
       "bounds": [
         [
           4,
@@ -6725,7 +6725,7 @@
         ],
         [
           1,
-          22
+          34
         ]
       ],
       "anatomy": "giraffe"
@@ -6738,7 +6738,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2648,
+      "voxelCount": 2560,
       "bounds": [
         [
           4,
@@ -6749,7 +6749,7 @@
           22
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -6763,11 +6763,11 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 1762,
+      "voxelCount": 1722,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -6788,7 +6788,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2374,
+      "voxelCount": 2306,
       "bounds": [
         [
           4,
@@ -6813,18 +6813,18 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 1679,
+      "voxelCount": 1615,
       "bounds": [
         [
           0,
-          19
+          17
         ],
         [
           1,
           15
         ],
         [
-          1,
+          2,
           16
         ]
       ],
@@ -6838,7 +6838,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 2274,
+      "voxelCount": 2240,
       "bounds": [
         [
           3,
@@ -6863,18 +6863,18 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1874,
+      "voxelCount": 1812,
       "bounds": [
         [
-          4,
-          19
+          6,
+          17
         ],
         [
           1,
           20
         ],
         [
-          1,
+          2,
           22
         ]
       ],
@@ -6888,7 +6888,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2312,
+      "voxelCount": 2242,
       "bounds": [
         [
           1,
@@ -6910,22 +6910,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 19,
-      "voxelCount": 2818,
+      "paletteCount": 21,
+      "voxelCount": 2792,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           20
         ],
         [
-          1,
-          22
+          2,
+          34
         ]
       ],
       "anatomy": "horse"
@@ -6938,7 +6938,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2954,
+      "voxelCount": 2866,
       "bounds": [
         [
           0,
@@ -6960,10 +6960,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 19,
-      "voxelCount": 3150,
+      "paletteCount": 21,
+      "voxelCount": 3098,
       "bounds": [
         [
           1,
@@ -6975,7 +6975,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -6988,7 +6988,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2606,
+      "voxelCount": 2584,
       "bounds": [
         [
           3,
@@ -7013,11 +7013,11 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1732,
+      "voxelCount": 1684,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -7038,7 +7038,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2658,
+      "voxelCount": 2606,
       "bounds": [
         [
           2,
@@ -7049,7 +7049,7 @@
           17
         ],
         [
-          1,
+          2,
           22
         ]
       ],
@@ -7063,7 +7063,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2064,
+      "voxelCount": 2042,
       "bounds": [
         [
           1,
@@ -7088,18 +7088,18 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 1844,
+      "voxelCount": 1802,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           17
         ],
         [
-          1,
+          2,
           21
         ]
       ],
@@ -7110,22 +7110,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 16,
-      "voxelCount": 2684,
+      "voxelCount": 2652,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           20
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "lizard"
@@ -7138,7 +7138,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2562,
+      "voxelCount": 2528,
       "bounds": [
         [
           1,
@@ -7149,7 +7149,7 @@
           14
         ],
         [
-          1,
+          2,
           23
         ]
       ],
@@ -7163,7 +7163,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2650,
+      "voxelCount": 2598,
       "bounds": [
         [
           1,
@@ -7188,7 +7188,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 3074,
+      "voxelCount": 3014,
       "bounds": [
         [
           0,
@@ -7210,22 +7210,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 3058,
+      "paletteCount": 17,
+      "voxelCount": 2958,
       "bounds": [
         [
           1,
           22
         ],
         [
-          5,
+          4,
           23
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "whale"
@@ -7238,7 +7238,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1998,
+      "voxelCount": 1928,
       "bounds": [
         [
           3,
@@ -7263,7 +7263,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2170,
+      "voxelCount": 2106,
       "bounds": [
         [
           4,
@@ -7274,7 +7274,7 @@
           20
         ],
         [
-          1,
+          2,
           19
         ]
       ],
@@ -7288,7 +7288,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1960,
+      "voxelCount": 1910,
       "bounds": [
         [
           3,
@@ -7313,7 +7313,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 1770,
+      "voxelCount": 1696,
       "bounds": [
         [
           0,
@@ -7324,7 +7324,7 @@
           13
         ],
         [
-          0,
+          1,
           19
         ]
       ],
@@ -7338,18 +7338,18 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1676,
+      "voxelCount": 1622,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           17
         ],
         [
-          1,
+          2,
           20
         ]
       ],
@@ -7363,7 +7363,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2312,
+      "voxelCount": 2260,
       "bounds": [
         [
           3,
@@ -7374,7 +7374,7 @@
           20
         ],
         [
-          1,
+          2,
           21
         ]
       ],
@@ -7388,11 +7388,11 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2520,
+      "voxelCount": 2458,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -7413,7 +7413,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 3442,
+      "voxelCount": 3386,
       "bounds": [
         [
           3,
@@ -7438,7 +7438,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2144,
+      "voxelCount": 2080,
       "bounds": [
         [
           0,
@@ -7449,7 +7449,7 @@
           18
         ],
         [
-          1,
+          2,
           17
         ]
       ],
@@ -7460,10 +7460,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 19,
-      "voxelCount": 3008,
+      "voxelCount": 2994,
       "bounds": [
         [
           4,
@@ -7475,7 +7475,7 @@
         ],
         [
           1,
-          22
+          34
         ]
       ],
       "anatomy": "giraffe"
@@ -7488,7 +7488,7 @@
         24
       ],
       "paletteCount": 21,
-      "voxelCount": 2924,
+      "voxelCount": 2854,
       "bounds": [
         [
           4,
@@ -7499,7 +7499,7 @@
           23
         ],
         [
-          2,
+          3,
           20
         ]
       ],
@@ -7513,7 +7513,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2296,
+      "voxelCount": 2256,
       "bounds": [
         [
           3,
@@ -7538,7 +7538,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 2642,
+      "voxelCount": 2580,
       "bounds": [
         [
           4,
@@ -7549,7 +7549,7 @@
           22
         ],
         [
-          1,
+          2,
           22
         ]
       ],
@@ -7563,7 +7563,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2634,
+      "voxelCount": 2576,
       "bounds": [
         [
           0,
@@ -7574,7 +7574,7 @@
           13
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -7588,7 +7588,32 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2266,
+      "voxelCount": 2196,
+      "bounds": [
+        [
+          4,
+          19
+        ],
+        [
+          1,
+          17
+        ],
+        [
+          1,
+          21
+        ]
+      ],
+      "anatomy": "hedgehog"
+    },
+    {
+      "name": "pet-235",
+      "grid": [
+        24,
+        24,
+        24
+      ],
+      "paletteCount": 18,
+      "voxelCount": 1564,
       "bounds": [
         [
           4,
@@ -7603,31 +7628,6 @@
           21
         ]
       ],
-      "anatomy": "hedgehog"
-    },
-    {
-      "name": "pet-235",
-      "grid": [
-        24,
-        24,
-        24
-      ],
-      "paletteCount": 19,
-      "voxelCount": 2690,
-      "bounds": [
-        [
-          4,
-          19
-        ],
-        [
-          1,
-          20
-        ],
-        [
-          0,
-          22
-        ]
-      ],
       "anatomy": "snail"
     },
     {
@@ -7638,11 +7638,11 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 2531,
+      "voxelCount": 2469,
       "bounds": [
         [
           4,
-          19
+          18
         ],
         [
           1,
@@ -7660,22 +7660,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 20,
-      "voxelCount": 2438,
+      "paletteCount": 21,
+      "voxelCount": 1854,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
-          21
+          20
         ],
         [
-          1,
-          22
+          2,
+          34
         ]
       ],
       "anatomy": "deer"
@@ -7688,7 +7688,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 2414,
+      "voxelCount": 2364,
       "bounds": [
         [
           0,
@@ -7710,10 +7710,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 19,
-      "voxelCount": 3238,
+      "paletteCount": 21,
+      "voxelCount": 3198,
       "bounds": [
         [
           1,
@@ -7725,7 +7725,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -7738,7 +7738,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 3798,
+      "voxelCount": 3766,
       "bounds": [
         [
           3,
@@ -7763,7 +7763,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2498,
+      "voxelCount": 2434,
       "bounds": [
         [
           4,
@@ -7774,7 +7774,7 @@
           20
         ],
         [
-          1,
+          2,
           21
         ]
       ],
@@ -7788,18 +7788,18 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1790,
+      "voxelCount": 1736,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           16
         ],
         [
-          1,
+          2,
           20
         ]
       ],
@@ -7813,7 +7813,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 1776,
+      "voxelCount": 1711,
       "bounds": [
         [
           0,
@@ -7824,7 +7824,7 @@
           12
         ],
         [
-          0,
+          1,
           19
         ]
       ],
@@ -7838,7 +7838,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2592,
+      "voxelCount": 2540,
       "bounds": [
         [
           4,
@@ -7863,7 +7863,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2834,
+      "voxelCount": 2752,
       "bounds": [
         [
           4,
@@ -7888,7 +7888,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2104,
+      "voxelCount": 2052,
       "bounds": [
         [
           1,
@@ -7896,10 +7896,10 @@
         ],
         [
           2,
-          14
+          13
         ],
         [
-          1,
+          2,
           22
         ]
       ],
@@ -7910,10 +7910,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 17,
-      "voxelCount": 3146,
+      "voxelCount": 3002,
       "bounds": [
         [
           4,
@@ -7925,7 +7925,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "fox"
@@ -7935,22 +7935,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 17,
-      "voxelCount": 3136,
+      "paletteCount": 18,
+      "voxelCount": 3024,
       "bounds": [
         [
           0,
           23
         ],
         [
-          5,
+          4,
           17
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "whale"
@@ -7963,7 +7963,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2601,
+      "voxelCount": 2519,
       "bounds": [
         [
           1,
@@ -7988,7 +7988,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 2708,
+      "voxelCount": 2638,
       "bounds": [
         [
           2,
@@ -7999,7 +7999,7 @@
           23
         ],
         [
-          1,
+          2,
           19
         ]
       ],
@@ -8013,18 +8013,18 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 1944,
+      "voxelCount": 1886,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           17
         ],
         [
-          2,
+          3,
           19
         ]
       ],
@@ -8038,18 +8038,18 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2276,
+      "voxelCount": 2230,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           17
         ],
         [
-          1,
+          2,
           22
         ]
       ],
@@ -8063,7 +8063,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2261,
+      "voxelCount": 2178,
       "bounds": [
         [
           1,
@@ -8088,7 +8088,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 2736,
+      "voxelCount": 2658,
       "bounds": [
         [
           2,
@@ -8113,7 +8113,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2672,
+      "voxelCount": 2592,
       "bounds": [
         [
           4,
@@ -8124,7 +8124,7 @@
           19
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -8138,7 +8138,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2502,
+      "voxelCount": 2462,
       "bounds": [
         [
           1,
@@ -8163,7 +8163,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2462,
+      "voxelCount": 2386,
       "bounds": [
         [
           4,
@@ -8185,10 +8185,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 18,
-      "voxelCount": 2602,
+      "paletteCount": 20,
+      "voxelCount": 2692,
       "bounds": [
         [
           0,
@@ -8196,11 +8196,11 @@
         ],
         [
           1,
-          18
+          20
         ],
         [
-          1,
-          22
+          2,
+          34
         ]
       ],
       "anatomy": "deer"
@@ -8210,10 +8210,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 19,
-      "voxelCount": 3472,
+      "voxelCount": 3458,
       "bounds": [
         [
           1,
@@ -8225,7 +8225,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -8238,7 +8238,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 3600,
+      "voxelCount": 3524,
       "bounds": [
         [
           4,
@@ -8249,7 +8249,7 @@
           21
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -8263,7 +8263,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 3022,
+      "voxelCount": 2952,
       "bounds": [
         [
           4,
@@ -8274,7 +8274,7 @@
           19
         ],
         [
-          0,
+          1,
           22
         ]
       ],
@@ -8288,7 +8288,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 3042,
+      "voxelCount": 2954,
       "bounds": [
         [
           4,
@@ -8313,7 +8313,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2254,
+      "voxelCount": 2176,
       "bounds": [
         [
           0,
@@ -8338,7 +8338,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2796,
+      "voxelCount": 2720,
       "bounds": [
         [
           2,
@@ -8349,7 +8349,7 @@
           17
         ],
         [
-          0,
+          1,
           20
         ]
       ],
@@ -8363,7 +8363,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2604,
+      "voxelCount": 2564,
       "bounds": [
         [
           1,
@@ -8388,7 +8388,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2922,
+      "voxelCount": 2858,
       "bounds": [
         [
           2,
@@ -8413,7 +8413,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 3186,
+      "voxelCount": 3098,
       "bounds": [
         [
           4,
@@ -8424,7 +8424,7 @@
           21
         ],
         [
-          0,
+          1,
           20
         ]
       ],
@@ -8438,7 +8438,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2810,
+      "voxelCount": 2760,
       "bounds": [
         [
           0,
@@ -8463,7 +8463,7 @@
         24
       ],
       "paletteCount": 19,
-      "voxelCount": 2860,
+      "voxelCount": 2778,
       "bounds": [
         [
           1,
@@ -8488,7 +8488,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2406,
+      "voxelCount": 2372,
       "bounds": [
         [
           2,
@@ -8499,7 +8499,7 @@
           23
         ],
         [
-          1,
+          2,
           19
         ]
       ],
@@ -8513,7 +8513,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 3200,
+      "voxelCount": 3128,
       "bounds": [
         [
           4,
@@ -8538,11 +8538,11 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2670,
+      "voxelCount": 2604,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
@@ -8563,18 +8563,18 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 1486,
+      "voxelCount": 1436,
       "bounds": [
         [
           1,
-          19
+          17
         ],
         [
           1,
           15
         ],
         [
-          1,
+          2,
           16
         ]
       ],
@@ -8588,7 +8588,7 @@
         24
       ],
       "paletteCount": 20,
-      "voxelCount": 2902,
+      "voxelCount": 2880,
       "bounds": [
         [
           0,
@@ -8613,7 +8613,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 3364,
+      "voxelCount": 3296,
       "bounds": [
         [
           1,
@@ -8638,7 +8638,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1968,
+      "voxelCount": 1902,
       "bounds": [
         [
           3,
@@ -8660,10 +8660,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 20,
-      "voxelCount": 3230,
+      "voxelCount": 3254,
       "bounds": [
         [
           2,
@@ -8675,7 +8675,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "lion"
@@ -8685,22 +8685,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 3184,
+      "paletteCount": 17,
+      "voxelCount": 3080,
       "bounds": [
         [
           0,
           23
         ],
         [
-          5,
+          4,
           18
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "whale"
@@ -8710,10 +8710,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 19,
-      "voxelCount": 2974,
+      "voxelCount": 2942,
       "bounds": [
         [
           1,
@@ -8724,8 +8724,8 @@
           23
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -8738,7 +8738,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2290,
+      "voxelCount": 2208,
       "bounds": [
         [
           3,
@@ -8763,19 +8763,19 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 1821,
+      "voxelCount": 1460,
       "bounds": [
         [
-          4,
-          19
-        ],
-        [
-          1,
-          22
-        ],
-        [
-          1,
+          5,
           18
+        ],
+        [
+          1,
+          23
+        ],
+        [
+          1,
+          16
         ]
       ],
       "anatomy": "rabbit"
@@ -8788,18 +8788,18 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 2314,
+      "voxelCount": 2250,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           17
         ],
         [
-          1,
+          2,
           22
         ]
       ],
@@ -8812,8 +8812,8 @@
         24,
         24
       ],
-      "paletteCount": 17,
-      "voxelCount": 1554,
+      "paletteCount": 19,
+      "voxelCount": 1677,
       "bounds": [
         [
           0,
@@ -8821,11 +8821,11 @@
         ],
         [
           1,
-          11
+          22
         ],
         [
           0,
-          19
+          20
         ]
       ],
       "anatomy": "turtle"
@@ -8837,8 +8837,8 @@
         24,
         24
       ],
-      "paletteCount": 18,
-      "voxelCount": 2634,
+      "paletteCount": 17,
+      "voxelCount": 1862,
       "bounds": [
         [
           3,
@@ -8846,7 +8846,7 @@
         ],
         [
           1,
-          17
+          22
         ],
         [
           1,
@@ -8863,7 +8863,7 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2744,
+      "voxelCount": 2674,
       "bounds": [
         [
           0,
@@ -8874,7 +8874,7 @@
           15
         ],
         [
-          1,
+          2,
           22
         ]
       ],
@@ -8888,11 +8888,11 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 1958,
+      "voxelCount": 1916,
       "bounds": [
         [
           4,
-          19
+          18
         ],
         [
           1,
@@ -8910,22 +8910,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
       "paletteCount": 17,
-      "voxelCount": 1494,
+      "voxelCount": 1548,
       "bounds": [
         [
           4,
-          19
+          18
         ],
         [
           2,
           19
         ],
         [
-          2,
-          20
+          3,
+          34
         ]
       ],
       "anatomy": "eel"
@@ -8937,8 +8937,8 @@
         24,
         24
       ],
-      "paletteCount": 14,
-      "voxelCount": 2478,
+      "paletteCount": 16,
+      "voxelCount": 2512,
       "bounds": [
         [
           0,
@@ -8946,7 +8946,7 @@
         ],
         [
           1,
-          18
+          22
         ],
         [
           0,
@@ -8960,22 +8960,22 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 18,
-      "voxelCount": 3150,
+      "paletteCount": 17,
+      "voxelCount": 2156,
       "bounds": [
         [
           1,
           22
         ],
         [
-          5,
-          23
+          4,
+          22
         ],
         [
-          0,
-          22
+          1,
+          34
         ]
       ],
       "anatomy": "whale"
@@ -8988,7 +8988,7 @@
         24
       ],
       "paletteCount": 14,
-      "voxelCount": 2346,
+      "voxelCount": 2294,
       "bounds": [
         [
           2,
@@ -9013,18 +9013,18 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 2396,
+      "voxelCount": 2344,
       "bounds": [
         [
-          4,
-          19
+          5,
+          18
         ],
         [
           1,
           21
         ],
         [
-          2,
+          3,
           21
         ]
       ],
@@ -9038,7 +9038,7 @@
         24
       ],
       "paletteCount": 18,
-      "voxelCount": 2761,
+      "voxelCount": 2739,
       "bounds": [
         [
           2,
@@ -9063,11 +9063,11 @@
         24
       ],
       "paletteCount": 16,
-      "voxelCount": 1511,
+      "voxelCount": 1463,
       "bounds": [
         [
           0,
-          19
+          18
         ],
         [
           1,
@@ -9088,7 +9088,7 @@
         24
       ],
       "paletteCount": 17,
-      "voxelCount": 4640,
+      "voxelCount": 3732,
       "bounds": [
         [
           2,
@@ -9099,8 +9099,8 @@
           19
         ],
         [
-          1,
-          22
+          2,
+          20
         ]
       ],
       "anatomy": "clam"
@@ -9113,7 +9113,7 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 1782,
+      "voxelCount": 1760,
       "bounds": [
         [
           4,
@@ -9138,7 +9138,7 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 2154,
+      "voxelCount": 2102,
       "bounds": [
         [
           1,
@@ -9149,7 +9149,7 @@
           14
         ],
         [
-          1,
+          2,
           21
         ]
       ],
@@ -9160,10 +9160,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 15,
-      "voxelCount": 2352,
+      "paletteCount": 18,
+      "voxelCount": 2434,
       "bounds": [
         [
           4,
@@ -9174,8 +9174,8 @@
           21
         ],
         [
-          1,
-          22
+          2,
+          34
         ]
       ],
       "anatomy": "deer"
@@ -9188,7 +9188,7 @@
         24
       ],
       "paletteCount": 15,
-      "voxelCount": 2806,
+      "voxelCount": 2772,
       "bounds": [
         [
           0,
@@ -9199,7 +9199,7 @@
           20
         ],
         [
-          1,
+          2,
           18
         ]
       ],
@@ -9210,10 +9210,10 @@
       "grid": [
         24,
         24,
-        24
+        35
       ],
-      "paletteCount": 15,
-      "voxelCount": 3042,
+      "paletteCount": 16,
+      "voxelCount": 3006,
       "bounds": [
         [
           1,
@@ -9225,7 +9225,7 @@
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "dragon"
@@ -9883,24 +9883,24 @@
     {
       "name": "pet-300",
       "grid": [
-        24,
-        24,
-        24
+        26,
+        25,
+        35
       ],
-      "paletteCount": 19,
-      "voxelCount": 3024,
+      "paletteCount": 20,
+      "voxelCount": 2498,
       "bounds": [
         [
           0,
-          23
+          25
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -9909,11 +9909,11 @@
       "name": "pet-301",
       "grid": [
         24,
-        24,
-        24
+        25,
+        35
       ],
-      "paletteCount": 17,
-      "voxelCount": 3756,
+      "paletteCount": 19,
+      "voxelCount": 3948,
       "bounds": [
         [
           1,
@@ -9921,11 +9921,11 @@
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -9933,24 +9933,24 @@
     {
       "name": "pet-302",
       "grid": [
-        24,
-        24,
-        24
+        30,
+        25,
+        35
       ],
       "paletteCount": 17,
-      "voxelCount": 2714,
+      "voxelCount": 2686,
       "bounds": [
         [
           0,
-          23
+          29
         ],
         [
           1,
-          23
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -9958,24 +9958,24 @@
     {
       "name": "pet-303",
       "grid": [
-        24,
-        24,
-        24
+        28,
+        25,
+        35
       ],
-      "paletteCount": 14,
-      "voxelCount": 5250,
+      "paletteCount": 15,
+      "voxelCount": 4498,
       "bounds": [
         [
           0,
-          23
+          27
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          20
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -9983,24 +9983,24 @@
     {
       "name": "pet-304",
       "grid": [
-        24,
-        24,
-        24
+        30,
+        25,
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 3306,
+      "paletteCount": 17,
+      "voxelCount": 3374,
       "bounds": [
         [
           0,
-          23
+          29
         ],
         [
           1,
-          23
+          24
         ],
         [
           0,
-          18
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10008,24 +10008,24 @@
     {
       "name": "pet-305",
       "grid": [
-        24,
-        24,
-        24
+        28,
+        25,
+        35
       ],
       "paletteCount": 19,
-      "voxelCount": 3750,
+      "voxelCount": 3150,
       "bounds": [
         [
           0,
-          23
+          27
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10034,11 +10034,11 @@
       "name": "pet-306",
       "grid": [
         24,
-        24,
-        24
+        25,
+        35
       ],
-      "paletteCount": 15,
-      "voxelCount": 3150,
+      "paletteCount": 17,
+      "voxelCount": 3162,
       "bounds": [
         [
           0,
@@ -10046,11 +10046,11 @@
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10058,24 +10058,24 @@
     {
       "name": "pet-307",
       "grid": [
-        24,
-        24,
-        24
+        28,
+        25,
+        35
       ],
-      "paletteCount": 21,
-      "voxelCount": 3284,
+      "paletteCount": 22,
+      "voxelCount": 3274,
       "bounds": [
         [
           0,
-          23
+          27
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10083,24 +10083,24 @@
     {
       "name": "pet-308",
       "grid": [
-        24,
-        24,
-        24
+        26,
+        25,
+        35
       ],
-      "paletteCount": 21,
-      "voxelCount": 2817,
+      "paletteCount": 23,
+      "voxelCount": 2811,
       "bounds": [
         [
           0,
-          23
+          25
         ],
         [
           2,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10108,24 +10108,24 @@
     {
       "name": "pet-309",
       "grid": [
-        24,
-        24,
-        24
+        32,
+        25,
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 3438,
+      "paletteCount": 18,
+      "voxelCount": 3382,
       "bounds": [
         [
           0,
-          23
+          31
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10133,24 +10133,24 @@
     {
       "name": "pet-310",
       "grid": [
-        24,
-        24,
-        24
+        32,
+        25,
+        35
       ],
-      "paletteCount": 22,
-      "voxelCount": 3272,
+      "paletteCount": 23,
+      "voxelCount": 3192,
       "bounds": [
         [
           0,
-          23
+          31
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10159,11 +10159,11 @@
       "name": "pet-311",
       "grid": [
         24,
-        24,
-        24
+        25,
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 3438,
+      "paletteCount": 17,
+      "voxelCount": 3658,
       "bounds": [
         [
           0,
@@ -10171,11 +10171,11 @@
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10183,24 +10183,24 @@
     {
       "name": "pet-312",
       "grid": [
-        24,
-        24,
-        24
+        28,
+        25,
+        35
       ],
-      "paletteCount": 17,
-      "voxelCount": 4468,
+      "paletteCount": 19,
+      "voxelCount": 4010,
       "bounds": [
         [
           0,
-          23
+          27
         ],
         [
           2,
-          22
+          24
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10208,24 +10208,24 @@
     {
       "name": "pet-313",
       "grid": [
-        24,
-        24,
-        24
+        30,
+        25,
+        35
       ],
-      "paletteCount": 21,
-      "voxelCount": 2896,
+      "paletteCount": 22,
+      "voxelCount": 2416,
       "bounds": [
         [
           0,
-          23
+          29
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10233,24 +10233,24 @@
     {
       "name": "pet-314",
       "grid": [
-        24,
-        24,
-        24
+        32,
+        25,
+        35
       ],
-      "paletteCount": 18,
-      "voxelCount": 4046,
+      "paletteCount": 19,
+      "voxelCount": 3606,
       "bounds": [
         [
           0,
-          23
+          31
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10258,24 +10258,24 @@
     {
       "name": "pet-315",
       "grid": [
-        24,
-        24,
-        24
+        28,
+        25,
+        35
       ],
-      "paletteCount": 18,
-      "voxelCount": 3746,
+      "paletteCount": 20,
+      "voxelCount": 3776,
       "bounds": [
         [
           0,
-          23
+          27
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10283,24 +10283,24 @@
     {
       "name": "pet-316",
       "grid": [
-        24,
-        24,
-        24
+        26,
+        25,
+        35
       ],
-      "paletteCount": 19,
-      "voxelCount": 5164,
+      "paletteCount": 18,
+      "voxelCount": 3872,
       "bounds": [
         [
           0,
-          23
+          25
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10309,11 +10309,11 @@
       "name": "pet-317",
       "grid": [
         24,
-        24,
-        24
+        25,
+        35
       ],
-      "paletteCount": 16,
-      "voxelCount": 4488,
+      "paletteCount": 19,
+      "voxelCount": 4660,
       "bounds": [
         [
           0,
@@ -10321,11 +10321,11 @@
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          22
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10333,24 +10333,24 @@
     {
       "name": "pet-318",
       "grid": [
-        24,
-        24,
-        24
+        32,
+        25,
+        35
       ],
       "paletteCount": 17,
-      "voxelCount": 2470,
+      "voxelCount": 2346,
       "bounds": [
         [
           0,
-          23
+          31
         ],
         [
-          1,
-          22
+          2,
+          24
         ],
         [
           0,
-          23
+          34
         ]
       ],
       "anatomy": "secret-dragon"
@@ -10359,11 +10359,11 @@
       "name": "pet-319",
       "grid": [
         24,
-        24,
-        24
+        25,
+        35
       ],
-      "paletteCount": 17,
-      "voxelCount": 3094,
+      "paletteCount": 18,
+      "voxelCount": 3282,
       "bounds": [
         [
           0,
@@ -10371,11 +10371,11 @@
         ],
         [
           1,
-          22
+          24
         ],
         [
           0,
-          21
+          34
         ]
       ],
       "anatomy": "secret-dragon"

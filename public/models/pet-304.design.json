@@ -1,11 +1,207 @@
 {
-  "schema": "alkong-stage-24-v2",
+  "schema": "alkong-stage-assembly-v3",
   "size": [
-    24,
-    24,
-    24
+    30,
+    25,
+    35
   ],
+  "unit": 21.6,
   "source": "scripts/rework_stage_pets.py",
+  "assembly": {
+    "body": {
+      "pivot": [
+        14.5,
+        7,
+        12
+      ],
+      "parent": null
+    },
+    "crown": {
+      "pivot": [
+        14.5,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "pivot": [
+        14.5,
+        16,
+        1
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "pivot": [
+        14.5,
+        14,
+        7
+      ],
+      "parent": "body",
+      "rotation": [
+        -0.18,
+        0,
+        0
+      ]
+    },
+    "left_arm": {
+      "pivot": [
+        9,
+        11,
+        12
+      ],
+      "parent": "body",
+      "rotation": [
+        0,
+        0.36,
+        0.1
+      ],
+      "scale": [
+        1.25,
+        1,
+        1
+      ]
+    },
+    "left_ear": {
+      "pivot": [
+        9,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.06,
+        0,
+        0.12
+      ]
+    },
+    "left_leg": {
+      "pivot": [
+        9,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "left_tip": {
+      "pivot": [
+        6,
+        11,
+        12
+      ],
+      "parent": "left_arm",
+      "rotation": [
+        0,
+        0.12,
+        -0.08
+      ]
+    },
+    "right_arm": {
+      "pivot": [
+        20,
+        11,
+        12
+      ],
+      "parent": "body",
+      "rotation": [
+        0,
+        -0.36,
+        -0.1
+      ],
+      "scale": [
+        1.25,
+        1,
+        1
+      ]
+    },
+    "right_ear": {
+      "pivot": [
+        20,
+        15,
+        12
+      ],
+      "parent": "head",
+      "rotation": [
+        0.06,
+        0,
+        -0.12
+      ]
+    },
+    "right_leg": {
+      "pivot": [
+        20,
+        7,
+        12
+      ],
+      "parent": "body"
+    },
+    "right_tip": {
+      "pivot": [
+        23,
+        11,
+        12
+      ],
+      "parent": "right_arm",
+      "rotation": [
+        0,
+        -0.12,
+        0.08
+      ]
+    },
+    "tail": {
+      "pivot": [
+        14.5,
+        7,
+        18
+      ],
+      "parent": "body",
+      "rotation": [
+        0.16,
+        -0.28,
+        0
+      ]
+    },
+    "tail_1": {
+      "pivot": [
+        14.5,
+        7,
+        22
+      ],
+      "parent": "tail",
+      "rotation": [
+        0.16,
+        -0.28,
+        0
+      ]
+    },
+    "tail_2": {
+      "pivot": [
+        14.5,
+        7,
+        26
+      ],
+      "parent": "tail_1",
+      "rotation": [
+        0.16,
+        -0.28,
+        0
+      ]
+    },
+    "tail_3": {
+      "pivot": [
+        14.5,
+        7,
+        30
+      ],
+      "parent": "tail_2",
+      "rotation": [
+        0.16,
+        -0.28,
+        0
+      ]
+    }
+  },
   "concept": {
     "key": "pet-304",
     "id": 304,

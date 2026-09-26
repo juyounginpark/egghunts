@@ -7,6 +7,7 @@ import struct
 from pathlib import Path
 from stage_pet_designs import LANGUAGES,FORMS,ROLES,ROLE_SLOTS,BODY_NOTES,FEATURES,EXPRESSIONS,IDLES,REACTIONS,DRAGON_STRUCTURES
 from stage_pet_finish import OBJECTS,RECIPES,PLACEMENT,MATERIALS,PALETTES,FACE_DESCRIPTIONS,mount_object,expressive_face,finish_colors,connect_anatomy,material_colors
+from stage_pet_pose import assemble
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'public/models';ART=ROOT/'docs/art'
 def catalog(path):
@@ -295,9 +296,10 @@ def dragon(stage):
  return g
 
 def export(g,row,colors):
- key=row['key'];voxels=[[*p,c] for p,(c,_) in sorted(g.cells.items())];parts={}
+ key=row['key'];shift=[max(0,-min(p[a] for p in g.cells)) for a in range(3)]
+ voxels=[[*(p[a]+shift[a] for a in range(3)),c] for p,(c,_) in sorted(g.cells.items())];parts={}
  for part in sorted({p for _,p in g.cells.values()}|{'body','head'}):
-  cells=[[*v,c] for v,(c,p) in sorted(g.cells.items()) if p==part]
+  cells=[[*(v[a]+shift[a] for a in range(3)),c] for v,(c,p) in sorted(g.cells.items()) if p==part]
   pivot=[11.5,7,12]
   if part=='head':pivot=[11.5,g.face[0]-1,7]
   if part=='eyes':pivot=[11.5,g.face[0]+1,g.face[1]]
@@ -308,14 +310,17 @@ def export(g,row,colors):
   if part=='float':pivot=[11.5,14,15]
   parent=None if part=='body' else 'head' if part in ['eyes','left_ear','right_ear'] else 'body'
   parts[part]=dict(pivot=pivot,parent=parent,voxels=cells)
- model=dict(size=[24]*3,front='-z',previewAngle=row['previewAngle'],colors=colors,pivot=[11.5,.5,11.5],voxels=voxels,parts=parts)
+  parts[part].update(g.parts.get(part,{}))
+  parts[part]['pivot']=[v+shift[a] for a,v in enumerate(parts[part]['pivot'])]
+ size=[max(24,max(v[a] for v in voxels)+1) for a in range(3)]
+ model=dict(size=size,unit=21.6,front='-z',previewAngle=row['previewAngle'],colors=colors,pivot=[v+shift[a] for a,v in enumerate([11.5,.5,11.5])],voxels=voxels,parts=parts)
  (OUT/f'{key}.json').write_text(json.dumps(model,separators=(',',':')),encoding='utf8')
- (OUT/f'{key}.design.json').write_text(json.dumps(dict(schema='alkong-stage-24-v2',size=[24]*3,source='scripts/rework_stage_pets.py',concept=row),ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+ (OUT/f'{key}.design.json').write_text(json.dumps(dict(schema='alkong-stage-assembly-v3',size=size,unit=21.6,source='scripts/rework_stage_pets.py',assembly={n:{k:v for k,v in p.items() if k!='voxels'} for n,p in parts.items()},concept=row),ensure_ascii=False,indent=2)+'\n',encoding='utf8')
  def chunk(tag,b):return tag+struct.pack('<II',len(b),0)+b
  palette=b''.join(bytes.fromhex(c[1:])+b'\xff' for c in colors)+bytes((256-len(colors))*4)
- chunks=chunk(b'SIZE',struct.pack('<III',24,24,24))+chunk(b'XYZI',struct.pack('<I',len(voxels))+b''.join(bytes([x,z,y,c]) for x,y,z,c in voxels))+chunk(b'RGBA',palette)
+ chunks=chunk(b'SIZE',struct.pack('<III',size[0],size[2],size[1]))+chunk(b'XYZI',struct.pack('<I',len(voxels))+b''.join(bytes([x,z,y,c]) for x,y,z,c in voxels))+chunk(b'RGBA',palette)
  (OUT/f'{key}.vox').write_bytes(b'VOX '+struct.pack('<I',150)+b'MAIN'+struct.pack('<II',0,len(chunks))+chunks)
- return dict(name=key,grid=[24]*3,paletteCount=len(colors),voxelCount=len(voxels),bounds=[[min(p[a] for p in voxels),max(p[a] for p in voxels)] for a in range(3)],anatomy=row['anatomy'])
+ return dict(name=key,grid=size,paletteCount=len(colors),voxelCount=len(voxels),bounds=[[min(p[a] for p in voxels),max(p[a] for p in voxels)] for a in range(3)],anatomy=row['anatomy'])
 
 def briefs():
  source=(ROOT/'src/stage-data.ts').read_text(encoding='utf8')
@@ -369,7 +374,7 @@ def main():
   if args.ids and row['id'] not in args.ids:continue
   g=dragon(stage) if slot==10 else Grid()
   if slot!=10:body(g,row['anatomy'],stage,slot);adapt_habitat(g,stage,slot);mount_object(g,stage,slot,Grid)
-  expressive_face(g,slot,stage);connect_anatomy(g,stage);colors=finish_colors(g,stage,slot)
+  expressive_face(g,slot,stage);connect_anatomy(g,stage);assemble(g,row);colors=finish_colors(g,stage,slot)
   records.append(export(g,row,colors));old[next(i for i,r in enumerate(old) if r['key']==row['key'])]=row
   pet=dragons[stage-1] if slot==10 else pets[row['id']-100];pet.update(description=row['concept'],color=colors[0])
  if args.bosses:
@@ -384,6 +389,6 @@ def main():
  (OUT/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf8');(ART/'character-concepts.json').write_text(json.dumps(old,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
  for path,name,data in [('src/stage-pet-catalog.ts','STAGE_PET_ROWS',pets),('src/secret-dragon-catalog.ts','SECRET_DRAGON_ROWS',dragons)]:
   (ROOT/path).write_text('// Stable IDs, names and tiers. Visuals: scripts/rework_stage_pets.py\nexport const '+name+' = '+json.dumps(data,ensure_ascii=False,indent=2)+';\n',encoding='utf8')
- print('Authored',len(records),'stage models on 24-cube grids; all 320 identities preserved.')
+ print('Authored',len(records),'stage assemblies at 24-unit body scale; all 320 identities preserved.')
 
 if __name__=='__main__':main()

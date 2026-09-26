@@ -1,9 +1,9 @@
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage } from "./data";
-import { eggVisual, petVisual, animateEgg } from "./visuals";
+import { eggVisual, petVisual, animateEgg,nestVisual } from "./visuals";
 import type { Egg, GameState } from "./game";
-import { voxelModel as model, loadVoxels,voxelColliders } from "./voxel";
+import { voxelModel as model, loadVoxels } from "./voxel";
 import {villageMapColliders,type MapCollider} from './map-collision';
 import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
@@ -275,7 +275,7 @@ export class World {
     this.hudMeasureAt = -1;
   }
   async init() {
-    await loadVoxels([...Array.from({length:20},(_,i)=>`guardian-${i+1}`),"guardian-final","alkong", "tree", "mushroom", "camp", "nest", "crystal", "ruin", "meteor", "pedestal", "barn", "fence", "gate", "well", "carrots", "cabbage", "hay", "flower", "lantern", "feed", "shop", "appletree", "beehive", "teapot", "log", "cart", "stalagmite", "statue", "column", "antenna", "starflower", ...EGGS.map((_, i) => `egg-${i}`)]);
+    await loadVoxels([...Array.from({length:20},(_,i)=>`guardian-${i+1}`),"guardian-final","alkong","pedestal","feed"]);
     this.player.add(model("alkong", true));
     this.eggModels = EGGS.map((_, i) => eggVisual(i));
     const groundMaterial = new T.MeshLambertMaterial({ vertexColors: true });
@@ -312,12 +312,8 @@ export class World {
     const mesh = new T.Mesh(g, groundMaterial);
     mesh.receiveShadow = true;
     this.terrain.add(mesh);
-    const prop = (name:string,x:number,z:number,scale=1,rotation=0,parent:T.Group=this.terrain) => {
-      if(!['flower','carrots','cabbage'].includes(name))this.mapColliders.push(...voxelColliders(name,x,z,scale,rotation));
-      const g=model(name);g.position.set(x,0,z);g.scale.setScalar(scale);g.rotation.y=rotation;parent.add(g);return g;
-    };
     for(const [slot,plot] of FARM_PLOTS.entries()){
-      const feed=farmLocal(slot,-1,2.5);prop("feed",feed.x,feed.z,.7,plot.rotation,this.farm);
+      const feed=farmLocal(slot,-1,2.5),bowl=model('feed');bowl.position.set(feed.x,0,feed.z);bowl.scale.setScalar(.7);bowl.rotation.y=plot.rotation;this.farm.add(bowl);
       const position=farmGym(slot),gym=new T.Group();gym.name=`gym-${slot}`;gym.position.set(position.x,0,position.z);gym.rotation.y=plot.rotation;
       const material=new T.MeshLambertMaterial({color:[0x859e5d,0xc59566,0x7ca3ad,0xac8ab2,0xb8a35a][slot]});
       for(const [w,h,d,x,y,z] of [[1.2,.15,1.6,0,.08,0],[.85,.04,1.35,0,.18,0],[.12,1,.12,-.5,.6,-.7],[.12,1,.12,.5,.6,-.7],[1.1,.12,.12,0,1.05,-.7]]){
@@ -462,7 +458,7 @@ export class World {
         const nestScale=m.scale.x*1.45;
         const nestKey=`${e.region}:${e.homeX}:${e.homeZ}`;
         if(e.homeX!==undefined&&!this.nests.has(nestKey)){
-          const nest=model("nest");this.nests.set(nestKey,nest);this.nestGroup.add(nest);
+          const nest=nestVisual(e);this.nests.set(nestKey,nest);this.nestGroup.add(nest);
         }
         const nest=this.nests.get(nestKey);
         if(nest){nest.position.set(e.homeX??e.x,.02,e.homeZ??e.z);nest.scale.setScalar(nestScale);}
