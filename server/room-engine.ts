@@ -197,6 +197,10 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number){
   case 'claimHatch':atBase();if(!g.claimHatch(text()))throw Error('EGG_NOT_READY');break;
   case 'select':atBase();if(!g.save.eggs.some(e=>e.id===text()))throw Error('NOT_OWNED');g.save.selected=text();g.revision++;break;
   case 'equip':{atBase();if(!g.equipPet(integer()))throw Error('CANNOT_EQUIP');break;}
+  case 'replacePet':{
+   atBase();const value=c.value as {id:number;slot:number;expected:number}|null;
+   if(!value||!g.replacePet(value.id,value.slot,value.expected))throw Error('CANNOT_EQUIP');break;
+  }
   case 'unequip':{atBase();if(!g.unequipPet(integer()))throw Error('NOT_OWNED');break;}
   case 'upgrade':atBase();if(!Object.hasOwn(UPGRADES,text()))throw Error('INVALID_UPGRADE');g.upgrade(text() as keyof typeof UPGRADES);break;
   case 'name':g.save.playerName=playerName(c.value);break;

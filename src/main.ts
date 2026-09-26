@@ -419,14 +419,14 @@ function updateHud() {
     : "기지 · 시간 제한 없이 탐험해요";
   $("world-label").style.opacity = game.distance < 4 ? "1" : "0";
   $("action").hidden = tab==='hatchery'||!game.action||game.training;
-  $("action-label").textContent = pickupPreparation?'꺼내는 중':tab === "hatchery" ? "두드리기" : !game.carried&&game.near&&BALANCE.rareEggPickupSeconds[EGGS[game.near.type].tier]>0?'알 꺼내기':game.action;
+  $("action-label").textContent = game.carried?'알 운반중':pickupPreparation?'꺼내는 중':tab === "hatchery" ? "두드리기" : game.near&&BALANCE.rareEggPickupSeconds[EGGS[game.near.type].tier]>0?'알 꺼내기':game.action;
   $("action").classList.toggle('preparing',!!pickupPreparation);
   $("action").style.setProperty('--pickup-progress',`${pickupPreparation?(1-pickupPreparation.remaining/pickupPreparation.duration)*100:0}%`);
   $("action").setAttribute('aria-label',pickupPreparation?'희귀 알 꺼내는 중, 이동하면 취소':$("action-label").textContent??'행동');
   $('action').title=$('action-label').textContent??'행동';
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
-  const weightHint=$('action-weight');weightHint.hidden=!actionEgg;
+  const weightHint=$('action-weight');weightHint.hidden=!actionEgg||!!game.carried;
   if(actionEgg)weightHint.textContent=eggWeightLabel(actionEgg.type,game.save.upgrades.carry);
   const actionModel=game.nearStore?'shop':game.nearGym?'gym':null;
   const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
@@ -529,8 +529,10 @@ function showSettings() {
     const label=button.previousElementSibling;if(label)label.textContent='Supabase';
   }
   ($("appearance-setting") as HTMLSelectElement).value=String(game.save.appearance??0);
+  $('resume').insertAdjacentHTML('beforebegin',`<fieldset class="sound-settings"><legend>펫 표시</legend><label>내 펫 숨김 <input id="hide-own-pets" type="checkbox" ${game.save.settings.hideOwnPets?'checked':''}></label><label>다른 사람 펫 숨김 <input id="hide-other-pets" type="checkbox" ${game.save.settings.hideOtherPets?'checked':''}></label><small>동행·농장 펫과 이름표만 숨겨요. 능력과 수익은 유지돼요.</small></fieldset>`);
 }
 const hatchTouches:{egg:string;x:number;y:number;at:number}[]=[];
+let pendingPetReplacement:{id:number;active:number[]}|null=null,petReplacing=false;
 document.addEventListener("click", async (e) => {
   const target=e.target as HTMLElement;
   const b = target.closest<HTMLElement>("button")??(tab==='hatchery'&&target.closest('#world')?$('hatch-touch'):null);
@@ -556,6 +558,28 @@ document.addEventListener("click", async (e) => {
     return;
   }
   if(hatchRevealing)return;
+  if(b.dataset.companion!==undefined&&game.save.active.length>=BALANCE.maxCompanions){
+    const id=Number(b.dataset.companion);
+    if(!MONGLES[id]||game.equippedCount(id)>=(game.save.mongles[id]??0)||game.death)return;
+    pendingPetReplacement={id,active:[...game.save.active]};input.reset();online.halt();paused=true;
+    $('modal').innerHTML=`<section class="death-card" role="dialog" aria-modal="true" aria-labelledby="replace-pet-title"><h1 id="replace-pet-title">교체할 펫 선택</h1><p>${MONGLES[id].name}와 교체할 현재 착용 펫을 골라 주세요.</p><div class="pet-slots">${game.save.active.map((old,slot)=>`<button class="pet-slot" data-replace-pet="${slot}" ${old===id?'disabled':''}><img src="${petIcon(old)}" alt=""/><b>${MONGLES[old].name}</b><small>${RARITIES[MONGLES[old].tier].name} · ${slot+1}번 자리</small><span>${old===id?'같은 펫':'교체'}</span></button>`).join('')}</div><button id="cancel-pet-replacement" class="secondary">취소</button></section>`;
+    $('modal').hidden=false;return;
+  }
+  if(b.id==='cancel-pet-replacement'){
+    if(petReplacing)return;pendingPetReplacement=null;paused=false;$('modal').hidden=true;return;
+  }
+  if(b.dataset.replacePet!==undefined&&pendingPetReplacement){
+    if(petReplacing)return;
+    const slot=Number(b.dataset.replacePet),{id,active}=pendingPetReplacement,expected=active[slot];
+    if(expected===undefined)return;
+    petReplacing=true;$('modal').querySelectorAll('button').forEach(button=>button.disabled=true);
+    try{
+      const ok=online.active?await remote('replacePet',{id,slot,expected}):game.replacePet(id,slot,expected);
+      if(ok){toast(`${MONGLES[id].name} 착용 완료`);void save();}
+      else toast('교체하지 못했어요. 현재 착용 펫을 확인하고 다시 선택해 주세요.');
+    }finally{petReplacing=false;pendingPetReplacement=null;paused=false;$('modal').hidden=true;renderPanel();}
+    return;
+  }
   if(b.id==='weekly-claim'){
     if(weeklyClaiming)return;
     weeklyClaiming=true;b.setAttribute('disabled','');b.textContent='받는 중…';input.reset();online.halt();
@@ -663,6 +687,8 @@ document.addEventListener("click", async (e) => {
       sound: !($("sound-setting") as HTMLInputElement).checked,
       volume: Number(($("volume-setting") as HTMLInputElement).value)/100,
       haptic: ($("haptic-setting") as HTMLInputElement).checked,
+      hideOwnPets: ($('hide-own-pets') as HTMLInputElement).checked,
+      hideOtherPets: ($('hide-other-pets') as HTMLInputElement).checked,
       quality: ($("quality-setting") as HTMLSelectElement).value as
         "high" | "low",
     };
@@ -696,6 +722,10 @@ document.addEventListener('input',e=>{
   if(game.save.settings.sound)audio.unlock();
 });
 document.addEventListener('change',e=>{
+  const petSetting=e.target as HTMLInputElement;
+  if(ready&&(petSetting.id==='hide-own-pets'||petSetting.id==='hide-other-pets')){
+    game.save.settings[petSetting.id==='hide-own-pets'?'hideOwnPets':'hideOtherPets']=petSetting.checked;void save();
+  }
   if(ready&&['sound-setting','volume-setting'].includes((e.target as HTMLElement).id)){
     if(game.save.settings.sound)audio.play('ui');
     void save();

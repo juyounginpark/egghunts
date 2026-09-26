@@ -112,7 +112,7 @@ export type Save = {
     sinceHit?:number;
     damageTicks?:{remaining:number;ticks:number;until:number}[];
   } | null;
-  settings: { sound: boolean; volume?:number; haptic: boolean; quality: "high" | "low" };
+  settings: { sound: boolean; volume?:number; haptic: boolean; quality: "high" | "low"; hideOwnPets?:boolean; hideOtherPets?:boolean };
 };
 export function freshSave(now: number): Save {
   return {
@@ -211,6 +211,7 @@ export function parseSave(raw: string | null, now: number): Save {
   )
     throw new Error("저장 데이터를 읽을 수 없어요. 원본은 유지됩니다.");
   s.settings.volume=typeof s.settings.volume==='number'&&Number.isFinite(s.settings.volume)?Math.max(0,Math.min(1,s.settings.volume)):1;
+  s.settings.hideOwnPets=s.settings.hideOwnPets===true;s.settings.hideOtherPets=s.settings.hideOtherPets===true;
   if (
     s.expedition &&
     (!finite(s.expedition.deadline) ||
@@ -390,6 +391,10 @@ export class GameState {
   unequipPet(id:number){
     const index=this.save.active.lastIndexOf(id);if(index<0)return false;
     this.save.active.splice(index,1);this.revision++;return true;
+  }
+  replacePet(id:number,slot:number,expected:number){
+    if(!Number.isInteger(id)||!MONGLES[id]||!Number.isInteger(slot)||slot<0||slot>=this.save.active.length||this.save.active[slot]!==expected||id===expected||this.equippedCount(id)>=(this.save.mongles[id]??0))return false;
+    this.save.active[slot]=id;this.revision++;return true;
   }
   death:NonNullable<Save['death']>|null=null;
   private reviveAdUntil:number|null=null;

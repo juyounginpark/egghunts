@@ -507,6 +507,10 @@ export class World {
       this.storage.visible =
         !isHatch;
     this.hatch.visible = isHatch;
+    this.companions.visible=!isHatch&&!game.save.settings.hideOwnPets;
+    this.farmPets.visible=this.farm.visible&&!game.save.settings.hideOwnPets;
+    this.roomFarmPets.visible=this.farm.visible&&mode==='explore'&&!game.save.settings.hideOtherPets;
+    for(const entry of this.peerPets.values())entry.group.visible=entry.group.visible&&!isHatch&&!game.save.settings.hideOtherPets;
     const deathAge=game.death?(game.now()-game.death.at)/1000:Infinity;
     const reviveAge=(game.now()-game.revivedAt)/1000;
     const fall=game.death?(this.reducedMotion.matches?1:T.MathUtils.smoothstep(deathAge,.05,.8)):0;
@@ -750,7 +754,7 @@ export class World {
       this.petLabels.dataset.ids=labelIds;
       this.petLabels.innerHTML=game.save.active.map(id=>`<div class="pet-label"><b><span style="color:${RARITIES[MONGLES[id].tier].color}">[${RARITIES[MONGLES[id].tier].name}]</span> ${MONGLES[id].name}</b><div class="stat-badges">${petAbilities(MONGLES[id])}</div></div>`).join('');
     }
-    this.petLabels.hidden=isHatch;
+    this.petLabels.hidden=isHatch||!!game.save.settings.hideOwnPets;
     const labelBoxes:{x:number;y:number;height:number;width:number}[]=[];
     const positionPetLabel=(pet:T.Object3D,label:HTMLElement,avoidOverlap=true)=>{
       const p=pet.position.clone();p.y+=(pet.userData.labelHeight??.8)*pet.scale.x+.06;p.project(this.camera);
@@ -770,7 +774,7 @@ export class World {
     this.companions.children.forEach((pet,i)=>{
       const label=this.petLabels.children[i] as HTMLElement|undefined;if(label)positionPetLabel(pet,label);
     });
-    this.peerPetLabels.hidden=isHatch||mode!=='explore';
+    this.peerPetLabels.hidden=isHatch||mode!=='explore'||!!game.save.settings.hideOtherPets;
     const peerLabelKeys=new Set<string>();
     for(const [owner,entry] of this.peerPets)entry.group.children.forEach((pet,index)=>{
       const id=pet.userData.petId as number,definition=MONGLES[id];if(!definition)return;
