@@ -25,7 +25,8 @@ export class HostStore {
   try{
    for(const [id,p]of Object.entries(room.state?.players??{}))this.db.prepare(`INSERT INTO profiles(user,state,revision) VALUES(?,?,1)
     ON CONFLICT(user) DO UPDATE SET state=excluded.state,revision=profiles.revision+1`).run(id,JSON.stringify(p.runtime));
-   if(room.members.length)this.db.prepare('INSERT OR REPLACE INTO rooms VALUES(?,?,?)').run(room.id,JSON.stringify(room.state),JSON.stringify(room.members));
+   // Empty rooms retain the current day's egg draw until their cycle expires.
+   if(room.state)this.db.prepare('INSERT OR REPLACE INTO rooms VALUES(?,?,?)').run(room.id,JSON.stringify(room.state),JSON.stringify(room.members));
    else this.db.prepare('DELETE FROM rooms WHERE id=?').run(room.id);
    this.db.exec('COMMIT');
   }catch(e){this.db.exec('ROLLBACK');throw e;}

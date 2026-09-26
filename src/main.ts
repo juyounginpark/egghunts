@@ -125,7 +125,7 @@ for (const el of [$("hint"), inventory, $("controls"), $("risk")])
   bottomHud.append(el);
 bottomHud.insertBefore(tutorial,$('controls'));
 let bannerStage=0,bannerUntil=0;
-let firstArrivalStage=0;
+const expeditionBannerStages=new Set<number>();
 let lastAnnouncement = 0,
   announcementTimer = 0;
 const platform = new Platform();
@@ -278,16 +278,15 @@ function updateHud() {
   eggNotices.observeWorld(game,online.latest?.serverTime??game.now());
   eggNotices.update(online.latest?.eggNotices??[],online.latest?.serverTime??game.now());
   const outside=tab==='explore'&&!game.isAtBase;
+  if(game.isAtBase)expeditionBannerStages.clear();
   if(outside!==wasExploring){setHudCompact(outside);wasExploring=outside;}
   if(!outside){bannerStage=0;bannerUntil=0;}
   else if(bannerStage!==game.stage.id){
     bannerStage=game.stage.id;
-    game.save.visitedStages??=[];
-    const first=firstArrivalStage===bannerStage||!game.save.visitedStages.includes(bannerStage);
-    firstArrivalStage=0;
+    const first=!expeditionBannerStages.has(bannerStage);
+    expeditionBannerStages.add(bannerStage);
     bannerUntil=first?performance.now()+ROUTE.bannerSeconds*1000:0;
-    if(first&&!game.save.visitedStages.includes(bannerStage)){game.save.visitedStages.push(bannerStage);game.revision++;}
-    $("region-banner-name").textContent=game.stage.name;
+    $("region-banner-name").textContent=`${game.stage.id}단계 · ${game.stage.name}`;
     $('region-banner-speed').lastElementChild!.textContent=num(game.recommendedSpeed,1);
     $('region-banner-speed').setAttribute('aria-label',`권장 스피드 ${num(game.recommendedSpeed,1)}`);
     $('region-banner-speed').title=`권장 스피드 ${num(game.recommendedSpeed,1)}`;
@@ -851,7 +850,6 @@ function frame(now: number) {
   }
   heardHazards=audible;
   for (const event of game.events.splice(0)) {
-    if(event.name==='region_enter'&&event.params.first===1)firstArrivalStage=Number(event.params.stage);
     const cues:Partial<Record<string,GameSound>>={hatch_manual_hit:'tap',egg_pickup:'pickup',egg_drop:'drop',egg_saved:'return',mongle_obtained:'hatch',player_hit:'hit',player_death:'death',player_revive:'revive',night_refresh:'night',region_enter:'stage',level_up:'upgrade',upgrade_purchase:'upgrade',trail_purchase:'upgrade',collection_reward:'upgrade',boss_wake:'boss',egg_recovered:'drop'};
     const cue=cues[event.name];if(cue&&cue!=='hatch')playSound(cue,Number(event.params.stage??game.stage.id));
     if(event.name==='hatch_manual_hit'&&tab==='hatchery'&&event.params.egg===game.selected?.id){

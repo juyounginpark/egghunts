@@ -115,17 +115,18 @@ export class OnlineGame{
  }
  constructor(private notify:(s:string)=>void,private syncClock:(n:number)=>void){
   document.addEventListener('visibilitychange',()=>{if(document.hidden)this.halt();});
-  window.addEventListener('pagehide',()=>{void this.leave();});
+  // Reload/navigation is a transport disconnect, not an explicit room departure.
+  window.addEventListener('pagehide',()=>{this.halt();void this.leave(false);});
   window.addEventListener('pageshow',event=>{if(event.persisted&&this.leaving)location.reload();});
  }
- async leave(){
+ async leave(releaseMembership=true){
   if(this.leaving)return;
   this.leaving=true;this.active=false;this.connected=false;this.peers=[];this.latest=null;
   this.socket?.close();
   this.warmSocket?.close();clearTimeout(this.warmTimer);
   clearInterval(this.syncTimer);this.syncTimer=undefined;this.vector={x:0,z:0,slow:false};this.queue=[];this.pending=null;
   for(const complete of this.completions.values())complete(false);this.completions.clear();
-  if(!this.accessToken)return;
+  if(!releaseMembership||!this.accessToken)return;
   try{await fetch(GAME_URL,{method:'POST',keepalive:true,headers:{apikey:PUBLIC_KEY,Authorization:`Bearer ${this.accessToken}`,'Content-Type':'application/json'},body:JSON.stringify({operation:'leave'}),signal:AbortSignal.timeout(5000)});}
   catch{/* A crashed/offline browser is also removed by the server membership lease. */}
  }

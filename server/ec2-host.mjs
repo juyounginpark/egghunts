@@ -3,6 +3,7 @@ import {randomUUID,createHash} from 'node:crypto';
 import {WebSocketServer,WebSocket} from 'ws';
 import {HostStore} from './ec2-store.mjs';
 import {runRoom,snapshotSections} from './room-engine.ts';
+import {BALANCE} from '../src/data';
 
 const required=name=>{const value=process.env[name];if(!value)throw Error(`Missing ${name}`);return value;};
 const supabase=required('SUPABASE_URL'),service=required('SUPABASE_SERVICE_ROLE_KEY');
@@ -104,11 +105,16 @@ function detach(user){
   delete next.state.players[user];
  }
  next.members=next.members.filter(m=>m.user_id!==user);store.commit(next);
- membership.delete(user);if(next.members.length)rooms.set(next.id,next);else rooms.delete(next.id);
+ membership.delete(user);rooms.set(next.id,next);
 }
 function prune(){
  const now=Date.now();
  for(const room of [...rooms.values()])for(const m of room.members)if(now-Date.parse(m.last_seen)>15000)detach(m.user_id);
+ // A solo player's reload must not reroll every floor egg. Keep the vacant
+ // room in matchmaking (and on disk) until the normal night refresh boundary.
+ for(const room of [...rooms.values()])if(!room.members.length&&room.state?.cycle!==Math.floor(now/BALANCE.nightInterval)){
+  store.commit({...room,state:null});rooms.delete(room.id);
+ }
 }
 async function operate(identity,request){
  if(!ready())throw Error('SERVER_NOT_READY');
