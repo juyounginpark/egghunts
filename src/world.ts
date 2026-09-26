@@ -16,6 +16,8 @@ import {animatePet,greetPet} from './pet-animation';
 import {followPets} from './pet-followers';
 import {GuardianMotion} from './guardian-motion';
 import {HatchBurst} from './hatch-burst';
+import {EnvironmentVisualController} from './environment-visual';
+import {dioramaMaterial} from './diorama-material';
 
 export class World {
   networkOffset={x:0,z:0};
@@ -75,7 +77,7 @@ export class World {
   }
   private decorateAvatar(avatar:T.Object3D,choice:number){
     const old=avatar.getObjectByName('avatar-accessory');if(old)avatar.remove(old);
-    const hat=new T.Mesh(new T.BoxGeometry(.65,.16,.6),new T.MeshLambertMaterial({color:[0x99c76b,0xffb677,0x83cdf0][choice]}));
+    const hat=new T.Mesh(new T.BoxGeometry(.65,.16,.6),dioramaMaterial({color:[0x99c76b,0xffb677,0x83cdf0][choice]},true));
     hat.name='avatar-accessory';hat.position.set(0,1.05,0);hat.rotation.z=choice===1?.16:0;avatar.add(hat);
     if(old instanceof T.Mesh){old.geometry.dispose();(old.material as T.Material).dispose();}
   }
@@ -169,7 +171,7 @@ export class World {
     return this.stageEggModels.get(key)!.clone();
   }
   private ambient=new T.HemisphereLight(0xfffae9,0x758259,2.5);
-  private nightLight=0;
+  readonly environment:EnvironmentVisualController;
   private lastWorld = "";
   private nests = new Map<string,T.Group>();
   private nestGroup=new T.Group();
@@ -203,7 +205,7 @@ export class World {
     this.renderer.toneMapping = T.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1;
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = T.PCFShadowMap;
+    this.renderer.shadowMap.type = T.PCFSoftShadowMap;
     this.renderer.setClearColor(0xe9f0d8);
     host.append(this.renderer.domElement);
     this.damageDirection.id='damage-direction';this.damageDirection.hidden=true;this.damageDirection.setAttribute('aria-hidden','true');host.append(this.damageDirection);
@@ -220,7 +222,6 @@ export class World {
       "aria-label",
       "알콩 원정대 3D 탐험 세계",
     );
-    this.scene.fog = new T.Fog(0xe9f0d8, 28, 65);
     this.scene.add(this.ambient);
     this.sun = new T.DirectionalLight(0xfff0ce, 3);
     this.sun.position.set(-8, 18, 10);
@@ -231,6 +232,9 @@ export class World {
     this.sun.shadow.camera.top = 16;
     this.sun.shadow.camera.bottom = -16;
     this.sun.shadow.normalBias = 0.04;
+    this.sun.shadow.camera.near=.5;
+    this.sun.shadow.camera.far=55;
+    this.environment=new EnvironmentVisualController(this.scene,this.renderer,this.sun,this.ambient);
     this.scene.add(
       this.sun,
       this.sun.target,
@@ -284,7 +288,7 @@ export class World {
     await loadVoxels([...Array.from({length:20},(_,i)=>`guardian-${i+1}`),"guardian-final","alkong","pedestal","feed"]);
     this.player.add(model("alkong", true));
     this.eggModels = EGGS.map((_, i) => eggVisual(i));
-    const groundMaterial = new T.MeshLambertMaterial({ vertexColors: true });
+    const groundMaterial = dioramaMaterial({ vertexColors: true });
     const chunks: T.BufferGeometry[] = [];
     const block = (
       x: number,
@@ -317,6 +321,7 @@ export class World {
     chunks.forEach((c) => c.dispose());
     const mesh = new T.Mesh(g, groundMaterial);
     mesh.receiveShadow = true;
+    mesh.castShadow = true;
     this.terrain.add(mesh);
     for(const [slot,plot] of FARM_PLOTS.entries()){
       const feed=farmLocal(slot,-1,2.5),bowl=model('feed');bowl.position.set(feed.x,0,feed.z);bowl.scale.setScalar(.7);bowl.rotation.y=plot.rotation;this.farm.add(bowl);
@@ -566,16 +571,7 @@ export class World {
       });
     }
     this.storage.children.forEach((m) => animateEgg(m, time, this.low));
-    const sky = !isHatch && game.distance>8 ? new T.Color(game.stage.color).lerp(new T.Color(0xe9f0d8),.6).getHex() : 0xe9f0d8;
-    this.renderer.setClearColor(game.isNight && !isHatch ? 0x303d61 : sky);
-    (this.scene.fog as T.Fog).color.set(
-      game.isNight && !isHatch ? 0x303d61 : sky,
-    );
-    this.nightLight=T.MathUtils.lerp(this.nightLight,game.isNight&&!isHatch?1:0,1-Math.exp(-dt*2));
-    this.sun.intensity=T.MathUtils.lerp(3,.22,this.nightLight);
-    this.sun.color.setHex(game.isNight&&!isHatch?0x98b7ff:0xfff5de);
-    this.ambient.intensity=T.MathUtils.lerp(2.5,.45,this.nightLight);
-    this.ambient.color.setHex(game.isNight&&!isHatch?0x779de7:0xfffae9);
+    this.environment.update(game,isHatch,this.low,this.player,this.peers.values());
     const moving = !game.death&&(game.training || Boolean(this.player.userData.moving));
     if(game.training)this.player.rotation.y=farmPlot(game.farmSlot).rotation+Math.PI;
     const rig = this.player.children[1];
@@ -678,7 +674,6 @@ export class World {
       this.damageDirection.style.transform=`translate(-50%,-50%) rotate(${angle+Math.PI/2}rad)`;
       this.damageDirection.style.opacity=String(Math.min(1,(DAMAGE_OVER_TIME.directionSeconds-hitAge)*3));
     }
-    this.sun.position.set(game.x - 8, 18, game.z + 10);
     for(const gain of [...this.trainingGains]){
       const age=(game.now()-gain.at)/1000;
       if(age>1.3){gain.el.remove();this.trainingGains=this.trainingGains.filter(g=>g!==gain);continue;}

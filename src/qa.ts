@@ -80,6 +80,11 @@ export function attach(game: GameState, world: World, input: Input, setTab: (tab
   };
   const state = () => ({...game.snapshot(),stageId:game.stage.id,knockback:game.knockback,hp:game.hp,maxHp:game.maxHp, x: game.x, z: game.z, carried: game.carried, remaining: game.remaining, speed: game.speed, dps: game.dps, result: game.result, flyaway: game.flyaway, message: game.message, near: game.near, input: input.vector(),isNight:game.isNight,training:game.training,returnReward:game.returnReward});
   const qa = {
+    environment:(value:number|null)=>{world.environment.preview=value===null?null:Math.max(0,Math.min(1,value));},
+    environmentToggle:(key:'ao'|'fog'|'rim'|'emissive'|'shadows',value:boolean)=>{world.environment.enabled[key]=value;},
+    environmentQuality:(low:boolean)=>{game.save.settings.quality=low?'low':'high';world.quality(low);},
+    environmentState:()=>({progress:world.environment.progress,preview:world.environment.preview,sun:world.scene.children.filter(o=>o.type==='DirectionalLight').length,programs:world.renderer.info.programs?.length,clock:game.nightAt-game.now()}),
+    cycleProgress:(value:number)=>{clock=game.nightAt-(BALANCE.nightInterval-BALANCE.nightDuration)*(1-value);game.tick(.01);},
     villagePortrait:()=>{const camera=world.camera.clone(),fog=world.scene.fog;world.scene.fog=null;world.renderer.setSize(1000,1000,false);camera.left=-17;camera.right=17;camera.top=17;camera.bottom=-17;camera.updateProjectionMatrix();camera.position.set(0,37,27);camera.lookAt(0,0,8);world.renderer.render(world.scene,camera);const png=world.renderer.domElement.toDataURL();world.scene.fog=fog;world.resize();return png;},
     petResult:(id:number)=>{prepare(game,'base');game.result=id;game.save.mongles[id]=1;game.revision++;setTab('explore');},
     pattern:(id:string,active=false)=>{
@@ -124,4 +129,14 @@ export function attach(game: GameState, world: World, input: Input, setTab: (tab
     balance: BALANCE,
   };
   Object.assign(window, {__qa: qa});
+  if(new URLSearchParams(location.search).has('environment')){
+    const panel=document.createElement('details');panel.id='environment-debug';
+    panel.style.cssText='position:fixed;z-index:9999;left:8px;bottom:90px;padding:8px;background:#fff6df;color:#243b3b;max-width:280px;font:12px system-ui';
+    panel.innerHTML='<summary>Environment preview</summary><label>Time <input type="range" min="0" max="1" step="0.001" value="0"></label><div></div>';
+    panel.querySelector('input')!.oninput=e=>qa.environment(Number((e.target as HTMLInputElement).value));
+    const row=panel.querySelector('div')!;
+    for(const [name,value] of [['Day',0],['Golden',.75],['Sunset',.92],['Night',1],['Live',null]] as const){const button=document.createElement('button');button.textContent=name;button.onclick=()=>qa.environment(value);row.append(button);}
+    for(const key of ['ao','fog','rim','emissive','shadows'] as const){const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.checked=true;input.onchange=()=>qa.environmentToggle(key,input.checked);label.append(input,key);panel.append(label);}
+    document.body.append(panel);
+  }
 }

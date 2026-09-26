@@ -4,11 +4,12 @@ import { ROUTE,MAP_OBSTACLES } from './stage-data';
 import { buildRegionLayout,type Block,type Motion } from './region-layout';
 import type { GameState } from './game';
 import {UnvisitedFog} from './unvisited-fog';
+import {dioramaMaterial} from './diorama-material';
 
 export class RegionArt {
  group=new T.Group();
- private ground=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshLambertMaterial(),18000);
- private moving=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshLambertMaterial(),2400);
+ private ground=new T.InstancedMesh(new T.BoxGeometry(1,1,1),dioramaMaterial(),18000);
+ private moving=new T.InstancedMesh(new T.BoxGeometry(1,1,1),dioramaMaterial(),2400);
  private outlines=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:MAP_OBSTACLES.outline,side:T.BackSide}),18000);
  private movingOutlines=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:MAP_OBSTACLES.outline,side:T.BackSide}),2400);
  private outlineCount=0;

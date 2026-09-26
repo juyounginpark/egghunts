@@ -1,4 +1,5 @@
 import * as T from "three";
+import {dioramaMaterial} from './diorama-material';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import type {MapCollider} from './map-collision';
 type Voxel = [number, number, number, number];
@@ -19,7 +20,8 @@ type Model = {
     { pivot: number[]; parent: string | null; voxels: Voxel[]; rotation?:number[]; scale?:number[] }
   >;
 };
-const mat = new T.MeshLambertMaterial({ vertexColors: true });
+const mat = dioramaMaterial({ vertexColors: true });
+const characterMaterial = dioramaMaterial({ vertexColors: true },true);
 const artMaterials=new Map<string,T.MeshStandardMaterial>();
 function artMaterial(kind:string){
  if(!artMaterials.has(kind))artMaterials.set(kind,new T.MeshStandardMaterial({vertexColors:true,roughness:kind==='polished'?.32:kind==='metal'?.6:.94,metalness:kind==='metal'?.28:0}));
@@ -79,7 +81,7 @@ function geometry(key: string, voxels: Voxel[], colors: string[], origin: number
 export function voxelModel(name: string, rig = false) {
   const d = dataCache.get(name)! ,
     group = new T.Group();
-  const material=d.artMaterial?artMaterial(d.artMaterial):mat;
+  const material=name==='alkong'||name.startsWith('guardian-')?characterMaterial:d.artMaterial?artMaterial(d.artMaterial):mat;
   if (rig || Object.values(d.parts).some(p=>p.rotation||p.scale)) {
     const groups: Record<string, T.Group> = {};
     for (const [n, p] of Object.entries(d.parts)) {
