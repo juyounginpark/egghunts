@@ -71,7 +71,7 @@ export type Save = {
   playerName?:string;
   dragonClues?:Record<string,DragonClue>;
   visitedStages?:number[];
-  routeVersion?:1|2;
+  routeVersion?:1|2|3;
   progression?:Progression;
   death?:{x:number;z:number;at:number;remaining:number}|null;
   version: 1;
@@ -116,6 +116,7 @@ export type Save = {
 export function freshSave(now: number): Save {
   return {
     balanceVersion:1,
+    routeVersion:3,
     version: 1,
     stageOrderVersion:2,
     trails: [0],
@@ -273,9 +274,12 @@ export class GameState {
     if(this.carried&&!this.inEggStage(this.carried,this.z))this.carried.secured=true;
     if(this.isAtBase){this.announcedStage=0;return;}
     const id=this.stage.id;
+    const visited=this.save.visitedStages??=[];
+    const first=!visited.includes(id);
+    if(first)visited.push(id);
     if(this.announcedStage===id)return;
     this.announcedStage=id;this.hazards.reset(id);
-    if(!this.isAtBase){this.emit('region_enter',{stage:id});if(id>4)this.unlockHealth();}
+    if(!this.isAtBase){this.emit('region_enter',{stage:id,first:first?1:0});if(id>4)this.unlockHealth();}
   }
   get level(){return this.progression.level;}
   get defenses(){return this.save.active.map(id=>PET_DEFENSE[id]??{});}
@@ -469,7 +473,11 @@ export class GameState {
   offlineReward:Money=0;
   settleProduction(at:number){
     const previous=this.save.productionAt??this.save.lastSavedAt;
-    this.tickPetIncome(Math.min(BALANCE.offlineCap,Math.max(0,(at-previous)/1000)));
+    const elapsed=Math.min(BALANCE.offlineCap,Math.max(0,(at-previous)/1000));
+    this.tickPetIncome(elapsed);
+    // Room time advances even with no movement requests from this player.
+    // Use the same persisted watermark as income so reconnects cannot replay it.
+    if(this.roomManaged)this.damage(elapsed*this.dps);
     this.save.productionAt=Math.max(previous,at);
   }
   private tickPetIncome(dt:number){
@@ -530,16 +538,6 @@ export class GameState {
     if(!save.progression){save.progression=newProgression();save.progression.seenEggs=[...save.discovered];save.progression.hatchedPets=save.mongles.flatMap((n,i)=>n?[i]:[]);save.progression.distanceRecord=save.best;}
     validateProgression(save.progression);
     if(hydrateOnly)return;
-    if(save.routeVersion===1){
-      const stretch=(z:number)=>z<-ROUTE.entrance?-ROUTE.entrance+(z+ROUTE.entrance)*3:z;
-      const eggs=new Set([...(save.world??[]),...(save.expedition?.carried?[save.expedition.carried]:[]),...(save.bosses??[]).flatMap(b=>b.loot?[b.loot]:[])]);
-      for(const egg of eggs){egg.z=stretch(egg.z);if(egg.homeZ!==undefined)egg.homeZ=stretch(egg.homeZ);}
-      for(const boss of save.bosses??[]){boss.z=stretch(boss.z);if(boss.homeZ!==undefined)boss.homeZ=stretch(boss.homeZ);}
-      if(save.expedition)save.expedition.z=stretch(save.expedition.z);
-      // Stretch the distance record with the route so migration grants no distance XP.
-      save.progression.distanceRecord=-stretch(-save.progression.distanceRecord);
-      save.routeVersion=2;
-    }
     const oldEntrance=save.progression.stage;
     if(oldEntrance!==1){
       const offset=(oldEntrance-1)*ROUTE.length;save.progression.stage=1;
@@ -560,7 +558,7 @@ export class GameState {
     if (
       save.world &&
       save.bosses &&
-      save.routeVersion === 2 && save.bosses.length>0&&save.bosses.length<=21 &&
+      save.routeVersion === 3 && save.bosses.length>0&&save.bosses.length<=21 &&
       save.world.every(
         (e) => EGGS[e.type] && Number.isFinite(e.x) && Number.isFinite(e.z),
       ) &&
@@ -593,7 +591,7 @@ export class GameState {
       this.sinceHit=Number.isFinite(save.expedition.sinceHit)?Math.max(0,save.expedition.sinceHit!):0;
       this.damageTicks=(Array.isArray(save.expedition.damageTicks)?save.expedition.damageTicks:[]).filter(p=>p&&Number.isFinite(p.remaining)&&p.remaining>0&&Number.isInteger(p.ticks)&&p.ticks>0&&p.ticks<=DAMAGE_OVER_TIME.ticks&&Number.isFinite(p.until)&&p.until>=0&&p.until<=DAMAGE_OVER_TIME.interval).slice(0,16).map(p=>({...p}));
     }
-    if(save.routeVersion!==2&&this.carried){
+    if(save.routeVersion!==3&&this.carried){
       this.carried.stageId??=this.progression.stage;this.carried.guardian=this.carried.stageId-this.progression.stage;
       const boss=this.bosses[this.carried.guardian];if(boss){boss.mode='chase';boss.target=this.carried.id;}
     }
@@ -888,6 +886,7 @@ export class GameState {
       }
       if (!this.carried){this.deadline=0;this.settleXP(true);}
     }
+    if(this.roomManaged)return; // Room automatic damage is settled above, once.
     this.autoClock += dt;
     const interval = 1 / (BALANCE.baseAutoRate + BALANCE.autoRatePerLevel * this.save.upgrades.rate);
     if (this.autoClock + 1e-9 >= interval) {
@@ -1057,7 +1056,7 @@ export class GameState {
   }
   snapshot(): Save {
     this.progression.hp=this.hp;this.progression.maxHP=this.maxHp;this.progression.immunity=this.immunity;this.progression.slowRemaining=this.slowRemaining;this.progression.slowMultiplier=this.slowMultiplier;
-    this.save.routeVersion=2;
+    this.save.routeVersion=3;
     this.save.death=this.death;
     this.save.nightAt = this.nightAt;
     this.save.nightUntil = this.nightUntil;

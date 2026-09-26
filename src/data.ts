@@ -1,5 +1,5 @@
 import {softenGrowth} from './growth-curve';
-import {ROAD_WIDTH_SCALE,STAGES} from './stage-data';
+import {ROAD_WIDTH_SCALE,STAGES,ROUTE_FAR_Z} from './stage-data';
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:1,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
@@ -76,7 +76,7 @@ export const BALANCE = {
   mapX: 6.5*ROAD_WIDTH_SCALE,
   mapNearZ: 22,
   baseMinZ:-4.4,
-  mapFarZ: -2277,
+  mapFarZ: ROUTE_FAR_Z,
   // The 2,280-unit final route needs ~228s round trip at the existing 20-unit cap.
   // Keep forced night return, but allow a complete expedition between nights.
   nightInterval: 300000,

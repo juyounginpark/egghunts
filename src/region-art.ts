@@ -3,6 +3,7 @@ import * as T from 'three';
 import { ROUTE,MAP_OBSTACLES } from './stage-data';
 import { buildRegionLayout,type Block,type Motion } from './region-layout';
 import type { GameState } from './game';
+import {UnvisitedFog} from './unvisited-fog';
 
 export class RegionArt {
  group=new T.Group();
@@ -57,14 +58,16 @@ export class RegionArt {
 
 /** Three recycled sections keep both sides of a boundary in view without loading 20 worlds. */
 export class ConnectedRegionArt {
+ private fog=new UnvisitedFog();
  group=new T.Group();private sections=Array.from({length:3},()=>new RegionArt());private active=0;
- constructor(){this.group.add(...this.sections.map(s=>s.group));}
+ constructor(){this.group.add(...this.sections.map(s=>s.group),this.fog.group);}
  render(game:GameState,time:number,visible:boolean){
   this.group.visible=visible;if(!visible)return;this.active=game.stage.id;
   const nearby=game.route.filter(r=>r.stage>=this.active-1&&r.stage<=this.active+1);
   for(const s of this.sections)s.group.visible=false;
   for(const r of nearby)this.sections[r.stage%3].renderSection(r.stage,r.offset,r.end-r.start,game.z,time);
+  this.fog.render(game,time);
  }
  metrics(){const current=this.sections[this.active%3].metrics();return {...current,sections:this.sections.filter(s=>s.group.visible).map(s=>s.metrics().stage)};}
- dispose(){for(const s of this.sections)s.dispose();this.group.removeFromParent();}
+ dispose(){for(const s of this.sections)s.dispose();this.fog.dispose();this.group.removeFromParent();}
 }

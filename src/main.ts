@@ -38,7 +38,7 @@ let hatchRevealing=false;
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
-app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header id="main-hud" aria-label="탐험가 정보"><div class="hud-player"><img class="hud-avatar" src="${import.meta.env.BASE_URL}models/alkong.png" alt="탐험가"/><div class="hud-level"><strong id="level">LV.1</strong><div id="xp-track" role="progressbar" aria-label="경험치" aria-valuemin="0"><i id="xp-fill"></i></div></div></div><div id="cycle-clock" role="timer" aria-live="off"><span id="cycle-phase"></span><span id="cycle-label"></span><strong id="cycle-remaining"></strong><div id="cycle-track" aria-hidden="true"><i id="cycle-fill"></i></div></div><div class="hud-wallet"><div class="dust"><span aria-hidden="true">${uiIcon('dust')}</span><b id="dust">0</b><small>별가루</small></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></div></header><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
+app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header id="main-hud" aria-label="탐험가 정보"><div class="hud-player"><img class="hud-avatar" src="${import.meta.env.BASE_URL}models/alkong.png" alt="탐험가"/><div class="hud-level"><strong id="level">LV.1</strong><div id="xp-track" role="progressbar" aria-label="경험치" aria-valuemin="0"><i id="xp-fill"></i></div></div></div><button id="cycle-clock" type="button" aria-live="off" aria-expanded="true" title="상단 정보 간소화"><span id="cycle-phase"></span><span id="cycle-label"></span><strong id="cycle-remaining"></strong><span id="cycle-track" aria-hidden="true"><i id="cycle-fill"></i></span></button><div class="hud-wallet"><div class="dust"><span aria-hidden="true">${uiIcon('dust')}</span><b id="dust">0</b><small>별가루</small></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></div></header><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
   icons,
 )
   .map(
@@ -58,6 +58,13 @@ buildVersion.setAttribute('aria-label',`게임 버전 ${import.meta.env.VITE_BUI
 $("shell").append(buildVersion);
 // Keep HUD rows in normal flow inside two anchored stacks.
 const topHud = document.createElement("div");
+let hudCompact=false,wasExploring=false;
+function setHudCompact(compact:boolean){
+  hudCompact=compact;
+  topHud.classList.toggle('compact',compact);
+  $('cycle-clock').setAttribute('aria-expanded',String(!compact));
+  $('cycle-clock').title=compact?'상단 정보 펼치기':'상단 정보 간소화';
+}
 const hudObserver=new ResizeObserver(()=>{
   const bottom=$('main-hud').getBoundingClientRect().bottom-$('shell').getBoundingClientRect().top;
   $('shell').style.setProperty('--main-hud-bottom',`${bottom}px`);
@@ -115,6 +122,7 @@ for (const el of [$("hint"), inventory, $("controls"), $("risk")])
   bottomHud.append(el);
 bottomHud.insertBefore(tutorial,$('controls'));
 let bannerStage=0,bannerUntil=0;
+let firstArrivalStage=0;
 let lastAnnouncement = 0,
   announcementTimer = 0;
 const platform = new Platform();
@@ -260,13 +268,15 @@ function updateHud() {
   eggNotices.observeWorld(game,online.latest?.serverTime??game.now());
   eggNotices.update(online.latest?.eggNotices??[],online.latest?.serverTime??game.now());
   const outside=tab==='explore'&&!game.isAtBase;
+  if(outside!==wasExploring){setHudCompact(outside);wasExploring=outside;}
   if(!outside){bannerStage=0;bannerUntil=0;}
   else if(bannerStage!==game.stage.id){
     bannerStage=game.stage.id;
     game.save.visitedStages??=[];
-    const first=!game.save.visitedStages.includes(bannerStage);
+    const first=firstArrivalStage===bannerStage||!game.save.visitedStages.includes(bannerStage);
+    firstArrivalStage=0;
     bannerUntil=first?performance.now()+ROUTE.bannerSeconds*1000:0;
-    if(first){game.save.visitedStages.push(bannerStage);game.revision++;}
+    if(first&&!game.save.visitedStages.includes(bannerStage)){game.save.visitedStages.push(bannerStage);game.revision++;}
     $("region-banner-name").textContent=game.stage.name;
     $('region-banner-speed').lastElementChild!.textContent=num(game.recommendedSpeed,1);
     $('region-banner-speed').setAttribute('aria-label',`권장 스피드 ${num(game.recommendedSpeed,1)}`);
@@ -326,7 +336,7 @@ function updateHud() {
     clock.dataset.warned=String(game.nightAt);
     if(!matchMedia('(prefers-reduced-motion: reduce)').matches)$('cycle-remaining').animate([{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});
   }
-  clock.setAttribute('aria-label',`${phase.night?'밤':'낮'} · ${$('cycle-label').textContent} ${phase.text}`);
+  clock.setAttribute('aria-label',`${phase.night?'밤':'낮'} · ${$('cycle-label').textContent} ${phase.text} · ${hudCompact?'상단 정보 펼치기':'상단 정보 간소화'}`);
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.training||!!game.carried||!!game.death||!!game.returnReward;
@@ -517,6 +527,7 @@ const hatchTouches:{egg:string;x:number;y:number;at:number}[]=[];
 document.addEventListener("click", async (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("button");
   if (!b || !ready) return;
+  if(b.id==='cycle-clock'){setHudCompact(!hudCompact);return;}
   if(b.id==='leave-room'){paused=true;input.reset();b.setAttribute('disabled','');await online.leave();location.reload();return;}
   if(b.id==='hatch-touch'||b.id==='claim-hatch'){
     if(tab!=='hatchery'||paused||hatchRevealing||!$('modal').hidden||game.returnReward||game.death)return;
@@ -775,6 +786,7 @@ function frame(now: number) {
   }
   heardHazards=audible;
   for (const event of game.events.splice(0)) {
+    if(event.name==='region_enter'&&event.params.first===1)firstArrivalStage=Number(event.params.stage);
     const cues:Partial<Record<string,GameSound>>={hatch_manual_hit:'tap',egg_pickup:'pickup',egg_drop:'drop',egg_saved:'return',mongle_obtained:'hatch',player_hit:'hit',player_death:'death',player_revive:'revive',night_refresh:'night',region_enter:'stage',level_up:'upgrade',upgrade_purchase:'upgrade',trail_purchase:'upgrade',collection_reward:'upgrade',boss_wake:'boss',egg_recovered:'drop'};
     const cue=cues[event.name];if(cue&&cue!=='hatch')playSound(cue,Number(event.params.stage??game.stage.id));
     if(event.name==='hatch_manual_hit'&&tab==='hatchery'&&event.params.egg===game.selected?.id){

@@ -638,3 +638,11 @@ nav button img { width:28px; height:28px; }
 .weekly-special img { width:84px; height:84px; }
 .weekly-special strong,.weekly-special small { width:100%; }
 #weekly-claim { width:100%; min-height:44px; margin-bottom:8px; }
+/* The time row is the one control for collapsing and reopening the upper HUD. */
+#main-hud #cycle-clock { width:100%; cursor:pointer; min-height:44px; }
+#main-hud #cycle-phase::after { content:' · 접기 ⌃'; font-size:10px; font-weight:400; }
+#shell #top-hud.compact > :not(#main-hud) { display:none!important; }
+#shell #top-hud.compact #main-hud { display:block; padding:0; min-height:0; height:auto; overflow:hidden; }
+#top-hud.compact #main-hud .hud-player,#top-hud.compact #main-hud .hud-wallet { display:none; }
+#top-hud.compact #main-hud #cycle-clock { margin:0; border-radius:10px; padding-top:7px; }
+#top-hud.compact #main-hud #cycle-phase::after { content:' ⌄'; font-size:13px; }

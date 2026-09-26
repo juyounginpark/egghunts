@@ -144,17 +144,19 @@ function createRegionLayout(stage:number,length:number){
   const theme=legacyTheme(stage);let blocks:Block[]=[];let motions:Motion[]=[];const color=new T.Color(),s=STAGES[stage-1];let seed=stage*7919;
   const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
   const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number)=>blocks.push({x:x*ROAD_WIDTH_SCALE,y,z,w:w*ROAD_WIDTH_SCALE,h,d,c});
-  const stamp=(parts:Block[],x:number,z:number,scale=1,y=0)=>{
-   const obstacle=Math.abs(x)<=7.5;
+  const stamp=(parts:Block[],x:number,z:number,scale=1,y=0,scenery=false)=>{
+   const obstacle=!scenery&&Math.abs(x)<=7.5;
    if(obstacle)scale*=MAP_OBSTACLES.scale;
    const angle=rand()*Math.PI*2,roll=(rand()-.5)*.12,cs=Math.cos(angle),sn=Math.sin(angle);
+   // Account for the whole rotated assembly, not just its centre, when clearing lanes.
+   if(scenery){const radius=Math.max(...parts.map(p=>Math.hypot(p.x,p.y*.12,p.z)+Math.hypot(p.w,p.d)/2))*scale;x=Math.sign(x)*(8.2+radius/ROAD_WIDTH_SCALE);}
    for(const p of parts){const px=(p.x*Math.cos(roll)-p.y*Math.sin(roll))*scale,py=(p.x*Math.sin(roll)+p.y*Math.cos(roll))*scale,pz=p.z*scale;
     blocks.push({x:x*ROAD_WIDTH_SCALE+px*cs-pz*sn,y:y+py,z:z+px*sn+pz*cs,w:p.w*scale,h:p.h*scale,d:p.d*scale,c:p.c,angle,roll,obstacle});
    }
   };
   const tiles=[0xceb994,0xd4b58f,0xaddbd3,0x706971,0x426b7e,0x9b928f,0x4a5978,0xdfc38a,0x9aa17a,0x9b8294,0xdedbcd,0x8995a2,0xa48b71,0xc2e4e8,0xd0bdd8,0x849077,0xadba81,0x929393,0x8887ad,0x756d91];
   for(let z=-ROUTE.entrance;z>=-ROUTE.entrance-length;z-=2){
-   const final=stage===20&&z<-240,voidZone=stage===19;
+   const final=stage===20&&z<-ROUTE.entrance-length*.52,voidZone=stage===19;
    for(let x=-8;x<=8;x+=2){
     const path=Math.abs(x)<=2,col=final?(path?0xebdfbc:0xd0d4b1):path?tiles[theme-1]:s.color;
     const tint=color.setHex(col).multiplyScalar(.96+rand()*.08).getHex();
@@ -188,16 +190,18 @@ function createRegionLayout(stage:number,length:number){
    stamp(sculpture(stage,variant),x,z,.8+rand()*.6);
    if(rand()<.7)stamp(sculpture(stage,(variant+5)%15),x+side*.7,z+1.7,.45+rand()*.35);
    if(rand()<.45)stamp(sculpture(stage,(variant+9)%15),-x,z-2.5,.7);
+   // Half the route, four assemblies per former one: about twice the old prop count.
+   for(let extra=0;extra<6;extra++)stamp(sculpture(stage,(variant+extra*3)%15),(extra%2?-1:1)*9,z+(rand()-.5)*3,.45+rand()*1.15,0,true);
    if([3,5,9,17].includes(theme))for(let j=0;j<5;j++)b(x+(rand()-.5)*2,.12,z+(rand()-.5)*2,.1,.3,.1,s.accent);
    z-=(2.6+rand()*2.8)/STAGE_STEPS[routeStep(z,0,length)-1].density;
   }
   // Extra biome-specific clusters stay outside the central nest/escape lanes.
   // Reuse the batched sculptures and distance buckets instead of adding meshes.
-  for(let patch=0;patch<Math.ceil(length/12);patch++){
-   const side=patch%2?1:-1,z=-12-patch*12,x=side*(7+rand()*.5);
-   stamp(sculpture(stage,patch%3),x,z,1.05+rand()*.35);
-   stamp(sculpture(stage,(patch+1)%3),x-side*.65,z+2.5,.55+rand()*.2);
-   stamp(sculpture(stage,(patch+2)%3),-x,z-3,.7+rand()*.25);
+  for(let patch=0;patch<Math.ceil(length/3);patch++){
+   const side=patch%2?1:-1,z=-9-patch*3,x=side*(9+rand()*.5);
+   stamp(sculpture(stage,patch%3),x,z,.8+rand()*.75,0,true);
+   stamp(sculpture(stage,(patch+1)%3),x+side*.65,z+1,.4+rand()*.4,0,true);
+   stamp(sculpture(stage,(patch+2)%3),-x,z-1,.6+rand()*.55,0,true);
    // Low themed footing ties each cluster to its terrain without hiding players.
    for(let j=0;j<3;j++)b(x+side*j*.25,.035,z+1+j*.35,.45,.07,.35,j%2?s.accent:s.color);
   }

@@ -3,7 +3,7 @@ import {advanceTutorial} from '../src/tutorial';
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
 import {BALANCE,EGGS,MONGLES,UPGRADES} from '../src/data';
 import {exportRuntime,restoreRuntime,migrateStageRuntime,type RuntimeState} from '../src/online-state';
-import {migrateStageWorld} from '../src/stage-migration';
+import {migrateStageWorld,compactRouteWorld} from '../src/stage-migration';
 import {playerName} from '../src/player-identity';
 import type {EggNotice} from '../src/egg-notices';
 export {snapshotSections} from '../src/snapshot-stream';
@@ -12,11 +12,16 @@ type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
 type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
 type Player={runtime:RuntimeState;input:{x:number;z:number;slow?:boolean};seen:number;receipts:string[];chat?:{id:string;text:string;at:number};guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
-export type Room={stageOrderVersion?:2;at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
+export type Room={stageOrderVersion?:2;routeVersion?:3;at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
 export type RequestInput={id:string;input?:{x:number;z:number;slow?:boolean};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
 export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number,identity?:{guest:boolean}){
  if(previous&&previous.stageOrderVersion!==2){migrateStageWorld(previous.world,previous.bosses);for(const p of Object.values(previous.players))migrateStageRuntime(p.runtime);previous.stageOrderVersion=2;}
+ if(previous&&previous.routeVersion!==3){
+  compactRouteWorld(previous.world,previous.bosses);
+  for(const p of Object.values(previous.players)){migrateStageRuntime(p.runtime);p.motion=[];delete p.preparation;}
+  previous.routeVersion=3;
+ }
  for(const p of profiles)if(p.state)migrateStageRuntime(p.state);
  if(!members.some(m=>m.user_id===user))throw Error('ROOM_EXPIRED');
  if(!request||typeof request.id!=='string'||request.id.length>80||!Array.isArray(request.commands??[])||(request.commands?.length??0)>16)throw Error('INVALID_REQUEST');
@@ -26,7 +31,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const cycle=Math.floor(now/BALANCE.nightInterval);
  const fresh=!previous||cycle!==previous.cycle?new GameState(freshSave(now),()=>now,random):null;
  const joinedNow=!previous?.players[user];
- const room:Room=previous??{stageOrderVersion:2,at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
+ const room:Room=previous??{stageOrderVersion:2,routeVersion:3,at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
  // Disconnected players cannot keep an egg or operate an unoccupied plot.
  for(const [id,p] of Object.entries(room.players))if(!members.some(m=>m.user_id===id)){
   const egg=p.runtime.fields.carried as WorldEgg|null;

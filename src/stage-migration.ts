@@ -1,6 +1,25 @@
 import {OLD_TO_STAGE,STAGE_ORDER_VERSION} from './stage-order';
 import type {Save,WorldEgg,Boss} from './game';
 const mapped=(n:number)=>OLD_TO_STAGE[n]??n;
+/** Version 3 halves route depth, keeping the village and stage membership intact. */
+export const compactRouteZ=(z:number)=>z<-6?-6+(z+6)/2:z;
+export function compactRouteWorld(world:WorldEgg[],bosses:Boss[]){
+ const objects=new Set<WorldEgg|Boss>([...world,...bosses,...bosses.flatMap(b=>b.loot?[b.loot]:[])]);
+ for(const o of objects){o.z=compactRouteZ(o.z);if(o.homeZ!==undefined)o.homeZ=compactRouteZ(o.homeZ);if('distance' in o)o.distance=-compactRouteZ(-o.distance);}
+}
+function migrateRoute(s:Save){
+ if(s.routeVersion===3)return;
+ // Stage-order migration normally handles v1; already reordered v1 saves also exist.
+ const scale=s.routeVersion===1?1.5:.5;
+ const convert=(z:number)=>z<-6?-6+(z+6)*scale:z;
+ const objects=new Set<WorldEgg|Boss>([...(s.world??[]),...(s.bosses??[]),...(s.expedition?.carried?[s.expedition.carried]:[]),...(s.bosses??[]).flatMap(b=>b.loot?[b.loot]:[])]);
+ for(const o of objects){o.z=convert(o.z);if(o.homeZ!==undefined)o.homeZ=convert(o.homeZ);if('distance' in o)o.distance=-convert(-o.distance);}
+ if(s.expedition)s.expedition.z=convert(s.expedition.z);
+ if(s.death)s.death.z=convert(s.death.z);
+ s.best=-convert(-s.best);
+ if(s.progression)s.progression.distanceRecord=-convert(-s.progression.distanceRecord);
+ s.routeVersion=3;
+}
 function position(z:number,old:number,start=1){return z<-6?z-(mapped(old)-old+start-1)*96:z;}
 export function migrateStageWorld(world:WorldEgg[],bosses:Boss[],start=1,seen=new Set<WorldEgg|Boss>()){
  for(const e of world){if(seen.has(e))continue;seen.add(e);const old=e.stageId;if(!old)continue;e.stageId=mapped(old);e.z=position(e.z,old,start);if(e.homeZ!==undefined)e.homeZ=position(e.homeZ,old,start);e.guardian=e.special?20:e.stageId-1;}
@@ -9,7 +28,7 @@ export function migrateStageWorld(world:WorldEgg[],bosses:Boss[],start=1,seen=ne
 }
 /** One-time permutation, never a reset. IDs, counts, tiers, weights and HP stay intact. */
 export function migrateStageSave(s:Save){
- if(s.stageOrderVersion===STAGE_ORDER_VERSION)return;
+ if(s.stageOrderVersion===STAGE_ORDER_VERSION){migrateRoute(s);return;}
  if(s.stageOrderVersion!==undefined)throw Error('Unsupported stage order');
  const start=s.progression?.stage??1;
  // Normalize the older 32-unit routes before permuting 96-unit stage offsets.
@@ -41,4 +60,5 @@ export function migrateStageSave(s:Save){
   }
  }
  s.stageOrderVersion=STAGE_ORDER_VERSION;
+ migrateRoute(s);
 }

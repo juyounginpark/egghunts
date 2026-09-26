@@ -1,5 +1,5 @@
 import {GameState,migrateEggHealth,type Save,type WorldEgg,type Boss} from './game';
-import {migrateStageSave} from './stage-migration';
+import {migrateStageSave,compactRouteZ} from './stage-migration';
 import {migrateBalance} from './balance-migration';
 import {MONGLES} from './data';
 import {validateWeekly} from './weekly';
@@ -8,10 +8,14 @@ import type {HazardManager} from './hazards';
 export type RuntimeState={save:Save;fields:Record<string,unknown>;hazards:ReturnType<HazardManager['snapshot']>};
 const omitted=new Set(['save','world','bosses','hazards','roomSnapshotTime','mapCollision','now','random','events','routeCache','routeStart']);
 export function migrateStageRuntime(state:RuntimeState){
- if(state.save.stageOrderVersion===2)return;
+ if(state.save.stageOrderVersion===2&&state.save.routeVersion===3)return;
+ const oldZ=state.fields.z;
  migrateStageSave(state.save);
  const e=state.save.expedition;
  if(e){state.fields.x=e.x;state.fields.z=e.z;state.fields.carried=e.carried;}
+ else if(typeof oldZ==='number')state.fields.z=compactRouteZ(oldZ);
+ if(state.save.death)state.fields.death=structuredClone(state.save.death);
+ state.fields.launch=null;state.fields.knockback={x:0,z:0,remaining:0};
  // In-flight attack geometry belongs to the previous world layout; restart its
  // normal telegraph rather than applying an old coordinate to a relocated player.
  state.hazards={...state.hazards,attacks:[],next:[],stage:0};
