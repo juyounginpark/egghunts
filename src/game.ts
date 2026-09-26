@@ -269,7 +269,10 @@ export class GameState {
   private routeStart=0;private routeCache:ReturnType<typeof routeSegments>=[];
   get route(){if(!this.routeCache.length||this.routeStart!==this.progression.stage){this.routeStart=this.progression.stage;this.routeCache=routeSegments(this.routeStart);}return this.routeCache;}
   get stage(){return STAGES[routeStage(this.progression.stage,this.z)-1];}
-  get recommendedSpeed(){return recommendedRouteSpeed(this.route.find(r=>r.stage===this.stage.id)!.home,this.stage.id);}
+  get recommendedSpeed(){
+    const chaser=this.carried?this.bosses.find(b=>b.target===this.carried!.id&&(b.mode==='chase'||b.mode==='waking')):undefined;
+    return recommendedRouteSpeed(0,chaser?.stageId??this.stage.id);
+  }
   get stageOffset(){return (this.stage.id-this.progression.stage)*ROUTE.length;}
   get stageStep(){return routeStep(this.z,this.stageOffset,this.stage.id===20?ROUTE.finalLength:ROUTE.length);}
   get farZ(){return -(this.route.at(-1)!.end-3);}

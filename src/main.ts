@@ -1,4 +1,4 @@
-import {eggMaxHp,eggWeightLabel,COUPON_ERRORS} from './data';
+import {eggMaxHp,COUPON_ERRORS} from './data';
 import {advanceTutorial,tutorialHint} from './tutorial';
 import {weeklyDay} from './weekly';
 import {add,exactMoney,compare} from './money';
@@ -344,7 +344,7 @@ function updateHud() {
   clock.setAttribute('aria-label',`${phase.night?'밤':'낮'} · ${$('cycle-label').textContent} ${phase.text} · ${hudCompact?'상단 정보 펼치기':'상단 정보 간소화'}`);
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
-  $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.training||!!game.carried||!!game.death||!!game.returnReward;
+  $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||!!game.carried||!!game.death||!!game.returnReward;
   $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:'';
   $('speed-help').hidden=!game.training;
   const hint=tutorialHint(game,tab);
@@ -418,16 +418,16 @@ function updateHud() {
     ? `기지 ${Math.round(game.distance)}m · ${game.risk==='safe'?'스피드 충분':game.risk==='warning'?'스피드 강화 추천':'먼 지역 · 스피드를 더 키워요'}`
     : "기지 · 시간 제한 없이 탐험해요";
   $("world-label").style.opacity = game.distance < 4 ? "1" : "0";
-  $("action").hidden = tab==='hatchery'||!game.action||game.training;
-  $("action-label").textContent = game.carried?'내려놓기':pickupPreparation?'꺼내는 중':tab === "hatchery" ? "두드리기" : game.near&&BALANCE.rareEggPickupSeconds[EGGS[game.near.type].tier]>0?'알 꺼내기':game.action;
+  $("action").hidden = tab==='hatchery'||!game.action;
+  $("action-label").textContent = game.carried?'알 내려놓기':pickupPreparation?'꺼내는 중':tab === "hatchery" ? "두드리기" : game.near&&BALANCE.rareEggPickupSeconds[EGGS[game.near.type].tier]>0?'알 꺼내기':game.action;
   $("action").classList.toggle('preparing',!!pickupPreparation);
   $("action").style.setProperty('--pickup-progress',`${pickupPreparation?(1-pickupPreparation.remaining/pickupPreparation.duration)*100:0}%`);
   $("action").setAttribute('aria-label',pickupPreparation?'희귀 알 꺼내는 중, 이동하면 취소':$("action-label").textContent??'행동');
   $('action').title=$('action-label').textContent??'행동';
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
-  const weightHint=$('action-weight');weightHint.hidden=!actionEgg||!!game.carried;
-  weightHint.textContent=actionEgg&&!game.carried?eggWeightLabel(actionEgg.type,game.save.upgrades.carry):'';
+  const weightHint=$('action-weight');weightHint.hidden=true;weightHint.textContent='';
+  $('action-label').hidden=!game.carried&&(!game.nearGym||!!actionEgg);
   $('action-icon').hidden=!!game.carried;
   const actionModel=game.nearStore?'shop':game.nearGym?'gym':null;
   const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
@@ -736,6 +736,8 @@ document.addEventListener('input',e=>{
   if(game.save.settings.sound)audio.unlock();
 });
 document.addEventListener('change',e=>{
+  const sortControl=e.target as HTMLSelectElement;
+  if(ready&&sortControl.id==='pet-sort'){$('panel').dataset.petSort=sortControl.value;renderPanel();return;}
   const petSetting=e.target as HTMLInputElement;
   if(ready&&(petSetting.id==='hide-own-pets'||petSetting.id==='hide-other-pets')){
     game.save.settings[petSetting.id==='hide-own-pets'?'hideOwnPets':'hideOtherPets']=petSetting.checked;void save();

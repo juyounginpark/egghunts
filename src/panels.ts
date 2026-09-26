@@ -8,6 +8,23 @@ import type { GameState } from "./game";
 import { formatNumber as num } from "./format";
 import {uiIcon} from './ui-icons';
 import {petAbilities,petIncomeBadge} from './pet-stats';
+const PET_SORT_OPTIONS:Record<string,string>={equipped:'착용 중 우선',rarity:'등급 높은 순',stage:'스테이지 높은 순',speed:'스피드 높은 순',tap:'터치 피해 높은 순',auto:'자동 피해 높은 순',income:'수익 높은 순',count:'보유 수량 많은 순',name:'이름순'};
+function sortPets(ids:number[],game:GameState,sort:string){
+  const value=(id:number)=>{
+    const pet=MONGLES[id];
+    switch(sort){
+      case 'rarity':return pet.tier;
+      case 'stage':return pet.stageId;
+      case 'speed':return pet.speedMultiplier;
+      case 'tap':return pet.clickMultiplier;
+      case 'auto':return pet.autoMultiplier;
+      case 'income':return game.petIncomeAmount(id);
+      case 'count':return game.save.mongles[id];
+      default:return Number(game.save.active.includes(id));
+    }
+  };
+  return ids.sort((a,b)=>sort==='name'?MONGLES[a].name.localeCompare(MONGLES[b].name,'ko')||a-b:value(b)-value(a)||MONGLES[b].sourceEggHp-MONGLES[a].sourceEggHp||MONGLES[b].tier-MONGLES[a].tier||a-b);
+}
 function collectionCard(i:number,slot:number,game:GameState){
  const m=MONGLES[i],found=game.hasDiscoveredPet(i),claimed=game.save.claimedPets?.includes(i);
  if((i>=300&&i<320)&&!found)return `<article class="pet-catalog-card secret-pet"><div class="pet-portrait"><img src="${import.meta.env.BASE_URL}models/stage-previews/pet-${i}-silhouette.png" alt="숨겨진 드래곤 실루엣" loading="lazy"/></div><small>SECRET DRAGON</small><h3>숨겨진 수호룡</h3><p>${STAGES[m.stageId-1].name} · 전용 알 ${(BALANCE.secretDragonEggChance*100).toFixed(2)}%</p></article>`;
@@ -17,10 +34,13 @@ function collectionCard(i:number,slot:number,game:GameState){
 export function panelHTML(tab: string, game: GameState) {
   if(tab==='weekly')return weeklyPanel(game);
   const owned=MONGLES.flatMap((_,i)=>game.save.mongles[i]>0?[i]:[]);
+  const requestedSort=document.getElementById('panel')?.dataset.petSort??'equipped';
+  const petSort=Object.hasOwn(PET_SORT_OPTIONS,requestedSort)?requestedSort:'equipped';
   if(tab==='pets')return `<h1>함께할 펫</h1><div class="pet-summary stat-badges">${petAbilities(game,true)}${petIncomeBadge(game.petIncomePerCycle,BALANCE.petIncomeSeconds)}</div>
     <details class="pet-help"><summary>아이콘 안내</summary><div class="stat-legend">${uiIcon('tap')} 터치 피해 ${uiIcon('auto')} 자동 피해 ${uiIcon('speed')} 이동 속도 ${uiIcon('dust')} 별가루 수익</div><p>같은 펫도 보유 수량만큼, 최대 ${BALANCE.maxCompanions}마리까지 착용해요. 착용한 펫은 따라오고 나머지는 내 울타리에서 놀아요.</p><p>능력 배율의 ×1을 초과한 보너스를 합산해요. 수익은 오프라인에서도 100% 누적돼요 (최대 48시간).</p></details>
     <button data-tab="collection" class="secondary">도감</button><div class="pet-slots">${Array.from({length:BALANCE.maxCompanions},(_,slot)=>{const id=game.save.active[slot];return id===undefined?'<div class="pet-slot empty">빈 자리</div>':`<button class="pet-slot" data-unequip="${id}" aria-label="${MONGLES[id].name} 한 마리 해제"><img src="${petIcon(id)}" alt=""/><b>${MONGLES[id].name}</b><small>한 마리 해제 ×</small></button>`;}).join('')}</div>
-    ${owned.length?owned.sort((a,b)=>Number(game.save.active.includes(b))-Number(game.save.active.includes(a))||MONGLES[b].sourceEggHp-MONGLES[a].sourceEggHp||MONGLES[b].tier-MONGLES[a].tier).map(id=>{
+    <label class="pet-sort">펫 정렬 <select id="pet-sort">${Object.entries(PET_SORT_OPTIONS).map(([value,label])=>`<option value="${value}" ${petSort===value?'selected':''}>${label}</option>`).join('')}</select></label>
+    ${owned.length?sortPets(owned,game,petSort).map(id=>{
       const equipped=game.equippedCount(id),remaining=game.save.mongles[id]-equipped;
       return `<article class="friend"><button class="friend-preview" data-pet-view="${id}" aria-label="${MONGLES[id].name}"><img src="${petIcon(id)}" alt="" loading="lazy"/></button><div><small>${RARITIES[MONGLES[id].tier].name}${MONGLES[id].stageId?` · STAGE ${MONGLES[id].stageId}`:""} · 보유 ${num(game.save.mongles[id])}마리 · 착용 ${equipped}마리</small><h3>${MONGLES[id].name}</h3><div class="stat-badges">${petAbilities(MONGLES[id])}${petIncomeBadge(game.petIncomeAmount(id),BALANCE.petIncomeSeconds)}</div><details class="pet-details"><summary>상세</summary><p>${MONGLES[id].effect}<br>${MONGLES[id].stageId?`STAGE ${MONGLES[id].stageId}`:REGIONS[MONGLES[id].region].name} · 수익 ×${game.petIncomeStageMultiplier(id)}</p></details></div><div class="pet-actions"><button class="small-btn" data-companion="${id}" ${!remaining?'disabled':''}>${!remaining?'모두 착용 중':equipped?'한 마리 더 착용':'착용'}</button><button class="small-btn" data-sell-pet="${id}">1마리 판매 +${num(game.petSellPrice(id))}</button></div></article>`;
     }).join(''):'<p class="empty-state">알을 부화해 첫 친구를 만나 보세요.</p>'}`;
