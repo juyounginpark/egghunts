@@ -4538,7 +4538,7 @@
         24
       ],
       "paletteCount": 12,
-      "voxelCount": 2462,
+      "voxelCount": 2020,
       "bounds": [
         [
           1,
@@ -4613,7 +4613,7 @@
         24
       ],
       "paletteCount": 12,
-      "voxelCount": 2214,
+      "voxelCount": 1676,
       "bounds": [
         [
           1,
@@ -4625,7 +4625,7 @@
         ],
         [
           2,
-          20
+          16
         ]
       ],
       "anatomy": "penguin"
@@ -5813,7 +5813,7 @@
         35
       ],
       "paletteCount": 12,
-      "voxelCount": 2302,
+      "voxelCount": 1844,
       "bounds": [
         [
           1,
@@ -6563,7 +6563,7 @@
         37
       ],
       "paletteCount": 12,
-      "voxelCount": 2162,
+      "voxelCount": 1624,
       "bounds": [
         [
           1,
@@ -6838,7 +6838,7 @@
         35
       ],
       "paletteCount": 12,
-      "voxelCount": 2370,
+      "voxelCount": 1912,
       "bounds": [
         [
           1,
@@ -8563,7 +8563,7 @@
         24
       ],
       "paletteCount": 12,
-      "voxelCount": 3300,
+      "voxelCount": 2868,
       "bounds": [
         [
           1,
@@ -10713,14 +10713,14 @@
         33
       ],
       "paletteCount": 12,
-      "voxelCount": 3199,
+      "voxelCount": 1968,
       "bounds": [
         [
-          -12,
-          12
+          -7,
+          8
         ],
         [
-          0,
+          1,
           10
         ],
         [
@@ -11288,14 +11288,14 @@
         32
       ],
       "paletteCount": 12,
-      "voxelCount": 3419,
+      "voxelCount": 2298,
       "bounds": [
         [
-          -10,
-          10
+          -9,
+          9
         ],
         [
-          0,
+          1,
           26
         ],
         [
@@ -12013,14 +12013,14 @@
         32
       ],
       "paletteCount": 12,
-      "voxelCount": 3975,
+      "voxelCount": 2884,
       "bounds": [
         [
-          -10,
-          10
+          -7,
+          7
         ],
         [
-          -1,
+          1,
           18
         ],
         [
@@ -13138,18 +13138,18 @@
         31
       ],
       "paletteCount": 12,
-      "voxelCount": 2957,
+      "voxelCount": 1804,
       "bounds": [
         [
-          -10,
-          10
+          -6,
+          8
         ],
         [
-          0,
+          1,
           19
         ],
         [
-          -10,
+          -8,
           20
         ]
       ],
@@ -13688,7 +13688,7 @@
         30
       ],
       "paletteCount": 12,
-      "voxelCount": 3801,
+      "voxelCount": 3548,
       "bounds": [
         [
           -19,
@@ -14613,19 +14613,19 @@
         23
       ],
       "paletteCount": 12,
-      "voxelCount": 3445,
+      "voxelCount": 2296,
       "bounds": [
         [
           -10,
           10
         ],
         [
-          0,
+          1,
           20
         ],
         [
-          -10,
-          12
+          -8,
+          5
         ]
       ],
       "anatomy": "bear"
@@ -16163,7 +16163,7 @@
         33
       ],
       "paletteCount": 12,
-      "voxelCount": 2224,
+      "voxelCount": 1964,
       "bounds": [
         [
           -7,
@@ -16213,14 +16213,14 @@
         33
       ],
       "paletteCount": 12,
-      "voxelCount": 1834,
+      "voxelCount": 1598,
       "bounds": [
         [
           -5,
           8
         ],
         [
-          0,
+          1,
           10
         ],
         [
@@ -16338,7 +16338,7 @@
         32
       ],
       "paletteCount": 12,
-      "voxelCount": 3269,
+      "voxelCount": 2847,
       "bounds": [
         [
           -7,

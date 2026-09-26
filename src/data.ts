@@ -89,6 +89,7 @@ export const BALANCE = {
   deadzone: 8,
   rarityRegionBonus: 0,
   farmPetsVisible: 12,
+  farmPetMaxSize: 1.4,
   trainingPerSecond: 0.01,
   trainingPerLevel: 0.01,
   gymX: 2.1,

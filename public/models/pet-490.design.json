@@ -194,5 +194,6 @@
       ],
       "parent": "prop"
     }
-  }
+  },
+  "userRevision": "2026-09-27: remove ground platform; preserve body, ID and stats"
 }

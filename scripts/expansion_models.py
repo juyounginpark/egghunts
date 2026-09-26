@@ -348,7 +348,7 @@ def attachment(g,m,form,index):
     for i in range(6):a=i*TAU/6;l((5,24,-1),(5+8*math.cos(a),21,-1+8*math.sin(a)),2.6,2 if i%2 else 3,'prop')
   elif m in {'mushroom','mushrooms'}:
    for x,h in ([(-5,5),(0,9),(5,6)] if m=='mushrooms' else [(0,7)]):l((x,9,4),(x,9+h,4),1.4,3,'crest');o(x,9+h,4,6 if m=='mushroom' else 3,2,5 if m=='mushroom' else 3,2,'crest')
-  elif m=='lily':o(0,1,0,12,1,12,3,'prop');flower(g,0,6,-10,4,'token')
+  elif m=='lily':flower(g,0,6,-10,4,'token')
   elif m in {'cycads','laurel','moss'}:
    for sign in [-1,1]:c([(0,10,1),(sign*4,13,4),(sign*8,12,9)],2,2,'crest')
   elif m=='fruitbranch':
@@ -422,15 +422,13 @@ def attachment(g,m,form,index):
    y,z=14,3;g.part('crest',(0,9,3));g.frame(-4,4,y-4,y+3,z-2,z+2,2,'crest',1);o(0,y,z,2,2,2,3,'token')
   elif m in {'nosehorn','twincrest'}:
    for x in ([0] if m=='nosehorn' else [-3,3]):l((x,y-4,z-5),(x*1.4,y+3,z-7),1.5,2,'crest')
-  elif m=='hotspa':o(0,y,z,2.5,2.5,2.5,3,'crest');o(0,0,0,10,1,12,2,'prop')
+  elif m=='hotspa':o(0,y,z,2.5,2.5,2.5,3,'crest')
   else:
    b(-6,6,y-1,y,z-5,z+4,2,'crest');o(0,y+1,z,4,2,3,3,'crest')
    if m=='candle':c([(0,y+1,z),(0,y+5,z),(2,y+7,z)],1.5,3,'crest')
  elif m in {'yarn','ribbon','kite','bookmark','seasons','collar','flowerbow','platter','laurelleaf','wishes','tape','balloon','mobile','airship','carousel','balloonfeet','cloudshoes','cloudwheels','hoverboard','skis','skates','sled','fishing','cloudcushion'}:
   if m in {'skis','skates','hoverboard','sled','carousel','cloudcushion'}:
-   for x in [-4,4]:b(x-1,x+1,0,1,-10,12,2,'prop')
-   if m in {'hoverboard','carousel','cloudcushion'}:o(0,1,0,10,1.5,9,3,'prop')
-   if m=='sled':b(-4,4,2,3,10,18,3,'prop')
+   pass # Ground platforms removed by the user's latest art revision.
   elif m in {'balloonfeet','cloudshoes','cloudwheels'}:
    for x in [-4,4]:
     for z in [-4,5]:o(x,1,z,3,2,3,2,'prop')
@@ -585,7 +583,7 @@ def attachment(g,m,form,index):
   elif m=='lava':
    for xyz,(color,p) in list(g.cells.items()):
     if p.startswith('arm_') and xyz[1]<4:g.cells[xyz]=(3,p)
-  elif m=='sandring':g.ring(0,2,0,12,2,3,'prop')
+  elif m=='sandring':pass
   elif m=='wavemane':
    for i in range(3):c([(0,15-i*3,-3),(0,16-i*3,2),(0,13-i*3,7)],2,2+i%2,'mane')
    g.part('mane',(0,13,-3))

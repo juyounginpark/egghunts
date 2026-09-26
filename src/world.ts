@@ -53,7 +53,7 @@ export class World {
       this.restCompanions(entry.group,peer.slot,time);entry.trail=[];
     }else{
       entry.group.children.forEach(pet=>{pet.rotation.z=0;});
-      entry.trail=followPets(entry.group,entry.trail,avatar.position,{x:Math.sin(avatar.rotation.y),z:Math.cos(avatar.rotation.y)},dt,time,this.low,this.reducedMotion.matches);
+      entry.trail=followPets(entry.group,entry.trail,avatar.position,{x:Math.sin(avatar.rotation.y),z:Math.cos(avatar.rotation.y)},dt,time,this.low,this.reducedMotion.matches,peer.z>=BALANCE.baseMinZ?BALANCE.farmPetMaxSize:Infinity);
     }
   }
   playerAnchor(id?:string){
@@ -73,9 +73,13 @@ export class World {
   private farmPet(id:number,slot:number,index:number){
     // Resting herds reuse merged bodies instead of one draw call per animated limb.
     const pet=petVisual(id,false);
-    pet.scale.setScalar(MONGLES[id].scale);
+    this.scaleFarmPet(pet);
     pet.userData.farmSlot=slot;pet.userData.farmIndex=index;
     return pet;
+  }
+  private scaleFarmPet(pet:T.Object3D){
+    const size=Math.max(.001,pet.userData.bodyWidth??1,pet.userData.bodyHeight??1,pet.userData.bodyDepth??1);
+    pet.scale.setScalar(Math.min(MONGLES[pet.userData.petId].scale,BALANCE.farmPetMaxSize/size));
   }
   private animateFarmPet(pet:T.Object3D,time:number){
     const pose=farmPetPose(pet.userData.farmSlot,pet.userData.farmIndex,time,this.reducedMotion.matches);
@@ -87,7 +91,7 @@ export class World {
   private restCompanions(group:T.Group,slot:number,time:number){
     group.children.forEach((pet,index)=>{
       pet.userData.farmSlot=slot;pet.userData.farmIndex=BALANCE.farmPetsVisible+index;
-      pet.scale.setScalar(MONGLES[pet.userData.petId].scale);
+      this.scaleFarmPet(pet);
       delete pet.userData.followScale;
       this.animateFarmPet(pet,time);
     });
@@ -628,7 +632,7 @@ export class World {
       this.restCompanions(this.companions,game.farmSlot,time);this.trail=[];
     }else{
       this.companions.children.forEach(pet=>{pet.rotation.z=0;});
-      this.trail=followPets(this.companions,this.trail,this.player.position,game.facing,dt,time,this.low,this.reducedMotion.matches);
+      this.trail=followPets(this.companions,this.trail,this.player.position,game.facing,dt,time,this.low,this.reducedMotion.matches,game.isAtBase?BALANCE.farmPetMaxSize:Infinity);
     }
     const storageKey = `${game.farmSlot}:`+game.save.eggs.map((e) => `${e.id}:${e.type}:${e.stageId}:${e.variant}`).join("|");
     if (storageKey !== this.storageKey) {

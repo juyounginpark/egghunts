@@ -215,7 +215,7 @@ def motif(g,m,stage,slot):
   if m in ['headphones','radar','goggles','ducts']:
    for x in [3,20]:ring(x,13,6,3,3,2,'left_ear' if x<10 else 'right_ear')
   elif m in ['wheels','skateboard','rocking','boat','sandals']:
-   b(2,21,1,2,5,20,2,'body')
+   # User revision: no platform beneath any character.
    for x in [3,20]:o(x,2,9,2,2,2,3,'left_leg' if x<10 else 'right_leg')
   elif m in ['pencils','crown','antenna']:
    for j in range(3 if m=='pencils' else 2):line((6+j*5,15,14),(4+j*7,23,17),1.1,2+j%2,'crown')

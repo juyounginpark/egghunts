@@ -1,5 +1,7 @@
 # 프로젝트 공식 아트 스타일 가이드 v1.0
 
+> 최신 사용자 개정 (2026-09-27): 캐릭터 아래 발판·받침대는 기존/확장 구분 없이 제거한다. 본체와 발은 보존한다. 과거 개별 프롬프트의 회전 받침·보드·연잎 바닥 지시보다 우선한다.
+
 > 프로젝트 연결 완료 기록 (2026-09-27): 원문 지침을 보존하고 [REFERENCE_INDEX.md](REFERENCE_INDEX.md)에 실제 자료를 등록했다. 원본 설계는 [voxel-art-rework-220-characters.md](voxel-art-rework-220-characters.md), 확장 지시는 [expansion-style-prompt.md](expansion-style-prompt.md), 760개 참조 연결은 [expansion-style-references.json](expansion-style-references.json)이다. 아래의 “작성 시점 미확인” 문장은 전달받은 원문의 상태를 설명한다. 현재 적용·비교 결과는 [expansion-style-report.md](expansion-style-report.md)를 따른다.
 
 이 문서는 사용자가 지정한 `voxel-art-rework-220-characters.md`의 디자인 언어와 프로젝트 내부의 공식 레퍼런스를 함께 관리하는 최상위 아트 기준이다. 이후 신규 캐릭터, 알, 소품, 스테이지 요소를 제작할 때 공통 기준으로 사용한다.
