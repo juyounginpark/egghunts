@@ -562,11 +562,18 @@ nav button img { width:28px; height:28px; }
 [data-mode="hatchery"] #egg-health .track { height:4px; margin-top:7px; border:0; }
 [data-mode="hatchery"] #inventory { padding:8px 0 0; background:none; border:0; box-shadow:none; }
 [data-mode="hatchery"] #inventory-count { font-size:10px; opacity:.7; }
-[data-mode="hatchery"] #egg-queue { display:flex; gap:8px; overflow-x:auto; padding:5px 2px; scrollbar-width:thin; }
+[data-mode="hatchery"] #egg-queue { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:6px; padding:5px 2px; }
 [data-mode="hatchery"] .egg-slot { flex:0 0 58px; min-height:64px; padding:4px; border-radius:12px; box-shadow:none; }
-[data-mode="hatchery"] .egg-slot small,[data-mode="hatchery"] .egg-slot.empty { display:none; }
+[data-mode="hatchery"] .egg-slot small { display:none; }
+[data-mode="hatchery"] .egg-slot.empty { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; border:1px dashed #869279; background:#fff9e855; }
+[data-mode="hatchery"] .egg-slot.empty small { display:block; font-size:9px; }
+[data-mode="hatchery"] #egg-health .egg-health-numbers { display:block; margin-top:6px; font-size:11px; font-variant-numeric:tabular-nums; }
+.hatch-hit-feedback { position:absolute; z-index:4; pointer-events:none; color:#fff2b2; text-shadow:0 2px 2px #573921,1px 0 #573921,-1px 0 #573921; }
+.hatch-hit-feedback b { font-size:25px; font-weight:900; white-space:nowrap; }
+.hatch-hit-feedback i { position:absolute; left:50%; top:50%; width:7px; height:7px; background:#ffd66d; border:1px solid #fff5cc; animation:hatch-chip .4s ease-out forwards; }
+@keyframes hatch-chip { from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(120deg);opacity:0} }
 [data-mode="hatchery"] .egg-slot b { font-size:10px; }
-[data-mode="hatchery"] .egg-slot .egg-icon { width:42px; height:42px; }
+[data-mode="hatchery"] .egg-slot .egg-icon { width:100%; max-width:42px; height:42px; }
 #shell.hatch-revealing #top-hud,#shell.hatch-revealing #bottom-hud,#shell.hatch-revealing nav,#shell.hatch-revealing #hatch-touch,#shell.hatch-revealing #egg-notices { visibility:hidden; pointer-events:none; }
 #return-reward,#return-reward.rare-reward { justify-content:flex-end; gap:12px; padding:16px 20px calc(24px + var(--safe-bottom)); background:none; }
 #return-reward > #reward-copy { width:min(340px,100%); padding:10px 14px; background:#fff9e8ed; border:0; box-shadow:none; }

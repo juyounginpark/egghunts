@@ -740,7 +740,10 @@ export class GameState {
       const reach=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1);
       const escapeSpeed=Math.max(0,(this.velocity.x*dx+this.velocity.z*dz)/(l||1));
       const speed=b.mode==='chase'?guardianPursuitSpeed(b.stageId??1,this.speed,l,escapeSpeed,reach):Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(b.stageId??1)*recoveryMultiplier);
-      const step=Math.min(l,speed*activeDt);
+      // A rush ends outside contact range even after a delayed/large server tick.
+      // Normal close pursuit resumes on the next tick, rather than overshooting.
+      const rush=b.mode==='chase'&&l>reach+BOSS_MOVEMENT.catchupTargetGap;
+      const step=Math.min(rush?l-reach-BOSS_MOVEMENT.catchupTargetGap:l,speed*activeDt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
@@ -910,11 +913,13 @@ export class GameState {
       this.message = sleeping?'보스가 잠에서 깼어요!':'알을 들었어요. 기지로 돌아가세요!';
     this.revision++;
   }
+  get tapDamage(){return (BALANCE.baseTap+BALANCE.tapPerLevel*this.save.upgrades.tap)*this.clickMultiplier;}
   tap() {
     if (!this.selected || this.selected.hp === 0 || this.result !== null || this.now() - this.lastTap < BALANCE.tapInterval) return false;
     this.lastTap = this.now();
-    this.emit("hatch_manual_hit");
-    this.damage((BALANCE.baseTap + BALANCE.tapPerLevel * this.save.upgrades.tap)*this.clickMultiplier);
+    const egg=this.selected,before=egg.hp;
+    this.damage(this.tapDamage);
+    this.emit("hatch_manual_hit",{egg:egg.id,damage:before-egg.hp,hp:egg.hp});
     return true;
   }
   damage(amount: number) {

@@ -136,7 +136,7 @@ export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{cons
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
-export const BOSS_MOVEMENT={maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,catchupStartGap:4,catchupTargetGap:7,catchupGain:2};
+export const BOSS_MOVEMENT={maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,catchupTargetGap:3,catchupMinSpeed:48,catchupMaxSpeed:120,catchupGain:10};
 export function guardianSpeed(stage:number){
  const progress=(Math.max(1,Math.min(STAGES.length,stage))-1)/(STAGES.length-1);
  return ROUTE.baseRecommendedSpeed+(BOSS_MOVEMENT.qualifiedChaseMaxSpeed-ROUTE.baseRecommendedSpeed)*progress;
@@ -146,13 +146,11 @@ export function guardianChaseSpeed(stage:number,playerSpeed:number){
  return playerSpeed>recommendedRouteSpeed(0,stage)
   ?guardianSpeed(stage):Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(stage)*BOSS_MOVEMENT.underqualifiedMultiplier);
 }
-/** Close-range rules stay intact; distant guardians match escape speed and close the gap. */
+/** Outside the close chase band, rush independently of stage/player speed stats. */
 export function guardianPursuitSpeed(stage:number,playerSpeed:number,distance:number,escapeSpeed:number,reach:number){
- const base=guardianChaseSpeed(stage,playerSpeed);
- const gap=distance-reach;
- const blend=Math.max(0,Math.min(1,(gap-BOSS_MOVEMENT.catchupStartGap)/(BOSS_MOVEMENT.catchupTargetGap-BOSS_MOVEMENT.catchupStartGap)));
- const catchup=Math.max(base,escapeSpeed+(gap-BOSS_MOVEMENT.catchupTargetGap)*BOSS_MOVEMENT.catchupGain);
- return Math.min(BOSS_MOVEMENT.maxSpeed,base+(catchup-base)*blend);
+ const excess=distance-reach-BOSS_MOVEMENT.catchupTargetGap;
+ if(excess<=0)return guardianChaseSpeed(stage,playerSpeed);
+ return Math.min(BOSS_MOVEMENT.catchupMaxSpeed,Math.max(0,escapeSpeed)+BOSS_MOVEMENT.catchupMinSpeed+excess*BOSS_MOVEMENT.catchupGain);
 }
 export function recommendedRouteSpeed(_depth:number,stage:number){return ROUTE.baseRecommendedSpeed*STAGE_DIFFICULTY.recommendedSpeedMultiplier**(stage-1);}
 export const GUARDIAN_ATTACKS=new Set(['hay','train','ink','lava-breath','tentacle','sweep','locker','book','drone','scorpion','stomp','raptor','wisps','club','lightning','medusa','ufo','nightmare','vine','mantis','magnet','void-hand','memory-tentacle','memory-lightning','memory-ufo','memory-meteor','creation-wave']);

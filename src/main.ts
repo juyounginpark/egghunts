@@ -171,11 +171,9 @@ async function action(preparedId?:string) {
   const preparedEgg=preparedId?game.world.find(e=>e.id===preparedId):undefined;
   if(preparedId&&(!preparedEgg||!game.canReachEgg(preparedEgg)||game.carried))return;
   if (tab === "hatchery") {
-    if(online.active){world.hitAt=performance.now();feedback(null);void remote('tap');return;}
+    if(online.active){void remote('tap');return;}
     if (game.tap()) {
-      world.hitAt = performance.now();
       $("action").dataset.hit = String(game.lastTap);
-      feedback(null);
     }
   } else if (tab === "explore") {
     const targetEgg=preparedEgg??game.near;
@@ -407,7 +405,7 @@ function updateHud() {
   if (tab === "hatchery") {
     const e = game.selected;
     $("egg-health").innerHTML = e
-      ? `<b>${eggName(e)}</b><div class="track" role="progressbar" aria-label="남은 알 내구도" aria-valuenow="${Math.ceil(e.hp)}" aria-valuemin="0" aria-valuemax="${EGGS[e.type].hp}"><i style="width:${(e.hp / EGGS[e.type].hp) * 100}%"></i></div>`
+      ? `<b>${eggName(e)}</b><div class="track" role="progressbar" aria-label="남은 알 내구도" aria-valuenow="${e.hp}" aria-valuemin="0" aria-valuemax="${EGGS[e.type].hp}"><i style="width:${(e.hp / EGGS[e.type].hp) * 100}%"></i></div><small class="egg-health-numbers">체력 ${num(e.hp)} / ${num(EGGS[e.type].hp)} · 클릭 −${num(Math.min(e.hp,game.tapDamage))}</small>`
       : "<b>새로운 만남을 기다려요</b><p>탐험에서 알을 가져와 주세요.</p>";
   }
   const touch=$<HTMLButtonElement>('hatch-touch');
@@ -753,6 +751,7 @@ function frame(now: number) {
   for (const event of game.events.splice(0)) {
     const cues:Partial<Record<string,GameSound>>={hatch_manual_hit:'tap',egg_pickup:'pickup',egg_drop:'drop',egg_saved:'return',mongle_obtained:'hatch',player_hit:'hit',player_death:'death',player_revive:'revive',night_refresh:'night',region_enter:'stage',level_up:'upgrade',upgrade_purchase:'upgrade',trail_purchase:'upgrade',collection_reward:'upgrade',boss_wake:'boss',egg_recovered:'drop'};
     const cue=cues[event.name];if(cue&&cue!=='hatch')playSound(cue,Number(event.params.stage??game.stage.id));
+    if(event.name==='hatch_manual_hit'&&tab==='hatchery'&&event.params.egg===game.selected?.id){world.showHatchHit(Number(event.params.damage));feedback(null);}
     if(event.name==='boss_wake'){bossAlertUntil=now+3000;if(!paused&&!game.death&&tab==='explore')feedback(null);}
     if(event.name==='expedition_start'){$("toast").hidden=true;clearTimeout(toastTimer);}
     if(['level_up','player_hit','health_unlocked','player_death'].includes(event.name)){feedback(null);void save();}

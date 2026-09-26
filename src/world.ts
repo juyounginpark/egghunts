@@ -380,6 +380,23 @@ export class World {
       this.hatch.add(m);
     }
   }
+  showHatchHit(amount:number){
+    if(!Number.isFinite(amount)||amount<=0||this.birth)return;
+    this.hitAt=performance.now();
+    const touch=document.getElementById('hatch-touch');if(!touch||touch.hidden)return;
+    const rect=touch.getBoundingClientRect(),host=this.host.getBoundingClientRect();
+    const effect=document.createElement('div');effect.className='hatch-hit-feedback';effect.setAttribute('aria-hidden','true');
+    effect.style.left=`${rect.left-host.left+rect.width/2}px`;effect.style.top=`${rect.top-host.top+rect.height*.35}px`;
+    const number=document.createElement('b');number.textContent=`−${amount<.01?'<0.01':formatNumber(amount)}`;effect.append(number);
+    if(!this.reducedMotion.matches)for(let i=0;i<6;i++){
+      const spark=document.createElement('i'),angle=i*Math.PI/3;
+      spark.style.setProperty('--dx',`${Math.cos(angle)*45}px`);spark.style.setProperty('--dy',`${Math.sin(angle)*35}px`);effect.append(spark);
+    }
+    const active=this.host.querySelectorAll('.hatch-hit-feedback');if(active.length>=8)active[0].remove();
+    this.host.append(effect);
+    const motion=effect.animate([{opacity:1,transform:'translate(-50%,-50%) scale(1.12)'},{opacity:0,transform:`translate(-50%,${this.reducedMotion.matches?'-50%':'-140%'}) scale(1)`}],{duration:650,easing:'ease-out'});
+    motion.onfinish=()=>effect.remove();
+  }
   async revealHatch(id:number,egg:Pick<Egg,'type'|'stageId'|'variant'>,onBirth:()=>void){
     // Hold the original egg while the result asset loads. Ownership was already
     // committed, so a failed asset request must still release the result UI.
@@ -627,7 +644,7 @@ export class World {
       if(shownResult!==null){animatePet(this.hatchModel,shownResult,time,false,this.reducedMotion.matches);this.hatchModel.userData.greetingAt??=time;greetPet(this.hatchModel,shownResult,time-this.hatchModel.userData.greetingAt,this.reducedMotion.matches);}
       this.hatchModel.visible = !!game.selected || game.result !== null || isReward;
       const kick = Math.max(0, 1 - (performance.now() - this.hitAt) / 220);
-      this.hatchModel.rotation.z = Math.sin(time * 70) * kick * 0.12;
+      this.hatchModel.rotation.z = this.reducedMotion.matches?0:Math.sin(time * 70) * kick * 0.12;
       this.hatchModel.rotation.y = birthEgg&&!this.reducedMotion.matches&&birthAge>=0 ? birthAge*birthAge*30 : isReward ? time*.8 : isHatch ? -0.25 : 0;
       this.hatchModel.position.y =
         shownResult !== null ? Math.abs(Math.sin(time * 3)) * 0.2 : 0;

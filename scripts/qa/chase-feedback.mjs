@@ -21,16 +21,26 @@ try{
  legacy.save.expedition={x:0,z:-400,deadline:now+60000,carried:null};legacy.fields.z=-400;
  migrateStageRuntime(legacy);assert.equal(legacy.fields.z,-1744);
  const once=JSON.stringify(legacy);migrateStageRuntime(legacy);assert.equal(JSON.stringify(legacy),once);
- // Distance feedback closes a 50m gap for every stage without teleporting.
+ // Every stage/stat catches a fast runner within one second, then holds the band.
  for(let stage=1;stage<=20;stage++){
+  for(const stat of [1,1e9]){
   let distance=50;const reach=ROUTE.bossReach*ROUTE.bossAngryScale;
-  for(let i=0;i<1800;i++){
-   const speed=guardianPursuitSpeed(stage,1e9,distance,20,reach);
-   assert.ok(speed<=BOSS_MOVEMENT.maxSpeed);
-   distance+=(20-speed)/60;
+  for(let i=0;i<60;i++){
+   distance+=20/60;
+   const speed=guardianPursuitSpeed(stage,stat,distance,20,reach);
+   assert.ok(speed<=BOSS_MOVEMENT.catchupMaxSpeed);
+   distance-=Math.min(distance-reach-BOSS_MOVEMENT.catchupTargetGap,speed/60);
   }
   assert.ok(distance<=reach+BOSS_MOVEMENT.catchupTargetGap+.05);
-  assert.equal(guardianPursuitSpeed(stage,1e9,reach+1,20,reach),guardianChaseSpeed(stage,1e9));
+  assert.equal(guardianPursuitSpeed(stage,stat,reach+1,20,reach),guardianChaseSpeed(stage,stat));
+  assert.equal(guardianPursuitSpeed(stage,stat,50,0,reach),BOSS_MOVEMENT.catchupMaxSpeed);
+  }
+  const g=make(),index=stage-1,b=g.bosses[index];
+  g.z=-50;g.carried=g.world[0];b.x=g.x;b.z=-100;b.mode='chase';b.target=g.carried.id;
+  const reach=ROUTE.bossReach*ROUTE.bossAngryScale;
+  g.tickBosses(1,index);
+  assert.ok(Math.abs(Math.hypot(g.x-b.x,g.z-b.z)-reach-BOSS_MOVEMENT.catchupTargetGap)<1e-8);
+  assert.equal(g.hp,g.maxHp);assert.ok(g.carried,'rush must not overshoot into contact');
  }
  const isolated=g=>{g.hazards.tick=()=>{};g.tickBosses=()=>{};return g;};
  const g=isolated(make());g.z=-20;g.deadline=now+60000;
@@ -44,5 +54,9 @@ try{
  assert.ok(Math.abs(h.hp-(hp-damage))<1e-8);assert.equal(h.damageTicks.length,0);
  h.immunity=0;h.hp=1;h.receiveHit(0);assert.equal(h.death,null);
  h.tick(DAMAGE_OVER_TIME.interval);assert.ok(h.death);assert.equal(h.damageTicks.length,0);
- console.log('PASS: live coordinates, one-time legacy migration, pursuit gap, deferred damage, persistence, immunity and death');
+ const hatch=make();hatch.save.eggs=[{id:'tap-feedback',type:0,hp:1,hpVersion:2,distance:0}];hatch.save.selected='tap-feedback';hatch.events=[];
+ assert.ok(hatch.tapDamage>=1);assert.equal(hatch.tap(),true);
+ assert.deepEqual(hatch.events.find(e=>e.name==='hatch_manual_hit').params,{egg:'tap-feedback',damage:1,hp:0});
+ assert.equal(hatch.tap(),false);assert.equal(hatch.events.filter(e=>e.name==='hatch_manual_hit').length,1);
+ console.log('PASS: live coordinates, legacy migration, rapid pursuit, deferred damage, persistence, immunity, death and actual hatch hit feedback');
 }finally{await server.close();}
