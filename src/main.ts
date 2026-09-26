@@ -855,6 +855,7 @@ function frame(now: number) {
   world.networkOffset=online.active?online.visualOffset:{x:0,z:0};
   world.render(game, tab, qa ? 1 : dt, qa ? qa.visualTime : now / 1000);
   roomChat.show(online.active&&tab==='explore'&&!paused&&!game.death&&!game.returnReward&&$('modal').hidden);
+  roomChat.update(online.active,game.save.playerName??'탐험가',online.latest?.chat,online.peers);
   roomHUD.update(game,online.active?online.peers:multiplayer.peers,world,online.latest?.isGuest??false,tab==='explore'&&!game.returnReward,online.latest?.chat);
   if (now - savedAt > 5000) {
     savedAt = now;

@@ -548,6 +548,11 @@ nav button img { width:28px; height:28px; }
 .player-chat { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); width:max-content; max-width:min(220px,65vw); padding:8px 10px; white-space:normal; overflow-wrap:anywhere; background:#fff9e8; border:2px solid #68724d; border-radius:8px; box-shadow:2px 3px 0 #52664a55; font-size:13px; line-height:1.4; }
 .player-chat::after { content:''; position:absolute; bottom:-7px; left:calc(50% - 5px); width:9px; height:9px; background:#fff9e8; border-right:2px solid #68724d; border-bottom:2px solid #68724d; transform:rotate(45deg); }
 #room-chat { grid-column:2; justify-self:start; }
+#room-chat-log { position:absolute; left:0; bottom:76px; width:min(230px,65vw); max-height:min(140px,20dvh); overflow-y:auto; overscroll-behavior:contain; touch-action:pan-y; padding:7px 9px; border-radius:6px; color:#fff9e8; background:#253a36b8; font-size:11px; line-height:1.5; overflow-wrap:anywhere; scrollbar-width:thin; }
+#room-chat-log>div+div { margin-top:4px; }
+#room-chat-log b { color:#ffe1a0; }
+#room-chat-log[data-empty="true"]::before { content:'같은 방의 채팅이 여기에 표시돼요'; color:#eee9d6; }
+#room-chat.composing #room-chat-log { bottom:144px; }
 #room-chat>.icon-btn { width:44px; height:44px; border-radius:8px; display:grid; place-items:center; }
 #room-chat form { position:absolute; bottom:76px; left:0; right:0; display:flex; gap:6px; padding:8px; background:#fff9e8; border:var(--hud-border); border-radius:var(--hud-radius); box-shadow:var(--hud-shadow); }
 #room-chat input { flex:1; min-width:0; height:44px; font-size:16px; color:#39482d; background:#fffdf3; border:1px solid #68724d; border-radius:4px; padding:0 8px; }
