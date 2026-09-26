@@ -412,7 +412,7 @@ function updateHud() {
   $("carry-chip").hidden = !game.carried || tab !== "explore";
   if (game.carried)
     $("carry-chip").textContent =
-      `알 운반 중 · ${eggWeightLabel(game.carried.type,game.save.upgrades.carry)}`;
+      '알 운반중';
   $("risk").className = game.risk;
   $("risk").querySelector("span")!.textContent = !game.isAtBase
     ? `기지 ${Math.round(game.distance)}m · ${game.risk==='safe'?'스피드 충분':game.risk==='warning'?'스피드 강화 추천':'먼 지역 · 스피드를 더 키워요'}`
