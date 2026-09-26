@@ -178,6 +178,7 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number){
  const text=()=>{if(typeof c.value!=='string'||c.value.length>160)throw Error('INVALID_ID');return c.value;};
  const atBase=()=>{if(!g.isAtBase||g.death)throw Error('RETURN_TO_BASE');};
  switch(c.kind){
+  case 'coupon':{const error=g.redeemCoupon(text());if(error)throw Error(error);break;}
   case 'chat':{
    if(typeof c.value!=='string'||c.value.length>BALANCE.chatMaxLength*2)throw Error('INVALID_CHAT');
    const message=c.value.normalize('NFC').replace(/[\p{Cc}\p{Cf}]/gu,'').trim().replace(/\s+/g,' ');

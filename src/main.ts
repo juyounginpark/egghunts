@@ -1,4 +1,4 @@
-import {eggMaxHp,eggWeightLabel} from './data';
+import {eggMaxHp,eggWeightLabel,COUPON_ERRORS} from './data';
 import {advanceTutorial,tutorialHint} from './tutorial';
 import {weeklyDay} from './weekly';
 import {add,exactMoney,compare} from './money';
@@ -524,15 +524,28 @@ function showSettings() {
     `<div class="settings-card"><span class="tag">TAKE A LITTLE BREAK</span><h1>잠깐 쉬어가요</h1><p>진행 상황은 자동으로 저장돼요. 탐험 제한시간은 없어요.</p><fieldset class="sound-settings"><legend>사운드</legend><label for="volume-setting">전체 볼륨 <output id="volume-value" for="volume-setting">${Math.round((game.save.settings.volume??1)*100)}%</output></label><input id="volume-setting" type="range" min="0" max="100" step="1" value="${Math.round((game.save.settings.volume??1)*100)}" aria-label="배경음악과 효과음 볼륨"/><label for="sound-setting">음소거 <input id="sound-setting" type="checkbox" ${!game.save.settings.sound ? "checked" : ""}></label><small>배경음악 · 효과음에 함께 적용</small></fieldset><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
   $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label><p>${platform.native?"토스 게임 로그인 연결됨":"브라우저 · 기기 저장"}</p><button id="multiplayer-connect" class="secondary">${multiplayer.connected?"친구 연결 종료":"게스트 로그인 · 친구와 걷기"}</button><small>같은 서버에서 이동 공유 · 알과 수집은 각자 진행</small>`);
   if(online.active){
+    const accountLink=document.createElement('section');$('resume').before(accountLink);online.mountEmailLink(accountLink);
     $("resume").insertAdjacentHTML('afterend','<button id="leave-room" class="secondary">방 나가기</button>');
     const button=$("multiplayer-connect");button.textContent=`${online.latest?.count??1} / 5`;
     const note=button.nextElementSibling;if(note)note.textContent='';
     const label=button.previousElementSibling;if(label)label.textContent='Supabase';
   }
   ($("appearance-setting") as HTMLSelectElement).value=String(game.save.appearance??0);
+  $('resume').insertAdjacentHTML('beforebegin','<fieldset class="sound-settings email-link"><legend>쿠폰 코드</legend><form id="coupon-form"><label>쿠폰 코드<input id="coupon-code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="64" required placeholder="코드를 입력하세요"></label><button type="submit" class="secondary">쿠폰 사용</button></form><p id="coupon-status" role="status">쿠폰은 계정당 1회 사용할 수 있어요. 농장에서 입력해 주세요.</p></fieldset>');
+  const couponForm=$('coupon-form') as HTMLFormElement,couponInput=$('coupon-code') as HTMLInputElement,couponStatus=$('coupon-status');
+  couponForm.onsubmit=async event=>{
+    event.preventDefault();if(couponRedeeming)return;
+    const code=couponInput.value.trim().toUpperCase();if(!code)return;
+    couponRedeeming=true;const field=couponForm.closest('fieldset')!;field.disabled=true;couponStatus.textContent='쿠폰 확인 중…';
+    try{
+      if(online.active){const ok=await remote('coupon',code);const error=online.latest?.errors.find(value=>value in COUPON_ERRORS||value==='RETURN_TO_BASE');couponStatus.textContent=ok?game.message:error==='RETURN_TO_BASE'?'농장으로 돌아와서 사용해 주세요.':COUPON_ERRORS[error??'']??'쿠폰을 사용할 수 없어요. 연결을 확인하고 다시 시도해 주세요.';if(ok)couponInput.value='';}
+      else {const error=game.redeemCoupon(code);couponStatus.textContent=error?(error==='RETURN_TO_BASE'?'농장으로 돌아와서 사용해 주세요.':COUPON_ERRORS[error]??'쿠폰을 사용할 수 없어요.'):game.message;if(!error){couponInput.value='';void save();}}
+    }finally{couponRedeeming=false;field.disabled=false;}
+  };
   $('resume').insertAdjacentHTML('beforebegin',`<fieldset class="sound-settings"><legend>펫 표시</legend><label>내 펫 숨김 <input id="hide-own-pets" type="checkbox" ${game.save.settings.hideOwnPets?'checked':''}></label><label>다른 사람 펫 숨김 <input id="hide-other-pets" type="checkbox" ${game.save.settings.hideOtherPets?'checked':''}></label><small>동행·농장 펫과 이름표만 숨겨요. 능력과 수익은 유지돼요.</small></fieldset>`);
 }
 const hatchTouches:{egg:string;x:number;y:number;at:number}[]=[];
+let couponRedeeming=false;
 let pendingPetReplacement:{id:number;active:number[]}|null=null,petReplacing=false;
 document.addEventListener("click", async (e) => {
   const target=e.target as HTMLElement;

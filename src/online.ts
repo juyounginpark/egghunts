@@ -2,7 +2,7 @@ import type {SupabaseClient} from '@supabase/supabase-js';
 import type {GameState,WorldEgg,Boss} from './game';
 import {restoreRuntime,type RuntimeState} from './online-state';
 import type {Peer} from './multiplayer';
-import {BALANCE} from './data';
+import {BALANCE,COUPON_ERRORS} from './data';
 import {playerName} from './player-identity';
 import type {EggNotice} from './egg-notices';
 import {restoreSnapshotSections} from './snapshot-stream';
@@ -15,7 +15,7 @@ const GAME_URL=import.meta.env.VITE_GAME_SERVER_URL||`${SUPABASE_URL}/functions/
 const HOSTED_EDGE=!import.meta.env.VITE_GAME_SERVER_URL;
 type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];chat?:ChatMessage|null;eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
-const errorText:Record<string,string>={CANNOT_EQUIP:'빈 착용 칸과 남은 펫 수량을 확인해 주세요.',WEEKLY_INVENTORY_FULL:'알 보관함 한 칸을 비워 주세요.',WEEKLY_UNAVAILABLE:'오늘 보상을 이미 받았거나 수령할 수 없는 상태예요.',EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
+const errorText:Record<string,string>={...COUPON_ERRORS,CANNOT_EQUIP:'빈 착용 칸과 남은 펫 수량을 확인해 주세요.',WEEKLY_INVENTORY_FULL:'알 보관함 한 칸을 비워 주세요.',WEEKLY_UNAVAILABLE:'오늘 보상을 이미 받았거나 수령할 수 없는 상태예요.',EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
 export class OnlineGame{
  active=false;
  connected=false;
@@ -41,6 +41,9 @@ export class OnlineGame{
  private inputRevision=0;
  private idleAcknowledgedRevision=-1;
  private accessToken='';
+ private playerAccountId='';
+ private emailLinkBusy=false;
+ private emailLinkSentAt=0;
  private leaving=false;
  private socket:WebSocket|null=null;
  private warmSocket:WebSocket|null=null;
@@ -166,10 +169,64 @@ export class OnlineGame{
     let name:string;
     try{name=playerName(nameInput.value);}catch{status.textContent='닉네임은 한글·영어만 최대 10자로 입력해 주세요.';nameInput.focus();return;}
     find.disabled=true;status.textContent='빈자리를 찾고 있어요…';
-    try{this.pending={operation:'join',id:crypto.randomUUID(),input:{x:0,z:0},commands:[{id:crypto.randomUUID(),kind:'name',value:name}]};await this.flush();if(this.latest?.errors.length)throw Error('이름을 저장하지 못했어요. 다시 시도해 주세요.');localStorage.setItem(`alkong:name:${accountId}`,name);this.active=true;listener.subscription.unsubscribe();resolve();}
+    try{this.playerAccountId=accountId;this.pending={operation:'join',id:crypto.randomUUID(),input:{x:0,z:0},commands:[{id:crypto.randomUUID(),kind:'name',value:name}]};await this.flush();if(this.latest?.errors.length)throw Error('이름을 저장하지 못했어요. 다시 시도해 주세요.');localStorage.setItem(`alkong:name:${accountId}`,name);this.active=true;listener.subscription.unsubscribe();resolve();}
     catch(err){status.textContent=err instanceof Error?err.message:'방을 찾지 못했어요.';}finally{find.disabled=false;}
    };
   });
+ }
+ mountEmailLink(host:HTMLElement){
+  host.innerHTML='<fieldset class="sound-settings email-link"><legend>이메일 연동</legend><p class="email-link-status" role="status">계정 확인 중…</p><form hidden><p>이메일을 인증하면 지금의 펫·알·진행 기록을 다른 기기에서도 이어갈 수 있어요.</p><label>연동할 이메일<input type="email" autocomplete="email" maxlength="254" required placeholder="you@example.com"></label><button type="submit" class="secondary">인증 메일 받기</button></form><div class="email-link-code" hidden><p>메일의 인증 링크를 누르세요. 코드가 있다면 아래에 입력해도 돼요.</p><form><label>인증 코드<input inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}" maxlength="8" required></label><button type="submit" class="secondary">코드 확인</button></form></div><button type="button" class="secondary email-link-check">연동 상태 확인</button></fieldset>';
+  const field=host.querySelector('fieldset')!,status=host.querySelector<HTMLElement>('.email-link-status')!,form=host.querySelector<HTMLFormElement>('form')!,email=form.querySelector('input')!,send=form.querySelector('button')!,codeBox=host.querySelector<HTMLElement>('.email-link-code')!,codeForm=codeBox.querySelector('form')!,code=codeForm.querySelector('input')!,check=host.querySelector<HTMLButtonElement>('.email-link-check')!;
+  let pendingEmail='';
+  const account=async()=>{
+   const {data,error}=await this.client.auth.getUser();if(error)throw error;
+   if(!data.user||data.user.id!==this.playerAccountId)throw Error('현재 플레이 계정과 로그인 계정이 달라요. 게임을 다시 열어 주세요.');
+   return data.user;
+  };
+  const refresh=async()=>{
+   const user=await account();
+   const linked=!user.is_anonymous&&!!user.email_confirmed_at&&!!user.email;
+   form.hidden=codeBox.hidden=linked;
+   if(linked){
+    status.textContent=`연동 완료 · ${user.email}\n다음 로그인부터 이 이메일을 사용하세요. 기존 기록은 그대로 유지돼요.`;
+    check.hidden=true;
+    const {error}=await this.client.auth.refreshSession();if(error)throw error;
+    return true;
+   }
+   pendingEmail=user.new_email??'';
+   if(pendingEmail)email.value=pendingEmail;
+   codeBox.hidden=!pendingEmail;send.textContent=pendingEmail?'인증 메일 다시 받기':'인증 메일 받기';
+   status.textContent=pendingEmail?'이메일 인증을 기다리고 있어요. 인증 후 연동 상태 확인을 눌러 주세요.':'게스트 계정 · 이메일을 연동해 기록을 보관하세요.';
+   return false;
+  };
+  const run=async(action:()=>Promise<unknown>)=>{
+   if(this.emailLinkBusy){status.textContent='이전 요청을 처리하고 있어요. 잠시 후 다시 눌러 주세요.';return;}
+   this.emailLinkBusy=true;field.disabled=true;
+   try{await action();}
+   catch(err){
+    const failure=err as {code?:string;message?:string};
+    const messages:Record<string,string>={email_exists:'이미 다른 계정에 연결된 이메일이에요. 다른 이메일을 사용해 주세요.',user_already_exists:'이미 사용 중인 이메일이에요. 다른 이메일을 사용해 주세요.',otp_expired:'인증 코드가 만료됐거나 올바르지 않아요. 메일을 다시 받아 주세요.',over_email_send_rate_limit:'메일 요청이 많아요. 잠시 후 다시 시도해 주세요.',over_request_rate_limit:'요청이 많아요. 잠시 후 다시 시도해 주세요.',manual_linking_disabled:'이메일 연동이 아직 서버에서 활성화되지 않았어요.',email_address_not_authorized:'현재 메일 발송 설정에서 이 주소로 보낼 수 없어요.'};
+    status.textContent=messages[failure.code??'']??failure.message??'연동하지 못했어요. 연결을 확인하고 다시 시도해 주세요.';
+   }finally{field.disabled=false;this.emailLinkBusy=false;}
+  };
+  form.onsubmit=event=>{event.preventDefault();void run(async()=>{
+   const user=await account();if(!user.is_anonymous&&user.email_confirmed_at){await refresh();return;}
+   if(Date.now()-this.emailLinkSentAt<60000)throw Error('인증 메일은 1분 뒤에 다시 받을 수 있어요.');
+   const address=email.value.trim();
+   const {data,error}=await this.client.auth.updateUser({email:address},{emailRedirectTo:'https://juyounginpark.github.io/egghunts/'});if(error)throw error;
+   if(data.user.id!==this.playerAccountId)throw Error('계정이 변경됐어요. 게임을 다시 열어 주세요.');
+   this.emailLinkSentAt=Date.now();pendingEmail=address;code.value='';
+   if(!await refresh()){pendingEmail=address;codeBox.hidden=false;send.textContent='인증 메일 다시 받기';status.textContent='인증 메일을 보냈어요. 메일함과 스팸함을 확인해 주세요.';}
+  });};
+  codeForm.onsubmit=event=>{event.preventDefault();void run(async()=>{
+   const user=await account();if(!user.is_anonymous&&user.email_confirmed_at){await refresh();return;}
+   const address=user.new_email||pendingEmail;if(!address)throw Error('먼저 인증 메일을 받아 주세요.');
+   const {data,error}=await this.client.auth.verifyOtp({email:address,token:code.value.trim(),type:'email_change'});if(error)throw error;
+   if(data.user&&data.user.id!==this.playerAccountId)throw Error('계정이 변경됐어요. 게임을 다시 열어 주세요.');
+   await refresh();
+  });};
+  check.onclick=()=>{void run(refresh);};
+  void run(refresh);
  }
  attach(game:GameState){
   this.game=game;if(this.latest)this.apply(this.latest);
@@ -261,6 +318,7 @@ export class OnlineGame{
    this.pending??={operation:'update',id:crypto.randomUUID(),input:this.vector,inputAt:this.inputAt,inputRevision:this.inputRevision,commands:this.queue.splice(0,16)};
    this.lastInput={...this.pending.input,slow:this.pending.input.slow===true};
    const {data,error}=await this.client.auth.getSession();if(error||!data.session)throw Error('다시 로그인해 주세요.');
+   if(this.playerAccountId&&data.session.user.id!==this.playerAccountId)throw Error('로그인 계정이 변경됐어요. 게임을 다시 열어 주세요.');
    let session=data.session;
    this.accessToken=session.access_token;
    for(let attempt=0;attempt<4;attempt++){

@@ -9,6 +9,7 @@ import {formatNumber} from './format';
 import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp,equippedPetMultiplier,eggCarryMultiplier} from './data';
 import {
   BALANCE,
+  COUPONS,
   DAMAGE_OVER_TIME,
   STAGE_COLLECTION_REWARDS,
   PROGRESSION,
@@ -68,6 +69,7 @@ export type Save = {
   balanceVersion?:1;
   balanceAdjustment?:BalanceAdjustment;
   weekly?:WeeklyProgress;
+  redeemedCoupons?:string[];
   stageOrderVersion?:2;
   playerName?:string;
   dragonClues?:Record<string,DragonClue>;
@@ -141,6 +143,8 @@ export function parseSave(raw: string | null, now: number): Save {
   if (!raw) return freshSave(now);
   const s = JSON.parse(raw) as Save;
   migrateBalance(s,now);validateWeekly(s.weekly);
+  s.redeemedCoupons??=[];
+  if(!Array.isArray(s.redeemedCoupons)||!s.redeemedCoupons.every(code=>typeof code==='string'&&/^[A-Z0-9_-]{1,64}$/.test(code))||new Set(s.redeemedCoupons).size!==s.redeemedCoupons.length)throw Error('Invalid coupon history');
   migrateStageSave(s);
   migrateEggHealth([...(Array.isArray(s.eggs)?s.eggs:[]),...(Array.isArray(s.world)?s.world:[]),s.expedition?.carried,...(Array.isArray(s.bosses)?s.bosses.flatMap(b=>b.loot?[b.loot]:[]):[])]);
   s.dragonClues??={};validateDragonClues(s.dragonClues);
@@ -988,6 +992,22 @@ export class GameState {
     return true;
   }
   get weeklyIndex(){return (this.save.weekly?.claimed??0)%7;}
+  redeemCoupon(value:string){
+    const code=value.trim().toUpperCase();
+    if(!Object.hasOwn(COUPONS,code))return 'COUPON_INVALID';
+    if(this.save.redeemedCoupons?.includes(code))return 'COUPON_USED';
+    if(!this.isAtBase||this.death)return 'RETURN_TO_BASE';
+    if(this.result!==null)return 'COUPON_HATCH_PENDING';
+    if(this.save.eggs.length>=BALANCE.inventory)return 'COUPON_INVENTORY_FULL';
+    const stageId=1+Math.floor(this.random()*STAGES.length),variant=Math.floor(this.random()*5);
+    const type=COUPONS[code].tier*REGIONS.length+Math.floor((stageId-1)/4),id=`coupon-${code}`;
+    const egg:Egg={id,type,stageId,variant,hp:eggMaxHp({type,stageId}),hpVersion:4,distance:0};
+    this.save.eggs.push(egg);this.save.selected??=id;
+    if(!this.save.discovered.includes(type))this.save.discovered.push(type);
+    (this.save.redeemedCoupons??=[]).push(code);
+    this.message=`쿠폰 사용 완료 · ${STAGES[stageId-1].name} SS급 알 1개를 받았어요!`;
+    this.revision++;this.emit('coupon_redeemed',{code,stage:stageId});return null;
+  }
   get canClaimWeekly(){return weeklyDay(this.now())>(this.save.weekly?.lastDay??-1);}
   claimWeekly(){
     if(!this.isAtBase||this.death){this.message='농장으로 돌아오면 받을 수 있어요';return false;}

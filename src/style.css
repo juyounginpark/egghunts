@@ -490,6 +490,10 @@ nav button img { width:28px; height:28px; }
 .settings-card #volume-setting { display:block; width:100%; height:44px; margin:0; cursor:pointer; }
 #volume-value { font-size:18px; font-weight:800; font-variant-numeric:tabular-nums; }
 .sound-settings small { font-size:11px; color:#637061; }
+.settings-card .email-link label { display:flex; flex-direction:column; align-items:stretch; gap:6px; }
+.email-link input { width:100%; min-width:0; min-height:44px; padding:8px; border:1px solid #86976e; border-radius:6px; background:#fffdf3; color:#293e38; font-size:16px; }
+.email-link button { width:100%; min-height:44px; margin-top:8px; }
+.email-link-status { white-space:pre-line; overflow-wrap:anywhere; }
 @media(min-width:440px){#main-hud #cycle-clock{flex-direction:row;gap:5px}#cycle-phase::after{content:' ·'}#main-hud .dust b{font-size:18px}}
 @media(max-width:359px){#top-hud #main-hud{gap:4px;padding:4px;grid-template-columns:minmax(72px,1fr) minmax(64px,.85fr) minmax(144px,1.5fr)}.hud-avatar{width:28px}.hud-player{gap:3px}#main-hud #level{font-size:13px}#main-hud .dust b{font-size:14px}#main-hud #cycle-clock{font-size:10px}#cycle-phase{font-size:12px}}
 
