@@ -1,0 +1,226 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 586,
+    "key": "14-N19",
+    "name": "꿈보따리 맥",
+    "sourceName": "꿈보따리 맥",
+    "stageId": 14,
+    "tier": 5,
+    "slot": 29,
+    "form": "tapir",
+    "motif": "dreambundle",
+    "prompt": "짧고 넓은 주둥이와 둥근 귀, 낮고 무거운 아이보리 몸의 맥을 만들라. 등에 별무늬 남색 보따리를 크게 메고 보라 끈이 배 아래를 감싸게 한다. 긴 코끝으로 작은 꿈방울을 받아 보따리에 넣으면 내부에서 옅은 별빛이 한 번 퍼진다.",
+    "color": "#eee7cf"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        11,
+        -12
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "rotation": [
+        0.12,
+        0,
+        -0.18
+      ],
+      "pivot": [
+        -5,
+        13,
+        -9
+      ],
+      "parent": "head"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.5,
+        5,
+        -4
+      ],
+      "parent": "body"
+    },
+    "left_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.5,
+        5,
+        5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "rotation": [
+        0.12,
+        0,
+        0.18
+      ],
+      "pivot": [
+        5,
+        13,
+        -9
+      ],
+      "parent": "head"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5.5,
+        5,
+        -4
+      ],
+      "parent": "body"
+    },
+    "right_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5.5,
+        5,
+        5
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        7,
+        13
+      ],
+      "parent": "tail"
+    },
+    "tail_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5,
+        5,
+        17
+      ],
+      "parent": "tail_1"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    },
+    "trunk": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        11,
+        -10
+      ],
+      "parent": "head"
+    }
+  }
+}

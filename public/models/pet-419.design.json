@@ -1,0 +1,213 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 419,
+    "key": "06-N04",
+    "name": "픽셀참새",
+    "sourceName": "픽셀참새",
+    "stageId": 6,
+    "tier": 0,
+    "slot": 14,
+    "form": "fox",
+    "motif": "pixel",
+    "prompt": "남색의 작은 둥근 몸과 흰 볼, 노란 부리의 참새를 만들라. 꼬리 끝만 청록 사각 조각 세 개로 분리해 아주 좁은 간격으로 띄운다. 고개를 돌리면 꼬리 조각이 순차적으로 같은 방향을 향한다.",
+    "color": "#344a70"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        11,
+        -10.8
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "rotation": [
+        0.12,
+        0,
+        -0.18
+      ],
+      "pivot": [
+        -3,
+        13,
+        -7.800000000000001
+      ],
+      "parent": "head"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.5,
+        7,
+        -4
+      ],
+      "parent": "body"
+    },
+    "left_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.5,
+        7,
+        5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "rotation": [
+        0.12,
+        0,
+        0.18
+      ],
+      "pivot": [
+        3,
+        13,
+        -7.800000000000001
+      ],
+      "parent": "head"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.5,
+        7,
+        -4
+      ],
+      "parent": "body"
+    },
+    "right_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.5,
+        7,
+        5
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        7,
+        13
+      ],
+      "parent": "tail"
+    },
+    "tail_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5,
+        5,
+        17
+      ],
+      "parent": "tail_1"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

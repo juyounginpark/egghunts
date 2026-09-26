@@ -1,0 +1,278 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 565,
+    "key": "13-N17",
+    "name": "눈폭풍 들소",
+    "sourceName": "눈폭풍 들소",
+    "stageId": 13,
+    "tier": 4,
+    "slot": 27,
+    "form": "bison",
+    "motif": "snowmane",
+    "prompt": "어깨가 높고 다리가 짧은 짙은 갈색 들소를 만들라. 가슴의 큰 흰 털판과 청회색 뿔을 강조하고 눈은 밝은 얼굴 면에 둔다. 몸을 털면 털판 바깥쪽을 따라 작은 눈 점이 짧은 호를 그린다.",
+    "color": "#654736"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        11,
+        -10.8
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        -5
+      ],
+      "parent": "body"
+    },
+    "horns": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        11,
+        -5
+      ],
+      "parent": "head"
+    },
+    "left_ear": {
+      "rotation": [
+        0.12,
+        0,
+        -0.18
+      ],
+      "pivot": [
+        -5,
+        13,
+        -7.800000000000001
+      ],
+      "parent": "head"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.5,
+        5,
+        -4
+      ],
+      "parent": "body"
+    },
+    "left_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.5,
+        5,
+        5
+      ],
+      "parent": "body"
+    },
+    "mane": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        11,
+        -4
+      ],
+      "parent": "head"
+    },
+    "plate_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        1
+      ],
+      "parent": "body"
+    },
+    "plate_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        4
+      ],
+      "parent": "body"
+    },
+    "plate_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        7
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "rotation": [
+        0.12,
+        0,
+        0.18
+      ],
+      "pivot": [
+        5,
+        13,
+        -7.800000000000001
+      ],
+      "parent": "head"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5.5,
+        5,
+        -4
+      ],
+      "parent": "body"
+    },
+    "right_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5.5,
+        5,
+        5
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        7,
+        13
+      ],
+      "parent": "tail"
+    },
+    "tail_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5,
+        5,
+        17
+      ],
+      "parent": "tail_1"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

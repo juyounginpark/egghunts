@@ -1,8 +1,10 @@
 import type {Object3D} from 'three';
 import {MONGLES} from './data';
+import {animateExpansionPet} from './expansion-pet-animation';
 
 /** Small authored poses on the existing voxel pivot hierarchy; never move the root. */
 export function animatePet(pet:Object3D,id:number,time:number,walking=false,reduced=false){
+ if(id>=321){animateExpansionPet(pet,time,walking,reduced);return;}
  if(id===320){
   if(reduced)return;
   const head=pet.getObjectByName('head'),tail=pet.getObjectByName('tail');
@@ -31,7 +33,7 @@ export const petPortraitAngle=(id:number)=>id>=100?([11,18].includes(MONGLES[id]
 /** One short greeting on hatch, layered over the same authored idle rig. */
 export function greetPet(pet:Object3D,id:number,elapsed:number,reduced=false){
  if(reduced||id<100||elapsed<0||elapsed>2.4)return;
- const slot=id>=300?10:(id-100)%10,pulse=Math.sin(Math.PI*elapsed/2.4),double=Math.sin(elapsed*Math.PI*2)*pulse;
+ const slot=id>=321?(MONGLES[id].species-11)%10:id>=300?10:(id-100)%10,pulse=Math.sin(Math.PI*elapsed/2.4),double=Math.sin(elapsed*Math.PI*2)*pulse;
  const rotate=(part:string,x=0,y=0,z=0)=>{const p=pet.getObjectByName(part);if(p){p.rotation.x+=x;p.rotation.y+=y;p.rotation.z+=z;}};
  rotate('head',-(slot===1?-.16:.13)*pulse,slot===8?.35*pulse:0,slot===3?.12*double:0);
  if([0,7,9,10].includes(slot)){rotate('left_arm',0,0,.28*pulse);rotate('right_arm',0,0,-.28*pulse);}

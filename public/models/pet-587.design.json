@@ -1,0 +1,135 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 587,
+    "key": "15-N01",
+    "name": "녹슨못 벌레",
+    "sourceName": "녹슨못 벌레",
+    "stageId": 15,
+    "tier": 0,
+    "slot": 11,
+    "form": "worm",
+    "motif": "nails",
+    "prompt": "짧고 두꺼운 갈색 몸 세 구간과 작은 크림색 얼굴을 만들라. 등에 큰 녹슨 못 두 개를 낮게 기울이고 발은 몸 아래로 모은다. 몸이 접히면 못이 서로 다른 각도로 흔들리고 앞발로 하나를 바로잡는다.",
+    "color": "#9a7656"
+  },
+  "assembly": {
+    "abdomen_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        2
+      ],
+      "parent": "body"
+    },
+    "abdomen_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        7
+      ],
+      "parent": "body"
+    },
+    "abdomen_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        12
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

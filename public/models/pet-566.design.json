@@ -1,0 +1,161 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 566,
+    "key": "13-N18",
+    "name": "유빙범고래",
+    "sourceName": "유빙범고래",
+    "stageId": 13,
+    "tier": 4,
+    "slot": 28,
+    "form": "orca",
+    "motif": "icefin",
+    "prompt": "넓고 긴 검정 몸과 큰 흰 눈가 무늬의 범고래를 만들라. 등지느러미는 기울어진 반투명 청색 빙판, 꼬리 끝은 짙은 남색으로 둔다. 몸이 느리게 휘면 빙판 두 구간이 부드럽게 따라오고 짧은 물보라가 난다.",
+    "color": "#30303c"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -10
+      ],
+      "parent": "head"
+    },
+    "fin": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        3
+      ],
+      "parent": "body"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0.1,
+        0,
+        -0.17
+      ],
+      "pivot": [
+        -4,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0.1,
+        0,
+        0.17
+      ],
+      "pivot": [
+        4,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        13
+      ],
+      "parent": "tail"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

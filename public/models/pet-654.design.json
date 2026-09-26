@@ -1,0 +1,213 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 654,
+    "key": "18-N11",
+    "name": "관측렌즈 카멜레온",
+    "sourceName": "관측렌즈 카멜레온",
+    "stageId": 18,
+    "tier": 2,
+    "slot": 21,
+    "form": "chameleon",
+    "motif": "lenses",
+    "prompt": "짧은 청록 몸과 말린 꼬리, 넓은 크림색 얼굴을 만들라. 눈 양옆에 작은 황동 렌즈 테두리를 두되 표정이 보이도록 중심은 투명하게 한다. 두 눈이 다른 방향을 살피다가 하나의 별점에 맞춰진다.",
+    "color": "#449b98"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        11,
+        -10.8
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "rotation": [
+        0.12,
+        0,
+        -0.18
+      ],
+      "pivot": [
+        -4,
+        13,
+        -7.800000000000001
+      ],
+      "parent": "head"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.5,
+        5,
+        -4
+      ],
+      "parent": "body"
+    },
+    "left_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.5,
+        5,
+        5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "rotation": [
+        0.12,
+        0,
+        0.18
+      ],
+      "pivot": [
+        4,
+        13,
+        -7.800000000000001
+      ],
+      "parent": "head"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5.5,
+        5,
+        -4
+      ],
+      "parent": "body"
+    },
+    "right_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5.5,
+        5,
+        5
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        7,
+        13
+      ],
+      "parent": "tail"
+    },
+    "tail_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5,
+        5,
+        17
+      ],
+      "parent": "tail_1"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

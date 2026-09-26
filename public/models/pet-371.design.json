@@ -1,0 +1,161 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 371,
+    "key": "03-N13",
+    "name": "해먹불가사리",
+    "sourceName": "해먹불가사리",
+    "stageId": 3,
+    "tier": 2,
+    "slot": 23,
+    "form": "starfish",
+    "motif": "hammock",
+    "prompt": "넓은 주황 불가사리의 다섯 팔을 서로 다른 각도로 구부려라. 가운데는 크림색 작은 얼굴, 양쪽 팔 사이에는 연보라 해초 해먹을 건다. 해먹 속 진주 하나를 좌우로 굴리며 가운데 몸이 천천히 흔들린다.",
+    "color": "#dc9851"
+  },
+  "assembly": {
+    "arm_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.0,
+        5,
+        0.0
+      ],
+      "parent": "body"
+    },
+    "arm_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0.9270509831248424,
+        5,
+        2.8531695488854605
+      ],
+      "parent": "body"
+    },
+    "arm_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.427050983124842,
+        5,
+        1.7633557568774196
+      ],
+      "parent": "body"
+    },
+    "arm_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.4270509831248424,
+        5,
+        -1.7633557568774192
+      ],
+      "parent": "body"
+    },
+    "arm_4": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0.9270509831248417,
+        5,
+        -2.853169548885461
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

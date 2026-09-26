@@ -1,0 +1,174 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 382,
+    "key": "04-N05",
+    "name": "부석토끼",
+    "sourceName": "부석토끼",
+    "stageId": 4,
+    "tier": 0,
+    "slot": 15,
+    "form": "rabbit",
+    "motif": "pumice",
+    "prompt": "옅은 회색의 통통한 돌 몸과 짧고 넓은 귀의 토끼를 만들라. 몸의 구멍은 큰 홈 세 개만 두고 배는 따뜻한 아이보리로 밝힌다. 귀 사이의 작은 주황 광석을 고개로 받쳤다 앞발로 내려놓는다.",
+    "color": "#9697a1"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        16,
+        -4
+      ],
+      "parent": "head"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        13,
+        -7
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        11,
+        -1
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5,
+        11,
+        0
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "rotation": [
+        0.12,
+        0,
+        -0.18
+      ],
+      "pivot": [
+        -3.5,
+        15,
+        -4
+      ],
+      "parent": "head"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.5,
+        3,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5,
+        11,
+        0
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "rotation": [
+        0.12,
+        0,
+        0.18
+      ],
+      "pivot": [
+        3.5,
+        15,
+        -4
+      ],
+      "parent": "head"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.5,
+        3,
+        -1
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

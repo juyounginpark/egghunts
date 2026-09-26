@@ -1,0 +1,174 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 538,
+    "key": "12-N09",
+    "name": "기압계 판다",
+    "sourceName": "기압계 판다",
+    "stageId": 12,
+    "tier": 1,
+    "slot": 19,
+    "form": "panda",
+    "motif": "barometer",
+    "prompt": "넓은 크림색 얼굴과 짙은 갈색 눈가, 통통한 몸을 만들라. 두 앞발에 큰 청록색 기압계를 안고 눈금은 굵은 네 칸만 넣는다. 바늘을 살피며 고개를 기울이면 작은 황동 귀장식이 흔들린다.",
+    "color": "#654736"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        14,
+        -7
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        12,
+        -1
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -8,
+        11,
+        0
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "rotation": [
+        0.12,
+        0,
+        -0.18
+      ],
+      "pivot": [
+        -5,
+        16,
+        -4
+      ],
+      "parent": "head"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -4,
+        3,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        8,
+        11,
+        0
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "rotation": [
+        0.12,
+        0,
+        0.18
+      ],
+      "pivot": [
+        5,
+        16,
+        -4
+      ],
+      "parent": "head"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        4,
+        3,
+        -1
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

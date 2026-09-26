@@ -1,0 +1,109 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 685,
+    "key": "20-N04",
+    "name": "햇살달팽이",
+    "sourceName": "햇살달팽이",
+    "stageId": 20,
+    "tier": 0,
+    "slot": 14,
+    "form": "snail",
+    "motif": "sunwheel",
+    "prompt": "짧은 살구색 몸 위에 납작한 금빛 원반 껍질을 기울여 얹어라. 껍질 가장자리는 아이보리 짧은 햇살 판 다섯 개로 나누고 눈자루는 작게 둔다. 고개를 들면 햇살 판이 차례로 바깥쪽으로 펼쳐진다.",
+    "color": "#e8b18f"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        2,
+        -5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

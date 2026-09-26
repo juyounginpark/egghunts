@@ -1,0 +1,161 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 420,
+    "key": "06-N05",
+    "name": "칩셋거북",
+    "sourceName": "칩셋거북",
+    "stageId": 6,
+    "tier": 0,
+    "slot": 15,
+    "form": "turtle",
+    "motif": "chip",
+    "prompt": "낮은 검정 몸과 짧은 크림색 얼굴의 거북을 만들라. 등에 큰 초록 회로판을 얹고 중앙의 은색 칩 하나와 굵은 회로선 세 개를 둔다. 고개를 내밀 때 중앙 칩 옆의 작은 표시등만 켜진다.",
+    "color": "#30303c"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        2,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -6,
+        2,
+        -4
+      ],
+      "parent": "body"
+    },
+    "left_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -6,
+        2,
+        5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        6,
+        2,
+        -4
+      ],
+      "parent": "body"
+    },
+    "right_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        6,
+        2,
+        5
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

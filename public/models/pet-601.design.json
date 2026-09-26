@@ -1,0 +1,213 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 601,
+    "key": "15-N15",
+    "name": "전선꼬리 표범",
+    "sourceName": "전선꼬리 표범",
+    "stageId": 15,
+    "tier": 3,
+    "slot": 25,
+    "form": "leopard",
+    "motif": "wiretail",
+    "prompt": "가는 검정 몸과 높은 어깨, 짧은 밝은 얼굴의 표범을 만들라. 꼬리는 굵은 주황 전선 세 가닥이 합쳐진 형태이며 등에 큰 회색 패치 두 개를 둔다. 꼬리를 휘면 세 가닥의 끝이 차례로 따라온다.",
+    "color": "#30303c"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        11,
+        -10.8
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_ear": {
+      "rotation": [
+        0.12,
+        0,
+        -0.18
+      ],
+      "pivot": [
+        -3,
+        13,
+        -7.800000000000001
+      ],
+      "parent": "head"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.5,
+        7,
+        -4
+      ],
+      "parent": "body"
+    },
+    "left_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.5,
+        7,
+        5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_ear": {
+      "rotation": [
+        0.12,
+        0,
+        0.18
+      ],
+      "pivot": [
+        3,
+        13,
+        -7.800000000000001
+      ],
+      "parent": "head"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.5,
+        7,
+        -4
+      ],
+      "parent": "body"
+    },
+    "right_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.5,
+        7,
+        5
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        4,
+        7,
+        13
+      ],
+      "parent": "tail"
+    },
+    "tail_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3,
+        9,
+        17
+      ],
+      "parent": "tail_1"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

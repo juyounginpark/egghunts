@@ -1,0 +1,109 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 424,
+    "key": "06-N09",
+    "name": "교통콘 달팽이",
+    "sourceName": "교통콘 달팽이",
+    "stageId": 6,
+    "tier": 1,
+    "slot": 19,
+    "form": "snail",
+    "motif": "cone",
+    "prompt": "낮고 긴 회색 몸 위에 기울어진 주황 교통콘 껍질을 얹어라. 흰 띠 두 개와 짧은 눈자루를 명확히 구분한다. 껍질이 흔들리면 고개를 돌려 확인하고 몸을 조금 낮춰 균형을 잡는다.",
+    "color": "#9697a1"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        2,
+        -5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

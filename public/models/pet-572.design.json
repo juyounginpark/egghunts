@@ -1,0 +1,109 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 572,
+    "key": "14-N05",
+    "name": "이불달팽이",
+    "sourceName": "이불달팽이",
+    "stageId": 14,
+    "tier": 0,
+    "slot": 15,
+    "form": "snail",
+    "motif": "blanket",
+    "prompt": "짧은 살구색 몸 위에 둥글게 말린 파랑 이불 껍질을 얹어라. 이불 안쪽은 크림색, 큰 별 자수 하나는 노랑으로 둔다. 작은 눈자루가 잠깐 들어갔다 나오면 이불 끝이 저절로 덮인다.",
+    "color": "#e8b18f"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        2,
+        -5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

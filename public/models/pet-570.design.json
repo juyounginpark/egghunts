@@ -1,0 +1,122 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 570,
+    "key": "14-N03",
+    "name": "단추눈 구름",
+    "sourceName": "단추눈 구름",
+    "stageId": 14,
+    "tier": 0,
+    "slot": 13,
+    "form": "cloud",
+    "motif": "buttoneyes",
+    "prompt": "넓고 낮은 흰 구름 몸에 큰 크림색 단추눈 두 개와 작은 입을 달아라. 아래에는 가는 파랑 리본 두 줄을 짧은 발처럼 둔다. 한쪽 단추가 천천히 돌아가면 몸의 구름 덩어리가 반대쪽으로 움직인다.",
+    "color": "#e9e8dc"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3,
+        2,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3,
+        2,
+        -1
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

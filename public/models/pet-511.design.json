@@ -1,0 +1,122 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 511,
+    "key": "11-N01",
+    "name": "방울눈 젤리",
+    "sourceName": "방울눈 젤리",
+    "stageId": 11,
+    "tier": 0,
+    "slot": 11,
+    "form": "slime",
+    "motif": "eyeorbs",
+    "prompt": "납작한 살구색 젤 몸 위에 짧은 목 두 개와 둥근 눈방울을 세워라. 입은 몸 앞의 작은 점 하나, 배 속 핵은 청록으로 둔다. 눈방울이 서로 다른 곳을 보다가 중앙으로 모이며 몸이 낮아진다.",
+    "color": "#e8b18f"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3,
+        2,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3,
+        2,
+        -1
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

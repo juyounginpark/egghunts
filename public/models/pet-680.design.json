@@ -1,0 +1,200 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 680,
+    "key": "19-N18",
+    "name": "공백날개 올빼미",
+    "sourceName": "공백날개 올빼미",
+    "stageId": 19,
+    "tier": 4,
+    "slot": 28,
+    "form": "owl",
+    "motif": "emptywings",
+    "prompt": "큰 크림색 얼굴과 짧은 검정 몸, 넓은 날개의 올빼미를 만들라. 날개는 두꺼운 회색 깃 테두리만 남기고 내부를 크게 비운다. 날개를 접으면 단단한 작은 몸처럼 보이고 펼치면 거대한 빈 면이 드러난다.",
+    "color": "#30303c"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        12,
+        -8
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        -3
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0.1,
+        -0.13,
+        -0.15
+      ],
+      "pivot": [
+        -3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.5,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "left_tip": {
+      "rotation": [
+        0.1,
+        -0.13,
+        -0.15
+      ],
+      "pivot": [
+        -3,
+        7,
+        6
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0.1,
+        0.13,
+        0.15
+      ],
+      "pivot": [
+        3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.5,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "right_tip": {
+      "rotation": [
+        0.1,
+        0.13,
+        0.15
+      ],
+      "pivot": [
+        3,
+        7,
+        6
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        12
+      ],
+      "parent": "tail"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

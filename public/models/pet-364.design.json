@@ -1,0 +1,148 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 364,
+    "key": "03-N06",
+    "name": "해초실고기",
+    "sourceName": "해초실고기",
+    "stageId": 3,
+    "tier": 1,
+    "slot": 16,
+    "form": "pipefish",
+    "motif": "leafins",
+    "prompt": "긴 주둥이와 가는 올리브색 몸, 넓은 잎 모양 지느러미의 실고기를 만들라. 지느러미 끝은 노랑으로 밝히고 눈은 짧은 머리 옆에 둔다. 몸은 곧게 유지한 채 잎 지느러미만 차례로 접혔다 펴진다.",
+    "color": "#828b60"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0.1,
+        -0.13,
+        -0.15
+      ],
+      "pivot": [
+        -3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0.1,
+        0.13,
+        0.15
+      ],
+      "pivot": [
+        3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        13
+      ],
+      "parent": "tail"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 648,
+    "key": "18-N05",
+    "name": "운석개구리",
+    "sourceName": "운석개구리",
+    "stageId": 18,
+    "tier": 0,
+    "slot": 15,
+    "form": "frog",
+    "motif": "meteorrocks",
+    "prompt": "낮고 넓은 회색 몸과 짧은 뒷다리의 개구리를 만들라. 등에는 큰 검정 운석 세 덩어리와 작은 금빛 틈을 두고 턱은 아이보리로 밝힌다. 턱이 부풀면 운석 하나가 조금 떠올랐다 등에 내려온다.",
+    "color": "#9697a1"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -3
+      ],
+      "parent": "body"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5,
+        3,
+        -4
+      ],
+      "parent": "body"
+    },
+    "left_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5,
+        3,
+        5
+      ],
+      "parent": "body"
+    },
+    "plate_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        1
+      ],
+      "parent": "body"
+    },
+    "plate_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        4
+      ],
+      "parent": "body"
+    },
+    "plate_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        7
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5,
+        3,
+        -4
+      ],
+      "parent": "body"
+    },
+    "right_leg_back": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        5,
+        3,
+        5
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

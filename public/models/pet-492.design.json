@@ -1,0 +1,122 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 492,
+    "key": "10-N01",
+    "name": "도토리 정령",
+    "sourceName": "도토리 정령",
+    "stageId": 10,
+    "tier": 0,
+    "slot": 11,
+    "form": "seed",
+    "motif": "acorn",
+    "prompt": "작은 아이보리 씨앗 몸에 두 발과 넓은 잎 귀를 달아라. 머리의 갈색 도토리 모자와 짙은 초록 작은 망토를 분리한다. 점눈으로 앞을 바라보며 두 손으로 작은 올리브 가지를 들어 인사한다.",
+    "color": "#eee7cf"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        -3
+      ],
+      "parent": "head"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3,
+        2,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3,
+        2,
+        -1
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

@@ -1,0 +1,213 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 496,
+    "key": "10-N05",
+    "name": "청동개미",
+    "sourceName": "청동개미",
+    "stageId": 10,
+    "tier": 0,
+    "slot": 15,
+    "form": "ant",
+    "motif": "stone",
+    "prompt": "머리·가슴·배가 분명한 청동색 개미와 짧은 검정 다리를 만들라. 얼굴 앞쪽은 아이보리 작은 면으로 밝히고 앞발에는 하얀 돌 조각을 쥐게 한다. 돌을 들어 나르려다 내려놓고 더듬이를 천천히 비빈다.",
+    "color": "#9f8657"
+  },
+  "assembly": {
+    "abdomen_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "abdomen_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        5
+      ],
+      "parent": "abdomen_1"
+    },
+    "antennae": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        -8
+      ],
+      "parent": "head"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -10.5
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -6
+      ],
+      "parent": "body"
+    },
+    "left_leg_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        -3
+      ],
+      "parent": "body"
+    },
+    "left_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "left_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_leg_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        -3
+      ],
+      "parent": "body"
+    },
+    "right_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "right_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

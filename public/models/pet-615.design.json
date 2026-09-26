@@ -1,0 +1,213 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 615,
+    "key": "16-N10",
+    "name": "풀씨하늘소",
+    "sourceName": "풀씨하늘소",
+    "stageId": 16,
+    "tier": 1,
+    "slot": 20,
+    "form": "longhorn",
+    "motif": "seedantenna",
+    "prompt": "길고 좁은 청색 등껍질과 큰 곡선 더듬이의 하늘소를 만들라. 더듬이 끝에는 크림색 풀씨 두 개를 달고 얼굴은 밝은 작은 면으로 둔다. 더듬이를 서로 교차하면 풀씨가 잠깐 맞닿았다 벌어진다.",
+    "color": "#658fbd"
+  },
+  "assembly": {
+    "abdomen_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "abdomen_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        5
+      ],
+      "parent": "abdomen_1"
+    },
+    "antennae": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        -8
+      ],
+      "parent": "head"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -10.5
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -6
+      ],
+      "parent": "body"
+    },
+    "left_leg_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        -3
+      ],
+      "parent": "body"
+    },
+    "left_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "left_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_leg_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        -3
+      ],
+      "parent": "body"
+    },
+    "right_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "right_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

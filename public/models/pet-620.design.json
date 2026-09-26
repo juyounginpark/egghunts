@@ -1,0 +1,239 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 620,
+    "key": "16-N15",
+    "name": "비취보석벌",
+    "sourceName": "비취보석벌",
+    "stageId": 16,
+    "tier": 3,
+    "slot": 25,
+    "form": "bee",
+    "motif": "jade",
+    "prompt": "가는 검정 허리와 큰 청록 가슴, 짧은 얼굴의 벌을 만들라. 등껍질은 넓은 비취 면 네 개, 날개는 아이보리의 길고 얇은 판이다. 몸을 기울이며 가슴 면의 빛이 이동하고 앞발로 작은 보석을 안는다.",
+    "color": "#30303c"
+  },
+  "assembly": {
+    "abdomen_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "abdomen_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        5
+      ],
+      "parent": "abdomen_1"
+    },
+    "antennae": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        -8
+      ],
+      "parent": "head"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -10.5
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -6
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0.1,
+        -0.13,
+        -0.15
+      ],
+      "pivot": [
+        -3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "left_leg_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        -3
+      ],
+      "parent": "body"
+    },
+    "left_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "left_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0.1,
+        0.13,
+        0.15
+      ],
+      "pivot": [
+        3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "right_leg_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        -3
+      ],
+      "parent": "body"
+    },
+    "right_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "right_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

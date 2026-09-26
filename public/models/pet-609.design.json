@@ -1,0 +1,213 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 609,
+    "key": "16-N04",
+    "name": "풀잎대벌레",
+    "sourceName": "풀잎대벌레",
+    "stageId": 16,
+    "tier": 0,
+    "slot": 14,
+    "form": "stickbug",
+    "motif": "leaf",
+    "prompt": "가늘고 긴 황갈색 몸과 짧은 머리, 굵은 마디의 다리를 만들라. 등에 작은 초록 잎 두 장만 달고 점눈은 얼굴 끝에 모은다. 나뭇가지처럼 가만히 있다가 앞다리 하나를 천천히 들어 인사한다.",
+    "color": "#b78d53"
+  },
+  "assembly": {
+    "abdomen_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "abdomen_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        5
+      ],
+      "parent": "abdomen_1"
+    },
+    "antennae": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        -8
+      ],
+      "parent": "head"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -10.5
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -6
+      ],
+      "parent": "body"
+    },
+    "left_leg_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        -3
+      ],
+      "parent": "body"
+    },
+    "left_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "left_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_leg_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        -3
+      ],
+      "parent": "body"
+    },
+    "right_leg_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "right_leg_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

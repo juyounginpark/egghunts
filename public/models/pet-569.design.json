@@ -1,0 +1,174 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 569,
+    "key": "14-N02",
+    "name": "주머니 병아리",
+    "sourceName": "주머니 병아리",
+    "stageId": 14,
+    "tier": 0,
+    "slot": 12,
+    "form": "chick",
+    "motif": "pocket",
+    "prompt": "작은 노랑 얼굴과 주황 부리, 짧은 날개가 보라 잠옷 주머니에서 나오게 하라. 주머니 아래에는 작은 발 두 개를 두고 흰 단추 하나만 강조한다. 안으로 숨었다가 주머니 반대쪽에서 고개를 다시 내민다.",
+    "color": "#ead378"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        12,
+        -8
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        -3
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0.1,
+        -0.13,
+        -0.15
+      ],
+      "pivot": [
+        -3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.5,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0.1,
+        0.13,
+        0.15
+      ],
+      "pivot": [
+        3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.5,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        12
+      ],
+      "parent": "tail"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

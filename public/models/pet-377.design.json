@@ -1,0 +1,161 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 377,
+    "key": "03-N19",
+    "name": "심해수호 상어",
+    "sourceName": "심해수호 상어",
+    "stageId": 3,
+    "tier": 5,
+    "slot": 29,
+    "form": "shark",
+    "motif": "crystalfin",
+    "prompt": "넓은 가슴지느러미와 두꺼운 앞몸, 길게 휘어진 꼬리의 상어를 만들라. 등은 차콜, 배는 진주색이며 지느러미 끝에 청록 결정 판을 단다. 둥근 눈과 짧은 입으로 침착한 인상을 주고 옆구리의 큰 물결 문양이 천천히 밝아지게 한다.",
+    "color": "#39363f"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -10
+      ],
+      "parent": "head"
+    },
+    "fin": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        3
+      ],
+      "parent": "body"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0.1,
+        -0.13,
+        -0.15
+      ],
+      "pivot": [
+        -3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0.1,
+        0.13,
+        0.15
+      ],
+      "pivot": [
+        3,
+        10,
+        1
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        13
+      ],
+      "parent": "tail"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

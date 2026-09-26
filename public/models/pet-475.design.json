@@ -1,0 +1,109 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 475,
+    "key": "09-N03",
+    "name": "호롱불 달팽이",
+    "sourceName": "호롱불 달팽이",
+    "stageId": 9,
+    "tier": 0,
+    "slot": 13,
+    "form": "snail",
+    "motif": "lantern",
+    "prompt": "낮은 청회색 몸 위에 아이보리 도자기 호롱을 껍질로 얹어라. 불꽃은 작은 주황 덩어리 하나, 눈자루는 짧고 둥글게 둔다. 몸이 기울면 불꽃만 반대쪽으로 움직이며 호롱 손잡이가 보인다.",
+    "color": "#899cac"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        9,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        2,
+        -5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

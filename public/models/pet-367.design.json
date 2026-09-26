@@ -1,0 +1,148 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 367,
+    "key": "03-N09",
+    "name": "돛지느러미 물고기",
+    "sourceName": "돛지느러미 물고기",
+    "stageId": 3,
+    "tier": 1,
+    "slot": 19,
+    "form": "fish",
+    "motif": "sail",
+    "prompt": "짧고 넓은 청색 몸과 작은 주둥이 위에 커다란 주황 돛지느러미를 세워라. 배는 크림색, 꼬리는 남색 두 갈래로 나눈다. 고개를 돌릴 때 돛이 기울어 접히며 얼굴은 계속 드러나게 한다.",
+    "color": "#658fbd"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0.1,
+        0,
+        -0.17
+      ],
+      "pivot": [
+        -4,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0.1,
+        0,
+        0.17
+      ],
+      "pivot": [
+        4,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        13
+      ],
+      "parent": "tail"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

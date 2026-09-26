@@ -1,0 +1,109 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 399,
+    "key": "05-N03",
+    "name": "풀통달팽이",
+    "sourceName": "풀통달팽이",
+    "stageId": 5,
+    "tier": 0,
+    "slot": 13,
+    "form": "snail",
+    "motif": "glue",
+    "prompt": "짧은 연보라 몸 위에 둥근 흰 풀통 껍질을 얹어라. 껍질 위 노란 뚜껑과 앞쪽 짧은 눈자루를 구분한다. 고개를 들어 뚜껑을 건드리면 풀방울 한 점이 늘어났다 껍질 안으로 돌아간다.",
+    "color": "#b6a2cf"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        2,
+        -5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        3
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

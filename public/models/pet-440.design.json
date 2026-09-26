@@ -1,0 +1,148 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 440,
+    "key": "07-N06",
+    "name": "양탄자 가오리",
+    "sourceName": "양탄자 가오리",
+    "stageId": 7,
+    "tier": 1,
+    "slot": 16,
+    "form": "ray",
+    "motif": "carpet",
+    "prompt": "넓고 납작한 자주색 몸과 짧은 앞면의 점눈을 만들라. 날개 가장자리는 금빛 술로 마감하고 중앙에는 큰 청록 마름모 무늬 하나를 넣는다. 공중에서 모서리가 차례로 접혀 양탄자처럼 느리게 펄럭인다.",
+    "color": "#dfc782"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -5
+      ],
+      "parent": "body"
+    },
+    "left_arm": {
+      "rotation": [
+        0.1,
+        0,
+        -0.17
+      ],
+      "pivot": [
+        -4,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_arm": {
+      "rotation": [
+        0.1,
+        0,
+        0.17
+      ],
+      "pivot": [
+        4,
+        5,
+        0
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        7
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        13
+      ],
+      "parent": "tail"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

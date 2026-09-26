@@ -1,0 +1,122 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 363,
+    "key": "03-N05",
+    "name": "바둑무늬 바다뱀",
+    "sourceName": "바둑무늬 바다뱀",
+    "stageId": 3,
+    "tier": 0,
+    "slot": 15,
+    "form": "snake",
+    "motif": "checker",
+    "prompt": "길고 가는 크림색 몸에 짙은 남색 사각 무늬를 넓은 간격으로 넣어라. 머리는 둥글고 짧게, 꼬리는 납작한 지느러미로 만든다. 몸을 낮은 S자로 굽혔다 펴며 작은 눈이 앞쪽을 살피게 한다.",
+    "color": "#f2e3bf"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -9
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -4
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "tail": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        3,
+        12
+      ],
+      "parent": "body"
+    },
+    "tail_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -7,
+        3,
+        13
+      ],
+      "parent": "tail"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

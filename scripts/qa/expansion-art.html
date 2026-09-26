@@ -1,0 +1,25 @@
+<!doctype html><meta charset="utf-8"><title>New character review</title><script type="module">
+import * as T from '/node_modules/three/build/three.module.js';
+import {loadVoxels,voxelModel} from '/src/voxel.ts';
+import {petVisual} from '/src/visuals.ts';
+import {animatePet} from '/src/pet-animation.ts';
+const renderer=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});renderer.setSize(256,256);
+const scene=new T.Scene(),camera=new T.OrthographicCamera(-1,1,1,-1,.01,200);
+scene.add(new T.HemisphereLight(0xfffaee,0x92978c,2.5));const sun=new T.DirectionalLight(0xfff4df,2.6);sun.position.set(-3,6,5);scene.add(sun);
+window.renderExpansion=async id=>{
+ await loadVoxels([`pet-${id}`]);const pet=petVisual(id),staticPet=voxelModel(`pet-${id}`,false);
+ const sparks=pet.getObjectByName('sparks');sparks.visible=false;
+ const bounds=new T.Box3().setFromObject(voxelModel(`pet-${id}`,true),true),baked=new T.Box3().setFromObject(staticPet,true);
+ const mismatch=Math.max(bounds.min.distanceTo(baked.min),bounds.max.distanceTo(baked.max));
+ const center=bounds.getCenter(new T.Vector3()),size=bounds.getSize(new T.Vector3());
+ const extent=Math.max(size.x,size.y,size.z)*.82;
+ camera.left=-extent;camera.right=extent;camera.top=extent;camera.bottom=-extent;camera.updateProjectionMatrix();
+ camera.position.copy(center).add(new T.Vector3(3,2.4,4));camera.lookAt(center);
+ scene.add(pet);animatePet(pet,id,0,false,true);renderer.render(scene,camera);
+ const image=renderer.domElement.toDataURL(),triangles=renderer.info.render.triangles;
+ animatePet(pet,id,2,false,false);renderer.render(scene,camera);
+ const animated=renderer.domElement.toDataURL();
+ scene.remove(pet);sparks.dispose();
+ return {image,animated,mismatch,triangles,bottom:bounds.min.y,parts:pet.userData.expansionParts?.length??0};
+};
+</script>

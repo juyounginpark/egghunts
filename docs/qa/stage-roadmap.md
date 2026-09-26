@@ -1,5 +1,7 @@
 # 20개 세계 디자인 계약과 출시 전환안
 
+> 2026-09-27 신규 380종: 기존 스테이지 펫 220종에 ID 321~700의 380종을 추가하여 스테이지당 30종, 총 600종으로 확장한다. 이전 도감 100종과 주간 보상 ID 320까지 포함하면 701종이다. 기존 스테이지별 SECRET 2종(일반 SECRET+드래곤)을 모두 보존하며 최종 C/B/A/S/SS/SSS/SECRET은 7/7/5/4/3/2/2다. 기존 321칸 저장 배열은 뒤에 0을 붙여 확장하고 소유·무게·보상 수령 기록을 유지한다. 신규 제작기는 `scripts/expansion_models.py`, 영구 ID 매핑은 `docs/art/expansion-id-map.json`, 결과는 `docs/art/expansion-report.md`다.
+
 > 2026-09-26 사용자 선택: 제공 문서의 20단계로 재편한다. 3=심해 산호숲, 5=유령 학교, 19=공허의 틈, 20=창조주의 정원. 기존 5→19, 6~19→5~18로 연결을 변경하고 320개 영구 ID와 소유/수령 기록을 유지한다. `stageOrderVersion:2`가 일회성 저장 변환을 구분한다. 최신 제작기는 `scripts/document_models.py`, 대응표는 `docs/art/document-id-map.md`, 결과는 `docs/art/document-rework-report.md`다. 아래 예전 통합 스테이지와 제작기 설명보다 이 개정을 우선한다.
 
 > 2026-09-24 추가: 각 스테이지에 거대 시크릿 드래곤 1종을 더해 전용 펫은 220종, 보존된 이전 100종을 포함하면 총 320종이다. ID 300~319와 전용 알 variant 5를 추가한다. 기존 300종 저장은 배열을 확장하며 보유량을 보존한다. 알 type ID 0~34도 그대로 유지한다. 드래곤 콘셉트와 전용 알 이름은 `src/secret-dragon-catalog.ts`, 모델 원본은 `scripts/secret_dragon_designs.py`다.

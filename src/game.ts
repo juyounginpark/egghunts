@@ -201,7 +201,7 @@ export function parseSave(raw: string | null, now: number): Save {
     ) ||
     new Set(s.eggs.map(e => e.id)).size !== s.eggs.length ||
     !Array.isArray(s.mongles) ||
-    ![3, 100, 300, 320, MONGLES.length].includes(s.mongles.length) ||
+    ![3, 100, 300, 320, 321, MONGLES.length].includes(s.mongles.length) ||
     !s.mongles.every((v) => Number.isInteger(v) && v >= 0) ||
     !Array.isArray(s.active) ||
     s.active.length > 3 ||

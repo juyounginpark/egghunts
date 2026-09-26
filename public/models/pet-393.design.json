@@ -1,0 +1,200 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 393,
+    "key": "04-N16",
+    "name": "마그마문어",
+    "sourceName": "마그마문어",
+    "stageId": 4,
+    "tier": 3,
+    "slot": 26,
+    "form": "octopus",
+    "motif": "lava",
+    "prompt": "둥근 흑요석 머리와 밖으로 말린 굵은 팔 여덟 개의 문어를 만들라. 팔 안쪽은 밝은 주황, 얼굴은 짙은 회색 면 위의 작은 밝은 눈으로 둔다. 팔을 모으면 어둡게 숨고 펼치면 뜨거운 안쪽 면이 드러난다.",
+    "color": "#343443"
+  },
+  "assembly": {
+    "arm_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.0,
+        5,
+        0.0
+      ],
+      "parent": "body"
+    },
+    "arm_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.121320343559643,
+        5,
+        2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "arm_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        1.8369701987210297e-16,
+        5,
+        3.0
+      ],
+      "parent": "body"
+    },
+    "arm_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.1213203435596424,
+        5,
+        2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "arm_4": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.0,
+        5,
+        3.6739403974420594e-16
+      ],
+      "parent": "body"
+    },
+    "arm_5": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.121320343559643,
+        5,
+        -2.1213203435596424
+      ],
+      "parent": "body"
+    },
+    "arm_6": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.51091059616309e-16,
+        5,
+        -3.0
+      ],
+      "parent": "body"
+    },
+    "arm_7": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.121320343559642,
+        5,
+        -2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

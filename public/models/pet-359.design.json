@@ -1,0 +1,174 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 359,
+    "key": "03-N01",
+    "name": "줄무늬 말미잘",
+    "sourceName": "줄무늬 말미잘",
+    "stageId": 3,
+    "tier": 0,
+    "slot": 11,
+    "form": "anemone",
+    "motif": "tentacles",
+    "prompt": "낮은 크림색 받침 위에 굵은 주황 촉수 여섯 개를 꽃처럼 펼쳐라. 중앙의 짧은 몸에 작은 점눈을 두고 촉수에는 흰 띠 하나씩만 넣는다. 앞 촉수가 접혀 얼굴을 잠깐 가렸다 다시 열린다.",
+    "color": "#f2e3bf"
+  },
+  "assembly": {
+    "arm_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.0,
+        5,
+        0.0
+      ],
+      "parent": "body"
+    },
+    "arm_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        1.5000000000000004,
+        5,
+        2.598076211353316
+      ],
+      "parent": "body"
+    },
+    "arm_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -1.4999999999999993,
+        5,
+        2.598076211353316
+      ],
+      "parent": "body"
+    },
+    "arm_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.0,
+        5,
+        3.6739403974420594e-16
+      ],
+      "parent": "body"
+    },
+    "arm_4": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -1.5000000000000013,
+        5,
+        -2.5980762113533156
+      ],
+      "parent": "body"
+    },
+    "arm_5": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        1.5000000000000004,
+        5,
+        -2.598076211353316
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 651,
+    "key": "18-N08",
+    "name": "은하조개",
+    "sourceName": "은하조개",
+    "stageId": 18,
+    "tier": 1,
+    "slot": 18,
+    "form": "clam",
+    "motif": "galaxy",
+    "prompt": "넓고 낮은 보라색 껍질 두 장 사이에 크림색 진주 얼굴을 두어라. 껍질 안쪽에는 청록 은하띠 하나와 별점 세 개만 넣는다. 껍질이 열리면 진주가 조금 떠오르고 안쪽 띠가 느리게 밝아진다.",
+    "color": "#8566ad"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        3,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        -0.35,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        8
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

@@ -2,6 +2,7 @@ import {softenGrowth} from './growth-curve';
 import {ROAD_WIDTH_SCALE,STAGES,ROUTE_FAR_Z} from './stage-data';
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
+import {EXPANSION_PETS} from './expansion-pet-catalog';
 export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:1,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
 export type DefensePassive={maxHP?:number;damageReduction?:number;firstHitReduction?:number;environmentReduction?:Partial<Record<string,number>>;statusReduction?:number;lowHPSpeed?:number;returnXPBonus?:number;lastStand?:boolean};
 // Existing companions keep their click/auto/speed abilities; future rows opt in.
@@ -368,6 +369,18 @@ export const MONGLES = [...LEGACY_MONGLES, ...[...STAGE_PET_ROWS,...SECRET_DRAGO
 })];
 export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>10+(i+1)*5);
 MONGLES.push({...MONGLES[0],id:'mongle-320',name:'별리본 루미',description:'일곱 번의 만남을 기억하는 주간 보상 전용 S급 친구',...abilitiesFromEgg({type:WEEKLY_EVENT.eggType},2),tier:3,stageId:0,region:0,species:0,scale:1.1,icon:'pet-320',color:'#ffc879'});
+// Average only the original same-stage/tier candidates. Adding equal-mean candidates
+// preserves expected bonuses under the existing uniform within-tier hatch draw.
+const originalPets=MONGLES.slice();
+for(const pet of EXPANSION_PETS){
+  const peers=originalPets.filter(p=>p.stageId===pet.stageId&&p.tier===pet.tier);
+  const mean=(key:'clickMultiplier'|'speedMultiplier'|'autoMultiplier')=>peers.reduce((sum,p)=>sum+p[key],0)/peers.length;
+  const clickMultiplier=mean('clickMultiplier'),speedMultiplier=mean('speedMultiplier'),autoMultiplier=mean('autoMultiplier');
+  MONGLES.push({...peers[0],id:`mongle-${pet.id}`,name:pet.name,description:`${pet.name} · ${STAGES[pet.stageId-1].name}의 새로운 친구`,
+    species:pet.slot,color:pet.color,icon:`pet-${pet.id}`,clickMultiplier,speedMultiplier,autoMultiplier,
+    effect:[['터치',clickMultiplier],['스피드',speedMultiplier],['자동',autoMultiplier]].filter(([,value])=>Number(value)>1).map(([label,value])=>`${label} ×${Number(Number(value).toFixed(2))}`).join(' · '),
+  });
+}
 /** Add only each pet's bonus; multiplying HP-scaled pets would compound stage growth. */
 export function equippedPetMultiplier(ids:readonly number[],kind:'clickMultiplier'|'autoMultiplier'|'speedMultiplier'){
   return 1+ids.reduce((sum,id)=>sum+MONGLES[id][kind]-1,0);

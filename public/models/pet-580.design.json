@@ -1,0 +1,200 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 580,
+    "key": "14-N13",
+    "name": "양초문어",
+    "sourceName": "양초문어",
+    "stageId": 14,
+    "tier": 2,
+    "slot": 23,
+    "form": "octopus",
+    "motif": "candle",
+    "prompt": "크림색 초 몸에 작은 점눈과 굵은 팔 여덟 개를 달아라. 머리 위 불꽃은 연보라, 팔 끝은 녹은 밀랍처럼 넓게 말린다. 팔로 불꽃을 가리면 빛이 약해지고 팔 끝의 밀랍방울이 위로 돌아온다.",
+    "color": "#f2e3bf"
+  },
+  "assembly": {
+    "arm_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.0,
+        5,
+        0.0
+      ],
+      "parent": "body"
+    },
+    "arm_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.121320343559643,
+        5,
+        2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "arm_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        1.8369701987210297e-16,
+        5,
+        3.0
+      ],
+      "parent": "body"
+    },
+    "arm_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.1213203435596424,
+        5,
+        2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "arm_4": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.0,
+        5,
+        3.6739403974420594e-16
+      ],
+      "parent": "body"
+    },
+    "arm_5": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.121320343559643,
+        5,
+        -2.1213203435596424
+      ],
+      "parent": "body"
+    },
+    "arm_6": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.51091059616309e-16,
+        5,
+        -3.0
+      ],
+      "parent": "body"
+    },
+    "arm_7": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.121320343559642,
+        5,
+        -2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        -3
+      ],
+      "parent": "head"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 324,
+    "key": "01-N04",
+    "name": "완두콩 애벌레",
+    "sourceName": "완두콩 애벌레",
+    "stageId": 1,
+    "tier": 0,
+    "slot": 14,
+    "form": "caterpillar",
+    "motif": "pea",
+    "prompt": "둥근 연두 몸 세 덩어리를 낮게 연결하고 앞 덩어리에 멀찍이 떨어진 점눈을 둔다. 열린 진초록 콩깍지가 몸 아래를 받치게 한다. 고개부터 차례로 들썩이며 콩깍지 가장자리를 넘겨다보게 한다.",
+    "color": "#a3c674"
+  },
+  "assembly": {
+    "abdomen_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        2
+      ],
+      "parent": "body"
+    },
+    "abdomen_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        7
+      ],
+      "parent": "body"
+    },
+    "abdomen_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        12
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

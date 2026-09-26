@@ -4,6 +4,8 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import type {MapCollider} from './map-collision';
 type Voxel = [number, number, number, number];
 type Model = {
+  partOpacity?:Record<string,number>;
+  castShadow?:boolean;
   artMotion?:string;
   artStage?:number;
   artForm?:string;
@@ -23,6 +25,7 @@ type Model = {
 const mat = dioramaMaterial({ vertexColors: true });
 const characterMaterial = dioramaMaterial({ vertexColors: true },true);
 const artMaterials=new Map<string,T.MeshStandardMaterial>();
+const translucentMaterials=new Map<string,T.MeshLambertMaterial|T.MeshStandardMaterial>();
 function artMaterial(kind:string){
  if(!artMaterials.has(kind))artMaterials.set(kind,new T.MeshStandardMaterial({vertexColors:true,roughness:kind==='polished'?.32:kind==='metal'?.6:.94,metalness:kind==='metal'?.28:0}));
  return artMaterials.get(kind)!;
@@ -91,7 +94,16 @@ export function voxelModel(name: string, rig = false) {
         geometry(`${name}:${n}`, p.voxels, d.colors, p.pivot, d.unit??d.size[1]*.9, d.front),
         material,
       );
-      mesh.castShadow = true;
+      const opacity=d.partOpacity?.[n];
+      if(opacity!==undefined){
+        const key=`${material.uuid}:${opacity}`;
+        if(!translucentMaterials.has(key)){
+          const glass=material.clone();glass.transparent=true;glass.opacity=opacity;glass.depthWrite=false;
+          translucentMaterials.set(key,glass);
+        }
+        mesh.material=translucentMaterials.get(key)!;
+      }
+      mesh.castShadow = d.castShadow??true;
       g.add(mesh);
       groups[n] = g;
     }
@@ -110,7 +122,18 @@ export function voxelModel(name: string, rig = false) {
       groups[n].userData.restScale=scale;
     }
     // Bake the same authored pose for static/farm rendering: one draw, identical silhouette.
-    if(!rig){
+    if(!rig&&d.partOpacity){
+      group.updateMatrixWorld(true);
+      const batches=new Map<T.Material,T.BufferGeometry[]>();
+      group.traverse(o=>{if(o instanceof T.Mesh){const m=o.material as T.Material;if(!batches.has(m))batches.set(m,[]);batches.get(m)!.push(o.geometry.clone().applyMatrix4(o.matrixWorld));}});
+      group.clear();
+      for(const [material,pieces]of batches){
+        const key=`${name}:posed:${material.uuid}`;
+        if(!geometryCache.has(key)){const merged=mergeGeometries(pieces);if(merged){merged.computeBoundingSphere();geometryCache.set(key,merged);}}
+        pieces.forEach(g=>g.dispose());
+        const mesh=new T.Mesh(geometryCache.get(key)!,material);mesh.castShadow=d.castShadow??true;mesh.receiveShadow=true;group.add(mesh);
+      }
+    }else if(!rig){
       const key=`${name}:posed`;
       if(!geometryCache.has(key)){
         group.updateMatrixWorld(true);const pieces:T.BufferGeometry[]=[];
@@ -118,7 +141,7 @@ export function voxelModel(name: string, rig = false) {
         const merged=mergeGeometries(pieces);pieces.forEach(g=>g.dispose());
         if(merged){merged.computeBoundingSphere();geometryCache.set(key,merged);}
       }
-      group.clear();const mesh=new T.Mesh(geometryCache.get(key)!,material);mesh.castShadow=mesh.receiveShadow=true;group.add(mesh);
+      group.clear();const mesh=new T.Mesh(geometryCache.get(key)!,material);mesh.castShadow=d.castShadow??true;mesh.receiveShadow=true;group.add(mesh);
     }
   } else {
     const mesh = new T.Mesh(

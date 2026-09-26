@@ -1,0 +1,148 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 545,
+    "key": "12-N16",
+    "name": "열기구 해파리",
+    "sourceName": "열기구 해파리",
+    "stageId": 12,
+    "tier": 3,
+    "slot": 26,
+    "form": "jelly",
+    "motif": "balloon",
+    "prompt": "커다란 아이보리 천주머니 몸 아래에 갈색 바구니와 짧은 리본 촉수 네 개를 달아라. 얼굴은 주머니 앞의 작은 점눈으로 둔다. 바구니의 따뜻한 불빛이 밝아지면 몸이 천천히 올라갔다 내려온다.",
+    "color": "#eee7cf"
+  },
+  "assembly": {
+    "arm_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.0,
+        5,
+        0.0
+      ],
+      "parent": "body"
+    },
+    "arm_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        1.8369701987210297e-16,
+        5,
+        3.0
+      ],
+      "parent": "body"
+    },
+    "arm_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.0,
+        5,
+        3.6739403974420594e-16
+      ],
+      "parent": "body"
+    },
+    "arm_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.51091059616309e-16,
+        5,
+        -3.0
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

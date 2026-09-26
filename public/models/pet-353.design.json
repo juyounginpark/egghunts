@@ -1,0 +1,200 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 353,
+    "key": "02-N14",
+    "name": "구슬팔 문어",
+    "sourceName": "구슬팔 문어",
+    "stageId": 2,
+    "tier": 3,
+    "slot": 24,
+    "form": "octopus",
+    "motif": "beadarms",
+    "prompt": "둥근 아이보리 머리와 넓게 말린 굵은 팔 여덟 개의 문어를 만들라. 각 팔 끝에는 서로 다른 크기의 청색·주황 유리구슬을 붙인다. 얼굴 아래 두 팔이 구슬 하나를 넘겨주고 나머지 팔은 바닥을 짚게 한다.",
+    "color": "#eee7cf"
+  },
+  "assembly": {
+    "arm_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.0,
+        5,
+        0.0
+      ],
+      "parent": "body"
+    },
+    "arm_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.121320343559643,
+        5,
+        2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "arm_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        1.8369701987210297e-16,
+        5,
+        3.0
+      ],
+      "parent": "body"
+    },
+    "arm_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.1213203435596424,
+        5,
+        2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "arm_4": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.0,
+        5,
+        3.6739403974420594e-16
+      ],
+      "parent": "body"
+    },
+    "arm_5": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.121320343559643,
+        5,
+        -2.1213203435596424
+      ],
+      "parent": "body"
+    },
+    "arm_6": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.51091059616309e-16,
+        5,
+        -3.0
+      ],
+      "parent": "body"
+    },
+    "arm_7": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.121320343559642,
+        5,
+        -2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

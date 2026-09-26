@@ -1,0 +1,135 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 360,
+    "key": "03-N02",
+    "name": "동전해삼",
+    "sourceName": "동전해삼",
+    "stageId": 3,
+    "tier": 0,
+    "slot": 12,
+    "form": "cucumber",
+    "motif": "coins",
+    "prompt": "길고 통통한 연갈색 몸과 짧은 발의 해삼을 만들라. 등에 큰 금빛 원무늬 세 개를 놓고 얼굴은 앞쪽에 작은 눈 두 개로 표현한다. 몸을 움츠리면 등에 얹힌 동전 하나가 기울었다 제자리로 돌아온다.",
+    "color": "#b58d6c"
+  },
+  "assembly": {
+    "abdomen_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        2
+      ],
+      "parent": "body"
+    },
+    "abdomen_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        7
+      ],
+      "parent": "body"
+    },
+    "abdomen_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        12
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

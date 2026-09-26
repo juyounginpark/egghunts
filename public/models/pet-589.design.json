@@ -1,0 +1,122 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 589,
+    "key": "15-N03",
+    "name": "이끼슬라임",
+    "sourceName": "이끼슬라임",
+    "stageId": 15,
+    "tier": 0,
+    "slot": 13,
+    "form": "slime",
+    "motif": "moss",
+    "prompt": "넓고 낮은 크림색 젤 몸 위에 짙은 초록 이끼 두 덩어리를 얹어라. 얼굴은 점눈과 작은 입으로 단순화하고 한쪽에 녹슨 병뚜껑을 붙인다. 몸이 부풀면 이끼 사이의 작은 물방울이 떠올랐다 내려온다.",
+    "color": "#f2e3bf"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "left_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3,
+        2,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "right_leg": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3,
+        2,
+        -1
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

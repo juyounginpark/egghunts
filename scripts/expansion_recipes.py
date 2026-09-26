@@ -1,0 +1,48 @@
+"""Append-only art recipes, in document order (never legacy save-ID order)."""
+FORMS = [
+ 'frog bird squirrel caterpillar mole duck raccoon hamster swallow snail fox beaver hedgehog otter giraffe goat panda crane elephant',
+ 'crab lizard cat chick fox giraffe salamander seal panda gorilla crocodile rabbit parrot octopus chameleon lion ray deer turtle',
+ 'anemone cucumber puffer shrimp snake pipefish urchin otter fish tunicate angler ammonite starfish lobster walrus eel whale horseshoe shark',
+ 'frog mouse beetle weasel rabbit lobster bear cat capybara crocodile fox crab bull wolf giraffe octopus rhino moth giant',
+ 'fox hedgehog snail chick mouse crocodile squirrel dog moth toad spider raccoon whale giraffe bull swan crane octopus lion',
+ 'chick mouse salamander fox turtle beaver shark frog snail parrot duck hedgehog jelly elephant peacock kangaroo spider gorilla whale',
+ 'mouse lizard crab quail beetle ray frog ibis snail cat goat owl monkey elephant cicada wolf crocodile peacock roc',
+ 'salamander mouse frog lizard ammonite raptor pachy lizard bird crocodile sabertooth dragonfly fish raptor raptor sauropod sloth pterosaur turtle',
+ 'mouse sparrow snail mole weasel monkey cat turtle swallow seal bull mantis bird peacock deer crane lion bear phoenix',
+ 'seed mouse bird lizard ant rabbit snail fox duck goat ram crane seahorse horse centaur twohead swan chimera phoenix',
+ 'slime snail slime shrimp beetle worm hamster deer chameleon penguin turtle horse ray bat fish lobster rhino moth queen',
+ 'bird snail rabbit raccoon toad pigeon frog lizard panda hedgehog firefly deer crocodile rhino parrot jelly swan lion bison',
+ 'hamster mouse bird lizard toad weasel snail monkey hedgehog raccoon dog butterfly mole walrus lynx deer bison orca yeti',
+ 'mouse chick cloud lizard snail goose rabbit raccoon frog seal parrot crocodile octopus panda deer ostrich hippo peacock tapir',
+ 'worm bird slime mouse lizard turtle hamster fox duck beaver penguin cicada butterfly goat leopard crocodile lion hippo giant',
+ 'ant weevil strider stickbug aphid millipede cricket spider firefly longhorn shieldbug moth mantis beetle bee grasshopper butterfly centipede queen',
+ 'rabbit frog penguin beetle salamander hamster lobster snake bat snail raccoon ant ram rhino monkey peacock deer hippo scorpion',
+ 'mouse bird snail salamander frog raccoon rabbit clam bee lobster chameleon turtle butterfly wolf peacock giraffe elephant swan seahorse',
+ 'seed mouse clam lizard bird beetle snail chick mole ram peacock butterfly scorpion giraffe urchin gorilla horse owl giant',
+ 'seed bird lizard snail mouse mole spider beaver penguin clam raccoon crocodile owl elephant giraffe ram griffin peacock unicorn',
+]
+# Each motif is a structural attachment with a deliberate location, not a palette swap.
+MOTIFS = [
+ 'pebble eargrain chestnut pea nest daisy mushroom carrot vane pumpkin petaltail cart raindrops lily sunflower flute umbrella wheat flowercart',
+ 'paper puzzle yarn spinningtop papercup blockneck sticker rubberball crayon drum sail card kaleidoscope beadarms puppet trumpet mobile carousel castle',
+ 'tentacles coins sandcastle shells checker leafins umbrella bubble sail glasscore lantern nacre hammock coral bowl vortex pearls terrace crystalfin',
+ 'rocks charcoal copper pouch pumice tongs hammer pottery hotspa coal glassfan magnet bellows rubymane pipes lava ironplates flamewings ruby',
+ 'bookmark rulers glue thumbtack notebook zipper brushtail tracksuit map exam piano tray globe bookshelves eraser portrait compass graduation bookmane',
+ 'button memory socket pixel chip tape keyboard speaker cone billboard printer equalizer display train antennafan hoverboard dish mirrorcity skyline',
+ 'date sand jar tile seed carpet palm stylus hourglass incense crystalhorn tablet pomegranate spices crystalwings dunes canal sunfan sandring',
+ 'mud cycads moss pinecone ammonite nosehorn dome sail feathers hollowlog fangs amber shellplates twincrest featherfan waterfall logarch fossil mountains',
+ 'coin persimmon lantern ricecake gourd mask shoes rooftile kite moonjar millstone strings talisman dancheong wishes moonwing orb cloudcushion moonfeathers',
+ 'acorn honey cloudtail shells stone laurel grapes lyre platter lantern fleece laurelleaf marble wavemane flowerbow collar harp snakehead dawnwings',
+ 'eyeorbs cupears footpads antenna eggcase suction window glasshorn eyespots culture flower tentacles seedgarden sixeyes spiral starclaws saucer resonators throne',
+ 'rivets chimney gloves workhat teacup mail gauge parasol barometer cart lantern pendulum paddlewheel tanks gramophone balloon armillary airship flightdeck',
+ 'snowball icebean frost skates snowhat skis icelamp mittens iceplates fishing sled crystals shovel icebergs fangs antlers snowmane icefin snowcrystal',
+ 'donut pocket buttoneyes pajamas blanket stairs clock vase candyumbrella envelope cloudbeak bookwing candle starpillow balloonfeet cloudshoes teapot invertedfan dreambundle',
+ 'nails tin moss metalseed mushrooms tire filters newspapertail faucet helmet recycle warning greenhouse sporehorn wiretail rebar mushroommane purifier ironflower',
+ 'bread sunflowerseed lilypads leaf pollen chestnutplates acorn ribbon amber seedantenna petalshield dewcups orchid canal jade leaves silk roothouse palace',
+ 'screws circuit lid fuse cable brushes spanners keys hinges beacon saw conveyor radiator compressor toolbox laserfan satellites coils excavator',
+ 'moonrock stardust meteor comettail meteorrocks helmet starclock galaxy orbit moonclaws lenses starmap nebula starmane meteorfan planets planet dawnstar starsea',
+ 'hollowleaves pocketvoid split broken blankmask folded hollowspiral shadow lightwell halfwool framefan hollowwings needle segmented hollowstar seals shadowless emptywings ribcage',
+ 'clay wavetail leafvein sunwheel petaltail sculptcloud dewthread woodgrain pollenbag rainbow seasons river lightshard fruitbranch leaves cloudwheels sunrise seasonfan seedlight',
+]
+assert len(FORMS)==len(MOTIFS)==20
+assert all(len(row.split())==19 for row in FORMS+MOTIFS)

@@ -1,0 +1,109 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 691,
+    "key": "20-N10",
+    "name": "무지개조개",
+    "sourceName": "무지개조개",
+    "stageId": 20,
+    "tier": 1,
+    "slot": 20,
+    "form": "clam",
+    "motif": "rainbow",
+    "prompt": "넓고 낮은 아이보리 껍질과 작은 진주 얼굴을 만들라. 껍질 안쪽은 분홍·노랑·청록 세 구획, 바깥은 단순한 큰 홈 네 줄로 둔다. 껍질을 펼치면 세 색의 빛이 짧은 한 줄로 이어졌다 다시 안으로 모인다.",
+    "color": "#eee7cf"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        3,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        -0.35,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        8
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

@@ -1,0 +1,9502 @@
+[
+  {
+    "name": "pet-321",
+    "grid": [
+      21,
+      10,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1479,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        -13,
+        10
+      ]
+    ],
+    "anatomy": "frog"
+  },
+  {
+    "name": "pet-322",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1535,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-323",
+    "grid": [
+      13,
+      21,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2000,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -13,
+        18
+      ]
+    ],
+    "anatomy": "squirrel"
+  },
+  {
+    "name": "pet-324",
+    "grid": [
+      13,
+      11,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1393,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        -11,
+        17
+      ]
+    ],
+    "anatomy": "caterpillar"
+  },
+  {
+    "name": "pet-325",
+    "grid": [
+      17,
+      18,
+      18
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1604,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -8,
+        9
+      ]
+    ],
+    "anatomy": "mole"
+  },
+  {
+    "name": "pet-326",
+    "grid": [
+      19,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1626,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -12,
+        18
+      ]
+    ],
+    "anatomy": "duck"
+  },
+  {
+    "name": "pet-327",
+    "grid": [
+      16,
+      18,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2385,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "raccoon"
+  },
+  {
+    "name": "pet-328",
+    "grid": [
+      15,
+      19,
+      18
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1239,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -12,
+        5
+      ]
+    ],
+    "anatomy": "hamster"
+  },
+  {
+    "name": "pet-329",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1557,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "swallow"
+  },
+  {
+    "name": "pet-330",
+    "grid": [
+      17,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2348,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-331",
+    "grid": [
+      27,
+      21,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1609,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "fox"
+  },
+  {
+    "name": "pet-332",
+    "grid": [
+      18,
+      19,
+      35
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1938,
+    "bounds": [
+      [
+        -8,
+        9
+      ],
+      [
+        0,
+        18
+      ],
+      [
+        -17,
+        17
+      ]
+    ],
+    "anatomy": "beaver"
+  },
+  {
+    "name": "pet-333",
+    "grid": [
+      17,
+      16,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2335,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        12
+      ]
+    ],
+    "anatomy": "hedgehog"
+  },
+  {
+    "name": "pet-334",
+    "grid": [
+      25,
+      11,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1532,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        -12,
+        20
+      ]
+    ],
+    "anatomy": "otter"
+  },
+  {
+    "name": "pet-335",
+    "grid": [
+      15,
+      33,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1517,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        33
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "giraffe"
+  },
+  {
+    "name": "pet-336",
+    "grid": [
+      21,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1330,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "goat"
+  },
+  {
+    "name": "pet-337",
+    "grid": [
+      26,
+      26,
+      19
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2712,
+    "bounds": [
+      [
+        -10,
+        15
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -10,
+        8
+      ]
+    ],
+    "anatomy": "panda"
+  },
+  {
+    "name": "pet-338",
+    "grid": [
+      33,
+      24,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3045,
+    "bounds": [
+      [
+        -16,
+        16
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -14,
+        18
+      ]
+    ],
+    "anatomy": "crane"
+  },
+  {
+    "name": "pet-339",
+    "grid": [
+      23,
+      20,
+      39
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2905,
+    "bounds": [
+      [
+        -11,
+        11
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -19,
+        19
+      ]
+    ],
+    "anatomy": "elephant"
+  },
+  {
+    "name": "pet-340",
+    "grid": [
+      33,
+      22,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3562,
+    "bounds": [
+      [
+        -16,
+        16
+      ],
+      [
+        0,
+        21
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "crab"
+  },
+  {
+    "name": "pet-341",
+    "grid": [
+      16,
+      10,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1156,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-342",
+    "grid": [
+      15,
+      16,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1671,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "cat"
+  },
+  {
+    "name": "pet-343",
+    "grid": [
+      19,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1411,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "chick"
+  },
+  {
+    "name": "pet-344",
+    "grid": [
+      14,
+      16,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1640,
+    "bounds": [
+      [
+        -5,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "fox"
+  },
+  {
+    "name": "pet-345",
+    "grid": [
+      15,
+      33,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1389,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        33
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "giraffe"
+  },
+  {
+    "name": "pet-346",
+    "grid": [
+      16,
+      10,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1143,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "salamander"
+  },
+  {
+    "name": "pet-347",
+    "grid": [
+      25,
+      16,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1671,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "seal"
+  },
+  {
+    "name": "pet-348",
+    "grid": [
+      21,
+      20,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1634,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "panda"
+  },
+  {
+    "name": "pet-349",
+    "grid": [
+      21,
+      19,
+      20
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1800,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -14,
+        5
+      ]
+    ],
+    "anatomy": "gorilla"
+  },
+  {
+    "name": "pet-350",
+    "grid": [
+      16,
+      19,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1411,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -13,
+        20
+      ]
+    ],
+    "anatomy": "crocodile"
+  },
+  {
+    "name": "pet-351",
+    "grid": [
+      13,
+      24,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1275,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "rabbit"
+  },
+  {
+    "name": "pet-352",
+    "grid": [
+      33,
+      22,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2473,
+    "bounds": [
+      [
+        -16,
+        16
+      ],
+      [
+        1,
+        22
+      ],
+      [
+        -14,
+        18
+      ]
+    ],
+    "anatomy": "parrot"
+  },
+  {
+    "name": "pet-353",
+    "grid": [
+      27,
+      11,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1521,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -13,
+        13
+      ]
+    ],
+    "anatomy": "octopus"
+  },
+  {
+    "name": "pet-354",
+    "grid": [
+      17,
+      19,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1816,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "chameleon"
+  },
+  {
+    "name": "pet-355",
+    "grid": [
+      17,
+      21,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2038,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "lion"
+  },
+  {
+    "name": "pet-356",
+    "grid": [
+      35,
+      12,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1480,
+    "bounds": [
+      [
+        -17,
+        17
+      ],
+      [
+        -2,
+        9
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "ray"
+  },
+  {
+    "name": "pet-357",
+    "grid": [
+      21,
+      27,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1933,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        26
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "deer"
+  },
+  {
+    "name": "pet-358",
+    "grid": [
+      17,
+      22,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3004,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        22
+      ],
+      [
+        -11,
+        12
+      ]
+    ],
+    "anatomy": "turtle"
+  },
+  {
+    "name": "pet-359",
+    "grid": [
+      25,
+      20,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1024,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -12,
+        12
+      ]
+    ],
+    "anatomy": "anemone"
+  },
+  {
+    "name": "pet-360",
+    "grid": [
+      12,
+      12,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1115,
+    "bounds": [
+      [
+        -5,
+        6
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        -11,
+        16
+      ]
+    ],
+    "anatomy": "cucumber"
+  },
+  {
+    "name": "pet-361",
+    "grid": [
+      25,
+      15,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2407,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        14
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "puffer"
+  },
+  {
+    "name": "pet-362",
+    "grid": [
+      25,
+      14,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1643,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "shrimp"
+  },
+  {
+    "name": "pet-363",
+    "grid": [
+      23,
+      11,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 695,
+    "bounds": [
+      [
+        -12,
+        10
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -10,
+        18
+      ]
+    ],
+    "anatomy": "snake"
+  },
+  {
+    "name": "pet-364",
+    "grid": [
+      27,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2534,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "pipefish"
+  },
+  {
+    "name": "pet-365",
+    "grid": [
+      28,
+      26,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2016,
+    "bounds": [
+      [
+        -12,
+        15
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        13
+      ]
+    ],
+    "anatomy": "urchin"
+  },
+  {
+    "name": "pet-366",
+    "grid": [
+      16,
+      11,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1145,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "otter"
+  },
+  {
+    "name": "pet-367",
+    "grid": [
+      25,
+      19,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1749,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "fish"
+  },
+  {
+    "name": "pet-368",
+    "grid": [
+      11,
+      11,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 742,
+    "bounds": [
+      [
+        -5,
+        5
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "tunicate"
+  },
+  {
+    "name": "pet-369",
+    "grid": [
+      25,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1544,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "angler"
+  },
+  {
+    "name": "pet-370",
+    "grid": [
+      15,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1201,
+    "bounds": [
+      [
+        -8,
+        6
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "ammonite"
+  },
+  {
+    "name": "pet-371",
+    "grid": [
+      25,
+      13,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1060,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        13
+      ],
+      [
+        -11,
+        13
+      ]
+    ],
+    "anatomy": "starfish"
+  },
+  {
+    "name": "pet-372",
+    "grid": [
+      25,
+      19,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1867,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        18
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "lobster"
+  },
+  {
+    "name": "pet-373",
+    "grid": [
+      25,
+      12,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1891,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        11
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "walrus"
+  },
+  {
+    "name": "pet-374",
+    "grid": [
+      23,
+      21,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 719,
+    "bounds": [
+      [
+        -12,
+        10
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -10,
+        18
+      ]
+    ],
+    "anatomy": "eel"
+  },
+  {
+    "name": "pet-375",
+    "grid": [
+      25,
+      14,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2477,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        14
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "whale"
+  },
+  {
+    "name": "pet-376",
+    "grid": [
+      17,
+      19,
+      37
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2832,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        25
+      ]
+    ],
+    "anatomy": "horseshoe"
+  },
+  {
+    "name": "pet-377",
+    "grid": [
+      37,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3554,
+    "bounds": [
+      [
+        -18,
+        18
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "shark"
+  },
+  {
+    "name": "pet-378",
+    "grid": [
+      21,
+      15,
+      21
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1616,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        14
+      ],
+      [
+        -10,
+        10
+      ]
+    ],
+    "anatomy": "frog"
+  },
+  {
+    "name": "pet-379",
+    "grid": [
+      14,
+      18,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1188,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -8,
+        23
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-380",
+    "grid": [
+      17,
+      14,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1119,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "beetle"
+  },
+  {
+    "name": "pet-381",
+    "grid": [
+      14,
+      10,
+      35
+    ],
+    "paletteCount": 12,
+    "voxelCount": 965,
+    "bounds": [
+      [
+        -5,
+        8
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -14,
+        20
+      ]
+    ],
+    "anatomy": "weasel"
+  },
+  {
+    "name": "pet-382",
+    "grid": [
+      13,
+      24,
+      15
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1281,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -9,
+        5
+      ]
+    ],
+    "anatomy": "rabbit"
+  },
+  {
+    "name": "pet-383",
+    "grid": [
+      25,
+      12,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1917,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        11
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "lobster"
+  },
+  {
+    "name": "pet-384",
+    "grid": [
+      21,
+      19,
+      18
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1802,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -12,
+        5
+      ]
+    ],
+    "anatomy": "bear"
+  },
+  {
+    "name": "pet-385",
+    "grid": [
+      15,
+      16,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1780,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "cat"
+  },
+  {
+    "name": "pet-386",
+    "grid": [
+      21,
+      20,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2036,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        -1,
+        18
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "capybara"
+  },
+  {
+    "name": "pet-387",
+    "grid": [
+      16,
+      13,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1549,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        13
+      ],
+      [
+        -13,
+        20
+      ]
+    ],
+    "anatomy": "crocodile"
+  },
+  {
+    "name": "pet-388",
+    "grid": [
+      37,
+      26,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2199,
+    "bounds": [
+      [
+        -18,
+        18
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "fox"
+  },
+  {
+    "name": "pet-389",
+    "grid": [
+      25,
+      12,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2245,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        11
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "crab"
+  },
+  {
+    "name": "pet-390",
+    "grid": [
+      21,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2052,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "bull"
+  },
+  {
+    "name": "pet-391",
+    "grid": [
+      19,
+      20,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1786,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "wolf"
+  },
+  {
+    "name": "pet-392",
+    "grid": [
+      20,
+      33,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1579,
+    "bounds": [
+      [
+        -7,
+        12
+      ],
+      [
+        1,
+        33
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "giraffe"
+  },
+  {
+    "name": "pet-393",
+    "grid": [
+      25,
+      11,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1077,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -12,
+        12
+      ]
+    ],
+    "anatomy": "octopus"
+  },
+  {
+    "name": "pet-394",
+    "grid": [
+      15,
+      20,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2060,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "rhino"
+  },
+  {
+    "name": "pet-395",
+    "grid": [
+      31,
+      18,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3093,
+    "bounds": [
+      [
+        -15,
+        15
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        15
+      ]
+    ],
+    "anatomy": "moth"
+  },
+  {
+    "name": "pet-396",
+    "grid": [
+      21,
+      19,
+      18
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1583,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -12,
+        5
+      ]
+    ],
+    "anatomy": "giant"
+  },
+  {
+    "name": "pet-397",
+    "grid": [
+      16,
+      16,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1846,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "fox"
+  },
+  {
+    "name": "pet-398",
+    "grid": [
+      17,
+      18,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2300,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        12
+      ]
+    ],
+    "anatomy": "hedgehog"
+  },
+  {
+    "name": "pet-399",
+    "grid": [
+      13,
+      21,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1970,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-400",
+    "grid": [
+      19,
+      20,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1774,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "chick"
+  },
+  {
+    "name": "pet-401",
+    "grid": [
+      14,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1340,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-402",
+    "grid": [
+      16,
+      12,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1302,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        -13,
+        20
+      ]
+    ],
+    "anatomy": "crocodile"
+  },
+  {
+    "name": "pet-403",
+    "grid": [
+      27,
+      21,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2156,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -8,
+        18
+      ]
+    ],
+    "anatomy": "squirrel"
+  },
+  {
+    "name": "pet-404",
+    "grid": [
+      15,
+      16,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1606,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "dog"
+  },
+  {
+    "name": "pet-405",
+    "grid": [
+      31,
+      18,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3029,
+    "bounds": [
+      [
+        -15,
+        15
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        15
+      ]
+    ],
+    "anatomy": "moth"
+  },
+  {
+    "name": "pet-406",
+    "grid": [
+      21,
+      11,
+      21
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1391,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        -10,
+        10
+      ]
+    ],
+    "anatomy": "toad"
+  },
+  {
+    "name": "pet-407",
+    "grid": [
+      27,
+      14,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1411,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "spider"
+  },
+  {
+    "name": "pet-408",
+    "grid": [
+      16,
+      16,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2395,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "raccoon"
+  },
+  {
+    "name": "pet-409",
+    "grid": [
+      25,
+      20,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3156,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "whale"
+  },
+  {
+    "name": "pet-410",
+    "grid": [
+      15,
+      33,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1845,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        33
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "giraffe"
+  },
+  {
+    "name": "pet-411",
+    "grid": [
+      21,
+      20,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2408,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "bull"
+  },
+  {
+    "name": "pet-412",
+    "grid": [
+      25,
+      24,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2035,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "swan"
+  },
+  {
+    "name": "pet-413",
+    "grid": [
+      19,
+      25,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1903,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        0,
+        24
+      ],
+      [
+        -14,
+        18
+      ]
+    ],
+    "anatomy": "crane"
+  },
+  {
+    "name": "pet-414",
+    "grid": [
+      25,
+      15,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1403,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        15
+      ],
+      [
+        -12,
+        12
+      ]
+    ],
+    "anatomy": "octopus"
+  },
+  {
+    "name": "pet-415",
+    "grid": [
+      27,
+      21,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2231,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "lion"
+  },
+  {
+    "name": "pet-416",
+    "grid": [
+      19,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1597,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "chick"
+  },
+  {
+    "name": "pet-417",
+    "grid": [
+      14,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1267,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-418",
+    "grid": [
+      16,
+      10,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1242,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "salamander"
+  },
+  {
+    "name": "pet-419",
+    "grid": [
+      14,
+      16,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1713,
+    "bounds": [
+      [
+        -5,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "fox"
+  },
+  {
+    "name": "pet-420",
+    "grid": [
+      17,
+      12,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2018,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        -11,
+        12
+      ]
+    ],
+    "anatomy": "turtle"
+  },
+  {
+    "name": "pet-421",
+    "grid": [
+      15,
+      18,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1236,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        17
+      ]
+    ],
+    "anatomy": "beaver"
+  },
+  {
+    "name": "pet-422",
+    "grid": [
+      25,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2083,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "shark"
+  },
+  {
+    "name": "pet-423",
+    "grid": [
+      21,
+      11,
+      22
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1436,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        -11,
+        10
+      ]
+    ],
+    "anatomy": "frog"
+  },
+  {
+    "name": "pet-424",
+    "grid": [
+      15,
+      19,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1632,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-425",
+    "grid": [
+      19,
+      17,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1544,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -14,
+        18
+      ]
+    ],
+    "anatomy": "parrot"
+  },
+  {
+    "name": "pet-426",
+    "grid": [
+      19,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1660,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -12,
+        18
+      ]
+    ],
+    "anatomy": "duck"
+  },
+  {
+    "name": "pet-427",
+    "grid": [
+      29,
+      18,
+      26
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3095,
+    "bounds": [
+      [
+        -10,
+        18
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        14
+      ]
+    ],
+    "anatomy": "hedgehog"
+  },
+  {
+    "name": "pet-428",
+    "grid": [
+      25,
+      11,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1076,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -12,
+        12
+      ]
+    ],
+    "anatomy": "jelly"
+  },
+  {
+    "name": "pet-429",
+    "grid": [
+      23,
+      17,
+      39
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2221,
+    "bounds": [
+      [
+        -11,
+        11
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -19,
+        19
+      ]
+    ],
+    "anatomy": "elephant"
+  },
+  {
+    "name": "pet-430",
+    "grid": [
+      37,
+      26,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2639,
+    "bounds": [
+      [
+        -18,
+        18
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "peacock"
+  },
+  {
+    "name": "pet-431",
+    "grid": [
+      21,
+      19,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1745,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        18
+      ],
+      [
+        -10,
+        20
+      ]
+    ],
+    "anatomy": "kangaroo"
+  },
+  {
+    "name": "pet-432",
+    "grid": [
+      27,
+      24,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1362,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        0,
+        23
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "spider"
+  },
+  {
+    "name": "pet-433",
+    "grid": [
+      21,
+      19,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1606,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "gorilla"
+  },
+  {
+    "name": "pet-434",
+    "grid": [
+      25,
+      19,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3198,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "whale"
+  },
+  {
+    "name": "pet-435",
+    "grid": [
+      14,
+      18,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1146,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-436",
+    "grid": [
+      16,
+      12,
+      36
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1232,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        -1,
+        10
+      ],
+      [
+        -15,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-437",
+    "grid": [
+      25,
+      12,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2137,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        11
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "crab"
+  },
+  {
+    "name": "pet-438",
+    "grid": [
+      19,
+      20,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1730,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "quail"
+  },
+  {
+    "name": "pet-439",
+    "grid": [
+      17,
+      14,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1189,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -13,
+        11
+      ]
+    ],
+    "anatomy": "beetle"
+  },
+  {
+    "name": "pet-440",
+    "grid": [
+      35,
+      10,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1448,
+    "bounds": [
+      [
+        -17,
+        17
+      ],
+      [
+        2,
+        11
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "ray"
+  },
+  {
+    "name": "pet-441",
+    "grid": [
+      27,
+      26,
+      21
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1839,
+    "bounds": [
+      [
+        -10,
+        16
+      ],
+      [
+        0,
+        25
+      ],
+      [
+        -10,
+        10
+      ]
+    ],
+    "anatomy": "frog"
+  },
+  {
+    "name": "pet-442",
+    "grid": [
+      19,
+      24,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1715,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -14,
+        18
+      ]
+    ],
+    "anatomy": "ibis"
+  },
+  {
+    "name": "pet-443",
+    "grid": [
+      15,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1322,
+    "bounds": [
+      [
+        -8,
+        6
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-444",
+    "grid": [
+      15,
+      16,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1731,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "cat"
+  },
+  {
+    "name": "pet-445",
+    "grid": [
+      21,
+      23,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1419,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        23
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "goat"
+  },
+  {
+    "name": "pet-446",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1835,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "owl"
+  },
+  {
+    "name": "pet-447",
+    "grid": [
+      14,
+      18,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1166,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "monkey"
+  },
+  {
+    "name": "pet-448",
+    "grid": [
+      23,
+      17,
+      39
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2310,
+    "bounds": [
+      [
+        -11,
+        11
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -19,
+        19
+      ]
+    ],
+    "anatomy": "elephant"
+  },
+  {
+    "name": "pet-449",
+    "grid": [
+      17,
+      14,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1349,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "cicada"
+  },
+  {
+    "name": "pet-450",
+    "grid": [
+      14,
+      16,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1451,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "wolf"
+  },
+  {
+    "name": "pet-451",
+    "grid": [
+      16,
+      12,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1335,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        -13,
+        20
+      ]
+    ],
+    "anatomy": "crocodile"
+  },
+  {
+    "name": "pet-452",
+    "grid": [
+      37,
+      26,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2757,
+    "bounds": [
+      [
+        -18,
+        18
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "peacock"
+  },
+  {
+    "name": "pet-453",
+    "grid": [
+      39,
+      18,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2194,
+    "bounds": [
+      [
+        -19,
+        19
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "roc"
+  },
+  {
+    "name": "pet-454",
+    "grid": [
+      16,
+      10,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1169,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "salamander"
+  },
+  {
+    "name": "pet-455",
+    "grid": [
+      19,
+      18,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1165,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -8,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-456",
+    "grid": [
+      21,
+      16,
+      21
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1593,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        15
+      ],
+      [
+        -10,
+        10
+      ]
+    ],
+    "anatomy": "frog"
+  },
+  {
+    "name": "pet-457",
+    "grid": [
+      16,
+      13,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1790,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        13
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-458",
+    "grid": [
+      15,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1123,
+    "bounds": [
+      [
+        -8,
+        6
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "ammonite"
+  },
+  {
+    "name": "pet-459",
+    "grid": [
+      13,
+      24,
+      39
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1194,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -15,
+        23
+      ]
+    ],
+    "anatomy": "raptor"
+  },
+  {
+    "name": "pet-460",
+    "grid": [
+      13,
+      23,
+      36
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1447,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        23
+      ],
+      [
+        -12,
+        23
+      ]
+    ],
+    "anatomy": "pachy"
+  },
+  {
+    "name": "pet-461",
+    "grid": [
+      16,
+      19,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1354,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-462",
+    "grid": [
+      27,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2319,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-463",
+    "grid": [
+      16,
+      17,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1870,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -13,
+        20
+      ]
+    ],
+    "anatomy": "crocodile"
+  },
+  {
+    "name": "pet-464",
+    "grid": [
+      15,
+      16,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1648,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "sabertooth"
+  },
+  {
+    "name": "pet-465",
+    "grid": [
+      29,
+      18,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2710,
+    "bounds": [
+      [
+        -14,
+        14
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        15
+      ]
+    ],
+    "anatomy": "dragonfly"
+  },
+  {
+    "name": "pet-466",
+    "grid": [
+      25,
+      13,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1860,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        13
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "fish"
+  },
+  {
+    "name": "pet-467",
+    "grid": [
+      13,
+      24,
+      39
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1256,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -15,
+        23
+      ]
+    ],
+    "anatomy": "raptor"
+  },
+  {
+    "name": "pet-468",
+    "grid": [
+      37,
+      26,
+      35
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2145,
+    "bounds": [
+      [
+        -18,
+        18
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        23
+      ]
+    ],
+    "anatomy": "raptor"
+  },
+  {
+    "name": "pet-469",
+    "grid": [
+      15,
+      28,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2178,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        28
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "sauropod"
+  },
+  {
+    "name": "pet-470",
+    "grid": [
+      15,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2044,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "sloth"
+  },
+  {
+    "name": "pet-471",
+    "grid": [
+      45,
+      18,
+      37
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3192,
+    "bounds": [
+      [
+        -22,
+        22
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -13,
+        23
+      ]
+    ],
+    "anatomy": "pterosaur"
+  },
+  {
+    "name": "pet-472",
+    "grid": [
+      19,
+      23,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2866,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        23
+      ],
+      [
+        -11,
+        12
+      ]
+    ],
+    "anatomy": "turtle"
+  },
+  {
+    "name": "pet-473",
+    "grid": [
+      14,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1267,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-474",
+    "grid": [
+      19,
+      19,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1569,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "sparrow"
+  },
+  {
+    "name": "pet-475",
+    "grid": [
+      15,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1132,
+    "bounds": [
+      [
+        -8,
+        6
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-476",
+    "grid": [
+      17,
+      18,
+      19
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1378,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -8,
+        10
+      ]
+    ],
+    "anatomy": "mole"
+  },
+  {
+    "name": "pet-477",
+    "grid": [
+      15,
+      10,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 965,
+    "bounds": [
+      [
+        -5,
+        9
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "weasel"
+  },
+  {
+    "name": "pet-478",
+    "grid": [
+      17,
+      18,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1020,
+    "bounds": [
+      [
+        -6,
+        10
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "monkey"
+  },
+  {
+    "name": "pet-479",
+    "grid": [
+      15,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1730,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        0,
+        16
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "cat"
+  },
+  {
+    "name": "pet-480",
+    "grid": [
+      17,
+      12,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2102,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        -11,
+        12
+      ]
+    ],
+    "anatomy": "turtle"
+  },
+  {
+    "name": "pet-481",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1702,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "swallow"
+  },
+  {
+    "name": "pet-482",
+    "grid": [
+      25,
+      11,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1511,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "seal"
+  },
+  {
+    "name": "pet-483",
+    "grid": [
+      21,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2151,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "bull"
+  },
+  {
+    "name": "pet-484",
+    "grid": [
+      19,
+      15,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 966,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        0,
+        14
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "mantis"
+  },
+  {
+    "name": "pet-485",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1502,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-486",
+    "grid": [
+      27,
+      21,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2335,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "peacock"
+  },
+  {
+    "name": "pet-487",
+    "grid": [
+      19,
+      26,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1434,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "deer"
+  },
+  {
+    "name": "pet-488",
+    "grid": [
+      27,
+      24,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2481,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -14,
+        18
+      ]
+    ],
+    "anatomy": "crane"
+  },
+  {
+    "name": "pet-489",
+    "grid": [
+      17,
+      18,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2140,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "lion"
+  },
+  {
+    "name": "pet-490",
+    "grid": [
+      21,
+      20,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2085,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        19
+      ],
+      [
+        -10,
+        12
+      ]
+    ],
+    "anatomy": "bear"
+  },
+  {
+    "name": "pet-491",
+    "grid": [
+      39,
+      17,
+      45
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3268,
+    "bounds": [
+      [
+        -19,
+        19
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        33
+      ]
+    ],
+    "anatomy": "phoenix"
+  },
+  {
+    "name": "pet-492",
+    "grid": [
+      13,
+      15,
+      14
+    ],
+    "paletteCount": 12,
+    "voxelCount": 922,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        15
+      ],
+      [
+        -8,
+        5
+      ]
+    ],
+    "anatomy": "seed"
+  },
+  {
+    "name": "pet-493",
+    "grid": [
+      14,
+      18,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1162,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-494",
+    "grid": [
+      27,
+      21,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2135,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-495",
+    "grid": [
+      16,
+      13,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1492,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        13
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-496",
+    "grid": [
+      17,
+      14,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 894,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -13,
+        15
+      ]
+    ],
+    "anatomy": "ant"
+  },
+  {
+    "name": "pet-497",
+    "grid": [
+      19,
+      24,
+      19
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1173,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -8,
+        10
+      ]
+    ],
+    "anatomy": "rabbit"
+  },
+  {
+    "name": "pet-498",
+    "grid": [
+      13,
+      19,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1481,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-499",
+    "grid": [
+      14,
+      16,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1837,
+    "bounds": [
+      [
+        -5,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "fox"
+  },
+  {
+    "name": "pet-500",
+    "grid": [
+      19,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1603,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -12,
+        18
+      ]
+    ],
+    "anatomy": "duck"
+  },
+  {
+    "name": "pet-501",
+    "grid": [
+      21,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1380,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "goat"
+  },
+  {
+    "name": "pet-502",
+    "grid": [
+      21,
+      20,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2196,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "ram"
+  },
+  {
+    "name": "pet-503",
+    "grid": [
+      19,
+      24,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1699,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -14,
+        18
+      ]
+    ],
+    "anatomy": "crane"
+  },
+  {
+    "name": "pet-504",
+    "grid": [
+      10,
+      25,
+      18
+    ],
+    "paletteCount": 12,
+    "voxelCount": 490,
+    "bounds": [
+      [
+        -3,
+        6
+      ],
+      [
+        0,
+        24
+      ],
+      [
+        -7,
+        10
+      ]
+    ],
+    "anatomy": "seahorse"
+  },
+  {
+    "name": "pet-505",
+    "grid": [
+      13,
+      22,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1439,
+    "bounds": [
+      [
+        -5,
+        7
+      ],
+      [
+        1,
+        22
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "horse"
+  },
+  {
+    "name": "pet-506",
+    "grid": [
+      15,
+      21,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1943,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "centaur"
+  },
+  {
+    "name": "pet-507",
+    "grid": [
+      15,
+      15,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1557,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        15
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "twohead"
+  },
+  {
+    "name": "pet-508",
+    "grid": [
+      25,
+      24,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2005,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "swan"
+  },
+  {
+    "name": "pet-509",
+    "grid": [
+      21,
+      18,
+      35
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2243,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        23
+      ]
+    ],
+    "anatomy": "chimera"
+  },
+  {
+    "name": "pet-510",
+    "grid": [
+      39,
+      17,
+      51
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3281,
+    "bounds": [
+      [
+        -19,
+        19
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        39
+      ]
+    ],
+    "anatomy": "phoenix"
+  },
+  {
+    "name": "pet-511",
+    "grid": [
+      15,
+      14,
+      14
+    ],
+    "paletteCount": 12,
+    "voxelCount": 670,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        14
+      ],
+      [
+        -8,
+        5
+      ]
+    ],
+    "anatomy": "slime"
+  },
+  {
+    "name": "pet-512",
+    "grid": [
+      16,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1175,
+    "bounds": [
+      [
+        -8,
+        7
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-513",
+    "grid": [
+      15,
+      11,
+      13
+    ],
+    "paletteCount": 12,
+    "voxelCount": 674,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        -7,
+        5
+      ]
+    ],
+    "anatomy": "slime"
+  },
+  {
+    "name": "pet-514",
+    "grid": [
+      25,
+      21,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1341,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        20
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "shrimp"
+  },
+  {
+    "name": "pet-515",
+    "grid": [
+      17,
+      18,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2279,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "beetle"
+  },
+  {
+    "name": "pet-516",
+    "grid": [
+      9,
+      10,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1065,
+    "bounds": [
+      [
+        -4,
+        4
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        -11,
+        16
+      ]
+    ],
+    "anatomy": "worm"
+  },
+  {
+    "name": "pet-517",
+    "grid": [
+      15,
+      19,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1217,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "hamster"
+  },
+  {
+    "name": "pet-518",
+    "grid": [
+      21,
+      28,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1438,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        28
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "deer"
+  },
+  {
+    "name": "pet-519",
+    "grid": [
+      15,
+      16,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1712,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "chameleon"
+  },
+  {
+    "name": "pet-520",
+    "grid": [
+      17,
+      16,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1079,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        15
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "penguin"
+  },
+  {
+    "name": "pet-521",
+    "grid": [
+      17,
+      12,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2109,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        -11,
+        12
+      ]
+    ],
+    "anatomy": "turtle"
+  },
+  {
+    "name": "pet-522",
+    "grid": [
+      19,
+      22,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1381,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        22
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "horse"
+  },
+  {
+    "name": "pet-523",
+    "grid": [
+      35,
+      14,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1712,
+    "bounds": [
+      [
+        -17,
+        17
+      ],
+      [
+        2,
+        15
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "ray"
+  },
+  {
+    "name": "pet-524",
+    "grid": [
+      31,
+      24,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1724,
+    "bounds": [
+      [
+        -15,
+        15
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -9,
+        18
+      ]
+    ],
+    "anatomy": "bat"
+  },
+  {
+    "name": "pet-525",
+    "grid": [
+      25,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1786,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "fish"
+  },
+  {
+    "name": "pet-526",
+    "grid": [
+      27,
+      12,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1879,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        0,
+        11
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "lobster"
+  },
+  {
+    "name": "pet-527",
+    "grid": [
+      15,
+      23,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2110,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        23
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "rhino"
+  },
+  {
+    "name": "pet-528",
+    "grid": [
+      31,
+      18,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3103,
+    "bounds": [
+      [
+        -15,
+        15
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        15
+      ]
+    ],
+    "anatomy": "moth"
+  },
+  {
+    "name": "pet-529",
+    "grid": [
+      37,
+      18,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3647,
+    "bounds": [
+      [
+        -18,
+        18
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        15
+      ]
+    ],
+    "anatomy": "queen"
+  },
+  {
+    "name": "pet-530",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1507,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-531",
+    "grid": [
+      16,
+      21,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1181,
+    "bounds": [
+      [
+        -8,
+        7
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-532",
+    "grid": [
+      19,
+      24,
+      15
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1131,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -9,
+        5
+      ]
+    ],
+    "anatomy": "rabbit"
+  },
+  {
+    "name": "pet-533",
+    "grid": [
+      16,
+      18,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2428,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -12,
+        21
+      ]
+    ],
+    "anatomy": "raccoon"
+  },
+  {
+    "name": "pet-534",
+    "grid": [
+      21,
+      10,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1476,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        -14,
+        10
+      ]
+    ],
+    "anatomy": "toad"
+  },
+  {
+    "name": "pet-535",
+    "grid": [
+      19,
+      17,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1852,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -14,
+        18
+      ]
+    ],
+    "anatomy": "pigeon"
+  },
+  {
+    "name": "pet-536",
+    "grid": [
+      21,
+      13,
+      22
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1408,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        12
+      ],
+      [
+        -11,
+        10
+      ]
+    ],
+    "anatomy": "frog"
+  },
+  {
+    "name": "pet-537",
+    "grid": [
+      23,
+      26,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2190,
+    "bounds": [
+      [
+        -7,
+        15
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-538",
+    "grid": [
+      21,
+      20,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1659,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "panda"
+  },
+  {
+    "name": "pet-539",
+    "grid": [
+      18,
+      16,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3063,
+    "bounds": [
+      [
+        -8,
+        9
+      ],
+      [
+        0,
+        15
+      ],
+      [
+        -17,
+        12
+      ]
+    ],
+    "anatomy": "hedgehog"
+  },
+  {
+    "name": "pet-540",
+    "grid": [
+      29,
+      18,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2845,
+    "bounds": [
+      [
+        -14,
+        14
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        16
+      ]
+    ],
+    "anatomy": "firefly"
+  },
+  {
+    "name": "pet-541",
+    "grid": [
+      19,
+      26,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1379,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "deer"
+  },
+  {
+    "name": "pet-542",
+    "grid": [
+      28,
+      12,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1257,
+    "bounds": [
+      [
+        -13,
+        14
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        -13,
+        20
+      ]
+    ],
+    "anatomy": "crocodile"
+  },
+  {
+    "name": "pet-543",
+    "grid": [
+      17,
+      20,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2127,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "rhino"
+  },
+  {
+    "name": "pet-544",
+    "grid": [
+      19,
+      21,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1586,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -14,
+        18
+      ]
+    ],
+    "anatomy": "parrot"
+  },
+  {
+    "name": "pet-545",
+    "grid": [
+      25,
+      23,
+      26
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2056,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        23
+      ],
+      [
+        -12,
+        13
+      ]
+    ],
+    "anatomy": "jelly"
+  },
+  {
+    "name": "pet-546",
+    "grid": [
+      25,
+      24,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1882,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "swan"
+  },
+  {
+    "name": "pet-547",
+    "grid": [
+      27,
+      23,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 4457,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        23
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "lion"
+  },
+  {
+    "name": "pet-548",
+    "grid": [
+      45,
+      19,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 4189,
+    "bounds": [
+      [
+        -22,
+        22
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "bison"
+  },
+  {
+    "name": "pet-549",
+    "grid": [
+      17,
+      19,
+      19
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2104,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -8,
+        10
+      ]
+    ],
+    "anatomy": "hamster"
+  },
+  {
+    "name": "pet-550",
+    "grid": [
+      14,
+      18,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1144,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-551",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1589,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-552",
+    "grid": [
+      16,
+      11,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1325,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-553",
+    "grid": [
+      21,
+      15,
+      22
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1664,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        14
+      ],
+      [
+        -11,
+        10
+      ]
+    ],
+    "anatomy": "toad"
+  },
+  {
+    "name": "pet-554",
+    "grid": [
+      14,
+      11,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1072,
+    "bounds": [
+      [
+        -5,
+        8
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "weasel"
+  },
+  {
+    "name": "pet-555",
+    "grid": [
+      15,
+      20,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1257,
+    "bounds": [
+      [
+        -8,
+        6
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-556",
+    "grid": [
+      19,
+      18,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1123,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -9,
+        19
+      ]
+    ],
+    "anatomy": "monkey"
+  },
+  {
+    "name": "pet-557",
+    "grid": [
+      17,
+      19,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2176,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        12
+      ]
+    ],
+    "anatomy": "hedgehog"
+  },
+  {
+    "name": "pet-558",
+    "grid": [
+      16,
+      16,
+      38
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2192,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -16,
+        21
+      ]
+    ],
+    "anatomy": "raccoon"
+  },
+  {
+    "name": "pet-559",
+    "grid": [
+      15,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2022,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        0,
+        16
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "dog"
+  },
+  {
+    "name": "pet-560",
+    "grid": [
+      29,
+      19,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2293,
+    "bounds": [
+      [
+        -14,
+        14
+      ],
+      [
+        0,
+        18
+      ],
+      [
+        -11,
+        17
+      ]
+    ],
+    "anatomy": "butterfly"
+  },
+  {
+    "name": "pet-561",
+    "grid": [
+      19,
+      18,
+      15
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1233,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -9,
+        5
+      ]
+    ],
+    "anatomy": "mole"
+  },
+  {
+    "name": "pet-562",
+    "grid": [
+      25,
+      24,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2717,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        23
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "walrus"
+  },
+  {
+    "name": "pet-563",
+    "grid": [
+      13,
+      16,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1191,
+    "bounds": [
+      [
+        -5,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "lynx"
+  },
+  {
+    "name": "pet-564",
+    "grid": [
+      27,
+      28,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1596,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        28
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "deer"
+  },
+  {
+    "name": "pet-565",
+    "grid": [
+      21,
+      20,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2905,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "bison"
+  },
+  {
+    "name": "pet-566",
+    "grid": [
+      25,
+      19,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2133,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "orca"
+  },
+  {
+    "name": "pet-567",
+    "grid": [
+      21,
+      19,
+      18
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1597,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -12,
+        5
+      ]
+    ],
+    "anatomy": "yeti"
+  },
+  {
+    "name": "pet-568",
+    "grid": [
+      16,
+      18,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1069,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -8,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-569",
+    "grid": [
+      19,
+      17,
+      26
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1630,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -14,
+        11
+      ]
+    ],
+    "anatomy": "chick"
+  },
+  {
+    "name": "pet-570",
+    "grid": [
+      15,
+      10,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 692,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "cloud"
+  },
+  {
+    "name": "pet-571",
+    "grid": [
+      16,
+      18,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1316,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-572",
+    "grid": [
+      16,
+      16,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1153,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-573",
+    "grid": [
+      27,
+      24,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2064,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "goose"
+  },
+  {
+    "name": "pet-574",
+    "grid": [
+      13,
+      24,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1058,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "rabbit"
+  },
+  {
+    "name": "pet-575",
+    "grid": [
+      16,
+      26,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2405,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "raccoon"
+  },
+  {
+    "name": "pet-576",
+    "grid": [
+      26,
+      27,
+      21
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2452,
+    "bounds": [
+      [
+        -10,
+        15
+      ],
+      [
+        0,
+        26
+      ],
+      [
+        -10,
+        10
+      ]
+    ],
+    "anatomy": "frog"
+  },
+  {
+    "name": "pet-577",
+    "grid": [
+      25,
+      11,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1585,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "seal"
+  },
+  {
+    "name": "pet-578",
+    "grid": [
+      19,
+      17,
+      38
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1730,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -19,
+        18
+      ]
+    ],
+    "anatomy": "parrot"
+  },
+  {
+    "name": "pet-579",
+    "grid": [
+      33,
+      21,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2766,
+    "bounds": [
+      [
+        -16,
+        16
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -13,
+        20
+      ]
+    ],
+    "anatomy": "crocodile"
+  },
+  {
+    "name": "pet-580",
+    "grid": [
+      25,
+      20,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1443,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -12,
+        12
+      ]
+    ],
+    "anatomy": "octopus"
+  },
+  {
+    "name": "pet-581",
+    "grid": [
+      21,
+      20,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1684,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "panda"
+  },
+  {
+    "name": "pet-582",
+    "grid": [
+      19,
+      28,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1524,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        -1,
+        26
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "deer"
+  },
+  {
+    "name": "pet-583",
+    "grid": [
+      19,
+      26,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1914,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        -1,
+        24
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "ostrich"
+  },
+  {
+    "name": "pet-584",
+    "grid": [
+      17,
+      17,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2563,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "hippo"
+  },
+  {
+    "name": "pet-585",
+    "grid": [
+      37,
+      41,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2832,
+    "bounds": [
+      [
+        -18,
+        18
+      ],
+      [
+        1,
+        41
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "peacock"
+  },
+  {
+    "name": "pet-586",
+    "grid": [
+      15,
+      17,
+      38
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2104,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -18,
+        19
+      ]
+    ],
+    "anatomy": "tapir"
+  },
+  {
+    "name": "pet-587",
+    "grid": [
+      11,
+      18,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1087,
+    "bounds": [
+      [
+        -5,
+        5
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        16
+      ]
+    ],
+    "anatomy": "worm"
+  },
+  {
+    "name": "pet-588",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1579,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-589",
+    "grid": [
+      19,
+      15,
+      18
+    ],
+    "paletteCount": 12,
+    "voxelCount": 800,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        15
+      ],
+      [
+        -7,
+        10
+      ]
+    ],
+    "anatomy": "slime"
+  },
+  {
+    "name": "pet-590",
+    "grid": [
+      14,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1087,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-591",
+    "grid": [
+      17,
+      20,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1368,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-592",
+    "grid": [
+      17,
+      16,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1140,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "turtle"
+  },
+  {
+    "name": "pet-593",
+    "grid": [
+      17,
+      19,
+      18
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1609,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -12,
+        5
+      ]
+    ],
+    "anatomy": "hamster"
+  },
+  {
+    "name": "pet-594",
+    "grid": [
+      27,
+      21,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1875,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "fox"
+  },
+  {
+    "name": "pet-595",
+    "grid": [
+      19,
+      21,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1604,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -12,
+        18
+      ]
+    ],
+    "anatomy": "duck"
+  },
+  {
+    "name": "pet-596",
+    "grid": [
+      16,
+      22,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1311,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        22
+      ],
+      [
+        -10,
+        17
+      ]
+    ],
+    "anatomy": "beaver"
+  },
+  {
+    "name": "pet-597",
+    "grid": [
+      17,
+      17,
+      22
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1334,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        16
+      ],
+      [
+        -14,
+        7
+      ]
+    ],
+    "anatomy": "penguin"
+  },
+  {
+    "name": "pet-598",
+    "grid": [
+      17,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1532,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "cicada"
+  },
+  {
+    "name": "pet-599",
+    "grid": [
+      29,
+      18,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2376,
+    "bounds": [
+      [
+        -14,
+        14
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        17
+      ]
+    ],
+    "anatomy": "butterfly"
+  },
+  {
+    "name": "pet-600",
+    "grid": [
+      23,
+      20,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1419,
+    "bounds": [
+      [
+        -11,
+        11
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "goat"
+  },
+  {
+    "name": "pet-601",
+    "grid": [
+      13,
+      16,
+      35
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1327,
+    "bounds": [
+      [
+        -5,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        23
+      ]
+    ],
+    "anatomy": "leopard"
+  },
+  {
+    "name": "pet-602",
+    "grid": [
+      16,
+      16,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1301,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -13,
+        20
+      ]
+    ],
+    "anatomy": "crocodile"
+  },
+  {
+    "name": "pet-603",
+    "grid": [
+      19,
+      20,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2327,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "lion"
+  },
+  {
+    "name": "pet-604",
+    "grid": [
+      17,
+      17,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2171,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "hippo"
+  },
+  {
+    "name": "pet-605",
+    "grid": [
+      21,
+      19,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1562,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "giant"
+  },
+  {
+    "name": "pet-606",
+    "grid": [
+      17,
+      14,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1297,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -14,
+        15
+      ]
+    ],
+    "anatomy": "ant"
+  },
+  {
+    "name": "pet-607",
+    "grid": [
+      17,
+      14,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1139,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -16,
+        11
+      ]
+    ],
+    "anatomy": "weevil"
+  },
+  {
+    "name": "pet-608",
+    "grid": [
+      27,
+      14,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1311,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "strider"
+  },
+  {
+    "name": "pet-609",
+    "grid": [
+      17,
+      14,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 643,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "stickbug"
+  },
+  {
+    "name": "pet-610",
+    "grid": [
+      17,
+      14,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1157,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -13,
+        11
+      ]
+    ],
+    "anatomy": "aphid"
+  },
+  {
+    "name": "pet-611",
+    "grid": [
+      17,
+      14,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1302,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "millipede"
+  },
+  {
+    "name": "pet-612",
+    "grid": [
+      19,
+      15,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1519,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        0,
+        14
+      ],
+      [
+        -12,
+        11
+      ]
+    ],
+    "anatomy": "cricket"
+  },
+  {
+    "name": "pet-613",
+    "grid": [
+      27,
+      14,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1270,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "spider"
+  },
+  {
+    "name": "pet-614",
+    "grid": [
+      29,
+      18,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2840,
+    "bounds": [
+      [
+        -14,
+        14
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        16
+      ]
+    ],
+    "anatomy": "firefly"
+  },
+  {
+    "name": "pet-615",
+    "grid": [
+      21,
+      16,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 622,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        15
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "longhorn"
+  },
+  {
+    "name": "pet-616",
+    "grid": [
+      27,
+      18,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2315,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "shieldbug"
+  },
+  {
+    "name": "pet-617",
+    "grid": [
+      31,
+      18,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3099,
+    "bounds": [
+      [
+        -15,
+        15
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        15
+      ]
+    ],
+    "anatomy": "moth"
+  },
+  {
+    "name": "pet-618",
+    "grid": [
+      27,
+      18,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2048,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "mantis"
+  },
+  {
+    "name": "pet-619",
+    "grid": [
+      17,
+      14,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1278,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "beetle"
+  },
+  {
+    "name": "pet-620",
+    "grid": [
+      29,
+      18,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2491,
+    "bounds": [
+      [
+        -14,
+        14
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -13,
+        11
+      ]
+    ],
+    "anatomy": "bee"
+  },
+  {
+    "name": "pet-621",
+    "grid": [
+      19,
+      20,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1358,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        0,
+        19
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "grasshopper"
+  },
+  {
+    "name": "pet-622",
+    "grid": [
+      29,
+      18,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2615,
+    "bounds": [
+      [
+        -14,
+        14
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        22
+      ]
+    ],
+    "anatomy": "butterfly"
+  },
+  {
+    "name": "pet-623",
+    "grid": [
+      17,
+      23,
+      43
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2191,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        22
+      ],
+      [
+        -11,
+        31
+      ]
+    ],
+    "anatomy": "centipede"
+  },
+  {
+    "name": "pet-624",
+    "grid": [
+      35,
+      23,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 4266,
+    "bounds": [
+      [
+        -17,
+        17
+      ],
+      [
+        0,
+        22
+      ],
+      [
+        -11,
+        15
+      ]
+    ],
+    "anatomy": "queen"
+  },
+  {
+    "name": "pet-625",
+    "grid": [
+      13,
+      24,
+      15
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1055,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -9,
+        5
+      ]
+    ],
+    "anatomy": "rabbit"
+  },
+  {
+    "name": "pet-626",
+    "grid": [
+      21,
+      11,
+      21
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1406,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        -10,
+        10
+      ]
+    ],
+    "anatomy": "frog"
+  },
+  {
+    "name": "pet-627",
+    "grid": [
+      17,
+      21,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1256,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        20
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "penguin"
+  },
+  {
+    "name": "pet-628",
+    "grid": [
+      17,
+      14,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1301,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "beetle"
+  },
+  {
+    "name": "pet-629",
+    "grid": [
+      16,
+      10,
+      35
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1214,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -11,
+        23
+      ]
+    ],
+    "anatomy": "salamander"
+  },
+  {
+    "name": "pet-630",
+    "grid": [
+      19,
+      19,
+      15
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1209,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -9,
+        5
+      ]
+    ],
+    "anatomy": "hamster"
+  },
+  {
+    "name": "pet-631",
+    "grid": [
+      23,
+      12,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1673,
+    "bounds": [
+      [
+        -11,
+        11
+      ],
+      [
+        0,
+        11
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "lobster"
+  },
+  {
+    "name": "pet-632",
+    "grid": [
+      23,
+      11,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 845,
+    "bounds": [
+      [
+        -12,
+        10
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -10,
+        18
+      ]
+    ],
+    "anatomy": "snake"
+  },
+  {
+    "name": "pet-633",
+    "grid": [
+      31,
+      24,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1650,
+    "bounds": [
+      [
+        -15,
+        15
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -9,
+        18
+      ]
+    ],
+    "anatomy": "bat"
+  },
+  {
+    "name": "pet-634",
+    "grid": [
+      15,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1425,
+    "bounds": [
+      [
+        -8,
+        6
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-635",
+    "grid": [
+      16,
+      16,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2238,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "raccoon"
+  },
+  {
+    "name": "pet-636",
+    "grid": [
+      17,
+      14,
+      27
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1060,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        15
+      ]
+    ],
+    "anatomy": "ant"
+  },
+  {
+    "name": "pet-637",
+    "grid": [
+      29,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2667,
+    "bounds": [
+      [
+        -10,
+        18
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "ram"
+  },
+  {
+    "name": "pet-638",
+    "grid": [
+      19,
+      20,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2597,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "rhino"
+  },
+  {
+    "name": "pet-639",
+    "grid": [
+      14,
+      18,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1342,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "monkey"
+  },
+  {
+    "name": "pet-640",
+    "grid": [
+      33,
+      24,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3029,
+    "bounds": [
+      [
+        -16,
+        16
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "peacock"
+  },
+  {
+    "name": "pet-641",
+    "grid": [
+      25,
+      26,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1641,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "deer"
+  },
+  {
+    "name": "pet-642",
+    "grid": [
+      18,
+      18,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1812,
+    "bounds": [
+      [
+        -8,
+        9
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "hippo"
+  },
+  {
+    "name": "pet-643",
+    "grid": [
+      25,
+      27,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1594,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        26
+      ],
+      [
+        -12,
+        18
+      ]
+    ],
+    "anatomy": "scorpion"
+  },
+  {
+    "name": "pet-644",
+    "grid": [
+      14,
+      18,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1114,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-645",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1582,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-646",
+    "grid": [
+      15,
+      17,
+      35
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1857,
+    "bounds": [
+      [
+        -8,
+        6
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        23
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-647",
+    "grid": [
+      27,
+      21,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1511,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "salamander"
+  },
+  {
+    "name": "pet-648",
+    "grid": [
+      21,
+      14,
+      21
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1579,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -10,
+        10
+      ]
+    ],
+    "anatomy": "frog"
+  },
+  {
+    "name": "pet-649",
+    "grid": [
+      16,
+      19,
+      35
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2627,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -13,
+        21
+      ]
+    ],
+    "anatomy": "raccoon"
+  },
+  {
+    "name": "pet-650",
+    "grid": [
+      17,
+      26,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1093,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        -1,
+        24
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "rabbit"
+  },
+  {
+    "name": "pet-651",
+    "grid": [
+      21,
+      14,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2207,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -16,
+        13
+      ]
+    ],
+    "anatomy": "clam"
+  },
+  {
+    "name": "pet-652",
+    "grid": [
+      29,
+      22,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2441,
+    "bounds": [
+      [
+        -14,
+        14
+      ],
+      [
+        0,
+        21
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "bee"
+  },
+  {
+    "name": "pet-653",
+    "grid": [
+      26,
+      12,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1757,
+    "bounds": [
+      [
+        -13,
+        12
+      ],
+      [
+        0,
+        11
+      ],
+      [
+        -12,
+        19
+      ]
+    ],
+    "anatomy": "lobster"
+  },
+  {
+    "name": "pet-654",
+    "grid": [
+      15,
+      16,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1793,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -14,
+        19
+      ]
+    ],
+    "anatomy": "chameleon"
+  },
+  {
+    "name": "pet-655",
+    "grid": [
+      17,
+      12,
+      24
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2019,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        -11,
+        12
+      ]
+    ],
+    "anatomy": "turtle"
+  },
+  {
+    "name": "pet-656",
+    "grid": [
+      31,
+      18,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2317,
+    "bounds": [
+      [
+        -15,
+        15
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        17
+      ]
+    ],
+    "anatomy": "butterfly"
+  },
+  {
+    "name": "pet-657",
+    "grid": [
+      13,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1228,
+    "bounds": [
+      [
+        -5,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "wolf"
+  },
+  {
+    "name": "pet-658",
+    "grid": [
+      25,
+      20,
+      38
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2668,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        26
+      ]
+    ],
+    "anatomy": "peacock"
+  },
+  {
+    "name": "pet-659",
+    "grid": [
+      16,
+      33,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1557,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        33
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "giraffe"
+  },
+  {
+    "name": "pet-660",
+    "grid": [
+      23,
+      21,
+      39
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2822,
+    "bounds": [
+      [
+        -11,
+        11
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -19,
+        19
+      ]
+    ],
+    "anatomy": "elephant"
+  },
+  {
+    "name": "pet-661",
+    "grid": [
+      25,
+      24,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1892,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "swan"
+  },
+  {
+    "name": "pet-662",
+    "grid": [
+      12,
+      25,
+      22
+    ],
+    "paletteCount": 12,
+    "voxelCount": 534,
+    "bounds": [
+      [
+        -5,
+        6
+      ],
+      [
+        0,
+        24
+      ],
+      [
+        -11,
+        10
+      ]
+    ],
+    "anatomy": "seahorse"
+  },
+  {
+    "name": "pet-663",
+    "grid": [
+      15,
+      19,
+      13
+    ],
+    "paletteCount": 12,
+    "voxelCount": 676,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -7,
+        5
+      ]
+    ],
+    "anatomy": "seed"
+  },
+  {
+    "name": "pet-664",
+    "grid": [
+      14,
+      18,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 673,
+    "bounds": [
+      [
+        -6,
+        7
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -8,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-665",
+    "grid": [
+      21,
+      14,
+      21
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1311,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -7,
+        13
+      ]
+    ],
+    "anatomy": "clam"
+  },
+  {
+    "name": "pet-666",
+    "grid": [
+      16,
+      10,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1023,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-667",
+    "grid": [
+      19,
+      17,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1592,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-668",
+    "grid": [
+      33,
+      22,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2748,
+    "bounds": [
+      [
+        -16,
+        16
+      ],
+      [
+        0,
+        21
+      ],
+      [
+        -11,
+        13
+      ]
+    ],
+    "anatomy": "beetle"
+  },
+  {
+    "name": "pet-669",
+    "grid": [
+      15,
+      17,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1075,
+    "bounds": [
+      [
+        -8,
+        6
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-670",
+    "grid": [
+      23,
+      19,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1842,
+    "bounds": [
+      [
+        -11,
+        11
+      ],
+      [
+        -1,
+        17
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "chick"
+  },
+  {
+    "name": "pet-671",
+    "grid": [
+      17,
+      18,
+      13
+    ],
+    "paletteCount": 12,
+    "voxelCount": 875,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -8,
+        4
+      ]
+    ],
+    "anatomy": "mole"
+  },
+  {
+    "name": "pet-672",
+    "grid": [
+      21,
+      18,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1297,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "ram"
+  },
+  {
+    "name": "pet-673",
+    "grid": [
+      29,
+      20,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1785,
+    "bounds": [
+      [
+        -14,
+        14
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "peacock"
+  },
+  {
+    "name": "pet-674",
+    "grid": [
+      37,
+      18,
+      29
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2213,
+    "bounds": [
+      [
+        -18,
+        18
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        17
+      ]
+    ],
+    "anatomy": "butterfly"
+  },
+  {
+    "name": "pet-675",
+    "grid": [
+      25,
+      22,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1552,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        0,
+        21
+      ],
+      [
+        -12,
+        18
+      ]
+    ],
+    "anatomy": "scorpion"
+  },
+  {
+    "name": "pet-676",
+    "grid": [
+      15,
+      33,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1330,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        33
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "giraffe"
+  },
+  {
+    "name": "pet-677",
+    "grid": [
+      25,
+      11,
+      25
+    ],
+    "paletteCount": 12,
+    "voxelCount": 709,
+    "bounds": [
+      [
+        -12,
+        12
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -11,
+        13
+      ]
+    ],
+    "anatomy": "urchin"
+  },
+  {
+    "name": "pet-678",
+    "grid": [
+      21,
+      19,
+      14
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1458,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -8,
+        5
+      ]
+    ],
+    "anatomy": "gorilla"
+  },
+  {
+    "name": "pet-679",
+    "grid": [
+      23,
+      24,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1767,
+    "bounds": [
+      [
+        -11,
+        11
+      ],
+      [
+        -1,
+        22
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "horse"
+  },
+  {
+    "name": "pet-680",
+    "grid": [
+      37,
+      18,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2669,
+    "bounds": [
+      [
+        -18,
+        18
+      ],
+      [
+        0,
+        17
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "owl"
+  },
+  {
+    "name": "pet-681",
+    "grid": [
+      21,
+      19,
+      14
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1526,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        19
+      ],
+      [
+        -8,
+        5
+      ]
+    ],
+    "anatomy": "giant"
+  },
+  {
+    "name": "pet-682",
+    "grid": [
+      11,
+      11,
+      17
+    ],
+    "paletteCount": 12,
+    "voxelCount": 704,
+    "bounds": [
+      [
+        -5,
+        5
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        -11,
+        5
+      ]
+    ],
+    "anatomy": "seed"
+  },
+  {
+    "name": "pet-683",
+    "grid": [
+      21,
+      17,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1653,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "bird"
+  },
+  {
+    "name": "pet-684",
+    "grid": [
+      16,
+      10,
+      32
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1134,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        -11,
+        20
+      ]
+    ],
+    "anatomy": "lizard"
+  },
+  {
+    "name": "pet-685",
+    "grid": [
+      21,
+      22,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 959,
+    "bounds": [
+      [
+        -9,
+        11
+      ],
+      [
+        1,
+        22
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "snail"
+  },
+  {
+    "name": "pet-686",
+    "grid": [
+      27,
+      21,
+      28
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1504,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        1,
+        21
+      ],
+      [
+        -8,
+        19
+      ]
+    ],
+    "anatomy": "mouse"
+  },
+  {
+    "name": "pet-687",
+    "grid": [
+      17,
+      18,
+      19
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1551,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -13,
+        5
+      ]
+    ],
+    "anatomy": "mole"
+  },
+  {
+    "name": "pet-688",
+    "grid": [
+      27,
+      14,
+      23
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1352,
+    "bounds": [
+      [
+        -13,
+        13
+      ],
+      [
+        0,
+        13
+      ],
+      [
+        -11,
+        11
+      ]
+    ],
+    "anatomy": "spider"
+  },
+  {
+    "name": "pet-689",
+    "grid": [
+      13,
+      18,
+      26
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1104,
+    "bounds": [
+      [
+        -6,
+        6
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -8,
+        17
+      ]
+    ],
+    "anatomy": "beaver"
+  },
+  {
+    "name": "pet-690",
+    "grid": [
+      17,
+      16,
+      20
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1112,
+    "bounds": [
+      [
+        -8,
+        8
+      ],
+      [
+        0,
+        15
+      ],
+      [
+        -14,
+        5
+      ]
+    ],
+    "anatomy": "penguin"
+  },
+  {
+    "name": "pet-691",
+    "grid": [
+      21,
+      15,
+      20
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1355,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        0,
+        14
+      ],
+      [
+        -7,
+        12
+      ]
+    ],
+    "anatomy": "clam"
+  },
+  {
+    "name": "pet-692",
+    "grid": [
+      16,
+      16,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2223,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        -11,
+        21
+      ]
+    ],
+    "anatomy": "raccoon"
+  },
+  {
+    "name": "pet-693",
+    "grid": [
+      16,
+      12,
+      34
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1610,
+    "bounds": [
+      [
+        -7,
+        8
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        -13,
+        20
+      ]
+    ],
+    "anatomy": "crocodile"
+  },
+  {
+    "name": "pet-694",
+    "grid": [
+      19,
+      17,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1675,
+    "bounds": [
+      [
+        -9,
+        9
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        -12,
+        18
+      ]
+    ],
+    "anatomy": "owl"
+  },
+  {
+    "name": "pet-695",
+    "grid": [
+      23,
+      18,
+      39
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2323,
+    "bounds": [
+      [
+        -11,
+        11
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -19,
+        19
+      ]
+    ],
+    "anatomy": "elephant"
+  },
+  {
+    "name": "pet-696",
+    "grid": [
+      15,
+      33,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1441,
+    "bounds": [
+      [
+        -7,
+        7
+      ],
+      [
+        1,
+        33
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "giraffe"
+  },
+  {
+    "name": "pet-697",
+    "grid": [
+      21,
+      20,
+      31
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1982,
+    "bounds": [
+      [
+        -10,
+        10
+      ],
+      [
+        -1,
+        18
+      ],
+      [
+        -11,
+        19
+      ]
+    ],
+    "anatomy": "ram"
+  },
+  {
+    "name": "pet-698",
+    "grid": [
+      39,
+      18,
+      41
+    ],
+    "paletteCount": 12,
+    "voxelCount": 3817,
+    "bounds": [
+      [
+        -19,
+        19
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        -11,
+        29
+      ]
+    ],
+    "anatomy": "griffin"
+  },
+  {
+    "name": "pet-699",
+    "grid": [
+      34,
+      24,
+      30
+    ],
+    "paletteCount": 12,
+    "voxelCount": 2806,
+    "bounds": [
+      [
+        -17,
+        16
+      ],
+      [
+        1,
+        24
+      ],
+      [
+        -11,
+        18
+      ]
+    ],
+    "anatomy": "peacock"
+  },
+  {
+    "name": "pet-700",
+    "grid": [
+      13,
+      25,
+      33
+    ],
+    "paletteCount": 12,
+    "voxelCount": 1359,
+    "bounds": [
+      [
+        -5,
+        7
+      ],
+      [
+        1,
+        25
+      ],
+      [
+        -13,
+        19
+      ]
+    ],
+    "anatomy": "unicorn"
+  }
+]

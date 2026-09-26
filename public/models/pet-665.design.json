@@ -1,0 +1,109 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 665,
+    "key": "19-N03",
+    "name": "갈라진 조개",
+    "sourceName": "갈라진 조개",
+    "stageId": 19,
+    "tier": 0,
+    "slot": 13,
+    "form": "clam",
+    "motif": "split",
+    "prompt": "넓고 낮은 아이보리 껍질 두 장을 좁은 틈으로 떨어뜨려 놓아라. 가운데의 작은 남색 진주 얼굴은 두 눈이 정렬되게 둔다. 껍질이 닫히려 하면 진주가 조금 떠올라 틈이 일정하게 남는다.",
+    "color": "#eee7cf"
+  },
+  "assembly": {
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        3,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "shell": {
+      "rotation": [
+        -0.35,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        8
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

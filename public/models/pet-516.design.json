@@ -1,0 +1,135 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 516,
+    "key": "11-N06",
+    "name": "흡착지렁이",
+    "sourceName": "흡착지렁이",
+    "stageId": 11,
+    "tier": 1,
+    "slot": 16,
+    "form": "worm",
+    "motif": "suction",
+    "prompt": "굵고 짧은 연분홍 몸 네 구간과 넓은 크림색 얼굴을 만들라. 몸 아래 큰 청록 흡착판 세 개를 두고 머리의 점눈은 멀찍이 배치한다. 앞구간이 들리면 흡착판이 순서대로 떨어졌다 다시 붙는다.",
+    "color": "#e8b6cb"
+  },
+  "assembly": {
+    "abdomen_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        2
+      ],
+      "parent": "body"
+    },
+    "abdomen_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        7
+      ],
+      "parent": "body"
+    },
+    "abdomen_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        12
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        3
+      ],
+      "parent": "body"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -10
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        4,
+        -5
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}

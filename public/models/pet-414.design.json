@@ -1,0 +1,200 @@
+{
+  "source": "scripts/expansion_models.py",
+  "brief": {
+    "id": 414,
+    "key": "05-N18",
+    "name": "졸업가운 문어",
+    "sourceName": "졸업가운 문어",
+    "stageId": 5,
+    "tier": 4,
+    "slot": 28,
+    "form": "octopus",
+    "motif": "graduation",
+    "prompt": "크림색 둥근 얼굴 아래로 짙은 남색 가운과 굵은 팔 여덟 개를 펼쳐라. 머리의 사각 모자와 금빛 술 하나만 강조한다. 두 팔로 두루마리를 펼치고 나머지 팔은 가운 아래에서 차례로 인사한다.",
+    "color": "#f2e3bf"
+  },
+  "assembly": {
+    "arm_0": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        3.0,
+        5,
+        0.0
+      ],
+      "parent": "body"
+    },
+    "arm_1": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.121320343559643,
+        5,
+        2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "arm_2": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        1.8369701987210297e-16,
+        5,
+        3.0
+      ],
+      "parent": "body"
+    },
+    "arm_3": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.1213203435596424,
+        5,
+        2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "arm_4": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -3.0,
+        5,
+        3.6739403974420594e-16
+      ],
+      "parent": "body"
+    },
+    "arm_5": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -2.121320343559643,
+        5,
+        -2.1213203435596424
+      ],
+      "parent": "body"
+    },
+    "arm_6": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        -5.51091059616309e-16,
+        5,
+        -3.0
+      ],
+      "parent": "body"
+    },
+    "arm_7": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        2.121320343559642,
+        5,
+        -2.121320343559643
+      ],
+      "parent": "body"
+    },
+    "body": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        0
+      ],
+      "parent": null
+    },
+    "crest": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        10,
+        -3
+      ],
+      "parent": "head"
+    },
+    "eyes": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        7,
+        -6
+      ],
+      "parent": "head"
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        5,
+        -1
+      ],
+      "parent": "body"
+    },
+    "prop": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        6,
+        -9
+      ],
+      "parent": "body"
+    },
+    "token": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        8,
+        -10
+      ],
+      "parent": "prop"
+    }
+  }
+}
