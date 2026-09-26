@@ -540,7 +540,8 @@ nav button img { width:28px; height:28px; }
 #player-labels { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
 .player-nameplate { position:absolute; transform:translate(-50%,-100%); padding:3px 6px; max-width:210px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#39482d; background:#fff9e8e8; border:1px solid var(--player-color); border-radius:4px; font-size:11px; line-height:16px; font-weight:700; }
 .player-nameplate.self { background:#f8edcce8; }
-.player-nameplate { overflow:visible; }
+.player-nameplate { overflow:visible; left:0; top:0; background:#fff9e8; will-change:transform; backface-visibility:hidden; text-shadow:none; transition:none; }
+.player-nameplate.self { background:#f8edcc; }
 .player-caption { display:block; max-width:198px; overflow:hidden; text-overflow:ellipsis; }
 .player-chat { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); width:max-content; max-width:min(220px,65vw); padding:8px 10px; white-space:normal; overflow-wrap:anywhere; background:#fff9e8; border:2px solid #68724d; border-radius:8px; box-shadow:2px 3px 0 #52664a55; font-size:13px; line-height:1.4; }
 .player-chat::after { content:''; position:absolute; bottom:-7px; left:calc(50% - 5px); width:9px; height:9px; background:#fff9e8; border-right:2px solid #68724d; border-bottom:2px solid #68724d; transform:rotate(45deg); }
@@ -554,7 +555,7 @@ nav button img { width:28px; height:28px; }
 
 /* Keep the model unobstructed; the only action is the egg itself. */
 #hatch-touch { position:absolute; z-index:3; padding:0; background:transparent; border:0; box-shadow:none; touch-action:manipulation; }
-#hatch-touch span { position:absolute; top:calc(100% + 12px); left:50%; transform:translateX(-50%); width:max-content; max-width:85vw; font-size:14px; font-weight:800; color:#35472e; text-shadow:0 1px 3px #fff9e8; pointer-events:auto; }
+#hatch-touch span { position:absolute; top:calc(100% + 12px); left:50%; transform:translateX(-50%); display:block; width:max-content; max-width:85vw; text-align:center; font-size:14px; font-weight:800; color:#35472e; text-shadow:0 1px 3px #fff9e8; pointer-events:auto; }
 #hatch-touch:focus-visible { outline:2px dashed #b98a35; border-radius:50%; }
 [data-mode="hatchery"] #top-hud #hatch-info { background:none; border:0; box-shadow:none; padding:2px 12px; }
 [data-mode="hatchery"] #hatch-info h1,[data-mode="hatchery"] #tutorial,[data-mode="hatchery"] #pet-effects,[data-mode="hatchery"] #cycle-clock,[data-mode="hatchery"] #controls { display:none; }
@@ -617,3 +618,14 @@ nav button img { width:28px; height:28px; }
 #shell #panel { top:calc(var(--main-hud-bottom,120px) + 8px); }
 #egg-notices { top:calc(var(--top-hud-bottom,160px) + 12px); }
 @media(max-width:359px){#top-hud #main-hud{grid-template-columns:minmax(82px,1fr) minmax(0,1.65fr);padding:5px 6px;column-gap:4px}#main-hud .hud-player{gap:4px}#main-hud .hud-avatar{width:24px;height:28px}#main-hud .hud-wallet{gap:0}#main-hud .dust b{font-size:20px}#main-hud .dust b.long-number{font-size:18px}#main-hud #cycle-clock{column-gap:8px}}
+
+/* One short, contextual onboarding hint; completed/skipped saves stay hidden. */
+#shell #bottom-hud #tutorial:not([hidden]) { display:flex; width:100%; box-shadow:none; border:1px solid #a1a77b; background:#fff9e8f5; }
+#shell #tutorial #tutorial-copy { display:block!important; margin:2px 0 0; font-size:12px; line-height:1.35; }
+#shell #tutorial-icon { display:none; }
+#shell #tutorial b { font-size:13px; }
+#shell .tutorial-focus { outline:2px solid #b3893a; outline-offset:3px; }
+#shell #egg-health .egg-health-numbers { display:flex; justify-content:center; gap:16px; align-items:center; }
+.egg-health-numbers span { display:inline-flex; align-items:center; gap:4px; }
+.egg-health-numbers .ui-icon { width:16px; height:16px; }
+#shell #inventory-count { font-size:12px; }

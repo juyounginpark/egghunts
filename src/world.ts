@@ -1,3 +1,4 @@
+import {eggMaxHp} from './data';
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage,DAMAGE_OVER_TIME } from "./data";
@@ -380,13 +381,13 @@ export class World {
       this.hatch.add(m);
     }
   }
-  showHatchHit(amount:number){
+  showHatchHit(amount:number,point?:{x:number;y:number}){
     if(!Number.isFinite(amount)||amount<=0||this.birth)return;
     this.hitAt=performance.now();
     const touch=document.getElementById('hatch-touch');if(!touch||touch.hidden)return;
     const rect=touch.getBoundingClientRect(),host=this.host.getBoundingClientRect();
     const effect=document.createElement('div');effect.className='hatch-hit-feedback';effect.setAttribute('aria-hidden','true');
-    effect.style.left=`${rect.left-host.left+rect.width/2}px`;effect.style.top=`${rect.top-host.top+rect.height*.35}px`;
+    effect.style.left=`${(point?.x??rect.left+rect.width/2)-host.left}px`;effect.style.top=`${(point?.y??rect.top+rect.height*.35)-host.top}px`;
     const number=document.createElement('b');number.textContent=`−${amount<.01?'<0.01':formatNumber(amount)}`;effect.append(number);
     if(!this.reducedMotion.matches)for(let i=0;i<6;i++){
       const spark=document.createElement('i'),angle=i*Math.PI/3;
@@ -420,6 +421,8 @@ export class World {
     const left=Math.max(8,(Math.min(...points.map(p=>p.x))+1)*rect.width/2),right=Math.min(rect.width-8,(Math.max(...points.map(p=>p.x))+1)*rect.width/2);
     const top=(1-Math.max(...points.map(p=>p.y)))*rect.height/2,bottom=(1-Math.min(...points.map(p=>p.y)))*rect.height/2;
     Object.assign(button.style,{left:`${left}px`,top:`${top}px`,width:`${Math.max(44,right-left)}px`,height:`${Math.max(44,bottom-top)}px`});
+    // The model bounds can be asymmetric; center the prompt on the viewport.
+    button.querySelector('span')!.style.left=`${rect.width/2-left}px`;
   }
   followerMetrics(){return this.companions.children.map(p=>({x:p.position.x,z:p.position.z,rotation:p.rotation.y,scale:p.scale.x}));}
   render(game: GameState, mode: string, dt: number, time: number) {
@@ -622,7 +625,7 @@ export class World {
     if(this.birth&&birthAge>=1.05&&this.birth.onBirth){this.birth.onBirth();this.birth.onBirth=undefined;}
     if(this.birth&&birthAge>=2.7)this.birth.done();
     this.crack.visible = isHatch && !!game.selected && game.result===null && !isReward;
-    const stage = game.selected ? crackStage(game.selected.hp, EGGS[game.selected.type].hp) : 0;
+    const stage = game.selected ? crackStage(game.selected.hp, eggMaxHp(game.selected)) : 0;
     if (this.crack.userData.stage !== stage) {
       this.crack.userData.stage = stage;
       for (const child of [...this.crack.children]) {

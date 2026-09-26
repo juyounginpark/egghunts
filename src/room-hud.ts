@@ -42,7 +42,10 @@ export class RoomHUD{
    entry.row.style.setProperty('--player-color',colors[p.slot??0]??colors[0]);entry.label.style.setProperty('--player-color',colors[p.slot??0]??colors[0]);
    entry.row.classList.toggle('self',p.id==='self');entry.label.classList.toggle('self',p.id==='self');
    const anchor=world.playerAnchor(p.id==='self'?undefined:p.id);entry.label.hidden=!anchor;
-   if(anchor){entry.label.style.left=`${anchor.x}px`;entry.label.style.top=`${anchor.y}px`;}
+   if(anchor){
+    const dpr=window.devicePixelRatio||1;
+    entry.label.style.transform=`translate3d(${Math.round(anchor.x*dpr)/dpr}px,${Math.round(anchor.y*dpr)/dpr}px,0) translate(-50%,-100%)`;
+   }
   }
  }
 }

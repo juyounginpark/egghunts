@@ -1,5 +1,5 @@
 import {EGGS,RARITIES} from './data';
-import {eggIcon,eggName,type EggAppearance} from './stage-eggs';
+import {eggName,type EggAppearance} from './stage-eggs';
 import {STAGES} from './stage-data';
 import type {GameState} from './game';
 export type EggNotice={id:string;at:number;name:string;guest:boolean;egg:EggAppearance};
@@ -51,8 +51,7 @@ export class EggNotices{
   const def=EGGS[n.egg.type];if(!def)return;
   const rarity=RARITIES[def.tier];
   this.host.replaceChildren();this.host.dataset.kind=n.kind??'acquired';this.host.style.setProperty('--rarity-color',rarity.color);
-  const icon=document.createElement('img'),copy=document.createElement('div'),who=document.createElement('small'),tier=document.createElement('b'),name=document.createElement('strong');
-  icon.src=eggIcon(n.egg);icon.alt='';
+  const copy=document.createElement('div'),who=document.createElement('small'),tier=document.createElement('b'),name=document.createElement('strong');
   if(n.kind==='dawn'){
    who.textContent='낮이 되었어요!';name.textContent='알이 리셋되었어요!';tier.hidden=true;
   }else{
@@ -62,6 +61,6 @@ export class EggNotices{
    const count=n.eggIds?.filter(id=>this.worldIds.has(id)).length??1;
    if(count>1)name.textContent+=` ×${count}`;
   }
-  copy.append(who,tier,name);this.host.append(icon,copy);this.until=performance.now()+4000;
+  copy.append(who,tier,name);this.host.append(copy);this.until=performance.now()+4000;
  }
 }

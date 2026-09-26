@@ -1,4 +1,5 @@
 import {add} from '../src/money';
+import {advanceTutorial} from '../src/tutorial';
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
 import {BALANCE,EGGS,MONGLES,UPGRADES} from '../src/data';
 import {exportRuntime,restoreRuntime,migrateStageRuntime,type RuntimeState} from '../src/online-state';
@@ -129,8 +130,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const commandResults=(request.commands??[]).map(c=>({id:c.id,error:player.commandErrors?.find(e=>e.id===c.id)?.error??null}));
  errors.push(...commandResults.flatMap(c=>c.error?[c.error]:[]));
  room.world=self.world;
- const tutorialSteps:Record<string,number>={expedition_start:1,egg_pickup:2,egg_saved:3,mongle_obtained:4,upgrade_purchase:5,trail_purchase:5};
- for(const g of games.values())for(const event of g.events)g.save.tutorial=Math.max(g.save.tutorial??0,tutorialSteps[event.name]??0);
+ for(const g of games.values())for(const event of g.events)g.save.tutorial=advanceTutorial(g.save.tutorial??0,event.name);
  room.eggNotices=(room.eggNotices??[]).filter(n=>now-n.at<60000);
  for(const [id,g] of games)for(const event of g.events)if(event.name==='egg_saved'){
   const p=event.params,noticeId=`${id}:${p.id}`;

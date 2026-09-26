@@ -1,3 +1,5 @@
+import {eggMaxHp} from './data';
+import {advanceTutorial,tutorialHint} from './tutorial';
 import {add,exactMoney,compare} from './money';
 import "./style.css";
 import {cycleClock} from "./cycle-clock";
@@ -105,7 +107,7 @@ $("shell").append(bottomHud);
 const inventory = document.createElement("section");
 inventory.id = "inventory";
 inventory.innerHTML =
-  '<div class="inventory-heading"><strong id="inventory-count">보관함 0 / 6</strong><span>알을 선택해 부화 준비</span></div><div id="egg-queue"></div><div id="pet-effects"></div>';
+  '<div class="inventory-heading"><strong id="inventory-count" aria-label="알 보관함">0 / 6</strong></div><div id="egg-queue"></div><div id="pet-effects"></div>';
 for (const el of [$("hint"), inventory, $("controls"), $("risk")])
   bottomHud.append(el);
 bottomHud.insertBefore(tutorial,$('controls'));
@@ -207,7 +209,7 @@ async function action(preparedId?:string) {
     }
     if(!game.carried&&targetEgg?.id.startsWith('net-')){
       claiming=true;
-      try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:EGGS[egg.type].hp,hpVersion:2,distance:Math.abs(egg.z),expires:game.nightAt});}
+      try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:eggMaxHp(egg),hpVersion:3,distance:Math.abs(egg.z),expires:game.nightAt});}
       catch(err){toast(String(err));}finally{claiming=false;}return;
     }
     if(!game.carried&&!game.near&&!game.nearGym){world.swingBat(game.now());feedback('swing');return;}
@@ -324,10 +326,12 @@ function updateHud() {
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.training||!!game.carried||!!game.death||!!game.returnReward;
   $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:'';
   $('speed-help').hidden=!game.training;
-  const step=game.save.tutorial??0;
-  $("tutorial").hidden=step>=5 || !!game.returnReward || game.result!==null;
-  $("tutorial-title").textContent = ["화면을 밀어 이동해요","알을 찾아요","큰 알일수록 느려져요","알을 두드려요","펫과 함께 자라요"][step]??'';
-  $("tutorial-copy").textContent = ["왼쪽 조이스틱을 위로 밀어 농장문을 나가세요.","길 위의 알에 다가가 오른쪽 ‘들고가기’를 누르세요.","알을 들면 느려져요. 아래쪽 농장으로 돌아가세요. 보스 공격에 맞으면 알을 떨어뜨려요!","부화실을 열고 알을 직접 눌러 주세요. 자동 장비도 도와줘요.","별가루로 강화하거나 트레일을 사세요. 농장 러닝머신에서도 속도가 올라요."][step]??"";
+  const hint=tutorialHint(game,tab);
+  $("tutorial").hidden=!hint || !!game.returnReward || game.result!==null || !!game.death || paused;
+  $("tutorial-title").textContent=hint?`${hint.step}/5 · ${hint.title}`:'';
+  $("tutorial-copy").textContent=hint?.copy??'';
+  document.querySelectorAll('.tutorial-focus').forEach(el=>el.classList.remove('tutorial-focus'));
+  if(hint&&!$('tutorial').hidden)document.querySelector(hint.target)?.classList.add('tutorial-focus');
   $("return-reward").hidden = !game.returnReward;
   if(game.returnReward){
     const rarity=RARITIES[EGGS[game.returnReward.type].tier];
@@ -413,8 +417,8 @@ function updateHud() {
   if (tab === "hatchery") {
     const e = game.selected;
     $("egg-health").innerHTML = e
-      ? `<b>${eggName(e)}</b><div class="track" role="progressbar" aria-label="남은 알 내구도" aria-valuenow="${e.hp}" aria-valuemin="0" aria-valuemax="${EGGS[e.type].hp}"><i style="width:${(e.hp / EGGS[e.type].hp) * 100}%"></i></div><small class="egg-health-numbers">체력 ${num(e.hp)} / ${num(EGGS[e.type].hp)} · 클릭 −${num(Math.min(e.hp,game.tapDamage))}</small>`
-      : "<b>새로운 만남을 기다려요</b><p>탐험에서 알을 가져와 주세요.</p>";
+      ? `<div class="track" role="progressbar" aria-label="${eggName(e)} 남은 알 내구도" aria-valuenow="${e.hp}" aria-valuemin="0" aria-valuemax="${eggMaxHp(e)}"><i style="width:${(e.hp / eggMaxHp(e)) * 100}%"></i></div><small class="egg-health-numbers"><span aria-label="체력 ${num(e.hp)} / ${num(eggMaxHp(e))}">♡ ${num(e.hp)} / ${num(eggMaxHp(e))}</span><span aria-label="클릭 피해 ${num(Math.min(e.hp,game.tapDamage))}">${uiIcon('tap')} −${num(Math.min(e.hp,game.tapDamage))}</span></small>`
+      : '<span aria-label="보관 중인 알이 없어요">🥚 0</span>';
   }
   const touch=$<HTMLButtonElement>('hatch-touch');
   touch.hidden=tab!=='hatchery'||!game.selected||!!game.returnReward||game.result!==null||hatchRevealing||!$('modal').hidden;
@@ -456,11 +460,11 @@ function renderEggQueue() {
     $("inventory").append(queue);
   }
   $("inventory-count").textContent =
-    `보관소 ${game.save.eggs.length} / ${BALANCE.inventory}`;
+    `🥚 ${game.save.eggs.length} / ${BALANCE.inventory}`;
   queue.innerHTML = Array.from({ length: BALANCE.inventory }, (_, i) => {
     const e = game.save.eggs[i];
     if (!e)
-      return '<div class="egg-slot empty"><span>＋</span><small>빈 칸</small></div>';
+      return '<div class="egg-slot empty" aria-label="빈 보관 칸"><span>＋</span></div>';
     const def = EGGS[e.type];
     return `<button data-egg="${e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""} ${def.tier >= 4 ? "rare" : ""}" style="--egg:${def.color}"><b>${def.rarity}</b><img class="egg-icon" src="${eggIcon(e)}" alt="" /><small>${e.hp===0?'획득 준비 완료':eggName(e)}</small></button>`;
   }).join("");
@@ -503,13 +507,20 @@ function showSettings() {
   }
   ($("appearance-setting") as HTMLSelectElement).value=String(game.save.appearance??0);
 }
+const hatchTouches:{egg:string;x:number;y:number;at:number}[]=[];
 document.addEventListener("click", async (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("button");
   if (!b || !ready) return;
   if(b.id==='leave-room'){paused=true;input.reset();b.setAttribute('disabled','');await online.leave();location.reload();return;}
   if(b.id==='hatch-touch'||b.id==='claim-hatch'){
     if(tab!=='hatchery'||paused||hatchRevealing||!$('modal').hidden||game.returnReward||game.death)return;
-    if(game.selected&&game.selected.hp>0){void action();return;}
+    if(game.selected&&game.selected.hp>0){
+      const point={egg:game.selected.id,x:e.clientX,y:e.clientY,at:performance.now()};
+      if(e.detail>0){hatchTouches.push(point);if(hatchTouches.length>20)hatchTouches.shift();}
+      const ok=online.active?await remote('tap'):game.tap();
+      if(!ok){const index=hatchTouches.indexOf(point);if(index>=0)hatchTouches.splice(index,1);}
+      return;
+    }
     const egg=game.selected;
     if(hatchClaiming||!egg||egg.hp!==0||game.result!==null)return;
     hatchClaiming=true;hatchEgg={...egg};input.reset();online.halt();
@@ -759,15 +770,18 @@ function frame(now: number) {
   for (const event of game.events.splice(0)) {
     const cues:Partial<Record<string,GameSound>>={hatch_manual_hit:'tap',egg_pickup:'pickup',egg_drop:'drop',egg_saved:'return',mongle_obtained:'hatch',player_hit:'hit',player_death:'death',player_revive:'revive',night_refresh:'night',region_enter:'stage',level_up:'upgrade',upgrade_purchase:'upgrade',trail_purchase:'upgrade',collection_reward:'upgrade',boss_wake:'boss',egg_recovered:'drop'};
     const cue=cues[event.name];if(cue&&cue!=='hatch')playSound(cue,Number(event.params.stage??game.stage.id));
-    if(event.name==='hatch_manual_hit'&&tab==='hatchery'&&event.params.egg===game.selected?.id){world.showHatchHit(Number(event.params.damage));feedback(null);}
+    if(event.name==='hatch_manual_hit'&&tab==='hatchery'&&event.params.egg===game.selected?.id){
+      while(hatchTouches.length&&(hatchTouches[0].egg!==event.params.egg||performance.now()-hatchTouches[0].at>3000))hatchTouches.shift();
+      world.showHatchHit(Number(event.params.damage),hatchTouches.shift());feedback(null);
+    }
     if(event.name==='boss_wake'){bossAlertUntil=now+3000;if(!paused&&!game.death&&tab==='explore')feedback(null);}
     if(event.name==='expedition_start'){$("toast").hidden=true;clearTimeout(toastTimer);}
     if(['level_up','player_hit','health_unlocked','player_death'].includes(event.name)){feedback(null);void save();}
     if(event.name.startsWith('expedition_fail_')){playSound('return');toast(game.message);void save();}
     if(event.name==='training_gain'){world.showTrainingGain(Number(event.params.amount),game.now());continue;}
-    const steps:Record<string,number>={expedition_start:1,egg_pickup:2,egg_saved:3,mongle_obtained:4,upgrade_purchase:5,trail_purchase:5};
-    if(steps[event.name] && (game.save.tutorial??0)<steps[event.name]){
-      game.save.tutorial=steps[event.name];platform.track("tutorial_step_complete",{step:steps[event.name]});
+    const nextStep=advanceTutorial(game.save.tutorial??0,event.name);
+    if((game.save.tutorial??0)<nextStep){
+      game.save.tutorial=nextStep;platform.track("tutorial_step_complete",{step:nextStep});
     }
     platform.track(event.name, event.params);
     if(event.name === "expedition_success" && platform.native)
@@ -801,7 +815,7 @@ function frame(now: number) {
   void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null);
   if(multiplayer.connected){
     game.world=game.world.filter(e=>!e.id.startsWith('net-')||multiplayer.drops.some(d=>d.id===e.id));
-    for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:EGGS[egg.type].hp,hpVersion:2,distance:Math.abs(egg.z),expires:game.nightAt});
+    for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:eggMaxHp(egg),hpVersion:3,distance:Math.abs(egg.z),expires:game.nightAt});
   }
   world.updatePeers(online.active?online.peers:multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
   world.networkOffset=online.active?online.visualOffset:{x:0,z:0};

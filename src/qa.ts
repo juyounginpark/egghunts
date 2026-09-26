@@ -1,3 +1,4 @@
+import {eggMaxHp} from './data';
 // Imported only behind import.meta.env.DEV. Never included in the release bundle.
 import { GameState, freshSave } from "./game";
 import { EGGS, BALANCE } from "./data";
@@ -32,7 +33,7 @@ export function prepare(game: GameState, scene: string) {
   if (["egg-near", "rare-near", "egg-carry", "urgent", "egg-loss"].includes(scene)) {
     const egg = game.world[2];
     egg.type = scene === "rare-near" ? 30 : 0;
-    egg.hp = EGGS[egg.type].hp;
+    egg.hp = eggMaxHp(egg);
     game.z = egg.z + 1;
     game.deadline = clock + game.duration * 1000;
     if (["egg-carry", "urgent", "egg-loss"].includes(scene)) game.interact();

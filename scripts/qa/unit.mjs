@@ -12,8 +12,8 @@ try {
    assert.ok(Math.abs(g.speed-before-g.effectiveTrainingRate)<1e-9);assert.ok(Math.abs(g.events.find(e=>e.name==='training_gain').params.amount-.0165)<1e-9);
  });
  await test('integer egg HP and lossless old floating-point HP migration',()=>{
-   assert.ok(EGGS.every(e=>Number.isInteger(e.hp)));assert.equal(EGGS[11].hp,880);
-   const s=freshSave(now);s.eggs=[{id:'float',type:11,hp:880.0000000000001,distance:43}];assert.equal(parseSave(JSON.stringify(s),now).eggs[0].hp,880);
+   assert.ok(EGGS.every(e=>Number.isInteger(e.hp)));assert.equal(EGGS[11].hp,308);
+   const s=freshSave(now);s.eggs=[{id:'float',type:11,hp:880.0000000000001,distance:43}];assert.equal(parseSave(JSON.stringify(s),now).eggs[0].hp,308);
    s.eggs[0].hp=900;assert.throws(()=>parseSave(JSON.stringify(s),now));
  });
  await test('sale pays once, removes last equipped pet, preserves discovery/reward on reload',()=>{

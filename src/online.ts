@@ -181,7 +181,7 @@ export class OnlineGame{
   this.receivedAt=performance.now();
   if(this.game){
    const g=this.game,settings=g.save.settings,offset=this.visualOffset,old={x:g.x+offset.x,z:g.z+offset.z,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot,facing:g.facing,velocity:g.velocity};
-   restoreRuntime(g,state.runtime,state.world,state.bosses);g.save.settings=settings;g.events.push(...state.events);
+   restoreRuntime(g,state.runtime,state.world,state.bosses,false);g.save.settings=settings;g.events.push(...state.events);
    g.roomSnapshotTime=state.serverTime/1000;
    const stable=old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
    if(stable&&!g.death&&!g.training&&g.now()>=g.knockedUntil){

@@ -1,7 +1,7 @@
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
-import {ECONOMY,recommendedIncome,growthCost} from './data';
+import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp} from './data';
 import {
   BALANCE,
   DAMAGE_OVER_TIME,
@@ -23,16 +23,16 @@ import {farmGym} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianPursuitSpeed,stageDamage,type HazardDefinition} from "./stage-data";
-export type Egg = { id: string; type: number; hp: number; hpVersion?:2; distance: number; stageId?:number; variant?:number; special?:boolean };
+export type Egg = { id: string; type: number; hp: number; hpVersion?:2|3; distance: number; stageId?:number; variant?:number; special?:boolean };
 // Version each egg because stored, carried and shared-room eggs have separate lifetimes.
 export function migrateEggHealth(eggs:(Egg|null|undefined)[]){
   for(const egg of eggs){
-    if(!egg||egg.hpVersion===2)continue;
-    if(egg.hpVersion!==undefined||!EGGS[egg.type]||!Number.isFinite(egg.hp)||egg.hp<0)throw Error('Invalid egg health');
-    const max=EGGS[egg.type].hp;
-    const hp=egg.hp*10;
-    if(hp>max+Number.EPSILON*max*8)throw Error('Invalid legacy egg health');
-    egg.hp=Math.min(max,hp);egg.hpVersion=2;
+    if(!egg||egg.hpVersion===3)continue;
+    if((egg.hpVersion!==undefined&&egg.hpVersion!==2)||!EGGS[egg.type]||!Number.isFinite(egg.hp)||egg.hp<0)throw Error('Invalid egg health');
+    const def=EGGS[egg.type];
+    const oldMax=Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6))/(egg.hpVersion===2?1:10);
+    if(egg.hp>oldMax+Number.EPSILON*oldMax*8)throw Error('Invalid legacy egg health');
+    egg.hp=Math.min(1,egg.hp/oldMax)*eggMaxHp({...egg,hpVersion:3});egg.hpVersion=3;
   }
 }
 export type WorldEgg = Egg & {
@@ -137,7 +137,7 @@ export function parseSave(raw: string | null, now: number): Save {
   // Older maximum HP values may contain floating-point multiplication noise.
   for(const egg of [...(Array.isArray(s.eggs)?s.eggs:[]),s.expedition?.carried]){
     if(egg&&EGGS[egg.type]&&Number.isFinite(egg.hp)){
-      const max=EGGS[egg.type].hp;
+      const max=eggMaxHp(egg);
       if(egg.hp>max&&egg.hp-max<=Number.EPSILON*max*8)egg.hp=max;
     }
   }
@@ -179,7 +179,7 @@ export function parseSave(raw: string | null, now: number): Save {
         Number.isInteger(e.type) &&
         !!EGGS[e.type] &&
         finite(e.hp) &&
-        e.hp <= EGGS[e.type].hp &&
+        e.hp <= eggMaxHp(e) &&
         typeof e.id === "string" &&
         finite(e.distance),
     ) ||
@@ -216,7 +216,7 @@ export function parseSave(raw: string | null, now: number): Save {
       !EGGS[e.type] ||
       typeof e.id !== "string" ||
       !finite(e.hp) ||
-      e.hp > EGGS[e.type].hp ||
+      e.hp > eggMaxHp(e) ||
       !finite(e.distance) ||
       !Number.isFinite(e.x) ||
       !Number.isFinite(e.z) ||
@@ -532,7 +532,7 @@ export class GameState {
     this.resetBosses();this.spawn();
     if (!save.world && !save.discovered.length && !save.eggs.length && !save.mongles.some(Boolean)) {
       const starter = this.world[2];
-      starter.type = 0; starter.hp = EGGS[0].hp;
+      starter.type = 0; starter.hp = eggMaxHp(starter);
     }
     if (
       save.world &&
@@ -663,8 +663,8 @@ export class GameState {
         return {
           id: `${boss.stage}-${slot}-${this.now()}-${this.random()}`,
           type,
-          hp: EGGS[type].hp,
-          hpVersion:2 as const,
+          hp: eggMaxHp({type,stageId:boss.stage}),
+          hpVersion:3 as const,
           distance: Math.abs(z),
           x,
           z,
@@ -681,7 +681,7 @@ export class GameState {
     const dragon=this.random()<BALANCE.secretDragonEggChance;
     const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=dragon?6:FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
     const type=tier*REGIONS.length+REGIONS.length-1,z=-this.route.at(-1)!.end+FINAL_GUARDIAN.eggEndOffset;
-    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:EGGS[type].hp,hpVersion:2,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
+    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:3,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
   }
   get nightRemaining() {
     return Math.max(0, Math.ceil((this.nightAt - this.now()) / 1000));

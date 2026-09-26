@@ -214,6 +214,17 @@ export const RARITIES = [
   },
 ];
 const eggNames = ["풀잎", "버섯", "수정", "화석", "우주"];
+export const EGG_HEALTH = {
+  legacyRegionBase: [300,4000,15000,75000,400000],
+  stageBase: [12,24,45,80,140,240,400,650,1050,1700,2700,4300,6800,10800,17000,27000,43000,68000,108000,170000],
+};
+export function eggMaxHp(egg:{type:number;stageId?:number;hpVersion?:2|3}){
+  const def=EGGS[egg.type];
+  // A client may briefly receive a snapshot from the previous server release.
+  if(egg.hpVersion===2)return Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6));
+  const stage=egg.stageId??(def.region*4+1);
+  return Math.round(EGG_HEALTH.stageBase[Math.max(0,Math.min(19,stage-1))]*(1+def.tier*.6));
+}
 // Keep the first five egg IDs compatible with existing saves.
 export const EGGS = RARITIES.flatMap((r, tier) =>
   REGIONS.map((_, region) => ({
@@ -221,7 +232,7 @@ export const EGGS = RARITIES.flatMap((r, tier) =>
     rarity: r.name,
     tier,
     region,
-    hp: Math.round([300, 4000, 15000, 75000, 400000][region] * (1 + tier * 0.6)),
+    hp: Math.round(EGG_HEALTH.stageBase[region*4] * (1 + tier * 0.6)),
     weight: 1-Math.min(BALANCE.maxCarrySlow,BALANCE.carrySlowByTier[tier]),
     reward: Math.round([30, 100, 300, 800, 2400][region] * (1 + tier * tier)),
     color: r.color,
