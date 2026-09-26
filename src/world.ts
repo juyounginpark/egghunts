@@ -1,6 +1,6 @@
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage } from "./data";
+import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage,DAMAGE_OVER_TIME } from "./data";
 import { eggVisual, petVisual, animateEgg,nestVisual } from "./visuals";
 import type { Egg, GameState } from "./game";
 import { voxelModel as model, loadVoxels } from "./voxel";
@@ -14,6 +14,7 @@ import {villageArt} from './world-art';
 import {animatePet,greetPet} from './pet-animation';
 import {followPets} from './pet-followers';
 import {GuardianMotion} from './guardian-motion';
+import {HatchBurst} from './hatch-burst';
 
 export class World {
   networkOffset={x:0,z:0};
@@ -174,6 +175,9 @@ export class World {
   private nightBarrier = new T.Mesh(new T.BoxGeometry(BALANCE.mapX*2,.8,.3),new T.MeshLambertMaterial({color:0xa9875c}));
   private selectionMaterial = new T.MeshBasicMaterial({color:0xff2525,side:T.BackSide});
   private hatchKey = "";
+  private hatchBurst=new HatchBurst();
+  private damageDirection=document.createElement('div');
+  private birth?:{id:number;egg:Pick<Egg,'type'|'stageId'|'variant'>;at:number;done:()=>void;onBirth?:()=>void};
   private carry = new T.Group();
   private focus = new T.Vector3();
   private healthAnchor = new T.Vector3();
@@ -201,6 +205,7 @@ export class World {
     this.renderer.shadowMap.type = T.PCFShadowMap;
     this.renderer.setClearColor(0xe9f0d8);
     host.append(this.renderer.domElement);
+    this.damageDirection.id='damage-direction';this.damageDirection.hidden=true;this.damageDirection.setAttribute('aria-hidden','true');host.append(this.damageDirection);
     this.petLabels.id="pet-labels";host.append(this.petLabels);
     this.peerPetLabels.id='peer-pet-labels';host.append(this.peerPetLabels);
     this.scene.add(this.farm,this.farmPets,this.roomFarmPets,this.footTrail);
@@ -331,7 +336,7 @@ export class World {
     pedestal.scale.set(2.5, 1, 2.5);
     pedestal.position.y = -0.2;
     this.crack.scale.setScalar(BALANCE.eggPresentationScale);
-    this.hatch.add(pedestal, this.crack);
+    this.hatch.add(pedestal, this.crack,this.hatchBurst);
     this.hatch.visible = false;
   }
   quality(low: boolean) {
@@ -375,6 +380,30 @@ export class World {
       this.hatch.add(m);
     }
   }
+  async revealHatch(id:number,egg:Pick<Egg,'type'|'stageId'|'variant'>,onBirth:()=>void){
+    // Hold the original egg while the result asset loads. Ownership was already
+    // committed, so a failed asset request must still release the result UI.
+    let finish!:()=>void;
+    const completed=new Promise<void>(resolve=>{finish=resolve;});
+    const birth=this.birth={id,egg,at:Infinity,done:finish,onBirth};
+    let timeout=0;
+    try{
+      await Promise.race([loadVoxels([`pet-${id}`]),new Promise<never>((_,reject)=>{timeout=window.setTimeout(()=>reject(Error('Pet asset timeout')),15000);})]);
+      clearTimeout(timeout);birth.at=performance.now();await completed;
+    }
+    finally{clearTimeout(timeout);if(this.birth===birth)this.birth=undefined;this.hatchBurst.visible=false;}
+  }
+  private positionHatchTouch(){
+    const button=document.getElementById('hatch-touch');
+    if(!button||button.hidden||!this.hatchModel)return;
+    this.hatchModel.updateWorldMatrix(true,true);
+    const box=new T.Box3().setFromObject(this.hatchModel),rect=this.host.getBoundingClientRect();
+    const points=[];
+    for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z])points.push(new T.Vector3(x,y,z).project(this.camera));
+    const left=Math.max(8,(Math.min(...points.map(p=>p.x))+1)*rect.width/2),right=Math.min(rect.width-8,(Math.max(...points.map(p=>p.x))+1)*rect.width/2);
+    const top=(1-Math.max(...points.map(p=>p.y)))*rect.height/2,bottom=(1-Math.min(...points.map(p=>p.y)))*rect.height/2;
+    Object.assign(button.style,{left:`${left}px`,top:`${top}px`,width:`${Math.max(44,right-left)}px`,height:`${Math.max(44,bottom-top)}px`});
+  }
   followerMetrics(){return this.companions.children.map(p=>({x:p.position.x,z:p.position.z,rotation:p.rotation.y,scale:p.scale.x}));}
   render(game: GameState, mode: string, dt: number, time: number) {
     this.animateBat(this.player,game.now()-this.swungAt);
@@ -385,9 +414,9 @@ export class World {
       // Exploration overlays never change framing; the hatchery has its own layout.
       const hatchLayout=mode==='hatchery'||game.result!==null||!!game.returnReward;
       if(hatchLayout){
-        const top=document.getElementById('top-hud')!.getBoundingClientRect().bottom-host.top;
+        const top=game.returnReward?host.height*.12:document.getElementById('top-hud')!.getBoundingClientRect().bottom-host.top;
         const bottom=document.getElementById('bottom-hud')!;
-        const end=bottom.hidden?host.height*.8:bottom.getBoundingClientRect().top-host.top;
+        const end=game.returnReward?document.getElementById('reward-copy')!.getBoundingClientRect().top-host.top:bottom.hidden?host.height*.8:bottom.getBoundingClientRect().top-host.top-36;
         this.viewportOffset=host.height/2-(top+end)/2;
       }else this.viewportOffset = -host.height * .05;
       this.camera.setViewOffset(
@@ -562,13 +591,20 @@ export class World {
     const near = game.near;
     this.highlight.visible = false;
     if (near) this.highlight.position.set(near.x, 0.055, near.z);
-    const hatchKey =
-      isReward ? `reward:${game.returnReward!.type}:${game.returnReward!.stageId}:${game.returnReward!.variant}` : game.result !== null
-        ? `result:${game.result}`
+    const birthAge=this.birth?(performance.now()-this.birth.at)/1000:-1;
+    const birthEgg=this.birth&&birthAge<1.05?this.birth.egg:undefined;
+    const shownResult=birthEgg?null:game.result;
+    const appearance=birthEgg??game.returnReward??game.selected;
+    const hatchKey = birthEgg?`birth:${this.birth!.id}`:
+      isReward ? `reward:${game.returnReward!.type}:${game.returnReward!.stageId}:${game.returnReward!.variant}` : shownResult !== null
+        ? `result:${shownResult}`
         : (game.selected?.id ?? "empty");
     if (hatchKey !== this.hatchKey)
-      void this.updateHatch(hatchKey, game.returnReward?.type ?? game.selected?.type ?? 0, isReward ? null : game.result,game.returnReward??game.selected).catch(err => { this.hatchKey = ""; this.assetError = String(err); });
-    this.crack.visible = isHatch && !!game.selected;
+      void this.updateHatch(hatchKey, appearance?.type ?? 0, isReward ? null : shownResult,appearance).catch(err => { this.hatchKey = ""; this.assetError = String(err); });
+    this.hatchBurst.update(birthAge,this.birth?MONGLES[this.birth.id].tier:0,this.reducedMotion.matches,this.low);
+    if(this.birth&&birthAge>=1.05&&this.birth.onBirth){this.birth.onBirth();this.birth.onBirth=undefined;}
+    if(this.birth&&birthAge>=2.7)this.birth.done();
+    this.crack.visible = isHatch && !!game.selected && game.result===null && !isReward;
     const stage = game.selected ? crackStage(game.selected.hp, EGGS[game.selected.type].hp) : 0;
     if (this.crack.userData.stage !== stage) {
       this.crack.userData.stage = stage;
@@ -588,13 +624,13 @@ export class World {
     }
     if (this.hatchModel) {
       animateEgg(this.hatchModel, time, this.low);
-      if(game.result!==null){animatePet(this.hatchModel,game.result,time,false,this.reducedMotion.matches);this.hatchModel.userData.greetingAt??=time;greetPet(this.hatchModel,game.result,time-this.hatchModel.userData.greetingAt,this.reducedMotion.matches);}
+      if(shownResult!==null){animatePet(this.hatchModel,shownResult,time,false,this.reducedMotion.matches);this.hatchModel.userData.greetingAt??=time;greetPet(this.hatchModel,shownResult,time-this.hatchModel.userData.greetingAt,this.reducedMotion.matches);}
       this.hatchModel.visible = !!game.selected || game.result !== null || isReward;
       const kick = Math.max(0, 1 - (performance.now() - this.hitAt) / 220);
       this.hatchModel.rotation.z = Math.sin(time * 70) * kick * 0.12;
-      this.hatchModel.rotation.y = isReward ? time*.8 : isHatch ? -0.25 : 0;
+      this.hatchModel.rotation.y = birthEgg&&!this.reducedMotion.matches&&birthAge>=0 ? birthAge*birthAge*30 : isReward ? time*.8 : isHatch ? -0.25 : 0;
       this.hatchModel.position.y =
-        game.result !== null ? Math.abs(Math.sin(time * 3)) * 0.2 : 0;
+        shownResult !== null ? Math.abs(Math.sin(time * 3)) * 0.2 : 0;
     }
     const target = isHatch
       ? new T.Vector3(0, 1, 0)
@@ -610,6 +646,18 @@ export class World {
     // Picking up an egg or showing a contextual button must not zoom the map.
     this.camera.zoom = isHatch ? 1.4 : .78;
     this.camera.updateProjectionMatrix();
+    this.camera.updateMatrixWorld();this.positionHatchTouch();
+    const hit=game.hitSource,hitAge=hit?(game.now()-hit.at)/1000:Infinity;
+    this.damageDirection.hidden=isHatch||game.isAtBase||hitAge<0||hitAge>DAMAGE_OVER_TIME.directionSeconds;
+    if(hit&&!this.damageDirection.hidden){
+      const p=new T.Vector3(game.x,.8,game.z).project(this.camera),source=new T.Vector3(hit.x,.8,hit.z).project(this.camera);
+      const dx=(source.x-p.x)*this.host.clientWidth,dy=-(source.y-p.y)*this.host.clientHeight;
+      const angle=Math.hypot(dx,dy)>.01?Math.atan2(dy,dx):-Math.PI/2;
+      this.damageDirection.style.left=`${Math.max(18,Math.min(this.host.clientWidth-18,(p.x+1)*this.host.clientWidth/2+Math.cos(angle)*64))}px`;
+      this.damageDirection.style.top=`${Math.max(18,Math.min(this.host.clientHeight-18,(1-p.y)*this.host.clientHeight/2+Math.sin(angle)*64))}px`;
+      this.damageDirection.style.transform=`translate(-50%,-50%) rotate(${angle+Math.PI/2}rad)`;
+      this.damageDirection.style.opacity=String(Math.min(1,(DAMAGE_OVER_TIME.directionSeconds-hitAge)*3));
+    }
     this.sun.position.set(game.x - 8, 18, game.z + 10);
     for(const gain of [...this.trainingGains]){
       const age=(game.now()-gain.at)/1000;

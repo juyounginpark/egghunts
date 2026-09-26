@@ -20,14 +20,15 @@ export function exportRuntime(game:GameState):RuntimeState{
  return structuredClone({save,fields,hazards:game.hazards.snapshot()});
 }
 export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[],bosses:Boss[]){
- migrateStageRuntime(state);
+ // Live snapshots already have authoritative coordinates. Only persisted room
+ // and profile records are migrated by runRoom; never permute a network frame.
  const known=game as unknown as Record<string,unknown>;
  for(const [key,value] of Object.entries(state.fields)){
   if(omitted.has(key)||!Object.hasOwn(game,key))continue;
   // JSON represents infinite initial timestamps as null.
   known[key]=value===null&&typeof known[key]==='number'&&!Number.isFinite(known[key])?known[key]:value;
  }
- game.save=structuredClone(state.save);migrateStageSave(game.save);game.save.dragonClues??={};game.world=world;game.bosses=bosses;game.hazards.restore(state.hazards);
+ game.save=structuredClone(state.save);game.save.dragonClues??={};game.world=world;game.bosses=bosses;game.hazards.restore(state.hazards);
  migrateEggHealth([...game.save.eggs,...world,game.carried,...bosses.flatMap(b=>b.loot?[b.loot]:[])]);
  if(game.save.progression)delete game.save.progression.traits;
  game.hp=Math.min(game.hp,game.maxHp);

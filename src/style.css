@@ -385,7 +385,7 @@ nav button img { width:32px; height:32px; }
 #egg-notices small { display:block; margin-bottom:5px; }
 #egg-notices b { display:inline-block; color:var(--rarity-color); background:#30382d; padding:2px 7px; margin-right:7px; font-size:21px; border-radius:4px; }
 #egg-notices strong { font-size:20px; overflow-wrap:anywhere; }
-.hatch-revealing> :not(.hatch-sequence) { visibility:hidden; }
+.result-card.hatch-revealing> :not(.hatch-sequence) { visibility:hidden; }
 .hatch-sequence { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--paper); gap:16px; }
 .hatch-sequence p { font-size:24px; font-weight:800; margin:0; }
 .hatch-egg,.hatch-pet { width:min(260px,65vw,42dvh); aspect-ratio:1; position:relative; }
@@ -551,3 +551,30 @@ nav button img { width:28px; height:28px; }
 #room-chat form button { width:44px; height:44px; flex-shrink:0; font-size:22px; border-radius:8px; }
 #joystick[data-slow] { border-color:#b28d3f; background:#f5e3a8; }
 #joystick[data-slow] #knob { display:grid; place-items:center; background:#ffe79e; font-size:16px; font-weight:900; }
+
+/* Keep the model unobstructed; the only action is the egg itself. */
+#hatch-touch { position:absolute; z-index:3; padding:0; background:transparent; border:0; box-shadow:none; touch-action:manipulation; }
+#hatch-touch span { position:absolute; top:calc(100% + 12px); left:50%; transform:translateX(-50%); width:max-content; max-width:85vw; font-size:14px; font-weight:800; color:#35472e; text-shadow:0 1px 3px #fff9e8; pointer-events:auto; }
+#hatch-touch:focus-visible { outline:2px dashed #b98a35; border-radius:50%; }
+[data-mode="hatchery"] #top-hud #hatch-info { background:none; border:0; box-shadow:none; padding:2px 12px; }
+[data-mode="hatchery"] #hatch-info h1,[data-mode="hatchery"] #tutorial,[data-mode="hatchery"] #pet-effects,[data-mode="hatchery"] #cycle-clock,[data-mode="hatchery"] #controls { display:none; }
+[data-mode="hatchery"] #egg-health { margin:0 auto; max-width:240px; font-size:13px; }
+[data-mode="hatchery"] #egg-health .track { height:4px; margin-top:7px; border:0; }
+[data-mode="hatchery"] #inventory { padding:8px 0 0; background:none; border:0; box-shadow:none; }
+[data-mode="hatchery"] #inventory-count { font-size:10px; opacity:.7; }
+[data-mode="hatchery"] #egg-queue { display:flex; gap:8px; overflow-x:auto; padding:5px 2px; scrollbar-width:thin; }
+[data-mode="hatchery"] .egg-slot { flex:0 0 58px; min-height:64px; padding:4px; border-radius:12px; box-shadow:none; }
+[data-mode="hatchery"] .egg-slot small,[data-mode="hatchery"] .egg-slot.empty { display:none; }
+[data-mode="hatchery"] .egg-slot b { font-size:10px; }
+[data-mode="hatchery"] .egg-slot .egg-icon { width:42px; height:42px; }
+#shell.hatch-revealing #top-hud,#shell.hatch-revealing #bottom-hud,#shell.hatch-revealing nav,#shell.hatch-revealing #hatch-touch,#shell.hatch-revealing #egg-notices { visibility:hidden; pointer-events:none; }
+#return-reward,#return-reward.rare-reward { justify-content:flex-end; gap:12px; padding:16px 20px calc(24px + var(--safe-bottom)); background:none; }
+#return-reward > #reward-copy { width:min(340px,100%); padding:10px 14px; background:#fff9e8ed; border:0; box-shadow:none; }
+#return-reward .tag { font-size:14px; padding:3px 9px; }
+#return-reward #reward-name,#return-reward.rare-reward #reward-name { font-size:18px; margin:5px 0 0; }
+#return-reward h1,#return-reward.rare-reward h1 { margin:5px 0 0; font-size:12px; }
+#shell #carry-chip { position:absolute; top:39%; left:50%; transform:translate(-50%,-50%); z-index:4; width:max-content; max-width:90%; margin:0; padding:0; background:none; border:0; border-radius:0; box-shadow:none; color:#fff9e8; font-size:16px; font-weight:800; text-shadow:0 1px 3px #20322a,0 0 5px #20322acc; pointer-events:none; }
+#health-edge { background:radial-gradient(ellipse at center,transparent 43%,#b21e2855 73%,#b21e28d9 100%); opacity:0; transition:opacity .12s linear; }
+#shell.low-health #health-edge { box-shadow:none; animation:none; }
+#damage-direction { position:absolute; z-index:5; width:0; height:0; border-left:10px solid transparent; border-right:10px solid transparent; border-bottom:21px solid #ff4c45; filter:drop-shadow(0 1px 2px #2d1715); pointer-events:none; }
+@media(max-height:580px){#return-reward,#return-reward.rare-reward{gap:6px;padding-bottom:calc(10px + var(--safe-bottom))}#return-reward > #reward-copy{padding:5px 10px}#return-reward h1{display:none}#hatch-touch span{font-size:12px;top:calc(100% + 6px)}}

@@ -5,6 +5,7 @@ export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonu
 export type DefensePassive={maxHP?:number;damageReduction?:number;firstHitReduction?:number;environmentReduction?:Partial<Record<string,number>>;statusReduction?:number;lowHPSpeed?:number;returnXPBonus?:number;lastStand?:boolean};
 // Existing companions keep their click/auto/speed abilities; future rows opt in.
 export const PET_DEFENSE:Partial<Record<number,DefensePassive>>={};
+export const DAMAGE_OVER_TIME={ticks:6,interval:.15,directionSeconds:1.4};
 export const BALANCE = {
   eggVisualScale:3,
   eggPresentationScale:1.5,

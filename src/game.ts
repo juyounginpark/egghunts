@@ -4,6 +4,7 @@ import {formatNumber} from './format';
 import {ECONOMY,recommendedIncome,growthCost} from './data';
 import {
   BALANCE,
+  DAMAGE_OVER_TIME,
   STAGE_COLLECTION_REWARDS,
   PROGRESSION,
   PET_DEFENSE,
@@ -21,7 +22,7 @@ import {HazardManager,type Hazard} from "./hazards";
 import {farmGym} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
-import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianChaseSpeed,stageDamage,type HazardDefinition} from "./stage-data";
+import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianPursuitSpeed,stageDamage,type HazardDefinition} from "./stage-data";
 export type Egg = { id: string; type: number; hp: number; hpVersion?:2; distance: number; stageId?:number; variant?:number; special?:boolean };
 // Version each egg because stored, carried and shared-room eggs have separate lifetimes.
 export function migrateEggHealth(eggs:(Egg|null|undefined)[]){
@@ -100,6 +101,7 @@ export type Save = {
     carried: WorldEgg | null;
     hp?:number;
     sinceHit?:number;
+    damageTicks?:{remaining:number;ticks:number;until:number}[];
   } | null;
   settings: { sound: boolean; volume?:number; haptic: boolean; quality: "high" | "low" };
 };
@@ -279,6 +281,7 @@ export class GameState {
   failExpedition(reason:string){
     if(!this.deadline&&!this.carried&&!this.death&&this.isAtBase)return false;
     this.reviveAdUntil=null;
+    this.damageTicks=[];this.hitSource=null;
     if(this.carried)this.flyaway={stageId:this.carried.stageId,variant:this.carried.variant,type:this.carried.type,x:this.x,z:this.z,at:this.now()};
     this.carried=null;this.deadline=0;this.x=this.z=0;this.training=false;this.launch=null;this.death=null;
     this.revivedAt=this.now();
@@ -291,7 +294,11 @@ export class GameState {
     const d=h.definition;if(this.death||(this.immunity>0&&!bossContact)||this.isAtBase)return false;
     const reduction=this.defense('damageReduction')+this.defenses.reduce((n,p)=>n+(p.environmentReduction?.[d.id]??0),0)+(!this.progression.firstHitUsed?this.defense('firstHitReduction'):0);
     const damage=this.immunity>0?0:reducedDamage(d.damage,d.damagePercent,this.maxHp,reduction);
-    this.progression.firstHitUsed=true;this.hp=Math.max(0,this.hp-damage);this.sinceHit=0;this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();
+    this.progression.firstHitUsed=true;this.sinceHit=0;this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();
+    if(damage>0){
+      this.damageTicks.push({remaining:damage,ticks:DAMAGE_OVER_TIME.ticks,until:DAMAGE_OVER_TIME.interval});
+      this.hitSource={x:h.origin.x,z:h.origin.z,at:this.now()};
+    }
     const overlap=Math.hypot(this.x-h.origin.x,this.z-h.origin.z)<.001;
     const dx=overlap?-this.facing.x:this.x-h.origin.x,dz=overlap?-this.facing.z:this.z-h.origin.z,l=Math.hypot(dx,dz)||1;
     const impact=bossContact||damage>0&&d.effect!=='dot';
@@ -308,8 +315,27 @@ export class GameState {
     if(d.effect==='ice')this.push(0,1);
     if(d.effect==='dust'){const amount=compare(this.save.dust,HAZARD_BALANCE.dustDrop)<0?Number(this.save.dust):HAZARD_BALANCE.dustDrop;this.save.dust=subtract(this.save.dust,amount);if(amount)this.dustDrops.push({x:this.x+.8,z:this.z,amount});}
     this.emit('player_hit',{damage,hp:this.hp,stage:this.stage.id});this.revision++;
-    if(this.hp<=0&&this.defenses.some(d=>d.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}
-    if(this.hp<=0)this.die();return true;
+    return true;
+  }
+  damageTicks:{remaining:number;ticks:number;until:number}[]=[];
+  hitSource:{x:number;z:number;at:number}|null=null;
+  private tickDamage(dt:number){
+    if(this.isAtBase||this.death){this.damageTicks=[];return;}
+    for(const pending of this.damageTicks){
+      pending.until-=dt;
+      while(pending.until<=1e-9&&pending.ticks>0){
+        const amount=pending.remaining/pending.ticks;
+        pending.remaining-=amount;pending.ticks--;pending.until+=DAMAGE_OVER_TIME.interval;
+        this.hp=Math.max(0,this.hp-amount);this.revision++;
+        if(this.hp<=0){
+          this.damageTicks=[];
+          if(this.defenses.some(d=>d.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}
+          else this.die();
+          return;
+        }
+      }
+    }
+    this.damageTicks=this.damageTicks.filter(p=>p.ticks>0);
   }
   roomManaged=false;
   dragonWatch:DragonWatch={stage:0,observed:{}};
@@ -365,6 +391,7 @@ export class GameState {
     const here=inPlace&&!this.isNight;
     this.x=here?this.death.x:0;this.z=here?this.death.z:0;
     this.deadline=here&&!this.isAtBase?this.now()+Math.max(BALANCE.reviveMinimumTime,this.death.remaining)*1000:0;
+    this.damageTicks=[];this.hitSource=null;
     this.hp=this.maxHp;this.sinceHit=0;this.immunity=BALANCE.reviveImmunity;this.knockedUntil=0;this.launch=null;
     this.death=null;this.reviveAdUntil=null;this.knockback.remaining=0;this.slowRemaining=0;this.effects={ink:0,stone:0,grab:0,delay:0,magnet:0};this.revivedAt=this.now();this.revision++;this.emit('player_revive',{inPlace:here?1:0});return true;
   }
@@ -541,6 +568,7 @@ export class GameState {
       this.message = "진행 중이던 원정으로 돌아왔어요";
       this.hp=Number.isFinite(save.expedition.hp)?Math.max(0,Math.min(this.maxHp,save.expedition.hp!)):this.maxHp;
       this.sinceHit=Number.isFinite(save.expedition.sinceHit)?Math.max(0,save.expedition.sinceHit!):0;
+      this.damageTicks=(Array.isArray(save.expedition.damageTicks)?save.expedition.damageTicks:[]).filter(p=>p&&Number.isFinite(p.remaining)&&p.remaining>0&&Number.isInteger(p.ticks)&&p.ticks>0&&p.ticks<=DAMAGE_OVER_TIME.ticks&&Number.isFinite(p.until)&&p.until>=0&&p.until<=DAMAGE_OVER_TIME.interval).slice(0,16).map(p=>({...p}));
     }
     if(save.routeVersion!==2&&this.carried){
       this.carried.stageId??=this.progression.stage;this.carried.guardian=this.carried.stageId-this.progression.stage;
@@ -708,8 +736,11 @@ export class GameState {
       const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):b.homeX??0;
       const tz=b.mode==='chase'?this.z:recovery?(b.loot?recovery.homeZ??b.homeZ??-17:recovery.z):b.homeZ??-17;
       const recoveryMultiplier=recovery?ROUTE.bossRecoverySpeedMultiplier:1;
-      const speed=b.mode==='chase'?guardianChaseSpeed(b.stageId??1,this.speed):Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(b.stageId??1)*recoveryMultiplier);
-      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz),step=Math.min(l,speed*activeDt);
+      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz);
+      const reach=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1);
+      const escapeSpeed=Math.max(0,(this.velocity.x*dx+this.velocity.z*dz)/(l||1));
+      const speed=b.mode==='chase'?guardianPursuitSpeed(b.stageId??1,this.speed,l,escapeSpeed,reach):Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(b.stageId??1)*recoveryMultiplier);
+      const step=Math.min(l,speed*activeDt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
@@ -773,6 +804,7 @@ export class GameState {
     this.syncStage();
     if(this.knockback.remaining>0){const step=Math.min(dt,this.knockback.remaining);this.push(this.knockback.x*step,this.knockback.z*step);this.knockback.remaining-=step;}
     this.hp=Math.min(this.hp,this.maxHp);
+    this.tickDamage(dt);if(this.death)return;
     this.immunity=Math.max(0,this.immunity-dt);this.slowRemaining=Math.max(0,this.slowRemaining-dt);this.sinceHit+=dt;
     for(const key of Object.keys(this.effects) as (keyof typeof this.effects)[])this.effects[key]=Math.max(0,this.effects[key]-dt);
     if(!this.isAtBase){
@@ -986,7 +1018,7 @@ export class GameState {
     this.save.bosses = this.bosses;
     this.save.lastSavedAt = this.now();
     this.save.expedition = this.deadline
-      ? { deadline: this.deadline, x: this.x, z: this.z, carried: this.carried,hp:this.hp,sinceHit:this.sinceHit }
+      ? { deadline: this.deadline, x: this.x, z: this.z, carried: this.carried,hp:this.hp,sinceHit:this.sinceHit,damageTicks:this.damageTicks }
       : null;
     return structuredClone(this.save);
   }

@@ -9,12 +9,11 @@ import {
   RARITIES,
   MONGLES,
   petIcon,
-  crackStage,
   type Upgrade,
 } from "./data";
 import { ROUTE, FINAL_GUARDIAN } from "./stage-data";
 import {eggName,eggIcon} from "./stage-eggs";
-import { GameState } from "./game";
+import { GameState, freshSave } from "./game";
 import { Platform } from "./platform";
 import { Input } from "./input";
 import { World } from "./world";
@@ -31,7 +30,7 @@ import {EggNotices} from './egg-notices';
 import type {EggAppearance} from './stage-eggs';
 let hatchEgg:EggAppearance|undefined;
 let hatchClaiming=false;
-let closeHatchReveal:(()=>void)|undefined;
+let hatchRevealing=false;
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
@@ -48,6 +47,7 @@ app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const eggNotices=new EggNotices($("shell"));
+$('world').insertAdjacentHTML('beforeend','<button id="hatch-touch" hidden aria-label="알 두드리기"><span>알을 클릭하여 깨뜨리기</span></button>');
 const buildVersion=document.createElement('small');
 buildVersion.id='build-version';buildVersion.textContent=import.meta.env.VITE_BUILD_VERSION;
 buildVersion.setAttribute('aria-label',`게임 버전 ${import.meta.env.VITE_BUILD_VERSION}`);
@@ -62,7 +62,6 @@ for (const el of [
   $("hatch-info"),
 ])
   topHud.append(el);
-topHud.append($("carry-chip"));
 const announcement = document.createElement("div");
 announcement.id = "announcement";
 announcement.hidden = true;
@@ -75,7 +74,7 @@ const hudContext=document.createElement('div');
 hudContext.id='hud-context';
 topHud.append(hudContext);
 const hudPlace=document.createElement('div');hudPlace.className='hud-place';
-hudPlace.append($('expedition'),$('carry-chip'));
+hudPlace.append($('expedition'));
 hudContext.append(speedHud,hudPlace);
 const roomHUD=new RoomHUD(hudPlace,$('world'));
 topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="hazard-cue" role="status" hidden></div>');
@@ -91,7 +90,7 @@ const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
 tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">×</button>`;
 topHud.append(tutorial);
-$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 15초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
+$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 15초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
 $("action").insertAdjacentHTML('beforebegin',`<button id="train-now" class="secondary" aria-label="운동하기" title="운동하기" hidden><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><span class="sr-only">운동하기</span></button>`);
 bottomHud.id = "bottom-hud";
@@ -167,7 +166,7 @@ function warnAboutBoss(){
   return true;
 }
 async function action(preparedId?:string) {
-  if (!ready || paused || !$("modal").hidden || game.returnReward || game.death) return;
+  if (!ready || paused || hatchRevealing || game.result!==null || !$("modal").hidden || game.returnReward || game.death) return;
   if(claiming||game.now()<game.knockedUntil)return;
   const preparedEgg=preparedId?game.world.find(e=>e.id===preparedId):undefined;
   if(preparedId&&(!preparedEgg||!game.canReachEgg(preparedEgg)||game.carried))return;
@@ -213,7 +212,7 @@ async function action(preparedId?:string) {
   }
 }
 function setTab(next: string) {
-  if (!ready || game.death) return;
+  if (!ready || game.death || hatchRevealing || hatchClaiming) return;
   if (
     next !== "explore" &&
     !game.isAtBase
@@ -264,6 +263,7 @@ function updateHud() {
   }
   $("region-banner").hidden=!outside||performance.now()>=bannerUntil;
   const hpRatio=game.hp/game.maxHp;
+  $('health-edge').style.opacity=outside?String(Math.pow(Math.max(0,1-hpRatio),.7)): '0';
   $("health-hud").setAttribute('aria-valuenow',String(Math.ceil(game.hp)));
   $("health-hud").setAttribute('aria-valuemax',String(game.maxHp));
   $("health-hud").setAttribute('aria-valuetext',`${Math.ceil(game.hp)} / ${game.maxHp}${hpRatio<=PROGRESSION.lowHP?' · 위험':''}`);
@@ -325,7 +325,7 @@ function updateHud() {
   const step=game.save.tutorial??0;
   $("tutorial").hidden=step>=5 || !!game.returnReward || game.result!==null;
   $("tutorial-title").textContent = ["화면을 밀어 이동해요","알을 찾아요","큰 알일수록 느려져요","알을 두드려요","펫과 함께 자라요"][step]??'';
-  $("tutorial-copy").textContent = ["왼쪽 조이스틱을 위로 밀어 농장문을 나가세요.","길 위의 알에 다가가 오른쪽 ‘들고가기’를 누르세요.","알을 들면 느려져요. 아래쪽 농장으로 돌아가세요. 보스 공격에 맞으면 알을 떨어뜨려요!","부화실을 열고 ‘두드리기’를 누르세요. 자동 장비도 도와줘요.","별가루로 강화하거나 트레일을 사세요. 농장 러닝머신에서도 속도가 올라요."][step]??"";
+  $("tutorial-copy").textContent = ["왼쪽 조이스틱을 위로 밀어 농장문을 나가세요.","길 위의 알에 다가가 오른쪽 ‘들고가기’를 누르세요.","알을 들면 느려져요. 아래쪽 농장으로 돌아가세요. 보스 공격에 맞으면 알을 떨어뜨려요!","부화실을 열고 알을 직접 눌러 주세요. 자동 장비도 도와줘요.","별가루로 강화하거나 트레일을 사세요. 농장 러닝머신에서도 속도가 올라요."][step]??"";
   $("return-reward").hidden = !game.returnReward;
   if(game.returnReward){
     const rarity=RARITIES[EGGS[game.returnReward.type].tier];
@@ -381,13 +381,13 @@ function updateHud() {
   $("carry-chip").hidden = !game.carried || tab !== "explore";
   if (game.carried)
     $("carry-chip").textContent =
-      `${EGGS[game.carried.type].rarity} · 운반 중`;
+      '알 운반중';
   $("risk").className = game.risk;
   $("risk").querySelector("span")!.textContent = !game.isAtBase
     ? `기지 ${Math.round(game.distance)}m · ${game.risk==='safe'?'스피드 충분':game.risk==='warning'?'스피드 강화 추천':'먼 지역 · 스피드를 더 키워요'}`
     : "기지 · 시간 제한 없이 탐험해요";
   $("world-label").style.opacity = game.distance < 4 ? "1" : "0";
-  $("action").hidden = tab!=='hatchery'&&(!game.action||game.training);
+  $("action").hidden = tab==='hatchery'||!game.action||game.training;
   $("action-label").textContent = pickupPreparation?'꺼내는 중':tab === "hatchery" ? "두드리기" : !game.carried&&game.near&&BALANCE.rareEggPickupSeconds[EGGS[game.near.type].tier]>0?'알 꺼내기':game.action;
   $("action").classList.toggle('preparing',!!pickupPreparation);
   $("action").style.setProperty('--pickup-progress',`${pickupPreparation?(1-pickupPreparation.remaining/pickupPreparation.duration)*100:0}%`);
@@ -395,7 +395,7 @@ function updateHud() {
   $('action').title=$('action-label').textContent??'행동';
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
-  const actionModel=tab==='hatchery'?'hammer':game.nearStore?'shop':game.nearGym?'gym':null;
+  const actionModel=game.nearStore?'shop':game.nearGym?'gym':null;
   const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
   if($("action-icon").dataset.icon!==actionIcon){$("action-icon").dataset.icon=actionIcon;$("action-icon").innerHTML=actionIcon;}
   $("action").classList.toggle(
@@ -407,9 +407,15 @@ function updateHud() {
   if (tab === "hatchery") {
     const e = game.selected;
     $("egg-health").innerHTML = e
-      ? `<b>${eggName(e)}</b><span>${e.hp===0?'보관소에서 획득하세요':["온전한 알", "작은 금", "큰 균열", "곧 만나요!"][crackStage(e.hp, EGGS[e.type].hp)]}</span><div class="track"><i style="width:${(e.hp / EGGS[e.type].hp) * 100}%"></i></div><small>${num(Math.ceil(e.hp))} / ${num(EGGS[e.type].hp)} · 자동 ${num(game.dps,1)}/s</small>`
+      ? `<b>${eggName(e)}</b><div class="track" role="progressbar" aria-label="남은 알 내구도" aria-valuenow="${Math.ceil(e.hp)}" aria-valuemin="0" aria-valuemax="${EGGS[e.type].hp}"><i style="width:${(e.hp / EGGS[e.type].hp) * 100}%"></i></div>`
       : "<b>새로운 만남을 기다려요</b><p>탐험에서 알을 가져와 주세요.</p>";
   }
+  const touch=$<HTMLButtonElement>('hatch-touch');
+  touch.hidden=tab!=='hatchery'||!game.selected||!!game.returnReward||game.result!==null||hatchRevealing||!$('modal').hidden;
+  touch.disabled=hatchClaiming;
+  const touchLabel=hatchClaiming?'열고 있어요…':game.selected?.hp===0?'알을 클릭하여 개봉':'알을 클릭하여 깨뜨리기';
+  touch.querySelector('span')!.textContent=touchLabel;touch.setAttribute('aria-label',touchLabel);
+  $('shell').classList.toggle('hatch-revealing',hatchRevealing);
   if (game.revision !== lastRevision) {
     lastRevision = game.revision;
     renderPanel();
@@ -420,18 +426,18 @@ function updateHud() {
   if (!virtualAd && !game.death && !game.returnReward && game.result !== null && lastResult !== game.result) {
     lastResult = game.result;
     input.reset();
-    const m = MONGLES[game.result];
-    $("modal").innerHTML =
-      `<div class="result-card" style="--reward:${m.color}">${petReveal(m.stageId,game.result>=300,m.tier)}${game.result>=100?`<div class="result-pet-motion"><div class="result-idle" role="img" aria-label="${m.name}" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-idle.png')"></div><div class="result-greeting" aria-hidden="true" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-greeting.png')"></div></div>`:`<img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}"/>`}<span class="tag">${game.result>=300?'SECRET DRAGON':RARITIES[m.tier].name}</span><h1>${m.name}</h1><div class="benefit stat-badges">${petAbilities(m)}</div><details><summary>이 친구는?</summary><p>${m.description}</p></details><button id="result-ok" class="primary">함께 모험하기</button></div>`;
-    $("modal").hidden = false;
-    const card=$("modal").querySelector<HTMLElement>('.result-card')!;
-    card.classList.add('hatch-revealing');
     const resultId=game.result;
-    void import('./hatch-reveal').then(({startHatchReveal})=>{
-      if(!card.isConnected)return;
-      closeHatchReveal=startHatchReveal(card,resultId,hatchEgg,()=>feedback(null));
-      hatchEgg=undefined;
-    }).catch(()=>card.classList.remove('hatch-revealing'));
+    const m = MONGLES[game.result];
+    const resultHTML =
+      `<div class="result-card" style="--reward:${m.color}">${petReveal(m.stageId,game.result>=300,m.tier)}${game.result>=100?`<div class="result-pet-motion"><div class="result-idle" role="img" aria-label="${m.name}" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-idle.png')"></div><div class="result-greeting" aria-hidden="true" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-greeting.png')"></div></div>`:`<img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}"/>`}<span class="tag">${game.result>=300?'SECRET DRAGON':RARITIES[m.tier].name}</span><h1>${m.name}</h1><div class="benefit stat-badges">${petAbilities(m)}</div><details><summary>이 친구는?</summary><p>${m.description}</p></details><button id="result-ok" class="primary">함께 모험하기</button></div>`;
+    hatchRevealing=true;touch.hidden=true;$('shell').classList.add('hatch-revealing');
+    const appearance=hatchEgg??{type:Math.max(0,EGGS.findIndex(e=>e.tier===m.tier)),stageId:m.stageId};
+    hatchEgg=undefined;
+    void world.revealHatch(resultId,appearance,()=>{playSound('hatch',m.stageId,m.tier);feedback(null);}).catch(err=>{console.warn('Hatch presentation unavailable',err);}).finally(()=>{
+      hatchRevealing=false;$('shell').classList.remove('hatch-revealing');
+      if(game.result!==resultId)return;
+      $('modal').innerHTML=resultHTML;$('modal').hidden=false;feedback(null);
+    });
     platform.track("hatch_complete", { mongle: m.id });
     feedback(null);
   }
@@ -452,7 +458,6 @@ function renderEggQueue() {
     const def = EGGS[e.type];
     return `<button data-egg="${e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""} ${def.tier >= 4 ? "rare" : ""}" style="--egg:${def.color}"><b>${def.rarity}</b><img class="egg-icon" src="${eggIcon(e)}" alt="" /><small>${e.hp===0?'획득 준비 완료':eggName(e)}</small></button>`;
   }).join("");
-  if(game.selected?.hp===0)queue.insertAdjacentHTML('beforeend','<button id="claim-hatch" class="primary">획득</button>');
   $("pet-effects").innerHTML = game.save.active.length
     ? `<div class="stat-badges"><span>${game.save.active.length}/${BALANCE.maxCompanions}</span>${petAbilities(game,true)}</div>`
     : "알을 부화하면 펫이 함께 걸어요";
@@ -496,15 +501,18 @@ document.addEventListener("click", async (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("button");
   if (!b || !ready) return;
   if(b.id==='leave-room'){paused=true;input.reset();b.setAttribute('disabled','');await online.leave();location.reload();return;}
-  if(b.id==='claim-hatch'){
+  if(b.id==='hatch-touch'||b.id==='claim-hatch'){
+    if(tab!=='hatchery'||paused||hatchRevealing||!$('modal').hidden||game.returnReward||game.death)return;
+    if(game.selected&&game.selected.hp>0){void action();return;}
     const egg=game.selected;
     if(hatchClaiming||!egg||egg.hp!==0||game.result!==null)return;
     hatchClaiming=true;hatchEgg={...egg};input.reset();online.halt();
     try{const ok=online.active?await remote('claimHatch',egg.id):game.claimHatch(egg.id);if(!ok)hatchEgg=undefined;else{void save();updateHud();}}
+    catch(err){hatchEgg=undefined;toast(err instanceof Error?err.message:'개봉하지 못했어요. 다시 눌러 주세요.');}
     finally{hatchClaiming=false;}
     return;
   }
-  if(b.id==='result-ok'){closeHatchReveal?.();closeHatchReveal=undefined;}
+  if(hatchRevealing)return;
   if(b.dataset.petView!==undefined){input.reset();const {openPetViewer}=await import('./pet-viewer');await openPetViewer(Number(b.dataset.petView));return;}
   if(online.active&&await onlineButton(b))return;
   if(b.id==='boss-warning-ok'){
@@ -644,9 +652,6 @@ document.addEventListener('change',e=>{
     void save();
   }
 });
-$("world").addEventListener("pointerdown", () => {
-  if (tab === "hatchery") action();
-});
 document.addEventListener("visibilitychange", async () => {
   if (!ready) return;
   if (document.hidden) {
@@ -680,7 +685,7 @@ async function start() {
     const localState = await platform.load();
     if(!qa)await online.enter($("loading"));
     const state = online.latest?.runtime.save??localState;
-    game = new GameState(state, () => platform.now(), qa?.random);
+    game = new GameState(online.active?freshSave(platform.now()):state, () => platform.now(), qa?.random);
     if(online.active){
       online.attach(game);
       try{const preferences=JSON.parse(localStorage.getItem("alkong:preferences")??"null");if(preferences&&typeof preferences.sound==="boolean")game.save.settings={...game.save.settings,...preferences};}catch{/* Ignore invalid device preferences. */}
@@ -747,7 +752,7 @@ function frame(now: number) {
   heardHazards=audible;
   for (const event of game.events.splice(0)) {
     const cues:Partial<Record<string,GameSound>>={hatch_manual_hit:'tap',egg_pickup:'pickup',egg_drop:'drop',egg_saved:'return',mongle_obtained:'hatch',player_hit:'hit',player_death:'death',player_revive:'revive',night_refresh:'night',region_enter:'stage',level_up:'upgrade',upgrade_purchase:'upgrade',trail_purchase:'upgrade',collection_reward:'upgrade',boss_wake:'boss',egg_recovered:'drop'};
-    const cue=cues[event.name];if(cue)playSound(cue,Number(event.params.stage??game.stage.id),cue==='hatch'?MONGLES[Number(event.params.mongle)]?.tier??0:6);
+    const cue=cues[event.name];if(cue&&cue!=='hatch')playSound(cue,Number(event.params.stage??game.stage.id));
     if(event.name==='boss_wake'){bossAlertUntil=now+3000;if(!paused&&!game.death&&tab==='explore')feedback(null);}
     if(event.name==='expedition_start'){$("toast").hidden=true;clearTimeout(toastTimer);}
     if(['level_up','player_hit','health_unlocked','player_death'].includes(event.name)){feedback(null);void save();}

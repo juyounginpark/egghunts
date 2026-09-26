@@ -1,6 +1,6 @@
 import {legacyTheme} from './stage-order';
 import { buildRegionLayout,type Block } from './region-layout';
-import { routeSegments,stagePatterns,environmentPlacement,ROAD_WIDTH_SCALE } from './stage-data';
+import { routeSegments,stagePatterns,environmentPlacement,ROAD_WIDTH_SCALE,MAP_OBSTACLES } from './stage-data';
 import {villageArt} from './world-art';
 import {villageColliders,clampVillage} from './village';
 
@@ -49,7 +49,8 @@ export class MapCollision{
      if(['hay','train','book','raptor','gear','orb'].includes(hazard.visual))continue;
      const {x,z}=environmentPlacement(r.stage,lane,r.offset);
      if([2,6,7,12,13,18].includes(legacyTheme(r.stage)))for(const side of [-1,1]){
-      boxes.push({minX:x+side*.55-.1,maxX:x+side*.55+.1,minZ:z-.35,maxZ:z+.35});
+      const scale=MAP_OBSTACLES.scale;
+      boxes.push({minX:x+(side*.55-.1)*scale,maxX:x+(side*.55+.1)*scale,minZ:z-.35*scale,maxZ:z+.35*scale});
      }
     }
     this.sections.set(key,buckets(boxes));
