@@ -947,6 +947,19 @@ export class GameState {
       if(!boss){this.revision++;return;}
       // Recovered eggs remain in the world and can be stolen during the return trip.
       boss.loot = null;
+      const requiredSpeed=recommendedRouteSpeed(0,boss.stageId??this.carried.stageId);
+      if(this.speed<requiredSpeed){
+        // Judge the carrying stat at theft time; armour and hit immunity do not
+        // turn an underqualified theft into a free escape window.
+        const dx=boss.x-this.x,dz=boss.z-this.z,distance=Math.hypot(dx,dz);
+        boss.x=this.x+(distance?dx/distance:1)*ROUTE.bossReach*.5;
+        boss.z=this.z+(distance?dz/distance:0)*ROUTE.bossReach*.5;
+        boss.mode='return';boss.target=null;boss.wakeRemaining=undefined;
+        this.hp=0;this.hitAt=this.now();this.die();
+        this.message='운반 스피드가 부족해 보스에게 잡혔어요.';
+        this.emit('boss_underqualified_defeat',{stage:boss.stageId??this.stage.id,requiredSpeed});
+        return;
+      }
       const sleeping=boss.mode==='idle';
       if(sleeping){boss.mode='waking';boss.wakeRemaining=ROUTE.bossWakeSeconds;}
       else if(boss.mode!=='waking'){boss.mode='chase';boss.wakeRemaining=undefined;}
