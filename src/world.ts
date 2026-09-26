@@ -10,7 +10,7 @@ import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
 import {petAbilities} from './pet-stats';
 import {HazardView} from "./hazard-view";
-import {FARM_PLOTS,farmPlot,farmGym,farmLocal,farmEggPosition,farmPetPose} from './village';
+import {FARM_PLOTS,farmPlot,farmGym,farmLocal,farmEggPosition,farmPetPose,CAMPFIRE,CAMP_SEATS} from './village';
 import {villageArt} from './world-art';
 import {animatePet,greetPet} from './pet-animation';
 import {followPets} from './pet-followers';
@@ -32,6 +32,7 @@ export class World {
   player = new T.Group();
   private peers = new Map<string,T.Group>();
   private peerPets=new Map<string,{group:T.Group;trail:T.Vector3[];key:string|null;request:number;retryAt:number}>();
+  private campfire=new T.Group();
   private clearPetInstances(group:T.Group){
     group.traverse(o=>{if(o instanceof T.InstancedMesh)o.dispose();});group.clear();
   }
@@ -147,18 +148,20 @@ export class World {
       avatar.visible=visible;avatar.position.x=position.x;avatar.position.z=position.z;
       const fresh=frameAt-avatar.userData.receivedAt<1200;
       const speed=dt>0&&!snap?Math.hypot(avatar.position.x-beforeX,avatar.position.z-beforeZ)/dt:0;
-      const walking=!down&&fresh&&speed>.08;
+      const seated=!down&&peer.seat!==undefined&&peer.seat!==null&&!!CAMP_SEATS[peer.seat];
+      if(seated){const seat=CAMP_SEATS[peer.seat!];avatar.position.x=seat.x;avatar.position.z=seat.z;}
+      const walking=!seated&&!down&&fresh&&speed>.08;
       avatar.userData.walkBlend=(avatar.userData.walkBlend??0)+((walking?1:0)-(avatar.userData.walkBlend??0))*(1-Math.exp(-dt*16));
       avatar.userData.walkPhase=(avatar.userData.walkPhase??0)+dt*9*Math.min(1.6,Math.max(.6,speed/1.6));
       const rig=avatar.getObjectByName('peer-rig')!,stride=Math.sin(avatar.userData.walkPhase)*avatar.userData.walkBlend;
-      rig.position.y=down?0:Math.abs(stride)*.07;
+      rig.position.y=down||seated?0:Math.abs(stride)*.07;
       for(const side of ['left','right']){
         const sign=side==='left'?1:-1,leg=rig.getObjectByName(`${side}_leg`),arm=rig.getObjectByName(`${side}_arm`);
-        if(leg)leg.rotation.x=down?.2:stride*.4*sign;
-        if(arm)arm.rotation.x=down?-.35:peer.carried!==null?-2.4:-stride*.3*sign;
+        if(leg)leg.rotation.x=down?.2:seated?-Math.PI/2:stride*.4*sign;
+        if(arm)arm.rotation.x=down?-.35:seated?-.5:peer.carried!==null?-2.4:-stride*.3*sign;
       }
       const flight=(frameAt-(avatar.userData.hitReceived??-Infinity))/(BALANCE.batFlightSeconds*1000);
-      avatar.position.y=down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0;
+      avatar.position.y=seated?CAMPFIRE.sittingHeight:down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0;
       avatar.rotation.y+=Math.atan2(Math.sin(peer.rotation-avatar.rotation.y),Math.cos(peer.rotation-avatar.rotation.y))*blend;
       avatar.rotation.z+=( (down?Math.PI/2:0)-avatar.rotation.z)*blend;
       this.animateBat(avatar,frameAt-(avatar.userData.swingReceived??-Infinity));
@@ -354,6 +357,17 @@ export class World {
       chunks.push(g);
     };
     for(const p of villageArt())block(p.x,p.y,p.z,p.w,p.h,p.d,p.c,p.angle??0);
+    this.campfire.position.set(CAMPFIRE.x,.4,CAMPFIRE.z);this.farm.add(this.campfire);
+    for(let layer=0;layer<3;layer++){
+      const parts:T.BufferGeometry[]=[];
+      for(let tier=0;tier<4;tier++){
+        const size=(.65-layer*.12)*(1-tier*.2),part=new T.BoxGeometry(size,.27,size);
+        part.translate((layer-1)*.23+Math.sin(tier+layer)*.08,tier*.22,0);parts.push(part);
+      }
+      const geometry=mergeGeometries(parts)!;parts.forEach(part=>part.dispose());
+      const flame=new T.Mesh(geometry,new T.MeshBasicMaterial({color:[0xf07526,0xffaf38,0xffe18a][layer]}));
+      flame.position.z=(layer-1)*.08;this.campfire.add(flame);
+    }
     const g = mergeGeometries(chunks);
     chunks.forEach((c) => c.dispose());
     const mesh = new T.Mesh(g, groundMaterial);
@@ -494,6 +508,7 @@ export class World {
     this.hazardsView.render(game,!isHatch,time);
     this.nestGroup.visible=!isHatch;
     this.farm.visible=this.farmPets.visible=!isHatch && game.z>-22;
+    this.campfire.children.forEach((flame,index)=>{flame.scale.y=this.reducedMotion.matches?1:1+Math.sin(time*7+index*2)*.12;flame.rotation.y=this.reducedMotion.matches?0:Math.sin(time*3+index)*.08;});
     if(this.farm.visible)void this.showFarmPets(game).catch(err=>{this.assetError=String(err);});
     if(this.farm.visible){
       this.farmPets.children.forEach(pet=>this.animateFarmPet(pet,time));
@@ -593,7 +608,7 @@ export class World {
     }
     this.player.position.set(
       game.x+this.networkOffset.x,
-      game.death ? .4*fall : game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
+      game.death ? .4*fall : game.seat!==null?CAMPFIRE.sittingHeight:game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
       game.z+this.networkOffset.z,
     );
     this.trail=followPets(this.companions,this.trail,this.player.position,game.facing,dt,time,this.low,this.reducedMotion.matches);
@@ -608,20 +623,21 @@ export class World {
     this.storage.visible=this.farm.visible;
     if(this.storage.visible)this.storage.children.forEach((m) => animateEgg(m, time, this.low));
     this.environment.update(game,isHatch,this.low,this.player,this.peers.values());
-    const moving = !game.death&&(game.training || Boolean(this.player.userData.moving));
+    const moving = game.seat===null&&!game.death&&(game.training || Boolean(this.player.userData.moving));
+    if(game.seat!==null&&CAMP_SEATS[game.seat])this.player.rotation.y=CAMP_SEATS[game.seat].rotation;
     if(game.training)this.player.rotation.y=farmPlot(game.farmSlot).rotation+Math.PI;
     const rig = this.player.children[1];
     if (rig) {
-      rig.position.y = game.death?0:moving
+      rig.position.y = game.death||game.seat!==null?0:moving
         ? Math.abs(Math.sin(time * 9)) * 0.07
         : Math.sin(time * 2) * 0.025;
       for (const side of ["left", "right"]) {
         const sign = side === "left" ? 1 : -1;
         const leg = rig.getObjectByName(`${side}_leg`),
           arm = rig.getObjectByName(`${side}_arm`);
-        if (leg) leg.rotation.x = game.death?.2*fall:moving ? Math.sin(time * 9) * 0.4 * sign : 0;
+        if (leg) leg.rotation.x = game.death?.2*fall:game.seat!==null?-Math.PI/2:moving ? Math.sin(time * 9) * 0.4 * sign : 0;
         if (arm)
-          arm.rotation.x = game.death?-.35*fall:game.carried
+          arm.rotation.x = game.death?-.35*fall:game.seat!==null?-.5:game.carried
             ? -2.4
             : moving
               ? -Math.sin(time * 9) * 0.3 * sign

@@ -1,5 +1,5 @@
 import type {Block} from './region-layout';
-import {FARM_PLOTS,farmLocal,VILLAGE,FARM_PEN} from './village';
+import {FARM_PLOTS,farmLocal,VILLAGE,FARM_PEN,CAMPFIRE,CAMP_SEATS} from './village';
 import {ROAD_WIDTH_SCALE} from './stage-data';
 let cached:Block[]|undefined;
 export function circularVillageArt(){
@@ -73,8 +73,16 @@ export function circularVillageArt(){
   local(0,1,1,.7,1.7,.12,wood);for(let n=0;n<5;n++)local(-1+n*.5,1.7,1.4,.5,.14,.9,n%2?cream:0x92a565);
   for(const x of [-1,1])local(x,.85,1.7,.12,1.7,.12,wood);
  }
- b(0,.2,9,2.1,.4,2.1,stone);b(0,.43,9,1.75,.06,1.75,0x89b7b2);b(0,.8,9,.55,.7,.55,cream);b(0,1.2,9,1,.16,1,stone);b(0,1.32,9,.8,.05,.8,0x9cc9bf);
+ // Stone fire ring and crossed charred logs replace the fountain.
+ for(let i=0;i<12;i++){const a=i*Math.PI/6;b(CAMPFIRE.x+Math.sin(a)*.95,.2,CAMPFIRE.z+Math.cos(a)*.95,.45,.4,.4,i%2?stone:0x8c8a79,a);}
+ b(CAMPFIRE.x,.1,CAMPFIRE.z,1.45,.18,1.45,0x433d32);
+ for(const side of [-1,1]){b(side*.25,.3,CAMPFIRE.z,1.35,.24,.3,0x5c4030,side*.65);b(side*.25,.44,CAMPFIRE.z,.95,.12,.16,0xc36c32,side*.65);}
+ for(const seat of CAMP_SEATS){
+  const local=(x:number,y:number,z:number,w:number,h:number,d:number,c:number)=>b(seat.x+x*Math.cos(seat.rotation)+z*Math.sin(seat.rotation),y,seat.z-x*Math.sin(seat.rotation)+z*Math.cos(seat.rotation),w,h,d,c,seat.rotation);
+  local(0,.34,0,2.15,.56,.62,wood);local(0,.63,0,2.05,.06,.42,0xb08a56);
+  for(const side of [-1,1]){local(side*1.08,.34,0,.05,.44,.48,0xd3b67b);local(side*1.115,.34,0,.015,.23,.26,0x9c7648);}
+  for(const x of [-.7,.7])local(x,.11,0,.22,.22,.7,0x5c4030);
+ }
  for(const side of [-1,1])for(const z of [-1,11]){const x=side*2.5;b(x,.8,z,.16,1.6,.16,wood);b(x,1.7,z,.48,.5,.48,gold);b(x,2,z,.65,.12,.65,0x5a6b50);}
- for(const side of [-1,1]){b(side*3.8,.4,9,1.5,.18,.5,wood);b(side*3.8,.75,9.2,1.5,.55,.12,wood);}
  cached=blocks;return blocks;
 }

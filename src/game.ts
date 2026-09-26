@@ -25,7 +25,7 @@ import {
 } from "./data";
 import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,reducedDamage,type Progression} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
-import {farmGym} from './village';
+import {farmGym,CAMPFIRE,CAMP_SEATS} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianPursuitSpeed,stageDamage,type HazardDefinition} from "./stage-data";
@@ -305,7 +305,7 @@ export class GameState {
     this.reviveAdUntil=null;
     this.damageTicks=[];this.hitSource=null;
     if(this.carried)this.flyaway={stageId:this.carried.stageId,variant:this.carried.variant,type:this.carried.type,x:this.x,z:this.z,at:this.now()};
-    this.carried=null;this.deadline=0;this.x=this.z=0;this.training=false;this.launch=null;this.death=null;
+    this.carried=null;this.deadline=0;this.x=this.z=0;this.training=false;this.seat=null;this.launch=null;this.death=null;
     this.revivedAt=this.now();
     const xp=this.settleXP(false);this.hp=this.maxHp;this.slowRemaining=0;this.effects={ink:0,stone:0,grab:0,delay:0,magnet:0};this.knockback.remaining=0;this.hazards.reset();
     if(!this.roomManaged)this.bosses.forEach(b=>{b.mode='return';b.target=null;});
@@ -409,6 +409,7 @@ export class GameState {
   get deathChoiceRemaining(){return this.death?Math.max(0,Math.min(BALANCE.deathChoiceDuration/1000,Math.ceil((this.death.at+BALANCE.deathChoiceDelay+BALANCE.deathChoiceDuration-this.now())/1000))):0;}
   private die(){
     if(this.death)return;
+    this.standUp();
     if(this.carried){const egg=this.carried;egg.x=this.x;egg.z=this.z;this.world.push(egg);this.carried=null;this.emit('egg_drop',{type:egg.type,reason:'death'});}
     this.death={x:this.x,z:this.z,at:this.now(),remaining:Math.max(0,(this.deadline-this.now())/1000)};
     this.knockback.remaining=0;this.launch=null;this.training=false;this.reviveAdUntil=null;
@@ -436,6 +437,7 @@ export class GameState {
   batAt=0;
   receiveBat(dx:number,dz:number){
     const now=this.now();if(this.death||now<this.knockedUntil)return false;
+    this.standUp();
     if(this.carried){const egg=this.carried;egg.x=this.x;egg.z=this.z;this.world.push(egg);this.carried=null;this.emit('egg_drop',{type:egg.type,reason:'player_hit'});}
     const length=Math.hypot(dx,dz)||1;
     this.knockback={x:dx/length*BALANCE.knockback/BALANCE.batFlightSeconds,z:dz/length*BALANCE.knockback/BALANCE.batFlightSeconds,remaining:BALANCE.batFlightSeconds};
@@ -444,7 +446,7 @@ export class GameState {
   pvpHit(hit:{x:number;z:number;until:number}){
     if(this.death)return;
     if(this.carried)this.emit('egg_drop',{type:this.carried.type,reason:'player_hit'});
-    this.carried=null;this.launch=null;this.training=false;this.x=hit.x;this.z=hit.z;this.knockedUntil=hit.until;
+    this.carried=null;this.launch=null;this.training=false;this.seat=null;this.x=hit.x;this.z=hit.z;this.knockedUntil=hit.until;
     this.message="배트에 맞아 넘어졌어요! 들고 있던 알을 떨어뜨렸어요.";this.revision++;
   }
   hp=BALANCE.baseHp;
@@ -456,6 +458,25 @@ export class GameState {
     return this.applyHazard({definition:d,origin:{x:this.x,z:this.z-1}} as Hazard);
   }
   training = false;
+  seat:number|null=null;
+  get nearSeat(){
+    if(this.seat!==null)return this.seat;
+    let nearest=-1,distance=CAMPFIRE.interactionRadius;
+    CAMP_SEATS.forEach((seat,index)=>{const d=Math.hypot(this.x-seat.x,this.z-seat.z);if(d<distance){nearest=index;distance=d;}});
+    return nearest;
+  }
+  standUp(){
+    const seat=this.seat===null?undefined:CAMP_SEATS[this.seat];this.seat=null;
+    if(seat){this.x=seat.x+Math.sin(seat.rotation)*CAMPFIRE.exitOffset;this.z=seat.z+Math.cos(seat.rotation)*CAMPFIRE.exitOffset;this.revision++;}
+  }
+  toggleSeat(){
+    if(!this.isAtBase||this.carried||this.death||this.training||this.launch||this.knockback.remaining>0||this.now()<this.knockedUntil)return false;
+    if(this.seat!==null){this.standUp();this.message='자리에서 일어났어요.';return true;}
+    const index=this.nearSeat;if(index<0)return false;
+    const seat=CAMP_SEATS[index];this.seat=index;this.x=seat.x;this.z=seat.z;
+    this.facing={x:Math.sin(seat.rotation),z:Math.cos(seat.rotation)};this.velocity={x:0,z:0};
+    this.message='모닥불 곁에서 쉬는 중 · 이동하면 일어나요.';this.revision++;return true;
+  }
   private trainingClock=0;
   private trainingGain=0;
   get movementMultiplier(){return TRAILS[this.save.equippedTrail??0].multiplier*this.speedMultiplier;}
@@ -471,7 +492,7 @@ export class GameState {
   get trainingRate() { return BALANCE.trainingPerSecond + BALANCE.trainingPerLevel*this.save.upgrades.training; }
   toggleTraining(){
     if(!this.isAtBase||this.carried||this.death||this.launch||this.knockback.remaining>0||this.now()<this.knockedUntil)return false;
-    this.training=!this.training;
+    this.standUp();this.training=!this.training;
     this.trainingClock=this.trainingGain=0;
     if(this.training){this.x=this.gym.x;this.z=this.gym.z;this.velocity={x:0,z:0};this.facing={x:0,z:-1};}
     this.message=this.training?'운동 중 · 조이스틱으로 이동하면 운동을 마쳐요.':'운동을 마쳤어요.';
@@ -689,6 +710,7 @@ export class GameState {
         : "safe";
   }
   get action() {
+    if(!this.carried&&this.nearSeat>=0)return this.seat!==null?'일어나기':'앉기';
     if(this.nearStore&&!this.carried&&!this.near&&!this.training)return "판매하기";
     if (this.nearGym && !this.carried) return this.training ? "운동 내리기" : "운동 시작";
     return this.carried ? "내려놓기" : this.near ? "들고가기" : "배트 스윙";
@@ -809,6 +831,7 @@ export class GameState {
     if(this.effects.grab>0||this.effects.stone>0)return;
     this.updateNight();
     if (!l || this.knockback.remaining>0 || this.launch || this.death || this.now()<this.knockedUntil) return;
+    if(this.seat!==null)this.standUp();
     if(this.training)this.toggleTraining();
     const speed=slow?Math.min(BALANCE.slowWalkSpeed,this.movementSpeed):this.movementSpeed;
     this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*speed,z:dz/Math.max(1,l)*speed};
@@ -920,6 +943,7 @@ export class GameState {
   interact() {
     this.updateNight();
     if(this.death)return;
+    if(!this.carried&&this.nearSeat>=0){this.toggleSeat();return;}
     if (this.nearGym && !this.carried) { this.toggleTraining(); return; }
     if (this.launch || this.now()<this.knockedUntil) return;
     if (this.carried) {

@@ -199,6 +199,11 @@ async function action(preparedId?:string) {
       $("action").dataset.hit = String(game.lastTap);
     }
   } else if (tab === "explore") {
+    if(!game.carried&&game.nearSeat>=0){
+      input.reset();online.halt();
+      if(online.active)await remote('sit');else{game.toggleSeat();void save();}
+      updateHud();return;
+    }
     const targetEgg=preparedEgg??game.near;
     if(!game.carried&&targetEgg&&!game.isAtBase){
       if(warnAboutBoss())return;
@@ -344,7 +349,7 @@ function updateHud() {
   clock.setAttribute('aria-label',`${phase.night?'밤':'낮'} · ${$('cycle-label').textContent} ${phase.text} · ${hudCompact?'상단 정보 펼치기':'상단 정보 간소화'}`);
   $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
-  $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||!!game.carried||!!game.death||!!game.returnReward;
+  $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||game.seat!==null||!!game.carried||!!game.death||!!game.returnReward;
   $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:'';
   $('speed-help').hidden=!game.training;
   const hint=tutorialHint(game,tab);
@@ -427,14 +432,14 @@ function updateHud() {
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
   const weightHint=$('action-weight');weightHint.hidden=true;weightHint.textContent='';
-  $('action-label').hidden=!game.carried&&(!game.nearGym||!!actionEgg);
+  $('action-label').hidden=!game.carried&&((!game.nearGym&&game.nearSeat<0)||!!actionEgg);
   $('action-icon').hidden=!!game.carried;
   const actionModel=game.nearStore?'shop':game.nearGym?'gym':null;
-  const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
+  const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:game.nearSeat>=0?'<span aria-hidden="true">🪵</span>':actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
   if($("action-icon").dataset.icon!==actionIcon){$("action-icon").dataset.icon=actionIcon;$("action-icon").innerHTML=actionIcon;}
   $("action").classList.toggle(
     "available",
-    tab === "hatchery" || !!game.near || !!game.carried || game.nearGym || game.nearStore,
+    tab === "hatchery" || !!game.near || !!game.carried || game.nearGym || game.nearStore || game.nearSeat>=0,
   );
   ($("action") as HTMLButtonElement).disabled =
     (tab === "hatchery" && (!game.selected || game.selected.hp===0));

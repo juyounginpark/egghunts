@@ -80,7 +80,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   ? Math.max(player.motionStart??0,now-BALANCE.roomStopRewindMs,Math.min(now,request.inputAt!)):null;
  // Release latency compensation uses only positions already simulated by the server.
  // It cannot restore an egg, health, rewards, or move through a new collision.
- if(stopAt!==null&&!player.receipts.includes(`request:${request.id}`)&&!self.death&&!self.training&&!self.launch&&!self.knockback.remaining){
+ if(stopAt!==null&&!player.receipts.includes(`request:${request.id}`)&&!self.death&&!self.training&&self.seat===null&&!self.launch&&!self.knockback.remaining){
   const history=player.motion??[],before=history.findLast(p=>p.at<=stopAt),after=history.find(p=>p.at>=stopAt);
    if(before&&after&&before.hit===(Number.isFinite(self.hitAt)?self.hitAt:0)&&after.hit===before.hit&&before.egg===(self.carried?.id??null)&&after.egg===before.egg&&before.base===self.isAtBase&&after.base===before.base){
    const t=after.at===before.at?0:(stopAt-before.at)/(after.at-before.at);
@@ -141,7 +141,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
        if(target.receiveBat(distance>.01?dx:self.facing.x,distance>.01?dz:self.facing.z))delete room.players[id].preparation;
       }
      }
-    }else applyCommand(self,player,command,now);
+    }else applyCommand(self,player,command,now,room);
    }catch(e){const error=e instanceof Error?e.message:'ACTION_FAILED';(player.commandErrors??=[]).push({id:command.id,error});}
   }
   player.receipts.push(`request:${request.id}`);player.receipts=player.receipts.slice(-128);
@@ -164,7 +164,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  for(const p of Object.values(room.players))if(p.chat&&now-p.chat.at>=BALANCE.chatDurationMs)delete p.chat;
  const peers=[...games].filter(([id])=>id!==user).map(([id,g])=>({
   id,at:now,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
-  speed:g.speed,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,chat:room.players[id].chat??null,
+  speed:g.speed,seat:g.seat,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,chat:room.players[id].chat??null,
   activePets:g.save.active.filter(id=>g.save.mongles[id]>0).slice(0,BALANCE.maxCompanions),
   pets:farmPetIds(g.save.mongles,g.save.active,now),
   farmEggs:g.save.eggs.map(({id,type,stageId,variant,special})=>({id,type,stageId,variant,special})),
@@ -173,11 +173,16 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const eggNotices=room.eggNotices.filter(notice=>!notice.id.startsWith(`${user}:`));
  return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,eggNotices,chat:player.chat??null,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
 }
-function applyCommand(g:GameState,p:Player,c:Command,now:number){
+function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
  const integer=()=>{if(!Number.isSafeInteger(c.value)||Number(c.value)<0)throw Error('INVALID_ID');return Number(c.value);};
  const text=()=>{if(typeof c.value!=='string'||c.value.length>160)throw Error('INVALID_ID');return c.value;};
  const atBase=()=>{if(!g.isAtBase||g.death)throw Error('RETURN_TO_BASE');};
  switch(c.kind){
+  case 'sit':{
+   atBase();const seat=g.nearSeat;
+   if(g.seat===null&&seat>=0&&Object.values(room.players).some(other=>other!==p&&other.runtime.fields.seat===seat))throw Error('SEAT_OCCUPIED');
+   if(!g.toggleSeat())throw Error('SEAT_UNAVAILABLE');break;
+  }
   case 'coupon':{const error=g.redeemCoupon(text());if(error)throw Error(error);break;}
   case 'chat':{
    if(typeof c.value!=='string'||c.value.length>BALANCE.chatMaxLength*2)throw Error('INVALID_CHAT');

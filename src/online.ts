@@ -16,6 +16,7 @@ const HOSTED_EDGE=!import.meta.env.VITE_GAME_SERVER_URL;
 type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];chat?:ChatMessage|null;eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={...COUPON_ERRORS,CANNOT_EQUIP:'빈 착용 칸과 남은 펫 수량을 확인해 주세요.',WEEKLY_INVENTORY_FULL:'알 보관함 한 칸을 비워 주세요.',WEEKLY_UNAVAILABLE:'오늘 보상을 이미 받았거나 수령할 수 없는 상태예요.',EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
+Object.assign(errorText,{SEAT_OCCUPIED:'이미 다른 탐험가가 앉아 있어요.',SEAT_UNAVAILABLE:'빈 통나무 의자 가까이에서 앉아 주세요.'});
 export class OnlineGame{
  active=false;
  connected=false;

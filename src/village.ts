@@ -1,5 +1,10 @@
 // Stable slots: local +Z faces the circular public promenade.
 export const VILLAGE={x:0,z:9,radius:14,walkRadius:13.25};
+export const CAMPFIRE={x:0,z:9,seatRadius:3.2,interactionRadius:1.5,sittingHeight:.18,exitOffset:1};
+export const CAMP_SEATS=Array.from({length:4},(_,index)=>{
+ const angle=index*Math.PI/2;
+ return {x:CAMPFIRE.x+Math.sin(angle)*CAMPFIRE.seatRadius,z:CAMPFIRE.z+Math.cos(angle)*CAMPFIRE.seatRadius,rotation:angle+Math.PI};
+});
 export const FARM_PLOTS=[-115,-57,0,57,115].map(deg=>{
  const a=deg*Math.PI/180,x=Math.sin(a)*10.3,z=VILLAGE.z+Math.cos(a)*10.3;
  return {x,z,rotation:Math.atan2(-x,VILLAGE.z-z)};
