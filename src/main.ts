@@ -343,8 +343,9 @@ function updateHud() {
   $('cycle-fill').style.width=`${phase.ratio*100}%`;
   clock.dataset.phase=phase.night?'night':'day';
   clock.classList.toggle('night-warning',phase.warning);
-  if(phase.warning&&clock.dataset.warned!==String(game.nightAt)){
+  if(ready&&phase.warning&&clock.dataset.warned!==String(game.nightAt)){
     clock.dataset.warned=String(game.nightAt);
+    toast('곧 밤이 와요!');
     if(!matchMedia('(prefers-reduced-motion: reduce)').matches)$('cycle-remaining').animate([{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});
   }
   clock.setAttribute('aria-label',`${phase.night?'밤':'낮'} · ${$('cycle-label').textContent} ${phase.text} · ${hudCompact?'상단 정보 펼치기':'상단 정보 간소화'}`);
