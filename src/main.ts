@@ -235,7 +235,7 @@ async function action(preparedId?:string) {
       try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:eggMaxHp(egg),hpVersion:4,distance:Math.abs(egg.z),expires:game.nightAt});}
       catch(err){toast(String(err));}finally{claiming=false;}return;
     }
-    if(!game.carried&&!game.near&&!game.nearGym){if(world.swingBat(game.now())){game.hitMobs();feedback('swing');}return;}
+    if(!game.carried&&!game.near&&!game.nearGym){if(world.swingBat(game.now())){feedback('swing');}return;}
     if(preparedEgg)game.pickup(preparedEgg);else game.interact();
     feedback(null);
     platform.track("egg_interact", { carrying: game.carried ? 1 : 0 });

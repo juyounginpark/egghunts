@@ -1,12 +1,9 @@
 import * as T from 'three';
 import type {GameState} from './game';
-import {MOB_TYPES} from './exploration-catalog';
-import {stagePatterns,environmentPlacement,STAGES} from './stage-data';
+import {stagePatterns,environmentPlacement} from './stage-data';
 import {environmentState} from './environment-state';
-import {explorationHeight} from './exploration-route';
-import {mobProjectiles,mobSight} from './mobs';
 import {speedPads} from './speed-pads';
-/** Shared instance pools for forty enemy designs and authoritative hazard states. */
+/** Shared instance pools for authoritative environmental hazard states. */
 export class ExplorationActors{
  group=new T.Group();
  private mesh=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshLambertMaterial(),4096);
@@ -20,7 +17,7 @@ export class ExplorationActors{
  private ring(x:number,z:number,r:number,c:number,y=.08,rz=r){for(let i=0;i<32;i++){const t=i*Math.PI/16;this.block(x+Math.cos(t)*r,y,z+Math.sin(t)*rz,.12,.035,.08,c,0,true);}}
  render(g:GameState,time:number,visible:boolean){
   this.group.visible=visible;if(!visible)return;this.count=this.marked=0;
-  const now=g.now(),orange=0xffb665,red=0xe76e59,cream=0xe5d9b8,dark=0x323c49;
+  const now=g.environmentTime??g.now(),orange=0xffb665,red=0xe76e59,cream=0xe5d9b8,dark=0x323c49;
   for(const [lane,d] of stagePatterns(g.stage.id).entries()){
    const base=environmentPlacement(g.stage.id,lane,g.stageOffset);if(Math.abs(base.z-g.z)>32)continue;
    const h=environmentState(d,lane,g.stageOffset,now),active=h.phase==='Active',warning=h.phase==='Telegraph',recovery=h.phase==='Recovery';
@@ -50,46 +47,6 @@ export class ExplorationActors{
      for(let j=0;j<7;j++)this.block(x+Math.sin(j*2)*.4,.2+j*.2,z+Math.cos(j*2)*.25,.3,.3,.25,d.visual==='lightning'?0xf1c975:0xbbcdbf);
     }
    }
-  }
-  for(const m of g.mobs){
-   if(Math.abs(m.z-g.z)>28||Math.abs(m.stage-g.stage.id)>1)continue;
-   const dead=m.phase==='dead',age=(now-m.at)/1000;if(dead&&age>.6)continue;
-   const d=MOB_TYPES[m.type],s=STAGES[m.stage-1],scale=dead?Math.max(0,1-age/.6):1;
-   const y=explorationHeight(m.x,m.z,g.progression.stage),angle=Math.atan2(m.aimX-m.x,m.aimZ-m.z),cs=Math.cos(angle),sn=Math.sin(angle);
-   const pulse=m.phase==='warning'?Math.sin(age*9)*.035:m.phase==='hit'?-Math.max(0,.18-age*.3):0;
-   const part=(x:number,yy:number,z:number,w:number,h:number,depth:number,c:number)=>this.block(m.x+(x*cs+z*sn)*scale,y+(yy+pulse)*scale,m.z+(-x*sn+z*cs)*scale,w*scale,h*scale,depth*scale,c,angle);
-   const color=['snow','pillow'].includes(d.form)?cream:['robot','drone','turret','gear','eye'].includes(d.form)?0x7b8990:s.accent;
-   part(0,.45,0,.7,.6,.65,color);part(0,.8,.15,.55,.4,.45,color);
-   for(const side of [-1,1]){part(side*.15,.84,.39,.09,.1,.04,dark);part(side*.16,.95,.4,.18,.04,.04,red);}
-   switch(d.form){
-    case 'sprout':case 'vine':case 'seed':for(const side of [-1,1]){part(side*.25,1.2,0,.5,.12,.22,0x779b66);part(side*.43,.5,.2,.25,.15,.15,0x8b7351);}break;
-    case 'bug':case 'ant':case 'gear':for(const side of [-1,1])for(const z of [-.25,0,.25])part(side*.45,.18,z,.35,.12,.1,dark);part(0,.55,-.35,.55,.55,.6,d.form==='gear'?0xb29665:0x98704c);break;
-    case 'crab':for(const side of [-1,1]){part(side*.6,.55,.25,.45,.35,.4,color);part(side*.6,.68,.45,.08,.18,.12,dark);part(side*.4,.15,-.1,.5,.15,.12,dark);}break;
-    case 'bird':case 'moth':case 'drone':case 'star':for(const side of [-1,1])part(side*.6,.65+Math.sin(time*3)*.05,0,.65,.15,.5,color);part(0,.8,.5,.18,.15,.25,cream);break;
-    case 'dog':case 'lizard':for(const side of [-1,1]){part(side*.25,.15,.1,.15,.3,.2,dark);part(side*.22,1.15,0,.16,.3,.15,color);}part(0,.4,-.6,.2,.15,.7,color);break;
-    case 'jar':case 'cup':case 'kettle':part(0,1.1,0,.8,.15,.6,cream);part(.5,.65,0,.2,.5,.15,color);if(d.form==='kettle')part(-.5,.7,.15,.4,.2,.2,color);break;
-    case 'book':case 'goblin':case 'ghost':part(0,.5,0,.9,.65,.15,cream);for(const side of [-1,1])part(side*.5,.55,.1,.4,.13,.1,color);break;
-    case 'eye':case 'turret':part(0,.75,.4,.45,.35,.15,dark);part(0,.8,.5,.18,.18,.1,red);if(d.form==='turret')part(0,.75,.65,.25,.2,.45,color);break;
-    case 'soldier':case 'robot':part(0,1.1,0,.75,.2,.55,dark);for(const side of [-1,1])part(side*.4,.55,.1,.18,.4,.18,cream);break;
-    case 'squid':case 'jelly':for(const side of [-1,1])for(const z of [-.2,.2])part(side*.3,.15,z,.15,.3,.15,color);break;
-    case 'flame':case 'liquid':part(0,1.1,0,.35,.5,.3,color);break;
-    case 'snow':case 'sand':case 'rock':part(0,.3,0,.9,.5,.85,color);break;
-    case 'pillow':case 'block':part(0,.5,0,1,.6,.8,color);part(0,.86,0,.75,.13,.65,cream);break;
-   }
-   if(!dead){this.block(m.x,y+1.5,m.z,.95,.08,.06,dark);this.block(m.x-(1-m.hp/m.maxHp)*.475,y+1.5,m.z,.95*m.hp/m.maxHp,.08,.07,0xe69a76);}
-   if(m.phase==='warning'){
-    const dx=m.aimX-m.fromX,dz=m.aimZ-m.fromZ,l=Math.hypot(dx,dz)||1;
-    if(d.kind==='projectile'||d.kind==='dash'){
-     const reach=d.kind==='dash'?d.active*3+1.15:l;
-     for(let i=0;i<=16;i++)for(const side of [-1,1])this.block(m.fromX+dx/l*i*reach/16-dz/l*side*.45,y+.07,m.fromZ+dz/l*i*reach/16+dx/l*side*.45,.1,.04,.1,orange,0,true);
-    }else{
-     const r=d.kind==='cone'?1.6:1.15,a=Math.atan2(dz,dx);
-     for(let i=0;i<=24;i++){const t=a-Math.PI/3+i*Math.PI/36;this.block(m.x+Math.cos(t)*r,y+.07,m.z+Math.sin(t)*r,.1,.04,.1,orange,0,true);}
-     for(const side of [-1,1])for(let i=1;i<8;i++)this.block(m.x+Math.cos(a+side*Math.PI/3)*r*i/8,y+.07,m.z+Math.sin(a+side*Math.PI/3)*r*i/8,.1,.04,.1,orange,0,true);
-    }
-   }
-   for(const p of mobProjectiles(m,now))if(mobSight(g,{x:m.fromX,z:m.fromZ},p))this.block(p.x,y+.55,p.z,.45,.4,.45,s.accent);
-   if(m.phase==='active'&&d.kind!=='projectile')part(0,.5,.8,.8,.25,.3,red);
   }
   if(g.speedPad.blend>1.005&&!g.death&&!g.isAtBase){
    for(let i=1;i<=3;i++)this.block(g.x-g.facing.x*i*.2,.08,g.z-g.facing.z*i*.2,.3,.04,.12,0xb4edda,0,true);

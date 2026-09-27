@@ -6,7 +6,7 @@ import {validateWeekly} from './weekly';
 import type {HazardManager} from './hazards';
 
 export type RuntimeState={save:Save;fields:Record<string,unknown>;hazards:ReturnType<HazardManager['snapshot']>};
-const omitted=new Set(['save','world','bosses','hazards','roomSnapshotTime','mapCollision','now','random','events','routeCache','routeStart']);
+const omitted=new Set(['save','world','bosses','hazards','roomSnapshotTime','environmentTime','mapCollision','now','random','events','routeCache','routeStart']);
 export function migrateStageRuntime(state:RuntimeState){
  if(state.save.stageOrderVersion===2&&state.save.routeVersion===3)return;
  const oldZ=state.fields.z;
@@ -24,7 +24,7 @@ export function migrateStageRuntime(state:RuntimeState){
 export function exportRuntime(game:GameState):RuntimeState{
  const save=game.snapshot();delete save.world;delete save.bosses;
  const fields=Object.fromEntries(Object.entries(game).filter(([key,value])=>!omitted.has(key)&&typeof value!=='function'));
- fields.mobs=game.mobs.filter(m=>Math.abs(m.stage-game.stage.id)<=1);
+ fields.mobs=[];
  return structuredClone({save,fields,hazards:game.hazards.snapshot()});
 }
 export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[],bosses:Boss[],migrateHealth=true){
@@ -36,6 +36,7 @@ export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[
   // JSON represents infinite initial timestamps as null.
   known[key]=value===null&&typeof known[key]==='number'&&!Number.isFinite(known[key])?known[key]:value;
  }
+ game.mobs=[];
  game.save=structuredClone(state.save);game.save.dragonClues??={};game.world=world;game.bosses=bosses;game.hazards.restore(state.hazards);
  if(migrateHealth)migrateEggHealth([...game.save.eggs,...world,game.carried,...bosses.flatMap(b=>b.loot?[b.loot]:[])]);
  if(migrateHealth){migrateBalance(game.save,game.now());validateWeekly(game.save.weekly);game.save.mongles=Array.from({length:MONGLES.length},(_,i)=>game.save.mongles[i]??0);}

@@ -72,8 +72,9 @@ const shared=mobSpawn(0,0,1,now);room.mobs=[shared];
 for(const id of ['a','b']){const p=make();p.x=shared.x;p.z=shared.z+1;p.facing={x:0,z:-1};room.players[id].runtime=exportRuntime(p);}
 room=runRoom(room,members,[],'a',{id:'hit-a',commands:[{id:'swing-a',kind:'attack'}]},now+100).room;
 room=runRoom(room,members,[],'b',{id:'hit-b',commands:[{id:'swing-b',kind:'attack'}]},now+200).room;
-assert.equal(room.mobs!.filter(v=>v.id===shared.id).length,1);assert.equal(room.mobs![0].hp,0);
-assert.equal((room.players.b.runtime.fields.mobs as any[]).find(v=>v.id===shared.id).phase,'dead');
+assert.deepEqual(room.mobs,[]);
+assert.deepEqual(room.players.a.runtime.fields.mobs,[]);
+assert.deepEqual(room.players.b.runtime.fields.mobs,[]);
 // Every attack type deals damage only during its active period, once per target.
 for(let type=0;type<MOB_TYPES.length;type++){
  const d=MOB_TYPES[type],p=make(),enemy=mobSpawn(type,0,1,now),offset=(d.stage-1)*48;
@@ -105,4 +106,16 @@ for(const stage of [5,8,14,17]){
  p.x=gate.x;p.z=gate.z-(stage-1)*48;assert.ok(p.openShortcut());assert.ok(!p.openedShortcuts.includes(stage));assert.equal(p.openShortcut(),false);
  t+=649;p.tick(.01);assert.ok(!p.openedShortcuts.includes(stage));t++;p.tick(.01);assert.ok(p.openedShortcuts.includes(stage));
 }
-console.log('PASS 400 objects / 40 enemy types / 48 pads; carried routes, all enemy attacks, fixed damage, 30/60/120Hz, lava re-entry, pad lifecycle, shared final hits, four timed gates');
+// Online environments no longer advance on the server; clients submit contacts.
+let clientRoom=runRoom(null,members,[],'a',{id:'environment-join'},now).room;
+const visitor=make(),contact=environmentPlacement(4,0,3*48);visitor.x=contact.x;visitor.z=contact.z;visitor.immunity=0;
+clientRoom.players.a.runtime=exportRuntime(visitor);
+clientRoom=runRoom(clientRoom,members,[],'a',{id:'environment-idle'},now+100).room;
+assert.equal(clientRoom.players.a.runtime.fields.hp,visitor.hp,'no server environmental damage');
+const hitAt=now+200,attackState=environmentState(stagePatterns(4)[0],0,3*48,hitAt);
+const report={id:'client-lava-contact',kind:'environmentHit',value:{id:attackState.definition.id,serial:attackState.serial,at:hitAt,stage:4,...contact}};
+clientRoom=runRoom(clientRoom,members,[],'a',{id:'environment-contact',commands:[report]},hitAt).room;
+const damaged=clientRoom.players.a.runtime.fields.hp as number;assert.ok(damaged<visitor.hp);
+clientRoom=runRoom(clientRoom,members,[],'a',{id:'environment-retry',commands:[report]},now+300).room;
+assert.equal(clientRoom.players.a.runtime.fields.hp,damaged,'contact retries cannot double damage');
+console.log('PASS 400 objects / 48 pads; carried routes, archived enemy unit behavior, fixed damage, 30/60/120Hz, lava re-entry, pad lifecycle, retired room mobs, timed gates, client environmental contact receipts');

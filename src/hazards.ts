@@ -25,6 +25,10 @@ export class HazardManager{
  snapshot(){return {attacks:this.attacks,time:this.time,next:[...this.next],serial:this.serial,stage:this.stage,environmentClock:this.environmentClock,environmentHits:this.environmentHits};}
  restore(s:ReturnType<HazardManager['snapshot']>){this.attacks=s.attacks;this.time=s.time;this.next=new Map(s.next);this.serial=s.serial;this.stage=s.stage;this.environmentClock=s.environmentClock??0;this.environmentHits=s.environmentHits??{};}
  reset(stage=0){this.attacks=[];this.time=0;this.next.clear();this.stage=stage;}
+ tickEnvironment(stage:number,p:HazardPlayer,clock:number,hit:(h:Hazard)=>void){
+  if(this.stage!==stage)this.reset(stage);
+  this.syncEnvironment(stage,p,clock,hit);
+ }
  spawn(d:HazardDefinition,p:HazardPlayer,member=0){
   const lead=d.targetingType==='predict'?B.prediction:0;
   const target={x:Math.max(-5.7,Math.min(5.7,p.x+p.vx*lead+(member-1)*(d.count>1?1.6:0))),z:p.z+p.vz*lead};

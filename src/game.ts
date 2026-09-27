@@ -1,7 +1,7 @@
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {softenGrowth} from './growth-curve';
 import {freshPads,updatePads} from './speed-pads';
-import {tickMobs,hitMobs,type Mob} from './mobs';
+import type {Mob} from './mobs';
 import {migrateExploration} from './exploration-migration';
 import {bossAnchor,specialEggAnchor,eggAnchor,shortcut,terrainAt} from './exploration-route';
 import {migrateBalance,type BalanceAdjustment} from './balance-migration';
@@ -463,7 +463,7 @@ export class GameState {
   knockedUntil=0;
   batAt=0;
   mobs:Mob[]=[];
-  hitMobs(swing=String(this.now())){hitMobs(this,swing);}
+  environmentTime:number|null=null;
   receiveBat(dx:number,dz:number){
     const now=this.now();if(this.death||now<this.knockedUntil)return false;
     this.standUp();
@@ -913,7 +913,6 @@ export class GameState {
   tick(dt:number){
     this.updateNight();
     for(const [key,at] of Object.entries(this.openingShortcuts))if(this.now()>=at+650){const stage=Number(key);if(!this.openedShortcuts.includes(stage))this.openedShortcuts.push(stage);delete this.openingShortcuts[stage];this.revision++;}
-    if(!this.roomManaged)tickMobs(this.mobs,new Map([['local',this]]),this.now(),dt);
     if(this.death){if(this.reviveAdUntil===null&&this.deathChoiceRemaining<=0)this.failExpedition('hp');return;}
     if(dt<=0)return;
     for(let left=dt;left>1e-9&&!this.death;left-=PROGRESSION.simulationStep)this.tickStep(Math.min(left,PROGRESSION.simulationStep));
@@ -931,7 +930,7 @@ export class GameState {
       if(near&&!this.progression.seenEggs.includes(near.type)){this.progression.seenEggs.push(near.type);this.progression.pendingXP+=PROGRESSION.discoveryXP;this.revision++;this.emit('egg_discovered',{type:near.type});}
       const reached=Math.floor(this.distance/PROGRESSION.distanceStep),old=Math.floor(this.progression.distanceRecord/PROGRESSION.distanceStep);
       if(reached>old){this.progression.pendingXP+=(reached-old)*PROGRESSION.distanceXP;this.progression.distanceRecord=this.distance;this.revision++;}
-      this.hazards.tick(dt,this.stage.id,{x:this.x,z:this.z,vx:this.velocity.x,vz:this.velocity.z,facing:this.facing,carrying:!!this.carried,metal:!!this.carried&&[2,17].includes(this.stage.id),moving:Math.hypot(this.velocity.x,this.velocity.z)>.01,stageOffset:this.stageOffset,guardianAwake:this.pursuing>=0&&Math.hypot(this.bosses[this.pursuing].x-this.x,this.bosses[this.pursuing].z-this.z)<12,guardianStage:this.bosses[this.pursuing]?.stageId,guardianOffset:((this.bosses[this.pursuing]?.stageId??this.stage.id)-this.progression.stage)*ROUTE.length},h=>this.applyHazard(h),(x,z)=>this.push(x,z),(key,seconds)=>{if(key in this.effects)this.effects[key as keyof typeof this.effects]=seconds;},!!this.carried&&EGGS[this.carried.type].tier===6,this.now());
+      this.hazards.tick(dt,this.stage.id,{x:this.x,z:this.z,vx:this.velocity.x,vz:this.velocity.z,facing:this.facing,carrying:!!this.carried,metal:!!this.carried&&[2,17].includes(this.stage.id),moving:Math.hypot(this.velocity.x,this.velocity.z)>.01,stageOffset:this.stageOffset,guardianAwake:this.pursuing>=0&&Math.hypot(this.bosses[this.pursuing].x-this.x,this.bosses[this.pursuing].z-this.z)<12,guardianStage:this.bosses[this.pursuing]?.stageId,guardianOffset:((this.bosses[this.pursuing]?.stageId??this.stage.id)-this.progression.stage)*ROUTE.length},h=>this.applyHazard(h),(x,z)=>this.push(x,z),(key,seconds)=>{if(key in this.effects)this.effects[key as keyof typeof this.effects]=seconds;},!!this.carried&&EGGS[this.carried.type].tier===6,this.roomManaged?undefined:this.now());
       const clue=this.save.dragonClues![this.stage.id]??=newDragonClue();
       observeDragon(clue,this.dragonWatch,this.stage.id,dt,{x:this.x,z:this.z,offset:this.stageOffset,hit:Number.isFinite(this.hitAt)?this.hitAt:0,egg:this.carried?.stageId===this.stage.id?this.carried.id:null,moving:Math.hypot(this.velocity.x,this.velocity.z)>.01},this.hazards.attacks);
     }else {this.hazards.reset();this.dragonWatch={stage:0,observed:{}};}

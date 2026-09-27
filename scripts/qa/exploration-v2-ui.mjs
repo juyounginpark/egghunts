@@ -13,11 +13,11 @@ try{
  for(let stage=1;stage<=20;stage++){
   await page.evaluate(async stage=>{
    window.__qa.scene('base');const {game}=window.__exploration;game.save.bossWarningSeen=true;
-   const {routePoint}=await import('/src/exploration-route.ts'),{mobSpawn}=await import('/src/mobs.ts');
+   const {routePoint}=await import('/src/exploration-route.ts');
    const p=routePoint(stage,.43);game.x=p.x;game.z=p.z-(stage-1)*48;game.push(0,0);
    // QA freezes visual time, so finish the visited-bank fade explicitly.
    for(const bank of window.__exploration.world.hazardsView.regions.fog.banks)if(bank.stage===stage)bank.alpha=0;
-   game.mobs=[0,1].map(i=>{const m=mobSpawn((stage-1)*2+i,i,1,game.now());m.x=game.x+(i?1.5:-1.5);m.z=game.z-2;m.aimX=game.x;m.aimZ=game.z;return m;});game.revision++;
+   if(game.mobs.length)throw Error('Unexpected map mobs');game.revision++;
   },stage);
   for(const night of [false,true]){
    await page.evaluate(night=>window.__qa.environment(night?1:0),night);await page.waitForTimeout(1250);
@@ -37,5 +37,5 @@ try{
  await page.screenshot({path:'artifacts/exploration-v2/speed-pad.png'});
  assert.deepEqual(errors,[]);assert.ok(rows.every(r=>!r.assetError));assert.ok(rows.every(r=>r.calls<=250&&r.triangles<=500000));
  await writeFile('artifacts/exploration-v2/report.json',JSON.stringify({rows,errors,limits:'Browser rendering only; multiplayer simulation is reported separately.'},null,2));
- console.log(`PASS 20 stages day/night, 40 enemy designs, speed gate, timed gate, boost badge; max draw calls ${Math.max(...rows.map(r=>r.calls))}, triangles ${Math.max(...rows.map(r=>r.triangles))}`);
+ console.log(`PASS 20 stages day/night, 20 object catalogs without mobs, speed gate, timed gate, boost badge; max draw calls ${Math.max(...rows.map(r=>r.calls))}, triangles ${Math.max(...rows.map(r=>r.triangles))}`);
 }finally{await browser.close();await server.close();}

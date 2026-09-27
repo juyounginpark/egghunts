@@ -1,5 +1,5 @@
 import {add} from '../src/money';
-import {tickMobs,type Mob} from '../src/mobs';
+import type {Mob} from '../src/mobs';
 import {migrateExploration} from '../src/exploration-migration';
 import {advanceTutorial} from '../src/tutorial';
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
@@ -8,6 +8,10 @@ import {exportRuntime,restoreRuntime,migrateStageRuntime,type RuntimeState} from
 import {migrateStageWorld,compactRouteWorld} from '../src/stage-migration';
 import {playerName} from '../src/player-identity';
 import type {EggNotice} from '../src/egg-notices';
+import {stagePatterns} from '../src/stage-data';
+import {environmentState} from '../src/environment-state';
+import {contains} from '../src/hazards';
+import {terrainAt} from '../src/exploration-route';
 export {snapshotSections} from '../src/snapshot-stream';
 
 type Member={user_id:string;slot:number;last_seen:string};
@@ -35,7 +39,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const joinedNow=!previous?.players[user];
  const room:Room=previous??{stageOrderVersion:2,routeVersion:3,at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
  room.openedShortcuts??=[];room.openingShortcuts??={};
- room.mobs??=[];
+ room.mobs=[]; // Retire persisted mobs when an existing room is resumed.
  if(room.explorationVersion!==3){migrateExploration(room.world,room.bosses);room.explorationVersion=3;}
  // Persisted rooms, unlike individual saves, may still contain a partial route.
  // Fill only absent guardians; a looted region with its guardian is left alone.
@@ -75,6 +79,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   }
   const g=new GameState(structuredClone(p.runtime.save),()=>simTime,random,true);
   restoreRuntime(g,p.runtime,room.world,room.bosses);g.farmSlot=m.slot;g.events=[];
+  g.hazards.attacks=g.hazards.attacks.filter(h=>!h.environment);
   g.openedShortcuts=room.openedShortcuts;g.openingShortcuts=room.openingShortcuts;
   g.mobs=room.mobs;
   g.settleProduction(Math.min(now,p.seen+BALANCE.offlineCap*1000));
@@ -124,7 +129,6 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    if(p.preparation&&(Math.hypot(g.x-p.preparation.x,g.z-p.preparation.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(p.preparation.hit??0)||g.death||g.carried))delete p.preparation;
   }
   // Every boss advances exactly once, against the player holding its target egg.
-  tickMobs(room.mobs,games,simTime,dt);
   for(let index=0;index<room.bosses.length;index++){
    const boss=room.bosses[index];
    const owner=[...games.values()].find(g=>g.carried?.id===boss.target)??self;
@@ -144,7 +148,6 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
      if(now-self.batAt>=BALANCE.batCooldown&&!self.death&&!self.carried&&!self.training&&!self.launch&&self.knockback.remaining<=0&&now>=self.knockedUntil){
       self.batAt=now;
       const length=Math.hypot(vector.x,vector.z);if(length>.01)self.facing={x:vector.x/length,z:vector.z/length};
-      self.hitMobs(`${user}:${command.id}`);
       for(const [id,target] of games){
        const dx=target.x-self.x,dz=target.z-self.z,distance=Math.hypot(dx,dz);
        if(id===user||now-room.players[id].seen>BALANCE.roomInputGraceMs||distance>BALANCE.batRange||(distance>.01&&(dx*self.facing.x+dz*self.facing.z)/distance<BALANCE.batFacingThreshold))continue;
@@ -189,6 +192,22 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
  const text=()=>{if(typeof c.value!=='string'||c.value.length>160)throw Error('INVALID_ID');return c.value;};
  const atBase=()=>{if(!g.isAtBase||g.death)throw Error('RETURN_TO_BASE');};
  switch(c.kind){
+  case 'environmentHit':{
+   // Clients own obstacle simulation. Persist a contact once, using known
+   // damage definitions; never accept client HP, rewards or egg ownership.
+   const v=c.value as {id:string;serial:number;at:number;stage:number;x:number;z:number}|undefined;
+   if(!v||typeof v.id!=='string'||![v.serial,v.at,v.stage,v.x,v.z].every(Number.isFinite)||!Number.isInteger(v.stage)||v.stage<1||v.stage>20||v.at>now+500||now-v.at>5000||g.isAtBase||g.death)break;
+   const definitions=stagePatterns(v.stage),lane=definitions.findIndex(d=>d.id===v.id);if(lane<0)break;
+   const d=definitions[lane],h=environmentState(d,lane,(v.stage-g.progression.stage)*48,v.at);
+   const reach=Math.min(12,1.5+g.movementSpeed*Math.max(0,(now-v.at)/1000));
+   const contact=contains(h,v)||(['cross','wall'].includes(d.movement??'')&&Array.from({length:6},(_,i)=>environmentState(d,lane,(v.stage-g.progression.stage)*48,v.at-(i+1)*100/6)).some(sample=>sample.phase==='Active'&&sample.serial===h.serial&&contains(sample,v)));
+   if(h.phase!=='Active'||h.serial!==v.serial||!contact||Math.hypot(g.x-v.x,g.z-v.z)>reach)break;
+   if(d.movement==='floor'&&terrainAt(v.stage,v.x,v.z+(v.stage-g.progression.stage)*48).height>.1)break;
+   const previous=g.hazards.environmentHits[d.id];
+   if(d.tickInterval?previous&&v.at<previous.next:previous?.serial===h.serial&&previous.hit)break;
+   g.hazards.environmentHits[d.id]={serial:h.serial,hit:true,next:v.at+(d.tickInterval??0)*1000};
+   g.applyHazard(h);break;
+  }
   case 'sit':{
    atBase();const seat=g.nearSeat;
    if(g.seat===null&&seat>=0&&Object.values(room.players).some(other=>other!==p&&other.runtime.fields.seat===seat))throw Error('SEAT_OCCUPIED');

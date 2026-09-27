@@ -3,7 +3,33 @@ import {STAGES,environmentPlacement} from './stage-data';
 import {eggAnchor,routePoint,shortcut,terrainAt} from './exploration-route';
 import {speedPads} from './speed-pads';
 import type {Block,Motion} from './region-layout';
+import {explorationLandmark} from './exploration-landmarks';
 export type ObjectAssembly={id:string;kind:string;blocks:Block[];motions:Motion[]};
+function surfaceShape(kind:string,stage:number){
+ const blocks:Block[]=[],s=STAGES[stage-1],wood=0x997556,cream=0xe1d8ba;
+ const b=(x:number,z:number,w:number,d:number,c:number,y=.035,h=.06)=>blocks.push({x,y,z,w,h,d,c,solid:false});
+ if(kind==='leaf'||kind==='shell'){
+  for(let j=-2;j<=2;j++)b(j*.3,0,.32,1.5-Math.abs(j)*.27,kind==='leaf'?0x769761:0xc6bba7);
+  b(0,0,.065,1.35,cream,.075,.025);for(const sign of [-1,1])for(const z of [-.4,0,.4])b(sign*.3,z,.5,.045,kind==='leaf'?0x9eb27b:0xe1d1b9,.072,.022);
+ }else if(kind==='nest'||kind==='cushion'){
+  b(0,0,1.7,1.35,stage===14?0xba9eaf:0xa29672);
+  for(let i=0;i<12;i++){const t=i*Math.PI/6;b(Math.cos(t)*.75,Math.sin(t)*.6,.32,.2,stage===14?cream:wood,.09,.1);}
+ }else if(kind==='balls'||kind==='cloud'||kind==='mushroom'){
+  b(0,0,1.8,1.5,stage===2?0x9887a9:0x8a9b87);
+  for(let j=0;j<9;j++)b((j%3-1)*.48,(Math.floor(j/3)-1)*.4,.42,.36,j%3===0?cream:j%3===1?s.accent:s.color,.08,.1);
+ }else if(['rug','mat','pillow','bed'].includes(kind)){
+  b(0,0,1.8,1.5,0xa391ad);b(0,0,1.55,1.25,0xc5b5c6,.07,.04);
+  for(const x of [-.7,.7])b(x,0,.065,1.1,cream,.1,.02);
+ }else if(['ice','sand','mud','crater','floor','mosaic','asphalt'].includes(kind)){
+  b(0,0,1.8,1.5,kind==='ice'?0x9dcbd2:kind==='mud'?0x92755d:s.color);
+  for(const sign of [-1,1])b(sign*.65,sign*.35,.4,.25,s.accent,.075,.02);
+ }else{
+  const metal=[4,6,11,12,17,18].includes(stage),c=metal?0x7a8789:[3,7,9,10,13,19].includes(stage)?0xb7b6a3:wood;
+  for(let i=-3;i<=3;i++)b(0,i*.22,1.8,.2,c,.04,.08);
+  for(const x of [-.75,.75])b(x,0,.1,1.6,metal?0xc5b68c:0x746451,.095,.04);
+ }
+ return {blocks,moving:[] as Block[]};
+}
 /** Large authored pieces, batched by RegionArt. Functional surfaces stay static. */
 export function objectShape(kind:string,stage:number,animated=false){
  const blocks:Block[]=[],moving:Block[]=[],s=STAGES[stage-1];
@@ -193,25 +219,47 @@ export function objectShape(kind:string,stage:number,animated=false){
 }
 export function explorationObjects(stage:number):ObjectAssembly[]{
  const rows=EXPLORATION_OBJECTS.slice((stage-1)*20,stage*20),out:ObjectAssembly[]=[];let hazard=0;
+ const hero=[0,0,0,0,0,18,0,1,1,0,0,0,0,18,13,0,0,0,3,0][stage-1];
+ const clusters=[.14,.26,.57,.79];
+ // Props form small scenes with an open centre, rather than alternating rows.
+ const slots=[[-.5,-2.4],[.8,-1.1],[-.3,.3],[1.1,1.6],[0,2.9]];
  for(const [i,[id,,kind,role,motion]] of rows.entries()){
-  let p=routePoint(stage,i===0?.77:.09+i*.042),x=p.x+(i%2?1:-1)*4.7,y=0,scale=.85;
-  // The main landmark frames the later arena; smaller props remain visible
-  // beside the walking route instead of being buried in the canyon boundary.
-  if(role==='structure'){x=-(stage%2?1:-1)*(i===0?8:9.5);scale=i===0?2:1.2;}
+  const cluster=Math.floor(i/5)%4,slot=slots[i%5],side=-(stage%2?1:-1);
+  let p=routePoint(stage,clusters[cluster]+((stage%3)-1)*.012),x=p.x+side*(4.4+slot[0]),y=0,scale=role==='structure'?1.05:role==='mark'?.95:.65+(i%3)*.12;
+  p={...p,z:p.z+slot[1]};
   if(role==='hazard'){p=environmentPlacement(stage,stage===20?(kind==='fountain'?1:0):hazard++);x=p.x;scale=1;}
   if(role==='troll'||role==='landing'){p=routePoint(stage,.35);x=p.x+(role==='landing'?(stage%2?4:-4):0);scale=1.8;}
   if(role==='walk'){p=routePoint(stage,.18+i%3*.2);x=p.x;scale=1.2;}
   if(role==='nest'){p=eggAnchor(stage,2);x=p.x;scale=1.2;}
   if(role==='gate'){p=shortcut(stage)!;x=p.x;scale=1;}
   const floor=role==='walk'||role==='troll'||role==='landing'||role==='nest';
-  const surface=terrainAt(stage,x,p.z);y=surface.walk?surface.height:.56;
-  const shape=objectShape(kind,stage,motion!=='static'),blocks:Block[]=[],motions:Motion[]=[];
-  for(const v of shape.blocks){
-   const h=floor?Math.min(.07,v.h*.05):v.h*scale;
-   blocks.push({...v,x:x+v.x*scale,y:y+(floor?.045+v.y*.025:v.y*scale),z:p.z+v.z*scale,w:v.w*scale,h,d:v.d*scale,solid:role==='structure'||role==='gate',gate:role==='gate'?stage:undefined});
+  // Functional floors remain on their authored route. Everything standing up
+  // moves outside ALL walkable surfaces, including the side return lane.
+  if(!['hazard','troll','landing','walk','nest','gate'].includes(role)){
+   const extent=role==='structure'?1.65:1.05;
+   const clear=(cx:number)=>[-extent,0,extent].every(dx=>[-extent,0,extent].every(dz=>!terrainAt(stage,cx+dx,p.z+dz).walk));
+   const candidates=Array.from({length:17},(_,j)=>side*(3+j*.5));
+   x=candidates.filter(clear).sort((a,b)=>Math.abs(a-x)-Math.abs(b-x))[0]??side*11.3;
   }
-  if(shape.moving.length&&!floor&&role!=='hazard')motions.push({x,y,z:p.z,kind:motion==='spin'?'spin':motion==='float'?'float':'sway',phase:i*.71,blocks:shape.moving.map(v=>({...v,x:v.x*scale,y:v.y*scale,z:v.z*scale,w:v.w*scale,h:v.h*scale,d:v.d*scale}))});
+  const surface=terrainAt(stage,x,p.z);y=surface.walk?surface.height:.56;
+  const shape=floor?surfaceShape(kind,stage):objectShape(kind,stage,motion!=='static'),blocks:Block[]=[],motions:Motion[]=[];
+  for(const v of shape.blocks){
+   const px=x+v.x*scale,pz=p.z+v.z*scale,ground=floor?terrainAt(stage,px,pz).height:y;
+   blocks.push({...v,x:px,y:ground+(floor?v.y:v.y*scale),z:pz,w:v.w*scale,h:floor?v.h:v.h*scale,d:v.d*scale,solid:role==='gate',gate:role==='gate'?stage:undefined});
+  }
+  if(shape.moving.length&&!floor&&role!=='hazard'){
+   const wheel=['clock','gauge','fan','windmill','gear','wheel','pulley','tire'].includes(kind),pivot=wheel?(kind==='clock'||kind==='gauge'?.9:kind==='fan'||kind==='windmill'?1.2:1):0;
+   motions.push({x,y:y+pivot*scale,z:p.z,kind:wheel?'windmill':motion==='spin'?'spin':motion==='float'?'float':'sway',phase:i*.71,blocks:shape.moving.map(v=>({...v,x:v.x*scale,y:(v.y-pivot)*scale,z:v.z*scale,w:v.w*scale,h:v.h*scale,d:v.d*scale}))});
+  }
   else for(const v of shape.moving)blocks.push({...v,x:x+v.x*scale,y:y+(floor?.09:v.y*scale),z:p.z+v.z*scale,w:v.w*scale,h:floor?.04:v.h*scale,d:v.d*scale});
+  if(i===hero){
+   const anchor=routePoint(stage,.79),hx=side*8.6;
+   // Wall-side silhouette faces the arena without taking its walking floor.
+   const landmarkGround=terrainAt(stage,hx,anchor.z).height;
+   const landmark=explorationLandmark(stage).map(v=>({...v,x:hx+v.x*.85,y:landmarkGround+v.y*.85,z:anchor.z+v.z*.85,w:v.w*.85,h:v.h*.85,d:v.d*.85,solid:false}));
+   if(role!=='troll'){blocks.length=0;motions.length=0;}
+   blocks.push(...landmark);
+  }
   out.push({id,kind,blocks,motions});
  }
  return out;
