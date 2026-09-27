@@ -65,6 +65,8 @@ export type Boss = {
   homeX?:number;
   windup?: number;
   wakeRemaining?: number;
+  lookX?:number;
+  lookZ?:number;
   x: number;
   z: number;
   mode: "idle" | "waking" | "chase" | "return";
@@ -839,8 +841,13 @@ export class GameState {
       if(only!==undefined&&guardian!==only)return;
       const ownsEgg=this.carried?.guardian===guardian;
       if(this.concealed&&ownsEgg&&(b.mode==='chase'||b.mode==='waking')){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
-      if(!this.concealed&&ownsEgg&&!this.isAtBase&&b.mode==='idle'){b.mode='waking';b.wakeRemaining=ROUTE.bossWakeSeconds;b.target=this.carried!.id;}
+      if(!this.concealed&&ownsEgg&&!this.isAtBase&&(b.mode==='idle'||b.mode==='return'&&!b.loot)){
+        const sleeping=b.mode==='idle';b.mode=sleeping?'waking':'chase';b.wakeRemaining=sleeping?ROUTE.bossWakeSeconds:undefined;b.target=this.carried!.id;
+      }
       if((b.mode==='chase'||b.mode==='waking')&&this.carried?.id!==b.target){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
+      // The authoritative target owns this simulation step, not the viewing client.
+      b.lookX=b.mode==='chase'||b.mode==='waking'?this.x:undefined;
+      b.lookZ=b.mode==='chase'||b.mode==='waking'?this.z:undefined;
       let activeDt=dt;
       if(b.mode==='waking'){
         const remaining=Number.isFinite(b.wakeRemaining)?Math.max(0,Math.min(ROUTE.bossWakeSeconds,b.wakeRemaining!)):ROUTE.bossWakeSeconds;
@@ -858,19 +865,13 @@ export class GameState {
         recovery=b.loot??this.world.find(e=>e.guardian===guardian&&!e.secured&&this.inEggStage(e,e.z)&&(e.x!==e.homeX||e.z!==e.homeZ));
         if(recovery)b.mode='return';
       }
-      // Return instantly once pursuit ends, or once a dropped egg is collected.
-      if(b.mode==='return'&&(!recovery||b.loot)){
-        if(b.loot)this.restoreEgg(b.loot,b.loot.region??0);
-        b.x=b.homeX??0;b.z=b.homeZ??-17;b.mode='idle';b.target=null;b.loot=null;b.wakeRemaining=undefined;b.windup=undefined;
-        return;
-      }
       const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):b.homeX??0;
       const tz=b.mode==='chase'?this.z:recovery?(b.loot?recovery.homeZ??b.homeZ??-17:recovery.z):b.homeZ??-17;
       const recoveryMultiplier=recovery?ROUTE.bossRecoverySpeedMultiplier:1;
       const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz);
       const reach=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1);
       const escapeSpeed=Math.max(0,(this.velocity.x*dx+this.velocity.z*dz)/(l||1));
-      const speed=b.mode==='chase'?guardianPursuitSpeed(b.stageId??1,this.speed,l,escapeSpeed,reach):Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(b.stageId??1)*recoveryMultiplier);
+      const speed=b.mode==='chase'?guardianPursuitSpeed(b.stageId??1,this.speed,l,escapeSpeed,reach):recovery&&!b.loot?Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(b.stageId??1)*recoveryMultiplier):Math.min(BOSS_MOVEMENT.returnSpeed,guardianSpeed(b.stageId??1));
       // A rush ends outside contact range even after a delayed/large server tick.
       // Normal close pursuit resumes on the next tick, rather than overshooting.
       const rush=b.mode==='chase'&&l>reach+BOSS_MOVEMENT.catchupTargetGap;
@@ -1003,6 +1004,12 @@ export class GameState {
             distance: e.distance,
           });
           this.save.selected ??= e.id;
+          const guardian=this.bosses[e.guardian??-1];
+          if(guardian?.target===e.id){
+            guardian.x=guardian.homeX??0;guardian.z=guardian.homeZ??-17;
+            guardian.mode='idle';guardian.target=null;guardian.loot=null;
+            guardian.wakeRemaining=guardian.windup=guardian.lookX=guardian.lookZ=undefined;
+          }
           if (!this.save.discovered.includes(e.type))
             this.save.discovered.push(e.type);
           this.save.best = Math.max(this.save.best, e.distance);

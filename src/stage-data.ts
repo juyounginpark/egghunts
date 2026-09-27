@@ -145,7 +145,7 @@ export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{cons
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
-export const BOSS_MOVEMENT={maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,underqualifiedKnockback:12,catchupTargetGap:1.2,catchupMinSpeed:90,catchupMaxSpeed:180,catchupGain:16};
+export const BOSS_MOVEMENT={returnSpeed:2,maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,underqualifiedKnockback:12,catchupTargetGap:1.2,catchupMinSpeed:90,catchupMaxSpeed:180,catchupGain:16};
 export function guardianSpeed(stage:number){
  const progress=(Math.max(1,Math.min(STAGES.length,stage))-1)/(STAGES.length-1);
  return ROUTE.baseRecommendedSpeed+(BOSS_MOVEMENT.qualifiedChaseMaxSpeed-ROUTE.baseRecommendedSpeed)*progress;

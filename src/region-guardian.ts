@@ -61,10 +61,11 @@ export class RegionGuardian {
    this.gait[k]+=dt*(sleeping?.7:chasing?11:1.8);
    const stretch=waking&&!reduced?Math.sin(wakeProgress*Math.PI):0;
    const stride=this.gait[k]+k,bounce=!reduced&&chasing?Math.abs(Math.sin(stride))*.13*rise:0;
-   let target=sleeping&&!waking?0:Math.atan2(game.x-x,game.z-z);
+   const lookX=state.lookX??state.x,lookZ=state.lookZ??state.z;
+   let target=sleeping&&!waking?0:Math.hypot(lookX-x,lookZ-z)>.001?Math.atan2(lookX-x,lookZ-z):Number.isFinite(this.headings[k])?this.headings[k]:0;
    if(state.mode==='return'){
-    const dx=state.loot?(state.loot.homeX??0)-x:moveX;
-    const dz=state.loot?(state.loot.homeZ??state.homeZ??-17)-z:moveZ;
+    const dx=state.loot?(state.loot.homeX??0)-x:Math.hypot(moveX,moveZ)>.001?moveX:(state.homeX??0)-x;
+    const dz=state.loot?(state.loot.homeZ??state.homeZ??-17)-z:Math.hypot(moveX,moveZ)>.001?moveZ:(state.homeZ??-17)-z;
     target=Math.hypot(dx,dz)>.001?Math.atan2(dx,dz):Number.isFinite(this.headings[k])?this.headings[k]:0;
    }
    if(!Number.isFinite(this.headings[k]))this.headings[k]=target;
