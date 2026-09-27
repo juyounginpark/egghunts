@@ -7,7 +7,6 @@ import {playerName} from './player-identity';
 import type {EggNotice} from './egg-notices';
 import {restoreSnapshotSections} from './snapshot-stream';
 import type {ChatMessage} from './multiplayer';
-import {HazardManager,type Hazard} from './hazards';
 
 export const SUPABASE_URL=import.meta.env.VITE_SUPABASE_URL||'https://leblcdiqsyxqzwlsnkio.supabase.co';
 const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_2KTon_WzPAci5G4dLyZ5Ww_bPgwmiig';
@@ -33,9 +32,6 @@ export class OnlineGame{
  private lastInput={x:0,z:0,slow:false};
  private inputAt=0;
  private receivedAt=0;
- private environment=new HazardManager();
- private environmentEpoch:number|null=null;
- private environmentPending=new Map<string,{hazard:Hazard;at:number;hitAt:number}>();
  private lastSent=0;
  private retryAt=0;
  private lastError='';
@@ -241,18 +237,11 @@ export class OnlineGame{
   this.syncTimer??=window.setInterval(()=>this.pump(),50);
  }
  private apply(state:Snapshot,acknowledgedInput?:{x:number;z:number},acknowledgedRevision?:number){
-  for(const result of state.commandResults??[])this.environmentPending.delete(result.id);
-  this.environmentEpoch??=state.serverTime+this.roundTrip/2-performance.now();
   this.latest=state;this.peers=state.peers;this.syncClock(state.serverTime+this.roundTrip/2);
   this.receivedAt=performance.now();
   if(this.game){
    const g=this.game,settings=g.save.settings,offset=this.visualOffset,old={x:g.x+offset.x,z:g.z+offset.z,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot,facing:g.facing,velocity:g.velocity};
    restoreRuntime(g,state.runtime,state.world,state.bosses,false);g.save.settings=settings;g.events.push(...state.events);
-   // Reapply only contacts not acknowledged yet; old snapshots cannot undo
-   // immediate local feedback. Ownership/death settle with the receipt.
-   const eventCount=g.events.length;
-   for(const {hazard,at,hitAt} of this.environmentPending.values())if(!g.isAtBase&&!g.death){g.immunity=0;g.applyHazard(hazard);g.hitAt=hitAt;g.immunity=Math.max(0,1-((g.environmentTime??g.now())-at)/1000);}
-   g.events.length=eventCount;
    g.roomSnapshotTime=state.serverTime/1000;
    const stable=old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
    if(stable&&!g.death&&!g.training&&g.now()>=g.knockedUntil){
@@ -292,19 +281,6 @@ export class OnlineGame{
  halt(){this.update(0,0);}
  reconcile(dt:number){
   if(!this.game)return;
-  const g=this.game;
-  // The environment clock advances every frame; packets only establish its epoch.
-  g.environmentTime=(this.environmentEpoch??g.now()-performance.now())+performance.now();
-  g.immunity=Math.max(0,g.immunity-dt);
-  if(!g.isAtBase&&!g.death&&!g.isNight){
-   this.environment.tickEnvironment(g.stage.id,{x:g.x+this.visualOffset.x,z:g.z+this.visualOffset.z,vx:g.velocity.x,vz:g.velocity.z,facing:g.facing,carrying:!!g.carried,metal:false,moving:Math.hypot(g.velocity.x,g.velocity.z)>.01,stageOffset:g.stageOffset},g.environmentTime,h=>{
-    if(this.environmentPending.size>=16||!g.applyHazard(h))return;
-    const id=crypto.randomUUID(),at=g.environmentTime!;
-    this.environmentPending.set(id,{hazard:structuredClone(h),at,hitAt:g.hitAt});
-    this.queue.push({id,kind:'environmentHit',value:{id:h.definition.id,serial:h.serial,at,stage:g.stage.id,x:g.x+this.visualOffset.x,z:g.z+this.visualOffset.z}});
-    this.pump();
-   });
-  }else this.environment.reset();
   const distance=Math.hypot(this.visualOffset.x,this.visualOffset.z),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
   const speed=this.vector.slow?Math.min(BALANCE.slowWalkSpeed,this.game.movementSpeed):this.game.movementSpeed;
   // A late packet must not briefly accelerate or reverse an otherwise steady walk.

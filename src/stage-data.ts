@@ -123,7 +123,8 @@ export const STAGE_ENVIRONMENT_IDS=reorderStages(oldEnvironmentIds);
 STAGE_ENVIRONMENT_IDS[18]=['void-hand','memory-tentacle','memory-lightning','memory-meteor'];
 STAGE_ENVIRONMENT_IDS[19]=['creation-wave'];
 export const LEGACY_STAGE_ENVIRONMENT_IDS=STAGE_ENVIRONMENT_IDS.map(ids=>[...ids]);
-export function stagePatterns(stage:number,_z=0){return STAGE_ENVIRONMENT_IDS[stage-1].map(id=>HAZARDS.find(d=>d.stageId===stage&&d.id===id)!);}
+// Environmental obstacles are retired. Guardian attack definitions stay intact.
+export function stagePatterns(_stage:number,_z=0):HazardDefinition[]{return [];}
 export function environmentPlacement(stage:number,lane:number,offset=0){
  const count=STAGE_ENVIRONMENT_IDS[stage-1].length;
  const p=routePoint(stage,.50+lane*.1/Math.max(1,count-1));

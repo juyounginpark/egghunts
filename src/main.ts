@@ -53,7 +53,6 @@ app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const eggNotices=new EggNotices($("shell"));
-$('shell').insertAdjacentHTML('beforeend','<div id="speed-pad-buff" hidden></div>');
 $('world').insertAdjacentHTML('beforeend','<button id="hatch-touch" hidden aria-label="알 두드리기"><span>알을 클릭하여 깨뜨리기</span></button>');
 $('world').insertAdjacentHTML('beforeend','<div id="first-egg-arrow" hidden><span>작은 알부터!</span><b>↓</b></div>');
 $('action').insertAdjacentHTML('beforeend','<small id="action-weight" hidden></small>');
@@ -282,8 +281,6 @@ function updateHud() {
   eggNotices.observeWorld(game,online.latest?.serverTime??game.now());
   eggNotices.update(online.latest?.eggNotices??[],online.latest?.serverTime??game.now());
   const outside=tab==='explore'&&!game.isAtBase;
-  $('speed-pad-buff').hidden=!outside||game.speedPad.blend<1.005||!!game.death;
-  $('speed-pad-buff').textContent=`이동 +${Math.round((game.speedPad.blend-1)*100)}%`;
   if(game.isAtBase)expeditionBannerStages.clear();
   if(outside!==wasExploring){setHudCompact(outside);wasExploring=outside;}
   if(!outside){bannerStage=0;bannerUntil=0;}

@@ -52,17 +52,9 @@ export function pathX(stage:number,z:number){
  return 0;
 }
 export function terrainAt(stage:number,x:number,z:number){
- const {progress:t,distance}=routeProgress(stage,x,z),center=pathX(stage,z),side=stage%2?1:-1;
- const arena=t>=.64,landing=t>=.25&&t<=.45,bypass=t>=.17&&t<=.65&&Math.abs(x-(center+side*6))<=2;
- const connectors=(Math.abs(t-.19)<.035||Math.abs(t-.61)<.035)&&Math.abs(x-center-side*3)<=5;
- const optional=[5,8,14,17].includes(stage)&&Math.abs(t-.53)<.045&&Math.abs(x-center-side*3)<=4;
- const walk=distance<=2.2||arena&&Math.abs(x)<=11||landing&&Math.abs(x-center)<=6.5||bypass||connectors||optional;
- const bridge=t>=.22&&t<=.48&&Math.abs(x-center)<1.9;
- const ramp=Math.max(0,Math.min(1,(t-.22)/.035,(.48-t)/.035));
- const height=bridge?(stage<=5?.24:stage===19?.9:.55)*ramp*Math.min(1,(1.9-Math.abs(x-center))/.5):0;
- const slow=landing&&!bridge&&!bypass&&[1,3,7,8,11,15,20].includes(stage)?.65:1;
- const ice=stage===13&&(bridge||t>=.18&&t<=.25&&distance<2.2);
- return {walk,height,slow,bridge,landing,progress:t,center,bypass,ice};
+ const {progress}=routeProgress(stage,x,z),center=pathX(stage,z);
+ // Open, continuous ground: no raised pads, slow fields, ice or conveyor zones.
+ return {walk:true,height:0,slow:1,bridge:false,landing:false,progress,center,bypass:Math.abs(x-center)>3,ice:false};
 }
 export function explorationHeight(x:number,z:number,start=1){
  if(z>-6)return 0;

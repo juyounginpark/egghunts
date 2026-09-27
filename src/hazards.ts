@@ -23,7 +23,7 @@ export class HazardManager{
  environmentClock=0;environmentHits:Record<string,{serial:number;hit:boolean;next:number}>={};
  attacks:Hazard[]=[];time=0;private next=new Map<string,number>();private serial=0;stage=0;
  snapshot(){return {attacks:this.attacks,time:this.time,next:[...this.next],serial:this.serial,stage:this.stage,environmentClock:this.environmentClock,environmentHits:this.environmentHits};}
- restore(s:ReturnType<HazardManager['snapshot']>){this.attacks=s.attacks;this.time=s.time;this.next=new Map(s.next);this.serial=s.serial;this.stage=s.stage;this.environmentClock=s.environmentClock??0;this.environmentHits=s.environmentHits??{};}
+ restore(s:ReturnType<HazardManager['snapshot']>){this.attacks=s.attacks.filter(h=>!h.environment);this.time=s.time;this.next=new Map(s.next);this.serial=s.serial;this.stage=s.stage;this.environmentClock=s.environmentClock??0;this.environmentHits=s.environmentHits??{};}
  reset(stage=0){this.attacks=[];this.time=0;this.next.clear();this.stage=stage;}
  tickEnvironment(stage:number,p:HazardPlayer,clock:number,hit:(h:Hazard)=>void){
   if(this.stage!==stage)this.reset(stage);

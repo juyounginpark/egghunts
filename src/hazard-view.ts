@@ -1,4 +1,3 @@
-import {ExplorationActors} from './exploration-actors';
 import {legacyTheme} from './stage-order';
 import { STAGES,stagePatterns,environmentPlacement,HAZARD_BALANCE as B,MAP_OBSTACLES } from "./stage-data";
 import * as T from "three";
@@ -8,14 +7,13 @@ import type {GameState} from "./game";
 /** Shared cube pools: no mesh per voxel, no allocation per attack. */
 export class HazardView{
  group=new T.Group();
- private expedition=new ExplorationActors();
  regions=new ConnectedRegionArt();guardians=new RegionGuardian();
  private warnings=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({transparent:true,opacity:.75,depthWrite:false,depthTest:false}),1536);
  private actors=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshLambertMaterial(),1024);
  private outlines=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:MAP_OBSTACLES.outline,side:T.BackSide}),1024);
  private source:{x:number;z:number}|null=null;private outlineCount=0;
  private dummy=new T.Object3D();private color=new T.Color();private sourceAccent=new T.Color();private warningCount=0;private actorCount=0;
- constructor(){this.group.add(this.expedition.group,this.regions.group,this.guardians.group,this.warnings,this.actors,this.outlines);for(const m of [this.warnings,this.actors,this.outlines])m.frustumCulled=false;this.warnings.renderOrder=10;this.actors.castShadow=true;}
+ constructor(){this.group.add(this.regions.group,this.guardians.group,this.warnings,this.actors,this.outlines);for(const m of [this.warnings,this.actors,this.outlines])m.frustumCulled=false;this.warnings.renderOrder=10;this.actors.castShadow=true;}
  private put(mesh:T.InstancedMesh,index:number,x:number,y:number,z:number,w:number,h:number,d:number,color:number,rotation=0){
   if(index>=mesh.instanceMatrix.count)return;
   if(this.source&&mesh===this.actors){const scale=MAP_OBSTACLES.scale;x=this.source.x+(x-this.source.x)*scale;z=this.source.z+(z-this.source.z)*scale;y*=scale;w*=scale;h*=scale;d*=scale;}
@@ -23,7 +21,7 @@ export class HazardView{
   if(this.source&&mesh===this.actors){this.dummy.scale.addScalar(MAP_OBSTACLES.outlineWidth);this.dummy.updateMatrix();this.outlines.setMatrixAt(this.outlineCount++,this.dummy.matrix);}
  }
  render(game:GameState,visible:boolean,time:number){
-  this.group.visible=visible;if(!visible)return;this.expedition.render(game,time,!game.isAtBase);this.regions.render(game,time,true);this.guardians.render(game,time,true);
+  this.group.visible=visible;if(!visible)return;this.regions.render(game,time,true);this.guardians.render(game,time,true);
   this.warningCount=this.actorCount=this.outlineCount=0;
   if(!game.isAtBase){
    for(const [lane,d] of stagePatterns(game.stage.id,game.z+game.stageOffset).entries()){
@@ -173,5 +171,5 @@ export class HazardView{
   const age=(game.now()-game.hitAt)/1000;if(age>=0&&age<.6)for(let i=0;i<12;i++){const a=i/12*Math.PI*2;this.put(this.actors,this.actorCount++,game.x+Math.cos(a)*age*2,.6+Math.sin(age*5),game.z+Math.sin(a)*age*2,.12,.12,.12,0xffea9c);}
   for(const [m,n] of [[this.warnings,this.warningCount],[this.actors,this.actorCount]] as const){m.count=n;m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true;}
  }
- dispose(){this.expedition.dispose();this.regions.dispose();this.guardians.dispose();for(const m of [this.warnings,this.actors,this.outlines]){m.geometry.dispose();(m.material as T.Material).dispose();}this.group.removeFromParent();}
+ dispose(){this.regions.dispose();this.guardians.dispose();for(const m of [this.warnings,this.actors,this.outlines]){m.geometry.dispose();(m.material as T.Material).dispose();}this.group.removeFromParent();}
 }

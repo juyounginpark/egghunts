@@ -1,35 +1,9 @@
-import {EXPLORATION_OBJECTS} from './exploration-catalog';
-import {STAGES,environmentPlacement} from './stage-data';
-import {eggAnchor,routePoint,shortcut,terrainAt} from './exploration-route';
-import {speedPads} from './speed-pads';
+import {STAGES} from './stage-data';
+import {routePoint} from './exploration-route';
+import {SCENERY_KINDS,SCENERY_CLEARINGS,NATURAL_SCENERY} from './exploration-scenery';
 import type {Block,Motion} from './region-layout';
 import {explorationLandmark} from './exploration-landmarks';
 export type ObjectAssembly={id:string;kind:string;blocks:Block[];motions:Motion[]};
-function surfaceShape(kind:string,stage:number){
- const blocks:Block[]=[],s=STAGES[stage-1],wood=0x997556,cream=0xe1d8ba;
- const b=(x:number,z:number,w:number,d:number,c:number,y=.035,h=.06)=>blocks.push({x,y,z,w,h,d,c,solid:false});
- if(kind==='leaf'||kind==='shell'){
-  for(let j=-2;j<=2;j++)b(j*.3,0,.32,1.5-Math.abs(j)*.27,kind==='leaf'?0x769761:0xc6bba7);
-  b(0,0,.065,1.35,cream,.075,.025);for(const sign of [-1,1])for(const z of [-.4,0,.4])b(sign*.3,z,.5,.045,kind==='leaf'?0x9eb27b:0xe1d1b9,.072,.022);
- }else if(kind==='nest'||kind==='cushion'){
-  b(0,0,1.7,1.35,stage===14?0xba9eaf:0xa29672);
-  for(let i=0;i<12;i++){const t=i*Math.PI/6;b(Math.cos(t)*.75,Math.sin(t)*.6,.32,.2,stage===14?cream:wood,.09,.1);}
- }else if(kind==='balls'||kind==='cloud'||kind==='mushroom'){
-  b(0,0,1.8,1.5,stage===2?0x9887a9:0x8a9b87);
-  for(let j=0;j<9;j++)b((j%3-1)*.48,(Math.floor(j/3)-1)*.4,.42,.36,j%3===0?cream:j%3===1?s.accent:s.color,.08,.1);
- }else if(['rug','mat','pillow','bed'].includes(kind)){
-  b(0,0,1.8,1.5,0xa391ad);b(0,0,1.55,1.25,0xc5b5c6,.07,.04);
-  for(const x of [-.7,.7])b(x,0,.065,1.1,cream,.1,.02);
- }else if(['ice','sand','mud','crater','floor','mosaic','asphalt'].includes(kind)){
-  b(0,0,1.8,1.5,kind==='ice'?0x9dcbd2:kind==='mud'?0x92755d:s.color);
-  for(const sign of [-1,1])b(sign*.65,sign*.35,.4,.25,s.accent,.075,.02);
- }else{
-  const metal=[4,6,11,12,17,18].includes(stage),c=metal?0x7a8789:[3,7,9,10,13,19].includes(stage)?0xb7b6a3:wood;
-  for(let i=-3;i<=3;i++)b(0,i*.22,1.8,.2,c,.04,.08);
-  for(const x of [-.75,.75])b(x,0,.1,1.6,metal?0xc5b68c:0x746451,.095,.04);
- }
- return {blocks,moving:[] as Block[]};
-}
 /** Large authored pieces, batched by RegionArt. Functional surfaces stay static. */
 export function objectShape(kind:string,stage:number,animated=false){
  const blocks:Block[]=[],moving:Block[]=[],s=STAGES[stage-1];
@@ -45,13 +19,74 @@ export function objectShape(kind:string,stage:number,animated=false){
  const leaf=(x:number,y:number,z:number,col=green)=>b(x,y,z,.8,.15,.45,col,true,x<0?-.2:.2);
  const hollow=(y=.65,col=stone)=>{box(.15,1.3,.25,1.2,col);for(const x of [-.55,.55])b(x,y,0,.2,y*2,.95,col);for(const z of [-.48,.48])b(0,y,z,1.2,y*2,.18,col);};
  switch(kind){
- case 'tree':case 'pine':case 'palm':case 'fern':case 'root':case 'vine':case 'coral':case 'tentacle':{
+ case 'flag':case 'banner':case 'coat':case 'scroll':{
+  post(-.55,0,2.1,wood);b(0,2,0,1.4,.12,.12,gold);
+  b(.05,1.5,0,1,.85,.12,kind==='scroll'?cream:a);b(.05,1.5,.08,.4,.4,.06,gold);
+  for(const x of [-.35,0,.35])b(x,1,0,.2,.25,.12,a);break;
+ }
+ case 'hammer':case 'tongs':case 'bone':{
+  b(0,.6,0,.18,1.2,.18,kind==='bone'?cream:wood);
+  for(const y of [.1,1.15])b(0,y,0,kind==='tongs'?.3:.8,.3,.4,kind==='bone'?cream:dark);
+  if(kind==='tongs')b(.35,.6,0,.12,1.2,.15,dark);break;
+ }
+ case 'pearl':case 'clam':case 'snail':case 'vessel':case 'amphora':{
+  for(let j=0;j<4;j++)b(0,.15+j*.22,0,1.1-Math.abs(j-1.5)*.2,.25,.9-Math.abs(j-1.5)*.15,cream);
+  if(kind==='clam'){b(0,.85,-.3,1.3,.18,.9,a,false,.5);box(.6,.4,.4,.4,0xf1e9dc);}
+  if(kind==='snail'){b(.7,.15,.1,.8,.25,.4,green);for(const x of [.8,1])post(x,.1,.5,green);ring(.7,.3,wood);}
+  if(kind==='amphora'||kind==='vessel'){ring(1,.3,gold);for(const x of [-.6,.6])b(x,.65,0,.2,.6,.25,gold);}
+  break;
+ }
+ case 'ore':case 'cairn':case 'pebble':case 'moonrock':case 'shard':case 'ruin':{
+  for(let j=0;j<4;j++){const tall=kind==='shard'?1.4:.4;b((j%2-.5)*.65,.2+j*.13,(Math.floor(j/2)-.5)*.5,.7,tall,.65,j%2?stone:a,false,j*.08);}
+  if(kind==='ruin'){post(-.5,0,1.5,stone);b(-.3,1.5,0,.9,.25,.5,cream);}break;
+ }
+ case 'fir':case 'leafbud':{
+  post(0,0,kind==='fir'?2.2:.7,wood);
+  for(let j=0;j<4;j++){const width=(kind==='fir'?1.9:1)-j*.24;b(j%2*.12,.5+j*.42,0,width,.5,width,j%2?green:0x65896a);}
+  break;
+ }
+ case 'drone':case 'satellite':case 'comet':{
+  box(1.3,.7,.6,.7,gold);for(const x of [-1,1]){b(x,1.3,0,1,.12,.8,kind==='comet'?a:dark);b(x,1.38,0,.7,.04,.6,a);}
+  post(0,0,1.2,dark);if(kind==='drone')for(const x of [-1,1])ring(1.5,.3,cream);
+  break;
+ }
+ case 'sign':case 'specimen':case 'console':{
+  legs(.8,dark);box(.85,1.4,.2,.9,dark);box(1.3,1.3,.7,.25,stone);b(0,1.3,.15,1,.45,.05,a);
+  for(const x of [-.4,0,.4])b(x,.98,.3,.18,.08,.15,gold);
+  if(kind==='specimen'){box(1.5,.4,.5,.4,green);box(1.9,.9,.1,.7,cream);}break;
+ }
+ case 'column':case 'harp':case 'chariot':case 'wreath':case 'camp':{
+  if(kind==='column'){box(.15,1.2,.3,1.2,cream);box(1,.65,1.5,.65,stone);box(1.85,1.3,.25,1.3,cream);}
+  else if(kind==='harp'){for(const x of [-.6,.6])post(x,0,1.7,gold);b(0,1.65,0,1.3,.2,.3,gold);for(let j=-2;j<=2;j++)b(j*.18,.9,0,.035,1.3,.035,cream);}
+  else if(kind==='chariot'){box(.6,1.4,.3,1.5,gold);b(0,1,-.6,1.4,.7,.15,gold);for(const x of [-.85,.85])b(x,.4,0,.2,.8,.8,wood);}
+  else if(kind==='wreath'){ring(.35,.7,green);for(const x of [-.5,.5])b(x,.5,0,.3,.2,.3,gold);}
+  else {for(const x of [-.3,.3])b(x,.2,0,.25,.25,1.3,wood);for(const x of [-.2,.2])b(x,.55,0,.25,.6,.3,0xe7ae71);}
+  break;
+ }
+ case 'tree':{
+  b(0,.9,0,.5,1.8,.45,wood);b(.12,1.65,0,.35,.8,.35,wood,false,.25);
+  for(const sign of [-1,1]){b(sign*.4,1.5,0,.65,.22,.25,wood,false,sign*.4);b(sign*.3,.1,.12,.8,.2,.5,wood);}
+  for(const [x,y,z,w] of [[-.65,1.9,0,1.2],[.55,2.15,.15,1.4],[0,2.65,0,1.2],[.15,2.15,-.6,1.1]]){
+   b(x,y,z,w,.55,w,green);b(x-.1,y+.33,z,w*.72,.25,w*.72,0xa5bb83);
+  }break;
+ }
+ case 'fern':{
+  post(0,0,.55,green);
+  for(let arm=0;arm<6;arm++){const t=arm*Math.PI/3;for(let j=1;j<=3;j++)b(Math.cos(t)*j*.22,.65-j*.1,Math.sin(t)*j*.22,.45-j*.055,.13,.4,j%2?green:0xa5bb83);}
+  break;
+ }
+ case 'palm':{
+  for(let j=0;j<5;j++)b(j*.055,.2+j*.4,0,.3,.42,.3,j%2?wood:0xab8960);
+  for(let arm=0;arm<6;arm++){const t=arm*Math.PI/3;for(let j=1;j<=3;j++)b(.2+Math.cos(t)*j*.3,2.25-j*j*.045,Math.sin(t)*j*.3,.5,.15,.45,j%2?green:0x6a8e61);}
+  for(const x of [-.1,.3])b(x,1.95,.2,.25,.3,.25,wood);break;
+ }
+ case 'pine':case 'root':case 'vine':case 'coral':case 'tentacle':{
   const trunk=kind==='coral'?0xcd9ea5:kind==='tentacle'?a:wood;
   post(0,0,1.8,trunk);for(const sign of [-1,1])for(let j=0;j<3;j++)b(sign*(.25+j*.16),.8+j*.28,0,.25,.5,.3,trunk,false,sign*.4);
   if(kind==='root')for(let j=0;j<4;j++)b((j-1.5)*.45,.15+Math.abs(j-1.5)*.1,0,.65,.35,.6,wood,false,(j<2?1:-1)*.25);
   else if(kind==='pine')for(let j=0;j<3;j++)b(0,1+j*.5,0,1.7-j*.4,.7,1.5-j*.4,stage===13?0xdce7dc:green,true);
   else if(kind==='coral'||kind==='tentacle'){for(const sign of [-1,1])b(sign*.65,1.6,0,.45,.4,.45,a,true);}
-  else for(const x of [-.65,0,.65]){leaf(x,1.9,0,kind==='palm'?0x7da36c:green);if(kind==='tree')b(x,2.15,0,.9,.5,.9,green,true);}
+  else for(const x of [-.65,0,.65])leaf(x,1.9,0,green);
   break;
  }
  case 'arch':case 'gate':case 'door':case 'cave':case 'hole':case 'cliff':{
@@ -218,63 +253,28 @@ export function objectShape(kind:string,stage:number,animated=false){
  return {blocks,moving};
 }
 export function explorationObjects(stage:number):ObjectAssembly[]{
- const rows=EXPLORATION_OBJECTS.slice((stage-1)*20,stage*20),out:ObjectAssembly[]=[];let hazard=0;
- const hero=[0,0,0,0,0,18,0,1,1,0,0,0,0,18,13,0,0,0,3,0][stage-1];
- const clusters=[.14,.26,.57,.79];
- // Props form small scenes with an open centre, rather than alternating rows.
- const slots=[[-.5,-2.4],[.8,-1.1],[-.3,.3],[1.1,1.6],[0,2.9]];
- for(const [i,[id,,kind,role,motion]] of rows.entries()){
-  const cluster=Math.floor(i/5)%4,slot=slots[i%5],side=-(stage%2?1:-1);
-  let p=routePoint(stage,clusters[cluster]+((stage%3)-1)*.012),x=p.x+side*(4.4+slot[0]),y=0,scale=role==='structure'?1.05:role==='mark'?.95:.65+(i%3)*.12;
-  p={...p,z:p.z+slot[1]};
-  if(role==='hazard'){p=environmentPlacement(stage,stage===20?(kind==='fountain'?1:0):hazard++);x=p.x;scale=1;}
-  if(role==='troll'||role==='landing'){p=routePoint(stage,.35);x=p.x+(role==='landing'?(stage%2?4:-4):0);scale=1.8;}
-  if(role==='walk'){p=routePoint(stage,.18+i%3*.2);x=p.x;scale=1.2;}
-  if(role==='nest'){p=eggAnchor(stage,2);x=p.x;scale=1.2;}
-  if(role==='gate'){p=shortcut(stage)!;x=p.x;scale=1;}
-  const floor=role==='walk'||role==='troll'||role==='landing'||role==='nest';
-  // Functional floors remain on their authored route. Everything standing up
-  // moves outside ALL walkable surfaces, including the side return lane.
-  if(!['hazard','troll','landing','walk','nest','gate'].includes(role)){
-   const extent=role==='structure'?1.65:1.05;
-   const clear=(cx:number)=>[-extent,0,extent].every(dx=>[-extent,0,extent].every(dz=>!terrainAt(stage,cx+dx,p.z+dz).walk));
-   const candidates=Array.from({length:17},(_,j)=>side*(3+j*.5));
-   x=candidates.filter(clear).sort((a,b)=>Math.abs(a-x)-Math.abs(b-x))[0]??side*11.3;
+ const out:ObjectAssembly[]=SCENERY_KINDS[stage-1].split(' ').map((kind,i)=>({id:`scenery-${stage}-${i}`,kind,blocks:[],motions:[]}));
+ const occupied:{x:number;z:number;r:number}[]=[];
+ // Reserve one of each type before filling gaps with repeated vegetation.
+ for(let j=0;j<5;j++)for(const [i,assembly] of out.entries()){
+  const {kind,blocks}=assembly,natural=NATURAL_SCENERY.has(kind);
+  if(j>=(i===0?1:natural?5:2))continue;
+  const shape=i===0?explorationLandmark(stage):objectShape(kind,stage).blocks;
+  let placed=false;
+  for(let attempt=0;attempt<100&&!placed;attempt++){
+   const scale=(i===0?.95:natural?.65+((i*7+j*3)%5)*.15:.8+(i%3)*.12)*(attempt>=48?.75:1);
+   const extent=Math.max(...shape.map(v=>Math.hypot(Math.abs(v.x)+v.w/2,Math.abs(v.z)+v.d/2)))*scale;
+   const cluster=(i+j+Math.floor(attempt/6))%4,side=(i+j+attempt)%2?1:-1;
+   const progress=i===0?.79:attempt<24?SCENERY_CLEARINGS[stage-1][cluster]+(((i*13+j*7+attempt*3)%17)-8)*.007:.08+((i*17+j*13+attempt*7)%77)/100;
+   const p=routePoint(stage,progress),x=side*(5.2+((i*3+j*5+attempt)%9)*.64);
+   if(Math.abs(x-p.x)<3+extent||Math.abs(x)+extent>12.5)continue;
+   if(occupied.some(v=>Math.hypot(v.x-x,v.z-p.z)<v.r+extent+.15))continue;
+   occupied.push({x,z:p.z,r:extent});placed=true;
+   const angle=(((i*7+j*11)%9)-4)*.12,cs=Math.cos(angle),sn=Math.sin(angle);
+   for(const v of shape)blocks.push({...v,x:x+(v.x*cs-v.z*sn)*scale,y:v.y*scale,z:p.z+(v.x*sn+v.z*cs)*scale,w:v.w*scale,h:v.h*scale,d:v.d*scale,angle:(v.angle??0)+angle,solid:false});
   }
-  const surface=terrainAt(stage,x,p.z);y=surface.walk?surface.height:.56;
-  const shape=floor?surfaceShape(kind,stage):objectShape(kind,stage,motion!=='static'),blocks:Block[]=[],motions:Motion[]=[];
-  for(const v of shape.blocks){
-   const px=x+v.x*scale,pz=p.z+v.z*scale,ground=floor?terrainAt(stage,px,pz).height:y;
-   blocks.push({...v,x:px,y:ground+(floor?v.y:v.y*scale),z:pz,w:v.w*scale,h:floor?v.h:v.h*scale,d:v.d*scale,solid:role==='gate',gate:role==='gate'?stage:undefined});
-  }
-  if(shape.moving.length&&!floor&&role!=='hazard'){
-   const wheel=['clock','gauge','fan','windmill','gear','wheel','pulley','tire'].includes(kind),pivot=wheel?(kind==='clock'||kind==='gauge'?.9:kind==='fan'||kind==='windmill'?1.2:1):0;
-   motions.push({x,y:y+pivot*scale,z:p.z,kind:wheel?'windmill':motion==='spin'?'spin':motion==='float'?'float':'sway',phase:i*.71,blocks:shape.moving.map(v=>({...v,x:v.x*scale,y:(v.y-pivot)*scale,z:v.z*scale,w:v.w*scale,h:v.h*scale,d:v.d*scale}))});
-  }
-  else for(const v of shape.moving)blocks.push({...v,x:x+v.x*scale,y:y+(floor?.09:v.y*scale),z:p.z+v.z*scale,w:v.w*scale,h:floor?.04:v.h*scale,d:v.d*scale});
-  if(i===hero){
-   const anchor=routePoint(stage,.79),hx=side*8.6;
-   // Wall-side silhouette faces the arena without taking its walking floor.
-   const landmarkGround=terrainAt(stage,hx,anchor.z).height;
-   const landmark=explorationLandmark(stage).map(v=>({...v,x:hx+v.x*.85,y:landmarkGround+v.y*.85,z:anchor.z+v.z*.85,w:v.w*.85,h:v.h*.85,d:v.d*.85,solid:false}));
-   if(role!=='troll'){blocks.length=0;motions.length=0;}
-   blocks.push(...landmark);
-  }
-  out.push({id,kind,blocks,motions});
  }
  return out;
 }
-export function speedPadArt(stage:number){
- const blocks:Block[]=[],motions:Motion[]=[];
- for(const [i,p] of speedPads(stage).entries()){
-  const color=stage<=5?[0x947f5d,0xd7be77,0x809eac,0x555d67,0x53786b][stage-1]:STAGES[stage-1].color;
-  blocks.push({x:p.x,y:p.height+.04,z:p.z,w:2.4,h:.08,d:1.3,c:color,solid:false});
-  const arrows:Block[]=[];
-  for(const dz of [-.3,.3])for(const sign of [-1,1])arrows.push({x:sign*.22,y:.1,z:dz,w:.5,h:.04,d:.12,c:0xb3e9dc,angle:sign*.6,solid:false});
-  motions.push({x:p.x,y:p.height,z:p.z,kind:'pulse',phase:i,blocks:arrows});
-  // Broad biome motif alongside the shared arrows.
-  const motif=objectShape(['clover','puzzle','shell','bellows','board','monitor','dune','leaf','knot','wings','rings','fan','crystal','rug','sprout','leaf','gear','starweed','rings','sprout'][stage-1],stage);
-  for(const v of motif.blocks)blocks.push({...v,x:p.x-.9+v.x*.18,y:p.height+.09+v.y*.015,z:p.z+v.z*.18,w:v.w*.18,h:.02,d:v.d*.18,solid:false});
- }
- return {blocks,motions};
-}
+/** Retained for saved tooling; speed pads have been removed. */
+export function speedPadArt(_stage:number){return {blocks:[] as Block[],motions:[] as Motion[]};}

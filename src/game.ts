@@ -1,6 +1,6 @@
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {softenGrowth} from './growth-curve';
-import {freshPads,updatePads} from './speed-pads';
+import {freshPads} from './speed-pads';
 import type {Mob} from './mobs';
 import {migrateExploration} from './exploration-migration';
 import {bossAnchor,specialEggAnchor,eggAnchor,shortcut,terrainAt} from './exploration-route';
@@ -383,14 +383,10 @@ export class GameState {
   readonly mapCollision=new MapCollision();
   openedShortcuts:number[]=[];
   openingShortcuts:Record<number,number>={};
-  get nearShortcut(){
-    if(this.carried||this.isAtBase||this.openedShortcuts.includes(this.stage.id)||this.openingShortcuts[this.stage.id]!==undefined)return null;
-    const p=shortcut(this.stage.id);return p&&Math.hypot(this.x-p.x,this.z+this.stageOffset-p.z)<3.4?p:null;
+  get nearShortcut():ReturnType<typeof shortcut>{
+    return null;
   }
-  openShortcut(){
-    if(this.death||this.knockback.remaining>0||this.now()<this.knockedUntil||!this.nearShortcut)return false;
-    this.openingShortcuts[this.stage.id]=this.now();this.message='지름길을 열고 있어요';this.revision++;return true;
-  }
+  openShortcut(){return false;}
   push(x:number,z:number){
     this.mapCollision.opened=this.openedShortcuts;
     const width=this.z+z>=BALANCE.baseMinZ?BALANCE.baseMapX:BALANCE.mapX;
@@ -861,7 +857,7 @@ export class GameState {
     });
   }
   move(dx: number, dz: number, dt: number, slow = false) {
-    updatePads(this.speedPad,this.stage.id,this.x,this.z+this.stageOffset,this.now(),dt,this.isAtBase||!!this.death||!!this.launch);
+
     this.motionTime+=dt;
     this.inputHistory.push({at:this.motionTime,x:dx,z:dz});this.inputHistory=this.inputHistory.filter(v=>v.at>=this.motionTime-1);
     if(this.effects.delay>0){const delayed=this.inputHistory.filter(v=>v.at<=this.motionTime-HAZARD_BALANCE.inputDelay).at(-1);dx=delayed?.x??0;dz=delayed?.z??0;}
@@ -879,7 +875,7 @@ export class GameState {
     if(this.seat!==null)this.standUp();
     if(this.training)this.toggleTraining();
     const unboosted=(slow?Math.min(BALANCE.slowWalkSpeed,this.movementSpeed):this.movementSpeed)*(surface?.slow??1);
-    const speed=unboosted*this.speedPad.blend;
+    const speed=unboosted;
     this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*speed,z:dz/Math.max(1,l)*speed};
     const scale = l > 1 ? 1 / l : 1;
     const beforeX=this.x,beforeZ=this.z;

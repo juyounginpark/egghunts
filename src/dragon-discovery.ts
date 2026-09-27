@@ -1,6 +1,7 @@
 import {contains,type Hazard} from './hazards';
 import {ROUTE,STAGE_ENVIRONMENT_IDS,LEGACY_STAGE_ENVIRONMENT_IDS} from './stage-data';
 import {reorderStages} from './stage-order';
+import {routeProgress} from './exploration-route';
 
 export type DragonClue={avoided:string[];carried:string[];escaped:string[];depth:boolean;sides:number;quiet:number;returned:boolean;claimed:boolean};
 export type DragonRule={hint:string;condition:string;avoid:string[];carry?:string[];escape?:string[];depth?:boolean;sides?:boolean;quiet?:number;returnEgg?:boolean};
@@ -26,9 +27,12 @@ const oldDragonRules:DragonRule[]=[
  {hint:'유성이 지난 뒤 별길의 양쪽에서 같은 하늘을 올려다보자.',condition:'유성 회피 + 위험 구간 좌우 방문',avoid:['meteors'],sides:true},
  {hint:'세 기억을 지나고 황금 파동의 빈틈에 서면 첫빛이 돌아온다.',condition:'기억의 촉수·번개·유성과 창조의 황금 파동을 각각 회피',avoid:['memory-tentacle','memory-lightning','memory-meteor','creation-wave']},
 ];
-export const DRAGON_RULES=reorderStages(oldDragonRules);
-DRAGON_RULES[18]={hint:'비어 있는 고리와 세 기억 사이의 틈을 찾아보자.',condition:'공허의 손과 기억의 촉수 회피',avoid:['void-hand','memory-tentacle']};
-DRAGON_RULES[19]={hint:'씨앗에서 퍼지는 황금 파동의 빈틈을 지나자.',condition:'창조의 황금 파동 회피',avoid:['creation-wave']};
+// Keep saved clue fields and claimed rewards; retired hazards cannot be prerequisites.
+export const DRAGON_RULES:DragonRule[]=Array.from({length:20},()=>({
+ hint:'\uAE4A\uC740 \uAE38\uC744 \uD0D0\uD5D8\uD558\uACE0 \uC54C\uC744 \uAE30\uC9C0\uB85C \uB370\uB824\uC624\uC790.',
+ condition:'\uC2A4\uD14C\uC774\uC9C0 80% \uC9C0\uC810 \uB3C4\uB2EC + \uC54C \uAE30\uC9C0 \uBCF4\uAD00',
+ avoid:[],depth:true,returnEgg:true,
+}));
 export const newDragonClue=():DragonClue=>({avoided:[],carried:[],escaped:[],depth:false,sides:0,quiet:0,returned:false,claimed:false});
 export function dragonReady(stage:number,c:DragonClue|undefined){const r=DRAGON_RULES[stage-1];return !!r&&!!c&&r.avoid.every(id=>c.avoided.includes(id))&&(r.carry??[]).every(id=>c.carried.includes(id))&&(r.escape??[]).every(id=>c.escaped.includes(id))&&(!r.depth||c.depth)&&(!r.sides||c.sides===3)&&(!r.quiet||c.quiet>=r.quiet)&&(!r.returnEgg||c.returned);}
 export function validateDragonClues(value:unknown):asserts value is Record<string,DragonClue>{
@@ -44,7 +48,7 @@ export function validateDragonClues(value:unknown):asserts value is Record<strin
 export type DragonWatch={stage:number;observed:Record<string,{hit:number;egg:string|null;entered:boolean;failed:boolean}>};
 export function observeDragon(c:DragonClue,watch:DragonWatch,stage:number,dt:number,p:{x:number;z:number;offset:number;hit:number;egg:string|null;moving:boolean},hazards:Hazard[]){
  if(watch.stage!==stage){watch.stage=stage;watch.observed={};}
- const depth=(-p.z-p.offset-ROUTE.entrance)/(stage===20?ROUTE.finalLength:ROUTE.length);
+ const depth=routeProgress(stage,p.x,p.z+p.offset).progress;
  if(depth>=.8)c.depth=true;
  const near=hazards.some(h=>Math.hypot(h.target.x-p.x,h.target.z-p.z)<9);
  if(near){if(p.x<-2)c.sides|=1;if(p.x>2)c.sides|=2;}
