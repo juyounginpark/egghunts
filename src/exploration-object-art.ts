@@ -256,9 +256,9 @@ export function explorationObjects(stage:number):ObjectAssembly[]{
  const out:ObjectAssembly[]=SCENERY_KINDS[stage-1].split(' ').map((kind,i)=>({id:`scenery-${stage}-${i}`,kind,blocks:[],motions:[]}));
  const occupied:{x:number;z:number;r:number}[]=[];
  // Reserve one of each type before filling gaps with repeated vegetation.
- for(let j=0;j<5;j++)for(const [i,assembly] of out.entries()){
+ for(let j=0;j<2;j++)for(const [i,assembly] of out.entries()){
   const {kind,blocks}=assembly,natural=NATURAL_SCENERY.has(kind);
-  if(j>=(i===0?1:natural?5:2))continue;
+  if(j>=(i===0?1:natural?2:1))continue;
   const shape=i===0?explorationLandmark(stage):objectShape(kind,stage).blocks;
   let placed=false;
   for(let attempt=0;attempt<100&&!placed;attempt++){
@@ -266,7 +266,7 @@ export function explorationObjects(stage:number):ObjectAssembly[]{
    const extent=Math.max(...shape.map(v=>Math.hypot(Math.abs(v.x)+v.w/2,Math.abs(v.z)+v.d/2)))*scale;
    const cluster=(i+j+Math.floor(attempt/6))%4,side=(i+j+attempt)%2?1:-1;
    const progress=i===0?.79:attempt<24?SCENERY_CLEARINGS[stage-1][cluster]+(((i*13+j*7+attempt*3)%17)-8)*.007:.08+((i*17+j*13+attempt*7)%77)/100;
-   const p=routePoint(stage,progress),x=side*(5.2+((i*3+j*5+attempt)%9)*.64);
+   const p=routePoint(stage,progress),x=side*(5+((i*3+j*5+attempt)%9)*.43);
    if(Math.abs(x-p.x)<3+extent||Math.abs(x)+extent>12.5)continue;
    if(occupied.some(v=>Math.hypot(v.x-x,v.z-p.z)<v.r+extent+.15))continue;
    occupied.push({x,z:p.z,r:extent});placed=true;

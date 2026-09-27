@@ -50,6 +50,14 @@ export class RegionArt {
   for(const m of this.motions){
    if(Math.abs(m.z-offset-playerZ)>32)continue;
    const slow=[5,14,15,19,20].includes(legacyTheme(stage)),t=time*(slow?.45:stage===2?.8:1)+m.phase;
+   if(m.kind==='drift'&&m.travel){
+    // Bubbles, embers, snow and falling streams reuse the same instance pool.
+    for(const [i,p] of m.blocks.entries()){
+     const phase=((t*.25+i*.23)%1+1)%1,scale=.25+Math.sin(phase*Math.PI)*.75;
+     this.put(this.moving,this.count++,{...p,w:p.w*scale,h:p.h*scale,d:p.d*scale},m.x+m.travel.x*phase,m.y+m.travel.y*phase,m.z+m.travel.z*phase);
+    }
+    continue;
+   }
    const turn=stage===2?Math.floor(t*4)/4:t;
    const angle=m.kind==='spin'?turn*.4:m.kind==='windmill'||m.kind==='pulse'?0:Math.sin(t*.8)*.09;
    const rising=[4,13,16].includes(legacyTheme(stage)),phase=(t*.22)%1;
