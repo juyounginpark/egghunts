@@ -107,6 +107,7 @@ export type Save = {
   eggs: Egg[];
   mongles: number[];
   active: number[];
+  mountPet?:number|null;
   discovered: number[];
   selected: string | null;
   best: number;
@@ -138,6 +139,7 @@ export function freshSave(now: number): Save {
     eggs: [],
     mongles: Array(MONGLES.length).fill(0),
     active: [],
+    mountPet:null,
     discovered: [],
     selected: null,
     best: 0,
@@ -223,6 +225,8 @@ export function parseSave(raw: string | null, now: number): Save {
     throw new Error("저장 데이터를 읽을 수 없어요. 원본은 유지됩니다.");
   s.settings.volume=typeof s.settings.volume==='number'&&Number.isFinite(s.settings.volume)?Math.max(0,Math.min(1,s.settings.volume)):1;
   s.settings.hideOwnPets=s.settings.hideOwnPets===true;s.settings.hideOtherPets=s.settings.hideOtherPets===true;
+  const mount=s.mountPet;
+  if(typeof mount!=='number'||!Number.isInteger(mount)||!MONGLES[mount]||(s.mongles[mount]??0)<=s.active.filter(id=>id===mount).length)s.mountPet=null;
   if (
     s.expedition &&
     (!finite(s.expedition.deadline) ||
@@ -411,10 +415,23 @@ export class GameState {
     if(!this.isAtBase||this.death||!Number.isInteger(id)||!this.save.mongles[id])return 0;
     this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(id))this.save.obtainedPets.push(id);
     this.save.mongles[id]--;
-    if(this.equippedCount(id)>this.save.mongles[id])this.unequipPet(id);
+    if(this.save.active.filter(p=>p===id).length+Number(this.save.mountPet===id)>this.save.mongles[id]){
+      if(!this.unequipPet(id))this.save.mountPet=null;
+    }
     const price=this.petSellPrice(id);this.save.dust=add(this.save.dust,price);this.revision++;this.emit('pet_sold',{pet:id,price});return price;
   }
-  equippedCount(id:number){return this.save.active.filter(p=>p===id).length;}
+  get mountId(){const id=this.save.mountPet;return typeof id==='number'&&Number.isInteger(id)&&MONGLES[id]&&(this.save.mongles[id]??0)>this.save.active.filter(p=>p===id).length?id:null;}
+  get equippedPetIds(){return this.mountId===null?this.save.active:[...this.save.active,this.mountId];}
+  equippedCount(id:number){return this.save.active.filter(p=>p===id).length+Number(this.mountId===id);}
+  mountBonus(id:number){return Math.max(0,(MONGLES[id]?.speedMultiplier??1)-1)*BALANCE.mountSpeedBonusRate;}
+  get mountSpeedMultiplier(){return 1+(this.mountId===null?0:this.mountBonus(this.mountId));}
+  get riding(){return this.mountId!==null&&!this.death&&!this.training&&this.seat===null&&this.now()>=this.knockedUntil&&this.knockback.remaining<=0&&!this.launch;}
+  equipMount(id:number){
+    if(!this.isAtBase||this.death||!Number.isInteger(id)||!MONGLES[id]||!this.save.mongles[id]||this.mountId===id)return false;
+    if(this.save.active.filter(p=>p===id).length>=this.save.mongles[id])this.unequipPet(id);
+    this.save.mountPet=id;this.revision++;return true;
+  }
+  unequipMount(){if(!this.isAtBase||this.death||this.save.mountPet==null)return false;this.save.mountPet=null;this.revision++;return true;}
   equipPet(id:number){
     if(!Number.isInteger(id)||!MONGLES[id]||this.save.active.length>=BALANCE.maxCompanions||this.equippedCount(id)>=(this.save.mongles[id]??0))return false;
     this.save.active.push(id);this.revision++;return true;
@@ -684,14 +701,15 @@ export class GameState {
   get autoMultiplier() { return equippedPetMultiplier(this.save.active,'autoMultiplier'); }
   get speedMultiplier() { return equippedPetMultiplier(this.save.active,'speedMultiplier'); }
   get movementSpeed() {
-    const stat=this.speed;
+    const stat=this.unmountedSpeed;
     const walking=this.isAtBase?BALANCE.baseWalkSpeed:Math.min(BALANCE.maxMovementSpeed,stat<=2?stat:2+Math.log2(stat/2));
-    return walking*(this.carried?BALANCE.carryingMovementMultiplier:1);
+    return walking*this.mountSpeedMultiplier*(this.carried?BALANCE.carryingMovementMultiplier:1);
   }
   speedPad=freshPads();
   eggRequiredSpeed(egg:WorldEgg){return recommendedRouteSpeed(0,egg.stageId??this.stage.id);}
   meetsEggSpeed(egg:WorldEgg){return this.speed>=this.eggRequiredSpeed(egg);}
-  get speed() {
+  get speed(){return this.unmountedSpeed*this.mountSpeedMultiplier;}
+  get unmountedSpeed() {
     return softenGrowth(
       this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
       (BALANCE.speed *

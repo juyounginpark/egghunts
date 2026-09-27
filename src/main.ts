@@ -578,6 +578,16 @@ document.addEventListener("click", async (e) => {
     return;
   }
   if(hatchRevealing)return;
+  if(b.dataset.mount!==undefined||b.id==='unequip-mount'){
+    if(!game.isAtBase||game.death)return;
+    b.setAttribute('disabled','');
+    try{
+      const remove=b.id==='unequip-mount',id=Number(b.dataset.mount);
+      const ok=online.active?await remote(remove?'unequipMount':'equipMount',remove?undefined:id):remove?game.unequipMount():game.equipMount(id);
+      if(ok){toast(remove?'탑승 해제':`${MONGLES[id].name} 탑승 · 이동속도 +${num(game.mountBonus(id)*100,1)}%`);void save();}
+    }finally{renderPanel();updateHud();}
+    return;
+  }
   if(b.dataset.companion!==undefined&&game.save.active.length>=BALANCE.maxCompanions){
     const id=Number(b.dataset.companion);
     if(!MONGLES[id]||game.equippedCount(id)>=(game.save.mongles[id]??0)||game.death)return;

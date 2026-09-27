@@ -1,7 +1,9 @@
+import {MountView} from './mount-view';
 import {eggMaxHp,farmPetIds} from './data';
 import {explorationHeight} from './exploration-route';
 import {concealedAt} from './brush';
 import {BRUSH_TERRAIN} from './stage-data';
+import {SceneryCreatures} from './scenery-creatures';
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage,DAMAGE_OVER_TIME } from "./data";
@@ -24,6 +26,8 @@ import {EnvironmentVisualController} from './environment-visual';
 import {dioramaMaterial} from './diorama-material';
 
 export class World {
+  private sceneryCreatures=new SceneryCreatures();
+  private mounts=new MountView();
   private stealthMaterials=new WeakMap<T.Material,T.Material>();
   private stealthSources=new WeakMap<T.Mesh,T.Material|T.Material[]>();
   private stealthOpacity(hidden:boolean){
@@ -184,17 +188,18 @@ export class World {
       const seated=!down&&peer.seat!==undefined&&peer.seat!==null&&!!CAMP_SEATS[peer.seat];
       if(seated){const seat=CAMP_SEATS[peer.seat!];avatar.position.x=seat.x;avatar.position.z=seat.z;}
       const walking=!seated&&!down&&fresh&&speed>.08;
+      const mountLift=this.mounts.update(avatar,peer.mountPet??null,!!peer.riding&&!down&&!seated,frameAt/1000,walking,this.reducedMotion.matches);
       avatar.userData.walkBlend=(avatar.userData.walkBlend??0)+((walking?1:0)-(avatar.userData.walkBlend??0))*(1-Math.exp(-dt*16));
       avatar.userData.walkPhase=(avatar.userData.walkPhase??0)+dt*9*Math.min(1.6,Math.max(.6,speed/1.6));
       const rig=avatar.getObjectByName('peer-rig')!,stride=Math.sin(avatar.userData.walkPhase)*avatar.userData.walkBlend;
-      rig.position.y=down||seated?0:Math.abs(stride)*.07;
+      rig.position.y=down||seated||mountLift>0?0:Math.abs(stride)*.07;
       for(const side of ['left','right']){
         const sign=side==='left'?1:-1,leg=rig.getObjectByName(`${side}_leg`),arm=rig.getObjectByName(`${side}_arm`);
-        if(leg)leg.rotation.x=down?.2:seated?-Math.PI/2:stride*.4*sign;
+        if(leg)leg.rotation.x=down?.2:seated||mountLift>0?-Math.PI/2:stride*.4*sign;
         if(arm)arm.rotation.x=down?-.35:seated?-.5:peer.carried!==null?-2.4:-stride*.3*sign;
       }
       const flight=(frameAt-(avatar.userData.hitReceived??-Infinity))/(BALANCE.batFlightSeconds*1000);
-      avatar.position.y=explorationHeight(avatar.position.x,avatar.position.z,this.routeStart)+(seated?CAMPFIRE.sittingHeight:down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0);
+      avatar.position.y=mountLift+explorationHeight(avatar.position.x,avatar.position.z,this.routeStart)+(seated?CAMPFIRE.sittingHeight:down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0);
       avatar.rotation.y+=Math.atan2(Math.sin(peer.rotation-avatar.rotation.y),Math.cos(peer.rotation-avatar.rotation.y))*blend;
       avatar.rotation.z+=( (down?Math.PI/2:0)-avatar.rotation.z)*blend;
       this.animateBat(avatar,frameAt-(avatar.userData.swingReceived??-Infinity));
@@ -216,7 +221,7 @@ export class World {
   farmPets = new T.Group();
   private farmKey = "";
   private petLabels = document.createElement("div");
-  private eggSpeedLabel=document.createElement('div');
+  private eggSpeedLabels=new Map<string,HTMLDivElement>();
   private peerPetLabels = document.createElement('div');
   private farmPetLabels = document.createElement('div');
   private farmPetLabelEntries=new Map<string,{id:number;label:HTMLElement}>();
@@ -283,11 +288,11 @@ export class World {
     host.append(this.renderer.domElement);
     this.damageDirection.id='damage-direction';this.damageDirection.hidden=true;this.damageDirection.setAttribute('aria-hidden','true');host.append(this.damageDirection);
     this.petLabels.id="pet-labels";host.append(this.petLabels);
-    this.eggSpeedLabel.className='egg-speed-label';this.eggSpeedLabel.hidden=true;host.append(this.eggSpeedLabel);
     this.peerPetLabels.id='peer-pet-labels';host.append(this.peerPetLabels);
     this.farmPetLabels.id='farm-pet-labels';host.append(this.farmPetLabels);
     this.scene.add(this.farm,this.farmPets,this.roomFarmPets,this.roomFarmEggs,this.footTrail);
     this.scene.add(this.hazardsView.group);
+    this.scene.add(this.sceneryCreatures.group);
     this.scene.add(this.nestGroup);
     this.nightBarrier.position.set(0,.65,BALANCE.baseMinZ-.25);
     this.scene.add(this.nightBarrier,this.lifeEffects);
@@ -361,7 +366,7 @@ export class World {
   }
   async init() {
     await loadVoxels([...Array.from({length:20},(_,i)=>`guardian-${i+1}`),"guardian-final","alkong","pedestal","feed"]);
-    this.player.add(model("alkong", true));
+    const rig=model("alkong",true);rig.name="player-rig";this.player.add(rig);
     this.eggModels = EGGS.map((_, i) => eggVisual(i));
     const groundMaterial = dioramaMaterial({ vertexColors: true });
     const chunks: T.BufferGeometry[] = [];
@@ -452,7 +457,7 @@ export class World {
     });
   }
   async showFarmPets(game: GameState) {
-    const ids=farmPetIds(game.save.mongles,game.save.active,game.now());
+    const ids=farmPetIds(game.save.mongles,game.riding?game.equippedPetIds:game.save.active,game.now());
     const key=`${game.farmSlot}:${ids.join(',')}`;if(key===this.farmKey)return;this.farmKey=key;
     try{await loadVoxels(ids.map(i=>`pet-${i}`));}catch(error){if(key===this.farmKey)this.farmKey='';throw error;}if(key!==this.farmKey)return;
     this.clearPetInstances(this.farmPets);ids.forEach((id,i)=>this.farmPets.add(this.farmPet(id,game.farmSlot,i)));
@@ -541,6 +546,7 @@ export class World {
     }
     const isReward=!!game.returnReward;
     const isHatch = mode === "hatchery" || game.result !== null || isReward;
+    this.sceneryCreatures.update(game,Math.min(.1,Math.max(0,dt)),time,!isHatch&&mode==='explore',this.swungAt,this.reducedMotion.matches);
     this.hazardsView.render(game,!isHatch,time);
     this.nestGroup.visible=!isHatch;
     this.farm.visible=this.farmPets.visible=!isHatch && game.z>-22;
@@ -642,12 +648,13 @@ export class World {
       this.flying.position.set(flyAge * 3, 1 + flyAge * 2, 0);
       this.flying.rotation.z = -flyAge * 2;
     }
+    const mountLift=this.mounts.update(this.player,game.mountId,game.riding,time,Boolean(this.player.userData.moving),this.reducedMotion.matches);
     this.player.position.set(
       game.x+this.networkOffset.x,
       game.death ? .4*fall : game.seat!==null?CAMPFIRE.sittingHeight:game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
       game.z+this.networkOffset.z,
     );
-    this.player.position.y+=explorationHeight(this.player.position.x,this.player.position.z,game.progression.stage);
+    this.player.position.y+=mountLift+explorationHeight(this.player.position.x,this.player.position.z,game.progression.stage);
     if(game.seat!==null){
       this.restCompanions(this.companions,game.farmSlot,time);this.trail=[];
     }else{
@@ -668,16 +675,16 @@ export class World {
     const moving = game.seat===null&&!game.death&&(game.training || Boolean(this.player.userData.moving));
     if(game.seat!==null&&CAMP_SEATS[game.seat])this.player.rotation.y=CAMP_SEATS[game.seat].rotation;
     if(game.training)this.player.rotation.y=farmPlot(game.farmSlot).rotation+Math.PI;
-    const rig = this.player.children[1];
+    const rig = this.player.getObjectByName("player-rig");
     if (rig) {
-      rig.position.y = game.death||game.seat!==null?0:moving
+      rig.position.y = game.death||game.seat!==null||mountLift>0?0:moving
         ? Math.abs(Math.sin(time * 9)) * 0.07
         : Math.sin(time * 2) * 0.025;
       for (const side of ["left", "right"]) {
         const sign = side === "left" ? 1 : -1;
         const leg = rig.getObjectByName(`${side}_leg`),
           arm = rig.getObjectByName(`${side}_arm`);
-        if (leg) leg.rotation.x = game.death?.2*fall:game.seat!==null?-Math.PI/2:moving ? Math.sin(time * 9) * 0.4 * sign : 0;
+        if (leg) leg.rotation.x = game.death?.2*fall:game.seat!==null||mountLift>0?-Math.PI/2:moving ? Math.sin(time * 9) * 0.4 * sign : 0;
         if (arm)
           arm.rotation.x = game.death?-.35*fall:game.seat!==null?-.5:game.carried
             ? -2.4
@@ -810,12 +817,15 @@ export class World {
       gain.el.hidden=isHatch;
     }
     this.sun.target.position.set(game.x, 0, game.z);
-    this.eggSpeedLabel.hidden=isHatch||!!game.carried||!near||game.meetsEggSpeed(near);
-    if(!this.eggSpeedLabel.hidden&&near){
-      const p=new T.Vector3(near.x,1.6,near.z).project(this.camera);
-      this.eggSpeedLabel.textContent=`권장 속도 ${formatNumber(game.eggRequiredSpeed(near))} / 현재 ${formatNumber(game.speed)}`;
-      this.eggSpeedLabel.style.left=`${(p.x+1)/2*this.host.clientWidth}px`;
-      this.eggSpeedLabel.style.top=`${(1-p.y)/2*this.host.clientHeight}px`;
+    const closeEggs=isHatch||game.carried?[]:visibleEggs.filter(egg=>game.canReachEgg(egg)&&!game.bosses.some(b=>b.loot?.id===egg.id));
+    for(const [id,label] of this.eggSpeedLabels)if(!closeEggs.some(egg=>egg.id===id)){label.remove();this.eggSpeedLabels.delete(id);}
+    for(const egg of closeEggs){
+      let label=this.eggSpeedLabels.get(egg.id);
+      if(!label){label=document.createElement('div');label.className='egg-speed-label';this.host.append(label);this.eggSpeedLabels.set(egg.id,label);}
+      const p=new T.Vector3(egg.x,explorationHeight(egg.x,egg.z,game.progression.stage)+1.6,egg.z).project(this.camera);
+      label.textContent=`권장 속도 ${formatNumber(game.eggRequiredSpeed(egg))} / 현재 ${formatNumber(game.speed)}`;
+      label.style.left=`${(p.x+1)/2*this.host.clientWidth}px`;
+      label.style.top=`${(1-p.y)/2*this.host.clientHeight}px`;
     }
     const labelIds=game.save.active.join(',');
     if(this.petLabels.dataset.ids!==labelIds){
