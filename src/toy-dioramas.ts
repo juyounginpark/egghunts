@@ -1,11 +1,13 @@
 import type {Block,Motion} from './region-layout';
 import {dioramaZones} from './diorama-zones';
 import {explorationLandmark} from './exploration-landmarks';
+import {terrainAt} from './exploration-route';
 
 /** A room at toy scale: eight authored scenes, rather than separate prop rows. */
 export function toyDioramas(){
  const paper=0xeee1be,wood=0x9c7554,dark=0x625775;
  return dioramaZones(2).map(q=>{
+  q={...q,height:terrainAt(2,q.x,q.z).height};
   const blocks:Block[]=[],motions:Motion[]=[],red=q.side<0?0xbd786b:0x8196b5,yellow=q.side<0?0xd8b66e:0xb198bd;
   const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number,angle=0,roll=0)=>blocks.push({x:q.x+x,y:q.height+y,z:q.z+z,w,h,d,c,angle,roll,solid:false});
   const gift=(x:number,z:number,s:number,c:number,y=0)=>{

@@ -13,10 +13,16 @@ export function dioramaZones(stage:number){
 }
 /** Decorative relief remains walkable; the central corridor is always level. */
 export function dioramaHeight(stage:number,x:number,z:number,center:number){
- if(Math.abs(x-center)<3||Math.abs(x)>12.5)return 0;
  // Match the rendered one-unit ground cells, including the lowered floor.
  x=Math.round(x);z=Math.floor(z)+.5;
+ const distance=Math.abs(x-center);
+ if(distance<3||Math.abs(x)>12.5)return 0;
  const depthScale=stage===20?225/48:1;
  const q=dioramaZones(stage).find(q=>q.height!==0&&Math.abs(x-q.x)<3.6&&Math.abs(z-q.z)/depthScale<5.2&&Math.abs(x-q.x)+Math.abs(z-q.z)/depthScale<7.4);
- return q?.height??0;
+ if(q)return q.height;
+ const progress=(-z-6)/(48*depthScale);
+ // Leave openings into the side scenes and a level approach to eggs/bosses.
+ const opening=[.25,.5,.7].some(p=>Math.abs(progress-p)<.035);
+ if(progress<.06||progress>.85||opening)return 0;
+ return distance<4.3?.16:distance<5.5?.32:0;
 }
