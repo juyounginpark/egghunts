@@ -1052,6 +1052,9 @@ export class GameState {
   }
   pickup(egg:WorldEgg){
       if(this.carried||this.knockback.remaining>0||this.death||this.now()<this.knockedUntil)return;
+      // Judge the displayed stat before carrying penalties. This rule is shared
+      // by local play and authoritative room commands, including concealed players.
+      const underqualified=!this.meetsEggSpeed(egg);
       this.carried = egg;
       this.emit("egg_pickup", {type: this.carried.type});
       this.world = this.world.filter((e) => e !== this.carried);
@@ -1060,6 +1063,14 @@ export class GameState {
       this.carried.stageId??=this.stage.id;
       this.carried.guardian??=Math.max(0,this.carried.stageId-this.progression.stage);
       const boss = this.bosses[this.carried.guardian];
+      if(underqualified){
+        this.hp=0;this.hitAt=this.now();
+        this.hitSource={x:boss?.x??egg.x,z:boss?.z??egg.z,at:this.hitAt};
+        this.die();this.restoreEgg(egg,region);
+        if(boss?.loot?.id===egg.id)boss.loot=null;
+        this.message='권장속도가 부족해 보스에게 즉시 제압당했어요!';
+        return;
+      }
       if(!boss){this.revision++;return;}
       // Recovered eggs remain in the world and can be stolen during the return trip.
       boss.loot = null;
