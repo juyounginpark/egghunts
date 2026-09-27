@@ -29,7 +29,8 @@ export class World {
   private stealthOpacity(hidden:boolean){
     this.player.traverse(o=>{
       if(!(o instanceof T.Mesh))return;
-      let source=this.stealthSources.get(o);if(!source){source=o.material;this.stealthSources.set(o,source);}
+      const source:T.Material|T.Material[]=this.stealthSources.get(o)??o.material;
+      this.stealthSources.set(o,source);
       const fade=(m:T.Material)=>{let copy=this.stealthMaterials.get(m);if(!copy){copy=m.clone();copy.transparent=true;copy.opacity=m.opacity*BRUSH_TERRAIN.opacity;copy.depthWrite=false;this.stealthMaterials.set(m,copy);}return copy;};
       o.material=hidden?(Array.isArray(source)?source.map(fade):fade(source)):source;
     });
