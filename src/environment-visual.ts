@@ -4,6 +4,7 @@ import {BALANCE} from './data';
 import type {GameState} from './game';
 import {dioramaUniforms} from './diorama-material';
 import {FARM_PLOTS,farmLocal} from './village';
+import {explorationSurface} from './exploration-route';
 
 // Three's physically scaled lights need larger intensities than normalized art guides.
 export const ENVIRONMENT_PRESETS=[
@@ -28,6 +29,8 @@ export class EnvironmentVisualController {
  private playerShadow:T.Mesh;
  private contacts:T.InstancedMesh;
  private marker=new T.Object3D();
+ private ripples=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:0xd0eee3}),160);
+ private waterState=new WeakMap<T.Object3D,{wet:boolean;entered:number;x:number;z:number}>();
  constructor(private scene:T.Scene,private renderer:T.WebGLRenderer,private sun:T.DirectionalLight,private ambient:T.HemisphereLight){
   scene.userData.diorama=this.uniforms;
   // A shared 32px radial texture replaces expensive SSAO and shadow lights.
@@ -48,7 +51,8 @@ export class EnvironmentVisualController {
   for(const [slot,plot] of FARM_PLOTS.entries())for(const side of [-1,1]){const p=farmLocal(slot,side*.8,1.39);lamp(p.x,1.45,p.z,.34,.4,.035,plot.rotation);}
   for(const side of [-1,1])for(const z of [-1,11])lamp(side*2.5,1.7,z,.49,.51,.49);
   this.lamps.instanceMatrix.needsUpdate=true;
-  scene.add(this.lamps,this.contacts,this.playerShadow);
+  this.ripples.frustumCulled=false;this.ripples.count=0;
+  scene.add(this.lamps,this.contacts,this.playerShadow,this.ripples);
  }
  update(game:GameState,hatch:boolean,low:boolean,player:T.Object3D,peers:Iterable<T.Object3D>){
   const clock=cycleClock(game.now(),game.nightAt,game.nightUntil);
@@ -76,20 +80,44 @@ export class EnvironmentVisualController {
   this.lamps.visible=!hatch&&game.z>-25;
   this.renderer.shadowMap.enabled=!low&&this.enabled.shadows;
   this.playerShadow.visible=this.contacts.visible=!hatch&&this.enabled.ao;
-  const height=Math.max(0,player.position.y),size=1/(1+height*.18);
-  this.playerShadow.position.set(player.position.x,.075,player.position.z);this.playerShadow.scale.set(1.15*size,1,.85*size);
+  const surfaceAt=(x:number,z:number)=>explorationSurface(x,z,game.progression.stage);
+  const surface=surfaceAt(player.position.x,player.position.z),floor=surface?.water?.surface??surface?.height??0;
+  const height=Math.max(0,player.position.y-(surface?.height??0)),size=1/(1+height*.18);
+  this.playerShadow.position.set(player.position.x,floor+.025,player.position.z);this.playerShadow.scale.set(1.15*size,1,.85*size);
   (this.playerShadow.material as T.MeshBasicMaterial).opacity=.24/(1+height*.5);
   this.contactMaterial.color.copy(this.ambient.groundColor);
   (this.playerShadow.material as T.MeshBasicMaterial).color.copy(this.ambient.groundColor);
   let count=0;
   const contact=(x:number,z:number,w:number,d:number)=>{
    if(count>=48||Math.abs(z-game.z)>28)return;
-   this.marker.position.set(x,.073,z);this.marker.rotation.set(0,0,0);this.marker.scale.set(w,1,d);this.marker.updateMatrix();this.contacts.setMatrixAt(count++,this.marker.matrix);
+   const s=surfaceAt(x,z);
+   this.marker.position.set(x,(s?.water?.surface??s?.height??0)+.025,z);this.marker.rotation.set(0,0,0);this.marker.scale.set(w,1,d);this.marker.updateMatrix();this.contacts.setMatrixAt(count++,this.marker.matrix);
   };
+  let rippleCount=0;const time=game.now()/1000;
+  const ripple=(actor:T.Object3D)=>{
+   const {x,y,z}=actor.position,s=surfaceAt(x,z),water=s?.water;
+   const wet=!hatch&&actor.visible&&!!water&&y-(s?.height??0)<.3;
+   const previous=this.waterState.get(actor),entered=wet&&!previous?.wet?time:previous?.entered??time;
+   const moving=!!previous&&Math.hypot(x-previous.x,z-previous.z)>.001;
+   this.waterState.set(actor,{wet,entered,x,z});
+   if(!wet||!water||Math.abs(z-game.z)>28)return;
+   const cube=(dx:number,dy:number,dz:number,w:number,h:number,d:number)=>{
+    if(rippleCount>=160||!surfaceAt(x+dx,z+dz)?.water)return;
+    this.marker.position.set(x+dx,water.surface+dy,z+dz);this.marker.rotation.set(0,0,0);this.marker.scale.set(w,h,d);this.marker.updateMatrix();this.ripples.setMatrixAt(rippleCount++,this.marker.matrix);
+   };
+   for(let ring=0;ring<(low?1:2);ring++){
+    const phase=(time*(moving?1.8:.55)+ring*.5)%1,r=.22+phase*.52,thickness=.045*(1-phase)+.008;
+    for(let j=0;j<8;j++){const angle=j*Math.PI/4;cube(Math.cos(angle)*r,.035,Math.sin(angle)*r,.14,thickness,.1);}
+   }
+   const age=time-entered;
+   if(age<.4)for(let j=0;j<4;j++){const a=j*Math.PI/2;cube(Math.cos(a)*(.25+age),.05+Math.sin(age/.4*Math.PI)*.22,Math.sin(a)*(.25+age),.065,.09,.065);}
+  };
+  ripple(player);
   for(const p of FARM_PLOTS)contact(p.x,p.z,4.8,4.8);
   for(const side of [-1,1]){contact(side*4.5,1,3.4,3.4);contact(side*2.25,-4.7,1.2,1.2);}
-  for(const peer of peers)if(peer.visible)contact(peer.position.x,peer.position.z,1.15,.85);
+  for(const peer of peers){ripple(peer);if(peer.visible)contact(peer.position.x,peer.position.z,1.15,.85);}
   for(const boss of game.bosses)contact(boss.x,boss.z,2.4,1.9);
   this.contacts.count=count;this.contacts.instanceMatrix.needsUpdate=true;
+  this.ripples.count=rippleCount;this.ripples.visible=!hatch;this.ripples.instanceMatrix.needsUpdate=true;
  }
 }

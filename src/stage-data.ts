@@ -1,6 +1,10 @@
 import {reorderStages,OLD_TO_STAGE} from './stage-order';
 import {routePoint} from './exploration-route';
 export const ROAD_WIDTH_SCALE=2;
+export const WATER_TERRAIN={
+ stages:[1,3,4,5,6,7,8,9,10,11,13,15,16,17,20],doublePools:[1,3,8,9,15,20],
+ speedMultiplier:.5,surface:-.12,depth:.72,edgeDepth:.48,radiusX:1.6,radiusZ:2.2,sideOffset:2.4,
+};
 export type Shape='ellipse'|'line'|'cone'|'ring'|'wall';
 export type Targeting='predict'|'fixed'|'track'|'sweep';
 export type Effect='hit'|'wind'|'ink'|'pull'|'stone'|'grab'|'delay'|'dot'|'ice'|'dust'|'web';

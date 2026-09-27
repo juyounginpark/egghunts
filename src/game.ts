@@ -876,12 +876,19 @@ export class GameState {
     }
     if(this.seat!==null)this.standUp();
     if(this.training)this.toggleTraining();
-    const unboosted=(slow?Math.min(BALANCE.slowWalkSpeed,this.movementSpeed):this.movementSpeed)*(surface?.slow??1);
+    const baseSpeed=slow?Math.min(BALANCE.slowWalkSpeed,this.movementSpeed):this.movementSpeed;
+    const unboosted=baseSpeed*(surface?.slow??1);
     const speed=unboosted;
     this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*speed,z:dz/Math.max(1,l)*speed};
     const scale = l > 1 ? 1 / l : 1;
     const beforeX=this.x,beforeZ=this.z;
-    this.push(dx*scale*speed*dt,dz*scale*speed*dt);
+    // Re-sample short segments so a long frame cannot skip a narrow water tile.
+    const steps=Math.max(1,Math.ceil(baseSpeed*dt/.2));
+    for(let i=0;i<steps;i++){
+      const ground=this.isAtBase?null:terrainAt(this.stage.id,this.x,this.z+this.stageOffset);
+      const distance=baseSpeed*(ground?.slow??1)*dt/steps;
+      this.push(dx*scale*distance,dz*scale*distance);
+    }
     if(surface?.bridge&&this.stage.id===17)this.push(0,(this.x<surface.center?1:-1)*Math.min(.5,unboosted*.25)*dt);
     if(surface?.ice){const glide=Math.min(1.2,speed*.3);this.iceDrift={x:this.facing.x*glide,z:this.facing.z*glide};}
     if(dt>0)this.velocity={x:(this.x-beforeX)/dt,z:(this.z-beforeZ)/dt};

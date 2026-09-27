@@ -1,4 +1,5 @@
-import {dioramaHeight} from './diorama-zones';
+import {reliefCell} from './terrain-relief';
+import {WATER_TERRAIN} from './stage-data';
 /** Authored centre lines; progress is cumulative walking distance, not world Z. */
 export type RoutePoint={x:number;z:number};
 export const EXPLORATION_MAPS=[
@@ -52,15 +53,39 @@ export function pathX(stage:number,z:number){
  for(let i=1;i<path.length;i++)if(z>=path[i].z){const t=Math.max(0,Math.min(1,(z-path[i-1].z)/(path[i].z-path[i-1].z)));return path[i-1].x+(path[i].x-path[i-1].x)*t;}
  return 0;
 }
+export type WaterRegion={x:number;z:number;rx:number;rz:number;surface:number};
+const waterCache=new Map<number,WaterRegion[]>();
+export function waterRegions(stage:number){
+ let pools=waterCache.get(stage);if(pools)return pools;
+ pools=[];
+ if(WATER_TERRAIN.stages.includes(stage)){
+  for(const [i,p] of (WATER_TERRAIN.doublePools.includes(stage)?[.3,.62]:[.43]).entries()){
+   const z=-6-routeLength(stage)*p,side=(stage+i)%2?1:-1;
+   pools.push({x:Math.round(pathX(stage,z)+side*WATER_TERRAIN.sideOffset),z:Math.floor(z)+.5,rx:WATER_TERRAIN.radiusX,rz:WATER_TERRAIN.radiusZ,surface:WATER_TERRAIN.surface});
+  }
+ }
+ waterCache.set(stage,pools);return pools;
+}
+export function waterAt(stage:number,x:number,z:number){
+ const cx=Math.round(x),cz=Math.floor(z)+.5;
+ for(const pool of waterRegions(stage)){
+  const distance=Math.abs(cx-pool.x)/pool.rx+Math.abs(cz-pool.z)/pool.rz;
+  if(distance<1.35)return {surface:pool.surface,depth:distance<.8?WATER_TERRAIN.depth:WATER_TERRAIN.edgeDepth};
+ }
+ return null;
+}
 export function terrainAt(stage:number,x:number,z:number){
  const {progress}=routeProgress(stage,x,z),center=pathX(stage,z);
- // Scenic terraces do not block movement or apply any floor effect.
- return {walk:true,height:dioramaHeight(stage,x,z,pathX(stage,Math.floor(z)+.5)),slow:1,bridge:false,landing:false,progress,center,bypass:Math.abs(x-center)>3,ice:false};
+ const water=waterAt(stage,x,z),cell=reliefCell(stage,x,z,pathX(stage,Math.floor(z)+.5),routeLength(stage));
+ return {walk:true,height:water?water.surface-water.depth:cell.height,slow:water?WATER_TERRAIN.speedMultiplier:1,water,bridge:false,landing:false,progress,center,bypass:Math.abs(x-center)>3,ice:false};
 }
 export function explorationHeight(x:number,z:number,start=1){
- if(z>-6)return 0;
+ return explorationSurface(x,z,start)?.height??0;
+}
+export function explorationSurface(x:number,z:number,start=1){
+ if(z>-6)return null;
  const stage=Math.min(20,start+Math.max(0,Math.floor((-z-6)/48))),offset=(stage-start)*48;
- return terrainAt(stage,x,z+offset).height;
+ return terrainAt(stage,x,z+offset);
 }
 export function shortcut(stage:number){
  if(![5,8,14,17].includes(stage))return null;

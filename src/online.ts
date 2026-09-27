@@ -7,6 +7,7 @@ import {playerName} from './player-identity';
 import type {EggNotice} from './egg-notices';
 import {restoreSnapshotSections} from './snapshot-stream';
 import type {ChatMessage} from './multiplayer';
+import {explorationSurface} from './exploration-route';
 
 export const SUPABASE_URL=import.meta.env.VITE_SUPABASE_URL||'https://leblcdiqsyxqzwlsnkio.supabase.co';
 const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_2KTon_WzPAci5G4dLyZ5Ww_bPgwmiig';
@@ -282,7 +283,7 @@ export class OnlineGame{
  reconcile(dt:number){
   if(!this.game)return;
   const distance=Math.hypot(this.visualOffset.x,this.visualOffset.z),moving=Math.hypot(this.vector.x,this.vector.z)>.01;
-  const speed=this.vector.slow?Math.min(BALANCE.slowWalkSpeed,this.game.movementSpeed):this.game.movementSpeed;
+  const speed=(this.vector.slow?Math.min(BALANCE.slowWalkSpeed,this.game.movementSpeed):this.game.movementSpeed)*(explorationSurface(this.game.x,this.game.z,this.game.progression.stage)?.slow??1);
   // A late packet must not briefly accelerate or reverse an otherwise steady walk.
   // Network error is corrected during the next walk, never as unsolicited
   // movement after release. Authoritative collisions/rewards remain at game.x/z.

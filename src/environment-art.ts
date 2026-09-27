@@ -79,9 +79,14 @@ export function environmentGroundDetails(stage:number):Block[]{
   for(let j=0;j<9;j++){
    const edge=j<3,localZ=q.z+(edge?0:1.2)+Math.sin(j*1.8+i)*.7;
    const x=edge?pathX(stage,localZ)+q.side*(2.8+j*.3):q.x+Math.cos(j*2.3)*1.6;
-   const y=terrainAt(stage,x,localZ).height+.025,angle=(j%5-2)*.23;
+   const surface=terrainAt(stage,x,localZ);
+   if(surface.water)continue;
+   const y=surface.height+.025,angle=(j%5-2)*.23;
+   // Broken edges and short scuffs connect the prop cluster to its ground.
+   if(j>=3&&j%3===0)out.push({x:x+.16,y:y+.02,z:localZ-.12,w:.19,h:.07,d:.24,c:base,angle,solid:false});
    if(plan.detail==='crack'||plan.detail==='grain'||plan.detail==='sand'){
     for(let k=0;k<3;k++)out.push({x:x+k*.16,y,z:localZ+Math.sin(k+i)*.1,w:.2,h:.02,d:plan.detail==='sand'?.08:.045,c:base,angle,solid:false});
+    if(plan.detail==='crack')out.push({x:x+.2,y,z:localZ+.16,w:.035,h:.02,d:.32,c:base,angle:-angle,solid:false});
    }else if(plan.detail==='tile'){
     out.push({x,y,z:localZ,w:.6,h:.025,d:.035,c:base,angle,solid:false});
     if(j%2===0)out.push({x:x+.3,y,z:localZ+.22,w:.035,h:.025,d:.45,c:base,solid:false});

@@ -633,7 +633,7 @@ export class World {
       game.death ? .4*fall : game.seat!==null?CAMPFIRE.sittingHeight:game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
       game.z+this.networkOffset.z,
     );
-    this.player.position.y+=explorationHeight(game.x,game.z,game.progression.stage);
+    this.player.position.y+=explorationHeight(this.player.position.x,this.player.position.z,game.progression.stage);
     if(game.seat!==null){
       this.restCompanions(this.companions,game.farmSlot,time);this.trail=[];
     }else{
