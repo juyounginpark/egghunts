@@ -2,7 +2,7 @@ import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './
 import {softenGrowth} from './growth-curve';
 import {freshPads} from './speed-pads';
 import type {Mob} from './mobs';
-import {migrateExploration,migrateBossHomes} from './exploration-migration';
+import {migrateExploration,migrateBossHomes,migrateEggHomes} from './exploration-migration';
 import {bossAnchor,specialEggAnchor,eggAnchor,shortcut,terrainAt} from './exploration-route';
 import {migrateBalance,type BalanceAdjustment} from './balance-migration';
 import {weeklyDay,validateWeekly,type WeeklyProgress} from './weekly';
@@ -70,7 +70,7 @@ export type Boss = {
   loot: WorldEgg | null;
 };
 export type Save = {
-  explorationVersion?:1|2|3|4;
+  explorationVersion?:1|2|3|4|5;
   openedShortcuts?:number[];
   balanceVersion?:1;
   balanceAdjustment?:BalanceAdjustment;
@@ -643,7 +643,8 @@ export class GameState {
       for(const boss of save.bosses){const i=this.bosses.findIndex(b=>b.stageId===boss.stageId&&!!b.final===!!boss.final);if(i>=0)this.bosses[i]=boss;}
     }
     if((save.explorationVersion??0)<3)migrateExploration(this.world,this.bosses);
-    if(save.explorationVersion!==4){migrateBossHomes(this.bosses);save.explorationVersion=4;}
+    if((save.explorationVersion??0)<4)migrateBossHomes(this.bosses);
+    if(save.explorationVersion!==5){migrateEggHomes(this.world,this.bosses);save.explorationVersion=5;}
     // Older saves applied the sleeping offset only in the renderer.
     for(const boss of this.bosses){
       if(boss.homeX===undefined){
@@ -1168,7 +1169,7 @@ export class GameState {
     return true;
   }
   snapshot(): Save {
-    this.save.explorationVersion=4;this.save.openedShortcuts=[...this.openedShortcuts];
+    this.save.explorationVersion=5;this.save.openedShortcuts=[...this.openedShortcuts];
     this.progression.hp=this.hp;this.progression.maxHP=this.maxHp;this.progression.immunity=this.immunity;this.progression.slowRemaining=this.slowRemaining;this.progression.slowMultiplier=this.slowMultiplier;
     this.save.routeVersion=3;
     this.save.death=this.death;

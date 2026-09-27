@@ -10,6 +10,9 @@ export function migrateBossHomes(bosses:Boss[]){
 }
 export function migrateExploration(world:WorldEgg[],bosses:Boss[]){
  migrateBossHomes(bosses);
+ migrateEggHomes(world,bosses);
+}
+export function migrateEggHomes(world:WorldEgg[],bosses:Boss[]){
  for(const egg of world){
   if(!egg.stageId||egg.secured||bosses.some(b=>b.loot?.id===egg.id))continue;
   const atHome=egg.x===egg.homeX&&egg.z===egg.homeZ;
