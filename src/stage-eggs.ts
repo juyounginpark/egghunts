@@ -2,6 +2,7 @@ import {designEgg} from "./egg-design";
 import {EGGS} from "./data";
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 import {reorderStages} from './stage-order';
+import {isStageEggVariant,normalEggIndex} from './egg-variants';
 export type EggAppearance={type:number;stageId?:number;variant?:number;special?:boolean};
 export type EggCell=[number,number,number,number];
 const oldEggNames=[
@@ -19,8 +20,25 @@ const oldEggNames=[
 export const STAGE_EGG_NAMES=reorderStages(oldEggNames);
 STAGE_EGG_NAMES[18]=['빈 고리','공백','그림자','끊어진 달','경계'];
 STAGE_EGG_NAMES[19]=['첫 씨앗','새벽','샘물','계절','세계수'];
-export function appearanceOf(e:EggAppearance){return e.stageId&&e.stageId>=1&&e.stageId<=20&&e.variant!==undefined&&e.variant>=0&&e.variant<=5?{stage:e.stageId,variant:e.variant}:null;}
-export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${a.variant===5?SECRET_DRAGON_ROWS.find(p=>p.stageId===a.stage)!.eggName:STAGE_EGG_NAMES[a.stage-1][a.variant]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
+// Five material families per biome, each applied to its five original motifs.
+const families=[
+ ['이슬','덩굴','꽃잎','뿌리','꿀방울'],['리본','블록 날개','크레용','태엽 고리','구슬'],
+ ['진주','산호 가지','조개 날개','해초 고리','물거품'],['흑요석','용암 가지','불꽃 날개','쇠사슬','불씨'],
+ ['봉인','깃펜','책장 날개','유령 고리','잉크방울'],['네온','안테나','회로 날개','전력 고리','신호등'],
+ ['황금','선인장','모래 날개','태양 고리','청금석'],['호박석','화석 뿔','익룡 날개','갈비뼈','공룡 발톱'],
+ ['비단','도깨비 뿔','부채 날개','달고리','도깨비불'],['월계관','대리석 뿔','천상 날개','신전 고리','번개 조각'],
+ ['탐사','촉수','비행 날개','위성 고리','외계 수정'],['황동','증기관','비행 날개','톱니 고리','압력계'],
+ ['서리','얼음 뿔','눈꽃 날개','빙하 고리','빙정'],['솜사탕','꿈뿔','베개 날개','무지개 고리','별사탕'],
+ ['격리','돌연변이 가지','방호 날개','배관 고리','발광 포자'],['꽃가루','더듬이','곤충 날개','잎맥 고리','수액'],
+ ['철갑','고철 뿔','금속 날개','자석 고리','볼트'],['별빛','혜성 꼬리','성운 날개','궤도 고리','별조각'],
+ ['봉인석','균열 뿔','그림자 날개','차원 고리','기억 조각'],['새벽빛','세계수 가지','계절 날개','생명 고리','씨앗 보석'],
+];
+for(let stage=0;stage<20;stage++){
+ const originals=[...STAGE_EGG_NAMES[stage]];
+ STAGE_EGG_NAMES[stage].push(...families[stage].flatMap(prefix=>originals.map(name=>`${prefix} ${name}`)));
+}
+export function appearanceOf(e:EggAppearance){return e.stageId&&e.stageId>=1&&e.stageId<=20&&e.variant!==undefined&&isStageEggVariant(e.variant)?{stage:e.stageId,variant:e.variant}:null;}
+export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${a.variant===5?SECRET_DRAGON_ROWS.find(p=>p.stageId===a.stage)!.eggName:STAGE_EGG_NAMES[a.stage-1][normalEggIndex(a.variant)]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
 export {designEgg as stageEggCells} from './egg-design';
 export function eggDesignAppearance(e:EggAppearance){
  if(e.type===35)return {stage:1,variant:6,tier:3};

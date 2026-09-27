@@ -3,6 +3,7 @@ import {STAGE_PET_ROWS} from './stage-pet-catalog';
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 import {stageEggMotif} from './egg-motifs';
 import {reorderStages,legacyTheme} from './stage-order';
+import {normalEggIndex} from './egg-variants';
 
 type Cell=[number,number,number,number];
 // These are material motions, not rarity colours: garden / mechanism / water / heat / sky.
@@ -14,12 +15,63 @@ const blend=(a:number,b:number,t:number)=>{
  return (ch(16)<<16)|(ch(8)<<8)|ch(0);
 };
 
+/** Five structural families preserve each biome's original five large motifs. */
+function extendedEgg(base:{cells:Cell[];colors:string[]},family:number,stage:number){
+ const cells=new Map<number,Cell>();
+ const put=(x:number,y:number,z:number,c:number)=>{
+  x=Math.round(x);y=Math.round(y);z=Math.round(z);
+  if(x>=0&&x<20&&y>=0&&y<20&&z>=0&&z<20)cells.set(x+y*20+z*400,[x,y,z,c]);
+ };
+ const box=(x:number,y:number,z:number,w:number,h:number,d:number,c:number)=>{
+  for(let xx=x;xx<x+w;xx++)for(let yy=y;yy<y+h;yy++)for(let zz=z;zz<z+d;zz++)put(xx,yy,zz,c);
+ };
+ const width=family===3?.66:family===4?.76:.88,height=family===1?.74:family===2?.79:.88;
+ for(const [x,y,z,c] of base.cells)put(9.5+(x-9.5)*width,1+y*height,9.5+(z-9.5)*.88,c);
+ const organic=[1,3,8,9,14,15,16,20].includes(stage),trim=organic?8:4;
+ if(family===1){
+  // Broad tiered cap: petals, ribbon, frost or armour in the stage palette.
+  for(let layer=0;layer<3;layer++)box(3+layer,13+layer,4+layer,14-layer*2,2,12-layer*2,layer===1?2:trim);
+  box(8,17,8,4,2,4,7);
+ }else if(family===2){
+  // Joined paired branches / antennae / horns, with a readable central gap.
+  for(let i=0;i<5;i++)for(const side of [-1,1]){
+   const x=side<0?5-i*.6:12+i*.6;
+   box(Math.round(x),10+i*1.5,8,3,3,4,i>2?2:trim);
+  }
+ }else if(family===3){
+  // Solid stepped wings connect directly to the compressed shell.
+  for(let i=0;i<5;i++){
+   box(4-i,5+i,7,2,9-i,6,i%2?2:trim);
+   box(14+i,5+i,7,2,9-i,6,i%2?2:trim);
+  }
+ }else if(family===4){
+  // Two chunky orbital belts with four connecting ribs, no thin wire noise.
+  for(const y of [5,12])for(let x=0;x<20;x++)for(let z=0;z<20;z++){
+   const r=((x-9.5)/9.2)**2+((z-9.5)/8.7)**2;
+   if(r<=1&&r>=.62){put(x,y,z,trim);put(x,y+1,z,2);}
+  }
+  for(const x of [1,16])box(x,5,8,3,9,4,trim);
+ }else{
+  // Large inset studs: honey, bubbles, crystals or bolts according to the biome.
+  for(const [x,y,z] of [[4,8,13],[12,8,13],[8,13,12],[8,4,14]]){
+   box(x,y,z,4,4,3,trim);box(x+1,y+1,z+2,2,2,2,7);
+  }
+  box(8,16,8,4,3,4,2);
+ }
+ return {cells:[...cells.values()],colors:[...base.colors]};
+}
+
 /** 20³ toy eggs: large shell, one environmental structure, a readable inset.
  * The palette references possible hatchlings of this stage/tier, not a promised result.
  * All bilateral parts are reflected around x=9.5. No per-voxel meshes or textures.
  */
-export function designEgg(stage:number,variant:number,tier=0){
+export function designEgg(stage:number,variant:number,tier=0):{cells:Cell[];colors:string[]}{
  const key=`${stage}:${variant}:${tier}`,cached=cache.get(key);if(cached)return cached;
+ if(variant>=7){
+  const index=normalEggIndex(variant),base=designEgg(stage,index%5,tier);
+  const design=extendedEgg(base,Math.floor(index/5),stage);
+  cache.set(key,design);return design;
+ }
  if(variant===6){
   const cells:Cell[]=[],colors=['#fff1bf','#e5a74e','#9d87df','#fff9eb'];
   for(let x=2;x<18;x++)for(let y=1;y<19;y++)for(let z=2;z<18;z++){

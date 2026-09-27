@@ -1,6 +1,7 @@
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {softenGrowth} from './growth-curve';
 import {freshPads} from './speed-pads';
+import {isStageEggVariant,normalEggSelection,randomNormalEggVariant} from './egg-variants';
 import type {Mob} from './mobs';
 import {migrateExploration,migrateBossHomes,migrateEggHomes} from './exploration-migration';
 import {bossAnchor,specialEggAnchor,eggAnchor,shortcut,terrainAt} from './exploration-route';
@@ -262,7 +263,7 @@ export function parseSave(raw: string | null, now: number): Save {
   );
   for(const e of [...s.eggs,...(s.world??[]),...(s.expedition?.carried?[s.expedition.carried]:[])]){
     if(e.stageId!==undefined&&(!Number.isInteger(e.stageId)||e.stageId<1||e.stageId>20))throw Error('Invalid egg stage');
-    if(e.variant!==undefined&&(!Number.isInteger(e.variant)||e.variant<0||e.variant>5||(e.variant===5&&(!e.stageId||EGGS[e.type].tier!==6))))throw Error('Invalid egg variation');
+    if(e.variant!==undefined&&(!isStageEggVariant(e.variant)||(e.variant===5&&(!e.stageId||EGGS[e.type].tier!==6))||(e.variant>=7&&!e.stageId)))throw Error('Invalid egg variation');
   }
   if(s.progression)validateProgression(s.progression);
   return s;
@@ -773,8 +774,9 @@ export class GameState {
     return this.carried ? "내려놓기" : this.near ? "들고가기" : "배트 스윙";
   }
   spawn() {
-    this.world = this.route.flatMap((boss, guardian) =>
-      Array.from({ length: 5 }, (_, slot) => {
+    this.world = this.route.flatMap((boss, guardian) => {
+      const variants=normalEggSelection(this.random,5);
+      return Array.from({ length: 5 }, (_, slot) => {
         const region=Math.floor((boss.stage-1)/4);
         const dragon = this.random()<BALANCE.secretDragonEggChance;
         const type = dragon?6*REGIONS.length+region:rollEgg(region, this.random);
@@ -789,18 +791,18 @@ export class GameState {
           z,
           homeX: x,
           homeZ: z,
-          region,stageId:boss.stage,variant:dragon?5:slot,guardian,
+          region,stageId:boss.stage,variant:dragon?5:variants[slot],guardian,
           secured: false,
           expires: this.now() + BALANCE.nightInterval,
         };
-      }),
+      });},
     );
     const rare=RARITIES.slice(FINAL_GUARDIAN.minimumEggTier);
     let roll=this.random()*rare.reduce((sum,r)=>sum+r.chance,0);
     const dragon=this.random()<BALANCE.secretDragonEggChance;
     const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=dragon?6:FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
     const type=tier*REGIONS.length+REGIONS.length-1,z=specialEggAnchor().z-this.route.at(-1)!.offset;
-    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:4,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:Math.floor(this.random()*5),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
+    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:4,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:randomNormalEggVariant(this.random),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
   }
   get nightRemaining() {
     return Math.max(0, Math.ceil((this.nightAt - this.now()) / 1000));
@@ -1116,7 +1118,7 @@ export class GameState {
     if(!this.isAtBase||this.death)return 'RETURN_TO_BASE';
     if(this.result!==null)return 'COUPON_HATCH_PENDING';
     if(this.save.eggs.length>=BALANCE.inventory)return 'COUPON_INVENTORY_FULL';
-    const stageId=1+Math.floor(this.random()*STAGES.length),variant=Math.floor(this.random()*5);
+    const stageId=1+Math.floor(this.random()*STAGES.length),variant=randomNormalEggVariant(this.random);
     const type=COUPONS[code].tier*REGIONS.length+Math.floor((stageId-1)/4),id=`coupon-${code}`;
     const egg:Egg={id,type,stageId,variant,hp:eggMaxHp({type,stageId}),hpVersion:4,distance:0};
     this.save.eggs.push(egg);this.save.selected??=id;

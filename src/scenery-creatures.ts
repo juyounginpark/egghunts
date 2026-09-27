@@ -29,7 +29,7 @@ export class SceneryCreatures{
    for(const [i,id] of ids.entries()){
     const model=voxelModel(`pet-${id}`,true),root=new T.Group();root.add(model);
     const bounds=new T.Box3().setFromObject(model),size=bounds.getSize(new T.Vector3()),center=bounds.getCenter(new T.Vector3());
-    const scale=Math.min((.85+(i%5)*.06)/Math.max(.01,size.y),1.35/Math.max(.01,size.x,size.z));
+    const scale=Math.min((.85+(i%5)*.06)/Math.max(.01,size.y),1.35/Math.max(.01,size.x,size.z))*(1+Math.random()*.7);
     model.scale.setScalar(scale);model.position.copy(center).multiplyScalar(-scale);
     const progress=[.15,.31,.47,.64,.79][Math.floor(i/2)]+(i%2)*.035;
     const z=-6-routeLength(scene.stage)*progress,x=pathX(scene.stage,z)+(i%2?1:-1)*3.7;
