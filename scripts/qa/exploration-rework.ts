@@ -25,21 +25,21 @@ for(let stage=1;stage<=20;stage++){
  const eggs=g.world.filter(e=>e.stageId===stage);
  assert.equal(eggs.length,stage===20?6:5);
  const arc=eggs.filter(e=>!e.special);
- assert.equal(arc[0].x,-arc[4].x);assert.equal(arc[1].x,-arc[3].x);
+ assert.ok(Math.abs(arc[0].x+arc[4].x-2*arc[2].x)<1e-8);assert.ok(Math.abs(arc[1].x+arc[3].x-2*arc[2].x)<1e-8);
  assert.equal(arc[0].z,arc[4].z);assert.equal(arc[1].z,arc[3].z);assert.ok(arc[2].z<arc[1].z&&arc[1].z<arc[0].z);
- for(const e of eggs)assert.ok(g.bosses[e.guardian!].homeZ!<e.homeZ!,`guardian behind egg ${stage}`);
+ for(const b of g.bosses.filter(b=>b.stageId===stage)){const p=routeProgress(stage,b.homeX!,b.homeZ!+offset).progress;assert.ok(p>=.60&&p<=.85,`guardian approach ${stage}`);}
  g.carried=null;g.x=path[0].x;g.z=path[0].z-offset;
  for(const p of path.slice(1))walk(g,p.x,p.z-offset);
  const e=eggs[2];walk(g,e.x,e.z);stat(g,required-.01);const weak=make();weak.x=e.x;weak.z=e.z;stat(weak,required-.01);weak.immunity=10;
  const weakEgg=weak.world.find(v=>v.stageId===stage&&!v.special)!;weak.pickup(weakEgg);
- assert.ok(weak.events.some(v=>v.name==='egg_pickup'));assert.equal(weak.hp,0);assert.ok(weak.death);
- assert.equal(weak.bosses[weakEgg.guardian!].mode,'return');assert.equal(weak.world.filter(v=>v.id===weakEgg.id).length,1);
+ assert.equal(weak.carried,null);assert.equal(weak.hp,weak.maxHp);assert.equal(weak.death,null);
+ assert.equal(weak.world.filter(v=>v.id===weakEgg.id).length,1);
  stat(g,required+.000001);g.pickup(e);assert.equal(g.carried?.id,e.id);stat(g,0.5);assert.ok(g.carried,'no repeated qualification after pickup');
  for(const p of [...path].reverse())walk(g,p.x,p.z-offset);
  g.interact();assert.equal(g.carried,null);
  const troll=routePoint(stage,.35);g.x=troll.x;g.z=troll.z-offset;g.knockedUntil=0;
  assert.equal(g.receiveBat(1,0),true);g.push(BALANCE.knockback,0);assert.ok(terrainAt(stage,g.x,g.z+offset).walk);g.knockback.remaining=0;g.knockedUntil=0;walk(g,troll.x,troll.z-offset);
- if(stage<=5)for(const d of stagePatterns(stage))assert.equal(d.damage+d.damagePercent,0);
+ for(const d of stagePatterns(stage)){assert.equal(d.damagePercent,0);assert.ok(d.damage>=0);}
  if(stage===11||stage===19){const h=new HazardManager(),p=environmentPlacement(stage,0,offset);h.tick(.01,stage,{...p,vx:0,vz:0,facing:{x:0,z:1},carrying:true,metal:false,moving:false,stageOffset:offset},()=>{},()=>{},()=>{},false,now);}
  console.log(`stage ${stage}: round trip, carried return, placement, speed gate, bat landing`);
 }
@@ -50,8 +50,9 @@ const members=['a','b'].map((user_id,slot)=>({user_id,slot,last_seen:new Date(no
 let room=runRoom(null,members,[],'a',{id:'join'},now).room;
 const gate=shortcut(5)!;for(const id of ['a','b']){const p=make();p.x=gate.x;p.z=gate.z-4*48;room.players[id].runtime=exportRuntime(p);}
 room=runRoom(room,members,[],'a',{id:'open',commands:[{id:'gate-a',kind:'shortcut'}]},now+100).room;
+assert.deepEqual(room.openedShortcuts,[]);assert.ok(room.openingShortcuts?.[5]);
+room=runRoom(room,members,[],'b',{id:'wait-open'},now+900).room;
 assert.deepEqual(room.openedShortcuts,[5]);assert.deepEqual(room.players.b.runtime.fields.openedShortcuts,[5]);
-room=runRoom(room,members,[],'b',{id:'open-b',commands:[{id:'gate-b',kind:'shortcut'}]},now+200).room;assert.deepEqual(room.openedShortcuts,[5]);
 const h1=new HazardManager(),h2=new HazardManager(),p={...environmentPlacement(6,0),vx:0,vz:0,facing:{x:0,z:1},carrying:false,metal:false,moving:false};
 h1.tick(.1,6,p,()=>{},()=>{},()=>{},false,now);h2.tick(.02,6,{...p,carrying:true},()=>{},()=>{},()=>{},false,now);assert.deepEqual(h1.attacks,h2.attacks);
 console.log('PASS: 20 routes, 101 eggs/21 guardians, speed gates, 10/20 movement caps, migration, shared shortcut and hazard clock');

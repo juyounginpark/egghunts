@@ -76,9 +76,10 @@ export function shortcut(stage:number){
 }
 export function eggAnchor(stage:number,slot:number){
  const lane=slot-2;
- return {x:lane*2.4,z:-6-routeLength(stage)+(stage===20?32:12)+(lane/2)**2*2.2};
+ const p=routePoint(stage,stage===20?.92:.94);
+ return {x:p.x+lane*2.4,z:p.z+(lane/2)**2*1.4};
 }
 export function bossAnchor(stage:number,final=false){
- return {x:0,z:-6-routeLength(stage)+(final?8:stage===20?25:5)};
+ return routePoint(stage,final?.83:.73);
 }
-export function specialEggAnchor(){return {x:0,z:-6-routeLength(20)+17};}
+export function specialEggAnchor(){return routePoint(20,.98);}

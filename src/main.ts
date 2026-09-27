@@ -53,6 +53,7 @@ app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const eggNotices=new EggNotices($("shell"));
+$('shell').insertAdjacentHTML('beforeend','<div id="speed-pad-buff" hidden></div>');
 $('world').insertAdjacentHTML('beforeend','<button id="hatch-touch" hidden aria-label="알 두드리기"><span>알을 클릭하여 깨뜨리기</span></button>');
 $('world').insertAdjacentHTML('beforeend','<div id="first-egg-arrow" hidden><span>작은 알부터!</span><b>↓</b></div>');
 $('action').insertAdjacentHTML('beforeend','<small id="action-weight" hidden></small>');
@@ -207,6 +208,7 @@ async function action(preparedId?:string) {
       updateHud();return;
     }
     const targetEgg=preparedEgg??game.near;
+    if(!game.carried&&targetEgg&&!game.meetsEggSpeed(targetEgg)){toast(`필요 속도 ${num(game.eggRequiredSpeed(targetEgg))} / 현재 ${num(game.speed)}`);return;}
     if(!game.carried&&targetEgg&&!game.isAtBase){
       if(warnAboutBoss())return;
       const egg=targetEgg,duration=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier];
@@ -233,7 +235,7 @@ async function action(preparedId?:string) {
       try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:eggMaxHp(egg),hpVersion:4,distance:Math.abs(egg.z),expires:game.nightAt});}
       catch(err){toast(String(err));}finally{claiming=false;}return;
     }
-    if(!game.carried&&!game.near&&!game.nearGym){world.swingBat(game.now());feedback('swing');return;}
+    if(!game.carried&&!game.near&&!game.nearGym){if(world.swingBat(game.now())){game.hitMobs();feedback('swing');}return;}
     if(preparedEgg)game.pickup(preparedEgg);else game.interact();
     feedback(null);
     platform.track("egg_interact", { carrying: game.carried ? 1 : 0 });
@@ -280,6 +282,8 @@ function updateHud() {
   eggNotices.observeWorld(game,online.latest?.serverTime??game.now());
   eggNotices.update(online.latest?.eggNotices??[],online.latest?.serverTime??game.now());
   const outside=tab==='explore'&&!game.isAtBase;
+  $('speed-pad-buff').hidden=!outside||game.speedPad.blend<1.005||!!game.death;
+  $('speed-pad-buff').textContent=`이동 +${Math.round((game.speedPad.blend-1)*100)}%`;
   if(game.isAtBase)expeditionBannerStages.clear();
   if(outside!==wasExploring){setHudCompact(outside);wasExploring=outside;}
   if(!outside){bannerStage=0;bannerUntil=0;}

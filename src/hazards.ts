@@ -1,4 +1,6 @@
 import { HAZARD_BALANCE as B, STAGE_COVERS, stagePatterns, environmentPlacement, type HazardDefinition, type Cover } from "./stage-data";
+import {environmentState} from './environment-state';
+import {terrainAt} from './exploration-route';
 export type Point={x:number;z:number};
 export type HazardPhase='Idle'|'Telegraph'|'Active'|'Recovery'|'Cooldown';
 export type Hazard={serial:number;definition:HazardDefinition;phase:HazardPhase;elapsed:number;origin:Point;target:Point;angle:number;warning:number;hit:boolean;dotClock:number;gaze:number;member:number;blocked:boolean;environment?:boolean};
@@ -9,7 +11,7 @@ export function blockedByCover(from:Point,to:Point,covers:Cover[]=STAGE_COVERS){
 }
 export function contains(h:Hazard,p:Point){
  const d=h.definition,dx=p.x-h.target.x,dz=p.z-h.target.z;
- if(d.shape==='wall')return Math.abs(dz)<=d.width&&Math.abs(dx)<=d.length/2&&Math.abs(dx-Math.sin(h.elapsed*.45)*1.2)>1.6;
+ if(d.shape==='wall')return Math.abs(dz)<=d.width&&Math.abs(dx)<=d.length/2&&Math.abs(dx)>1.6;
  if(d.shape==='ellipse')return (dx/d.radius)**2+(dz/(d.radius*.75))**2<=1;
  if(d.shape==='line'){const along=dx*Math.cos(h.angle)+dz*Math.sin(h.angle),cross=-dx*Math.sin(h.angle)+dz*Math.cos(h.angle);return Math.abs(along)<=d.length/2&&Math.abs(cross)<=d.width;}
  if(d.shape==='cone'){const x=p.x-h.origin.x,z=p.z-h.origin.z,len=Math.hypot(x,z);return len<=d.radius&&(len===0||(x*Math.cos(h.angle)+z*Math.sin(h.angle))/len>.5);}
@@ -18,9 +20,10 @@ export function contains(h:Hazard,p:Point){
  return !gap&&Math.abs(Math.hypot(dx,dz)-radius)<.3;
 }
 export class HazardManager{
+ environmentClock=0;environmentHits:Record<string,{serial:number;hit:boolean;next:number}>={};
  attacks:Hazard[]=[];time=0;private next=new Map<string,number>();private serial=0;stage=0;
- snapshot(){return {attacks:this.attacks,time:this.time,next:[...this.next],serial:this.serial,stage:this.stage};}
- restore(s:ReturnType<HazardManager['snapshot']>){this.attacks=s.attacks;this.time=s.time;this.next=new Map(s.next);this.serial=s.serial;this.stage=s.stage;}
+ snapshot(){return {attacks:this.attacks,time:this.time,next:[...this.next],serial:this.serial,stage:this.stage,environmentClock:this.environmentClock,environmentHits:this.environmentHits};}
+ restore(s:ReturnType<HazardManager['snapshot']>){this.attacks=s.attacks;this.time=s.time;this.next=new Map(s.next);this.serial=s.serial;this.stage=s.stage;this.environmentClock=s.environmentClock??0;this.environmentHits=s.environmentHits??{};}
  reset(stage=0){this.attacks=[];this.time=0;this.next.clear();this.stage=stage;}
  spawn(d:HazardDefinition,p:HazardPlayer,member=0){
   const lead=d.targetingType==='predict'?B.prediction:0;
@@ -33,29 +36,36 @@ export class HazardManager{
  }
  tick(dt:number,stage:number,p:HazardPlayer,hit:(h:Hazard)=>void,push:(x:number,z:number)=>void,status:(effect:string,seconds:number)=>void,secret=false,clock?:number){
   if(this.stage!==stage)this.reset(stage);
-  if(clock!==undefined)this.syncEnvironment(stage,p,clock);
+  if(clock!==undefined)this.syncEnvironment(stage,p,clock,hit);
   for(let rest=dt;rest>1e-9;rest-=B.step){const step=Math.min(B.step,rest);this.step(step,stage,p,hit,push,status,secret);}
  }
- private syncEnvironment(stage:number,p:HazardPlayer,clock:number){
-  const prior=new Map(this.attacks.filter(h=>h.environment).map(h=>[h.definition.id,h]));
+ private syncEnvironment(stage:number,p:HazardPlayer,clock:number,hit:(h:Hazard)=>void){
+  const previous=this.environmentClock||clock;this.environmentClock=clock;
   this.attacks=this.attacks.filter(h=>!h.environment);
   for(const [lane,d] of stagePatterns(stage).entries()){
    const place=environmentPlacement(stage,lane,p.stageOffset??0);
    if(Math.abs(place.z-p.z)>36)continue;
-   const period=d.telegraphDuration+d.activeDuration+B.recovery+d.cooldown;
-   const time=clock/1000+stage*2.7+lane*6,cycle=Math.floor(time/period),age=time-cycle*period;
-   const phase:HazardPhase=age<d.telegraphDuration?'Telegraph':age<d.telegraphDuration+d.activeDuration?'Active':age<d.telegraphDuration+d.activeDuration+B.recovery?'Recovery':'Cooldown';
-   if(phase==='Cooldown')continue;
-   const elapsed=phase==='Telegraph'?age:phase==='Active'?age-d.telegraphDuration:age-d.telegraphDuration-d.activeDuration;
-   const old=prior.get(d.id),serial=cycle*100+stage*2+lane;
-   const h:Hazard={serial,definition:d,phase,elapsed,origin:{...place},target:{...place},angle:0,warning:d.telegraphDuration,hit:old?.serial===serial?old.hit:false,dotClock:0,gaze:0,member:lane,blocked:false,environment:true};
-   if(['orb','train','raptor','flame'].includes(d.visual))h.target.x=place.x-4+(phase==='Active'?elapsed/d.activeDuration:0)*8;
-   h.origin={...h.target};this.attacks.push(h);
+   const h=environmentState(d,lane,p.stageOffset??0,clock);
+   const old=this.environmentHits[d.id];
+   const record=old?.serial===h.serial?old:{serial:h.serial,hit:false,next:old?.next??0};this.environmentHits[d.id]=record;
+   if(h.phase!=='Cooldown')this.attacks.push(h);
+   if(h.phase!=='Active')continue;
+   if(d.movement==='floor'&&terrainAt(stage,p.x,p.z+(p.stageOffset??0)).height>.1)continue;
+   let contact=contains(h,p);
+   // Sweep the actual moving footprint, with no oversized invisible collider.
+   if(!contact&&(d.movement==='cross'||d.movement==='wall'))for(let i=1;i<=6;i++){
+    const sample=environmentState(d,lane,p.stageOffset??0,clock-Math.min(100,clock-previous)*i/6);
+    if(sample.phase==='Active'&&sample.serial===h.serial&&contains(sample,p)){contact=true;break;}
+   }
+   if(!contact)continue;
+   if(d.tickInterval){if(clock+1e-4<record.next)continue;record.next=clock+d.tickInterval*1000;hit(h);}
+   else if(!record.hit){record.hit=h.hit=true;hit(h);}
   }
  }
  private step(dt:number,stage:number,p:HazardPlayer,hit:(h:Hazard)=>void,push:(x:number,z:number)=>void,status:(effect:string,seconds:number)=>void,secret:boolean){
   this.time+=dt;
   for(const h of this.attacks){
+   if(h.environment)continue;
    const d=h.definition;if(!h.environment)h.elapsed+=dt;
    if(h.elapsed<0)continue;
    if(h.phase==='Telegraph'){

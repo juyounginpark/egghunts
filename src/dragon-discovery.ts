@@ -35,7 +35,8 @@ export function validateDragonClues(value:unknown):asserts value is Record<strin
  if(!value||typeof value!=='object'||Array.isArray(value))throw Error('Invalid dragon clues');
  for(const [key,c]of Object.entries(value as Record<string,DragonClue>)){
   const s=Number(key);if(!Number.isInteger(s)||!STAGE_ENVIRONMENT_IDS[s-1]||!c)throw Error('Invalid dragon stage');
-  const ids=[...LEGACY_STAGE_ENVIRONMENT_IDS[s-1],...STAGE_ENVIRONMENT_IDS[s-1]];
+  // The v1 insect map had a second hazard; keep already saved observations valid.
+  const ids=[...new Set([...LEGACY_STAGE_ENVIRONMENT_IDS[s-1],...STAGE_ENVIRONMENT_IDS[s-1],...(s===16?['explore-16-1']:[])])];
   for(const list of [c.avoided,c.carried,c.escaped])if(!Array.isArray(list)||list.length>ids.length||new Set(list).size!==list.length||!list.every(id=>ids.includes(id)))throw Error('Invalid dragon observations');
   if(![c.depth,c.returned,c.claimed].every(v=>typeof v==='boolean')||!Number.isInteger(c.sides)||c.sides<0||c.sides>3||!Number.isFinite(c.quiet)||c.quiet<0||c.quiet>3)throw Error('Invalid dragon progress');
  }

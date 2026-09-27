@@ -3,7 +3,7 @@ import {explorationLayout} from './exploration-layout';
 import {STAGES,ROUTE} from './stage-data';
 
 export type Block = { x:number;y:number;z:number;w:number;h:number;d:number;c:number;angle?:number;roll?:number;obstacle?:boolean;solid?:boolean;gate?:number };
-export type Motion = { blocks:Block[];x:number;y:number;z:number;kind:'spin'|'sway'|'float'|'windmill';phase:number };
+export type Motion = { blocks:Block[];x:number;y:number;z:number;kind:'spin'|'sway'|'float'|'windmill'|'pulse';phase:number };
 const cream=0xffefd0, wood=0x856048, dark=0x303344, gold=0xe9ba60;
 /** Model parts are batched cubes. A prop is a small voxel assembly, never a Mesh per voxel. */
 function sculpture(stage:number,variant:number):Block[]{

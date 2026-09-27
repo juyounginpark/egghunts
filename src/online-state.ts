@@ -24,6 +24,7 @@ export function migrateStageRuntime(state:RuntimeState){
 export function exportRuntime(game:GameState):RuntimeState{
  const save=game.snapshot();delete save.world;delete save.bosses;
  const fields=Object.fromEntries(Object.entries(game).filter(([key,value])=>!omitted.has(key)&&typeof value!=='function'));
+ fields.mobs=game.mobs.filter(m=>Math.abs(m.stage-game.stage.id)<=1);
  return structuredClone({save,fields,hazards:game.hazards.snapshot()});
 }
 export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[],bosses:Boss[],migrateHealth=true){

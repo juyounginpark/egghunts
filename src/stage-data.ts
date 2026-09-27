@@ -4,7 +4,7 @@ export const ROAD_WIDTH_SCALE=2;
 export type Shape='ellipse'|'line'|'cone'|'ring'|'wall';
 export type Targeting='predict'|'fixed'|'track'|'sweep';
 export type Effect='hit'|'wind'|'ink'|'pull'|'stone'|'grab'|'delay'|'dot'|'ice'|'dust'|'web';
-export type HazardDefinition={id:string;displayName:string;stageId:number;damage:number;damagePercent:number;telegraphDuration:number;activeDuration:number;cooldown:number;knockback:number;slowMultiplier:number;slowDuration:number;shape:Shape;targetingType:Targeting;carryTelegraphBonus:number;radius:number;width:number;length:number;blockable:boolean;effect:Effect;count:number;freezeBefore:number;visual:string;minTelegraph:number};
+export type HazardDefinition={recoveryDuration?:number;tickInterval?:number;movement?:'still'|'cross'|'wall'|'floor'|'drop';id:string;displayName:string;stageId:number;damage:number;damagePercent:number;telegraphDuration:number;activeDuration:number;cooldown:number;knockback:number;slowMultiplier:number;slowDuration:number;shape:Shape;targetingType:Targeting;carryTelegraphBonus:number;radius:number;width:number;length:number;blockable:boolean;effect:Effect;count:number;freezeBefore:number;visual:string;minTelegraph:number};
 export const HAZARD_BALANCE={environmentSection:32,environmentX:2.8*ROAD_WIDTH_SCALE,environmentStart:21,environmentSpacing:8,movingRadius:1.1,crossingSeconds:4,laneHalfWidth:6*ROAD_WIDTH_SCALE,step:1/60,maxActive:2,recovery:.4,spawnDelay:.8,spawnGap:1.1,trackFreeze:.3,prediction:.3,windSpeed:1.5,pullSpeed:1.4,metalPull:1.6,centerRadius:.65,dotInterval:1,stoneSeconds:1.5,stoneDuration:1.5,grabDuration:1,escapeInputBonus:2,inputDelay:.5,inkDuration:1.2,iceCarryRate:1.4,dustDrop:5,projectileSpeed:2.2,finalSecretCooldown:.9,phaseDistances:[35,80],waveGap:.8,coverRadius:.85,coverX:3.5*ROAD_WIDTH_SCALE,coverSpacing:12};
 type StageRow=[string,number,number,string,string,number,number];
 const rows:StageRow[]=[
@@ -126,8 +126,8 @@ export const LEGACY_STAGE_ENVIRONMENT_IDS=STAGE_ENVIRONMENT_IDS.map(ids=>[...ids
 export function stagePatterns(stage:number,_z=0){return STAGE_ENVIRONMENT_IDS[stage-1].map(id=>HAZARDS.find(d=>d.stageId===stage&&d.id===id)!);}
 export function environmentPlacement(stage:number,lane:number,offset=0){
  const count=STAGE_ENVIRONMENT_IDS[stage-1].length;
- const p=routePoint(stage,stage===6?.23:.5+lane*.11/Math.max(1,count-1));
- return {x:p.x+(stage<=5?3:0),z:p.z-offset};
+ const p=routePoint(stage,.50+lane*.1/Math.max(1,count-1));
+ return {x:p.x+((stage===3||stage===4)&&lane===0?1.7:0),z:p.z-offset};
 }
 export type Cover={x:number;z:number;radius:number};
 export const MAP_OBSTACLES={scale:1.5,outline:0xff3939,outlineWidth:.035};
@@ -159,18 +159,24 @@ export function recommendedRouteSpeed(_depth:number,stage:number){return STAGE_R
 export const GUARDIAN_ATTACKS=new Set(['hay','train','ink','lava-breath','tentacle','sweep','locker','book','drone','scorpion','stomp','raptor','wisps','club','lightning','medusa','ufo','nightmare','vine','mantis','magnet','void-hand','memory-tentacle','memory-lightning','memory-ufo','memory-meteor','creation-wave']);
 
 // Environmental patterns are distinct from existing guardian attacks and use room time.
-const explorationHazards:[string,string][]=[
- ['진흙 웅덩이','puddle'],['장난감 공','orb'],['거품 분출구','coral'],['외곽 불꽃','steam'],['복도 유령','flame'],
- ['배달 로봇','train'],['구르는 바위','orb'],['공룡 발 그림자','dinosaur'],['도깨비불','flame'],['번개 테라스','lightning'],
- ['빈칸 레이저 벽','laser'],['증기 배관','steam'],['눈덩이 경사','orb'],['내려오는 베개','crusher'],['가스 배관','steam'],
- ['개미 횡단로','raptor'],['압착기','crusher'],['운석 관측 바닥','meteor'],['빈칸 검은 벽','void'],['씨앗 언덕','orb'],
+// H_s=100 and A_s=3 are fixed baseline presets (base HP and base manual hit).
+// They never scale with the player receiving the attack.
+export const EXPLORATION_COMBAT={referenceHP:100,referenceBat:3,respawnMs:32000,aggro:4,leash:6,enemySpeed:1.1,projectileSpeed:2.4,hitRecovery:.55};
+// T / A / fully-clear rest / visual return / fixed damage / interval / movement.
+export const ENVIRONMENT_TIMING:[number,number,number,number,number,number,string][]=[
+ [2.4,.8,4,0,0,0,'still'],[2.4,2.4,3.6,0,2,0,'cross'],[0,1,0,0,3,1,'floor'],[0,1,0,0,3,1.05,'floor'],
+ [2.4,.25,3.8,.7,4,0,'drop'],[2.2,1.6,3.8,0,6,1.05,'still'],[2.4,2.6,3.8,0,7,0,'cross'],[2.6,.45,3.8,.9,8,0,'drop'],
+ [2.2,3,3.4,0,9,0,'cross'],[2.4,.2,3.6,.4,10,0,'still'],[2.2,3,3.2,0,11,0,'wall'],[2.4,1.8,4,0,8,1.05,'still'],
+ [2.2,2.8,3.8,0,13,0,'cross'],[2.4,.35,4,1.35,14,0,'drop'],[2.4,2.25,4.25,0,6,1.05,'still'],[2.2,.2,3.8,.4,16,0,'drop'],
+ [2.4,.3,4,1.3,17,0,'drop'],[3.1,.2,4,.4,18,0,'drop'],[2.4,3.2,3.6,0,19,0,'wall'],[2.4,2.8,3.8,0,20,0,'cross'],
 ];
+const visuals=['puddle','orb','coral','lava','book','lightning','orb','dinosaur','flame','lightning','laser','steam','orb','pillow','steam','icicle','crusher','meteor','void','seed'];
 for(let i=0;i<20;i++){
- const stage=i+1,entries=[explorationHazards[i],...(stage===16?[['거대 이슬','icicle']]:stage===20?[['물줄기 정원','coral']]:[])];
- STAGE_ENVIRONMENT_IDS[i]=entries.map(([name,visual],lane)=>{
-  const id=`explore-${stage}-${lane}`,wall=stage===11||stage===19;
-  HAZARDS.push({id,displayName:name,stageId:stage,damage:0,damagePercent:stage<=5?0:.08,telegraphDuration:2.6,activeDuration:['orb','train','raptor','flame'].includes(visual)?7:wall?5:1.2,cooldown:8,knockback:stage<=5?.15:.4,slowMultiplier:.8,slowDuration:.5,shape:wall?'wall':'ellipse',targetingType:'fixed',carryTelegraphBonus:0,radius:stage<=5?.8:1.5,width:.45,length:10,blockable:false,effect:'hit',count:1,freezeBefore:0,visual,minTelegraph:2.6});
+ const stage=i+1,extra=stage===3||stage===4||stage===20;
+ STAGE_ENVIRONMENT_IDS[i]=Array.from({length:extra?2:1},(_,lane)=>{
+  const [t,a,rest,recovery,damage,interval,movement]=lane===1?(stage===3?[2.6,.8,4,0,0,0,'still']:stage===4?[2.6,1,3.6,0,4,0,'still']:[2.4,1.6,4,0,7,1.05,'still']):ENVIRONMENT_TIMING[i];
+  const id=`explore-${stage}-${lane}`,wall=movement==='wall';
+  HAZARDS.push({id,displayName:id,stageId:stage,damage:Number(damage),damagePercent:0,telegraphDuration:Number(t),activeDuration:Number(a),cooldown:Number(rest),recoveryDuration:Number(recovery),tickInterval:Number(interval),movement:movement as HazardDefinition['movement'],knockback:.15,slowMultiplier:.9,slowDuration:.3,shape:wall?'wall':'ellipse',targetingType:'fixed',carryTelegraphBonus:0,radius:movement==='floor'?.8:1,width:.35,length:8,blockable:false,effect:Number(interval)?'dot':'hit',count:1,freezeBefore:0,visual:lane===1?(stage===4?'steam':'coral'):visuals[i],minTelegraph:Number(t)});
   return id;
  });
 }
-

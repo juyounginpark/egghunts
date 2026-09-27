@@ -796,7 +796,7 @@ export class World {
     this.eggSpeedLabel.hidden=isHatch||!!game.carried||!near||game.meetsEggSpeed(near);
     if(!this.eggSpeedLabel.hidden&&near){
       const p=new T.Vector3(near.x,1.6,near.z).project(this.camera);
-      this.eggSpeedLabel.textContent=`권장 속도 ${formatNumber(game.eggRequiredSpeed(near))} / 현재 ${formatNumber(game.speed)} · 들면 즉사`;
+      this.eggSpeedLabel.textContent=`필요 속도 ${formatNumber(game.eggRequiredSpeed(near))} / 현재 ${formatNumber(game.speed)}`;
       this.eggSpeedLabel.style.left=`${(p.x+1)/2*this.host.clientWidth}px`;
       this.eggSpeedLabel.style.top=`${(1-p.y)/2*this.host.clientHeight}px`;
     }

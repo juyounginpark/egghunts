@@ -1,5 +1,7 @@
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {softenGrowth} from './growth-curve';
+import {freshPads,updatePads} from './speed-pads';
+import {tickMobs,hitMobs,type Mob} from './mobs';
 import {migrateExploration} from './exploration-migration';
 import {bossAnchor,specialEggAnchor,eggAnchor,shortcut,terrainAt} from './exploration-route';
 import {migrateBalance,type BalanceAdjustment} from './balance-migration';
@@ -68,7 +70,7 @@ export type Boss = {
   loot: WorldEgg | null;
 };
 export type Save = {
-  explorationVersion?:1|2;
+  explorationVersion?:1|2|3;
   openedShortcuts?:number[];
   balanceVersion?:1;
   balanceAdjustment?:BalanceAdjustment;
@@ -307,7 +309,7 @@ export class GameState {
   settleXP(success:boolean){const xp=Math.floor(this.progression.pendingXP*(success?1+this.defense('returnXPBonus'):PROGRESSION.failureKeep));this.progression.pendingXP=0;this.gainXP(xp);this.emit('xp_settled',{xp,success:success?1:0});return xp;}
   failExpedition(reason:string){
     if(!this.deadline&&!this.carried&&!this.death&&this.isAtBase)return false;
-    this.reviveAdUntil=null;
+    this.reviveAdUntil=null;this.speedPad=freshPads();
     this.damageTicks=[];this.hitSource=null;
     if(this.carried)this.flyaway={stageId:this.carried.stageId,variant:this.carried.variant,type:this.carried.type,x:this.x,z:this.z,at:this.now()};
     this.carried=null;this.deadline=0;this.x=this.z=0;this.training=false;this.seat=null;this.launch=null;this.death=null;
@@ -321,6 +323,14 @@ export class GameState {
     const d=h.definition;if(this.death||(this.immunity>0&&!bossContact)||this.isAtBase)return false;
     const reduction=this.defense('damageReduction')+this.defenses.reduce((n,p)=>n+(p.environmentReduction?.[d.id]??0),0)+(!this.progression.firstHitUsed?this.defense('firstHitReduction'):0);
     const damage=this.immunity>0?0:reducedDamage(d.damage,d.damagePercent,this.maxHp,reduction);
+    if(d.id?.startsWith('explore-')||d.id?.startsWith('mob-')){
+      if(damage<=0)return false;
+      this.hp=Math.max(0,this.hp-damage);this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();this.sinceHit=0;this.progression.firstHitUsed=true;
+      this.hitSource={...h.origin,at:this.now()};this.unlockHealth();
+      this.emit('player_hit',{damage,hp:this.hp,stage:this.stage.id,attackId:h.serial,source:d.id});this.revision++;
+      if(this.hp<=0){if(this.defenses.some(v=>v.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}else this.die();}
+      return true;
+    }
     this.progression.firstHitUsed=true;this.sinceHit=0;this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();
     if(damage>0){
       this.damageTicks.push({remaining:damage,ticks:DAMAGE_OVER_TIME.ticks,until:DAMAGE_OVER_TIME.interval});
@@ -372,13 +382,14 @@ export class GameState {
   get gym(){return farmGym(this.farmSlot);}
   readonly mapCollision=new MapCollision();
   openedShortcuts:number[]=[];
+  openingShortcuts:Record<number,number>={};
   get nearShortcut(){
-    if(this.carried||this.isAtBase||this.openedShortcuts.includes(this.stage.id))return null;
+    if(this.carried||this.isAtBase||this.openedShortcuts.includes(this.stage.id)||this.openingShortcuts[this.stage.id]!==undefined)return null;
     const p=shortcut(this.stage.id);return p&&Math.hypot(this.x-p.x,this.z+this.stageOffset-p.z)<3.4?p:null;
   }
   openShortcut(){
     if(this.death||this.knockback.remaining>0||this.now()<this.knockedUntil||!this.nearShortcut)return false;
-    this.openedShortcuts.push(this.stage.id);this.message='지름길이 열렸어요!';this.revision++;return true;
+    this.openingShortcuts[this.stage.id]=this.now();this.message='지름길을 열고 있어요';this.revision++;return true;
   }
   push(x:number,z:number){
     this.mapCollision.opened=this.openedShortcuts;
@@ -424,6 +435,7 @@ export class GameState {
   get deathChoiceRemaining(){return this.death?Math.max(0,Math.min(BALANCE.deathChoiceDuration/1000,Math.ceil((this.death.at+BALANCE.deathChoiceDelay+BALANCE.deathChoiceDuration-this.now())/1000))):0;}
   private die(){
     if(this.death)return;
+    this.speedPad=freshPads();
     this.standUp();
     if(this.carried){const egg=this.carried;egg.x=this.x;egg.z=this.z;this.world.push(egg);this.carried=null;this.emit('egg_drop',{type:egg.type,reason:'death'});}
     this.death={x:this.x,z:this.z,at:this.now(),remaining:Math.max(0,(this.deadline-this.now())/1000)};
@@ -444,12 +456,14 @@ export class GameState {
     this.x=here?this.death.x:0;this.z=here?this.death.z:0;
     this.deadline=here&&!this.isAtBase?this.now()+Math.max(BALANCE.reviveMinimumTime,this.death.remaining)*1000:0;
     this.damageTicks=[];this.hitSource=null;
-    this.hp=this.maxHp;this.sinceHit=0;this.immunity=BALANCE.reviveImmunity;this.knockedUntil=0;this.launch=null;
+    this.hp=this.maxHp;this.sinceHit=0;this.immunity=BALANCE.reviveImmunity;this.knockedUntil=0;this.launch=null;this.speedPad=freshPads();
     this.death=null;this.reviveAdUntil=null;this.knockback.remaining=0;this.slowRemaining=0;this.effects={ink:0,stone:0,grab:0,delay:0,magnet:0};this.revivedAt=this.now();this.revision++;this.emit('player_revive',{inPlace:here?1:0});return true;
   }
   get isAtBase(){return this.z>=BALANCE.baseMinZ&&this.z<=BALANCE.mapNearZ&&Math.abs(this.x)<=BALANCE.baseMapX;}
   knockedUntil=0;
   batAt=0;
+  mobs:Mob[]=[];
+  hitMobs(swing=String(this.now())){hitMobs(this,swing);}
   receiveBat(dx:number,dz:number){
     const now=this.now();if(this.death||now<this.knockedUntil)return false;
     this.standUp();
@@ -632,7 +646,7 @@ export class GameState {
       this.world = [...this.world.filter(e=>e.special?!save.bosses!.some(b=>b.final):!restoredStages.has(e.stageId)),...save.world];
       for(const boss of save.bosses){const i=this.bosses.findIndex(b=>b.stageId===boss.stageId&&!!b.final===!!boss.final);if(i>=0)this.bosses[i]=boss;}
     }
-    if(save.explorationVersion!==2){migrateExploration(this.world,this.bosses);save.explorationVersion=2;}
+    if(save.explorationVersion!==3){migrateExploration(this.world,this.bosses);save.explorationVersion=3;}
     // Older saves applied the sleeping offset only in the renderer.
     for(const boss of this.bosses){
       if(boss.homeX===undefined){
@@ -674,6 +688,7 @@ export class GameState {
     const walking=this.isAtBase?BALANCE.baseWalkSpeed:Math.min(BALANCE.maxMovementSpeed,stat<=2?stat:2+Math.log2(stat/2));
     return walking*(this.carried?BALANCE.carryingMovementMultiplier:1);
   }
+  speedPad=freshPads();
   eggRequiredSpeed(egg:WorldEgg){return recommendedRouteSpeed(0,egg.stageId??this.stage.id);}
   meetsEggSpeed(egg:WorldEgg){return this.speed>=this.eggRequiredSpeed(egg);}
   get speed() {
@@ -846,6 +861,7 @@ export class GameState {
     });
   }
   move(dx: number, dz: number, dt: number, slow = false) {
+    updatePads(this.speedPad,this.stage.id,this.x,this.z+this.stageOffset,this.now(),dt,this.isAtBase||!!this.death||!!this.launch);
     this.motionTime+=dt;
     this.inputHistory.push({at:this.motionTime,x:dx,z:dz});this.inputHistory=this.inputHistory.filter(v=>v.at>=this.motionTime-1);
     if(this.effects.delay>0){const delayed=this.inputHistory.filter(v=>v.at<=this.motionTime-HAZARD_BALANCE.inputDelay).at(-1);dx=delayed?.x??0;dz=delayed?.z??0;}
@@ -862,12 +878,13 @@ export class GameState {
     }
     if(this.seat!==null)this.standUp();
     if(this.training)this.toggleTraining();
-    const speed=(slow?Math.min(BALANCE.slowWalkSpeed,this.movementSpeed):this.movementSpeed)*(surface?.slow??1);
+    const unboosted=(slow?Math.min(BALANCE.slowWalkSpeed,this.movementSpeed):this.movementSpeed)*(surface?.slow??1);
+    const speed=unboosted*this.speedPad.blend;
     this.facing = {x: dx/l, z: dz/l};this.velocity={x:dx/Math.max(1,l)*speed,z:dz/Math.max(1,l)*speed};
     const scale = l > 1 ? 1 / l : 1;
     const beforeX=this.x,beforeZ=this.z;
     this.push(dx*scale*speed*dt,dz*scale*speed*dt);
-    if(surface?.bridge&&this.stage.id===17)this.push(0,(this.x<surface.center?1:-1)*Math.min(.5,speed*.25)*dt);
+    if(surface?.bridge&&this.stage.id===17)this.push(0,(this.x<surface.center?1:-1)*Math.min(.5,unboosted*.25)*dt);
     if(surface?.ice){const glide=Math.min(1.2,speed*.3);this.iceDrift={x:this.facing.x*glide,z:this.facing.z*glide};}
     if(dt>0)this.velocity={x:(this.x-beforeX)/dt,z:(this.z-beforeZ)/dt};
     if (!this.deadline && !this.isAtBase) {
@@ -886,6 +903,8 @@ export class GameState {
     // Night closes the expedition, including dropped field eggs.
     if(!this.isAtBase||this.carried)this.failExpedition('night');
     this.openedShortcuts=[];
+    this.openingShortcuts={};
+    this.mobs=[];
     this.spawn();
     this.resetBosses();
     this.announcement='밤에는 농장에서 쉬어요 · 아침에 입구가 열려요';
@@ -893,6 +912,8 @@ export class GameState {
   }
   tick(dt:number){
     this.updateNight();
+    for(const [key,at] of Object.entries(this.openingShortcuts))if(this.now()>=at+650){const stage=Number(key);if(!this.openedShortcuts.includes(stage))this.openedShortcuts.push(stage);delete this.openingShortcuts[stage];this.revision++;}
+    if(!this.roomManaged)tickMobs(this.mobs,new Map([['local',this]]),this.now(),dt);
     if(this.death){if(this.reviveAdUntil===null&&this.deathChoiceRemaining<=0)this.failExpedition('hp');return;}
     if(dt<=0)return;
     for(let left=dt;left>1e-9&&!this.death;left-=PROGRESSION.simulationStep)this.tickStep(Math.min(left,PROGRESSION.simulationStep));
@@ -993,7 +1014,7 @@ export class GameState {
   }
   pickup(egg:WorldEgg){
       if(this.carried||this.knockback.remaining>0||this.death||this.now()<this.knockedUntil)return;
-      const qualified=this.meetsEggSpeed(egg);
+      if(!this.meetsEggSpeed(egg)){this.message=`필요 속도 ${formatNumber(this.eggRequiredSpeed(egg))} / 현재 ${formatNumber(this.speed)}`;return;}
       this.carried = egg;
       this.emit("egg_pickup", {type: this.carried.type});
       this.world = this.world.filter((e) => e !== this.carried);
@@ -1005,16 +1026,6 @@ export class GameState {
       if(!boss){this.revision++;return;}
       // Recovered eggs remain in the world and can be stolen during the return trip.
       boss.loot = null;
-      if(!qualified){
-        const dx=boss.x-this.x,dz=boss.z-this.z,distance=Math.hypot(dx,dz)||1;
-        boss.x=this.x+dx/distance*ROUTE.bossReach*.5;
-        boss.z=this.z+dz/distance*ROUTE.bossReach*.5;
-        boss.mode='return';boss.target=null;boss.wakeRemaining=undefined;
-        this.hp=0;this.hitAt=this.now();this.die();
-        this.message='속도가 부족해 보스에게 잡혔어요!';
-        this.emit('boss_underqualified_defeat',{stage:boss.stageId??this.stage.id,requiredSpeed:this.eggRequiredSpeed(egg)});
-        return;
-      }
       const sleeping=boss.mode==='idle';
       if(sleeping){boss.mode='waking';boss.wakeRemaining=ROUTE.bossWakeSeconds;}
       else if(boss.mode!=='waking'){boss.mode='chase';boss.wakeRemaining=undefined;}
@@ -1161,7 +1172,7 @@ export class GameState {
     return true;
   }
   snapshot(): Save {
-    this.save.explorationVersion=2;this.save.openedShortcuts=[...this.openedShortcuts];
+    this.save.explorationVersion=3;this.save.openedShortcuts=[...this.openedShortcuts];
     this.progression.hp=this.hp;this.progression.maxHP=this.maxHp;this.progression.immunity=this.immunity;this.progression.slowRemaining=this.slowRemaining;this.progression.slowMultiplier=this.slowMultiplier;
     this.save.routeVersion=3;
     this.save.death=this.death;

@@ -30,33 +30,37 @@ export class RegionArt {
   for(const p of this.blocks){const key=Math.floor(p.z/16);if(!this.buckets.has(key))this.buckets.set(key,[]);this.buckets.get(key)!.push(p);}
  }
  private gates='';
- renderSection(stage:number,offset:number,length:number,playerZ:number,time:number,opened:number[]=[]){
+ renderSection(stage:number,offset:number,length:number,playerZ:number,time:number,opened:number[]=[],opening:Record<number,number>={},clock=0){
   this.group.visible=true;this.group.position.z=-offset;
   if(this.stage!==stage)this.build(stage,length);
   const band=Math.floor((playerZ+offset)/16);
-  const gates=opened.join(',');
+  const gates=opened.join(',')+'|'+Object.keys(opening).join(',');
   if(band!==this.visibleBand||gates!==this.gates){
    this.gates=gates;
    this.visibleBand=band;let count=0,outlines=0;
-   for(let key=band-3;key<=band+3;key++)for(const p of this.buckets.get(key)??[]){if(p.gate&&opened.includes(p.gate))continue;this.put(this.ground,count++,p);if(p.obstacle)this.outline(this.outlines,outlines++);}
+   for(let key=band-3;key<=band+3;key++)for(const p of this.buckets.get(key)??[]){if(p.gate&&(opened.includes(p.gate)||opening[p.gate]!==undefined))continue;this.put(this.ground,count++,p);if(p.obstacle)this.outline(this.outlines,outlines++);}
    this.outlines.count=outlines;this.outlines.instanceMatrix.needsUpdate=true;
    this.ground.count=count;this.ground.instanceMatrix.needsUpdate=true;if(this.ground.instanceColor)this.ground.instanceColor.needsUpdate=true;
   }
   this.count=this.outlineCount=0;
+  for(const p of this.blocks)if(p.gate&&opening[p.gate]!==undefined&&!opened.includes(p.gate)){
+   const t=Math.min(1,Math.max(0,(clock-opening[p.gate])/650));
+   this.put(this.moving,this.count++,p,0,t*t*2.8);
+  }
   for(const m of this.motions){
    if(Math.abs(m.z-offset-playerZ)>32)continue;
    const slow=[5,14,15,19,20].includes(legacyTheme(stage)),t=time*(slow?.45:stage===2?.8:1)+m.phase;
    const turn=stage===2?Math.floor(t*4)/4:t;
-   const angle=m.kind==='spin'?turn*.4:m.kind==='windmill'?0:Math.sin(t*.8)*.09;
+   const angle=m.kind==='spin'?turn*.4:m.kind==='windmill'||m.kind==='pulse'?0:Math.sin(t*.8)*.09;
    const rising=[4,13,16].includes(legacyTheme(stage)),phase=(t*.22)%1;
    const y=m.y+(m.kind==='float'?(rising?Math.sin(phase*Math.PI)*.5:Math.sin(t*1.1)*.18):0);
    const x=m.x+(m.kind==='float'?Math.sin(t*.6)*.3:0);
-   for(const p of m.blocks){this.put(this.moving,this.count++,p,x,y,m.z,angle,m.kind==='windmill'?t*.5:0);if(p.obstacle)this.outline(this.movingOutlines,this.outlineCount++);}
+   for(const p of m.blocks){this.put(this.moving,this.count++,m.kind==='pulse'?{...p,c:this.color.setHex(p.c).multiplyScalar(.85+.15*Math.sin(time*2.1+m.phase)).getHex()}:p,x,y,m.z,angle,m.kind==='windmill'?t*.5:0);if(p.obstacle)this.outline(this.movingOutlines,this.outlineCount++);}
   }
   this.moving.count=this.count;this.moving.instanceMatrix.needsUpdate=true;if(this.moving.instanceColor)this.moving.instanceColor.needsUpdate=true;
   this.movingOutlines.count=this.outlineCount;this.movingOutlines.instanceMatrix.needsUpdate=true;
  }
- metrics(){return {stage:this.stage,blocks:this.ground.count,moving:this.moving.count,assemblies:this.motions.length,elementTypes:15,endWall:this.stage===20};}
+ metrics(){return {stage:this.stage,blocks:this.ground.count,moving:this.moving.count,assemblies:this.motions.length,elementTypes:20,endWall:this.stage===20};}
  dispose(){for(const m of [this.ground,this.moving,this.outlines,this.movingOutlines]){m.geometry.dispose();(m.material as T.Material).dispose();}this.group.removeFromParent();}
 }
 
@@ -69,7 +73,7 @@ export class ConnectedRegionArt {
   this.group.visible=visible;if(!visible)return;this.active=game.stage.id;
   const nearby=game.route.filter(r=>r.stage>=this.active-1&&r.stage<=this.active+1);
   for(const s of this.sections)s.group.visible=false;
-  for(const r of nearby)this.sections[r.stage%3].renderSection(r.stage,r.offset,r.end-r.start,game.z,time,game.openedShortcuts);
+  for(const r of nearby)this.sections[r.stage%3].renderSection(r.stage,r.offset,r.end-r.start,game.z,time,game.openedShortcuts,game.openingShortcuts,game.now());
   this.fog.render(game,time);
  }
  metrics(){const current=this.sections[this.active%3].metrics();return {...current,sections:this.sections.filter(s=>s.group.visible).map(s=>s.metrics().stage)};}

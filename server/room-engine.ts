@@ -1,4 +1,5 @@
 import {add} from '../src/money';
+import {tickMobs,type Mob} from '../src/mobs';
 import {migrateExploration} from '../src/exploration-migration';
 import {advanceTutorial} from '../src/tutorial';
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
@@ -13,7 +14,7 @@ type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
 type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
 type Player={runtime:RuntimeState;input:{x:number;z:number;slow?:boolean};seen:number;receipts:string[];chat?:{id:string;text:string;at:number};guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
-export type Room={stageOrderVersion?:2;routeVersion?:3;explorationVersion?:1|2;openedShortcuts?:number[];at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
+export type Room={stageOrderVersion?:2;routeVersion?:3;explorationVersion?:1|2|3;openedShortcuts?:number[];openingShortcuts?:Record<number,number>;mobs?:Mob[];at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
 export type RequestInput={id:string;input?:{x:number;z:number;slow?:boolean};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
 export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number,identity?:{guest:boolean}){
@@ -33,8 +34,9 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const fresh=!previous||cycle!==previous.cycle?new GameState(freshSave(now),()=>now,random):null;
  const joinedNow=!previous?.players[user];
  const room:Room=previous??{stageOrderVersion:2,routeVersion:3,at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
- room.openedShortcuts??=[];
- if(room.explorationVersion!==2){migrateExploration(room.world,room.bosses);room.explorationVersion=2;}
+ room.openedShortcuts??=[];room.openingShortcuts??={};
+ room.mobs??=[];
+ if(room.explorationVersion!==3){migrateExploration(room.world,room.bosses);room.explorationVersion=3;}
  // Persisted rooms, unlike individual saves, may still contain a partial route.
  // Fill only absent guardians; a looted region with its guardian is left alone.
  const missing=Array.from({length:21},(_,i)=>i).filter(i=>!room.bosses.some(b=>i===20?b.final:!b.final&&b.stageId===i+1));
@@ -73,7 +75,8 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   }
   const g=new GameState(structuredClone(p.runtime.save),()=>simTime,random,true);
   restoreRuntime(g,p.runtime,room.world,room.bosses);g.farmSlot=m.slot;g.events=[];
-  g.openedShortcuts=room.openedShortcuts;
+  g.openedShortcuts=room.openedShortcuts;g.openingShortcuts=room.openingShortcuts;
+  g.mobs=room.mobs;
   g.settleProduction(Math.min(now,p.seen+BALANCE.offlineCap*1000));
   if(m.user_id===user)g.save.productionAt=now;
   games.set(m.user_id,g);
@@ -93,7 +96,8 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  }
  if(!joinedNow&&now-player.seen<10&&!player.receipts.includes(`request:${request.id}`))throw Error('RATE_LIMIT');
  if(cycle!==room.cycle){
-  room.openedShortcuts=[];for(const g of games.values())g.openedShortcuts=room.openedShortcuts;
+  room.mobs=[];room.openingShortcuts={};for(const g of games.values())g.mobs=room.mobs;
+  room.openedShortcuts=[];for(const g of games.values()){g.openedShortcuts=room.openedShortcuts;g.openingShortcuts=room.openingShortcuts;}
   room.world=fresh!.world;room.bosses=fresh!.bosses;room.cycle=cycle;
   for(const [id,g] of games){g.failExpedition('night');g.world=room.world;g.bosses=room.bosses;delete room.players[id].preparation;}
  }
@@ -120,6 +124,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    if(p.preparation&&(Math.hypot(g.x-p.preparation.x,g.z-p.preparation.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(p.preparation.hit??0)||g.death||g.carried))delete p.preparation;
   }
   // Every boss advances exactly once, against the player holding its target egg.
+  tickMobs(room.mobs,games,simTime,dt);
   for(let index=0;index<room.bosses.length;index++){
    const boss=room.bosses[index];
    const owner=[...games.values()].find(g=>g.carried?.id===boss.target)??self;
@@ -139,6 +144,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
      if(now-self.batAt>=BALANCE.batCooldown&&!self.death&&!self.carried&&!self.training&&!self.launch&&self.knockback.remaining<=0&&now>=self.knockedUntil){
       self.batAt=now;
       const length=Math.hypot(vector.x,vector.z);if(length>.01)self.facing={x:vector.x/length,z:vector.z/length};
+      self.hitMobs(`${user}:${command.id}`);
       for(const [id,target] of games){
        const dx=target.x-self.x,dz=target.z-self.z,distance=Math.hypot(dx,dz);
        if(id===user||now-room.players[id].seen>BALANCE.roomInputGraceMs||distance>BALANCE.batRange||(distance>.01&&(dx*self.facing.x+dz*self.facing.z)/distance<BALANCE.batFacingThreshold))continue;
@@ -197,8 +203,10 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
    p.chat={id:c.id,text:message,at:now};break;
   }
   case 'prepare':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
+   if(!g.meetsEggSpeed(egg))throw Error('INSUFFICIENT_SPEED');
    p.preparation={id:egg.id,at:now,x:g.x,z:g.z,hit:Number.isFinite(g.hitAt)?g.hitAt:0};break;}
   case 'pickup':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||g.isNight||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
+   if(!g.meetsEggSpeed(egg))throw Error('INSUFFICIENT_SPEED');
    const seconds=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier],prep=p.preparation;
    if(seconds&&(!prep||prep.id!==egg.id||now-prep.at<seconds*1000||Math.hypot(g.x-prep.x,g.z-prep.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(prep.hit??0)))throw Error('PREPARE_EGG');
    g.pickup(egg);delete p.preparation;break;}
