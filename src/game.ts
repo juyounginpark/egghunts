@@ -1065,7 +1065,7 @@ export class GameState {
       if(sleeping){boss.mode='waking';boss.wakeRemaining=ROUTE.bossWakeSeconds;}
       else if(boss.mode!=='waking'){boss.mode='chase';boss.wakeRemaining=undefined;}
       boss.target = this.carried.id;
-      this.message = sleeping?'보스가 깨어나는 중이에요! 5초 뒤 추격해요.':'알을 들었어요. 기지로 돌아가세요!';
+      this.message = sleeping?`보스가 깨어나는 중이에요! ${ROUTE.bossWakeSeconds}초 뒤 추격해요.`:'알을 들었어요. 기지로 돌아가세요!';
     this.revision++;
   }
   get tapDamage(){return softenGrowth((BALANCE.baseTap+BALANCE.tapPerLevel*this.save.upgrades.tap)*this.clickMultiplier,ECONOMY.softThreshold);}

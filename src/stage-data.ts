@@ -140,7 +140,7 @@ export const MAP_OBSTACLES={scale:1.5,outline:0xff3939,outlineWidth:.035};
 export const STAGE_COVERS:Cover[]=Array.from({length:4},(_,i)=>({x:(i%2?1:-1)*HAZARD_BALANCE.coverX,z:-30-i*HAZARD_BALANCE.coverSpacing/2,radius:HAZARD_BALANCE.coverRadius}));
 
 // Connected expedition: selected stage is the entrance, not a repeated full map.
-export const ROUTE={entrance:6,length:48,finalLength:225,bossKnockback:2.4,bossKnockbackPerSpeed:2.4,bossMaxKnockback:24,bossKnockbackSeconds:.28,bossReach:2,bossBaseScale:1.5,bossAngryScale:1.5,bossWindup:.65,bossWakeSeconds:5,bossRecoverySpeedMultiplier:3,bossDamage:STAGE_DIFFICULTY.minimumDamage,bossDamagePerStage:STAGE_DIFFICULTY.damagePerStage,bannerSeconds:3,recommendedCarryRatio:.65,targetTravelSeconds:20,baseRecommendedSpeed:1.5};
+export const ROUTE={entrance:6,length:48,finalLength:225,bossKnockback:2.4,bossKnockbackPerSpeed:2.4,bossMaxKnockback:24,bossKnockbackSeconds:.28,bossReach:2,bossBaseScale:1.5,bossAngryScale:1.5,bossWindup:.65,bossWakeSeconds:3,bossRecoverySpeedMultiplier:3,bossDamage:STAGE_DIFFICULTY.minimumDamage,bossDamagePerStage:STAGE_DIFFICULTY.damagePerStage,bannerSeconds:3,recommendedCarryRatio:.65,targetTravelSeconds:20,baseRecommendedSpeed:1.5};
 export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{const offset=(s.id-start)*ROUTE.length;return {stage:s.id,offset,start:ROUTE.entrance+offset,end:ROUTE.entrance+offset+(s.id===20?ROUTE.finalLength:ROUTE.length),home:18+offset};});}
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
@@ -161,7 +161,7 @@ export function guardianPursuitSpeed(stage:number,playerSpeed:number,distance:nu
  if(excess<=0)return guardianChaseSpeed(stage,playerSpeed);
  return Math.min(BOSS_MOVEMENT.catchupMaxSpeed,Math.max(0,escapeSpeed)+BOSS_MOVEMENT.catchupMinSpeed+excess*BOSS_MOVEMENT.catchupGain);
 }
-export const STAGE_REQUIRED_SPEED=[2,3,5,7,10,15,25,40,65,100,180,320,600,1100,2000,4000,7500,14000,26000,50000] as const;
+export const STAGE_REQUIRED_SPEED=[1,3,5,7,10,15,25,40,65,100,180,320,600,1100,2000,4000,7500,14000,26000,50000] as const;
 export function recommendedRouteSpeed(_depth:number,stage:number){return STAGE_REQUIRED_SPEED[Math.max(0,Math.min(19,stage-1))];}
 export const GUARDIAN_ATTACKS=new Set(['hay','train','ink','lava-breath','tentacle','sweep','locker','book','drone','scorpion','stomp','raptor','wisps','club','lightning','medusa','ufo','nightmare','vine','mantis','magnet','void-hand','memory-tentacle','memory-lightning','memory-ufo','memory-meteor','creation-wave']);
 
