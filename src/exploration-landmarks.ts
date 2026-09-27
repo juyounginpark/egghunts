@@ -36,7 +36,9 @@ export function explorationLandmark(stage:number):Block[]{
  case 7: // Stepped pyramid, dark entry and paired obelisks.
   for(let i=0;i<6;i++)b(0,.25+i*.48,-.3,3.6-i*.5,.5,2.8-i*.36,0xc8aa78);
   b(0,.7,1.16,.75,1.35,.07,0x675744);for(const x of [-1.55,1.55]){column(x,1.1,2.2,0xb08b5f);b(x,2.3,1.1,.25,.3,.25,gold);}
-  for(let i=0;i<3;i++)b(0,.08+i*.1,1.9-i*.3,1.25,.16,.4,0xdfc79a);break;
+  for(let i=0;i<3;i++)b(0,.08+i*.1,1.9-i*.3,1.25,.16,.4,0xdfc79a);
+  b(1.1,.35,1.5,.9,.55,1.35,0xb89563);b(1.1,.95,1.9,.65,.7,.6,0xc9aa78);b(1.1,1.25,1.9,.9,.22,.65,gold);
+  for(const x of [.92,1.28])b(x,1,2.22,.1,.08,.03,dark);break;
  case 8: // Ancient roots curl around a cracked giant eggshell.
   for(const x of [-1.2,1.2]){b(x,1.5,-.3,.8,3,1.3,wood);b(x*.7,.4,.45,1.25,.65,1.5,wood);foliage(x,3.1,-.3,1.9,0x57794c);}
   b(0,2.8,-.5,2.6,.6,1,wood);ring(.35,1,ivory);for(const x of [-.75,.7])b(x,.65,.3,.35,.9,.6,0xd4c7a4);b(.5,1.15,.1,.45,.35,.45,ivory);break;
@@ -45,7 +47,9 @@ export function explorationLandmark(stage:number):Block[]{
   for(const x of [-1.55,1.55]){b(x,2.3,.4,.07,.7,.07,wood);b(x,1.9,.4,.45,.55,.4,0xd2b579);b(x,1.55,.4,.06,.2,.06,0xb98175);}break;
  case 10: // Colonnaded temple, stepped plinth and triangular pediment.
   for(let j=0;j<3;j++)b(0,.12+j*.16,0,3.6-j*.3,.22,2.3-j*.2,ivory);
-  for(const x of [-1.2,-.4,.4,1.2])column(x,.45,2.8,0xd5d6c9);b(0,2.9,0,3.5,.35,1.7,ivory);roof(3.1,3.5,1.9,0xc4c7bd);b(0,3.6,1,.35,.35,.08,gold);break;
+  for(const x of [-1.2,-.4,.4,1.2])column(x,.45,2.8,0xd5d6c9);b(0,2.9,0,3.5,.35,1.7,ivory);roof(3.1,3.5,1.9,0xc4c7bd);b(0,3.6,1,.35,.35,.08,gold);
+  b(0,1.25,1.2,.5,1.35,.4,ivory);b(0,2.1,1.2,.4,.45,.4,ivory);
+  for(const side of [-1,1])for(let j=0;j<3;j++)b(side*(.35+j*.22),1.9+j*.12,1.1,.3,.55-j*.08,.15,ivory);break;
  case 11: // Saucer laboratory, segmented crown and hatch.
   for(let i=0;i<3;i++)b(0,1.8+i*.4,0,3.6-i*.8,.45,2.6-i*.5,i===2?0x94b69d:0x75878b);
   for(const x of [-1.15,1.15])column(x,0,1.7,dark);b(0,.85,.3,1.2,1.7,.5,0x56686c);b(0,.8,.58,.75,1.4,.04,0xa3c3a6);for(const x of [-1,-.5,0,.5,1])b(x,1.95,1.35,.16,.16,.06,0xc9deb7);break;
@@ -65,10 +69,13 @@ export function explorationLandmark(stage:number):Block[]{
  case 16: // Oversized mushroom canopy and exposed seed chamber.
   for(const [x,h,r] of [[-1,2.6,1.9],[.9,3.5,2.4]]){b(x,h/2,0,.5,h,.55,ivory);b(x,h,0,r,.5,r*.8,0xb87972);b(x,h+.32,0,r*.65,.2,r*.55,0xcc9990);for(const dx of [-.35,.35])b(x+dx,h+.45,.15,.24,.08,.25,ivory);}
   ring(.25,1,wood);b(0,.4,.65,.85,.7,.8,0xb9a675);break;
- case 17: // Open assembly gantry, hoist, mechanical ribs.
+ case 17: // A full-size unfinished robot held inside the assembly gantry.
   arch(2.9,3.5,0,dark);for(const x of [-1.45,1.45]){b(x,1.5,.43,.28,2.5,.12,0xadb1a8);b(x,3.3,.46,.5,.22,.06,gold);}
   b(.4,2.85,0,.1,1.1,.1,dark);b(.4,2.2,0,.55,.2,.4,gold);for(const x of [.15,.65])b(x,1.95,0,.12,.45,.18,stone);
-  b(-.55,.4,.1,1.2,.8,1,0x7d9291);b(-.55,1,.1,.7,.4,.7,dark);for(const x of [-.8,-.35])b(x,.95,.48,.15,.1,.04,0xc4d4bf);break;
+  b(0,1.1,.25,1.5,1.65,1,0x7d9291);b(0,2.3,.25,1.05,.75,.85,0x9ca8a1);
+  for(const x of [-.27,.27])b(x,2.4,.7,.17,.12,.04,0xc4d4bf);
+  b(0,1.3,.78,.7,.65,.07,dark);for(const y of [1.1,1.35,1.6])b(0,y,.83,.6,.07,.04,gold);
+  b(-1,1.4,.2,.45,1.1,.5,stone);b(1,1.6,.2,.4,.6,.45,stone);b(1,.8,.2,.12,.95,.12,dark);break;
  case 18: // Observatory dome, shutter slit and projecting telescope.
   b(0,1,0,2.7,2,2,0x8a889c);for(let i=0;i<4;i++)b(0,2.1+i*.35,-.1,3-i*.55,.4,2.4-i*.4,0xb2b4c4);
   b(.2,2.8,1,.45,.8,.1,dark);b(.2,2.6,1.3,.5,.5,1.3,gold);b(.2,2.6,1.98,.65,.65,.12,dark);window(-.8,1.2,1.03,0xa9bfce);break;
@@ -76,9 +83,10 @@ export function explorationLandmark(stage:number):Block[]{
   for(const [x,h,z] of [[-1.2,3.6,0],[1.2,2.8,-.2]]){b(x,h/2,z,.65,h,.85,0x645d76);b(x,.2,z,1,.4,1.1,0x857f92);b(x,h-.2,z,.9,.3,1,0xa299b2);}
   b(-.4,3.5,0,1.4,.45,.85,0x82778f);b(.85,3.3,-.2,.8,.4,.7,0x82778f);for(const x of [-1.2,1.2])b(x,1.6,.46,.13,1.4,.04,0xaebac1);ring(.06,1.25,0x8d899c);break;
  case 20: // Split garden tree, flowering crown and inlaid stone roots.
-  for(const x of [-.9,.9]){b(x,1.8,0,.7,3.6,1.25,0xafa181);b(x*1.35,.3,.5,1.3,.5,1.5,0xbab294);foliage(x,3.5,0,2.4,0x8b9e74);}
-  b(0,3,0,2.1,.75,1,0xafa181);foliage(0,4.25,-.2,2.5,0xa9b78c);
-  for(const x of [-1.4,0,1.4])b(x,3.8,.8,.4,.22,.35,0xe2c6ae);ring(.1,1.2,gold);break;
+  for(const x of [-.9,.9]){b(x,1.8,0,.7,3.6,1.25,0xafa181);b(x*1.35,.3,.5,1.3,.5,1.5,0xbab294);foliage(x,3.5,0,2.4,0xb5b480);}
+  b(0,3,0,2.1,.75,1,0xafa181);foliage(0,4.25,-.2,2.5,0xd0c491);
+  for(const x of [-1.4,0,1.4])b(x,3.8,.8,.4,.22,.35,0xe2c6ae);ring(.1,1.2,gold);
+  b(0,.14,.75,1.2,.12,1.2,0xa3c5b5);for(const x of [-.4,.4]){b(x,.65,.75,.28,1,.3,0xb2d2c4);b(x,1.2,.75,.15,.2,.15,ivory);}break;
  }
  return out;
 }

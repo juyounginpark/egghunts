@@ -28,7 +28,7 @@ export function biomeGround(stage:number,x:number,z:number,base:number){
 }
 
 /** Biome silhouettes, authored separately from the shared collectible-scale props. */
-function habitat(stage:number,variant:number){
+export function habitat(stage:number,variant:number){
  const blocks:Block[]=[],motions:Motion[]=[];
  const v=variant%4,wood=0x795c44,leaf=0x658b60,ivory=0xe4dfc9,stone=0x929b99,gold=0xc4a35b,dark=0x39434b;
  const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number,target=blocks)=>target.push({x,y,z,w,h,d,c,solid:false});

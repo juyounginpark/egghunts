@@ -23,11 +23,11 @@ const walk=(g:GameState,x:number,z:number)=>{
 assert.equal(EXPLORATION_OBJECTS.length,400);assert.equal(MOB_TYPES.length,40);
 let pads=0;const g=make();assert.equal(g.world.length,101);assert.equal(g.bosses.length,21);
 for(let stage=1;stage<=20;stage++){
- const art=explorationObjects(stage);assert.equal(art.length,stage===2?8:20);assert.ok(art.every(o=>o.blocks.length+o.motions.length>0));
+ const art=explorationObjects(stage);assert.equal(art.length,stage===2?8:11);assert.ok(art.every(o=>o.blocks.length+o.motions.length>0));
  assert.equal(EXPLORATION_OBJECTS.slice((stage-1)*20,stage*20).filter(r=>r[3]==='troll').length,1);
  pads+=speedPads(stage).length;assert.deepEqual(speedPadArt(stage),{blocks:[],motions:[]});
  assert.deepEqual(stagePatterns(stage),[]);assert.ok(art.every(o=>o.blocks.every(b=>b.solid===false)));
- for(const x of [-10,0,10]){const t=terrainAt(stage,x,-25);assert.equal(t.walk,true);assert.equal(t.slow,1);assert.ok([-.16,0,.16,.32].includes(t.height));}
+ for(const x of [-10,0,10]){const t=terrainAt(stage,x,-25);assert.equal(t.walk,true);assert.equal(t.slow,1);assert.ok([-.32,-.16,0,.16,.32,.48].includes(t.height));}
  for(const point of mainPath(stage))assert.equal(terrainAt(stage,point.x,point.z).height,0);
  const offset=(stage-1)*48,path=mainPath(stage).slice(0,-1);
  for(const boss of g.bosses.filter(b=>b.stageId===stage)){const p=routeProgress(stage,boss.homeX!,boss.homeZ!+offset).progress;assert.ok(p>(stage===20?.92:.94)&&p<=1,`boss behind eggs ${stage} ${p}`);}
@@ -39,7 +39,7 @@ for(let stage=1;stage<=20;stage++){
  stat(g,STAGE_REQUIRED_SPEED[stage-1]+.001);g.pickup(egg);assert.equal(g.carried?.id,egg.id);stat(g,1);assert.ok(g.carried);
  for(const p of [...path].reverse())walk(g,p.x,p.z-offset);g.interact();
  for(const p of speedPads(stage))assert.ok(terrainAt(stage,p.x,p.z).walk,`pad floor ${p.id}`);
- console.log(`stage ${stage}: 20 objects, egg/boss positions, carried round trip, pads`);
+ console.log(`stage ${stage}: planned scene assemblies, egg/boss positions, carried round trip, pads`);
 }
 assert.equal(pads,0);
 // Retired pads cannot grant or restore a movement boost.
