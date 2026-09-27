@@ -1,5 +1,7 @@
 import {eggMaxHp,farmPetIds} from './data';
 import {explorationHeight} from './exploration-route';
+import {concealedAt} from './brush';
+import {BRUSH_TERRAIN} from './stage-data';
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage,DAMAGE_OVER_TIME } from "./data";
@@ -22,6 +24,16 @@ import {EnvironmentVisualController} from './environment-visual';
 import {dioramaMaterial} from './diorama-material';
 
 export class World {
+  private stealthMaterials=new WeakMap<T.Material,T.Material>();
+  private stealthSources=new WeakMap<T.Mesh,T.Material|T.Material[]>();
+  private stealthOpacity(hidden:boolean){
+    this.player.traverse(o=>{
+      if(!(o instanceof T.Mesh))return;
+      let source=this.stealthSources.get(o);if(!source){source=o.material;this.stealthSources.set(o,source);}
+      const fade=(m:T.Material)=>{let copy=this.stealthMaterials.get(m);if(!copy){copy=m.clone();copy.transparent=true;copy.opacity=m.opacity*BRUSH_TERRAIN.opacity;copy.depthWrite=false;this.stealthMaterials.set(m,copy);}return copy;};
+      o.material=hidden?(Array.isArray(source)?source.map(fade):fade(source)):source;
+    });
+  }
   private routeStart=1;
   networkOffset={x:0,z:0};
   chasePressure=0;
@@ -164,7 +176,8 @@ export class World {
       const position=motion.position(dt,frameAt/1000);
       const snap=Math.hypot(position.x-avatar.position.x,position.z-avatar.position.z)>12;
       const beforeX=avatar.position.x,beforeZ=avatar.position.z;
-      avatar.visible=visible;avatar.position.x=position.x;avatar.position.z=position.z;
+      const peerVisible=visible&&!concealedAt(peer.x,peer.z,this.routeStart);
+      avatar.visible=peerVisible;avatar.position.x=position.x;avatar.position.z=position.z;
       const fresh=frameAt-avatar.userData.receivedAt<1200;
       const speed=dt>0&&!snap?Math.hypot(avatar.position.x-beforeX,avatar.position.z-beforeZ)/dt:0;
       const seated=!down&&peer.seat!==undefined&&peer.seat!==null&&!!CAMP_SEATS[peer.seat];
@@ -191,7 +204,7 @@ export class World {
         avatar.userData.egg=eggKey;
       }
       const held=avatar.getObjectByName('peer-egg');if(held)animateEgg(held,frameAt/1000,this.low);
-      this.syncPeerPets(peer,avatar,visible,dt,frameAt/1000);
+      this.syncPeerPets(peer,avatar,peerVisible,dt,frameAt/1000);
       if(avatar.userData.appearance!==peer.appearance){this.decorateAvatar(avatar,peer.appearance);avatar.userData.appearance=peer.appearance;}
     }
   }
@@ -684,6 +697,7 @@ export class World {
       }
     }
     this.carry.children.forEach((m) => animateEgg(m, time, this.low));
+    this.stealthOpacity(game.concealed);
     const near = game.near;
     this.highlight.visible = false;
     if (near) this.highlight.position.set(near.x, 0.055, near.z);
@@ -860,7 +874,7 @@ export class World {
     }
     for(const [key,row] of this.farmPetLabelEntries)if(!farmLabelKeys.has(key)){row.label.remove();this.farmPetLabelEntries.delete(key);}
     const trailDef=TRAILS[game.save.equippedTrail??0];
-    this.footTrail.visible=!isHatch&&moving&&trailDef.multiplier>1;
+    this.footTrail.visible=!isHatch&&!game.concealed&&moving&&trailDef.multiplier>1;
     (this.footTrail.material as T.MeshBasicMaterial).color.set(trailDef.color);
     const marker=new T.Object3D();
     for(let i=0;i<24;i++){const p=this.trail[Math.min(this.trail.length-1,i*2)];if(!p)continue;marker.position.copy(p);marker.position.x+=Math.sin(i*2)*.16;marker.position.y=.1;marker.scale.setScalar(1-i/28);marker.updateMatrix();this.footTrail.setMatrixAt(i,marker.matrix);}

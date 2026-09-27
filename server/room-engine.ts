@@ -129,7 +129,8 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   // Every boss advances exactly once, against the player holding its target egg.
   for(let index=0;index<room.bosses.length;index++){
    const boss=room.bosses[index];
-   const owner=[...games.values()].find(g=>g.carried?.id===boss.target)??self;
+   const candidates=[...games.values()];
+   const owner=candidates.find(g=>g.carried?.id===boss.target)??candidates.find(g=>g.carried?.guardian===index&&!g.concealed)??candidates.find(g=>g.carried?.guardian===index)??self;
    owner.world=room.world;owner.bosses=room.bosses;owner.tickBosses(dt,index);room.world=owner.world;
   }
  }
@@ -148,7 +149,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
       const length=Math.hypot(vector.x,vector.z);if(length>.01)self.facing={x:vector.x/length,z:vector.z/length};
       for(const [id,target] of games){
        const dx=target.x-self.x,dz=target.z-self.z,distance=Math.hypot(dx,dz);
-       if(id===user||now-room.players[id].seen>BALANCE.roomInputGraceMs||distance>BALANCE.batRange||(distance>.01&&(dx*self.facing.x+dz*self.facing.z)/distance<BALANCE.batFacingThreshold))continue;
+       if(id===user||target.concealed||now-room.players[id].seen>BALANCE.roomInputGraceMs||distance>BALANCE.batRange||(distance>.01&&(dx*self.facing.x+dz*self.facing.z)/distance<BALANCE.batFacingThreshold))continue;
        target.world=self.world;
        if(target.receiveBat(distance>.01?dx:self.facing.x,distance>.01?dz:self.facing.z))delete room.players[id].preparation;
       }
@@ -174,7 +175,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const events=self.events.splice(0);
  for(const [id,g] of games){g.world=room.world;g.bosses=room.bosses;room.players[id].runtime=exportRuntime(g);}
  for(const p of Object.values(room.players))if(p.chat&&now-p.chat.at>=BALANCE.chatDurationMs)delete p.chat;
- const peers=[...games].filter(([id])=>id!==user).map(([id,g])=>({
+ const peers=[...games].filter(([id,g])=>id!==user&&!g.concealed).map(([id,g])=>({
   id,at:now,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
   speed:g.speed,seat:g.seat,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,chat:room.players[id].chat??null,
   activePets:g.save.active.filter(id=>g.save.mongles[id]>0).slice(0,BALANCE.maxCompanions),

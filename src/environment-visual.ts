@@ -5,6 +5,8 @@ import type {GameState} from './game';
 import {dioramaUniforms} from './diorama-material';
 import {FARM_PLOTS,farmLocal} from './village';
 import {explorationSurface} from './exploration-route';
+import {brushRegions} from './brush';
+import {ENVIRONMENT_ART} from './environment-art-data';
 
 // Three's physically scaled lights need larger intensities than normalized art guides.
 export const ENVIRONMENT_PRESETS=[
@@ -31,6 +33,7 @@ export class EnvironmentVisualController {
  private marker=new T.Object3D();
  private ripples=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:0xd0eee3}),160);
  private waterState=new WeakMap<T.Object3D,{wet:boolean;entered:number;x:number;z:number}>();
+ private glows=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({transparent:true,opacity:.75,depthWrite:false}),24);
  constructor(private scene:T.Scene,private renderer:T.WebGLRenderer,private sun:T.DirectionalLight,private ambient:T.HemisphereLight){
   scene.userData.diorama=this.uniforms;
   // A shared 32px radial texture replaces expensive SSAO and shadow lights.
@@ -52,6 +55,7 @@ export class EnvironmentVisualController {
   for(const side of [-1,1])for(const z of [-1,11])lamp(side*2.5,1.7,z,.49,.51,.49);
   this.lamps.instanceMatrix.needsUpdate=true;
   this.ripples.frustumCulled=false;this.ripples.count=0;
+  this.glows.frustumCulled=false;this.glows.count=0;scene.add(this.glows);
   scene.add(this.lamps,this.contacts,this.playerShadow,this.ripples);
  }
  update(game:GameState,hatch:boolean,low:boolean,player:T.Object3D,peers:Iterable<T.Object3D>){
@@ -119,5 +123,18 @@ export class EnvironmentVisualController {
   for(const boss of game.bosses)contact(boss.x,boss.z,2.4,1.9);
   this.contacts.count=count;this.contacts.instanceMatrix.needsUpdate=true;
   this.ripples.count=rippleCount;this.ripples.visible=!hatch;this.ripples.instanceMatrix.needsUpdate=true;
+  let glowCount=0;
+  const stage=game.stage.id,offset=game.stageOffset,colors=ENVIRONMENT_ART[stage-1].accents;
+  if(!hatch&&!game.isAtBase)for(const [i,p] of brushRegions(stage).entries()){
+   if(Math.abs(p.z-offset-game.z)>23)continue;
+   for(let j=0;j<(low?2:4);j++){
+    const phase=time*.65+i*2+j*1.7,stationary=j===0;
+    const x=p.x+(stationary?1.3:Math.sin(phase)*1.4),z=p.z-offset+(stationary?.4:Math.cos(phase*.7)*1.2);
+    const y=(surfaceAt(x,z)?.height??0)+(stationary?.35:.9+Math.sin(phase*1.1)*.22),size=stationary?.14:.055+.025*(1+Math.sin(phase*2));
+    this.marker.position.set(x,y,z);this.marker.rotation.set(0,0,0);this.marker.scale.set(size,stationary?.22:size,size);this.marker.updateMatrix();
+    this.glows.setMatrixAt(glowCount,this.marker.matrix);this.glows.setColorAt(glowCount++,this.tint.setHex(stationary?colors[0]:[3,11,13,18,19].includes(stage)?0xb2d9d0:0xe5dba0));
+   }
+  }
+  this.glows.count=glowCount;this.glows.visible=!hatch;this.glows.instanceMatrix.needsUpdate=true;if(this.glows.instanceColor)this.glows.instanceColor.needsUpdate=true;
  }
 }

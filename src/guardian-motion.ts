@@ -19,7 +19,7 @@ export class GuardianMotion{
   const desired=last.at+Math.max(0,now-this.received)-this.delay;
   // Slew playback speed by at most 10%; packet arrival cannot jump the pose.
   const error=desired-(this.clock+dt);
-  this.clock+=dt+Math.max(-dt*.1,Math.min(dt*.1,error));
+  this.clock=Math.min(last.at+.1,this.clock+dt+Math.max(-dt*.1,Math.min(dt*.1,error)));
   const first=this.points[0];if(this.clock<=first.at)return first;
   let a=first,b=last;
   for(let i=1;i<this.points.length;i++){a=this.points[i-1];b=this.points[i];if(b.at>=this.clock)break;}

@@ -32,11 +32,11 @@ export class Multiplayer {
     const r=await fetch(`${this.url}/claim`,{method:'POST',headers:{Authorization:`Bearer ${this.token}`,'Content-Type':'application/json'},body:JSON.stringify({id}),signal:AbortSignal.timeout(3000)});
     if(!r.ok)throw Error('다른 친구가 먼저 집었거나 너무 멀어요.');return r.json();
   }
-  async update(x:number,z:number,rotation:number,appearance:number,carried:number|null){
+  async update(x:number,z:number,rotation:number,appearance:number,carried:number|null,stageStart=1){
     if(!this.connected||this.busy||performance.now()-this.lastSent<100)return;
     this.busy=true;this.lastSent=performance.now();
     try{
-      const response=await fetch(`${this.url}/state`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${this.token}`},body:JSON.stringify({x,z,rotation,appearance,carried}),signal:AbortSignal.timeout(3000)});
+      const response=await fetch(`${this.url}/state`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${this.token}`},body:JSON.stringify({x,z,rotation,appearance,carried,stageStart}),signal:AbortSignal.timeout(3000)});
       if(!response.ok)throw Error('연결 종료');
       const state=await response.json();this.peers=state.players;this.drops=state.drops;this.syncClock(state.serverTime);
       if(state.hit&&state.hit.id!==this.lastHit){this.lastHit=state.hit.id;this.onHit(state.hit);}

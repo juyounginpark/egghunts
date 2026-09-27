@@ -7,6 +7,7 @@ import {ENVIRONMENT_ART} from './environment-art-data';
 import {STAGES} from './stage-data';
 import {pathX,routeLength,EXPLORATION_MAPS,waterAt,waterRegions} from './exploration-route';
 import {reliefCell} from './terrain-relief';
+import {brushArt} from './brush';
 
 /** Walkable surfaces and their solid edges share the same authored footprint. */
 export function explorationLayout(stage:number,_sculpture:(stage:number,variant:number)=>Block[]){
@@ -42,6 +43,7 @@ export function explorationLayout(stage:number,_sculpture:(stage:number,variant:
  for(const object of explorationObjects(stage)){blocks.push(...object.blocks);motions.push(...object.motions);}
  const background=environmentBackdrops(stage);blocks.push(...background.blocks);motions.push(...background.motions);
  blocks.push(...environmentGroundDetails(stage));
+ blocks.push(...brushArt(stage));
  if(stage===2)blocks.push(...dioramaDetails(stage));
  if(stage===20)b(0,.4,-6-length,27,.8,1,s.color,true);
  blocks.push(...explorationWalls(stage,length));

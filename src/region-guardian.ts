@@ -21,6 +21,7 @@ export class RegionGuardian {
  private headings=Array<number>(21).fill(NaN);private roots=Array.from({length:21},()=>({x:NaN,z:NaN}));private lastTime=0;
  private samples=new Map<number,{state:Boss;stage:number;at:number;serverAt:number}>();
  private motion=Array.from({length:21},()=>new GuardianMotion());
+ private groundHeights=Array<number>(21).fill(NaN);
  constructor(){this.group.add(this.mesh,this.effects);this.mesh.castShadow=true;this.mesh.frustumCulled=this.effects.frustumCulled=false;this.mesh.count=this.effects.count=0;}
  render(game:GameState,time:number,visible:boolean){
   this.group.visible=visible;if(!visible)return;this.stage=game.stage.id;
@@ -34,7 +35,8 @@ export class RegionGuardian {
    const serverAt=game.roomSnapshotTime||time;
    const gap=sample?Math.max(0,serverAt-sample.serverAt):0;
    const teleported=sample&&sample.state!==state&&Math.hypot(sample.state.x-state.x,sample.state.z-state.z)>Math.max(30,BOSS_MOVEMENT.catchupMaxSpeed*gap*1.5+2);
-   const reset=!Number.isFinite(root.x)||sample?.stage!==stage||!!teleported;
+   const returnedHome=state.mode==='idle'&&sample?.state.mode!=='idle'&&state.x===state.homeX&&state.z===state.homeZ;
+   const reset=!Number.isFinite(root.x)||sample?.stage!==stage||!!teleported||returnedHome;
    if(reset){root.x=state.x;root.z=state.z;this.headings[k]=NaN;this.motion[k].reset();}
    if(!sample||sample.serverAt!==serverAt||reset){
     sample={state,stage,at:time,serverAt};
@@ -80,7 +82,9 @@ export class RegionGuardian {
    }
    character.visible=true;
    character.position.set(x,(breath+bounce+(hover&&!reduced?Math.sin(time*1.2+k)*.14*rise:0))*scale,z);
-   character.position.y+=explorationHeight(x,z,game.progression.stage);
+   const ground=explorationHeight(x,z,game.progression.stage);
+   this.groundHeights[k]=reset||!Number.isFinite(this.groundHeights[k])?ground:this.groundHeights[k]+(ground-this.groundHeights[k])*(1-Math.exp(-dt*14));
+   character.position.y+=this.groundHeights[k];
    character.rotation.set(-charge*.1,angle,0);
    character.scale.set(2.8*scale,2.8*scale*(sleeping?.78+.22*rise:1),2.8*scale);
    character.traverse(part=>{

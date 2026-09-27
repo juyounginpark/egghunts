@@ -4,6 +4,7 @@ import {freshPads} from './speed-pads';
 import type {Mob} from './mobs';
 import {migrateExploration,migrateBossHomes,migrateEggHomes} from './exploration-migration';
 import {bossAnchor,specialEggAnchor,eggAnchor,shortcut,terrainAt} from './exploration-route';
+import {concealedAt} from './brush';
 import {migrateBalance,type BalanceAdjustment} from './balance-migration';
 import {weeklyDay,validateWeekly,type WeeklyProgress} from './weekly';
 import {firstEggTarget} from './tutorial';
@@ -320,6 +321,7 @@ export class GameState {
     this.emit(`expedition_fail_${reason}`,{xp});this.revision++;return true;
   }
   applyHazard(h:Hazard,bossContact=false){
+    if(this.concealed)return false;
     const d=h.definition;if(this.death||(this.immunity>0&&!bossContact)||this.isAtBase)return false;
     const reduction=this.defense('damageReduction')+this.defenses.reduce((n,p)=>n+(p.environmentReduction?.[d.id]??0),0)+(!this.progression.firstHitUsed?this.defense('firstHitReduction'):0);
     const damage=this.immunity>0?0:reducedDamage(d.damage,d.damagePercent,this.maxHp,reduction);
@@ -791,6 +793,7 @@ export class GameState {
   get pursuing() {
     return this.bosses.findIndex((b) => b.mode === "chase");
   }
+  get concealed(){return !this.death&&!this.isAtBase&&concealedAt(this.x,this.z,this.progression.stage);}
   restoreEgg(egg: WorldEgg, region: number) {
     egg.x = egg.homeX ?? 0;
     egg.z = egg.homeZ ?? this.bosses[egg.guardian??region]?.homeZ ?? -14;
@@ -814,6 +817,9 @@ export class GameState {
   tickBosses(dt:number,only?:number){
     this.bosses.forEach((b,guardian)=>{
       if(only!==undefined&&guardian!==only)return;
+      const ownsEgg=this.carried?.guardian===guardian;
+      if(this.concealed&&ownsEgg&&(b.mode==='chase'||b.mode==='waking')){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
+      if(!this.concealed&&ownsEgg&&!this.isAtBase&&b.mode==='idle'){b.mode='chase';b.target=this.carried!.id;}
       if((b.mode==='chase'||b.mode==='waking')&&this.carried?.id!==b.target){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
       let activeDt=dt;
       if(b.mode==='waking'){
@@ -831,6 +837,12 @@ export class GameState {
         b.loot=this.world.find(e=>e.id===b.loot?.id)??null;
         recovery=b.loot??this.world.find(e=>e.guardian===guardian&&!e.secured&&this.inEggStage(e,e.z)&&(e.x!==e.homeX||e.z!==e.homeZ));
         if(recovery)b.mode='return';
+      }
+      // Return instantly once pursuit ends, or once a dropped egg is collected.
+      if(b.mode==='return'&&(!recovery||b.loot)){
+        if(b.loot)this.restoreEgg(b.loot,b.loot.region??0);
+        b.x=b.homeX??0;b.z=b.homeZ??-17;b.mode='idle';b.target=null;b.loot=null;b.wakeRemaining=undefined;b.windup=undefined;
+        return;
       }
       const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):b.homeX??0;
       const tz=b.mode==='chase'?this.z:recovery?(b.loot?recovery.homeZ??b.homeZ??-17:recovery.z):b.homeZ??-17;
