@@ -145,7 +145,7 @@ export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{cons
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
-export const BOSS_MOVEMENT={returnSpeed:2,maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,underqualifiedKnockback:12,catchupTargetGap:1.2,catchupMinSpeed:90,catchupMaxSpeed:180,catchupGain:16};
+export const BOSS_MOVEMENT={qualifiedCatchupGain:2,qualifiedCatchupBlendDistance:3,returnSpeed:2,maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,underqualifiedKnockback:12,catchupTargetGap:1.2,catchupMinSpeed:90,catchupMaxSpeed:180,catchupGain:16};
 export function guardianSpeed(stage:number){
  const progress=(Math.max(1,Math.min(STAGES.length,stage))-1)/(STAGES.length-1);
  return ROUTE.baseRecommendedSpeed+(BOSS_MOVEMENT.qualifiedChaseMaxSpeed-ROUTE.baseRecommendedSpeed)*progress;
@@ -154,12 +154,12 @@ export function guardianSpeed(stage:number){
 export function guardianChaseSpeed(stage:number,playerSpeed:number){
  return playerSpeed<recommendedRouteSpeed(0,stage)?BOSS_MOVEMENT.catchupMinSpeed:guardianSpeed(stage);
 }
-/** Outside the close chase band, rush independently of stage/player speed stats. */
+/** Qualified pursuit accelerates continuously across the close chase boundary. */
 export function guardianPursuitSpeed(stage:number,playerSpeed:number,distance:number,escapeSpeed:number,reach:number){
  if(playerSpeed<recommendedRouteSpeed(0,stage))return Math.min(BOSS_MOVEMENT.catchupMaxSpeed,Math.max(0,escapeSpeed)+BOSS_MOVEMENT.catchupMinSpeed);
- const excess=distance-reach-BOSS_MOVEMENT.catchupTargetGap;
- if(excess<=0)return guardianChaseSpeed(stage,playerSpeed);
- return Math.min(BOSS_MOVEMENT.catchupMaxSpeed,Math.max(0,escapeSpeed)+BOSS_MOVEMENT.catchupMinSpeed+excess*BOSS_MOVEMENT.catchupGain);
+ const excess=Math.max(0,distance-reach-BOSS_MOVEMENT.catchupTargetGap),base=guardianChaseSpeed(stage,playerSpeed);
+ const blend=Math.min(1,excess/BOSS_MOVEMENT.qualifiedCatchupBlendDistance);
+ return Math.min(BOSS_MOVEMENT.maxSpeed,base+Math.max(0,escapeSpeed-base)*blend+excess*BOSS_MOVEMENT.qualifiedCatchupGain);
 }
 export const STAGE_REQUIRED_SPEED=[1,3,5,7,10,15,25,40,65,100,180,320,600,1100,2000,4000,7500,14000,26000,50000] as const;
 export function recommendedRouteSpeed(_depth:number,stage:number){return STAGE_REQUIRED_SPEED[Math.max(0,Math.min(19,stage-1))];}
