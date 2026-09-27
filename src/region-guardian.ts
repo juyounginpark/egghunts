@@ -58,8 +58,9 @@ export class RegionGuardian {
    const x=root.x,hover=[3,5,6,7,12,15,19,20].includes(stage);
    const u=chasing?Math.min(1,(state.windup??0)/ROUTE.bossWindup):0;
    const charge=u*u*(3-2*u),breath=reduced?0:Math.sin(time*1.5+k)*.035;
-   this.gait[k]+=dt*(sleeping?.7+10.3*rise:chasing?11:1.8);
-   const stride=this.gait[k]+k,bounce=!reduced?Math.abs(Math.sin(stride))*.13*rise:0;
+   this.gait[k]+=dt*(sleeping?.7:chasing?11:1.8);
+   const stretch=waking&&!reduced?Math.sin(wakeProgress*Math.PI):0;
+   const stride=this.gait[k]+k,bounce=!reduced&&chasing?Math.abs(Math.sin(stride))*.13*rise:0;
    let target=sleeping&&!waking?0:Math.atan2(game.x-x,game.z-z);
    if(state.mode==='return'){
     const dx=state.loot?(state.loot.homeX??0)-x:moveX;
@@ -92,7 +93,8 @@ export class RegionGuardian {
     const side=part.name.startsWith('left_')?-1:1;
     const limb=/_(leg|arm|wing)$/.test(part.name);
     part.rotation.x=limb&&!reduced?Math.sin(stride+side)*(.08+.22*rise):0;
-    if(part.name==='head')part.rotation.x=-charge*.15;
+    if(waking&&limb)part.rotation.x=/_(arm|wing)$/.test(part.name)?-stretch*.65:stretch*.1;
+    if(part.name==='head')part.rotation.x=-charge*.15+stretch*.22;
     if(part.name==='crown'||part.name==='tail')part.rotation.y=reduced?0:Math.sin(time*(.6+stage*.025))*.055*(sleeping?.4:1);
    });
    const eyes=character.getObjectByName('eyes');if(eyes)eyes.scale.y=sleeping?.12+.88*rise:1;

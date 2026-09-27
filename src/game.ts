@@ -837,7 +837,7 @@ export class GameState {
       if(only!==undefined&&guardian!==only)return;
       const ownsEgg=this.carried?.guardian===guardian;
       if(this.concealed&&ownsEgg&&(b.mode==='chase'||b.mode==='waking')){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
-      if(!this.concealed&&ownsEgg&&!this.isAtBase&&b.mode==='idle'){b.mode='chase';b.target=this.carried!.id;}
+      if(!this.concealed&&ownsEgg&&!this.isAtBase&&b.mode==='idle'){b.mode='waking';b.wakeRemaining=ROUTE.bossWakeSeconds;b.target=this.carried!.id;}
       if((b.mode==='chase'||b.mode==='waking')&&this.carried?.id!==b.target){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
       let activeDt=dt;
       if(b.mode==='waking'){
@@ -1062,10 +1062,10 @@ export class GameState {
       // Recovered eggs remain in the world and can be stolen during the return trip.
       boss.loot = null;
       const sleeping=boss.mode==='idle';
-      if(sleeping){boss.mode='waking';boss.wakeRemaining=this.meetsEggSpeed(egg)?ROUTE.bossWakeSeconds:BOSS_MOVEMENT.underqualifiedWakeSeconds;}
+      if(sleeping){boss.mode='waking';boss.wakeRemaining=ROUTE.bossWakeSeconds;}
       else if(boss.mode!=='waking'){boss.mode='chase';boss.wakeRemaining=undefined;}
       boss.target = this.carried.id;
-      this.message = sleeping?'보스가 잠에서 깼어요!':'알을 들었어요. 기지로 돌아가세요!';
+      this.message = sleeping?'보스가 깨어나는 중이에요! 5초 뒤 추격해요.':'알을 들었어요. 기지로 돌아가세요!';
     this.revision++;
   }
   get tapDamage(){return softenGrowth((BALANCE.baseTap+BALANCE.tapPerLevel*this.save.upgrades.tap)*this.clickMultiplier,ECONOMY.softThreshold);}
