@@ -145,17 +145,18 @@ export function routeSegments(start=1){return STAGES.slice(start-1).map(s=>{cons
 export function routeStage(start:number,z:number){return Math.min(20,start+Math.max(0,Math.floor((-z-ROUTE.entrance)/ROUTE.length)));}
 export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
-export const BOSS_MOVEMENT={maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,catchupTargetGap:1.2,catchupMinSpeed:90,catchupMaxSpeed:180,catchupGain:16};
+export const BOSS_MOVEMENT={maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,underqualifiedWakeSeconds:.15,underqualifiedKnockback:12,catchupTargetGap:1.2,catchupMinSpeed:90,catchupMaxSpeed:180,catchupGain:16};
 export function guardianSpeed(stage:number){
  const progress=(Math.max(1,Math.min(STAGES.length,stage))-1)/(STAGES.length-1);
  return ROUTE.baseRecommendedSpeed+(BOSS_MOVEMENT.qualifiedChaseMaxSpeed-ROUTE.baseRecommendedSpeed)*progress;
 }
-// Qualification is checked only before pickup; pursuit never rechecks the table.
-export function guardianChaseSpeed(stage:number,_playerSpeed:number){
- return guardianSpeed(stage);
+// Recommended stats never gate pickup; falling short makes close pursuit fast.
+export function guardianChaseSpeed(stage:number,playerSpeed:number){
+ return playerSpeed<recommendedRouteSpeed(0,stage)?BOSS_MOVEMENT.catchupMinSpeed:guardianSpeed(stage);
 }
 /** Outside the close chase band, rush independently of stage/player speed stats. */
 export function guardianPursuitSpeed(stage:number,playerSpeed:number,distance:number,escapeSpeed:number,reach:number){
+ if(playerSpeed<recommendedRouteSpeed(0,stage))return Math.min(BOSS_MOVEMENT.catchupMaxSpeed,Math.max(0,escapeSpeed)+BOSS_MOVEMENT.catchupMinSpeed);
  const excess=distance-reach-BOSS_MOVEMENT.catchupTargetGap;
  if(excess<=0)return guardianChaseSpeed(stage,playerSpeed);
  return Math.min(BOSS_MOVEMENT.catchupMaxSpeed,Math.max(0,escapeSpeed)+BOSS_MOVEMENT.catchupMinSpeed+excess*BOSS_MOVEMENT.catchupGain);

@@ -36,8 +36,8 @@ for(let stage=1;stage<=20;stage++){
  for(const egg of eggs){const p=routeProgress(stage,egg.x,egg.z+offset).progress;assert.ok(p>=.85&&p<=1,`egg ${stage} ${p}`);}
  g.carried=null;g.x=path[0].x;g.z=path[0].z-offset;
  for(const p of path.slice(1))walk(g,p.x,p.z-offset);
- const egg=eggs[2];walk(g,egg.x,egg.z);stat(g,STAGE_REQUIRED_SPEED[stage-1]-.01);g.pickup(egg);assert.equal(g.carried,null);assert.ok(g.hp>0);
- stat(g,STAGE_REQUIRED_SPEED[stage-1]+.001);g.pickup(egg);assert.equal(g.carried?.id,egg.id);stat(g,1);assert.ok(g.carried);
+ const egg=eggs[2];walk(g,egg.x,egg.z);stat(g,STAGE_REQUIRED_SPEED[stage-1]-.01);g.pickup(egg);assert.equal(g.carried?.id,egg.id);assert.ok(g.hp>0);
+ stat(g,STAGE_REQUIRED_SPEED[stage-1]+.001);assert.equal(g.carried?.id,egg.id);stat(g,1);assert.ok(g.carried);
  for(const p of [...path].reverse())walk(g,p.x,p.z-offset);g.interact();
  for(const p of speedPads(stage))assert.ok(terrainAt(stage,p.x,p.z).walk,`pad floor ${p.id}`);
  console.log(`stage ${stage}: planned scene assemblies, egg/boss positions, carried round trip, pads`);

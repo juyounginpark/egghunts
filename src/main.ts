@@ -207,7 +207,6 @@ async function action(preparedId?:string) {
       updateHud();return;
     }
     const targetEgg=preparedEgg??game.near;
-    if(!game.carried&&targetEgg&&!game.meetsEggSpeed(targetEgg)){toast(`필요 속도 ${num(game.eggRequiredSpeed(targetEgg))} / 현재 ${num(game.speed)}`);return;}
     if(!game.carried&&targetEgg&&!game.isAtBase){
       if(warnAboutBoss())return;
       const egg=targetEgg,duration=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier];

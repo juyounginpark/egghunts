@@ -206,10 +206,8 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
    p.chat={id:c.id,text:message,at:now};break;
   }
   case 'prepare':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
-   if(!g.meetsEggSpeed(egg))throw Error('INSUFFICIENT_SPEED');
    p.preparation={id:egg.id,at:now,x:g.x,z:g.z,hit:Number.isFinite(g.hitAt)?g.hitAt:0};break;}
   case 'pickup':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||g.isNight||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
-   if(!g.meetsEggSpeed(egg))throw Error('INSUFFICIENT_SPEED');
    const seconds=BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier],prep=p.preparation;
    if(seconds&&(!prep||prep.id!==egg.id||now-prep.at<seconds*1000||Math.hypot(g.x-prep.x,g.z-prep.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(prep.hit??0)))throw Error('PREPARE_EGG');
    g.pickup(egg);delete p.preparation;break;}
