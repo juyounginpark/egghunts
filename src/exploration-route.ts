@@ -72,6 +72,8 @@ export function eggAnchor(stage:number,slot:number){
  return {x:p.x+lane*2.4,z:p.z+(lane/2)**2*1.4};
 }
 export function bossAnchor(stage:number,final=false){
- return routePoint(stage,final?.83:.73);
+ const egg=final?specialEggAnchor():eggAnchor(stage,2);
+ // Deeper into the stage than the egg arc, with room before the back boundary.
+ return {x:egg.x,z:egg.z-2.2};
 }
 export function specialEggAnchor(){return routePoint(20,.98);}

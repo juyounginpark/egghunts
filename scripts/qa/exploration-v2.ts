@@ -29,7 +29,7 @@ for(let stage=1;stage<=20;stage++){
  assert.deepEqual(stagePatterns(stage),[]);assert.ok(art.every(o=>o.blocks.every(b=>b.solid===false)));
  for(const x of [-10,0,10])assert.deepEqual([terrainAt(stage,x,-25).height,terrainAt(stage,x,-25).slow],[0,1]);
  const offset=(stage-1)*48,path=mainPath(stage).slice(0,-1);
- for(const boss of g.bosses.filter(b=>b.stageId===stage)){const p=routeProgress(stage,boss.homeX!,boss.homeZ!+offset).progress;assert.ok(p>=.6&&p<=.85,`boss ${stage} ${p}`);}
+ for(const boss of g.bosses.filter(b=>b.stageId===stage)){const p=routeProgress(stage,boss.homeX!,boss.homeZ!+offset).progress;assert.ok(p>(stage===20?.92:.94)&&p<=1,`boss behind eggs ${stage} ${p}`);}
  const eggs=g.world.filter(e=>e.stageId===stage);assert.equal(eggs.length,stage===20?6:5);
  for(const egg of eggs){const p=routeProgress(stage,egg.x,egg.z+offset).progress;assert.ok(p>=.85&&p<=1,`egg ${stage} ${p}`);}
  g.carried=null;g.x=path[0].x;g.z=path[0].z-offset;

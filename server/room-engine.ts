@@ -1,6 +1,6 @@
 import {add} from '../src/money';
 import type {Mob} from '../src/mobs';
-import {migrateExploration} from '../src/exploration-migration';
+import {migrateExploration,migrateBossHomes} from '../src/exploration-migration';
 import {advanceTutorial} from '../src/tutorial';
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
 import {BALANCE,EGGS,MONGLES,UPGRADES,farmPetIds} from '../src/data';
@@ -14,7 +14,7 @@ type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
 type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
 type Player={runtime:RuntimeState;input:{x:number;z:number;slow?:boolean};seen:number;receipts:string[];chat?:{id:string;text:string;at:number};guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
-export type Room={stageOrderVersion?:2;routeVersion?:3;explorationVersion?:1|2|3;openedShortcuts?:number[];openingShortcuts?:Record<number,number>;mobs?:Mob[];at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
+export type Room={stageOrderVersion?:2;routeVersion?:3;explorationVersion?:1|2|3|4;openedShortcuts?:number[];openingShortcuts?:Record<number,number>;mobs?:Mob[];at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
 export type RequestInput={id:string;input?:{x:number;z:number;slow?:boolean};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
 export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number,identity?:{guest:boolean}){
@@ -36,7 +36,8 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  const room:Room=previous??{stageOrderVersion:2,routeVersion:3,at:now,cycle:Math.floor(now/BALANCE.nightInterval),world:fresh!.world,bosses:fresh!.bosses,players:{}};
  room.openedShortcuts??=[];room.openingShortcuts??={};
  room.mobs=[]; // Retire persisted mobs when an existing room is resumed.
- if(room.explorationVersion!==3){migrateExploration(room.world,room.bosses);room.explorationVersion=3;}
+ if((room.explorationVersion??0)<3)migrateExploration(room.world,room.bosses);
+ if(room.explorationVersion!==4){migrateBossHomes(room.bosses);room.explorationVersion=4;}
  // Persisted rooms, unlike individual saves, may still contain a partial route.
  // Fill only absent guardians; a looted region with its guardian is left alone.
  const missing=Array.from({length:21},(_,i)=>i).filter(i=>!room.bosses.some(b=>i===20?b.final:!b.final&&b.stageId===i+1));
