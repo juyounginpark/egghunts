@@ -7,15 +7,8 @@ import {loadVoxels,voxelModel} from './voxel';
 import {animatePet} from './pet-animation';
 
 // Existing official same-stage designs; these are scenery instances, not owned pets.
-const slots=[
- [0,1,3,4,8],[0,2,3,5,9],[0,1,3,4,6],[0,2,3,5,8],
- [1,2,4,5,8],[0,1,2,6,8],[0,1,3,4,9],[0,1,4,6,8],
- [0,1,2,5,7],[0,1,3,6,8],[0,2,3,5,9],[0,2,4,6,9],
- [0,1,2,3,7],[0,2,4,8,9],[0,1,3,5,8],[0,1,3,5,8],
- [0,1,2,4,6],[0,1,2,4,8],[0,1,3,4,6],[0,1,3,6,7],
-];
 export function sceneryCreatureIds(stage:number){
- return slots[stage-1].map(slot=>100+STAGE_PET_ROWS.findIndex(p=>p.stageId===stage&&p.slot===slot));
+ return Array.from({length:10},(_,slot)=>100+STAGE_PET_ROWS.findIndex(p=>p.stageId===stage&&p.slot===slot));
 }
 type Creature={id:number;root:T.Group;model:T.Group;x:number;z:number;homeX:number;homeZ:number;targetX:number;targetZ:number;wait:number;down:number;fallSide:number;recoilX:number;recoilZ:number;phase:number;seed:number;center:number;side:number;ground:number;legs:(T.Object3D|undefined)[]};
 type StageScene={stage:number;group:T.Group;creatures:Creature[];loading:boolean;retryAt:number};
@@ -36,9 +29,10 @@ export class SceneryCreatures{
    for(const [i,id] of ids.entries()){
     const model=voxelModel(`pet-${id}`,true),root=new T.Group();root.add(model);
     const bounds=new T.Box3().setFromObject(model),size=bounds.getSize(new T.Vector3()),center=bounds.getCenter(new T.Vector3());
-    const scale=Math.min((.85+i*.06)/Math.max(.01,size.y),1.35/Math.max(.01,size.x,size.z));
+    const scale=Math.min((.85+(i%5)*.06)/Math.max(.01,size.y),1.35/Math.max(.01,size.x,size.z));
     model.scale.setScalar(scale);model.position.copy(center).multiplyScalar(-scale);
-    const z=-6-routeLength(scene.stage)*[.15,.31,.47,.64,.79][i],x=pathX(scene.stage,z)+(i%2?1:-1)*3.7;
+    const progress=[.15,.31,.47,.64,.79][Math.floor(i/2)]+(i%2)*.035;
+    const z=-6-routeLength(scene.stage)*progress,x=pathX(scene.stage,z)+(i%2?1:-1)*3.7;
     root.name=`scenery-${scene.stage}-${i}`;root.userData.petId=id;scene.group.add(root);
     scene.creatures.push({id,root,model,x,z,homeX:x,homeZ:z,targetX:x,targetZ:z,wait:.5+i*.3,down:0,fallSide:1,recoilX:0,recoilZ:0,phase:i,seed:scene.stage*101+i*7919,center:size.y*scale/2,side:size.x*scale/2,ground:terrainAt(scene.stage,x,z).height,legs:['left_leg','right_leg'].map(n=>model.getObjectByName(n))});
    }

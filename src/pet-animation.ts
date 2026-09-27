@@ -4,7 +4,7 @@ import {animateExpansionPet} from './expansion-pet-animation';
 
 /** Small authored poses on the existing voxel pivot hierarchy; never move the root. */
 export function animatePet(pet:Object3D,id:number,time:number,walking=false,reduced=false){
- if(id>=321){animateExpansionPet(pet,time,walking,reduced);return;}
+ if(id>=321){animateExpansionPet(pet,id,time,walking,reduced);return;}
  if(id===320){
   if(reduced)return;
   const head=pet.getObjectByName('head'),tail=pet.getObjectByName('tail');

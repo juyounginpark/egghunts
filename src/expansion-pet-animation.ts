@@ -1,7 +1,7 @@
 import type {Object3D} from 'three';
 
 /** Opt-in poses for the appended models; legacy animation and materials stay intact. */
-export function animateExpansionPet(pet:Object3D,time:number,walking:boolean,reduced:boolean){
+export function animateExpansionPet(pet:Object3D,id:number,time:number,walking:boolean,reduced:boolean){
  const parts:Object3D[]=pet.userData.expansionParts??=(()=>{
   const result:Object3D[]=[];
   pet.traverse(part=>{if(part.userData.restRotation){part.userData.expansionPosition=part.position.clone();result.push(part);}});
@@ -12,7 +12,7 @@ export function animateExpansionPet(pet:Object3D,time:number,walking:boolean,red
   part.rotation.set(r[0],r[1],r[2]);part.scale.set(s[0],s[1],s[2]);part.position.copy(part.userData.expansionPosition);
  }
  if(reduced)return;
- const t=time*.72+(pet.userData.petId-321)*.31,w=walking?.3:1,beat=Math.max(0,Math.sin(t*.75))**4;
+ const t=time*.72+(id-321)*.31,w=walking?.3:1,beat=Math.max(0,Math.sin(t*.75))**4;
  // One main gesture, with delayed appendage follow-through instead of every
  // part oscillating independently. Locomotion remains a separate leg cycle.
  const gesture=Math.sin(t*.75)*beat,follow=Math.sin((t-.35)*.75)*Math.max(0,Math.sin((t-.35)*.75))**4;
