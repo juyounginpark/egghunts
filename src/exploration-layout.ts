@@ -1,9 +1,10 @@
 import type {Block,Motion} from './region-layout';
 import {explorationWalls} from './exploration-walls';
 import {explorationObjects} from './exploration-object-art';
-import {biomeScenery,biomeGround} from './biome-scenery';
+import {biomeScenery,biomeGround,dioramaDetails} from './biome-scenery';
 import {STAGES} from './stage-data';
 import {pathX,routeLength,EXPLORATION_MAPS} from './exploration-route';
+import {dioramaHeight} from './diorama-zones';
 
 /** Walkable surfaces and their solid edges share the same authored footprint. */
 export function explorationLayout(stage:number,_sculpture:(stage:number,variant:number)=>Block[]){
@@ -16,11 +17,13 @@ export function explorationLayout(stage:number,_sculpture:(stage:number,variant:
   for(let x=-13;x<=13;x++){
    const edge=2.1+.35*Math.sin(depth*.27+stage)+.2*Math.sin(x*2+depth*.7);
    const trail=Math.abs(x-center)<edge;
-   b(x,-.14,z,1,.28,1,trail?soil:biomeGround(stage,x,z,grass));
+   const top=dioramaHeight(stage,x,z,center),bottom=-.45;
+   b(x,(top+bottom)/2,z,1,top-bottom,1,trail?soil:biomeGround(stage,x,z,grass));
   }
  }
  for(const object of explorationObjects(stage)){blocks.push(...object.blocks);motions.push(...object.motions);}
  const scenery=biomeScenery(stage,blocks);blocks.push(...scenery.blocks);motions.push(...scenery.motions);
+ blocks.push(...dioramaDetails(stage));
  if(stage===20)b(0,.4,-6-length,27,.8,1,s.color,true);
  blocks.push(...explorationWalls(stage,length));
  return {blocks,motions,title:EXPLORATION_MAPS[stage-1][2]};

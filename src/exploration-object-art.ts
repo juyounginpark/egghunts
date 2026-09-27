@@ -1,6 +1,8 @@
 import {STAGES} from './stage-data';
-import {routePoint} from './exploration-route';
-import {SCENERY_KINDS,SCENERY_CLEARINGS,NATURAL_SCENERY} from './exploration-scenery';
+import {pathX,terrainAt} from './exploration-route';
+import {SCENERY_KINDS} from './exploration-scenery';
+import {dioramaZones} from './diorama-zones';
+import {toyDioramas} from './toy-dioramas';
 import type {Block,Motion} from './region-layout';
 import {explorationLandmark} from './exploration-landmarks';
 export type ObjectAssembly={id:string;kind:string;blocks:Block[];motions:Motion[]};
@@ -253,26 +255,22 @@ export function objectShape(kind:string,stage:number,animated=false){
  return {blocks,moving};
 }
 export function explorationObjects(stage:number):ObjectAssembly[]{
- const out:ObjectAssembly[]=SCENERY_KINDS[stage-1].split(' ').map((kind,i)=>({id:`scenery-${stage}-${i}`,kind,blocks:[],motions:[]}));
- const occupied:{x:number;z:number;r:number}[]=[];
- // Reserve one of each type before filling gaps with repeated vegetation.
- for(let j=0;j<2;j++)for(const [i,assembly] of out.entries()){
-  const {kind,blocks}=assembly,natural=NATURAL_SCENERY.has(kind);
-  if(j>=(i===0?1:natural?2:1))continue;
+ if(stage===2)return toyDioramas();
+ const zones=dioramaZones(stage),out:ObjectAssembly[]=[];
+ for(const [i,kind] of SCENERY_KINDS[stage-1].split(' ').entries()){
+  const zone=i===0?zones[6]:zones[[0,1,2,3,4,5,7][(i-1)%7]],slot=Math.floor((i-1)/7);
+  const offsets=[[-.75,-.65],[.8,.35],[-.15,1.25]];
+  const [dx,dz]=i===0?[0,0]:offsets[slot];
+  const scale=i===0?1.33:[.82,.58,.43][slot];
   const shape=i===0?explorationLandmark(stage):objectShape(kind,stage).blocks;
-  let placed=false;
-  for(let attempt=0;attempt<100&&!placed;attempt++){
-   const scale=(i===0?.95:natural?.65+((i*7+j*3)%5)*.15:.8+(i%3)*.12)*(attempt>=48?.75:1);
-   const extent=Math.max(...shape.map(v=>Math.hypot(Math.abs(v.x)+v.w/2,Math.abs(v.z)+v.d/2)))*scale;
-   const cluster=(i+j+Math.floor(attempt/6))%4,side=(i+j+attempt)%2?1:-1;
-   const progress=i===0?.79:attempt<24?SCENERY_CLEARINGS[stage-1][cluster]+(((i*13+j*7+attempt*3)%17)-8)*.007:.08+((i*17+j*13+attempt*7)%77)/100;
-   const p=routePoint(stage,progress),x=side*(5+((i*3+j*5+attempt)%9)*.43);
-   if(Math.abs(x-p.x)<3+extent||Math.abs(x)+extent>12.5)continue;
-   if(occupied.some(v=>Math.hypot(v.x-x,v.z-p.z)<v.r+extent+.15))continue;
-   occupied.push({x,z:p.z,r:extent});placed=true;
-   const angle=(((i*7+j*11)%9)-4)*.12,cs=Math.cos(angle),sn=Math.sin(angle);
-   for(const v of shape)blocks.push({...v,x:x+(v.x*cs-v.z*sn)*scale,y:v.y*scale,z:p.z+(v.x*sn+v.z*cs)*scale,w:v.w*scale,h:v.h*scale,d:v.d*scale,angle:(v.angle??0)+angle,solid:false});
-  }
+  const z=zone.z+dz,extent=Math.max(...shape.map(v=>Math.abs(v.x)+v.w/2))*scale;
+  let x=zone.x+dx;
+  const centre=pathX(stage,z);
+  if(Math.abs(x-centre)<2.8+extent)x=centre+zone.side*(2.8+extent);
+  x=zone.side*Math.min(Math.abs(x),12.3-extent);
+  const y=terrainAt(stage,x,z).height,angle=i===0?0:(slot-1)*.17,cs=Math.cos(angle),sn=Math.sin(angle);
+  const blocks=shape.map(v=>({...v,x:x+(v.x*cs-v.z*sn)*scale,y:y+v.y*scale,z:z+(v.x*sn+v.z*cs)*scale,w:v.w*scale,h:v.h*scale,d:v.d*scale,angle:(v.angle??0)+angle,solid:false}));
+  out.push({id:`scenery-${stage}-${i}`,kind,blocks,motions:[]});
  }
  return out;
 }

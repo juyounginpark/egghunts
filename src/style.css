@@ -669,13 +669,15 @@ nav button img { width:28px; height:28px; }
 #main-hud #cycle-clock { width:100%; cursor:pointer; min-height:44px; }
 #main-hud #cycle-phase::after { content:' · 접기 ⌃'; font-size:10px; font-weight:400; }
 #shell #top-hud.compact > :not(#main-hud):not(#hud-context):not(#region-banner):not(#tutorial) { display:none!important; }
-#top-hud.compact #hud-context #speed-hud { flex-direction:row; align-items:center; gap:12px; max-width:100%; }
-#top-hud.compact #hud-context .hud-place { display:none; }
+#top-hud.compact #hud-context { display:none!important; }
 #speed-hud .speed-heading::before { content:'속도'; font-size:11px; }
 #speed-hud #day-clock::before { content:'권장'; font-size:11px; }
-#shell #top-hud.compact #main-hud { display:block; padding:0; min-height:0; height:auto; overflow:hidden; }
+#shell #top-hud.compact #main-hud { display:block; justify-self:start; width:64px; height:64px; min-height:0; padding:0; overflow:hidden; box-sizing:border-box; }
 #top-hud.compact #main-hud .hud-player,#top-hud.compact #main-hud .hud-wallet { display:none; }
-#top-hud.compact #main-hud #cycle-clock { margin:0; border-radius:10px; padding-top:7px; }
-#top-hud.compact #main-hud #cycle-phase::after { content:' ⌄'; font-size:13px; }
+#top-hud.compact #main-hud #cycle-clock { display:grid; grid-template-columns:1fr; grid-template-rows:25px 20px; justify-items:center; align-content:center; gap:2px; width:100%; height:100%; min-height:0; margin:0; border-radius:10px; padding:4px; }
+#top-hud.compact #main-hud #cycle-phase { font-size:23px; line-height:1; }
+#top-hud.compact #main-hud #cycle-phase::after { content:none; }
+#top-hud.compact #main-hud #cycle-label,#top-hud.compact #main-hud #cycle-track { display:none; }
+#top-hud.compact #main-hud #cycle-remaining { min-width:0; font-size:17px; line-height:20px; text-align:center; letter-spacing:-.4px; transform-origin:center; }
 
 .egg-speed-label{position:absolute;z-index:12;transform:translate(-50%,-100%);padding:6px 10px;border-radius:9px;background:#302f39ed;color:#ffe2a0;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none}

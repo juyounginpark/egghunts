@@ -22,6 +22,7 @@ import {EnvironmentVisualController} from './environment-visual';
 import {dioramaMaterial} from './diorama-material';
 
 export class World {
+  private routeStart=1;
   networkOffset={x:0,z:0};
   chasePressure=0;
   private reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -54,7 +55,7 @@ export class World {
       this.restCompanions(entry.group,peer.slot,time);entry.trail=[];
     }else{
       entry.group.children.forEach(pet=>{pet.rotation.z=0;});
-      entry.trail=followPets(entry.group,entry.trail,avatar.position,{x:Math.sin(avatar.rotation.y),z:Math.cos(avatar.rotation.y)},dt,time,this.low,this.reducedMotion.matches,peer.z>=BALANCE.baseMinZ?BALANCE.farmPetMaxSize:Infinity);
+      entry.trail=followPets(entry.group,entry.trail,avatar.position,{x:Math.sin(avatar.rotation.y),z:Math.cos(avatar.rotation.y)},dt,time,this.low,this.reducedMotion.matches,peer.z>=BALANCE.baseMinZ?BALANCE.farmPetMaxSize:Infinity,this.routeStart);
     }
   }
   playerAnchor(id?:string){
@@ -179,7 +180,7 @@ export class World {
         if(arm)arm.rotation.x=down?-.35:seated?-.5:peer.carried!==null?-2.4:-stride*.3*sign;
       }
       const flight=(frameAt-(avatar.userData.hitReceived??-Infinity))/(BALANCE.batFlightSeconds*1000);
-      avatar.position.y=explorationHeight(avatar.position.x,avatar.position.z)+(seated?CAMPFIRE.sittingHeight:down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0);
+      avatar.position.y=explorationHeight(avatar.position.x,avatar.position.z,this.routeStart)+(seated?CAMPFIRE.sittingHeight:down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0);
       avatar.rotation.y+=Math.atan2(Math.sin(peer.rotation-avatar.rotation.y),Math.cos(peer.rotation-avatar.rotation.y))*blend;
       avatar.rotation.z+=( (down?Math.PI/2:0)-avatar.rotation.z)*blend;
       this.animateBat(avatar,frameAt-(avatar.userData.swingReceived??-Infinity));
@@ -501,6 +502,7 @@ export class World {
   }
   followerMetrics(){return this.companions.children.map(p=>({x:p.position.x,z:p.position.z,rotation:p.rotation.y,scale:p.scale.x}));}
   render(game: GameState, mode: string, dt: number, time: number) {
+    this.routeStart=game.progression.stage;
     this.animateBat(this.player,game.now()-this.swungAt);
     if(this.appearance!==(game.save.appearance??0)){this.appearance=game.save.appearance??0;this.decorateAvatar(this.player,this.appearance);}
     if (time - this.hudMeasureAt > 0.3 || this.hudMeasureAt < 0) {
@@ -636,7 +638,7 @@ export class World {
       this.restCompanions(this.companions,game.farmSlot,time);this.trail=[];
     }else{
       this.companions.children.forEach(pet=>{pet.rotation.z=0;});
-      this.trail=followPets(this.companions,this.trail,this.player.position,game.facing,dt,time,this.low,this.reducedMotion.matches,game.isAtBase?BALANCE.farmPetMaxSize:Infinity);
+      this.trail=followPets(this.companions,this.trail,this.player.position,game.facing,dt,time,this.low,this.reducedMotion.matches,game.isAtBase?BALANCE.farmPetMaxSize:Infinity,game.progression.stage);
     }
     const storageKey = `${game.farmSlot}:`+game.save.eggs.map((e) => `${e.id}:${e.type}:${e.stageId}:${e.variant}`).join("|");
     if (storageKey !== this.storageKey) {

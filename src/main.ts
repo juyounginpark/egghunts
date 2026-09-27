@@ -338,7 +338,7 @@ function updateHud() {
   $('day-clock').setAttribute('aria-label',`권장 속도 ${num(game.recommendedSpeed,1)}`);
   $('day-clock').title=`권장 속도 ${num(game.recommendedSpeed,1)}`;
   const phase=cycleClock(game.now(),game.nightAt,game.nightUntil),clock=$('cycle-clock');
-  $('cycle-phase').textContent=phase.night?'☾ 밤':'☀ 낮';
+  $('cycle-phase').textContent=hudCompact?(phase.night?'☾':'☀'):(phase.night?'☾ 밤':'☀ 낮');
   $('cycle-label').textContent=phase.night?'아침까지':'밤까지';
   $('cycle-remaining').textContent=phase.text;
   $('cycle-fill').style.width=`${phase.ratio*100}%`;

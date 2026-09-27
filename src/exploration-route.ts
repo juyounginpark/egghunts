@@ -1,3 +1,4 @@
+import {dioramaHeight} from './diorama-zones';
 /** Authored centre lines; progress is cumulative walking distance, not world Z. */
 export type RoutePoint={x:number;z:number};
 export const EXPLORATION_MAPS=[
@@ -53,8 +54,8 @@ export function pathX(stage:number,z:number){
 }
 export function terrainAt(stage:number,x:number,z:number){
  const {progress}=routeProgress(stage,x,z),center=pathX(stage,z);
- // Open, continuous ground: no raised pads, slow fields, ice or conveyor zones.
- return {walk:true,height:0,slow:1,bridge:false,landing:false,progress,center,bypass:Math.abs(x-center)>3,ice:false};
+ // Scenic terraces do not block movement or apply any floor effect.
+ return {walk:true,height:dioramaHeight(stage,x,z,center),slow:1,bridge:false,landing:false,progress,center,bypass:Math.abs(x-center)>3,ice:false};
 }
 export function explorationHeight(x:number,z:number,start=1){
  if(z>-6)return 0;

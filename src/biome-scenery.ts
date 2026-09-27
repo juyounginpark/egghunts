@@ -1,5 +1,6 @@
 import type {Block,Motion} from './region-layout';
-import {pathX,routeLength} from './exploration-route';
+import {pathX,routeLength,terrainAt} from './exploration-route';
+import {dioramaZones} from './diorama-zones';
 
 /** Flat material regions connect individual scenes into a continuous landscape. */
 export function biomeGround(stage:number,x:number,z:number,base:number){
@@ -203,22 +204,23 @@ function habitat(stage:number,variant:number){
 /** Three visual depths: low shorelines, middle scenes, dense outer silhouettes. */
 export function biomeScenery(stage:number,existing:Block[]){
  const blocks:Block[]=[],motions:Motion[]=[],length=routeLength(stage);
+ if(stage===2)return {blocks,motions}; // The toy room has eight bespoke scenes.
  const occupied=existing.filter(b=>b.y+b.h/2>.4);
- let index=0;
- for(let depth=2.2;depth<length-2;depth+=2.6+(index%5)*.24)for(const side of [-1,1]){
-  const n=index++,z=-6-depth+Math.sin(n*2.3)*.8;
-  const built=[5,6,10,12,17].includes(stage);
-  const x=side*(built?10.6+Math.sin(n*1.7)*.2:10.3+Math.sin(n*1.7)*.65),scale=.78+(n%4)*.07;
-  // The small inner groups vary their spacing instead of forming prop rows.
-  const sites=[{x,z,scale}];
-  if(n%3===0&&depth<length*.84)sites.push({x:side*(6.3+(n%5)*.35),z:z+1.2,scale:.62});
-  for(const site of sites){
+ for(const zone of dioramaZones(stage)){
+  const n=zone.index,side=zone.side;
+  const sites=n===6?[]:[
+   {x:zone.x+side*1.65,z:zone.z-1.65,scale:.72},
+   {x:zone.x+side*1.7,z:zone.z+1.7,scale:.55},
+  ];
+  if(n===3||n===7)sites.unshift({x:zone.x,z:zone.z-3.5,scale:1.5});
+  for(const [part,site] of sites.entries()){
    const radius=1.55*site.scale;
    if(Math.abs(site.x-pathX(stage,site.z))<3+radius)continue;
-   if(occupied.some(b=>Math.abs(b.x-site.x)<b.w/2+radius&&Math.abs(b.z-site.z)<b.d/2+radius))continue;
-   const shape=habitat(stage,n+(side>0?2:0));
-   for(const p of shape.blocks)blocks.push({...p,x:site.x+p.x*site.scale,y:p.y*site.scale,z:site.z+p.z*site.scale,w:p.w*site.scale,h:p.h*site.scale,d:p.d*site.scale});
-   for(const m of shape.motions)motions.push({...m,x:site.x+m.x*site.scale,y:m.y*site.scale,z:site.z+m.z*site.scale,phase:m.phase+stage*.4,travel:m.travel?{x:m.travel.x*site.scale,y:m.travel.y*site.scale,z:m.travel.z*site.scale}:undefined,blocks:m.blocks.map(p=>({...p,x:p.x*site.scale,y:p.y*site.scale,z:p.z*site.scale,w:p.w*site.scale,h:p.h*site.scale,d:p.d*site.scale}))});
+   if(occupied.some(b=>Math.abs(b.x-site.x)<b.w/2+radius*.72&&Math.abs(b.z-site.z)<b.d/2+radius*.72))continue;
+   const shape=habitat(stage,n+(side>0?2:0)+(n===7?3:0)+part);
+   const ground=terrainAt(stage,site.x,site.z).height;
+   for(const p of shape.blocks)blocks.push({...p,x:site.x+p.x*site.scale,y:ground+p.y*site.scale,z:site.z+p.z*site.scale,w:p.w*site.scale,h:p.h*site.scale,d:p.d*site.scale});
+   for(const m of shape.motions)motions.push({...m,x:site.x+m.x*site.scale,y:ground+m.y*site.scale,z:site.z+m.z*site.scale,phase:m.phase+stage*.4,travel:m.travel?{x:m.travel.x*site.scale,y:m.travel.y*site.scale,z:m.travel.z*site.scale}:undefined,blocks:m.blocks.map(p=>({...p,x:p.x*site.scale,y:p.y*site.scale,z:p.z*site.scale,w:p.w*site.scale,h:p.h*site.scale,d:p.d*site.scale}))});
    occupied.push({x:site.x,y:1,z:site.z,w:radius*1.6,h:2,d:radius*1.6,c:0,solid:false});
   }
  }
@@ -231,4 +233,25 @@ export function biomeScenery(stage:number,existing:Block[]){
   }
  }
  return {blocks,motions};
+}
+
+/** Sparse traces connect scene edges to the trail without an evenly scattered carpet. */
+export function dioramaDetails(stage:number){
+ const blocks:Block[]=[],natural=[1,3,7,8,9,13,15,16,19,20].includes(stage);
+ const palette=[0x9cab79,0xd8b77d,0xb8b6bf,0x6c5c54,0xb5a194,0x7e929d,0xcfb581,0x889b72,0xa294a9,0xd2cbb5,0x9aaa89,0xb29974,0xc3dce0,0xd0b7cb,0x8b997a,0xa0b47d,0x959f9e,0xa9a6c4,0x92849f,0xc6cc9c];
+ for(const q of dioramaZones(stage)){
+  // Only selected scene boundaries get scraps and material bridges.
+  if(q.index%2===0)continue;
+  const c=palette[stage-1],cx=pathX(stage,q.z)+q.side*2.8;
+  for(let j=0;j<9;j++){
+   const x=cx+q.side*(j%3)*.55,z=q.z+Math.sin(j*2.1)*.8,ground=terrainAt(stage,x,z).height;
+   blocks.push({x,y:ground+.025,z,w:natural?.28:.55,h:.035,d:natural?.38:.4,c,angle:j*.24,solid:false});
+   if(j%3===0)blocks.push({x:x+.16,y:ground+.08,z:z+.1,w:.15,h:.1,d:.2,c:natural?0xa5b09b:0xe3d4b6,solid:false});
+  }
+  if(stage===2&&(q.index===1||q.index===3)){
+   blocks.push({x:cx,y:.02,z:q.z,w:1.7,h:.035,d:2.1,c:q.index===3?0xc3a7b7:0xddc69a,angle:.13,solid:false});
+   for(let j=0;j<4;j++)blocks.push({x:cx+q.side*.85,y:.045,z:q.z-.7+j*.45,w:.3,h:.025,d:.09,c:0xe7d8b7,angle:.13,solid:false});
+  }
+ }
+ return blocks;
 }
