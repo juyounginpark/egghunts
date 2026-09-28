@@ -578,7 +578,7 @@ document.addEventListener('keydown',event=>{
   event.preventDefault();if(!$('modal').querySelector('button:disabled'))closePetDetail();return;
  }
  if(event.key==='Tab'){
-  const buttons=[...$('modal').querySelectorAll<HTMLElement>('button:not(:disabled),summary')].filter(el=>el.getClientRects().length);
+  const buttons=Array.from($('modal').querySelectorAll<HTMLElement>('button:not(:disabled),summary')).filter(el=>el.getClientRects().length);
   const first=buttons[0],last=buttons.at(-1);
   if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}
   else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
