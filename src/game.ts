@@ -1238,21 +1238,17 @@ export class GameState {
     if(this.result!==null){this.message='부화 결과를 확인한 뒤 받아 주세요';return false;}
     if(!this.canClaimWeekly){this.message='오늘 보상은 이미 받았어요';return false;}
     const index=this.weeklyIndex;
-    if(index===6&&this.petStorageFull){this.message='펫 보관함 한 칸을 비워 주세요';return false;}
     if(index===6&&this.save.eggs.length>=this.eggCapacity){this.message='알 보관함 한 칸을 비워 주세요';return false;}
     const day=weeklyDay(this.now()),claimed=this.save.weekly?.claimed??0;
     this.save.dust=add(this.save.dust,this.weeklyReward(index));
     if(index===6){
-      const id=`weekly-${claimed+1}-${day}`,type=WEEKLY_EVENT.eggType,pet=WEEKLY_EVENT.petId;
+      const id=`weekly-${claimed+1}-${day}`,type=WEEKLY_EVENT.eggType;
       this.save.eggs.push({id,type,hp:eggMaxHp({type}),hpVersion:5,distance:0,...rollEggWeight({type},this.random)});
       this.save.selected??=id;
       if(!this.save.discovered.includes(type))this.save.discovered.push(type);
-      addPetLot(this.save,pet,rollEggWeight({type},this.random));
-      this.save.mongles[pet]=(this.save.mongles[pet]??0)+1;
-      this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(pet))this.save.obtainedPets.push(pet);
     }
     this.save.weekly={claimed:claimed+1,lastDay:day};
-    this.message=index===6?'S급 별리본 루미와 전용 알을 받았어요!':`${index+1}일차 보상을 받았어요`;
+    this.message=index===6?'별리본 루미가 태어나는 전용 S급 알 1개를 받았어요!':`${index+1}일차 보상을 받았어요`;
     this.emit('weekly_reward',{day:index+1});this.revision++;return true;
   }
   offline(seconds: number) {
