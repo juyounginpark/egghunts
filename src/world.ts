@@ -479,8 +479,11 @@ export class World {
     if (m) {
       m.scale.setScalar((result !== null ? 2*WEIGHT_BALANCE.petVisualScale : 2.5*BALANCE.eggPresentationScale)*weightSize(appearance??{}));
       m.userData.hatchScale=m.scale.x;
+      m.rotation.y=result===null?-.25:0;
       this.hatch.add(m);
-      const size=new T.Box3().setFromObject(m).getSize(new T.Vector3());
+      const bounds=new T.Box3().setFromObject(m);
+      m.userData.hatchTouchBounds=bounds.clone();
+      const size=bounds.getSize(new T.Vector3());
       m.userData.hatchExtent=Math.max(.1,size.y*.85+(size.x+size.z)*.4);
     }
   }
@@ -518,8 +521,8 @@ export class World {
   private positionHatchTouch(){
     const button=document.getElementById('hatch-touch');
     if(!button||button.hidden||!this.hatchModel)return;
-    this.hatchModel.updateWorldMatrix(true,true);
-    const box=new T.Box3().setFromObject(this.hatchModel),rect=this.host.getBoundingClientRect();
+    // Project the resting bounds: shaking/scaling the egg must not move its CTA.
+    const box=this.hatchModel.userData.hatchTouchBounds as T.Box3,rect=this.host.getBoundingClientRect();
     const points=[];
     for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z])points.push(new T.Vector3(x,y,z).project(this.camera));
     const left=Math.max(8,(Math.min(...points.map(p=>p.x))+1)*rect.width/2),right=Math.min(rect.width-8,(Math.max(...points.map(p=>p.x))+1)*rect.width/2);

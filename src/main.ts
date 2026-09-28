@@ -922,9 +922,10 @@ window.addEventListener("pagehide", () => {
 async function start() {
   try {
     await platform.login();
-    const localState = await platform.load();
     if(!qa)await online.enter($("loading"));
-    const state = online.latest?.runtime.save??localState;
+    // Online ownership comes from the server. A stale device-only save must not
+    // block authentication or prevent loading that account's intact server save.
+    const state = online.latest?.runtime.save??await platform.load();
     game = new GameState(online.active?freshSave(platform.now()):state, () => platform.now(), qa?.random);
     if(online.active){
       online.attach(game);
