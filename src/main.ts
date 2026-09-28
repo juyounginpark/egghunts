@@ -18,7 +18,7 @@ import {
   petIcon,
   type Upgrade,
 } from "./data";
-import { ROUTE, FINAL_GUARDIAN } from "./stage-data";
+import { ROUTE, FINAL_GUARDIAN, recommendedRouteSpeed } from "./stage-data";
 import {legacyTheme} from './stage-order';
 import {eggName,eggIcon} from "./stage-eggs";
 import { GameState, freshSave } from "./game";
@@ -158,6 +158,7 @@ let heardHazards=new Set<number>();
 let lastHeartbeat=0;
 let bossAlertUntil=0,wasPursued=false;
 let lastBossStep=0;
+let entryNoticeStage=0,entryNoticeAt=-Infinity;
 let virtualAd:VirtualAd|null=null;
 let virtualAdPurpose:'currency'|'revive'='currency';
 let pendingSale:{kind:'egg'|'pet';id:string}|null=null;
@@ -381,6 +382,14 @@ function updateHud() {
   $("shell").classList.remove("wind");
   document.querySelector("nav")!.hidden = exploring;
   $("inventory").hidden = tab !== "hatchery";
+  const nextStage=exploring?game.route.find(segment=>segment.stage===game.stage.id+1):undefined;
+  const entryDistance=nextStage?Math.abs(game.z+nextStage.start):Infinity;
+  const entryLocked=!!nextStage&&!game.canEnterStage(nextStage.stage);
+  if(!entryLocked||entryDistance>1.5||nextStage?.stage!==entryNoticeStage)entryNoticeStage=0;
+  if(tab==='explore'&&entryLocked&&nextStage&&entryDistance<.6&&!paused&&!game.death&&!game.returnReward&&$('modal').hidden&&entryNoticeStage!==nextStage.stage&&performance.now()-entryNoticeAt>4000){
+    toast(`${nextStage.stage}스테이지에 진입할 수 없어요\n필요 속도 ${num(recommendedRouteSpeed(0,nextStage.stage))} / 현재 ${num(game.progressionSpeed,3)}\n농장에서 스피드를 강화해 주세요.`);
+    entryNoticeStage=nextStage.stage;entryNoticeAt=performance.now();
+  }
   $("hint").hidden = tab!=="explore" || (exploring && game.pursuing < 0 && !game.launch&&!game.expeditionWarning);
   $("speed-hud").hidden = tab!=="explore";
   $("region").textContent =
