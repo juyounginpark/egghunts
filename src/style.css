@@ -816,3 +816,4 @@ nav button img { width:28px; height:28px; }
 .pet-card-actions button{flex:1;min-width:0;min-height:44px;padding:8px 4px;margin:0;border-radius:9px;font-size:12px;box-shadow:none}.pet-card-actions .primary{background:#6d8754;color:white}
 .pet-empty-message{width:100%;text-align:center;padding:30px 8px;font-size:13px}
 #shell[data-mode="hatchery"] #egg-bag .egg-slot{width:100%;justify-self:stretch;box-sizing:border-box}
+.stage-lock-label{position:absolute;transform:translate(-50%,-50%);width:max-content;max-width:94%;white-space:pre;text-align:center;pointer-events:none;z-index:2;font-size:clamp(20px,5vw,28px);font-weight:900;line-height:1.5;color:#fffef0;text-shadow:0 2px 3px #273c42,2px 0 2px #273c42,-2px 0 2px #273c42,0 -1px 2px #273c42}

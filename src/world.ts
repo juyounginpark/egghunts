@@ -3,7 +3,7 @@ import {MountView} from './mount-view';
 import {eggMaxHp} from './data';
 import {explorationHeight} from './exploration-route';
 import {concealedAt} from './brush';
-import {BRUSH_TERRAIN} from './stage-data';
+import {BRUSH_TERRAIN,recommendedRouteSpeed} from './stage-data';
 import {SceneryCreatures} from './scenery-creatures';
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
@@ -222,6 +222,8 @@ export class World {
   private farmKey = "";
   private petLabels = document.createElement("div");
   private eggSpeedLabels=new Map<string,HTMLDivElement>();
+  private stageLockLabel=document.createElement('div');
+  private stageLockWall=new T.Mesh(new T.BoxGeometry(BALANCE.mapX*2,4,.08),new T.MeshBasicMaterial({color:0xd9e9e4,transparent:true,opacity:.2,depthWrite:false}));
   private peerPetLabels = document.createElement('div');
   private farmPetLabels = document.createElement('div');
   private farmPetLabelEntries=new Map<string,{id:number;label:HTMLElement}>();
@@ -289,6 +291,8 @@ export class World {
     host.append(this.renderer.domElement);
     this.damageDirection.id='damage-direction';this.damageDirection.hidden=true;this.damageDirection.setAttribute('aria-hidden','true');host.append(this.damageDirection);
     this.petLabels.id="pet-labels";host.append(this.petLabels);
+    this.stageLockLabel.className='stage-lock-label';this.stageLockLabel.hidden=true;host.append(this.stageLockLabel);
+    this.stageLockWall.visible=false;this.scene.add(this.stageLockWall);
     this.peerPetLabels.id='peer-pet-labels';host.append(this.peerPetLabels);
     this.farmPetLabels.id='farm-pet-labels';host.append(this.farmPetLabels);
     this.scene.add(this.farm,this.farmPets,this.roomFarmPets,this.roomFarmEggs,this.footTrail);
@@ -813,7 +817,19 @@ export class World {
       gain.el.hidden=isHatch;
     }
     this.sun.target.position.set(game.x, 0, game.z);
-    const closeEggs=isHatch||game.carried?[]:visibleEggs.filter(egg=>game.canReachEgg(egg)&&!game.bosses.some(b=>b.loot?.id===egg.id));
+    const closeEggs=isHatch||mode!=='explore'||game.carried?[]:visibleEggs.filter(egg=>game.canReachEgg(egg)&&!game.bosses.some(b=>b.loot?.id===egg.id))
+      .sort((a,b)=>Math.hypot(a.x-game.x,a.z-game.z)-Math.hypot(b.x-game.x,b.z-game.z)||a.id.localeCompare(b.id)).slice(0,1);
+    const locked=game.route.find(r=>r.stage>game.stage.id&&!game.canEnterStage(r.stage));
+    const showLock=mode==='explore'&&!isHatch&&!game.isNight&&!!locked&&Math.abs(game.z+locked.start)<24;
+    this.stageLockWall.visible=showLock;this.stageLockLabel.hidden=true;
+    if(showLock&&locked){
+      this.stageLockWall.position.set(0,2,-locked.start);
+      const p=new T.Vector3(0,2,-locked.start).project(this.camera);
+      this.stageLockLabel.hidden=p.z < -1||p.z>1||Math.abs(p.x)>1||Math.abs(p.y)>1;
+      this.stageLockLabel.textContent=`STAGE ${locked.stage}\n해금 조건 : 속도 ${formatNumber(recommendedRouteSpeed(0,locked.stage))}`;
+      this.stageLockLabel.style.left=`${(p.x+1)/2*this.host.clientWidth}px`;
+      this.stageLockLabel.style.top=`${(1-p.y)/2*this.host.clientHeight}px`;
+    }
     for(const [id,label] of this.eggSpeedLabels)if(!closeEggs.some(egg=>egg.id===id)){label.remove();this.eggSpeedLabels.delete(id);}
     for(const egg of closeEggs){
       let label=this.eggSpeedLabels.get(egg.id);

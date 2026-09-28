@@ -23,6 +23,9 @@ export function explorationWalls(stage:number,length:number):Block[]{
   const noise=((index*17+stage*11+(side+1)*7)%13)/12;
   const inset=Math.round((wave*1.6+noise*.6)*4)/4;
   const edge=12.5+inset,width=18-edge;
+  // Ground ends at ±13.5. Support recessed rock faces all the way to the rear ridge.
+  // Short strips stay in the same render buckets as their walls; no collision changes.
+  b(side*16.75,-.525,z,7.1,1.05,depth,rock,false);
   const h=2.8+Math.round((wave*2.3+noise*.8)*4)/4;
   // The broad silhouette undulates in plan as well as elevation. No new road obstacles.
   b(side*(edge+width/2),.75,z,width,1.5,depth,rock);
