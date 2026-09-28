@@ -124,7 +124,7 @@ $("shell").append(bottomHud);
 const inventory = document.createElement("section");
 inventory.id = "inventory";
 inventory.innerHTML =
-  '<div class="inventory-heading"><strong id="inventory-count" aria-label="알 보관함">0 / 6</strong></div><div id="egg-queue"></div><div id="pet-effects"></div>';
+  '<div class="inventory-heading"><strong id="inventory-count" aria-label="알 보관함"></strong></div><div id="egg-queue"></div><div id="pet-effects"></div>';
 for (const el of [$("hint"), inventory, $("controls"), $("risk")])
   bottomHud.append(el);
 const eggBag=document.createElement('dialog');
@@ -543,7 +543,7 @@ function renderEggQueue() {
     $("inventory").append(queue);
   }
   $("inventory-count").textContent =
-    `${game.save.eggs.length}/${BALANCE.inventory}`;
+    `${game.save.eggs.length}/${game.eggCapacity}`;
   const html = game.save.eggs.map(e => {
     const def = EGGS[e.type];
     return `<button data-egg="${e.id}" aria-pressed="${game.save.selected===e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""}" style="--egg:${def.color}"><b>${def.rarity}${game.save.selected===e.id?' ✓':''}</b><img class="egg-icon" src="${eggIcon(e)}" alt=""/><strong>${eggName(e)}</strong><span class="bag-egg-weight">${compactWeight(e.weightG??0)}</span><small></small><span class="egg-slot-progress" aria-hidden="true"><i></i></span></button>`;

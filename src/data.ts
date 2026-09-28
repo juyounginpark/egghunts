@@ -117,7 +117,7 @@ export const BALANCE = {
   speed: 2,
   interaction: 1.4,
   returnRadius: 2.2,
-  inventory: 6,
+  eggsPerLevel:15,
   offlineCap: 172800,
   tapInterval: 80,
 };

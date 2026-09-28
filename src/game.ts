@@ -214,7 +214,6 @@ export function parseSave(raw: string | null, now: number): Save {
         s.upgrades[k as Upgrade] >= 0 && s.upgrades[k as Upgrade] <= BALANCE.maxUpgrade,
     ) ||
     !Array.isArray(s.eggs) ||
-    s.eggs.length > BALANCE.inventory ||
     !s.eggs.every(
       (e) =>
         Number.isInteger(e.type) &&
@@ -320,6 +319,7 @@ export class GameState {
     if(!this.isAtBase){this.emit('region_enter',{stage:id,first:first?1:0});if(id>4)this.unlockHealth();}
   }
   get level(){return this.progression.level;}
+  get eggCapacity(){return Math.max(1,this.level)*BALANCE.eggsPerLevel;}
   get defenses(){return this.save.active.map(id=>PET_DEFENSE[id]??{});}
   defense(key:'maxHP'|'damageReduction'|'firstHitReduction'|'statusReduction'|'lowHPSpeed'|'returnXPBonus'){return this.defenses.reduce((n,d)=>n+(d[key]??0),0);}
   selectStage(id:number){
@@ -1080,7 +1080,7 @@ export class GameState {
 
     if (this.isAtBase && this.deadline) {
       if (this.carried) {
-        if (this.save.eggs.length < BALANCE.inventory) {
+        if (this.save.eggs.length < this.eggCapacity) {
           const e = this.carried;
           if(e.stageId){const clue=this.save.dragonClues![e.stageId]??=newDragonClue();if(DRAGON_RULES[e.stageId-1].avoid.every(id=>clue.avoided.includes(id)))clue.returned=true;}
           this.emit("egg_saved", {id:e.id,type:e.type,stageId:e.stageId??0,variant:e.variant??-1,special:e.special?1:0});
@@ -1218,7 +1218,7 @@ export class GameState {
     if(this.save.redeemedCoupons?.includes(code))return 'COUPON_USED';
     if(!this.isAtBase||this.death)return 'RETURN_TO_BASE';
     if(this.result!==null)return 'COUPON_HATCH_PENDING';
-    if(this.save.eggs.length>=BALANCE.inventory)return 'COUPON_INVENTORY_FULL';
+    if(this.save.eggs.length>=this.eggCapacity)return 'COUPON_INVENTORY_FULL';
     const stageId=1,variant=randomNormalEggVariant(this.random);
     const type=2*REGIONS.length,id=`coupon-${code}`;
     const egg:Egg={id,type,stageId,variant,hp:eggMaxHp({type,stageId}),hpVersion:5,distance:0};
@@ -1239,7 +1239,7 @@ export class GameState {
     if(!this.canClaimWeekly){this.message='오늘 보상은 이미 받았어요';return false;}
     const index=this.weeklyIndex;
     if(index===6&&this.petStorageFull){this.message='펫 보관함 한 칸을 비워 주세요';return false;}
-    if(index===6&&this.save.eggs.length>=BALANCE.inventory){this.message='알 보관함 한 칸을 비워 주세요';return false;}
+    if(index===6&&this.save.eggs.length>=this.eggCapacity){this.message='알 보관함 한 칸을 비워 주세요';return false;}
     const day=weeklyDay(this.now()),claimed=this.save.weekly?.claimed??0;
     this.save.dust=add(this.save.dust,this.weeklyReward(index));
     if(index===6){

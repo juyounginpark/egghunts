@@ -17,9 +17,9 @@ try{
   const restored=new GameState(parseSave(JSON.stringify(g.snapshot()),now),()=>now);
   restored.save.eggs=[];assert.equal(restored.redeemCoupon('FREEPET'),'COUPON_USED');
  }
- const full=make();full.save.eggs=Array.from({length:BALANCE.inventory},(_,i)=>({id:`full-${i}`,type:0,hp:12,hpVersion:4,distance:0}));
+ const full=make();full.save.eggs=Array.from({length:full.eggCapacity},(_,i)=>({id:`full-${i}`,type:0,hp:12,hpVersion:4,distance:0}));
  assert.equal(full.redeemCoupon('FREEPET'),'COUPON_INVENTORY_FULL');assert.equal(full.save.redeemedCoupons,undefined);
- full.save.eggs.pop();assert.equal(full.redeemCoupon('FREEPET'),null);assert.equal(full.save.eggs.length,BALANCE.inventory);
+ full.save.eggs.pop();assert.equal(full.redeemCoupon('FREEPET'),null);assert.equal(full.save.eggs.length,full.eggCapacity);
  const bad=make();for(const code of ['','NOPE','constructor','__proto__'])assert.equal(bad.redeemCoupon(code),'COUPON_INVALID');
  bad.z=-30;assert.equal(bad.redeemCoupon('FREEPET'),'RETURN_TO_BASE');assert.equal(bad.save.redeemedCoupons,undefined);
  const members=[{user_id:'coupon-test',slot:0,last_seen:new Date(now).toISOString()}];
