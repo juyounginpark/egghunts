@@ -647,13 +647,8 @@ document.addEventListener("click", async (e) => {
   if(hatchRevealing)return;
   if(b.hasAttribute('data-empty-egg')){toast('탐험에서 알을 데려와 주세요.');return;}
   if(b.dataset.petPick!==undefined){
-    $('panel').dataset.petPick=b.dataset.petPick;delete $('panel').dataset.petFilter;renderPanel();
+    $('panel').dataset.petPick=b.dataset.petPick;renderPanel();
     $('panel').querySelector<HTMLElement>('.pet-list-tools')?.scrollIntoView({block:'nearest'});return;
-  }
-  if(b.id==='pet-equipped-filter'){$('panel').dataset.petFilter=$('panel').dataset.petFilter==='equipped'?'':'equipped';renderPanel();return;}
-  if(b.dataset.petScroll){
-    const rail=$('panel').querySelector<HTMLElement>('.pet-inventory-grid');
-    rail?.scrollBy({left:Number(b.dataset.petScroll)*rail.clientWidth*.8,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});return;
   }
   if(b.dataset.petLot!==undefined){
     const html=petDetailPanel(game,b.dataset.petLot);if(!html)return;

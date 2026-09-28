@@ -543,7 +543,8 @@ export class World {
         const bottom=document.getElementById('bottom-hud')!;
         const end=game.returnReward?document.getElementById('reward-copy')!.getBoundingClientRect().top-host.top:bottom.hidden?host.height*.8:bottom.getBoundingClientRect().top-host.top-36;
         this.hatchSpace=Math.max(80,end-top-36);
-        this.viewportOffset=host.height/2-(top+end)/2;
+        // Keep the egg/pedestal below center, independent of the floating bag button.
+        this.viewportOffset=host.height/2-(top+end)/2-(mode==='hatchery'&&!game.returnReward?Math.min(30,host.height*.035):0);
       }else this.viewportOffset = -host.height * .05;
       this.camera.setViewOffset(
         host.width,
