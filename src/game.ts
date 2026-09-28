@@ -1,5 +1,5 @@
 import {ULTRA_SECRET} from './ultra-secret';
-import {ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
+import {WEIGHT_BALANCE,ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {softenGrowth} from './growth-curve';
 import {freshPads} from './speed-pads';
@@ -426,7 +426,7 @@ export class GameState {
     if(chosen)return this.sellPetLot(chosen.key);
     return 0;
   }
-  get mountId(){const id=this.save.mountPet;return typeof id==='number'&&Number.isInteger(id)&&MONGLES[id]&&(this.save.mongles[id]??0)>this.save.active.filter(p=>p===id).length?id:null;}
+  get mountId(){const id=this.save.mountPet;if((this.mountPetLot?.weightG??0)<WEIGHT_BALANCE.mountMinimumGrams)return null;return typeof id==='number'&&Number.isInteger(id)&&MONGLES[id]&&(this.save.mongles[id]??0)>this.save.active.filter(p=>p===id).length?id:null;}
   get equippedPetIds(){return this.mountId===null?this.save.active:[...this.save.active,this.mountId];}
   equippedCount(id:number){return this.save.active.filter(p=>p===id).length+Number(this.mountId===id);}
   mountBonus(id:number){return Math.max(0,(MONGLES[id]?.speedMultiplier??1)-1)*BALANCE.mountSpeedBonusRate;}
@@ -467,7 +467,7 @@ export class GameState {
   }
   unequipPetSlot(slot:number){if(!this.isAtBase||this.death||!Number.isInteger(slot)||slot<0||slot>=this.save.active.length)return false;this.save.active.splice(slot,1);this.save.activeLots?.splice(slot,1);this.revision++;return true;}
   equipMountLot(key:string){
-    const lot=this.save.petLots?.find(l=>l.key===key);if(!this.isAtBase||this.death||!lot||lot.count<=0||this.save.mountLot===key)return false;
+    const lot=this.save.petLots?.find(l=>l.key===key);if(!this.isAtBase||this.death||!lot||lot.count<=0||lot.weightG<WEIGHT_BALANCE.mountMinimumGrams||this.save.mountLot===key)return false;
     if(this.lotAvailable(key)<=0){const slot=this.save.activeLots?.lastIndexOf(key)??-1;if(slot<0)return false;this.unequipPetSlot(slot);}
     this.save.mountPet=lot.species;this.save.mountLot=key;this.revision++;return true;
   }

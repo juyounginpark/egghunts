@@ -1,6 +1,5 @@
-import {WEIGHT_BALANCE} from './weight';
+import {petDisplayScale} from './weight';
 import {addPetAura,animateEgg} from './visuals';
-import {MONGLES} from './data';
 import * as T from 'three';
 import {loadVoxels,voxelModel} from './voxel';
 import {animatePet} from './pet-animation';
@@ -37,7 +36,7 @@ export class MountView{
    const bounds=new T.Box3().setFromObject(model),center=bounds.getCenter(new T.Vector3());
    model.traverse(part=>{if(part instanceof T.Mesh){part.geometry.computeBoundingBox();entry.surfaces.push(part);}});
    addPetAura(model,entry.id);
-   const scale=MONGLES[entry.id].scale*entry.size*WEIGHT_BALANCE.petVisualScale;
+   const scale=petDisplayScale(entry.id,entry.size,model.userData);
    model.scale.setScalar(scale);model.position.set(-center.x*scale,-bounds.min.y*scale,-center.z*scale);model.updateMatrixWorld(true);
    entry.model=model;entry.root.add(model);this.updateSeat(entry);
   }catch{entry.retryAt=performance.now()+5000;}

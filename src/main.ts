@@ -275,7 +275,9 @@ function renderPanel() {
 }
 function updateHud() {
   weeklyEntry.hidden=!game.isAtBase||tab!=='explore'||!!game.returnReward||game.result!==null;
-  weeklyEntry.textContent=game.canClaimWeekly?'🎁 이벤트 · 받을 보상':'🎁 이벤트';
+  weeklyEntry.textContent='\uD83C\uDF81';
+  weeklyEntry.classList.toggle('reward-ready',game.canClaimWeekly);
+  weeklyEntry.setAttribute('aria-label',game.canClaimWeekly?'\uC774\uBCA4\uD2B8 - \uBC1B\uC744 \uBCF4\uC0C1 \uC788\uC74C':'\uC774\uBCA4\uD2B8');
   if((tab==='weekly'||tab==='events')&&renderedWeeklyDay!==weeklyDay(game.now())){renderedWeeklyDay=weeklyDay(game.now());renderPanel();}
   eggNotices.observeWorld(game,online.latest?.serverTime??game.now());
   eggNotices.update(online.latest?.eggNotices??[],online.latest?.serverTime??game.now());
@@ -580,13 +582,6 @@ document.addEventListener("click", async (e) => {
   }
   if(hatchRevealing)return;
   if(b.dataset.event!==undefined){$('panel').dataset.event=b.dataset.event;setTab('events');return;}
-  if(b.id==='event-coupon-redeem'){
-    if(couponRedeeming)return;couponRedeeming=true;b.setAttribute('disabled','');
-    try{const code=($('event-coupon-code') as HTMLInputElement).value;
-      if(online.active){if(await remote('coupon',code)){toast(game.message);void save();}}
-      else {const error=game.redeemCoupon(code);toast(error?COUPON_ERRORS[error]??error:game.message);if(!error)void save();}
-    }finally{couponRedeeming=false;renderPanel();}return;
-  }
   if(b.dataset.lotAction!==undefined){
     if(!game.isAtBase||game.death)return;
     const action=b.dataset.lotAction,key=b.dataset.lot??'',slot=b.dataset.slot===undefined?undefined:Number(b.dataset.slot);

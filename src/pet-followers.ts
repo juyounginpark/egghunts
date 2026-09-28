@@ -1,12 +1,11 @@
-import {weightSize,WEIGHT_BALANCE} from './weight';
+import {weightSize,petDisplayScale} from './weight';
 import * as T from 'three';
 import {animateEgg} from './visuals';
 import {animatePet} from './pet-animation';
-import {MONGLES} from './data';
 import {explorationHeight} from './exploration-route';
 
 /** Shared local/remote trail spacing and articulated companion animation. */
-export function followPets(companions:T.Group,trail:T.Vector3[],position:T.Vector3,facing:{x:number;z:number},dt:number,time:number,low:boolean,reducedMotion:boolean,maxSize=Infinity,routeStart=1){
+export function followPets(companions:T.Group,trail:T.Vector3[],position:T.Vector3,facing:{x:number;z:number},dt:number,time:number,low:boolean,reducedMotion:boolean,_maxSize=Infinity,routeStart=1){
     const here = new T.Vector3(position.x, 0, position.z);
     if (!trail.length || trail[0].distanceTo(here) > 10) {
       trail = Array.from({ length: 500 }, (_, i) =>
@@ -19,9 +18,7 @@ export function followPets(companions:T.Group,trail:T.Vector3[],position:T.Vecto
     }
     let followerDistance=0;
     companions.children.forEach((pet, i) => {
-      const natural=MONGLES[pet.userData.petId].scale*weightSize(pet.userData.weight??{});
-      const size=Math.max(.001,pet.userData.bodyWidth??1,pet.userData.bodyHeight??1,pet.userData.bodyDepth??1);
-      pet.userData.followScale=Math.min(natural,pet.userData.petId>=100?3.2/Math.max(1,pet.userData.bodyWidth??1):Infinity,maxSize/size)*WEIGHT_BALANCE.petVisualScale;
+      pet.userData.followScale=petDisplayScale(pet.userData.petId,weightSize(pet.userData.weight??{}),pet.userData);
       pet.scale.setScalar(pet.userData.followScale);
       const radius=(p:T.Object3D)=>p.scale.x*Math.max(.6,(p.userData.bodyDepth??1)*.5);
       followerDistance+=Math.max(1.2,radius(pet))+(i?Math.max(.4,radius(companions.children[i-1])):.6);

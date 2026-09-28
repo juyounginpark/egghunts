@@ -1,4 +1,4 @@
-import {weightSize,weightText,WEIGHT_BALANCE,type Weighted} from './weight';
+import {weightSize,weightText,WEIGHT_BALANCE,petDisplayScale,type Weighted} from './weight';
 import {MountView} from './mount-view';
 import {eggMaxHp} from './data';
 import {explorationHeight} from './exploration-route';
@@ -98,8 +98,7 @@ export class World {
     return pet;
   }
   private scaleFarmPet(pet:T.Object3D){
-    const size=Math.max(.001,pet.userData.bodyWidth??1,pet.userData.bodyHeight??1,pet.userData.bodyDepth??1);
-    pet.scale.setScalar(Math.min(MONGLES[pet.userData.petId].scale*weightSize(pet.userData.weight??{}),BALANCE.farmPetMaxSize/size)*WEIGHT_BALANCE.petVisualScale);
+    pet.scale.setScalar(petDisplayScale(pet.userData.petId,weightSize(pet.userData.weight??{}),pet.userData));
   }
   private animateFarmPet(pet:T.Object3D,time:number){
     const pose=farmPetPose(pet.userData.farmSlot,pet.userData.farmIndex,time,this.reducedMotion.matches);
