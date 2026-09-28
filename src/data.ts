@@ -83,10 +83,14 @@ export const BALANCE = {
   mapNearZ: 22,
   baseMinZ:-4.4,
   mapFarZ: ROUTE_FAR_Z,
-  // The 2,280-unit final route needs ~228s round trip at the existing 20-unit cap.
-  // Keep forced night return, but allow a complete expedition between nights.
-  nightInterval: 300000,
+  // Cycle starts with the reset window, then daylight, then explorable night.
+  nightInterval: 435000,
   nightDuration: 15000,
+  normalNightDuration: 180000,
+  nightMoveMultiplier: .7,
+  rainInterval: 180000,
+  rainChance: .4,
+  rainDuration: 35000,
   warningSeconds: 10,
   windSeconds: 5,
   deadzone: 8,

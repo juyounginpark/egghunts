@@ -115,7 +115,7 @@ tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}mo
 topHud.append(tutorial);
 const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='events';topHud.append(weeklyEntry);
 let renderedWeeklyDay=-1;
-$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 15초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
+$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤이 깊어 나가지 못해요.<br>날이 밝으면 다시 출발해요.</p><small>낮 4분 · 밤 3분 · 깊은 밤 15초</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
 $("action").insertAdjacentHTML('beforebegin',`<button id="train-now" class="secondary" aria-label="운동하기" title="운동하기" hidden><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><span class="sr-only">운동하기</span></button>`);
 bottomHud.id = "bottom-hud";
@@ -175,7 +175,8 @@ function feedback(sound:GameSound|null='ui') {
 }
 // Pay the audio device startup cost on login, before movement is available.
 for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>{if(!ready||game.save.settings.sound)audio.unlock();},{capture:true});
-function toast(text: string) {
+function toast(text: string,scope='') {
+  $('toast').dataset.scope=scope;
   $("toast").textContent = text;
   $("toast").hidden = false;
   clearTimeout(toastTimer);
@@ -260,6 +261,7 @@ function setTab(next: string) {
   input.reset();
   pickupPreparation=null;
   tab = next;
+  if(tab!=='explore'&&$('toast').dataset.scope==='night'){$('toast').hidden=true;clearTimeout(toastTimer);}
   if(eggBag.open)eggBag.close();
   document
     .querySelectorAll<HTMLButtonElement>("nav [data-tab]")
@@ -340,7 +342,7 @@ function updateHud() {
   }
   if(game.death&&game.deathAnimationRemaining<=0&&!virtualAd&&$("modal").dataset.kind!=='death'){
     input.reset();paused=true;$("modal").hidden=false;$("modal").dataset.kind='death';
-    $("modal").innerHTML='<section class="death-card" role="dialog" aria-modal="true" aria-labelledby="death-title"><span class="tag">A LITTLE REST</span><h1 id="death-title">잠시 쓰러졌어요</h1><p>떨어뜨린 알은 현장에 남아 있어요.</p><strong id="death-count"></strong><button id="revive-ad" class="primary">가상광고 보고 부활</button><small>10초 시청 · 제자리 HP 전부 회복 · 3초 무적<br>밤이 되면 농장으로 돌아가요</small><button id="respawn-base" class="secondary">그냥 복귀</button><small>복귀 시 원정 경험치 70% 유지</small></section>';
+    $("modal").innerHTML='<section class="death-card" role="dialog" aria-modal="true" aria-labelledby="death-title"><span class="tag">A LITTLE REST</span><h1 id="death-title">잠시 쓰러졌어요</h1><p>떨어뜨린 알은 현장에 남아 있어요.</p><strong id="death-count"></strong><button id="revive-ad" class="primary">가상광고 보고 부활</button><small>10초 시청 · 제자리 HP 전부 회복 · 3초 무적<br>깊은 밤이 되면 농장으로 돌아가요</small><button id="respawn-base" class="secondary">그냥 복귀</button><small>복귀 시 원정 경험치 70% 유지</small></section>';
   }
   if(game.death&&!virtualAd&&document.getElementById('death-count'))$('death-count').textContent=`${game.deathChoiceRemaining}초 후 자동 복귀`;
   $("night-curtain").hidden = true;
@@ -353,23 +355,24 @@ function updateHud() {
   $('day-clock').setAttribute('aria-label',game.isAtBase?'기지':`권장 속도 ${num(game.recommendedSpeed,1)}`);
   $('day-clock').title=game.isAtBase?'기지':`권장 속도 ${num(game.recommendedSpeed,1)}`;
   const phase=cycleClock(game.now(),game.nightAt,game.nightUntil),clock=$('cycle-clock');
-  $('cycle-phase').textContent=hudCompact?(phase.night?'☾':'☀'):(phase.night?'☾ 밤':'☀ 낮');
-  $('cycle-label').textContent=phase.night?'아침까지':'밤까지';
+  if($('toast').dataset.scope==='night'&&(tab!=='explore'||!$('modal').hidden)){$('toast').hidden=true;clearTimeout(toastTimer);}
+  $('cycle-phase').textContent=hudCompact?(phase.night?'☾':'☀'):(phase.deepNight?'☾ 깊은 밤':phase.night?'☾ 밤':'☀ 낮');
+  $('cycle-label').textContent=phase.deepNight?'아침까지':phase.normalNight?'깊은 밤까지':'밤까지';
   $('cycle-remaining').textContent=phase.text;
   $('cycle-fill').style.width=`${phase.ratio*100}%`;
   clock.dataset.phase=phase.night?'night':'day';
-  clock.classList.toggle('night-warning',phase.warning);
-  if(ready&&phase.warning&&clock.dataset.warned!==String(game.nightAt)){
-    clock.dataset.warned=String(game.nightAt);
-    toast('곧 밤이 와요!');
+  clock.classList.toggle('night-warning',phase.warning&&tab==='explore');
+  if(ready&&tab==='explore'&&$('modal').hidden&&!game.returnReward&&phase.warning&&clock.dataset.warned!==String(phase.deadline)){
+    clock.dataset.warned=String(phase.deadline);
+    toast(phase.normalNight?'곧 깊은 밤이 와요! 기지로 돌아가세요.':'곧 밤이 와요! 이동속도 30% 감소','night');
     if(!matchMedia('(prefers-reduced-motion: reduce)').matches)$('cycle-remaining').animate([{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});
   }
   clock.setAttribute('aria-label',`${phase.night?'밤':'낮'} · ${$('cycle-label').textContent} ${phase.text} · ${hudCompact?'상단 정보 펼치기':'상단 정보 간소화'}`);
-  $("night-sky").classList.toggle('visible',game.isNight&&tab==='explore');
+  $("night-sky").classList.toggle('visible',phase.night&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||game.seat!==null||!!game.carried||!!game.death||!!game.returnReward;
-  $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:'';
-  $('speed-help').hidden=!game.training;
+  $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:phase.normalNight?'밤 · 이동 −30%':'';
+  $('speed-help').hidden=!game.training&&!phase.normalNight;
   const hint=tutorialHint(game,tab);
   $("tutorial").hidden=!hint || !!game.returnReward || game.result!==null || !!game.death || paused;
   $("tutorial-title").textContent=hint?`${hint.step}/5 · ${hint.title}`:'';
@@ -413,7 +416,7 @@ function updateHud() {
     !exploring ? "앞으로 걸으면 20개 지역이 이어져요" : game.stage.description;
   $("expedition").querySelector(".tag")!.textContent =
     exploring ? `STAGE ${String(game.stage.id).padStart(2, "0")} · STEP ${game.stageStep}/3` : "BASE CAMP";
-  $("shell").classList.toggle("night", game.isNight);
+  $("shell").classList.toggle("night", phase.night);
   if (game.announcementId !== lastAnnouncement) {
     lastAnnouncement = game.announcementId;
     $("announcement").textContent = game.announcement;
@@ -428,7 +431,7 @@ function updateHud() {
       game.announcement.includes("SECRET") ? 12000 : 5000,
     );
   }
-    if (!game.isNight && game.announcement.startsWith('밤에는 농장에서')) {
+    if ((!game.isNight||tab!=='explore') && (game.announcement.startsWith('밤에는 농장에서')||game.announcement==='밤이 깊어 나가지 못해요')) {
       $("announcement").hidden = true;
       clearTimeout(announcementTimer);
     }
@@ -441,7 +444,7 @@ function updateHud() {
   $("timer-fill").style.width = `${Math.min(100,game.speed/game.recommendedSpeed*100)}%`;
   $("expedition").classList.remove("urgent");
   $("hint").textContent =
-    game.expeditionWarning ? game.expeditionWarning : game.pursuing >= 0
+    game.isNight?'밤이 깊어 나가지 못해요':game.expeditionWarning ? game.expeditionWarning : game.pursuing >= 0
       ? "알을 들고 귀환하세요 · ! 표시의 장애물을 피하세요"
       : game.message;
   $("carry-chip").hidden = !game.carried || tab !== "explore";
@@ -750,7 +753,7 @@ document.addEventListener("click", async (e) => {
   if(b.id==='virtual-ad-close'&&virtualAd){
     const reward=virtualAd.claim();if(!reward)return;
     if(online.active){await remote(virtualAdPurpose==='revive'?'revive':'adClaim');}
-    else if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'밤이 되어 농장으로 돌아왔어요.');}else{const reward=game.claimAdReward();playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
+    else if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'깊은 밤이 되어 농장으로 돌아왔어요.');}else{const reward=game.claimAdReward();playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
     game.revision++;virtualAd=null;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';renderPanel();void save();
     platform.track('virtual_ad_reward',{purpose:virtualAdPurpose,amount:virtualAdPurpose==='currency'?reward:0});return;
   }

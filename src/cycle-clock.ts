@@ -6,8 +6,10 @@ export function clockText(seconds:number){
 }
 /** Read the game's phase deadlines; never maintain a second countdown. */
 export function cycleClock(now:number,nightAt:number,nightUntil:number){
- const night=now<nightUntil;
- const remaining=Math.max(0,((night?nightUntil:nightAt)-now)/1000);
- const duration=(night?BALANCE.nightDuration:BALANCE.nightInterval-BALANCE.nightDuration)/1000;
- return {night,remaining,text:clockText(remaining),ratio:Math.max(0,Math.min(1,remaining/duration)),warning:!night&&remaining>0&&remaining<=10};
+ const deepNight=now<nightUntil,normalNight=!deepNight&&now>=nightAt-BALANCE.normalNightDuration;
+ const night=deepNight||normalNight;
+ const deadline=deepNight?nightUntil:normalNight?nightAt:nightAt-BALANCE.normalNightDuration;
+ const remaining=Math.max(0,(deadline-now)/1000);
+ const duration=(deepNight?BALANCE.nightDuration:normalNight?BALANCE.normalNightDuration:BALANCE.nightInterval-BALANCE.nightDuration-BALANCE.normalNightDuration)/1000;
+ return {night,deepNight,normalNight,deadline,remaining,text:clockText(remaining),ratio:Math.max(0,Math.min(1,remaining/duration)),warning:!deepNight&&remaining>0&&remaining<=BALANCE.warningSeconds};
 }

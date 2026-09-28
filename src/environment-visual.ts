@@ -7,6 +7,7 @@ import {FARM_PLOTS,farmLocal} from './village';
 import {explorationSurface} from './exploration-route';
 import {brushRegions} from './brush';
 import {ENVIRONMENT_ART} from './environment-art-data';
+import {rainStrength} from './weather';
 
 // Three's physically scaled lights need larger intensities than normalized art guides.
 export const ENVIRONMENT_PRESETS=[
@@ -34,6 +35,9 @@ export class EnvironmentVisualController {
  private ripples=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:0xd0eee3}),160);
  private waterState=new WeakMap<T.Object3D,{wet:boolean;entered:number;x:number;z:number}>();
  private glows=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({transparent:true,opacity:.75,depthWrite:false}),24);
+ private rainMaterial=new T.MeshBasicMaterial({color:0xc2dde6,transparent:true,opacity:.5,depthWrite:false});
+ private rain=new T.InstancedMesh(new T.BoxGeometry(1,1,1),this.rainMaterial,180);
+ private reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
  constructor(private scene:T.Scene,private renderer:T.WebGLRenderer,private sun:T.DirectionalLight,private ambient:T.HemisphereLight){
   scene.userData.diorama=this.uniforms;
   // A shared 32px radial texture replaces expensive SSAO and shadow lights.
@@ -56,13 +60,14 @@ export class EnvironmentVisualController {
   this.lamps.instanceMatrix.needsUpdate=true;
   this.ripples.frustumCulled=false;this.ripples.count=0;
   this.glows.frustumCulled=false;this.glows.count=0;scene.add(this.glows);
+  this.rain.frustumCulled=false;this.rain.count=0;scene.add(this.rain);
   scene.add(this.lamps,this.contacts,this.playerShadow,this.ripples);
  }
  update(game:GameState,hatch:boolean,low:boolean,player:T.Object3D,peers:Iterable<T.Object3D>){
   const clock=cycleClock(game.now(),game.nightAt,game.nightUntil);
   let progress=clock.night?1:1-clock.ratio;
   // Dawn also derives from the authoritative cycle, including resume/reload.
-  const daySeconds=(BALANCE.nightInterval-BALANCE.nightDuration)/1000;
+  const daySeconds=(BALANCE.nightInterval-BALANCE.nightDuration-BALANCE.normalNightDuration)/1000;
   if(!clock.night&&progress*daySeconds<8)progress=1-T.MathUtils.smoothstep(progress*daySeconds,0,8);
   this.progress=hatch?0:this.preview??progress;
   const b=ENVIRONMENT_PRESETS.find(p=>p.at>=this.progress)??ENVIRONMENT_PRESETS[4];
@@ -76,6 +81,9 @@ export class EnvironmentVisualController {
   color(this.fog.color,'fog');
   if(!hatch&&game.distance>8)this.fog.color.lerp(this.tint.set(game.stage.color),.1*(1-this.progress));
   this.fog.near=number('near');this.fog.far=number('far');
+  const rain=hatch?0:rainStrength(game.now());
+  this.sun.intensity*=1-rain*.22;this.ambient.intensity*=1-rain*.08;
+  this.fog.color.lerp(this.tint.setHex(0x879faa),rain*.22);
   this.scene.fog=this.enabled.fog?this.fog:null;this.renderer.setClearColor(this.fog.color);
   this.uniforms.uDioramaAO.value=this.enabled.ao?number('ao'):0;
   this.uniforms.uDioramaRim.value=this.enabled.rim?number('rim')*(low?.75:1):0;
@@ -85,6 +93,20 @@ export class EnvironmentVisualController {
   this.renderer.shadowMap.enabled=!low&&this.enabled.shadows;
   this.playerShadow.visible=this.contacts.visible=!hatch&&this.enabled.ao;
   const surfaceAt=(x:number,z:number)=>explorationSurface(x,z,game.progression.stage);
+  // One instanced draw, anchored around the player. No per-drop objects or network state.
+  const drops=rain>0?(this.reducedMotion.matches?28:low?70:180):0;
+  this.rainMaterial.opacity=rain*(this.reducedMotion.matches?.24:.5);
+  for(let i=0;i<drops;i++){
+   const phase=((this.reducedMotion.matches?0:game.now()/1000)*.85+i*.61803398875)%1;
+   const x=game.x+((i*7.13)%28)-14-phase*.7,z=game.z+((i*11.71)%34)-19;
+   const ground=surfaceAt(x,z),floor=ground?.water?.surface??ground?.height??0;
+   const splash=phase>.94,spread=(phase-.94)/.06;
+   this.marker.position.set(x,splash?floor+.035:floor+(1-phase)*12,z);
+   this.marker.rotation.set(0,0,splash?0:-.12);
+   this.marker.scale.set(splash?.09+spread*.24:.035,splash?.025:.4,splash?.09+spread*.24:.035);
+   this.marker.updateMatrix();this.rain.setMatrixAt(i,this.marker.matrix);
+  }
+  this.rain.count=drops;this.rain.visible=drops>0;if(drops)this.rain.instanceMatrix.needsUpdate=true;
   const surface=surfaceAt(player.position.x,player.position.z),floor=surface?.water?.surface??surface?.height??0;
   const height=Math.max(0,player.position.y-(surface?.height??0)),size=1/(1+height*.18);
   this.playerShadow.position.set(player.position.x,floor+.025,player.position.z);this.playerShadow.scale.set(1.15*size,1,.85*size);

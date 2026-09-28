@@ -745,7 +745,7 @@ export class GameState {
   get progressionSpeed(){return progressionSpeedValue(upgradeBaseSpeed(this.save.upgrades.speed),this.save.trainingProgress??0,this.save.equippedTrail??0,this.speedMultiplier,this.level);}
   get movementSpeed(){
     const base=this.isAtBase?BALANCE.baseWalkSpeed:walkingSpeedValue(this.progressionSpeed);
-    const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1);
+    const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1)*(this.isNormalNight?BALANCE.nightMoveMultiplier:1);
     return base*TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
   }
   speedPad=freshPads();
@@ -760,7 +760,7 @@ export class GameState {
     const egg=this.carried??this.near;
     const speed=this.movementSpeed*(egg&&!this.carried?carryMultiplier(egg,this.save.upgrades.carry):1);
     const estimate=Math.max(0,-this.z+BALANCE.baseMinZ)*1.25/Math.max(.1,speed)+8+(egg&&!this.carried?BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier]:0);
-    return this.nightRemaining<estimate?'밤이 가까워요! 새 알을 줍기보다 기지로 돌아가세요.':'';
+    return this.nightRemaining<estimate?'깊은 밤이 가까워요! 기지로 돌아가세요.':'';
   }
   get speed(){return this.progressionSpeed;}
   get unmountedSpeed(){return this.progressionSpeed;}
@@ -849,8 +849,10 @@ export class GameState {
     return Math.max(0, Math.ceil((this.nightAt - this.now()) / 1000));
   }
   get isNight() {
+    // Compatibility: this flag exclusively means the forced-reset/closed phase.
     return this.now() < this.nightUntil;
   }
+  get isNormalNight(){return !this.isNight&&this.now()>=this.nightAt-BALANCE.normalNightDuration;}
   get pursuing() {
     return this.bosses.findIndex((b) => b.mode === "chase");
   }
@@ -986,7 +988,7 @@ export class GameState {
     this.mobs=[];
     this.spawn();
     this.resetBosses();
-    this.announcement='밤에는 농장에서 쉬어요 · 아침에 입구가 열려요';
+    this.announcement='밤이 깊어 나가지 못해요';
     this.announcementId++;this.emit('night_refresh');this.revision++;
   }
   tick(dt:number){
