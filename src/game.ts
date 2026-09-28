@@ -54,6 +54,8 @@ export function migrateEggHealth(eggs:(Egg|null|undefined)[]){
   }
 }
 export type WorldEgg = Egg & {
+  pickedUp?:boolean;
+  nightWeightApplied?:boolean;
   x: number;
   z: number;
   expires: number;
@@ -865,6 +867,18 @@ export class GameState {
     return this.now() < this.nightUntil;
   }
   get isNormalNight(){return !this.isNight&&this.now()>=this.nightAt-BALANCE.normalNightDuration;}
+  private applyNightEggWeight(egg:WorldEgg){
+    if(!this.isNormalNight||egg.pickedUp||egg.secured||egg.nightWeightApplied)return;
+    ensureEggWeight(egg);
+    egg.weightG=Math.round(egg.weightG!*BALANCE.nightEggWeightMultiplier);
+    egg.nightWeightApplied=true;
+    this.revision++;
+  }
+  applyNightEggWeights(){
+    if(!this.isNormalNight)return;
+    for(const egg of this.world)this.applyNightEggWeight(egg);
+    for(const boss of this.bosses)if(boss.replenishing)this.applyNightEggWeight(boss.replenishing.egg);
+  }
   get isRaining(){return rainStrength(this.now())>0;}
   get isWindy(){return windStrength(this.now())>0;}
   get pursuing() {
@@ -1024,6 +1038,7 @@ export class GameState {
   }
   updateNight() {
     if(this.roomManaged)return;
+    this.applyNightEggWeights();
     if (this.now() < this.nightAt) return;
     const onset = this.nightAt + Math.floor((this.now()-this.nightAt)/BALANCE.nightInterval)*BALANCE.nightInterval;
     this.nightAt = onset + BALANCE.nightInterval;
@@ -1148,6 +1163,8 @@ export class GameState {
   }
   pickup(egg:WorldEgg){
       if(this.carried||this.knockback.remaining>0||this.death||this.now()<this.knockedUntil)return;
+      this.applyNightEggWeight(egg);
+      egg.pickedUp=true;
       ensureEggWeight(egg);
       // Pickup remains available below the recommended recovery stat.
       this.carried = egg;

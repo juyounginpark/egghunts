@@ -118,6 +118,7 @@ export const BALANCE = {
   interaction: 1.4,
   returnRadius: 2.2,
   eggsPerLevel:15,
+  nightEggWeightMultiplier:1.3,
   offlineCap: 172800,
   tapInterval: 80,
 };

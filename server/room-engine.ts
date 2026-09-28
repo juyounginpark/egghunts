@@ -135,6 +135,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   }
  }
  simTime=now;room.at=now;self.world=room.world;self.bosses=room.bosses;
+ self.applyNightEggWeights();
  const errors:string[]=[];
  const duplicate=player.receipts.includes(`request:${request.id}`);
  if(!duplicate){

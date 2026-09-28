@@ -638,6 +638,9 @@ export class World {
     this.eggs.children.forEach((m) => {
       const egg=renderedEggs.find(e=>e.id===m.userData.id);
       if(egg){
+        m.scale.setScalar(RARITIES[EGGS[egg.type].tier].scale*BALANCE.eggVisualScale*weightSize(egg));
+        const nest=this.nests.get(`${egg.region}:${egg.homeX}:${egg.homeZ}`);
+        if(nest)nest.scale.setScalar(m.scale.x*1.45);
         const carrier=game.bosses.findIndex(b=>b.replenishing?.egg.id===egg.id);
         const delivery=game.bosses[carrier]?.replenishing;
         const location=delivery?this.hazardsView.guardians.position(carrier)??egg:egg;
