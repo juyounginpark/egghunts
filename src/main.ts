@@ -4,6 +4,7 @@ import {hatchProgress,hatchInfo} from './hatch-ui';
 import {eggMaxHp,COUPON_ERRORS} from './data';
 import {advanceTutorial,tutorialHint,TUTORIAL_STEPS} from './tutorial';
 import {IdlePresence} from './idle-presence';
+import {formatTrainingGain} from './format';
 import {weeklyDay} from './weekly';
 import {exactMoney,compare} from './money';
 import "./style.css";
@@ -391,7 +392,7 @@ function updateHud() {
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||game.seat!==null||!!game.carried||!!game.death||!!game.returnReward;
   const weatherTags=[phase.normalNight?'밤':'',game.isRaining?'비':'',game.isWindy?'바람':''].filter(Boolean);
   const weatherSpeed=(phase.normalNight?BALANCE.nightMoveMultiplier:1)*(game.isRaining?BALANCE.rainMoveMultiplier:1)*(game.isWindy?BALANCE.windMoveMultiplier:1),weatherChange=Math.round((weatherSpeed-1)*1000)/10;
-  $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:weatherTags.length?`${weatherTags.join('·')} · 이동 ${weatherChange>=0?'+':'−'}${Math.abs(weatherChange)}%`:'';
+  $('speed-help').textContent=game.training?((game.save.trainingProgress??0)>=1?'운동 성장 최대':`+${formatTrainingGain(game.effectiveTrainingRate)}/초`):weatherTags.length?`${weatherTags.join('·')} · 이동 ${weatherChange>=0?'+':'−'}${Math.abs(weatherChange)}%`:'';
   $('speed-help').hidden=!game.training&&!weatherTags.length;
   const hint=tutorialHint(game,tab);
   $("tutorial").hidden=!hint || !!game.returnReward || game.result!==null || !!game.death || paused;

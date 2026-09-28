@@ -13,4 +13,11 @@ export function formatNumber(value: Money, decimals = 2) {
 }
 // D = 1: currency and physical values share notation, never an implicit multiplier.
 export const formatCurrency = formatNumber;
+// Early training gains are ~0.0007; compact currency precision hides them.
+export function formatTrainingGain(value:number){
+  if(!Number.isFinite(value)||value<=0)return '0';
+  if(value>=1)return formatNumber(value);
+  if(value<.000001)return '<0.000001';
+  return value.toFixed(6).replace(/0+$/,'').replace(/\.$/,'');
+}
 export { exactMoney } from './money';

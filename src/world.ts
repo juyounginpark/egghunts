@@ -13,7 +13,7 @@ import type { Egg, GameState } from "./game";
 import { voxelModel as model, loadVoxels } from "./voxel";
 import {villageMapColliders,type MapCollider} from './map-collision';
 import type { Peer } from "./multiplayer";
-import { formatNumber } from "./format";
+import { formatNumber,formatTrainingGain } from "./format";
 import {HazardView} from "./hazard-view";
 import {FARM_PLOTS,farmPlot,farmGym,farmLocal,farmEggPosition,farmPetPose,CAMPFIRE,CAMP_SEATS} from './village';
 import {villageArt} from './world-art';
@@ -232,7 +232,8 @@ export class World {
   private peerPetLabelEntries=new Map<string,{id:number;label:HTMLDivElement}>();
   private trainingGains:{el:HTMLDivElement;at:number}[]=[];
   showTrainingGain(amount:number,at:number){
-    const el=document.createElement('div');el.className='training-gain';el.textContent=`+${formatNumber(amount,3)}`;
+    if(!Number.isFinite(amount)||amount<=0)return;
+    const el=document.createElement('div');el.className='training-gain';el.textContent=`+${formatTrainingGain(amount)}`;
     this.host.append(el);this.trainingGains.push({el,at});
     while(this.trainingGains.length>4)this.trainingGains.shift()!.el.remove();
   }
