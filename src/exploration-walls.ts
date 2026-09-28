@@ -16,8 +16,16 @@ const palettes=[
 /** Irregular buttresses, recessed gullies and rear peaks leave x=±12.5 clear. */
 export function explorationWalls(stage:number,length:number):Block[]{
  const out:Block[]=[],[rock,face,cap]=palettes[stage-1];
- const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number,solid=true)=>out.push({x,y,z,w,h,d,c,solid});
+ let layer=0;
+ const b=(x:number,y:number,z:number,w:number,h:number,d:number,c:number,solid=true)=>{
+  // Intersecting strata used identical end/side planes: different colors fought
+  // for the same depth pixel. Inset each visible layer by a distinct sub-voxel
+  // amount; the continuous foundation below still covers every joint.
+  const inset=y<0?0:++layer*.001;
+  out.push({x,y,z,w:w-inset,h:h-inset,d:d-inset,c,solid});
+ };
  for(const side of [-1,1])for(let start=0,index=0;start<length;start+=3,index++){
+  layer=0;
   const depth=Math.min(3,length-start),z=-6-start-depth/2;
   const wave=(Math.sin(index*.69+stage*1.7+side*2)+1)/2;
   const noise=((index*17+stage*11+(side+1)*7)%13)/12;
@@ -25,7 +33,7 @@ export function explorationWalls(stage:number,length:number):Block[]{
   const edge=12.5+inset,width=18-edge;
   // Ground ends at ±13.5. Support recessed rock faces all the way to the rear ridge.
   // Short strips stay in the same render buckets as their walls; no collision changes.
-  b(side*16.75,-.525,z,7.1,1.05,depth,rock,false);
+  b(side*16.75,-.545,z,7.1,1.01,depth,rock,false);
   const h=2.8+Math.round((wave*2.3+noise*.8)*4)/4;
   // The broad silhouette undulates in plan as well as elevation. No new road obstacles.
   b(side*(edge+width/2),.75,z,width,1.5,depth,rock);

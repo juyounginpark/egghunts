@@ -4,6 +4,7 @@ import {WebSocketServer,WebSocket} from 'ws';
 import {HostStore} from './ec2-store.mjs';
 import {runRoom,snapshotSections} from './room-engine.ts';
 import {BALANCE} from '../src/data';
+import {IdlePresence} from '../src/idle-presence';
 
 const required=name=>{const value=process.env[name];if(!value)throw Error(`Missing ${name}`);return value;};
 const supabase=required('SUPABASE_URL'),service=required('SUPABASE_SERVICE_ROLE_KEY');
@@ -13,6 +14,7 @@ const rooms=new Map(store.rooms().map(r=>[r.id,r])),membership=new Map();
 for(const r of rooms.values())for(const m of r.members)membership.set(m.user_id,r.id);
 const identities=new Map(),verifying=new Map(),loading=new Map();
 const connections=new Map();
+const presence=new Map(),idleUsers=new Set();
 let active=false,cloudSeen=0,stopping=false,cloudBusy=false;
 const maxRooms=Number(process.env.GAME_MAX_ROOMS??4);
 let transferMonth=store.metadata('transferMonth')??'',transferBytes=Number(store.metadata('transferBytes')??0);
@@ -28,7 +30,7 @@ function socketSend(socket,packet){
  if(socket.bufferedAmount>262144||!transferAvailable(bytes)){socket.close(1008,'Capacity limit');return;}
  transferBytes+=bytes;socket.send(text);
 }
-const known=new Set(['SIGN_IN','ROOM_EXPIRED','SERVER_NOT_READY','SERVER_FULL','RATE_LIMIT','INVALID_REQUEST','INVALID_INPUT','INVALID_COMMAND','INVALID_OPERATION']);
+const known=new Set(['SIGN_IN','ROOM_EXPIRED','IDLE_TIMEOUT','SERVER_NOT_READY','SERVER_FULL','RATE_LIMIT','INVALID_REQUEST','INVALID_INPUT','INVALID_COMMAND','INVALID_OPERATION']);
 const buckets=new Map(),negative=new Map();
 function allow(key,rate,burst){
  const now=Date.now(),old=buckets.get(key)??{tokens:burst,at:now};
@@ -95,9 +97,11 @@ async function loadProfile(user){
  })().finally(()=>loading.delete(user));loading.set(user,task);return task;
 }
 function detach(user){
+ presence.delete(user);
  const room=rooms.get(membership.get(user));if(!room)return;
  const next=structuredClone(room),player=next.state?.players[user];
  if(player){
+  player.runtime.fields.training=false;player.runtime.fields.velocity={x:0,z:0};
   // Save the last personal state before removing it from the shared world.
   store.commit(next);
   const egg=player.runtime.fields.carried;
@@ -107,9 +111,21 @@ function detach(user){
  next.members=next.members.filter(m=>m.user_id!==user);store.commit(next);
  membership.delete(user);rooms.set(next.id,next);
 }
+function expireIdle(user){
+ idleUsers.add(user);detach(user);
+ for(const socket of connections.get(user)??[])socket.close(4001,'IDLE_TIMEOUT');
+}
+function observeIdle(user,fields,now){
+ let tracker=presence.get(user);if(!tracker){tracker=new IdlePresence();presence.set(user,tracker);}
+ return tracker.update(fields.x??0,fields.z??0,fields.training===true,now);
+}
 function prune(){
  const now=Date.now();
- for(const room of [...rooms.values()])for(const m of room.members)if(now-Date.parse(m.last_seen)>15000)detach(m.user_id);
+ for(const room of [...rooms.values()])for(const m of room.members){
+  const fields=room.state?.players[m.user_id]?.runtime.fields;
+  if(fields&&observeIdle(m.user_id,fields,now))expireIdle(m.user_id);
+  else if(now-Date.parse(m.last_seen)>15000)detach(m.user_id);
+ }
  // A solo player's reload must not reroll every floor egg. Keep the vacant
  // room in matchmaking (and on disk) until the normal night refresh boundary.
  for(const room of [...rooms.values()])if(!room.members.length&&room.state?.cycle!==Math.floor(now/BALANCE.nightInterval)){
@@ -126,7 +142,9 @@ async function operate(identity,request){
  if(request.operation==='join'){
   if(!allow('join',1,10)||!allow(`join:${user}`,0.2,3))throw Error('RATE_LIMIT');
   await loadProfile(user);
+  idleUsers.delete(user);presence.delete(user);
  }
+ if(idleUsers.has(user))throw Error('IDLE_TIMEOUT');
  // No await from here through local commit: one process owns the room.
  if(!ready())throw Error('SERVER_NOT_READY');
  let room=rooms.get(membership.get(user));
@@ -143,6 +161,7 @@ async function operate(identity,request){
  const result=runRoom(next.state,next.members,[{user_id:user,state:store.profile(user)}],user,request,now,{guest:identity.guest});
  next.state=result.room;
  store.commit(next);rooms.set(next.id,next);membership.set(user,next.id);
+ if(observeIdle(user,result.response.runtime.fields,now)){expireIdle(user);throw Error('IDLE_TIMEOUT');}
  return result.response;
 }
 function cors(origin){return {'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin',...(origins.has(origin)?{'Access-Control-Allow-Origin':origin}:{}),'Access-Control-Allow-Headers':'authorization,apikey,content-type','Access-Control-Allow-Methods':'POST,OPTIONS','Access-Control-Expose-Headers':'Server-Timing'};}

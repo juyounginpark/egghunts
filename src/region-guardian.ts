@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {explorationHeight} from './exploration-route';
 import {legacyTheme} from './stage-order';
-import { ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT } from './stage-data';
+import { ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,EGG_REPLENISH } from './stage-data';
 import type { GameState, Boss } from './game';
 import { voxelModel } from './voxel';
 import {GuardianMotion} from './guardian-motion';
@@ -41,7 +41,7 @@ export class RegionGuardian {
    if(!sample||sample.serverAt!==serverAt||reset){
     sample={state,stage,at:time,serverAt};
     this.samples.set(k,sample);
-    if(game.roomManaged)this.motion[k].sample(state.x,state.z,game.roomSnapshotTime||time,time);
+    if(game.roomManaged)this.motion[k].sample(state.x,state.z,game.roomSnapshotTime||time,time,state.mode==='chase'||state.mode==='return');
    }
    const sampleAge=Math.max(0,time-sample.at);
    const waking=state.mode==='waking',wakeRemaining=Math.max(0,(state.wakeRemaining??ROUTE.bossWakeSeconds)-(game.roomManaged?Math.min(sampleAge,.5):0));
@@ -49,8 +49,8 @@ export class RegionGuardian {
    const rise=wakeProgress*wakeProgress*(3-2*wakeProgress);
    const scale=ROUTE.bossBaseScale*(state.final?FINAL_GUARDIAN.scale:1)*(1+(ROUTE.bossAngryScale-1)*rise);
    const tx=state.x,tz=state.z;
-   const moveX=tx-root.x,moveZ=tz-root.z;
    const displayed=game.roomManaged?this.motion[k].position(dt,time):{x:tx,z:tz};
+   const moveX=displayed.x-root.x,moveZ=displayed.z-root.z;
    root.x=displayed.x;root.z=displayed.z;
    const z=root.z;if(Math.abs(z-game.z)>(state.final?40:23))continue;
 
@@ -87,7 +87,8 @@ export class RegionGuardian {
    const ground=explorationHeight(x,z,game.progression.stage);
    this.groundHeights[k]=reset||!Number.isFinite(this.groundHeights[k])?ground:this.groundHeights[k]+(ground-this.groundHeights[k])*(1-Math.exp(-dt*14));
    character.position.y+=this.groundHeights[k];
-   character.rotation.set(-charge*.1,angle,0);
+   const placing=state.replenishing?Math.min(1,state.replenishing.placing/EGG_REPLENISH.placeSeconds):0;
+   character.rotation.set(-charge*.1+(reduced?0:Math.sin(placing*Math.PI)*.22),angle,0);
    character.scale.set(2.8*scale,2.8*scale*(sleeping?.78+.22*rise:1),2.8*scale);
    character.traverse(part=>{
     if(!(part instanceof T.Group))return;
@@ -95,6 +96,7 @@ export class RegionGuardian {
     const limb=/_(leg|arm|wing)$/.test(part.name);
     part.rotation.x=limb&&!reduced?Math.sin(stride+side)*(.08+.22*rise):0;
     if(waking&&limb)part.rotation.x=/_(arm|wing)$/.test(part.name)?-stretch*.65:stretch*.1;
+    if(state.replenishing&&/_(arm|wing)$/.test(part.name))part.rotation.x=-.65+placing*.5;
     if(part.name==='head')part.rotation.x=-charge*.15+stretch*.22;
     if(part.name==='crown'||part.name==='tail')part.rotation.y=reduced?0:Math.sin(time*(.6+stage*.025))*.055*(sleeping?.4:1);
    });
@@ -128,5 +130,6 @@ export class RegionGuardian {
   this.effects.count=effectIndex;this.effects.instanceMatrix.needsUpdate=true;if(this.effects.instanceColor)this.effects.instanceColor.needsUpdate=true;
  }
  metrics(){const visible=Array.from(this.characters.values()).filter(c=>c.visible);return {stage:this.stage,parts:visible.find(c=>c.userData.stage===this.stage)?.userData.surfacePatches??0,visibleParts:visible.reduce((n,c)=>n+c.userData.surfacePatches,0),pose:visible.flatMap(c=>{c.updateMatrix();return c.matrix.toArray();})};}
+ position(index:number){const root=this.roots[index];return root&&Number.isFinite(root.x)?root:undefined;}
  dispose(){for(const mesh of [this.mesh,this.effects]){mesh.geometry.dispose();(mesh.material as T.Material).dispose();}this.rimMaterial.dispose();this.characters.clear();this.group.removeFromParent();}
 }

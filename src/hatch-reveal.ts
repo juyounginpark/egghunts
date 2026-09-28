@@ -8,7 +8,7 @@ import {eggIcon,type EggAppearance} from './stage-eggs';
 export function startHatchReveal(card:HTMLElement,id:number,egg:EggAppearance|undefined,onReveal:()=>void){
  const overlay=document.createElement('div');overlay.className='hatch-sequence';
  const appearance=egg??{type:Math.max(0,EGGS.findIndex(e=>e.tier===MONGLES[id].tier))};
- overlay.innerHTML=`<div class="hatch-egg"><img src="${eggIcon(appearance)}" alt="부화하는 알"/><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 15 40 38 57 47 44 64 56 86"/></svg></div><div class="hatch-pet"></div><p role="status">두근두근…</p><button class="secondary hatch-skip">건너뛰기</button>`;
+ overlay.innerHTML=`<div class="hatch-egg"><img src="${eggIcon(appearance)}" alt="부화하는 알"/></div><div class="hatch-pet"></div><p role="status">두근두근…</p><button class="secondary hatch-skip">건너뛰기</button>`;
  card.append(overlay);
  const host=overlay.querySelector<HTMLElement>('.hatch-pet')!,label=overlay.querySelector('p')!;
  let renderer:T.WebGLRenderer|undefined,frame=0,closed=false,model:T.Group|undefined,started=0,announced=false;

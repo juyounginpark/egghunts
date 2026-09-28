@@ -1,6 +1,7 @@
 import {OVERHAUL,upgradeBaseSpeed,progressionSpeedValue,productionUpgradeMultiplier,petIncomeValue,incomeValue,trainingProgressAfter,offlineSeconds,tapDamageValue,autoDamageValue,stageReward,walkingSpeedValue,stableRecoveryRatio,collectionEligible} from './balance';
 import {ULTRA_SECRET} from './ultra-secret';
-import {rainStrength} from './weather';
+import {EGG_REPLENISH} from './stage-data';
+import {rainStrength,windStrength} from './weather';
 import {WEIGHT_BALANCE,ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {freshPads} from './speed-pads';
@@ -11,7 +12,7 @@ import {bossAnchor,specialEggAnchor,eggAnchor,shortcut,terrainAt} from './explor
 import {concealedAt} from './brush';
 import {migrateBalance,type BalanceAdjustment} from './balance-migration';
 import {weeklyDay,validateWeekly,type WeeklyProgress} from './weekly';
-import {firstEggTarget} from './tutorial';
+import {firstEggTarget,migrateTutorial,TUTORIAL_STEPS} from './tutorial';
 import {WEEKLY_EVENT} from './data';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
@@ -76,6 +77,8 @@ export type Boss = {
   mode: "idle" | "waking" | "chase" | "return";
   target: string | null;
   loot: WorldEgg | null;
+  replenishAt?:number;
+  replenishing?:{egg:WorldEgg;placing:number};
 };
 export type Save = {
   explorationVersion?:1|2|3|4|5;
@@ -100,6 +103,7 @@ export type Save = {
   trainingSpeed?: number;
   petIncome?: { elapsed:number; pending:Money };
   tutorial?: number;
+  tutorialVersion?:2;
   bossWarningSeen?:boolean;
   claimedPets?: number[];
   claimedRegions?: number[];
@@ -142,10 +146,11 @@ export function freshSave(now: number): Save {
     stageOrderVersion:2,
     trails: [0],
     equippedTrail: 0,
-    dust: 0,
+    dust: BALANCE.startingDust,
     upgrades: { speed: 0, carry: 0, tap: 0, damage: 0, rate: 0, time: 0, training: 0,health:0 },
     trainingSpeed: 0,
     tutorial: 0,
+    tutorialVersion:2,
     eggs: [],
     mongles: Array(MONGLES.length).fill(0),
     active: [],
@@ -189,6 +194,7 @@ export function parseSave(raw: string | null, now: number): Save {
   s.appearance ??= 0;
   if(![0,1,2].includes(s.appearance))throw new Error("Invalid appearance");
   s.tutorial ??= s.mongles?.some(Boolean) ? 5 : 0;
+  migrateTutorial(s);
   s.claimedPets ??= []; s.claimedRegions ??= []; s.claimedCollection ??= false;
   s.claimedStages ??= [];s.claimedStageCollection ??= false;
   if(!Array.isArray(s.claimedStages)||!s.claimedStages.every(id=>Number.isInteger(id)&&id>=1&&id<=20)||typeof s.claimedStageCollection!=='boolean')throw Error('Invalid stage collection rewards');
@@ -198,7 +204,7 @@ export function parseSave(raw: string | null, now: number): Save {
     typeof v === "number" && Number.isFinite(v) && v >= 0;
   if (
     !validMoney(s.dust) ||
-    !finite(s.trainingSpeed) || !Number.isInteger(s.tutorial) || s.tutorial < 0 || s.tutorial > 5 ||
+    !finite(s.trainingSpeed) || !Number.isInteger(s.tutorial) || s.tutorial < 0 || s.tutorial > TUTORIAL_STEPS ||
     !finite(s.lastSavedAt) ||
     !finite(s.best) ||
     !s.upgrades ||
@@ -584,7 +590,7 @@ export class GameState {
     if(!this.isAtBase||this.carried||this.death||this.launch||this.knockback.remaining>0||this.now()<this.knockedUntil)return false;
     this.standUp();this.training=!this.training;
     this.trainingClock=this.trainingGain=0;
-    if(this.training){this.x=this.gym.x;this.z=this.gym.z;this.velocity={x:0,z:0};this.facing={x:0,z:-1};}
+    if(this.training){this.x=this.gym.x;this.z=this.gym.z;this.velocity={x:0,z:0};this.facing={x:0,z:-1};this.emit('training_start');}
     this.message=this.training?'운동 중 · 조이스틱으로 이동하면 운동을 마쳐요.':'운동을 마쳤어요.';
     this.revision++;return true;
   }
@@ -657,6 +663,7 @@ export class GameState {
     public random: () => number = Math.random,
     hydrateOnly=false,
   ) {
+    migrateTutorial(save);
     migrateBalance(save,this.now());validateWeekly(save.weekly);
     save.mongles=Array.from({length:MONGLES.length},(_,i)=>save.mongles[i]??0);
     ensurePetLots(save);
@@ -747,7 +754,7 @@ export class GameState {
   get progressionSpeed(){return progressionSpeedValue(upgradeBaseSpeed(this.save.upgrades.speed),this.save.trainingProgress??0,this.save.equippedTrail??0,this.speedMultiplier,this.level);}
   get movementSpeed(){
     const base=this.isAtBase?BALANCE.baseWalkSpeed:walkingSpeedValue(this.progressionSpeed);
-    const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1)*(this.isNormalNight?BALANCE.nightMoveMultiplier:1)*(this.isRaining?BALANCE.rainMoveMultiplier:1);
+    const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1)*(this.isNormalNight?BALANCE.nightMoveMultiplier:1)*(this.isRaining?BALANCE.rainMoveMultiplier:1)*(this.isWindy?BALANCE.windMoveMultiplier:1);
     return base*TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
   }
   speedPad=freshPads();
@@ -814,29 +821,32 @@ export class GameState {
     if (this.nearGym && !this.carried) return this.training ? "운동 내리기" : "운동 시작";
     return this.carried ? "내려놓기" : this.near ? "들고가기" : "배트 스윙";
   }
-  spawn() {
-    this.world = this.route.flatMap((boss, guardian) => {
-      const variants=normalEggSelection(this.random,5);
-      return Array.from({ length: 5 }, (_, slot) => {
-        const region=Math.floor((boss.stage-1)/4);
+  private newStageEgg(stage:number,offset:number,guardian:number,slot:number,variant:number):WorldEgg{
+        const region=Math.floor((stage-1)/4);
         const roll=this.random(),ultra=roll<ULTRA_SECRET.chance,dragon=!ultra&&roll<ULTRA_SECRET.chance+BALANCE.secretDragonEggChance;
         const type = ultra||dragon?6*REGIONS.length+region:rollEgg(region, this.random);
-        const anchor=eggAnchor(boss.stage,slot),x=anchor.x,z=anchor.z-boss.offset;
+        const anchor=eggAnchor(stage,slot),x=anchor.x,z=anchor.z-offset;
         return {
-          id: `${boss.stage}-${slot}-${this.now()}-${this.random()}`,
+          id: `${stage}-${slot}-${this.now()}-${this.random()}`,
           type,
-          hp: eggMaxHp({type,stageId:boss.stage}),
+          hp: eggMaxHp({type,stageId:stage}),
           hpVersion:5 as const,
-          ...rollEggWeight({type,stageId:boss.stage,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:variants[slot]},this.random),
+          ...rollEggWeight({type,stageId:stage,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:variant},this.random),
           distance: Math.abs(z),
           x,
           z,
           homeX: x,
           homeZ: z,
-          region,stageId:boss.stage,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:variants[slot],guardian,
+          region,stageId:stage,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:variant,guardian,
           secured: false,
           expires: this.now() + BALANCE.nightInterval,
         };
+  }
+  spawn() {
+    this.world = this.route.flatMap((boss, guardian) => {
+      const variants=normalEggSelection(this.random,5);
+      return Array.from({ length: 5 }, (_, slot) => {
+        return this.newStageEgg(boss.stage,boss.offset,guardian,slot,variants[slot]);
       });},
     );
     const rare=RARITIES.slice(FINAL_GUARDIAN.minimumEggTier);
@@ -856,6 +866,7 @@ export class GameState {
   }
   get isNormalNight(){return !this.isNight&&this.now()>=this.nightAt-BALANCE.normalNightDuration;}
   get isRaining(){return rainStrength(this.now())>0;}
+  get isWindy(){return windStrength(this.now())>0;}
   get pursuing() {
     return this.bosses.findIndex((b) => b.mode === "chase");
   }
@@ -880,7 +891,39 @@ export class GameState {
     const segment=this.route.find(r=>r.stage===egg.stageId);
     return !!segment&&-z>=segment.start&&-z<segment.end;
   }
-  tickBosses(dt:number,only?:number){
+  private tickEggReplenish(b:Boss,guardian:number,dt:number,reserved:WorldEgg[]){
+    if(this.isNight||b.final){delete b.replenishAt;delete b.replenishing;return false;}
+    const count=this.world.filter(e=>e.stageId===b.stageId).length;
+    if(count>EGG_REPLENISH.threshold){delete b.replenishAt;delete b.replenishing;return false;}
+    b.replenishAt??=this.now()+EGG_REPLENISH.minDelay+this.random()*(EGG_REPLENISH.maxDelay-EGG_REPLENISH.minDelay);
+    if(b.mode==='chase'||b.mode==='waking'||b.loot){delete b.replenishing;return false;}
+    if(!b.replenishing){
+      if(b.mode!=='idle'||this.now()<b.replenishAt)return false;
+      const segment=this.route.find(r=>r.stage===b.stageId);if(!segment)return false;
+      const occupied=[...this.world,...reserved,...(this.carried?[this.carried]:[])];
+      const slots=Array.from({length:5},(_,slot)=>({slot,...eggAnchor(segment.stage,slot)}))
+        .filter(p=>!occupied.some(e=>e.guardian===guardian&&Math.hypot((e.homeX??e.x)-p.x,(e.homeZ??e.z)-(p.z-segment.offset))<.2));
+      const spot=slots[Math.min(slots.length-1,Math.floor(this.random()*slots.length))];if(!spot)return false;
+      b.replenishing={egg:this.newStageEgg(segment.stage,segment.offset,guardian,spot.slot,randomNormalEggVariant(this.random)),placing:0};
+      b.mode='return';
+    }
+    const delivery=b.replenishing,egg=delivery.egg;
+    const dx=egg.homeX!-b.x,dz=egg.homeZ!-b.z,distance=Math.hypot(dx,dz);
+    b.lookX=egg.homeX;b.lookZ=egg.homeZ;
+    const step=Math.min(distance,BOSS_MOVEMENT.returnSpeed*dt);
+    if(distance>.03){b.x+=dx/distance*step;b.z+=dz/distance*step;}
+    else delivery.placing+=dt;
+    egg.x=b.x;egg.z=b.z;
+    if(delivery.placing>=EGG_REPLENISH.placeSeconds){
+      // Check again at commit: another player's dropped egg can occupy this nest.
+      if(!this.world.some(e=>Math.hypot((e.homeX??e.x)-egg.homeX!,(e.homeZ??e.z)-egg.homeZ!)<.2)){
+        egg.x=egg.homeX!;egg.z=egg.homeZ!;this.world.push(egg);this.revision++;
+      }
+      delete b.replenishing;delete b.replenishAt;
+    }
+    return true;
+  }
+  tickBosses(dt:number,only?:number,reserved:WorldEgg[]=[]){
     this.bosses.forEach((b,guardian)=>{
       if(only!==undefined&&guardian!==only)return;
       const ownsEgg=this.carried?.guardian===guardian;
@@ -892,6 +935,7 @@ export class GameState {
       // The authoritative target owns this simulation step, not the viewing client.
       b.lookX=b.mode==='chase'||b.mode==='waking'?this.x:undefined;
       b.lookZ=b.mode==='chase'||b.mode==='waking'?this.z:undefined;
+      if(this.tickEggReplenish(b,guardian,dt,reserved))return;
       let activeDt=dt;
       if(b.mode==='waking'){
         const remaining=Number.isFinite(b.wakeRemaining)?Math.max(0,Math.min(ROUTE.bossWakeSeconds,b.wakeRemaining!)):ROUTE.bossWakeSeconds;
@@ -1139,9 +1183,13 @@ export class GameState {
     e.hp = Math.max(0, e.hp - amount);
     if (e.hp === 0) { this.message = '부화 준비 완료! 보관소에서 획득하세요.'; this.revision++; }
   }
+  get petCount(){return this.save.mongles.reduce((sum,count)=>sum+count,0);}
+  get petCapacity(){return Math.max(1,this.progression.level)*BALANCE.petsPerLevel;}
+  get petStorageFull(){return this.petCount>=this.petCapacity;}
   claimHatch(id: string) {
     const e = this.save.eggs.find(egg => egg.id === id);
     if (!this.isAtBase || this.death || this.result !== null || !e || e.hp !== 0) return false;
+    if(this.petStorageFull){this.message=`펫 보관함이 가득 찼어요 (${this.petCount}/${this.petCapacity}). 레벨을 올리거나 펫을 판매해 주세요.`;return false;}
     if (e.hp === 0) {
       const pool = MONGLES.flatMap((m,i)=>(e.type===WEEKLY_EVENT.eggType?i===WEEKLY_EVENT.petId:i!==WEEKLY_EVENT.petId&&m.tier===EGGS[e.type].tier&&(e.stageId?m.stageId===e.stageId&&(e.variant===ULTRA_SECRET.eggVariant?m.species===30:e.variant===5?m.species===10:m.species!==10&&m.species!==30):m.stageId===0&&m.region===EGGS[e.type].region))?[i]:[]);
       const m = pool[Math.min(pool.length-1,Math.floor(this.random()*pool.length))];
@@ -1190,6 +1238,7 @@ export class GameState {
     if(this.result!==null){this.message='부화 결과를 확인한 뒤 받아 주세요';return false;}
     if(!this.canClaimWeekly){this.message='오늘 보상은 이미 받았어요';return false;}
     const index=this.weeklyIndex;
+    if(index===6&&this.petStorageFull){this.message='펫 보관함 한 칸을 비워 주세요';return false;}
     if(index===6&&this.save.eggs.length>=BALANCE.inventory){this.message='알 보관함 한 칸을 비워 주세요';return false;}
     const day=weeklyDay(this.now()),claimed=this.save.weekly?.claimed??0;
     this.save.dust=add(this.save.dust,this.weeklyReward(index));

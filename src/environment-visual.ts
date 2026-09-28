@@ -3,11 +3,11 @@ import {cycleClock} from './cycle-clock';
 import {BALANCE} from './data';
 import type {GameState} from './game';
 import {dioramaUniforms} from './diorama-material';
-import {FARM_PLOTS,farmLocal} from './village';
+import {CAMPFIRE,FARM_PLOTS,farmLocal} from './village';
 import {explorationSurface} from './exploration-route';
 import {brushRegions} from './brush';
 import {ENVIRONMENT_ART} from './environment-art-data';
-import {rainStrength} from './weather';
+import {rainStrength,windStrength} from './weather';
 
 // Three's physically scaled lights need larger intensities than normalized art guides.
 export const ENVIRONMENT_PRESETS=[
@@ -37,6 +37,10 @@ export class EnvironmentVisualController {
  private glows=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({transparent:true,opacity:.75,depthWrite:false}),24);
  private rainMaterial=new T.MeshBasicMaterial({color:0xc2dde6,transparent:true,opacity:.5,depthWrite:false});
  private rain=new T.InstancedMesh(new T.BoxGeometry(1,1,1),this.rainMaterial,180);
+ private windMaterial=new T.MeshBasicMaterial({color:0xe5efd0,transparent:true,opacity:.45,depthWrite:false});
+ private wind=new T.InstancedMesh(new T.BoxGeometry(1,1,1),this.windMaterial,36);
+ private fireLight=new T.PointLight(0xffab55,0,9,2);
+ private fireGlow:T.Mesh;
  private reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
  constructor(private scene:T.Scene,private renderer:T.WebGLRenderer,private sun:T.DirectionalLight,private ambient:T.HemisphereLight){
   scene.userData.diorama=this.uniforms;
@@ -49,6 +53,10 @@ export class EnvironmentVisualController {
   const map=new T.DataTexture(pixels,32,32);map.magFilter=map.minFilter=T.LinearFilter;map.needsUpdate=true;
   this.contactMaterial=new T.MeshBasicMaterial({color:0x626c64,map,transparent:true,opacity:.22,depthWrite:false});
   const plane=new T.PlaneGeometry(1,1);plane.rotateX(-Math.PI/2);
+  this.fireGlow=new T.Mesh(plane,new T.MeshBasicMaterial({color:0xffaf61,map,transparent:true,opacity:0,depthWrite:false,blending:T.AdditiveBlending}));
+  this.fireGlow.position.set(CAMPFIRE.x,.045,CAMPFIRE.z);this.fireGlow.scale.setScalar(8);
+  this.fireLight.position.set(CAMPFIRE.x,1.5,CAMPFIRE.z);
+  scene.add(this.fireGlow,this.fireLight);
   this.playerShadow=new T.Mesh(plane,this.contactMaterial.clone());
   this.contacts=new T.InstancedMesh(plane,this.contactMaterial,48);this.contacts.frustumCulled=false;
   let index=0;
@@ -61,6 +69,7 @@ export class EnvironmentVisualController {
   this.ripples.frustumCulled=false;this.ripples.count=0;
   this.glows.frustumCulled=false;this.glows.count=0;scene.add(this.glows);
   this.rain.frustumCulled=false;this.rain.count=0;scene.add(this.rain);
+  this.wind.frustumCulled=false;this.wind.count=0;scene.add(this.wind);
   scene.add(this.lamps,this.contacts,this.playerShadow,this.ripples);
  }
  update(game:GameState,hatch:boolean,low:boolean,player:T.Object3D,peers:Iterable<T.Object3D>){
@@ -90,9 +99,23 @@ export class EnvironmentVisualController {
   color(this.uniforms.uDioramaRimColor.value,'rimColor');this.uniforms.uDioramaSaturation.value=number('saturation');
   this.lampMaterial.emissiveIntensity=this.enabled.emissive?number('emission')*1.8:0;
   this.lamps.visible=!hatch&&game.z>-25;
+  const fireNight=!hatch?T.MathUtils.smoothstep(this.progress,.85,1):0;
+  const fireFlicker=this.reducedMotion.matches?1:1+Math.sin(game.now()*.0031)*.045+Math.sin(game.now()*.0073)*.025;
+  this.fireLight.intensity=fireNight*5*fireFlicker;
+  this.fireGlow.visible=fireNight>0;
+  (this.fireGlow.material as T.MeshBasicMaterial).opacity=fireNight*.24*fireFlicker;
   this.renderer.shadowMap.enabled=!low&&this.enabled.shadows;
   this.playerShadow.visible=this.contacts.visible=!hatch&&this.enabled.ao;
   const surfaceAt=(x:number,z:number)=>explorationSurface(x,z,game.progression.stage);
+  const wind=hatch?0:windStrength(game.now()),windCount=wind>0?(this.reducedMotion.matches?8:low?14:36):0;
+  this.windMaterial.opacity=wind*.45;
+  for(let i=0;i<windCount;i++){
+   const phase=(game.now()/1000*(this.reducedMotion.matches?.04:.2)+i*.618)%1;
+   const x=game.x-13+phase*26,z=game.z-15+(i*7.3)%28;
+   const ground=surfaceAt(x,z),y=(ground?.height??0)+.5+(i%4)*.45;
+   this.marker.position.set(x,y,z);this.marker.rotation.set(0,-.3,0);this.marker.scale.set(.35+(i%3)*.2,.025,.035);this.marker.updateMatrix();this.wind.setMatrixAt(i,this.marker.matrix);
+  }
+  this.wind.count=windCount;this.wind.visible=windCount>0;if(windCount)this.wind.instanceMatrix.needsUpdate=true;
   // One instanced draw, anchored around the player. No per-drop objects or network state.
   const drops=rain>0?(this.reducedMotion.matches?28:low?70:180):0;
   this.rainMaterial.opacity=rain*(this.reducedMotion.matches?.24:.5);

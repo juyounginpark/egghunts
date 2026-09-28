@@ -12,6 +12,8 @@ export const COUPONS:Record<string,{tier:number}>={FREEPET:{tier:2}};
 export const COUPON_ERRORS:Record<string,string>={COUPON_INVALID:'올바른 쿠폰 코드를 입력해 주세요.',COUPON_USED:'이미 사용한 쿠폰이에요.',COUPON_INVENTORY_FULL:'알 보관함 한 칸을 비운 뒤 다시 사용해 주세요.',COUPON_HATCH_PENDING:'부화 결과를 확인한 뒤 사용해 주세요.'};
 export const DAMAGE_OVER_TIME={ticks:6,interval:.15,directionSeconds:1.4};
 export const BALANCE = {
+  startingDust:100,
+  petsPerLevel:10,
   eggVisualScale:3,
   eggPresentationScale:1.5,
   eggNestSpacing:2.4,
@@ -92,6 +94,12 @@ export const BALANCE = {
   rainChance: .4,
   rainDuration: 35000,
   rainMoveMultiplier: .9,
+  windInterval: 210000,
+  windDuration: 45000,
+  windChance: .45,
+  windMoveMultiplier: 1.1,
+  idleTimeout: 300000,
+  trainingIdleTimeout: 600000,
   warningSeconds: 10,
   windSeconds: 5,
   deadzone: 8,

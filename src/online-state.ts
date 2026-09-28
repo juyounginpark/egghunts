@@ -5,6 +5,7 @@ import {migrateBalance} from './balance-migration';
 import {MONGLES} from './data';
 import {validateWeekly} from './weekly';
 import {freshPads} from './speed-pads';
+import {migrateTutorial} from './tutorial';
 import type {HazardManager} from './hazards';
 
 export type RuntimeState={save:Save;fields:Record<string,unknown>;hazards:ReturnType<HazardManager['snapshot']>};
@@ -40,6 +41,7 @@ export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[
  }
  game.mobs=[];game.speedPad=freshPads();
  game.save=structuredClone(state.save);game.save.dragonClues??={};game.world=world;game.bosses=bosses;game.hazards.restore(state.hazards);
+ migrateTutorial(game.save);
  if(migrateHealth)migrateEggHealth([...game.save.eggs,...world,game.carried,...bosses.flatMap(b=>b.loot?[b.loot]:[])]);
  if(migrateHealth){migrateBalance(game.save,game.now());validateWeekly(game.save.weekly);game.save.mongles=Array.from({length:MONGLES.length},(_,i)=>game.save.mongles[i]??0);}
  if(game.save.progression)delete game.save.progression.traits;

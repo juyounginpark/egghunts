@@ -1,7 +1,7 @@
 import {add} from '../src/money';
 import type {Mob} from '../src/mobs';
 import {migrateExploration,migrateBossHomes,migrateEggHomes} from '../src/exploration-migration';
-import {advanceTutorial} from '../src/tutorial';
+import {advanceTutorial,TUTORIAL_STEPS} from '../src/tutorial';
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
 import {BALANCE,EGGS,MONGLES,UPGRADES} from '../src/data';
 import {exportRuntime,restoreRuntime,migrateStageRuntime,type RuntimeState} from '../src/online-state';
@@ -131,7 +131,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    const boss=room.bosses[index];
    const candidates=[...games.values()];
    const owner=candidates.find(g=>g.carried?.id===boss.target)??candidates.find(g=>g.carried?.guardian===index&&!g.concealed)??candidates.find(g=>g.carried?.guardian===index)??self;
-   owner.world=room.world;owner.bosses=room.bosses;owner.tickBosses(dt,index);room.world=owner.world;
+   owner.world=room.world;owner.bosses=room.bosses;owner.tickBosses(dt,index,candidates.flatMap(g=>g.carried?[g.carried]:[]));room.world=owner.world;
   }
  }
  simTime=now;room.at=now;self.world=room.world;self.bosses=room.bosses;
@@ -216,7 +216,7 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
   case 'shortcut':if(!g.openShortcut())throw Error('SHORTCUT_UNAVAILABLE');break;
   case 'train':atBase();g.toggleTraining();break;
   case 'tap':atBase();g.tap();break;
-  case 'claimHatch':atBase();if(!g.claimHatch(text()))throw Error('EGG_NOT_READY');break;
+  case 'claimHatch':atBase();if(!g.claimHatch(text()))throw Error(g.petStorageFull?'PET_INVENTORY_FULL':'EGG_NOT_READY');break;
   case 'select':atBase();if(!g.save.eggs.some(e=>e.id===text()))throw Error('NOT_OWNED');g.save.selected=text();g.revision++;break;
   case 'equip':{atBase();if(!g.equipPet(integer()))throw Error('CANNOT_EQUIP');break;}
   case 'equipPetLot':case 'equipMountLot':case 'sellPetLot':case 'unequipPetSlot':{
@@ -250,8 +250,8 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
   case 'adClaim':atBase();if(p.adAt===undefined||now-p.adAt<BALANCE.virtualAdDuration)throw Error('WAIT_FOR_AD');delete p.adAt;if(!g.claimAdReward())throw Error('AD_DAILY_LIMIT');break;
   case 'result':g.result=null;break;
   case 'reward':g.returnReward=null;break;
-  case 'tutorial':g.save.tutorial=5;break;
-  case 'weekly':if(!g.claimWeekly())throw Error(g.message==='알 보관함 한 칸을 비워 주세요'?'WEEKLY_INVENTORY_FULL':'WEEKLY_UNAVAILABLE');break;
+  case 'tutorial':g.save.tutorial=TUTORIAL_STEPS;break;
+  case 'weekly':if(!g.claimWeekly())throw Error(g.message==='펫 보관함 한 칸을 비워 주세요'?'PET_INVENTORY_FULL':g.message==='알 보관함 한 칸을 비워 주세요'?'WEEKLY_INVENTORY_FULL':'WEEKLY_UNAVAILABLE');break;
   case 'warning':g.save.bossWarningSeen=true;break;
   case 'appearance':if(integer()>2)throw Error('INVALID_APPEARANCE');g.save.appearance=integer();break;
   default:throw Error('UNKNOWN_ACTION');

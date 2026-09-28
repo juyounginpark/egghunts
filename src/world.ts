@@ -3,7 +3,7 @@ import {MountView} from './mount-view';
 import {eggMaxHp} from './data';
 import {explorationHeight} from './exploration-route';
 import {concealedAt} from './brush';
-import {BRUSH_TERRAIN,recommendedRouteSpeed} from './stage-data';
+import {BRUSH_TERRAIN,recommendedRouteSpeed,EGG_REPLENISH} from './stage-data';
 import {SceneryCreatures} from './scenery-creatures';
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
@@ -600,7 +600,9 @@ export class World {
       this.lifeEffects.instanceMatrix.needsUpdate=true;
     }
     this.nightBarrier.visible=game.isNight&&!isHatch;
-    const visibleEggs=game.world.filter(e=>Math.abs(e.z-game.z)<24);
+    const carriedByBoss=game.bosses.flatMap(b=>b.replenishing?[b.replenishing.egg]:[]);
+    const renderedEggs=[...game.world,...carriedByBoss];
+    const visibleEggs=renderedEggs.filter(e=>Math.abs(e.z-game.z)<24);
     const worldKey = visibleEggs.map((e) => e.id).join("|");
     if (worldKey !== this.lastWorld) {
       this.lastWorld = worldKey;
@@ -630,11 +632,16 @@ export class World {
       }
     }
     this.eggs.children.forEach((m) => {
-      const egg=game.world.find(e=>e.id===m.userData.id);
+      const egg=renderedEggs.find(e=>e.id===m.userData.id);
       if(egg){
-        const held=game.bosses.some(b=>b.loot?.id===egg.id);
+        const carrier=game.bosses.findIndex(b=>b.replenishing?.egg.id===egg.id);
+        const delivery=game.bosses[carrier]?.replenishing;
+        const location=delivery?this.hazardsView.guardians.position(carrier)??egg:egg;
+        const held=!!delivery||game.bosses.some(b=>b.loot?.id===egg.id);
         const atNest=egg.x===egg.homeX&&egg.z===egg.homeZ;
-        m.position.set(egg.x,explorationHeight(egg.x,egg.z,game.progression.stage)+(held?1.2:atNest?.02+2.5/18*m.scale.x*1.45:.03),egg.z);
+        const nestHeight=.02+2.5/18*m.scale.x*1.45;
+        const heldHeight=delivery?1.2+(nestHeight-1.2)*Math.min(1,delivery.placing/EGG_REPLENISH.placeSeconds):1.2;
+        m.position.set(location.x,explorationHeight(location.x,location.z,game.progression.stage)+(held?heldHeight:atNest?nestHeight:.03),location.z);
       }
       m.getObjectByName("selection-outline")!.visible=!game.carried&&game.near?.id===m.userData.id;
       m.visible = Math.abs(m.position.z - game.z) < 22;
@@ -733,6 +740,9 @@ export class World {
     if (hatchKey !== this.hatchKey)
       void this.updateHatch(hatchKey, appearance?.type ?? 0, isReward ? null : shownResult,appearance).catch(err => { this.hatchKey = ""; this.assetError = String(err); });
     this.hatchBurst.update(birthAge,this.birth?MONGLES[this.birth.id].tier:0,this.reducedMotion.matches,this.low);
+    if(!this.birth&&isHatch&&shownResult===null&&game.selected&&!isReward){
+      this.hatchBurst.anticipate(1-game.selected.hp/eggMaxHp(game.selected),time,EGGS[game.selected.type].tier,this.reducedMotion.matches,this.low);
+    }
     if(this.birth&&birthAge>=1.05&&this.birth.onBirth){this.birth.onBirth();this.birth.onBirth=undefined;}
     if(this.birth&&birthAge>=2.7)this.birth.done();
     if (this.hatchModel) {
@@ -742,18 +752,19 @@ export class World {
       const hitAge=(performance.now()-this.hitAt)/1000;
       const kick = shownResult===null&&hitAge>=0?Math.max(0,1-hitAge/.38):0;
       const progress=game.selected?1-game.selected.hp/eggMaxHp(game.selected):0;
+      const anticipation=this.reducedMotion.matches||shownResult!==null||isReward?0:Math.max(0,Math.min(1,(progress-.8)/.2));
       const pulse=!this.reducedMotion.matches&&shownResult===null&&progress>=.9?Math.sin(time*7)*.018:0;
       const squash=this.reducedMotion.matches?0:Math.sin(hitAge*18)*kick*.1;
       const base=this.hatchModel.userData.hatchScale as number;
       this.hatchModel.scale.set(base*(1+squash*.5+pulse),base*(1-squash+pulse),base*(1+squash*.5+pulse));
-      this.hatchModel.rotation.z = this.reducedMotion.matches?0:Math.sin(hitAge*22)*kick*.045+(progress>=.3&&shownResult===null?Math.sin(time*3)*.01:0);
-      this.hatchModel.position.x=0;
+      this.hatchModel.rotation.z = this.reducedMotion.matches?0:Math.sin(hitAge*22)*kick*.045+Math.sin(time*(22+anticipation*18))*anticipation*.18;
+      this.hatchModel.position.x=Math.sin(time*33)*anticipation*.07;
       const revealing=!!this.birth&&Number.isFinite(birthAge)&&birthAge>=0&&!this.reducedMotion.matches;
       const spin= birthAge<1.05 ? 6*Math.PI*Math.pow(Math.max(0,birthAge)/1.05,2)
         : 6*Math.PI+2*Math.PI*(1-Math.pow(1-Math.min(1,(birthAge-1.05)/1.65),3));
       this.hatchModel.rotation.y = revealing ? -.25+spin : isReward ? time*.35 : isHatch ? -.25 : 0;
       this.hatchModel.position.y =
-        this.reducedMotion.matches?0:shownResult !== null ? Math.abs(Math.sin(time*3))*.12 : Math.max(0,Math.sin(hitAge*12))*kick*.12;
+        this.reducedMotion.matches?0:shownResult !== null ? Math.abs(Math.sin(time*3))*.12 : Math.max(0,Math.sin(hitAge*12))*kick*.12+Math.abs(Math.sin(time*19))*anticipation*.09;
     }
     const target = isHatch
       ? new T.Vector3(0, 1, 0)
@@ -823,7 +834,7 @@ export class World {
       gain.el.hidden=isHatch;
     }
     this.sun.target.position.set(game.x, 0, game.z);
-    const closeEggs=isHatch||mode!=='explore'||game.carried?[]:visibleEggs.filter(egg=>game.canReachEgg(egg)&&!game.bosses.some(b=>b.loot?.id===egg.id))
+    const closeEggs=isHatch||mode!=='explore'||game.carried?[]:visibleEggs.filter(egg=>game.canReachEgg(egg)&&!game.bosses.some(b=>b.loot?.id===egg.id||b.replenishing?.egg.id===egg.id))
       .sort((a,b)=>Math.hypot(a.x-game.x,a.z-game.z)-Math.hypot(b.x-game.x,b.z-game.z)||a.id.localeCompare(b.id)).slice(0,1);
     const locked=game.route.find(r=>r.stage>game.stage.id&&!game.canEnterStage(r.stage));
     const showLock=mode==='explore'&&!isHatch&&!game.isNight&&!!locked&&Math.abs(game.z+locked.start)<24;

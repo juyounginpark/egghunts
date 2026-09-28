@@ -1,8 +1,9 @@
 import {weightText} from './weight';
 import {petDetailPanel,compactWeight} from './pet-inventory-ui';
-import {hatchProgress,hatchInfo,hatchCracks} from './hatch-ui';
+import {hatchProgress,hatchInfo} from './hatch-ui';
 import {eggMaxHp,COUPON_ERRORS} from './data';
-import {advanceTutorial,tutorialHint} from './tutorial';
+import {advanceTutorial,tutorialHint,TUTORIAL_STEPS} from './tutorial';
+import {IdlePresence} from './idle-presence';
 import {weeklyDay} from './weekly';
 import {exactMoney,compare} from './money';
 import "./style.css";
@@ -55,7 +56,7 @@ app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const eggNotices=new EggNotices($("shell"));
-$('world').insertAdjacentHTML('beforeend',`<button id="hatch-touch" hidden aria-label="알 두드리기">${hatchCracks}<span>알을 톡톡 두드려 부화시키세요</span></button>`);
+$('world').insertAdjacentHTML('beforeend',`<button id="hatch-touch" hidden aria-label="알 두드리기"><span>알을 톡톡 두드려 부화시키세요</span></button>`);
 $('world').insertAdjacentHTML('beforeend','<div id="first-egg-arrow" hidden><span>작은 알부터!</span><b>↓</b></div>');
 $('action').insertAdjacentHTML('beforeend','<small id="action-weight" hidden></small>');
 const buildVersion=document.createElement('small');
@@ -140,6 +141,17 @@ let lastAnnouncement = 0,
 const platform = new Platform();
 const multiplayer=new Multiplayer(time=>{if(!qa)platform.offset=time-Date.now();},toast);
 const online=new OnlineGame(toast,time=>platform.syncServerTime(time));
+let inactive=false;
+online.onInactive=()=>{
+  if(inactive)return;inactive=true;paused=true;input?.reset();
+  game.training=false;game.velocity={x:0,z:0};void multiplayer.logout();
+  audio.music('silent');
+  const dialog=document.createElement('dialog');dialog.className='inactive-dialog';
+  dialog.innerHTML='<h2>미접속 상태예요</h2><p>오랫동안 같은 자리에 있어<br>서버 연결과 방 참여가 종료됐어요.</p><button class="primary">방 퇴장</button>';
+  dialog.addEventListener('cancel',event=>event.preventDefault());
+  dialog.querySelector('button')!.onclick=()=>location.reload();
+  $('shell').append(dialog);dialog.showModal();
+};
 async function remote(kind:string,value?:unknown){try{return await online.send(kind,value);}catch(err){toast(err instanceof Error?err.message:'연결을 확인해 주세요.');return false;}}
 const roomChat=new RoomChat($('controls'),()=>{input?.reset();online.halt();},text=>remote('chat',text));
 
@@ -159,6 +171,12 @@ let game: GameState,
   hiddenAt = 0,
   toastTimer = 0;
 const audio=new GameAudio();
+const localPresence=new IdlePresence();
+window.setInterval(()=>{
+  if(ready&&!online.active&&!inactive&&localPresence.update(game.x,game.z,game.training,Date.now())){
+    game.training=false;void save();online.onInactive();
+  }
+},1000);
 function applyAudioSettings(){audio.setVolume(game.save.settings.volume??1,!game.save.settings.sound);}
 let heardHazards=new Set<number>();
 let lastHeartbeat=0;
@@ -371,11 +389,13 @@ function updateHud() {
   $("night-sky").classList.toggle('visible',phase.night&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||game.seat!==null||!!game.carried||!!game.death||!!game.returnReward;
-  $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:phase.normalNight&&game.isRaining?'밤·비 · 이동 −37%':phase.normalNight?'밤 · 이동 −30%':game.isRaining?'비 · 이동 −10%':'';
-  $('speed-help').hidden=!game.training&&!phase.normalNight&&!game.isRaining;
+  const weatherTags=[phase.normalNight?'밤':'',game.isRaining?'비':'',game.isWindy?'바람':''].filter(Boolean);
+  const weatherSpeed=(phase.normalNight?BALANCE.nightMoveMultiplier:1)*(game.isRaining?BALANCE.rainMoveMultiplier:1)*(game.isWindy?BALANCE.windMoveMultiplier:1),weatherChange=Math.round((weatherSpeed-1)*1000)/10;
+  $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:weatherTags.length?`${weatherTags.join('·')} · 이동 ${weatherChange>=0?'+':'−'}${Math.abs(weatherChange)}%`:'';
+  $('speed-help').hidden=!game.training&&!weatherTags.length;
   const hint=tutorialHint(game,tab);
   $("tutorial").hidden=!hint || !!game.returnReward || game.result!==null || !!game.death || paused;
-  $("tutorial-title").textContent=hint?`${hint.step}/5 · ${hint.title}`:'';
+  $("tutorial-title").textContent=hint?`${hint.step}/${TUTORIAL_STEPS} · ${hint.title}`:'';
   $("tutorial-copy").textContent=hint?.copy??'';
   document.querySelectorAll('.tutorial-focus').forEach(el=>el.classList.remove('tutorial-focus'));
   if(hint&&!$('tutorial').hidden)document.querySelector(hint.target)?.classList.add('tutorial-focus');
@@ -638,6 +658,7 @@ document.addEventListener("click", async (e) => {
     }
     const egg=game.selected;
     if(hatchClaiming||!egg||egg.hp!==0||game.result!==null)return;
+    if(game.petStorageFull){toast(`펫 보관함 ${game.petCount}/${game.petCapacity} · 레벨을 올리거나 펫을 판매해 주세요.`);return;}
     hatchClaiming=true;hatchEgg={...egg};input.reset();online.halt();
     try{const ok=online.active?await remote('claimHatch',egg.id):game.claimHatch(egg.id);if(!ok)hatchEgg=undefined;else{void save();updateHud();}}
     catch(err){hatchEgg=undefined;toast(err instanceof Error?err.message:'친구를 만나지 못했어요. 다시 눌러 주세요.');}
@@ -780,7 +801,7 @@ document.addEventListener("click", async (e) => {
   if (b.id==="claim-all") { const reward=game.claimCollection();if(reward){feedback();toast(`+${num(reward)}`);renderPanel();void save();} }
   if (b.dataset.trail) { if (game.buyTrail(Number(b.dataset.trail))) { feedback(); renderPanel(); void save(); } }
   if (b.id === "reward-ok") { game.returnReward=null; $("return-reward").hidden=true; }
-  if (b.id === "tutorial-skip") { game.save.tutorial=5; game.revision++; void save(); }
+  if (b.id === "tutorial-skip") { game.save.tutorial=TUTORIAL_STEPS; game.revision++; void save(); }
   if (b.dataset.upgrade) {
     if (game.upgrade(b.dataset.upgrade as Upgrade)) {
       feedback();
@@ -935,7 +956,7 @@ async function start() {
 }
 function frame(now: number) {
   requestAnimationFrame(frame);
-  if (document.hidden || syncing) return;
+  if (document.hidden || syncing || inactive) return;
   const dt = Math.min(0.05, (now - lastNow) / 1000);
   lastNow = now;
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}

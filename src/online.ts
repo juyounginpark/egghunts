@@ -8,6 +8,7 @@ import type {EggNotice} from './egg-notices';
 import {restoreSnapshotSections} from './snapshot-stream';
 import type {ChatMessage} from './multiplayer';
 import {explorationSurface} from './exploration-route';
+import {IdlePresence} from './idle-presence';
 
 export const SUPABASE_URL=import.meta.env.VITE_SUPABASE_URL||'https://leblcdiqsyxqzwlsnkio.supabase.co';
 const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_2KTon_WzPAci5G4dLyZ5Ww_bPgwmiig';
@@ -19,7 +20,11 @@ type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={...COUPON_ERRORS,CANNOT_EQUIP:'빈 착용 칸과 남은 펫 수량을 확인해 주세요.',WEEKLY_INVENTORY_FULL:'알 보관함 한 칸을 비워 주세요.',WEEKLY_UNAVAILABLE:'오늘 보상을 이미 받았거나 수령할 수 없는 상태예요.',EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
 Object.assign(errorText,{SEAT_OCCUPIED:'이미 다른 탐험가가 앉아 있어요.',SEAT_UNAVAILABLE:'빈 통나무 의자 가까이에서 앉아 주세요.'});
 Object.assign(errorText,{SHORTCUT_UNAVAILABLE:'빈손으로 지름길 장치 가까이에서 사용해 주세요.'});
+Object.assign(errorText,{PET_INVENTORY_FULL:'펫 보관함이 가득 찼어요. 레벨을 올리거나 펫을 판매해 주세요.'});
 export class OnlineGame{
+ onInactive:()=>void=()=>{};
+ private presence=new IdlePresence();
+ private expireIdle(){if(this.leaving)return;void this.leave();this.onInactive();}
  active=false;
  connected=false;
  latest:Snapshot|null=null;
@@ -74,8 +79,9 @@ export class OnlineGame{
    }catch{socket.close();}
   };
   socket.onerror=()=>socket.close();
-  socket.onclose=()=>{
+  socket.onclose=event=>{
    clearTimeout(opened);
+   if(event.reason==='IDLE_TIMEOUT'){this.expireIdle();return;}
    if(this.warmSocket===socket){this.warmSocket=null;this.warmReady=false;return;}
    if(this.socket!==socket)return;
    this.socket=null;clearTimeout(this.warmTimer);
@@ -124,6 +130,7 @@ export class OnlineGame{
  async leave(releaseMembership=true){
   if(this.leaving)return;
   this.leaving=true;this.active=false;this.connected=false;this.peers=[];this.latest=null;
+  const request=this.socketRequest;this.socketRequest=null;if(request){clearTimeout(request.timer);request.reject();}
   this.socket?.close();
   this.warmSocket?.close();clearTimeout(this.warmTimer);
   clearInterval(this.syncTimer);this.syncTimer=undefined;this.vector={x:0,z:0,slow:false};this.queue=[];this.pending=null;
@@ -311,6 +318,7 @@ export class OnlineGame{
   }
  }
  private pump(){
+  if(this.active&&this.game&&this.presence.update(this.game.x,this.game.z,this.game.training,Date.now())){this.expireIdle();return;}
   if(this.leaving||!this.active||this.busy||performance.now()<this.retryAt)return;
   if(!this.queue.length&&performance.now()-this.lastSent<BALANCE.roomSyncMs)return;
   void this.flush().catch(()=>{});
@@ -343,6 +351,7 @@ export class OnlineGame{
      }
      return;
     }
+    if(state.error==='IDLE_TIMEOUT'){this.expireIdle();return;}
     if(attempt===0&&response.status===401){const refreshed=await this.client.auth.refreshSession();if(!refreshed.error&&refreshed.data.session){session=refreshed.data.session;this.accessToken=session.access_token;continue;}}
     if(state.error==='ROOM_EXPIRED')this.pending={...this.pending!,operation:'join'};
     if(attempt<3&&['ROOM_EXPIRED','RETRY','RATE_LIMIT'].includes(state.error)){
