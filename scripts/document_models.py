@@ -2,6 +2,7 @@
 import argparse,json,math
 from pathlib import Path
 from rework_stage_pets import Grid,export,body
+from sprout_designs import sculpt_sprout
 ROOT=Path(__file__).resolve().parents[1]
 FORMS=[
 'seed rabbit bird mouse turtle bird bear lion butterfly deer',
@@ -389,18 +390,26 @@ def main():
   colors=palette(r['prompt'])
   if stage==1:
    colors=[['#a6c976','#477c49','#d8c58c','#f4e4bd'],['#ebe5cf','#4e9055','#e5a8bb','#35704b'],['#ead16c','#d69a39','#cc853c','#eee9db'],['#d84a64','#58834b','#ab394e','#f0d1a2'],['#87946b','#765039','#b38b58','#d7bb86'],['#eed38b','#8cbac9','#b17d45','#e19648'],['#694933','#bd843a','#e5bf63','#eadac1'],['#bd985a','#d8876f','#9a553f','#e8ae64'],['#b99ad5','#d68fac','#e2cb69','#69b5b5'],['#ba9571','#6c9667','#d9b8cc','#b56d44'],['#28595c','#e9dfc8','#a88250','#d994ac']][slot]+['#292b35','#f0e8d7']
+  if r['id'] in [100,290]:colors=sculpt_sprout(g,r['id']==290)
   # Two large material tones, no stochastic speckling.
   dark=[]
   for c in colors:dark.append('#'+''.join(f'{round(int(c[i:i+2],16)*.82):02x}' for i in [1,3,5]))
   for xyz,(c,p) in list(g.cells.items()):
    if c!=5 and xyz[1]<7:g.cells[xyz]=(c+6,p)
   row=dict(**r,key=f"pet-{r['id']}",anatomy=form,feature=m,previewAngle=35,secretDragon=slot==10,stageName='',role=form,colors=dict(primary=colors[0]),idle=r['prompt'])
+  if r['id']==100:row.update(concept='통통한 콩몸과 넓은 두 잎이 연결된 초원의 어린 정령',feature='굵은 줄기로 연결된 두 장의 잎',idle='고개가 먼저 움직이고 두 잎이 작게 따라 흔들린다')
+  if r['id']==290:row.update(concept='열린 씨앗 껍질에서 자란 아이보리 정령과 청자색 떡잎',feature='몸을 감싼 껍질과 길게 펼쳐진 떡잎',idle='고개를 천천히 기울이고 떡잎이 느리게 따라온다')
   records.append(export(g,row,colors+dark));designs.append(row)
   modelpath=ROOT/f"public/models/{row['key']}.json";model=json.loads(modelpath.read_text());model['artMotion']=m;model['artStage']=stage;model['artForm']=form
   model['artMaterial']='polished' if m in ['glass','crystal','ice','bead','honey','lapis'] else 'metal' if stage in [6,12,17] or m in ['furnace','anvil','barrel'] else 'matte'
   modelpath.write_text(json.dumps(model,separators=(',',':')))
   designpath=ROOT/f"public/models/{row['key']}.design.json";d=json.loads(designpath.read_text(encoding='utf8'));d['source']='scripts/document_models.py';designpath.write_text(json.dumps(d,ensure_ascii=False,indent=2),encoding='utf8')
- (ROOT/'docs/art/document-models-audit.json').write_text(json.dumps(records,indent=2),encoding='utf8')
+ auditpath=ROOT/'docs/art/document-models-audit.json'
+ if args.ids and auditpath.exists():
+  previous=json.loads(auditpath.read_text(encoding='utf8'));updates={r['name']:r for r in records}
+  records_for_audit=[updates.pop(r['name'],r) for r in previous]+list(updates.values())
+ else:records_for_audit=records
+ auditpath.write_text(json.dumps(records_for_audit,indent=2),encoding='utf8')
  manifestpath=ROOT/'public/models/manifest.json';manifest=json.loads(manifestpath.read_text(encoding='utf8'));replacements={r['name']:r for r in records};manifest['models']=[replacements.get(r['name'],r) for r in manifest['models']];manifestpath.write_text(json.dumps(manifest,indent=2),encoding='utf8')
  if not args.ids:(ROOT/'docs/art/stage-pet-designs.json').write_text(json.dumps(designs,ensure_ascii=False,indent=2),encoding='utf8')
  if not args.ids:

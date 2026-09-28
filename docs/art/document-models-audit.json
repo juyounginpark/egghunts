@@ -7,19 +7,19 @@
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 1541,
+    "voxelCount": 1224,
     "bounds": [
       [
-        6,
-        17
-      ],
-      [
-        1,
-        23
-      ],
-      [
         3,
-        17
+        20
+      ],
+      [
+        0,
+        22
+      ],
+      [
+        6,
+        15
       ]
     ],
     "anatomy": "seed"
@@ -4757,19 +4757,19 @@
       24
     ],
     "paletteCount": 12,
-    "voxelCount": 1669,
+    "voxelCount": 1492,
     "bounds": [
       [
-        6,
-        17
+        1,
+        22
       ],
       [
-        1,
+        0,
         23
       ],
       [
-        3,
-        17
+        7,
+        16
       ]
     ],
     "anatomy": "seed"

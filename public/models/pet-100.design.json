@@ -11,74 +11,48 @@
     "body": {
       "pivot": [
         11.5,
-        7,
-        12
+        5,
+        11
       ],
       "parent": null
     },
     "crown": {
       "pivot": [
         11.5,
-        7,
-        12
+        14,
+        11
       ],
-      "parent": "body"
+      "parent": "head"
     },
     "eyes": {
       "pivot": [
         11.5,
         11,
-        3
+        6
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        9,
-        7
+        8,
+        11
       ],
       "parent": "body"
-    },
-    "left_ear": {
-      "pivot": [
-        6,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.08,
-        0,
-        0.22
-      ]
     },
     "left_leg": {
       "pivot": [
-        6,
-        7,
-        12
+        8,
+        3,
+        11
       ],
       "parent": "body"
     },
-    "right_ear": {
-      "pivot": [
-        17,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.08,
-        0,
-        -0.22
-      ]
-    },
     "right_leg": {
       "pivot": [
-        17,
-        7,
-        12
+        15,
+        3,
+        11
       ],
       "parent": "body"
     }
@@ -94,14 +68,15 @@
     "prompt": "짧고 통통한 몸과 작은 점눈을 유지. 머리에는 줄기 하나에서 벌어지는 큰 잎 두 장. 잎은 끝이 바깥으로 기울고 두께가 가늘어진다. 부드러운 연두 몸, 진초록 잎 뿌리, 크림색 배. 몸이 살짝 들썩일 때 잎이 늦게 따라 흔들린다. 첫 마스코트답게 단순하고 명료하게.",
     "key": "pet-100",
     "anatomy": "seed",
-    "feature": "leaves",
+    "feature": "굵은 줄기로 연결된 두 장의 잎",
     "previewAngle": 35,
     "secretDragon": false,
     "stageName": "",
     "role": "seed",
     "colors": {
-      "primary": "#a6c976"
+      "primary": "#aad16f"
     },
-    "idle": "짧고 통통한 몸과 작은 점눈을 유지. 머리에는 줄기 하나에서 벌어지는 큰 잎 두 장. 잎은 끝이 바깥으로 기울고 두께가 가늘어진다. 부드러운 연두 몸, 진초록 잎 뿌리, 크림색 배. 몸이 살짝 들썩일 때 잎이 늦게 따라 흔들린다. 첫 마스코트답게 단순하고 명료하게."
+    "idle": "고개가 먼저 움직이고 두 잎이 작게 따라 흔들린다",
+    "concept": "통통한 콩몸과 넓은 두 잎이 연결된 초원의 어린 정령"
   }
 }

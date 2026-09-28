@@ -11,74 +11,48 @@
     "body": {
       "pivot": [
         11.5,
-        7,
-        12
+        5,
+        11
       ],
       "parent": null
     },
     "crown": {
       "pivot": [
         11.5,
-        7,
-        12
+        14,
+        11
       ],
-      "parent": "body"
+      "parent": "head"
     },
     "eyes": {
       "pivot": [
         11.5,
-        12,
-        3
+        11,
+        6
       ],
       "parent": "head"
     },
     "head": {
       "pivot": [
         11.5,
-        10,
-        7
+        8,
+        11
       ],
       "parent": "body"
-    },
-    "left_ear": {
-      "pivot": [
-        6,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.08,
-        0,
-        0.22
-      ]
     },
     "left_leg": {
       "pivot": [
-        6,
-        7,
-        12
+        8,
+        3,
+        11
       ],
       "parent": "body"
     },
-    "right_ear": {
-      "pivot": [
-        17,
-        15,
-        12
-      ],
-      "parent": "head",
-      "rotation": [
-        0.08,
-        0,
-        -0.22
-      ]
-    },
     "right_leg": {
       "pivot": [
-        17,
-        7,
-        12
+        15,
+        3,
+        11
       ],
       "parent": "body"
     }
@@ -94,14 +68,15 @@
     "prompt": "둥근 아이보리 씨앗 몸에서 큰 잎 두 장과 짧은 두 발이 나온 작은 정령을 만들라. 얼굴은 씨앗 앞쪽의 작은 점눈과 짧은 입으로 두고 껍질의 검정 이음매 하나를 남긴다. 잎은 뿌리의 청록에서 끝의 밝은 연두로 변화시킨다. 잠깐 웅크린 뒤 잎이 열리며 발밑에 작은 새싹 하나가 나타났다가 사라지게 한다.",
     "key": "pet-290",
     "anatomy": "seed",
-    "feature": "leaves",
+    "feature": "몸을 감싼 껍질과 길게 펼쳐진 떡잎",
     "previewAngle": 35,
     "secretDragon": false,
     "stageName": "",
     "role": "seed",
     "colors": {
-      "primary": "#eee7cf"
+      "primary": "#eee8cc"
     },
-    "idle": "둥근 아이보리 씨앗 몸에서 큰 잎 두 장과 짧은 두 발이 나온 작은 정령을 만들라. 얼굴은 씨앗 앞쪽의 작은 점눈과 짧은 입으로 두고 껍질의 검정 이음매 하나를 남긴다. 잎은 뿌리의 청록에서 끝의 밝은 연두로 변화시킨다. 잠깐 웅크린 뒤 잎이 열리며 발밑에 작은 새싹 하나가 나타났다가 사라지게 한다."
+    "idle": "고개를 천천히 기울이고 떡잎이 느리게 따라온다",
+    "concept": "열린 씨앗 껍질에서 자란 아이보리 정령과 청자색 떡잎"
   }
 }
