@@ -1,6 +1,6 @@
 import {OVERHAUL,upgradeBaseSpeed,progressionSpeedValue,productionUpgradeMultiplier,petIncomeValue,incomeValue,trainingProgressAfter,offlineSeconds,tapDamageValue,autoDamageValue,stageReward,walkingSpeedValue,stableRecoveryRatio,collectionEligible} from './balance';
 import {ULTRA_SECRET} from './ultra-secret';
-import {EGG_REPLENISH} from './stage-data';
+import {EGG_REPLENISH,OFF_PATH_SPEED_MULTIPLIER} from './stage-data';
 import {rainStrength,windStrength} from './weather';
 import {WEIGHT_BALANCE,ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
@@ -754,10 +754,14 @@ export class GameState {
   get autoMultiplier() { return equippedPetMultiplier(this.save.active,'autoMultiplier'); }
   get speedMultiplier() { return equippedPetMultiplier(this.save.active,'speedMultiplier'); }
   get progressionSpeed(){return progressionSpeedValue(upgradeBaseSpeed(this.save.upgrades.speed),this.save.trainingProgress??0,this.save.equippedTrail??0,this.speedMultiplier,this.level);}
+  get offPath(){
+    return !this.isAtBase&&!terrainAt(this.stage.id,this.x,this.z+this.stageOffset).onPath;
+  }
+  get pathSpeedMultiplier(){return this.offPath?OFF_PATH_SPEED_MULTIPLIER:1;}
   get movementSpeed(){
     const base=this.isAtBase?BALANCE.baseWalkSpeed:walkingSpeedValue(this.progressionSpeed);
     const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1)*(this.isNormalNight?BALANCE.nightMoveMultiplier:1)*(this.isRaining?BALANCE.rainMoveMultiplier:1)*(this.isWindy?BALANCE.windMoveMultiplier:1);
-    return base*TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
+    return base*TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*this.pathSpeedMultiplier*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
   }
   speedPad=freshPads();
   eggRequiredSpeed(egg:WorldEgg){const stage=egg.stageId??this.stage.id;return recommendedRouteSpeed(0,stage)*stableRecoveryRatio(stage)*(.88/carryMultiplier(egg,this.save.upgrades.carry));}

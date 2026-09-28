@@ -77,7 +77,7 @@ export function waterAt(stage:number,x:number,z:number){
 export function terrainAt(stage:number,x:number,z:number){
  const {progress}=routeProgress(stage,x,z),center=pathX(stage,z);
  const water=waterAt(stage,x,z),cell=reliefCell(stage,x,z,pathX(stage,Math.floor(z)+.5),routeLength(stage));
- return {walk:true,height:water?water.surface-water.depth:cell.height,slow:water?WATER_TERRAIN.speedMultiplier:1,water,bridge:false,landing:false,progress,center,bypass:Math.abs(x-center)>3,ice:false};
+ return {walk:true,onPath:cell.trail,height:water?water.surface-water.depth:cell.height,slow:water?WATER_TERRAIN.speedMultiplier:1,water,bridge:false,landing:false,progress,center,bypass:Math.abs(x-center)>3,ice:false};
 }
 export function explorationHeight(x:number,z:number,start=1){
  return explorationSurface(x,z,start)?.height??0;
