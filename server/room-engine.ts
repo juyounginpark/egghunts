@@ -3,7 +3,7 @@ import type {Mob} from '../src/mobs';
 import {migrateExploration,migrateBossHomes,migrateEggHomes} from '../src/exploration-migration';
 import {advanceTutorial} from '../src/tutorial';
 import {GameState,freshSave,type WorldEgg,type Boss} from '../src/game';
-import {BALANCE,EGGS,MONGLES,UPGRADES,farmPetIds} from '../src/data';
+import {BALANCE,EGGS,MONGLES,UPGRADES} from '../src/data';
 import {exportRuntime,restoreRuntime,migrateStageRuntime,type RuntimeState} from '../src/online-state';
 import {migrateStageWorld,compactRouteWorld} from '../src/stage-migration';
 import {playerName} from '../src/player-identity';
@@ -179,9 +179,9 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   id,at:now,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
   speed:g.speed,seat:g.seat,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,chat:room.players[id].chat??null,
   activePets:g.save.active.filter(id=>g.save.mongles[id]>0).slice(0,BALANCE.maxCompanions),
-  mountPet:g.mountId,riding:g.riding,
-  pets:farmPetIds(g.save.mongles,g.riding?g.equippedPetIds:g.save.active,now),
-  farmEggs:g.save.eggs.map(({id,type,stageId,variant,special})=>({id,type,stageId,variant,special})),
+  mountPet:g.mountId,riding:g.riding,mountWeight:g.mountPetLot,activePetWeights:g.activePetLots,petWeights:g.farmPetLots(),
+  pets:g.farmPetLots().map(l=>l.species),
+  farmEggs:g.save.eggs.map(({id,type,stageId,variant,special,weightG,standardWeightG})=>({id,type,stageId,variant,special,weightG,standardWeightG})),
  }));
  // Notice IDs start with the authenticated owner's UUID, not the nickname.
  const eggNotices=room.eggNotices.filter(notice=>!notice.id.startsWith(`${user}:`));
@@ -219,6 +219,12 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
   case 'claimHatch':atBase();if(!g.claimHatch(text()))throw Error('EGG_NOT_READY');break;
   case 'select':atBase();if(!g.save.eggs.some(e=>e.id===text()))throw Error('NOT_OWNED');g.save.selected=text();g.revision++;break;
   case 'equip':{atBase();if(!g.equipPet(integer()))throw Error('CANNOT_EQUIP');break;}
+  case 'equipPetLot':case 'equipMountLot':case 'sellPetLot':case 'unequipPetSlot':{
+   atBase();const value=c.value as {key?:string;slot?:number}|null;
+   if(!value||typeof value.key!=='string'||value.key.length>100)throw Error('INVALID_ID');
+   const ok=c.kind==='equipPetLot'?g.equipPetLot(value.key,value.slot):c.kind==='equipMountLot'?g.equipMountLot(value.key):c.kind==='sellPetLot'?g.sellPetLot(value.key):g.unequipPetSlot(value.slot??-1);
+   if(!ok)throw Error('CANNOT_EQUIP');break;
+  }
   case 'equipMount':{atBase();if(!g.equipMount(integer()))throw Error('CANNOT_EQUIP');break;}
   case 'unequipMount':{atBase();if(!g.unequipMount())throw Error('NOT_OWNED');break;}
   case 'replacePet':{

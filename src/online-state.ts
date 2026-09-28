@@ -1,3 +1,4 @@
+import {ensurePetLots,ensureEggWeight} from './weight';
 import {GameState,migrateEggHealth,type Save,type WorldEgg,type Boss} from './game';
 import {migrateStageSave,compactRouteZ} from './stage-migration';
 import {migrateBalance} from './balance-migration';
@@ -42,6 +43,8 @@ export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[
  if(migrateHealth)migrateEggHealth([...game.save.eggs,...world,game.carried,...bosses.flatMap(b=>b.loot?[b.loot]:[])]);
  if(migrateHealth){migrateBalance(game.save,game.now());validateWeekly(game.save.weekly);game.save.mongles=Array.from({length:MONGLES.length},(_,i)=>game.save.mongles[i]??0);}
  if(game.save.progression)delete game.save.progression.traits;
+ ensurePetLots(game.save);
+ for(const egg of [...game.save.eggs,...world,game.carried])ensureEggWeight(egg);
  game.hp=Math.min(game.hp,game.maxHp);
  game.roomManaged=true;
 }

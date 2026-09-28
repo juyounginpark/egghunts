@@ -1,3 +1,5 @@
+import {ULTRA_SECRET} from './ultra-secret';
+import {ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {softenGrowth} from './growth-curve';
 import {freshPads} from './speed-pads';
@@ -12,7 +14,7 @@ import {firstEggTarget} from './tutorial';
 import {WEEKLY_EVENT} from './data';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
-import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp,equippedPetMultiplier,eggCarryMultiplier} from './data';
+import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp,equippedPetMultiplier} from './data';
 import {
   BALANCE,
   COUPONS,
@@ -35,10 +37,11 @@ import {farmGym,CAMPFIRE,CAMP_SEATS} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianPursuitSpeed,stageDamage,type HazardDefinition} from "./stage-data";
-export type Egg = { id: string; type: number; hp: number; hpVersion?:2|3|4; distance: number; stageId?:number; variant?:number; special?:boolean };
+export type Egg = Weighted & { id: string; type: number; hp: number; hpVersion?:2|3|4; distance: number; stageId?:number; variant?:number; special?:boolean };
 // Version each egg because stored, carried and shared-room eggs have separate lifetimes.
 export function migrateEggHealth(eggs:(Egg|null|undefined)[]){
   for(const egg of eggs){
+    ensureEggWeight(egg);
     if(!egg||egg.hpVersion===4)continue;
     if((egg.hpVersion!==undefined&&egg.hpVersion!==2&&egg.hpVersion!==3)||!EGGS[egg.type]||!Number.isFinite(egg.hp)||egg.hp<0)throw Error('Invalid egg health');
     const def=EGGS[egg.type];
@@ -110,6 +113,7 @@ export type Save = {
   eggs: Egg[];
   mongles: number[];
   active: number[];
+  petLots?:PetLot[];activeLots?:string[];mountLot?:string|null;
   mountPet?:number|null;
   discovered: number[];
   selected: string | null;
@@ -213,7 +217,7 @@ export function parseSave(raw: string | null, now: number): Save {
     ) ||
     new Set(s.eggs.map(e => e.id)).size !== s.eggs.length ||
     !Array.isArray(s.mongles) ||
-    ![3, 100, 300, 320, 321, MONGLES.length].includes(s.mongles.length) ||
+    ![3, 100, 300, 320, 321, 701, MONGLES.length].includes(s.mongles.length) ||
     !s.mongles.every((v) => Number.isInteger(v) && v >= 0) ||
     !Array.isArray(s.active) ||
     s.active.length > 3 ||
@@ -265,9 +269,10 @@ export function parseSave(raw: string | null, now: number): Save {
   );
   for(const e of [...s.eggs,...(s.world??[]),...(s.expedition?.carried?[s.expedition.carried]:[])]){
     if(e.stageId!==undefined&&(!Number.isInteger(e.stageId)||e.stageId<1||e.stageId>20))throw Error('Invalid egg stage');
-    if(e.variant!==undefined&&(!isStageEggVariant(e.variant)||(e.variant===5&&(!e.stageId||EGGS[e.type].tier!==6))||(e.variant>=7&&!e.stageId)))throw Error('Invalid egg variation');
+    if(e.variant!==undefined&&(!isStageEggVariant(e.variant)||((e.variant===5||e.variant===32)&&(!e.stageId||EGGS[e.type].tier!==6))||(e.variant>=7&&!e.stageId)))throw Error('Invalid egg variation');
   }
   if(s.progression)validateProgression(s.progression);
+  ensurePetLots(s);
   return s;
 }
 export class GameState {
@@ -417,11 +422,9 @@ export class GameState {
   sellPet(id:number){
     if(!this.isAtBase||this.death||!Number.isInteger(id)||!this.save.mongles[id])return 0;
     this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(id))this.save.obtainedPets.push(id);
-    this.save.mongles[id]--;
-    if(this.save.active.filter(p=>p===id).length+Number(this.save.mountPet===id)>this.save.mongles[id]){
-      if(!this.unequipPet(id))this.save.mountPet=null;
-    }
-    const price=this.petSellPrice(id);this.save.dust=add(this.save.dust,price);this.revision++;this.emit('pet_sold',{pet:id,price});return price;
+    const chosen=this.save.petLots?.find(l=>l.species===id&&l.count>0);
+    if(chosen)return this.sellPetLot(chosen.key);
+    return 0;
   }
   get mountId(){const id=this.save.mountPet;return typeof id==='number'&&Number.isInteger(id)&&MONGLES[id]&&(this.save.mongles[id]??0)>this.save.active.filter(p=>p===id).length?id:null;}
   get equippedPetIds(){return this.mountId===null?this.save.active:[...this.save.active,this.mountId];}
@@ -430,22 +433,49 @@ export class GameState {
   get mountSpeedMultiplier(){return 1+(this.mountId===null?0:this.mountBonus(this.mountId));}
   get riding(){return this.mountId!==null&&!this.death&&!this.training&&this.seat===null&&this.now()>=this.knockedUntil&&this.knockback.remaining<=0&&!this.launch;}
   equipMount(id:number){
-    if(!this.isAtBase||this.death||!Number.isInteger(id)||!MONGLES[id]||!this.save.mongles[id]||this.mountId===id)return false;
-    if(this.save.active.filter(p=>p===id).length>=this.save.mongles[id])this.unequipPet(id);
-    this.save.mountPet=id;this.revision++;return true;
+    const lot=this.save.petLots?.find(l=>l.species===id&&l.count>0);return lot?this.equipMountLot(lot.key):false;
   }
-  unequipMount(){if(!this.isAtBase||this.death||this.save.mountPet==null)return false;this.save.mountPet=null;this.revision++;return true;}
+  unequipMount(){if(!this.isAtBase||this.death||this.save.mountPet==null)return false;this.save.mountPet=null;this.save.mountLot=null;this.revision++;return true;}
   equipPet(id:number){
     if(!Number.isInteger(id)||!MONGLES[id]||this.save.active.length>=BALANCE.maxCompanions||this.equippedCount(id)>=(this.save.mongles[id]??0))return false;
-    this.save.active.push(id);this.revision++;return true;
+    const lot=this.save.petLots?.find(l=>l.species===id&&this.lotAvailable(l.key)>0);
+    return lot?this.equipPetLot(lot.key):false;
   }
   unequipPet(id:number){
     const index=this.save.active.lastIndexOf(id);if(index<0)return false;
+    this.save.activeLots?.splice(index,1);
     this.save.active.splice(index,1);this.revision++;return true;
   }
   replacePet(id:number,slot:number,expected:number){
     if(!Number.isInteger(id)||!MONGLES[id]||!Number.isInteger(slot)||slot<0||slot>=this.save.active.length||this.save.active[slot]!==expected||id===expected||this.equippedCount(id)>=(this.save.mongles[id]??0))return false;
-    this.save.active[slot]=id;this.revision++;return true;
+    const lot=this.save.petLots?.find(l=>l.species===id&&this.lotAvailable(l.key)>0);return lot?this.equipPetLot(lot.key,slot):false;
+  }
+  lotAvailable(key:string){const lot=this.save.petLots?.find(l=>l.key===key);return (lot?.count??0)-(this.save.activeLots??[]).filter(k=>k===key).length-Number(this.save.mountLot===key);}
+  get activePetLots(){return this.save.active.map((id,i)=>this.save.petLots?.find(l=>l.key===this.save.activeLots?.[i])??{key:'',species:id,weightG:1,standardWeightG:1,count:1});}
+  get mountPetLot(){return this.save.petLots?.find(l=>l.key===this.save.mountLot);}
+  farmPetLots(){
+    const reserved=[...(this.save.activeLots??[]),...(this.riding&&this.save.mountLot?[this.save.mountLot]:[])];
+    const lots=(this.save.petLots??[]).map(l=>({...l,count:Math.max(0,l.count-reserved.filter(k=>k===l.key).length)}));
+    const total=lots.reduce((n,l)=>n+l.count,0),limit=Math.min(BALANCE.farmPetsVisible,total),start=total>limit?Math.floor(this.now()/12000)*limit%total:0;
+    return Array.from({length:limit},(_,i)=>{let n=(start+i)%total;return lots.find(l=>{if(n<l.count)return true;n-=l.count;return false;})!;});
+  }
+  equipPetLot(key:string,slot?:number){
+    const lot=this.save.petLots?.find(l=>l.key===key);if(!this.isAtBase||this.death||!lot||this.lotAvailable(key)<=0)return false;
+    if(slot===undefined){if(this.save.active.length>=BALANCE.maxCompanions)return false;this.save.active.push(lot.species);(this.save.activeLots??=[]).push(key);}
+    else {if(!Number.isInteger(slot)||slot<0||slot>=this.save.active.length)return false;this.save.active[slot]=lot.species;this.save.activeLots![slot]=key;}
+    this.revision++;return true;
+  }
+  unequipPetSlot(slot:number){if(!this.isAtBase||this.death||!Number.isInteger(slot)||slot<0||slot>=this.save.active.length)return false;this.save.active.splice(slot,1);this.save.activeLots?.splice(slot,1);this.revision++;return true;}
+  equipMountLot(key:string){
+    const lot=this.save.petLots?.find(l=>l.key===key);if(!this.isAtBase||this.death||!lot||lot.count<=0||this.save.mountLot===key)return false;
+    if(this.lotAvailable(key)<=0){const slot=this.save.activeLots?.lastIndexOf(key)??-1;if(slot<0)return false;this.unequipPetSlot(slot);}
+    this.save.mountPet=lot.species;this.save.mountLot=key;this.revision++;return true;
+  }
+  sellPetLot(key:string){
+    const lot=this.save.petLots?.find(l=>l.key===key);if(!this.isAtBase||this.death||!lot||lot.count<=0)return 0;
+    if(this.lotAvailable(key)<=0){const slot=this.save.activeLots?.lastIndexOf(key)??-1;if(slot>=0)this.unequipPetSlot(slot);else this.unequipMount();}
+    lot.count--;this.save.mongles[lot.species]--;this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(lot.species))this.save.obtainedPets.push(lot.species);
+    const price=this.petSellPrice(lot.species);this.save.dust=add(this.save.dust,price);this.revision++;this.emit('pet_sold',{pet:lot.species,price});return price;
   }
   death:NonNullable<Save['death']>|null=null;
   private reviveAdUntil:number|null=null;
@@ -534,7 +564,8 @@ export class GameState {
     return softenGrowth(before+this.trainingRate*this.movementMultiplier*levelSpeed(this.level),ECONOMY.softThreshold)-softenGrowth(before,ECONOMY.softThreshold);
   }
   get trainingSpeedBonus(){return softenGrowth(this.trainingBaseSpeed+this.trainingRawBonus,ECONOMY.softThreshold)-softenGrowth(this.trainingBaseSpeed,ECONOMY.softThreshold);}
-  returnReward: { type: number; distance: number; stageId?:number;variant?:number;special?:boolean } | null = null;
+  resultWeight: Weighted | null = null;
+  returnReward: Weighted & { type: number; distance: number; stageId?:number;variant?:number;special?:boolean } | null = null;
   get nearGym() { return Math.hypot(this.x-this.gym.x,this.z-this.gym.z)<BALANCE.gymRadius; }
   get trainingRate() { return BALANCE.trainingPerSecond + BALANCE.trainingPerLevel*this.save.upgrades.training; }
   toggleTraining(){
@@ -621,6 +652,7 @@ export class GameState {
   ) {
     migrateBalance(save,this.now());validateWeekly(save.weekly);
     save.mongles=Array.from({length:MONGLES.length},(_,i)=>save.mongles[i]??0);
+    ensurePetLots(save);
     migrateStageSave(save);
     migrateEggHealth([...save.eggs,...(save.world??[]),save.expedition?.carried,...(save.bosses??[]).flatMap(b=>b.loot?[b.loot]:[])]);
     save.dragonClues??={};
@@ -644,7 +676,9 @@ export class GameState {
     this.resetBosses();this.spawn();
     if (!save.world && !save.discovered.length && !save.eggs.length && !save.mongles.some(Boolean)) {
       const starter = this.world[2];
-      starter.type = 0; starter.hp = eggMaxHp(starter);
+      starter.type = 0;
+      if(starter.variant===5||starter.variant===ULTRA_SECRET.eggVariant)starter.variant=0;
+      Object.assign(starter,rollEggWeight(starter,this.random));starter.hp = eggMaxHp(starter);
     }
     if (
       save.world &&
@@ -709,8 +743,13 @@ export class GameState {
     return walking*this.mountSpeedMultiplier*(this.carried?BALANCE.carryingMovementMultiplier:1);
   }
   speedPad=freshPads();
-  eggRequiredSpeed(egg:WorldEgg){return recommendedRouteSpeed(0,egg.stageId??this.stage.id);}
-  meetsEggSpeed(egg:WorldEgg){return this.speed>=this.eggRequiredSpeed(egg);}
+  private beforeCarrySpeed(speed:number,multiplier:number){
+    const mount=this.mountSpeedMultiplier,t=ECONOMY.softThreshold,s=speed/mount;
+    return (s<=t?softenGrowth(s/multiplier,t):s-t*Math.log10(multiplier))*mount;
+  }
+  eggRequiredSpeed(egg:WorldEgg){return this.beforeCarrySpeed(recommendedRouteSpeed(0,egg.stageId??this.stage.id),carryMultiplier(egg,this.save.upgrades.carry));}
+  get unloadedSpeed(){return this.carried?this.beforeCarrySpeed(this.speed,carryMultiplier(this.carried,this.save.upgrades.carry)):this.speed;}
+  meetsEggSpeed(egg:WorldEgg){return this.unloadedSpeed+1e-9>=this.eggRequiredSpeed(egg);}
   get speed(){return this.unmountedSpeed*this.mountSpeedMultiplier;}
   get unmountedSpeed() {
     return softenGrowth(
@@ -718,7 +757,7 @@ export class GameState {
       (BALANCE.speed *
       (ECONOMY.speedGrowth ** this.save.upgrades.speed) + (this.save.trainingSpeed ?? 0)) *
       (this.carried
-        ? eggCarryMultiplier(this.carried.type,this.save.upgrades.carry)
+        ? carryMultiplier(this.carried,this.save.upgrades.carry)
         : 1)
     ,ECONOMY.softThreshold);
   }
@@ -780,20 +819,21 @@ export class GameState {
       const variants=normalEggSelection(this.random,5);
       return Array.from({ length: 5 }, (_, slot) => {
         const region=Math.floor((boss.stage-1)/4);
-        const dragon = this.random()<BALANCE.secretDragonEggChance;
-        const type = dragon?6*REGIONS.length+region:rollEgg(region, this.random);
+        const roll=this.random(),ultra=roll<ULTRA_SECRET.chance,dragon=!ultra&&roll<ULTRA_SECRET.chance+BALANCE.secretDragonEggChance;
+        const type = ultra||dragon?6*REGIONS.length+region:rollEgg(region, this.random);
         const anchor=eggAnchor(boss.stage,slot),x=anchor.x,z=anchor.z-boss.offset;
         return {
           id: `${boss.stage}-${slot}-${this.now()}-${this.random()}`,
           type,
           hp: eggMaxHp({type,stageId:boss.stage}),
           hpVersion:4 as const,
+          ...rollEggWeight({type,stageId:boss.stage,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:variants[slot]},this.random),
           distance: Math.abs(z),
           x,
           z,
           homeX: x,
           homeZ: z,
-          region,stageId:boss.stage,variant:dragon?5:variants[slot],guardian,
+          region,stageId:boss.stage,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:variants[slot],guardian,
           secured: false,
           expires: this.now() + BALANCE.nightInterval,
         };
@@ -801,10 +841,11 @@ export class GameState {
     );
     const rare=RARITIES.slice(FINAL_GUARDIAN.minimumEggTier);
     let roll=this.random()*rare.reduce((sum,r)=>sum+r.chance,0);
-    const dragon=this.random()<BALANCE.secretDragonEggChance;
-    const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=dragon?6:FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
+    const secretRoll=this.random(),ultra=secretRoll<ULTRA_SECRET.chance,dragon=!ultra&&secretRoll<ULTRA_SECRET.chance+BALANCE.secretDragonEggChance;
+    const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=ultra||dragon?6:FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
     const type=tier*REGIONS.length+REGIONS.length-1,z=specialEggAnchor().z-this.route.at(-1)!.offset;
-    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:4,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:dragon?5:randomNormalEggVariant(this.random),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
+    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:4,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:randomNormalEggVariant(this.random),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
+    Object.assign(this.world.at(-1)!,rollEggWeight(this.world.at(-1)!,this.random));
   }
   get nightRemaining() {
     return Math.max(0, Math.ceil((this.nightAt - this.now()) / 1000));
@@ -997,7 +1038,7 @@ export class GameState {
           this.emit("egg_saved", {id:e.id,type:e.type,stageId:e.stageId??0,variant:e.variant??-1,special:e.special?1:0});
           this.emit("expedition_success", {distance: Math.floor(e.distance)});
           this.save.eggs.push({
-            id: e.id,stageId:e.stageId,variant:e.variant,special:e.special,
+            id: e.id,stageId:e.stageId,variant:e.variant,special:e.special,weightG:e.weightG,standardWeightG:e.standardWeightG,
             type: e.type,
             hp: e.hp,
             hpVersion:e.hpVersion,
@@ -1017,7 +1058,7 @@ export class GameState {
           const completed=e.stageId??this.progression.stage;
           if(!this.progression.completedStages.includes(completed))this.progression.completedStages.push(completed);
           if(completed>=PROGRESSION.unlockStage)this.unlockHealth();
-          this.returnReward = {type:e.type, distance:e.distance,stageId:e.stageId,variant:e.variant,special:e.special};
+          this.returnReward = {type:e.type, distance:e.distance,stageId:e.stageId,variant:e.variant,special:e.special,weightG:e.weightG,standardWeightG:e.standardWeightG};
           this.message = `${EGGS[e.type].name} 보관 완료! 부화실에서 만나봐요`;
           this.carried = null;
           this.revision++;
@@ -1059,6 +1100,7 @@ export class GameState {
   }
   pickup(egg:WorldEgg){
       if(this.carried||this.knockback.remaining>0||this.death||this.now()<this.knockedUntil)return;
+      ensureEggWeight(egg);
       // Judge the displayed stat before carrying penalties. This rule is shared
       // by local play and authoritative room commands, including concealed players.
       const underqualified=!this.meetsEggSpeed(egg);
@@ -1108,21 +1150,24 @@ export class GameState {
     if (!this.isAtBase || this.death || this.result !== null || !e || e.hp !== 0) return false;
     if (e.hp === 0) {
       const pool = MONGLES.map((m, i) => ({ ...m, index: i })).filter(
-        (m) => e.type===WEEKLY_EVENT.eggType?m.index===WEEKLY_EVENT.petId:m.index!==WEEKLY_EVENT.petId&&m.tier === EGGS[e.type].tier && (e.stageId?m.stageId===e.stageId&&(e.variant===5?m.species===10:m.species!==10):m.stageId===0&&m.region===EGGS[e.type].region),
+        (m) => e.type===WEEKLY_EVENT.eggType?m.index===WEEKLY_EVENT.petId:m.index!==WEEKLY_EVENT.petId&&m.tier === EGGS[e.type].tier && (e.stageId?m.stageId===e.stageId&&(e.variant===ULTRA_SECRET.eggVariant?m.species===30:e.variant===5?m.species===10:m.species!==10&&m.species!==30):m.stageId===0&&m.region===EGGS[e.type].region),
       );
       const m =
         pool[Math.min(pool.length - 1, Math.floor(this.random() * pool.length))]
           .index;
       this.emit("mongle_obtained", {mongle: m});
       if(!this.progression.hatchedPets.includes(m)){this.progression.hatchedPets.push(m);this.gainXP(PROGRESSION.hatchXP);}
+      ensureEggWeight(e);
+      const hatched=addPetLot(this.save,m,{weightG:e.weightG!,standardWeightG:e.standardWeightG!});
       this.save.mongles[m]++;
       this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(m))this.save.obtainedPets.push(m);
       if (!this.save.active.includes(m) && this.save.active.length < BALANCE.maxCompanions)
-        this.save.active.push(m);
+        {this.save.active.push(m);(this.save.activeLots??=[]).push(hatched.key);}
       this.save.dust=add(this.save.dust,EGGS[e.type].reward);
       this.save.eggs = this.save.eggs.filter((v) => v.id !== e.id);
       this.save.selected = null;
       this.result = m;
+      this.resultWeight={weightG:e.weightG,standardWeightG:e.standardWeightG};
       this.message = `${MONGLES[m].name} 탄생! 별가루 +${formatNumber(EGGS[e.type].reward)}`;
       this.revision++;
     }
@@ -1139,6 +1184,7 @@ export class GameState {
     const stageId=1+Math.floor(this.random()*STAGES.length),variant=randomNormalEggVariant(this.random);
     const type=COUPONS[code].tier*REGIONS.length+Math.floor((stageId-1)/4),id=`coupon-${code}`;
     const egg:Egg={id,type,stageId,variant,hp:eggMaxHp({type,stageId}),hpVersion:4,distance:0};
+    Object.assign(egg,rollEggWeight(egg,this.random));
     this.save.eggs.push(egg);this.save.selected??=id;
     if(!this.save.discovered.includes(type))this.save.discovered.push(type);
     (this.save.redeemedCoupons??=[]).push(code);
@@ -1156,9 +1202,10 @@ export class GameState {
     this.save.dust=add(this.save.dust,WEEKLY_EVENT.rewards[index]);
     if(index===6){
       const id=`weekly-${claimed+1}-${day}`,type=WEEKLY_EVENT.eggType,pet=WEEKLY_EVENT.petId;
-      this.save.eggs.push({id,type,hp:eggMaxHp({type}),hpVersion:4,distance:0});
+      this.save.eggs.push({id,type,hp:eggMaxHp({type}),hpVersion:4,distance:0,...rollEggWeight({type},this.random)});
       this.save.selected??=id;
       if(!this.save.discovered.includes(type))this.save.discovered.push(type);
+      addPetLot(this.save,pet,rollEggWeight({type},this.random));
       this.save.mongles[pet]=(this.save.mongles[pet]??0)+1;
       this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(pet))this.save.obtainedPets.push(pet);
     }

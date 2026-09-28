@@ -1,5 +1,6 @@
+import {weightSize,weightText,type Weighted} from './weight';
 import {MountView} from './mount-view';
-import {eggMaxHp,farmPetIds} from './data';
+import {eggMaxHp} from './data';
 import {explorationHeight} from './exploration-route';
 import {concealedAt} from './brush';
 import {BRUSH_TERRAIN} from './stage-data';
@@ -13,7 +14,6 @@ import { voxelModel as model, loadVoxels } from "./voxel";
 import {villageMapColliders,type MapCollider} from './map-collision';
 import type { Peer } from "./multiplayer";
 import { formatNumber } from "./format";
-import {petAbilities} from './pet-stats';
 import {HazardView} from "./hazard-view";
 import {FARM_PLOTS,farmPlot,farmGym,farmLocal,farmEggPosition,farmPetPose,CAMPFIRE,CAMP_SEATS} from './village';
 import {villageArt} from './world-art';
@@ -59,13 +59,14 @@ export class World {
     let entry=this.peerPets.get(peer.id);
     if(!entry){entry={group:new T.Group(),trail:[],key:null,request:0,retryAt:0};this.peerPets.set(peer.id,entry);this.scene.add(entry.group);}
     entry.group.visible=visible;
-    const ids=(peer.activePets??[]).filter(id=>Number.isInteger(id)&&!!MONGLES[id]).slice(0,BALANCE.maxCompanions),key=ids.join(',');
+    const weights=peer.activePetWeights??[];
+    const ids=(peer.activePets??[]).filter(id=>Number.isInteger(id)&&!!MONGLES[id]).slice(0,BALANCE.maxCompanions),key=ids.join(',')+JSON.stringify(weights);
     if(entry.key!==key&&time>=entry.retryAt){
       entry.key=key;const request=++entry.request,current=entry;
       this.clearPetInstances(current.group);
       void loadVoxels(ids.map(id=>`pet-${id}`)).then(()=>{
         if(this.peerPets.get(peer.id)!==current||current.request!==request)return;
-        for(const id of ids){const pet=petVisual(id);pet.scale.setScalar(MONGLES[id].scale);pet.position.copy(avatar.position);current.group.add(pet);}
+        for(const [i,id] of ids.entries()){const pet=petVisual(id);pet.userData.weight=weights[i];pet.scale.setScalar(MONGLES[id].scale);pet.position.copy(avatar.position);current.group.add(pet);}
       }).catch(err=>{if(this.peerPets.get(peer.id)===current&&current.request===request){current.key=null;current.retryAt=time+2;this.assetError=String(err);}});
     }
     if(peer.seat!==undefined&&peer.seat!==null&&peer.slot!==undefined){
@@ -89,16 +90,16 @@ export class World {
   private roomFarmPets=new T.Group();
   private roomFarmEggs=new T.Group();
   private roomEggKey='';
-  private farmPet(id:number,slot:number,index:number){
+  private farmPet(id:number,slot:number,index:number,weight?:Weighted){
     // Resting herds reuse merged bodies instead of one draw call per animated limb.
-    const pet=petVisual(id,false);
+    const pet=petVisual(id,false);pet.userData.weight=weight;
     this.scaleFarmPet(pet);
     pet.userData.farmSlot=slot;pet.userData.farmIndex=index;
     return pet;
   }
   private scaleFarmPet(pet:T.Object3D){
     const size=Math.max(.001,pet.userData.bodyWidth??1,pet.userData.bodyHeight??1,pet.userData.bodyDepth??1);
-    pet.scale.setScalar(Math.min(MONGLES[pet.userData.petId].scale,BALANCE.farmPetMaxSize/size));
+    pet.scale.setScalar(Math.min(MONGLES[pet.userData.petId].scale*weightSize(pet.userData.weight??{}),BALANCE.farmPetMaxSize/size));
   }
   private animateFarmPet(pet:T.Object3D,time:number){
     const pose=farmPetPose(pet.userData.farmSlot,pet.userData.farmIndex,time,this.reducedMotion.matches);
@@ -115,10 +116,10 @@ export class World {
       this.animateFarmPet(pet,time);
     });
   }
-  private farmEgg(egg:Pick<Egg,'type'|'stageId'|'variant'>,slot:number,index:number,count:number){
+  private farmEgg(egg:Pick<Egg,'type'|'stageId'|'variant'|'weightG'|'standardWeightG'>,slot:number,index:number,count:number){
     const model=this.eggModel(egg),at=farmEggPosition(slot,index,count);
     const rowSpacing=Math.min(.7,2.9/Math.max(1,Math.ceil(count/3)-1));
-    model.scale.setScalar(Math.min(.45,rowSpacing*.65));model.position.set(at.x,.08,at.z);model.rotation.y=farmPlot(slot).rotation;
+    model.scale.setScalar(Math.min(.45,rowSpacing*.65)*weightSize(egg));model.position.set(at.x,.08,at.z);model.rotation.y=farmPlot(slot).rotation;
     return model;
   }
   private async showRoomFarms(players:Peer[]){
@@ -128,11 +129,11 @@ export class World {
       this.roomEggKey=eggKey;this.clearPetInstances(this.roomFarmEggs);
       for(const p of farms){const eggs=p.farmEggs??[];eggs.forEach((egg,i)=>this.roomFarmEggs.add(this.farmEgg(egg,p.slot!,i,eggs.length)));}
     }
-    const entries=farms.flatMap(p=>(p.pets??[]).slice(0,BALANCE.farmPetsVisible).map((id,i)=>({id,i,slot:p.slot!})));
+    const entries=farms.flatMap(p=>(p.pets??[]).slice(0,BALANCE.farmPetsVisible).map((id,i)=>({id,i,slot:p.slot!,weight:p.petWeights?.[i]})));
     const key=JSON.stringify(entries);if(key===this.roomFarmKey)return;this.roomFarmKey=key;
     try{await loadVoxels(entries.map(p=>`pet-${p.id}`));}catch(error){if(key===this.roomFarmKey)this.roomFarmKey='';throw error;}if(key!==this.roomFarmKey)return;
     this.clearPetInstances(this.roomFarmPets);
-    for(const p of entries)this.roomFarmPets.add(this.farmPet(p.id,p.slot,p.i));
+    for(const p of entries)this.roomFarmPets.add(this.farmPet(p.id,p.slot,p.i,p.weight));
   }
   private appearance=-1;
   private batGeometry=new T.BoxGeometry(.13,.13,1.25);
@@ -188,7 +189,7 @@ export class World {
       const seated=!down&&peer.seat!==undefined&&peer.seat!==null&&!!CAMP_SEATS[peer.seat];
       if(seated){const seat=CAMP_SEATS[peer.seat!];avatar.position.x=seat.x;avatar.position.z=seat.z;}
       const walking=!seated&&!down&&fresh&&speed>.08;
-      const mountLift=this.mounts.update(avatar,peer.mountPet??null,!!peer.riding&&!down&&!seated,frameAt/1000,walking,this.reducedMotion.matches);
+      const mountLift=this.mounts.update(avatar,peer.mountPet??null,!!peer.riding&&!down&&!seated,frameAt/1000,walking,this.reducedMotion.matches,weightSize(peer.mountWeight??{}));
       avatar.userData.walkBlend=(avatar.userData.walkBlend??0)+((walking?1:0)-(avatar.userData.walkBlend??0))*(1-Math.exp(-dt*16));
       avatar.userData.walkPhase=(avatar.userData.walkPhase??0)+dt*9*Math.min(1.6,Math.max(.6,speed/1.6));
       const rig=avatar.getObjectByName('peer-rig')!,stride=Math.sin(avatar.userData.walkPhase)*avatar.userData.walkBlend;
@@ -206,7 +207,7 @@ export class World {
       const eggKey=peer.carried===null?null:`${peer.egg?.id??''}:${peer.carried}:${peer.egg?.stageId??''}:${peer.egg?.variant??''}`;
       if(avatar.userData.egg!==eggKey){
         const old=avatar.getObjectByName('peer-egg');if(old){old.traverse(o=>{if(o instanceof T.InstancedMesh)o.dispose();});avatar.remove(old);}
-        if(peer.carried!==null){const egg=this.eggModel(peer.egg??{type:peer.carried});egg.name='peer-egg';egg.position.y=1.12;egg.scale.setScalar(RARITIES[EGGS[peer.carried].tier].scale*.85*BALANCE.eggVisualScale);avatar.add(egg);}
+        if(peer.carried!==null){const egg=this.eggModel(peer.egg??{type:peer.carried});egg.name='peer-egg';egg.position.y=1.12;egg.scale.setScalar(RARITIES[EGGS[peer.carried].tier].scale*.85*BALANCE.eggVisualScale*weightSize(peer.egg??{}));avatar.add(egg);}
         avatar.userData.egg=eggKey;
       }
       const held=avatar.getObjectByName('peer-egg');if(held)animateEgg(held,frameAt/1000,this.low);
@@ -242,7 +243,7 @@ export class World {
   private viewportOffset = 0;
   private eggModels: T.Group[] = [];
   private stageEggModels=new Map<string,T.Group>();
-  private eggModel(egg:Pick<Egg,'type'|'stageId'|'variant'>){
+  private eggModel(egg:Pick<Egg,'type'|'stageId'|'variant'|'weightG'|'standardWeightG'>){
     if(!egg.stageId||egg.variant===undefined)return this.eggModels[egg.type].clone();
     const key=`${egg.stageId}:${egg.variant}:${egg.type}`;
     if(!this.stageEggModels.has(key))this.stageEggModels.set(key,eggVisual(egg.type,egg));
@@ -258,7 +259,7 @@ export class World {
   private hatchKey = "";
   private hatchBurst=new HatchBurst();
   private damageDirection=document.createElement('div');
-  private birth?:{id:number;egg:Pick<Egg,'type'|'stageId'|'variant'>;at:number;done:()=>void;onBirth?:()=>void};
+  private birth?:{id:number;egg:Pick<Egg,'type'|'stageId'|'variant'|'weightG'|'standardWeightG'>;at:number;done:()=>void;onBirth?:()=>void};
   private carry = new T.Group();
   private focus = new T.Vector3();
   private healthAnchor = new T.Vector3();
@@ -441,8 +442,8 @@ export class World {
     this.resize();
     this.renderer.shadowMap.enabled = !low;
   }
-  async showCompanions(ids: number[]) {
-    const key = ids.join(",");
+  async showCompanions(ids: number[],weights:Weighted[]=[]) {
+    const key = ids.join(",")+JSON.stringify(weights);
     if (key === this.companionKey) return;
     this.companionKey = key;
     await loadVoxels(ids.map(i => `pet-${i}`));
@@ -451,18 +452,18 @@ export class World {
     this.companions.clear();
     models.forEach((m, i) => {
       m.position.copy(this.player.position);
-      m.userData.petId = ids[i];
+      m.userData.petId = ids[i];m.userData.weight=weights[i];
       m.scale.setScalar(MONGLES[ids[i]].scale);
       this.companions.add(m);
     });
   }
   async showFarmPets(game: GameState) {
-    const ids=farmPetIds(game.save.mongles,game.riding?game.equippedPetIds:game.save.active,game.now());
-    const key=`${game.farmSlot}:${ids.join(',')}`;if(key===this.farmKey)return;this.farmKey=key;
+    const lots=game.farmPetLots(),ids=lots.map(l=>l.species);
+    const key=`${game.farmSlot}:${lots.map(l=>l.key).join(',')}`;if(key===this.farmKey)return;this.farmKey=key;
     try{await loadVoxels(ids.map(i=>`pet-${i}`));}catch(error){if(key===this.farmKey)this.farmKey='';throw error;}if(key!==this.farmKey)return;
-    this.clearPetInstances(this.farmPets);ids.forEach((id,i)=>this.farmPets.add(this.farmPet(id,game.farmSlot,i)));
+    this.clearPetInstances(this.farmPets);ids.forEach((id,i)=>this.farmPets.add(this.farmPet(id,game.farmSlot,i,lots[i])));
   }
-  async updateHatch(key: string, type: number, result: number | null, appearance?:Pick<Egg,'type'|'stageId'|'variant'>) {
+  async updateHatch(key: string, type: number, result: number | null, appearance?:Pick<Egg,'type'|'stageId'|'variant'|'weightG'|'standardWeightG'>) {
     this.hatchKey = key;
     if (result !== null) await loadVoxels([`pet-${result}`]);
     const m =
@@ -471,7 +472,7 @@ export class World {
     if (this.hatchModel) {this.clearPetInstances(this.hatchModel);this.hatch.remove(this.hatchModel);}
     this.hatchModel = m ?? null;
     if (m) {
-      m.scale.setScalar(result !== null ? 2 : 2.5*BALANCE.eggPresentationScale);
+      m.scale.setScalar((result !== null ? 2 : 2.5*BALANCE.eggPresentationScale)*weightSize(appearance??{}));
       this.hatch.add(m);
     }
   }
@@ -493,7 +494,7 @@ export class World {
     const motion=effect.animate([{opacity:1,transform:'translate(-50%,-50%) scale(1.12)'},{opacity:0,transform:`translate(-50%,${this.reducedMotion.matches?'-50%':'-140%'}) scale(1)`}],{duration:650,easing:'ease-out'});
     motion.onfinish=()=>effect.remove();
   }
-  async revealHatch(id:number,egg:Pick<Egg,'type'|'stageId'|'variant'>,onBirth:()=>void){
+  async revealHatch(id:number,egg:Pick<Egg,'type'|'stageId'|'variant'|'weightG'|'standardWeightG'>,onBirth:()=>void){
     // Hold the original egg while the result asset loads. Ownership was already
     // committed, so a failed asset request must still release the result UI.
     let finish!:()=>void;
@@ -602,7 +603,7 @@ export class World {
         if(existing.has(e.id))continue;
         const m = this.eggModel(e);
         m.position.set(e.x, 0.06, e.z);
-        m.scale.setScalar(RARITIES[EGGS[e.type].tier].scale*BALANCE.eggVisualScale);
+        m.scale.setScalar(RARITIES[EGGS[e.type].tier].scale*BALANCE.eggVisualScale*weightSize(e));
         m.userData.id = e.id;
         const nestScale=m.scale.x*1.45;
         const nestKey=`${e.region}:${e.homeX}:${e.homeZ}`;
@@ -648,7 +649,7 @@ export class World {
       this.flying.position.set(flyAge * 3, 1 + flyAge * 2, 0);
       this.flying.rotation.z = -flyAge * 2;
     }
-    const mountLift=this.mounts.update(this.player,game.mountId,game.riding,time,Boolean(this.player.userData.moving),this.reducedMotion.matches);
+    const mountLift=this.mounts.update(this.player,game.mountId,game.riding,time,Boolean(this.player.userData.moving),this.reducedMotion.matches,weightSize(game.mountPetLot??{}));
     this.player.position.set(
       game.x+this.networkOffset.x,
       game.death ? .4*fall : game.seat!==null?CAMPFIRE.sittingHeight:game.knockback.remaining>0 ? Math.sin(game.knockback.remaining/.28*Math.PI)*.65 : game.launch ? Math.sin(game.launch.elapsed * Math.PI) * 2.5 : game.training ? .2+Math.abs(Math.sin(time*14))*.05 : reviveAge<.7?Math.sin(reviveAge/.7*Math.PI)*.4:0,
@@ -699,7 +700,7 @@ export class World {
       this.carry.userData.id = carryId;
       if (game.carried) {
         const m = this.eggModel(game.carried);
-        m.scale.setScalar(RARITIES[EGGS[game.carried.type].tier].scale * 0.85*BALANCE.eggVisualScale);
+        m.scale.setScalar(RARITIES[EGGS[game.carried.type].tier].scale * 0.85*BALANCE.eggVisualScale*weightSize(game.carried));
         m.position.y = 1.12;
         this.carry.add(m);
       }
@@ -714,7 +715,7 @@ export class World {
     const birthAge=this.birth?(performance.now()-this.birth.at)/1000:-1;
     const birthEgg=this.birth&&birthAge<1.05?this.birth.egg:undefined;
     const shownResult=birthEgg?null:game.result;
-    const appearance=birthEgg??game.returnReward??game.selected;
+    const appearance=birthEgg??game.returnReward??(shownResult!==null?{type:0,...game.resultWeight}:game.selected);
     const hatchKey = birthEgg?`birth:${this.birth!.id}`:
       isReward ? `reward:${game.returnReward!.type}:${game.returnReward!.stageId}:${game.returnReward!.variant}` : shownResult !== null
         ? `result:${shownResult}`
@@ -823,14 +824,14 @@ export class World {
       let label=this.eggSpeedLabels.get(egg.id);
       if(!label){label=document.createElement('div');label.className='egg-speed-label';this.host.append(label);this.eggSpeedLabels.set(egg.id,label);}
       const p=new T.Vector3(egg.x,explorationHeight(egg.x,egg.z,game.progression.stage)+1.6,egg.z).project(this.camera);
-      label.textContent=`권장 속도 ${formatNumber(game.eggRequiredSpeed(egg))} / 현재 ${formatNumber(game.speed)}`;
+      label.textContent=`권장 속도 ${formatNumber(game.eggRequiredSpeed(egg))} / 현재 ${formatNumber(game.unloadedSpeed)} · ${weightText(egg.weightG??0)}`;
       label.style.left=`${(p.x+1)/2*this.host.clientWidth}px`;
       label.style.top=`${(1-p.y)/2*this.host.clientHeight}px`;
     }
-    const labelIds=game.save.active.join(',');
+    const labelIds=game.save.active.join(',')+JSON.stringify(game.activePetLots);
     if(this.petLabels.dataset.ids!==labelIds){
       this.petLabels.dataset.ids=labelIds;
-      this.petLabels.innerHTML=game.save.active.map(id=>`<div class="pet-label"><b><span style="color:${RARITIES[MONGLES[id].tier].color}">[${RARITIES[MONGLES[id].tier].name}]</span> ${MONGLES[id].name}</b><div class="stat-badges">${petAbilities(MONGLES[id])}</div></div>`).join('');
+      this.petLabels.innerHTML=game.save.active.map((id,i)=>`<div class="pet-label"><b><span style="color:${RARITIES[MONGLES[id].tier].color}">[${RARITIES[MONGLES[id].tier].name}]</span> ${MONGLES[id].name}</b><div class="stat-badges">${weightText(game.activePetLots[i]?.weightG??0)}</div></div>`).join('');
     }
     this.petLabels.hidden=isHatch||!!game.save.settings.hideOwnPets;
     const labelBoxes:{x:number;y:number;height:number;width:number}[]=[];
@@ -864,6 +865,7 @@ export class World {
         tier.textContent=`[${RARITIES[definition.tier].name}]`;name.append(tier,` ${definition.name}`);label.append(name);
         this.peerPetLabels.append(label);row={id,label};this.peerPetLabelEntries.set(key,row);
       }
+      let weight=row.label.querySelector('.pet-weight');if(!weight){weight=document.createElement('small');weight.className='pet-weight';row.label.append(weight);}weight.textContent=weightText(pet.userData.weight?.weightG??0);
       if(!entry.group.visible){row.label.hidden=true;return;}
       positionPetLabel(pet,row.label);
     });
@@ -880,6 +882,7 @@ export class World {
         tier.textContent=RARITIES[definition.tier].name;tier.style.color=RARITIES[definition.tier].color;
         label.append(name,tier);this.farmPetLabels.append(label);row={id,label};this.farmPetLabelEntries.set(key,row);
       }
+      let weight=row.label.querySelector('.pet-weight');if(!weight){weight=document.createElement('small');weight.className='pet-weight';row.label.append(weight);}weight.textContent=weightText(pet.userData.weight?.weightG??0);
       if(!group.visible||this.farmPetLabels.hidden){row.label.hidden=true;continue;}
       positionPetLabel(pet,row.label,false);
     }

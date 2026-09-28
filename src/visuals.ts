@@ -1,3 +1,4 @@
+import {isUltraPet} from './ultra-secret';
 ﻿import * as T from "three";
 import { RARITIES, MONGLES } from "./data";
 import {eggDesignAppearance,stageEggCells,type EggAppearance} from "./stage-eggs";
@@ -11,7 +12,7 @@ const palettes=[[0xaaff88,0xffa1cb,0xffef95],[0x7cf8ff,0xffd16b,0xb59aff],[0x67d
 const reducedMotion=typeof window!=='undefined'?window.matchMedia('(prefers-reduced-motion: reduce)'):null;
 function aura(g:T.Group,tier:number,seed:number,family:number) {
   g.userData.tier=tier;g.userData.effectSeed=seed;g.userData.effectFamily=family;
-  const sparks = new T.InstancedMesh(cube,materials[tier],g.userData.eggDesign?[0,2,3,5,8,12,16][tier]:g.userData.petId>=100?[2,3,4,6,8,10,14][tier]:[2,4,10,24,40,64,96][tier]);
+  const sparks = new T.InstancedMesh(cube,materials[tier],g.userData.ultraSecret?144:g.userData.eggDesign?[0,2,3,5,8,12,16][tier]:g.userData.petId>=100?[2,3,4,6,8,10,14][tier]:[2,4,10,24,40,64,96][tier]);
   sparks.name='sparks'; sparks.frustumCulled=false;g.add(sparks);
   for(let i=0;i<sparks.instanceMatrix.count;i++){
     tint.set(RARITIES[tier].color).lerp(accent.setHex(palettes[family][(i+seed)%3]),tier>=3?.65:.2);
@@ -28,7 +29,7 @@ function aura(g:T.Group,tier:number,seed:number,family:number) {
 export function eggVisual(type:number,appearance?:EggAppearance){
  const a=eggDesignAppearance({...appearance,type});
  const data=stageEggCells(a.stage,a.variant,a.tier),model=proceduralVoxelModel(`toy-egg:${a.stage}:${a.variant}:${a.tier}`,data.cells,data.colors);
- model.userData.appearance=`${a.stage}:${a.variant}:${a.tier}`;model.userData.eggDesign=true;model.userData.eggAccent=data.colors[1];
+ model.userData.ultraSecret=a.variant===32;model.userData.appearance=`${a.stage}:${a.variant}:${a.tier}`;model.userData.eggDesign=true;model.userData.eggAccent=data.colors[1];
  return aura(model,a.tier,a.stage*7+a.variant,EGG_EFFECT_FAMILIES[a.stage-1]);
 }
 export function animateEgg(g:T.Object3D,time:number,low=false){
@@ -65,7 +66,7 @@ export function animateEgg(g:T.Object3D,time:number,low=false){
         const crown=i/count*Math.PI*8+t*.35;x=Math.cos(crown)*.5;z=Math.sin(crown)*.5;y=body*1.6+.1*Math.sin(crown*3);sx=.06;sy=i%3===0?.2:.08;sz=.06;
       }
     }
-    if(g.userData.petId>=100){
+    if(g.userData.petId>=100&&!g.userData.ultraSecret){
       const radius=(g.userData.effectRadius??.7)+.12;
       x=Math.cos(a*.45)*radius;z=Math.sin(a*.45)*radius;y=.08+phase*body*.65;
       const fade=Math.sin(phase*Math.PI);sx=sz=size*fade;sy=sx;
@@ -75,7 +76,7 @@ export function animateEgg(g:T.Object3D,time:number,low=false){
       if(family===3){x*=1-phase*.35;z*=1-phase*.35;sy*=2.3;}
       if(family===4){y=body*.4+Math.sin(a*.45)*body*.32;sx*=1.6;}
     }
-    if(g.userData.eggDesign){
+    if(g.userData.eggDesign&&!g.userData.ultraSecret){
       // Small material-specific motions remain outside the silhouette. No beams,
       // generic luminous wings or crowns covering the egg's actual structure.
       const pulse=.8+.2*Math.sin(t*1.8+i),radius=.56+phase*.13;
@@ -93,8 +94,10 @@ export function animateEgg(g:T.Object3D,time:number,low=false){
   sparks.instanceMatrix.needsUpdate=true;
 }
 export function petVisual(id:number,rig=true){
-  const pet=voxelModel(`pet-${id}`,rig);
-  pet.userData.petId=id;
+  return addPetAura(voxelModel(`pet-${id}`,rig),id);
+}
+export function addPetAura(pet:T.Group,id:number){
+  pet.userData.petId=id;pet.userData.ultraSecret=isUltraPet(id);
   // Measure the actual body before adding tall beams and particles.
   const bounds=new T.Box3().setFromObject(pet);
   pet.userData.labelHeight=bounds.max.y;

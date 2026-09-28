@@ -1,3 +1,4 @@
+import {weightText} from './weight';
 import {eggMaxHp,COUPON_ERRORS} from './data';
 import {advanceTutorial,tutorialHint} from './tutorial';
 import {weeklyDay} from './weekly';
@@ -30,7 +31,6 @@ import {RoomChat} from './room-chat';
 import { VirtualAd } from "./virtual-ad";
 import { formatNumber as num } from "./format";
 import { uiIcon } from './ui-icons';
-import {petAbilities} from './pet-stats';
 import {EggNotices} from './egg-notices';
 import type {EggAppearance} from './stage-eggs';
 let hatchEgg:EggAppearance|undefined;
@@ -111,7 +111,7 @@ const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
 tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">×</button>`;
 topHud.append(tutorial);
-const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='weekly';topHud.append(weeklyEntry);
+const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='events';topHud.append(weeklyEntry);
 let renderedWeeklyDay=-1;
 $("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤에는 탐험할 수 없어요.<br>날이 밝으면 다시 출발해요.</p><small>3분마다 15초 · 운반 알은 떨어지고 농장으로 귀환</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
@@ -268,15 +268,15 @@ function setTab(next: string) {
   void save();
 }
 function renderPanel() {
-  if(tab==='weekly'&&weeklyClaiming)return;
+  if((tab==='weekly'||tab==='events')&&weeklyClaiming)return;
   const html=(tab==='shop'?'<button data-tab="store" class="secondary">알 · 펫 판매 스토어</button>':'')+panelHTML(tab, game);
   // Preserve pressed buttons and focus across unchanged network snapshots.
   if($('panel').dataset.html!==html){$('panel').dataset.html=html;$('panel').innerHTML=html;}
 }
 function updateHud() {
   weeklyEntry.hidden=!game.isAtBase||tab!=='explore'||!!game.returnReward||game.result!==null;
-  weeklyEntry.textContent=game.canClaimWeekly?'🎁 주간 보상 받기':'🎁 주간 보상';
-  if(tab==='weekly'&&renderedWeeklyDay!==weeklyDay(game.now())){renderedWeeklyDay=weeklyDay(game.now());renderPanel();}
+  weeklyEntry.textContent=game.canClaimWeekly?'🎁 이벤트 · 받을 보상':'🎁 이벤트';
+  if((tab==='weekly'||tab==='events')&&renderedWeeklyDay!==weeklyDay(game.now())){renderedWeeklyDay=weeklyDay(game.now());renderPanel();}
   eggNotices.observeWorld(game,online.latest?.serverTime??game.now());
   eggNotices.update(online.latest?.eggNotices??[],online.latest?.serverTime??game.now());
   const outside=tab==='explore'&&!game.isAtBase;
@@ -333,9 +333,9 @@ function updateHud() {
   const speedHelp=`현재 스피드 ${num(game.speed,2)}`;
   $('speed-hud').setAttribute('aria-label',speedHelp);
   $('speed-hud').title=speedHelp;
-  $('recommended-speed-value').textContent=num(game.recommendedSpeed,1);
-  $('day-clock').setAttribute('aria-label',`권장 속도 ${num(game.recommendedSpeed,1)}`);
-  $('day-clock').title=`권장 속도 ${num(game.recommendedSpeed,1)}`;
+  $('recommended-speed-value').textContent=game.isAtBase?'기지':num(game.recommendedSpeed,1);
+  $('day-clock').setAttribute('aria-label',game.isAtBase?'기지':`권장 속도 ${num(game.recommendedSpeed,1)}`);
+  $('day-clock').title=game.isAtBase?'기지':`권장 속도 ${num(game.recommendedSpeed,1)}`;
   const phase=cycleClock(game.now(),game.nightAt,game.nightUntil),clock=$('cycle-clock');
   $('cycle-phase').textContent=hudCompact?(phase.night?'☾':'☀'):(phase.night?'☾ 밤':'☀ 낮');
   $('cycle-label').textContent=phase.night?'아침까지':'밤까지';
@@ -460,7 +460,7 @@ function updateHud() {
   if (game.revision !== lastRevision) {
     lastRevision = game.revision;
     renderPanel();
-    void world.showCompanions(game.save.active).catch(err => toast(String(err)));
+    void world.showCompanions(game.save.active,game.activePetLots).catch(err => toast(String(err)));
     void save();
     renderEggQueue();
   }
@@ -470,7 +470,7 @@ function updateHud() {
     const resultId=game.result;
     const m = MONGLES[game.result];
     const resultHTML =
-      `<div class="result-card" style="--reward:${m.color}">${petReveal(m.stageId,(game.result>=300&&game.result<320),m.tier)}${game.result>=100&&game.result<320?`<div class="result-pet-motion"><div class="result-idle" role="img" aria-label="${m.name}" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-idle.png')"></div><div class="result-greeting" aria-hidden="true" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-greeting.png')"></div></div>`:`<img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}"/>`}<span class="tag">${(game.result>=300&&game.result<320)?'SECRET DRAGON':RARITIES[m.tier].name}</span><h1>${m.name}</h1><div class="benefit stat-badges">${petAbilities(m)}</div><details><summary>이 친구는?</summary><p>${m.description}</p></details><button id="result-ok" class="primary">함께 모험하기</button></div>`;
+      `<div class="result-card" style="--reward:${m.color}">${petReveal(m.stageId,(game.result>=300&&game.result<320),m.tier)}${game.result>=100&&game.result<320?`<div class="result-pet-motion"><div class="result-idle" role="img" aria-label="${m.name}" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-idle.png')"></div><div class="result-greeting" aria-hidden="true" style="background-image:url('${import.meta.env.BASE_URL}models/stage-previews/pet-${game.result}-greeting.png')"></div></div>`:`<img class="result-pet" src="${petIcon(game.result)}" alt="${m.name}"/>`}<span class="tag">${(game.result>=300&&game.result<320)?'SECRET DRAGON':RARITIES[m.tier].name}</span><h1>${m.name}</h1><div class="benefit stat-badges">${weightText(game.resultWeight?.weightG??0)}</div><details><summary>이 친구는?</summary><p>${m.description}</p></details><button id="result-ok" class="primary">함께 모험하기</button></div>`;
     hatchRevealing=true;touch.hidden=true;$('shell').classList.add('hatch-revealing');
     const appearance=hatchEgg??{type:Math.max(0,EGGS.findIndex(e=>e.tier===m.tier)),stageId:m.stageId};
     hatchEgg=undefined;
@@ -497,10 +497,10 @@ function renderEggQueue() {
     if (!e)
       return '<div class="egg-slot empty" aria-label="빈 보관 칸"><span>＋</span></div>';
     const def = EGGS[e.type];
-    return `<button data-egg="${e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""} ${def.tier >= 4 ? "rare" : ""}" style="--egg:${def.color}"><b>${def.rarity}</b><img class="egg-icon" src="${eggIcon(e)}" alt="" /><small>${e.hp===0?'획득 준비 완료':eggName(e)}</small></button>`;
+    return `<button data-egg="${e.id}" aria-label="${def.rarity} ${eggName(e)} 선택" class="egg-slot ${game.save.selected === e.id ? "selected" : ""} ${def.tier >= 4 ? "rare" : ""}" style="--egg:${def.color}"><b>${def.rarity}</b><img class="egg-icon" src="${eggIcon(e)}" alt="" /><small>${weightText(e.weightG??0)} · ${e.hp===0?'획득 준비 완료':eggName(e)}</small></button>`;
   }).join("");
   $("pet-effects").innerHTML = game.save.active.length
-    ? `<div class="stat-badges"><span>${game.save.active.length}/${BALANCE.maxCompanions}</span>${petAbilities(game,true)}</div>`
+    ? `<div class="stat-badges"><span>${game.save.active.length}/${BALANCE.maxCompanions}</span>${game.activePetLots.map(l=>`<span>${MONGLES[l.species].name} ${weightText(l.weightG)}</span>`).join('')}</div>`
     : "알을 부화하면 펫이 함께 걸어요";
 }
 async function onlineButton(b:HTMLElement):Promise<boolean>{
@@ -579,6 +579,30 @@ document.addEventListener("click", async (e) => {
     return;
   }
   if(hatchRevealing)return;
+  if(b.dataset.event!==undefined){$('panel').dataset.event=b.dataset.event;setTab('events');return;}
+  if(b.id==='event-coupon-redeem'){
+    if(couponRedeeming)return;couponRedeeming=true;b.setAttribute('disabled','');
+    try{const code=($('event-coupon-code') as HTMLInputElement).value;
+      if(online.active){if(await remote('coupon',code)){toast(game.message);void save();}}
+      else {const error=game.redeemCoupon(code);toast(error?COUPON_ERRORS[error]??error:game.message);if(!error)void save();}
+    }finally{couponRedeeming=false;renderPanel();}return;
+  }
+  if(b.dataset.lotAction!==undefined){
+    if(!game.isAtBase||game.death)return;
+    const action=b.dataset.lotAction,key=b.dataset.lot??'',slot=b.dataset.slot===undefined?undefined:Number(b.dataset.slot);
+    if(action==='equip'&&slot===undefined&&game.save.active.length>=BALANCE.maxCompanions){
+      input.reset();online.halt();paused=true;
+      $('modal').innerHTML=`<section class="death-card"><h1>교체할 동행 펫</h1><div class="pet-slots">${game.activePetLots.map((l,i)=>`<button class="pet-slot" data-lot-action="equip" data-lot="${key}" data-slot="${i}"><img src="${petIcon(l.species)}" alt=""/><b>${MONGLES[l.species].name}</b><small>${weightText(l.weightG)}</small></button>`).join('')}</div><button id="cancel-pet-replacement">취소</button></section>`;
+      $('modal').hidden=false;return;
+    }
+    b.setAttribute('disabled','');
+    try{
+      const command=action==='equip'?'equipPetLot':action==='mount'?'equipMountLot':action==='sell'?'sellPetLot':'unequipPetSlot';
+      const ok=online.active?await remote(command,{key,slot}):action==='equip'?game.equipPetLot(key,slot):action==='mount'?game.equipMountLot(key):action==='sell'?game.sellPetLot(key):game.unequipPetSlot(slot??-1);
+      if(ok)void save();
+    }finally{paused=false;$('modal').hidden=true;renderPanel();updateHud();}
+    return;
+  }
   if(b.dataset.mount!==undefined||b.id==='unequip-mount'){
     if(!game.isAtBase||game.death)return;
     b.setAttribute('disabled','');

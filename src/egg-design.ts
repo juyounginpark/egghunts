@@ -67,6 +67,7 @@ function extendedEgg(base:{cells:Cell[];colors:string[]},family:number,stage:num
  */
 export function designEgg(stage:number,variant:number,tier=0):{cells:Cell[];colors:string[]}{
  const key=`${stage}:${variant}:${tier}`,cached=cache.get(key);if(cached)return cached;
+ if(variant===32){const base=designEgg(stage,5,6),design=extendedEgg(base,4,stage);design.colors[2]='#fffbd4';design.colors[6]='#baffff';cache.set(key,design);return design;}
  if(variant>=7){
   const index=normalEggIndex(variant),base=designEgg(stage,index%5,tier);
   const design=extendedEgg(base,Math.floor(index/5),stage);

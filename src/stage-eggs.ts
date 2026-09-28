@@ -1,9 +1,11 @@
+import {ULTRA_SECRET_NAMES} from './ultra-secret';
+import type {Weighted} from './weight';
 import {designEgg} from "./egg-design";
 import {EGGS} from "./data";
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 import {reorderStages} from './stage-order';
 import {isStageEggVariant,normalEggIndex} from './egg-variants';
-export type EggAppearance={type:number;stageId?:number;variant?:number;special?:boolean};
+export type EggAppearance=Weighted & {type:number;stageId?:number;variant?:number;special?:boolean};
 export type EggCell=[number,number,number,number];
 const oldEggNames=[
  ['도토리','꽃봉오리','딸기','새싹','벌집'],['주사위','블록 성','팽이','태엽 로봇','장난감 기차'],
@@ -38,7 +40,7 @@ for(let stage=0;stage<20;stage++){
  STAGE_EGG_NAMES[stage].push(...families[stage].flatMap(prefix=>originals.map(name=>`${prefix} ${name}`)));
 }
 export function appearanceOf(e:EggAppearance){return e.stageId&&e.stageId>=1&&e.stageId<=20&&e.variant!==undefined&&isStageEggVariant(e.variant)?{stage:e.stageId,variant:e.variant}:null;}
-export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${a.variant===5?SECRET_DRAGON_ROWS.find(p=>p.stageId===a.stage)!.eggName:STAGE_EGG_NAMES[a.stage-1][normalEggIndex(a.variant)]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
+export function eggName(e:EggAppearance){const a=appearanceOf(e),name=a?`${a.variant===32?ULTRA_SECRET_NAMES[a.stage-1]:a.variant===5?SECRET_DRAGON_ROWS.find(p=>p.stageId===a.stage)!.eggName:STAGE_EGG_NAMES[a.stage-1][normalEggIndex(a.variant)]} 알`:EGGS[e.type].name;return e.special?`스페셜 · ${name}`:name;}
 export {designEgg as stageEggCells} from './egg-design';
 export function eggDesignAppearance(e:EggAppearance){
  if(e.type===35)return {stage:1,variant:6,tier:3};

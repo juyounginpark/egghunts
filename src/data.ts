@@ -1,3 +1,4 @@
+import {ULTRA_SECRET_NAMES} from './ultra-secret';
 import {softenGrowth} from './growth-curve';
 import {ROAD_WIDTH_SCALE,STAGES,ROUTE_FAR_Z} from './stage-data';
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
@@ -91,7 +92,7 @@ export const BALANCE = {
   deadzone: 8,
   rarityRegionBonus: 0,
   farmPetsVisible: 12,
-  farmPetMaxSize: 1.4,
+  farmPetMaxSize: 4.2,
   trainingPerSecond: 0.01,
   trainingPerLevel: 0.01,
   gymX: 2.1,
@@ -384,6 +385,10 @@ for(const pet of EXPANSION_PETS){
     effect:[['터치',clickMultiplier],['스피드',speedMultiplier],['자동',autoMultiplier]].filter(([,value])=>Number(value)>1).map(([label,value])=>`${label} ×${Number(Number(value).toFixed(2))}`).join(' · '),
   });
 }
+for(let stage=1;stage<=20;stage++){
+ const source=MONGLES.find(p=>p.stageId===stage&&p.species===10)!;
+ MONGLES.push({...source,id:`mongle-${700+stage}`,name:ULTRA_SECRET_NAMES[stage-1],description:`${STAGES[stage-1].name} · 0.001%`,species:30,icon:`pet-${700+stage}`});
+}
 /** Add only each pet's bonus; multiplying HP-scaled pets would compound stage growth. */
 export function equippedPetMultiplier(ids:readonly number[],kind:'clickMultiplier'|'autoMultiplier'|'speedMultiplier'){
   return 1+ids.reduce((sum,id)=>sum+MONGLES[id][kind]-1,0);
@@ -399,7 +404,7 @@ export function farmPetIds(owned:readonly number[],active:readonly number[],now:
     return counts.findIndex(n=>{if(index<n)return true;index-=n;return false;});
   });
 }
-export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id===WEEKLY_EVENT.petId?'svg':'png'}`;}
+export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id===WEEKLY_EVENT.petId||id>=701?'svg':'png'}`;}
 export const UPGRADES = {
   health: {name:"든든한 체력",description:"최대 HP +20 · 생산 강화 (1K 이후 증가 완화)",icon:"pack",cost:30,growth:1.6},
   training: {

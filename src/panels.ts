@@ -1,3 +1,7 @@
+import {ULTRA_SECRET,isUltraPet} from './ultra-secret';
+import {eventsPanel} from './events-ui';
+import {weightText} from './weight';
+import {petInventoryPanel} from './pet-inventory-ui';
 import {eggMaxHp} from './data';
 import {weeklyPanel} from './weekly-ui';
 import {compare} from './money';
@@ -7,47 +11,20 @@ import {eggName,eggIcon} from "./stage-eggs";
 import type { GameState } from "./game";
 import { formatNumber as num } from "./format";
 import {uiIcon} from './ui-icons';
-import {petAbilities,petIncomeBadge} from './pet-stats';
-function mountButton(id:number,game:GameState){return `<button class="small-btn" data-mount="${id}" ${game.mountId===id?'disabled':''}>${game.mountId===id?'탑승 중':'탑승'} · 속도 +${num(game.mountBonus(id)*100,1)}%</button>`;}
-const PET_SORT_OPTIONS:Record<string,string>={equipped:'착용 중 우선',rarity:'등급 높은 순',stage:'스테이지 높은 순',speed:'스피드 높은 순',tap:'터치 피해 높은 순',auto:'자동 피해 높은 순',income:'수익 높은 순',count:'보유 수량 많은 순',name:'이름순'};
-function sortPets(ids:number[],game:GameState,sort:string){
-  const value=(id:number)=>{
-    const pet=MONGLES[id];
-    switch(sort){
-      case 'rarity':return pet.tier;
-      case 'stage':return pet.stageId;
-      case 'speed':return pet.speedMultiplier;
-      case 'tap':return pet.clickMultiplier;
-      case 'auto':return pet.autoMultiplier;
-      case 'income':return game.petIncomeAmount(id);
-      case 'count':return game.save.mongles[id];
-      default:return Number(game.equippedCount(id)>0);
-    }
-  };
-  return ids.sort((a,b)=>sort==='name'?MONGLES[a].name.localeCompare(MONGLES[b].name,'ko')||a-b:value(b)-value(a)||MONGLES[b].sourceEggHp-MONGLES[a].sourceEggHp||MONGLES[b].tier-MONGLES[a].tier||a-b);
-}
+import {petAbilities} from './pet-stats';
 function collectionCard(i:number,slot:number,game:GameState){
  const m=MONGLES[i],found=game.hasDiscoveredPet(i),claimed=game.save.claimedPets?.includes(i);
+ if(isUltraPet(i)&&!found)return `<article class="pet-catalog-card secret-pet"><div class="pet-portrait unknown">?</div><small>ULTRA SECRET · 0.001%</small><h3>태초의 시크릿</h3><p>${STAGES[m.stageId-1].name}</p></article>`;
  if((i>=300&&i<320)&&!found)return `<article class="pet-catalog-card secret-pet"><div class="pet-portrait"><img src="${import.meta.env.BASE_URL}models/stage-previews/pet-${i}-silhouette.png" alt="숨겨진 드래곤 실루엣" loading="lazy"/></div><small>SECRET DRAGON</small><h3>숨겨진 수호룡</h3><p>${STAGES[m.stageId-1].name} · 전용 알 ${(BALANCE.secretDragonEggChance*100).toFixed(2)}%</p></article>`;
  return `<article class="pet-catalog-card ${found?'':'locked'} ${(i>=300&&i<320)?'secret-pet':''}">${found?`<button class="pet-portrait" data-pet-view="${i}" aria-label="${m.name} 크게 보기"><img src="${petIcon(i)}" alt="${m.name}" loading="lazy"/></button>`:'<div class="pet-portrait unknown" aria-label="미발견">?</div>'}<small>NO.${String(slot+1).padStart(2,'0')} · ${RARITIES[m.tier].name}</small><h3>${found?m.name:'???'}</h3>${found?`<div class="stat-badges">${petAbilities(m)}</div><details class="pet-details"><summary>상세</summary><p>${m.description}<br>${m.effect}</p></details><small>보유 ${num(game.save.mongles[i])}</small><button class="small-btn" data-claim-pet="${i}" ${claimed?'disabled':''}>${claimed?'보상 수령 완료':`+${num(game.discoveryReward(i))}`}</button>`:''}</article>`;
 }
 
 export function panelHTML(tab: string, game: GameState) {
+  if(tab==='events')return eventsPanel(game);
   if(tab==='weekly')return weeklyPanel(game);
-  const owned=MONGLES.flatMap((_,i)=>game.save.mongles[i]>0?[i]:[]);
-  const requestedSort=document.getElementById('panel')?.dataset.petSort??'equipped';
-  const petSort=Object.hasOwn(PET_SORT_OPTIONS,requestedSort)?requestedSort:'equipped';
-  if(tab==='pets')return `<h1>함께할 펫</h1><div class="pet-summary stat-badges">${petAbilities(game,true)}${petIncomeBadge(game.petIncomePerCycle,BALANCE.petIncomeSeconds)}</div>
-    <details class="pet-help"><summary>아이콘 안내</summary><div class="stat-legend">${uiIcon('tap')} 터치 피해 ${uiIcon('auto')} 자동 피해 ${uiIcon('speed')} 이동 속도 ${uiIcon('dust')} 별가루 수익</div><p>같은 펫도 보유 수량만큼, 최대 ${BALANCE.maxCompanions}마리까지 착용해요. 착용한 펫은 따라오고 나머지는 내 울타리에서 놀아요.</p><p>능력 배율의 ×1을 초과한 보너스를 합산해요. 수익은 오프라인에서도 100% 누적돼요 (최대 48시간).</p></details>
-    <button data-tab="collection" class="secondary">도감</button>
-    <div class="mount-slot">${game.mountId===null?'<div class="pet-slot empty"><b>탑승 펫</b><small>아래 펫의 탑승 버튼으로 선택</small></div>':`<button id="unequip-mount" class="pet-slot"><small>탑승 펫</small><img src="${petIcon(game.mountId)}" alt=""/><b>${MONGLES[game.mountId].name}</b><strong>이동속도 +${num(game.mountBonus(game.mountId)*100,1)}%</strong><small>현재 속도 스탯 +${num(game.speed-game.unmountedSpeed,2)}</small><small>탑승 해제 ×</small></button>`}<p>펫의 속도 배율에 따라 탑승 속도가 올라요.<br>×5 펫은 +40% · 동행 중인 마지막 한 마리는 탑승 칸으로 이동해요.</p></div>
-    <div class="pet-slots">${Array.from({length:BALANCE.maxCompanions},(_,slot)=>{const id=game.save.active[slot];return id===undefined?'<div class="pet-slot empty">빈 자리</div>':`<button class="pet-slot" data-unequip="${id}" aria-label="${MONGLES[id].name} 한 마리 해제"><img src="${petIcon(id)}" alt=""/><b>${MONGLES[id].name}</b><small>한 마리 해제 ×</small></button>`;}).join('')}</div>
-    <label class="pet-sort">펫 정렬 <select id="pet-sort">${Object.entries(PET_SORT_OPTIONS).map(([value,label])=>`<option value="${value}" ${petSort===value?'selected':''}>${label}</option>`).join('')}</select></label>
-    ${owned.length?sortPets(owned,game,petSort).map(id=>{
-      const equipped=game.equippedCount(id),remaining=game.save.mongles[id]-equipped;
-      return `<article class="friend"><button class="friend-preview" data-pet-view="${id}" aria-label="${MONGLES[id].name}"><img src="${petIcon(id)}" alt="" loading="lazy"/></button><div><small>${RARITIES[MONGLES[id].tier].name}${MONGLES[id].stageId?` · STAGE ${MONGLES[id].stageId}`:""} · 보유 ${num(game.save.mongles[id])}마리 · 착용 ${equipped}마리</small><h3>${MONGLES[id].name}</h3><div class="stat-badges">${petAbilities(MONGLES[id])}${petIncomeBadge(game.petIncomeAmount(id),BALANCE.petIncomeSeconds)}</div><details class="pet-details"><summary>상세</summary><p>${MONGLES[id].effect}<br>${MONGLES[id].stageId?`STAGE ${MONGLES[id].stageId}`:REGIONS[MONGLES[id].region].name} · 수익 ×${game.petIncomeStageMultiplier(id)}</p></details></div><div class="pet-actions">${mountButton(id,game)}<button class="small-btn" data-companion="${id}" ${!remaining?'disabled':''}>${!remaining?'모두 착용 중':equipped?'한 마리 더 착용':'착용'}</button><button class="small-btn" data-sell-pet="${id}">1마리 판매 +${num(game.petSellPrice(id))}</button></div></article>`;
-    }).join(''):'<p class="empty-state">알을 부화해 첫 친구를 만나 보세요.</p>'}`;
-  if(tab==='store')return `<span class="tag">FARM TRADING POST</span><h1>농장 판매 스토어</h1><p>알이나 펫을 별가루로 바꿔요.<br>펫을 팔아도 도감 발견과 보상 기록은 남아요.</p><button data-tab="shop" class="secondary">트레일 상점으로</button><h2>보관 중인 알</h2>${game.save.eggs.length?game.save.eggs.map(e=>`<article class="sale-card"><img src="${eggIcon(e)}" alt=""/><div><b>${eggName(e)}</b><small>${EGGS[e.type].rarity} · HP ${num(Math.ceil(e.hp))}/${num(eggMaxHp(e))}</small></div><button class="small-btn" data-sell-egg="${e.id}">판매 +${num(game.eggSellPrice(e.type))}</button></article>`).join(''):'<p>판매할 알이 없어요.</p>'}<h2>보유 펫</h2>${owned.length?owned.map(id=>`<article class="sale-card"><img src="${petIcon(id)}" alt="" loading="lazy"/><div><b>${MONGLES[id].name}</b><small>${RARITIES[MONGLES[id].tier].name}${MONGLES[id].stageId?` · STAGE ${MONGLES[id].stageId}`:""} · ${num(game.save.mongles[id])}마리${game.save.active.includes(id)?' · 착용 중':''}</small></div><button class="small-btn" data-sell-pet="${id}">1마리 판매 +${num(game.petSellPrice(id))}</button></article>`).join(''):'<p>판매할 펫이 없어요.</p>'}`;
+  if(tab==='collection-special')return `<h1>스페셜 도감</h1><button data-tab="collection">스테이지 도감</button><div class="pet-catalog-grid">${collectionCard(320,0,game)}</div>`;
+  if(tab==='pets')return petInventoryPanel(game);
+  if(tab==='store')return `<span class="tag">FARM TRADING POST</span><h1>농장 판매 스토어</h1><p>알이나 펫을 별가루로 바꿔요.<br>펫을 팔아도 도감 발견과 보상 기록은 남아요.</p><button data-tab="shop" class="secondary">트레일 상점으로</button><h2>보관 중인 알</h2>${game.save.eggs.length?game.save.eggs.map(e=>`<article class="sale-card"><img src="${eggIcon(e)}" alt=""/><div><b>${eggName(e)}</b><small>${EGGS[e.type].rarity} · ${weightText(e.weightG??0)} · HP ${num(Math.ceil(e.hp))}/${num(eggMaxHp(e))}</small></div><button class="small-btn" data-sell-egg="${e.id}">판매 +${num(game.eggSellPrice(e.type))}</button></article>`).join(''):'<p>판매할 알이 없어요.</p>'}<h2>보유 펫</h2><button data-tab="pets">무게별 펫 선택 및 판매</button>`;
   if(tab==='collection'){
     const raw=Number(document.getElementById('panel')?.dataset.collectionStage??game.stage.id);
     const stage=Number.isInteger(raw)&&raw>=1&&raw<=20?raw:game.stage.id;
@@ -60,8 +37,8 @@ export function panelHTML(tab: string, game: GameState) {
     const fullClaimed=legacy?game.save.claimedCollection:game.save.claimedStageCollection;
     const title=legacy?`이전 도감 · ${REGIONS[region].name}`:`${stage}. ${STAGES[stage-1].name}`;
     const reward=legacy?BALANCE.regionCollectionRewards[region]:STAGE_COLLECTION_REWARDS[stage-1];
-    const chances=rarityChances(legacy?region:Math.floor((stage-1)/4)).map((chance,tier)=>legacy?chance:chance*(1-BALANCE.secretDragonEggChance)+(tier===6?BALANCE.secretDragonEggChance*100:0));
-    return `<h1>펫 도감</h1><button data-tab="weekly">🎁 주간 보상</button>${collectionCard(320,320,game)}
+    const chances=rarityChances(legacy?region:Math.floor((stage-1)/4)).map((chance,tier)=>legacy?chance:chance*(1-BALANCE.secretDragonEggChance-ULTRA_SECRET.chance)+(tier===6?(BALANCE.secretDragonEggChance+ULTRA_SECRET.chance)*100:0));
+    return `<h1>펫 도감</h1><button data-tab="collection-special">스페셜</button><button data-tab="events">이벤트</button>
       <div class="collection-count">${catalog.filter(i=>game.hasDiscoveredPet(i)).length}<small> / ${catalog.length} 발견${legacy?' · 이전 수집 기록':' · 스테이지 전용 펫'}</small></div>
       <details class="stage-categories"><summary>${title} · 카테고리 변경</summary><div class="stage-category-grid">${STAGES.map(s=>{const found=MONGLES.filter((m,i)=>m.stageId===s.id&&game.hasDiscoveredPet(i)).length;return `<button data-collection-stage="${s.id}" class="${stage===s.id?'active':''}" aria-pressed="${stage===s.id}"><b>${s.id}. ${s.name}</b><small>${found}/${MONGLES.filter(m=>m.stageId===s.id).length}</small></button>`;}).join('')}</div></details>
       ${legacy?`<div class="region-tabs">${REGIONS.map((r,i)=>`<button data-region="${i}" class="${region===i?'active':''}">${r.name}</button>`).join('')}</div>`:''}
