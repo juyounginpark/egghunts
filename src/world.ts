@@ -1,4 +1,4 @@
-import {weightSize,weightText,type Weighted} from './weight';
+import {weightSize,weightText,WEIGHT_BALANCE,type Weighted} from './weight';
 import {MountView} from './mount-view';
 import {eggMaxHp} from './data';
 import {explorationHeight} from './exploration-route';
@@ -99,7 +99,7 @@ export class World {
   }
   private scaleFarmPet(pet:T.Object3D){
     const size=Math.max(.001,pet.userData.bodyWidth??1,pet.userData.bodyHeight??1,pet.userData.bodyDepth??1);
-    pet.scale.setScalar(Math.min(MONGLES[pet.userData.petId].scale*weightSize(pet.userData.weight??{}),BALANCE.farmPetMaxSize/size));
+    pet.scale.setScalar(Math.min(MONGLES[pet.userData.petId].scale*weightSize(pet.userData.weight??{}),BALANCE.farmPetMaxSize/size)*WEIGHT_BALANCE.petVisualScale);
   }
   private animateFarmPet(pet:T.Object3D,time:number){
     const pose=farmPetPose(pet.userData.farmSlot,pet.userData.farmIndex,time,this.reducedMotion.matches);
@@ -472,7 +472,7 @@ export class World {
     if (this.hatchModel) {this.clearPetInstances(this.hatchModel);this.hatch.remove(this.hatchModel);}
     this.hatchModel = m ?? null;
     if (m) {
-      m.scale.setScalar((result !== null ? 2 : 2.5*BALANCE.eggPresentationScale)*weightSize(appearance??{}));
+      m.scale.setScalar((result !== null ? 2*WEIGHT_BALANCE.petVisualScale : 2.5*BALANCE.eggPresentationScale)*weightSize(appearance??{}));
       this.hatch.add(m);
     }
   }

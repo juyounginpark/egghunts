@@ -1,4 +1,4 @@
-import {weightSize} from './weight';
+import {weightSize,WEIGHT_BALANCE} from './weight';
 import * as T from 'three';
 import {animateEgg} from './visuals';
 import {animatePet} from './pet-animation';
@@ -21,7 +21,7 @@ export function followPets(companions:T.Group,trail:T.Vector3[],position:T.Vecto
     companions.children.forEach((pet, i) => {
       const natural=MONGLES[pet.userData.petId].scale*weightSize(pet.userData.weight??{});
       const size=Math.max(.001,pet.userData.bodyWidth??1,pet.userData.bodyHeight??1,pet.userData.bodyDepth??1);
-      pet.userData.followScale=Math.min(natural,pet.userData.petId>=100?3.2/Math.max(1,pet.userData.bodyWidth??1):Infinity,maxSize/size);
+      pet.userData.followScale=Math.min(natural,pet.userData.petId>=100?3.2/Math.max(1,pet.userData.bodyWidth??1):Infinity,maxSize/size)*WEIGHT_BALANCE.petVisualScale;
       pet.scale.setScalar(pet.userData.followScale);
       const radius=(p:T.Object3D)=>p.scale.x*Math.max(.6,(p.userData.bodyDepth??1)*.5);
       followerDistance+=Math.max(1.2,radius(pet))+(i?Math.max(.4,radius(companions.children[i-1])):.6);

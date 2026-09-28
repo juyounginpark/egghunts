@@ -1,5 +1,5 @@
 import {EGGS,MONGLES,eggCarryMultiplier} from './data';
-export const WEIGHT_BALANCE={standardGrams:[250,1000,5000,20000,100000,500000,2000000],normalDeviation:.3,rareChance:.01,rareMin:.4,rareMax:.5,sizeExponent:.5};
+export const WEIGHT_BALANCE={standardGrams:[250,1000,5000,20000,100000,500000,2000000],normalDeviation:.3,rareChance:.01,rareMin:.4,rareMax:.5,sizeExponent:.5,petVisualScale:.6};
 export type Weighted={weightG?:number;standardWeightG?:number};
 export type PetLot={key:string;species:number;weightG:number;standardWeightG:number;count:number};
 type Inventory={mongles:number[];active:number[];mountPet?:number|null;petLots?:PetLot[];activeLots?:string[];mountLot?:string|null};
