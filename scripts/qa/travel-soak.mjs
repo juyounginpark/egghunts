@@ -1,5 +1,5 @@
 // Manual distance/repeated-travel renderer profile; isolated local fixture, no server saves.
-/* global WebGLRenderingContext, WebGL2RenderingContext */
+
 import {createServer} from 'vite';
 import {chromium} from 'playwright';
 import {execFileSync} from 'node:child_process';

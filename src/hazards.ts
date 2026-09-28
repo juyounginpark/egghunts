@@ -66,7 +66,7 @@ export class HazardManager{
    else if(!record.hit){record.hit=h.hit=true;hit(h);}
   }
  }
- private step(dt:number,stage:number,p:HazardPlayer,hit:(h:Hazard)=>void,push:(x:number,z:number)=>void,status:(effect:string,seconds:number)=>void,secret:boolean){
+ private step(dt:number,stage:number,p:HazardPlayer,hit:(h:Hazard)=>void,push:(x:number,z:number)=>void,status:(effect:string,seconds:number)=>void,_secret:boolean){
   this.time+=dt;
   for(const h of this.attacks){
    if(h.environment)continue;

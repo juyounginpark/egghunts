@@ -28,7 +28,7 @@ let child,output='';
 async function start(){
  child=spawn(process.execPath,['dist-server/host.mjs'],{env:{...process.env,SUPABASE_URL:`http://127.0.0.1:${cloud.address().port}`,SUPABASE_SERVICE_ROLE_KEY:'fixture',GAME_ALLOWED_ORIGINS:'http://127.0.0.1',GAME_DATA_PATH:path,GAME_MAX_ROOMS:'1',PORT:'4346',HOST:'127.0.0.1'},stdio:['ignore','pipe','pipe']});
  child.stdout.on('data',d=>{output+=d;});child.stderr.on('data',d=>{output+=d;});
- for(let i=0;i<100;i++){await new Promise(r=>setTimeout(r,50));try{if((await fetch('http://127.0.0.1:4346/readyz')).ok)return;}catch{}}
+ for(let i=0;i<100;i++){await new Promise(r=>setTimeout(r,50));try{if((await fetch('http://127.0.0.1:4346/readyz')).ok)return;}catch{/* Server teardown can close the transport first. */}}
  throw Error(`Host startup failed: ${output}`);
 }
 async function request(token,body){const response=await fetch('http://127.0.0.1:4346/game',{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});return {status:response.status,body:await response.json()};}

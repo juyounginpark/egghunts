@@ -1,7 +1,7 @@
 import {eggMaxHp} from './data';
 // Imported only behind import.meta.env.DEV. Never included in the release bundle.
 import { GameState, freshSave } from "./game";
-import { EGGS, BALANCE } from "./data";
+import { BALANCE } from "./data";
 import {HAZARDS} from "./stage-data";
 import type { World } from "./world";
 import type { Input } from "./input";
@@ -34,7 +34,7 @@ export function prepare(game: GameState, scene: string) {
     const egg = game.world[2];
     egg.type = scene === "rare-near" ? 30 : 0;
     egg.hp = eggMaxHp(egg);
-    game.z = egg.z + 1;
+    game.x = egg.x;game.z = egg.z + 1;
     game.deadline = clock + game.duration * 1000;
     if (["egg-carry", "urgent", "egg-loss"].includes(scene)) game.interact();
     if (scene === "urgent") game.deadline = clock + 4000;
@@ -121,7 +121,7 @@ export function attach(game: GameState, world: World, input: Input, setTab: (tab
     travel: (x: number, z: number) => {
       for(let i=0; i<12000 && Math.hypot(game.x-x,game.z-z)>.12; i++) {
         const dx=x-game.x,dz=z-game.z,l=Math.hypot(dx,dz);
-        step(Math.min(1/60,l/game.speed),{x:dx/l,z:dz/l});
+        step(Math.min(1/60,l/game.movementSpeed),{x:dx/l,z:dz/l});
         if(game.flyaway) break;
       }
     },

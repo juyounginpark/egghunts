@@ -1,4 +1,5 @@
 import {reorderStages,OLD_TO_STAGE} from './stage-order';
+import {walkingSpeedValue,stableRecoveryRatio} from './balance';
 import {routePoint} from './exploration-route';
 export const ROAD_WIDTH_SCALE=2;
 export const BRUSH_TERRAIN={progress:[.22,.51,.79],offset:3.5,radius:1.55,opacity:.5};
@@ -43,11 +44,12 @@ export const STAGES=documentRows.map(([name,color,accent,description,kit,minLeve
 export const STAGE_DIFFICULTY={minimumDamage:40,damagePerStage:20,recommendedSpeedMultiplier:1.4,speedSoftThreshold:1000};
 export const STAGE_STEPS=[{damage:1,cooldown:1,density:1,tint:1.08},{damage:1.25,cooldown:.85,density:1.2,tint:1},{damage:1.5,cooldown:.7,density:1.4,tint:.88}];
 export const FINAL_GUARDIAN={stage:20,scale:3,bossEndOffset:12,eggEndOffset:23,minimumEggTier:4};
-export function stageDamage(stage:number,step=1){return Math.round((STAGE_DIFFICULTY.minimumDamage+(stage-1)*STAGE_DIFFICULTY.damagePerStage)*STAGE_STEPS[step-1].damage);}
+export function stageDamage(stage:number,step=1){return Math.round((100+(stage-1)*25)*.16*(1+(step-1)*.05));}
 export function routeStep(z:number,offset:number,length:number){return Math.min(3,Math.max(1,Math.floor((-z-offset-ROUTE.entrance)/(length/3))+1));}
 function attack(stageId:number,id:string,displayName:string,damage:number,telegraphDuration:number,shape:Shape,extra:Partial<HazardDefinition>={}):HazardDefinition{
  const definition:HazardDefinition={id,displayName,stageId,damage,damagePercent:stageId>=13?.08:stageId>=9?.05:stageId>=5?.03:0,telegraphDuration,activeDuration:.35,cooldown:6,knockback:.5,slowMultiplier:.8,slowDuration:.5,shape,targetingType:'predict',carryTelegraphBonus:.2,radius:1.2,width:.55,length:10,blockable:false,effect:'hit',count:1,freezeBefore:.3,visual:STAGES[stageId-1].kit,minTelegraph:shape==='line'?1:1.2,...extra};
- if(definition.damage>0||definition.damagePercent>0)definition.damage=Math.max(definition.damage,stageDamage(stageId));
+ if(definition.damage>0||definition.damagePercent>0){definition.damage=stageDamage(stageId);definition.damagePercent=.04;}
+ definition.telegraphDuration=Math.max(definition.telegraphDuration,definition.minTelegraph);
  return definition;
 }
 export const HAZARDS:HazardDefinition[]=[
@@ -129,7 +131,7 @@ STAGE_ENVIRONMENT_IDS[18]=['void-hand','memory-tentacle','memory-lightning','mem
 STAGE_ENVIRONMENT_IDS[19]=['creation-wave'];
 export const LEGACY_STAGE_ENVIRONMENT_IDS=STAGE_ENVIRONMENT_IDS.map(ids=>[...ids]);
 // Environmental obstacles are retired. Guardian attack definitions stay intact.
-export function stagePatterns(_stage:number,_z=0):HazardDefinition[]{return [];}
+export function stagePatterns(stage:number,_z=0):HazardDefinition[]{return stage<5?[]:HAZARDS.filter(d=>STAGE_ENVIRONMENT_IDS[stage-1].includes(d.id));}
 export function environmentPlacement(stage:number,lane:number,offset=0){
  const count=STAGE_ENVIRONMENT_IDS[stage-1].length;
  const p=routePoint(stage,.50+lane*.1/Math.max(1,count-1));
@@ -147,19 +149,16 @@ export const ROUTE_FAR_Z=-(ROUTE.entrance+19*ROUTE.length+ROUTE.finalLength-3);
 
 export const BOSS_MOVEMENT={qualifiedCatchupGain:2,qualifiedCatchupBlendDistance:3,returnSpeed:2,maxSpeed:30,qualifiedChaseMaxSpeed:15,underqualifiedMultiplier:2,underqualifiedKnockback:12,catchupTargetGap:1.2,catchupMinSpeed:90,catchupMaxSpeed:180,catchupGain:16};
 export function guardianSpeed(stage:number){
- const progress=(Math.max(1,Math.min(STAGES.length,stage))-1)/(STAGES.length-1);
- return ROUTE.baseRecommendedSpeed+(BOSS_MOVEMENT.qualifiedChaseMaxSpeed-ROUTE.baseRecommendedSpeed)*progress;
+ return walkingSpeedValue(recommendedRouteSpeed(0,stage)*stableRecoveryRatio(stage))*(stage<=4?.88:stage===20?.76:.84);
 }
 // Recommended stats never gate pickup; falling short makes close pursuit fast.
 export function guardianChaseSpeed(stage:number,playerSpeed:number){
- return playerSpeed<recommendedRouteSpeed(0,stage)?BOSS_MOVEMENT.catchupMinSpeed:guardianSpeed(stage);
+ return playerSpeed<recommendedRouteSpeed(0,stage)?guardianSpeed(stage)*2.5:guardianSpeed(stage);
 }
 /** Qualified pursuit accelerates continuously across the close chase boundary. */
-export function guardianPursuitSpeed(stage:number,playerSpeed:number,distance:number,escapeSpeed:number,reach:number){
- if(playerSpeed<recommendedRouteSpeed(0,stage))return Math.min(BOSS_MOVEMENT.catchupMaxSpeed,Math.max(0,escapeSpeed)+BOSS_MOVEMENT.catchupMinSpeed);
- const excess=Math.max(0,distance-reach-BOSS_MOVEMENT.catchupTargetGap),base=guardianChaseSpeed(stage,playerSpeed);
- const blend=Math.min(1,excess/BOSS_MOVEMENT.qualifiedCatchupBlendDistance);
- return Math.min(BOSS_MOVEMENT.maxSpeed,base+Math.max(0,escapeSpeed-base)*blend+excess*BOSS_MOVEMENT.qualifiedCatchupGain);
+export function guardianPursuitSpeed(stage:number,playerSpeed:number,_distance:number,_escapeSpeed:number,_reach:number){
+ // A fixed stage pace: no acceleration based on network distance or the viewer's velocity.
+ return guardianChaseSpeed(stage,playerSpeed);
 }
 export const STAGE_REQUIRED_SPEED=[1,3,5,7,10,15,25,40,65,100,180,320,600,1100,2000,4000,7500,14000,26000,50000] as const;
 export function recommendedRouteSpeed(_depth:number,stage:number){return STAGE_REQUIRED_SPEED[Math.max(0,Math.min(19,stage-1))];}
@@ -183,7 +182,7 @@ for(let i=0;i<20;i++){
  STAGE_ENVIRONMENT_IDS[i]=Array.from({length:extra?2:1},(_,lane)=>{
   const [t,a,rest,recovery,damage,interval,movement]=lane===1?(stage===3?[2.6,.8,4,0,0,0,'still']:stage===4?[2.6,1,3.6,0,4,0,'still']:[2.4,1.6,4,0,7,1.05,'still']):ENVIRONMENT_TIMING[i];
   const id=`explore-${stage}-${lane}`,wall=movement==='wall';
-  HAZARDS.push({id,displayName:id,stageId:stage,damage:Number(damage),damagePercent:0,telegraphDuration:Number(t),activeDuration:Number(a),cooldown:Number(rest),recoveryDuration:Number(recovery),tickInterval:Number(interval),movement:movement as HazardDefinition['movement'],knockback:.15,slowMultiplier:.9,slowDuration:.3,shape:wall?'wall':'ellipse',targetingType:'fixed',carryTelegraphBonus:0,radius:movement==='floor'?.8:1,width:.35,length:8,blockable:false,effect:Number(interval)?'dot':'hit',count:1,freezeBefore:0,visual:lane===1?(stage===4?'steam':'coral'):visuals[i],minTelegraph:Number(t)});
+  HAZARDS.push({id,displayName:id,stageId:stage,damage:Number(damage)?stageDamage(stage):0,damagePercent:Number(damage)?.04:0,telegraphDuration:Number(t),activeDuration:Number(a),cooldown:Number(rest),recoveryDuration:Number(recovery),tickInterval:Number(interval),movement:movement as HazardDefinition['movement'],knockback:.15,slowMultiplier:.9,slowDuration:.3,shape:wall?'wall':'ellipse',targetingType:'fixed',carryTelegraphBonus:0,radius:movement==='floor'?.8:1,width:.35,length:8,blockable:false,effect:Number(interval)?'dot':'hit',count:1,freezeBefore:0,visual:lane===1?(stage===4?'steam':'coral'):visuals[i],minTelegraph:Number(t)});
   return id;
  });
 }

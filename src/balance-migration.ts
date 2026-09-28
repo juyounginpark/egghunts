@@ -1,23 +1,21 @@
-import {BALANCE,ECONOMY,growthCost,recommendedIncome} from './data';
-import {compare,validMoney,type Money} from './money';
+import {upgradeBaseSpeed,OVERHAUL} from './balance';
+import {validMoney,type Money} from './money';
 import type {Save} from './game';
 export type BalanceAdjustment={at:number;dust:Money;trainingSpeed:number;pending:Money};
-/** One-time correction at persisted-save boundaries, never on incoming live frames. */
-export function migrateBalance(save:Save,now:number){
- if(save.balanceVersion===1)return;
- if(save.balanceVersion!==undefined)throw Error('Invalid balance version');
- const level=save.upgrades?.speed;
- if(!Number.isInteger(level)||level<0||level>BALANCE.maxUpgrade||!validMoney(save.dust))throw Error('Invalid balance migration');
- const training=save.trainingSpeed??0,pending=save.petIncome?.pending??0;
- if(!Number.isFinite(training)||training<0||!validMoney(pending))throw Error('Invalid balance migration');
- const walletLimit=Math.max(ECONOMY.migrationWalletMinimum,growthCost('speed',level)*ECONOMY.migrationWalletGoals);
- const trainingLimit=BALANCE.speed*ECONOMY.speedGrowth**level*ECONOMY.migrationTrainingMultiple;
- const pendingLimit=recommendedIncome(Math.min(20,level+1))*BALANCE.petIncomeSeconds;
- if(compare(save.dust,walletLimit)>0||training>trainingLimit||compare(pending,pendingLimit)>0){
-  save.balanceAdjustment={at:now,dust:save.dust,trainingSpeed:training,pending};
-  if(compare(save.dust,walletLimit)>0)save.dust=walletLimit;
-  save.trainingSpeed=Math.min(training,trainingLimit);
-  if(save.petIncome&&compare(pending,pendingLimit)>0)save.petIncome.pending=pendingLimit;
+/** Preserve currency, ownership, lot references and original training values. */
+export function migrateBalance(save:Save,_now:number){
+ if([save.productionAt,save.productionActiveAt].some(value=>value!==undefined&&(!Number.isFinite(value)||value<0)))throw Error('Invalid production timestamp');
+ if(save.balanceVersion===2){
+  if(!Number.isFinite(save.trainingProgress)||save.trainingProgress!<0||save.trainingProgress!>1)throw Error('Invalid training progress');
+  if(!Number.isInteger(save.highestStage)||save.highestStage!<1||save.highestStage!>20)throw Error('Invalid highest stage');
+  if(save.adRewards&&(!Number.isInteger(save.adRewards.day)||!Number.isInteger(save.adRewards.count)||save.adRewards.count<0||save.adRewards.count>OVERHAUL.adDailyLimit))throw Error('Invalid ad rewards');
+  return;
  }
- save.balanceVersion=1;
+ if(save.balanceVersion!==undefined&&save.balanceVersion!==1)throw Error('Invalid balance version');
+ if(!validMoney(save.dust)||!Number.isFinite(save.trainingSpeed??0)||(save.trainingSpeed??0)<0)throw Error('Invalid balance migration');
+ const legacy=save.trainingSpeed??0;
+ save.legacyTrainingSpeed??=legacy;
+ save.trainingProgress=Math.min(1,legacy/(upgradeBaseSpeed(save.upgrades.speed)*OVERHAUL.trainingCap));
+ save.highestStage=Math.max(1,...(save.visitedStages??[]),...(save.progression?.completedStages??[]));
+ save.balanceVersion=2;
 }

@@ -1,0 +1,802 @@
+[
+  {
+    "stage": 1,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 23,
+    "failures": 7,
+    "successRate": 0.7666666666666667,
+    "seconds": 13.27000000000002
+  },
+  {
+    "stage": 1,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 14.030000000000022
+  },
+  {
+    "stage": 1,
+    "preset": "stable",
+    "ratio": 1.2,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 13.545000000000023
+  },
+  {
+    "stage": 1,
+    "preset": "strong",
+    "ratio": 1.7999999999999998,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 12.43500000000002
+  },
+  {
+    "stage": 2,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 12,
+    "failures": 18,
+    "successRate": 0.4,
+    "seconds": 17.129999999999992
+  },
+  {
+    "stage": 2,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 29,
+    "failures": 1,
+    "successRate": 0.9666666666666667,
+    "seconds": 22.68499999999996
+  },
+  {
+    "stage": 2,
+    "preset": "stable",
+    "ratio": 1.2,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 21.814999999999973
+  },
+  {
+    "stage": 2,
+    "preset": "strong",
+    "ratio": 1.7999999999999998,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 19.939999999999994
+  },
+  {
+    "stage": 3,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 8,
+    "failures": 22,
+    "successRate": 0.26666666666666666,
+    "seconds": 20.29999999999996
+  },
+  {
+    "stage": 3,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 14,
+    "failures": 16,
+    "successRate": 0.4666666666666667,
+    "seconds": 26.899999999999928
+  },
+  {
+    "stage": 3,
+    "preset": "stable",
+    "ratio": 1.2,
+    "trials": 30,
+    "successes": 26,
+    "failures": 4,
+    "successRate": 0.8666666666666667,
+    "seconds": 29.744999999999887
+  },
+  {
+    "stage": 3,
+    "preset": "strong",
+    "ratio": 1.7999999999999998,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 27.414999999999914
+  },
+  {
+    "stage": 4,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 4,
+    "failures": 26,
+    "successRate": 0.13333333333333333,
+    "seconds": 21.379999999999953
+  },
+  {
+    "stage": 4,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 11,
+    "failures": 19,
+    "successRate": 0.36666666666666664,
+    "seconds": 32.32499999999987
+  },
+  {
+    "stage": 4,
+    "preset": "stable",
+    "ratio": 1.2,
+    "trials": 30,
+    "successes": 19,
+    "failures": 11,
+    "successRate": 0.6333333333333333,
+    "seconds": 34.12999999999986
+  },
+  {
+    "stage": 4,
+    "preset": "strong",
+    "ratio": 1.7999999999999998,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 34.10999999999986
+  },
+  {
+    "stage": 5,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 2,
+    "failures": 28,
+    "successRate": 0.06666666666666667,
+    "seconds": 20.234999999999946
+  },
+  {
+    "stage": 5,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 16,
+    "failures": 14,
+    "successRate": 0.5333333333333333,
+    "seconds": 38.08499999999983
+  },
+  {
+    "stage": 5,
+    "preset": "stable",
+    "ratio": 1.35,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 42.03999999999978
+  },
+  {
+    "stage": 5,
+    "preset": "strong",
+    "ratio": 2.0250000000000004,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 38.90499999999981
+  },
+  {
+    "stage": 6,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 2,
+    "failures": 28,
+    "successRate": 0.06666666666666667,
+    "seconds": 20.844999999999946
+  },
+  {
+    "stage": 6,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 16,
+    "failures": 14,
+    "successRate": 0.5333333333333333,
+    "seconds": 43.36999999999978
+  },
+  {
+    "stage": 6,
+    "preset": "stable",
+    "ratio": 1.35,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 46.17999999999974
+  },
+  {
+    "stage": 6,
+    "preset": "strong",
+    "ratio": 2.0250000000000004,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 42.89999999999977
+  },
+  {
+    "stage": 7,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 2,
+    "failures": 28,
+    "successRate": 0.06666666666666667,
+    "seconds": 22.639999999999933
+  },
+  {
+    "stage": 7,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 12,
+    "failures": 18,
+    "successRate": 0.4,
+    "seconds": 44.11499999999975
+  },
+  {
+    "stage": 7,
+    "preset": "stable",
+    "ratio": 1.35,
+    "trials": 30,
+    "successes": 27,
+    "failures": 3,
+    "successRate": 0.9,
+    "seconds": 48.80999999999971
+  },
+  {
+    "stage": 7,
+    "preset": "strong",
+    "ratio": 2.0250000000000004,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 45.874999999999744
+  },
+  {
+    "stage": 8,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 2,
+    "failures": 28,
+    "successRate": 0.06666666666666667,
+    "seconds": 22.259999999999938
+  },
+  {
+    "stage": 8,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 12,
+    "failures": 18,
+    "successRate": 0.4,
+    "seconds": 45.90499999999974
+  },
+  {
+    "stage": 8,
+    "preset": "stable",
+    "ratio": 1.35,
+    "trials": 30,
+    "successes": 28,
+    "failures": 2,
+    "successRate": 0.9333333333333333,
+    "seconds": 50.78499999999969
+  },
+  {
+    "stage": 8,
+    "preset": "strong",
+    "ratio": 2.0250000000000004,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 48.39499999999973
+  },
+  {
+    "stage": 9,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 3,
+    "failures": 27,
+    "successRate": 0.1,
+    "seconds": 21.86999999999994
+  },
+  {
+    "stage": 9,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 13,
+    "failures": 17,
+    "successRate": 0.43333333333333335,
+    "seconds": 47.644999999999726
+  },
+  {
+    "stage": 9,
+    "preset": "stable",
+    "ratio": 1.35,
+    "trials": 30,
+    "successes": 29,
+    "failures": 1,
+    "successRate": 0.9666666666666667,
+    "seconds": 53.46499999999967
+  },
+  {
+    "stage": 9,
+    "preset": "strong",
+    "ratio": 2.0250000000000004,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 50.64499999999971
+  },
+  {
+    "stage": 10,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 3,
+    "failures": 27,
+    "successRate": 0.1,
+    "seconds": 25.644999999999907
+  },
+  {
+    "stage": 10,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 10,
+    "failures": 20,
+    "successRate": 0.3333333333333333,
+    "seconds": 48.47499999999971
+  },
+  {
+    "stage": 10,
+    "preset": "stable",
+    "ratio": 1.55,
+    "trials": 30,
+    "successes": 28,
+    "failures": 2,
+    "successRate": 0.9333333333333333,
+    "seconds": 54.269999999999655
+  },
+  {
+    "stage": 10,
+    "preset": "strong",
+    "ratio": 2.325,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 51.63499999999968
+  },
+  {
+    "stage": 11,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 2,
+    "failures": 28,
+    "successRate": 0.06666666666666667,
+    "seconds": 27.3099999999999
+  },
+  {
+    "stage": 11,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 13,
+    "failures": 17,
+    "successRate": 0.43333333333333335,
+    "seconds": 48.219999999999715
+  },
+  {
+    "stage": 11,
+    "preset": "stable",
+    "ratio": 1.55,
+    "trials": 30,
+    "successes": 29,
+    "failures": 1,
+    "successRate": 0.9666666666666667,
+    "seconds": 55.40999999999966
+  },
+  {
+    "stage": 11,
+    "preset": "strong",
+    "ratio": 2.325,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 52.91499999999967
+  },
+  {
+    "stage": 12,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 2,
+    "failures": 28,
+    "successRate": 0.06666666666666667,
+    "seconds": 23.539999999999914
+  },
+  {
+    "stage": 12,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 16,
+    "failures": 14,
+    "successRate": 0.5333333333333333,
+    "seconds": 51.76999999999968
+  },
+  {
+    "stage": 12,
+    "preset": "stable",
+    "ratio": 1.55,
+    "trials": 30,
+    "successes": 27,
+    "failures": 3,
+    "successRate": 0.9,
+    "seconds": 55.489999999999654
+  },
+  {
+    "stage": 12,
+    "preset": "strong",
+    "ratio": 2.325,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 54.08499999999967
+  },
+  {
+    "stage": 13,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 0,
+    "failures": 30,
+    "successRate": 0,
+    "seconds": 24.68999999999992
+  },
+  {
+    "stage": 13,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 13,
+    "failures": 17,
+    "successRate": 0.43333333333333335,
+    "seconds": 48.704999999999714
+  },
+  {
+    "stage": 13,
+    "preset": "stable",
+    "ratio": 1.55,
+    "trials": 30,
+    "successes": 27,
+    "failures": 3,
+    "successRate": 0.9,
+    "seconds": 55.71499999999965
+  },
+  {
+    "stage": 13,
+    "preset": "strong",
+    "ratio": 2.325,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 54.81499999999965
+  },
+  {
+    "stage": 14,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 1,
+    "failures": 29,
+    "successRate": 0.03333333333333333,
+    "seconds": 17.764999999999965
+  },
+  {
+    "stage": 14,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 13,
+    "failures": 17,
+    "successRate": 0.43333333333333335,
+    "seconds": 49.8399999999997
+  },
+  {
+    "stage": 14,
+    "preset": "stable",
+    "ratio": 1.55,
+    "trials": 30,
+    "successes": 28,
+    "failures": 2,
+    "successRate": 0.9333333333333333,
+    "seconds": 56.684999999999654
+  },
+  {
+    "stage": 14,
+    "preset": "strong",
+    "ratio": 2.325,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 55.58499999999967
+  },
+  {
+    "stage": 15,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 1,
+    "failures": 29,
+    "successRate": 0.03333333333333333,
+    "seconds": 20.379999999999942
+  },
+  {
+    "stage": 15,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 5,
+    "failures": 25,
+    "successRate": 0.16666666666666666,
+    "seconds": 42.81499999999978
+  },
+  {
+    "stage": 15,
+    "preset": "stable",
+    "ratio": 1.75,
+    "trials": 30,
+    "successes": 21,
+    "failures": 9,
+    "successRate": 0.7,
+    "seconds": 54.30499999999966
+  },
+  {
+    "stage": 15,
+    "preset": "strong",
+    "ratio": 2.625,
+    "trials": 30,
+    "successes": 27,
+    "failures": 3,
+    "successRate": 0.9,
+    "seconds": 55.429999999999644
+  },
+  {
+    "stage": 16,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 6,
+    "failures": 24,
+    "successRate": 0.2,
+    "seconds": 30.214999999999872
+  },
+  {
+    "stage": 16,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 10,
+    "failures": 20,
+    "successRate": 0.3333333333333333,
+    "seconds": 47.46999999999973
+  },
+  {
+    "stage": 16,
+    "preset": "stable",
+    "ratio": 1.75,
+    "trials": 30,
+    "successes": 20,
+    "failures": 10,
+    "successRate": 0.6666666666666666,
+    "seconds": 54.22499999999967
+  },
+  {
+    "stage": 16,
+    "preset": "strong",
+    "ratio": 2.625,
+    "trials": 30,
+    "successes": 26,
+    "failures": 4,
+    "successRate": 0.8666666666666667,
+    "seconds": 55.48999999999965
+  },
+  {
+    "stage": 17,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 0,
+    "failures": 30,
+    "successRate": 0,
+    "seconds": 19.89999999999996
+  },
+  {
+    "stage": 17,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 9,
+    "failures": 21,
+    "successRate": 0.3,
+    "seconds": 42.25499999999977
+  },
+  {
+    "stage": 17,
+    "preset": "stable",
+    "ratio": 1.75,
+    "trials": 30,
+    "successes": 16,
+    "failures": 14,
+    "successRate": 0.5333333333333333,
+    "seconds": 52.11499999999967
+  },
+  {
+    "stage": 17,
+    "preset": "strong",
+    "ratio": 2.625,
+    "trials": 30,
+    "successes": 26,
+    "failures": 4,
+    "successRate": 0.8666666666666667,
+    "seconds": 56.87999999999965
+  },
+  {
+    "stage": 18,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 5,
+    "failures": 25,
+    "successRate": 0.16666666666666666,
+    "seconds": 33.42499999999985
+  },
+  {
+    "stage": 18,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 15,
+    "failures": 15,
+    "successRate": 0.5,
+    "seconds": 48.034999999999734
+  },
+  {
+    "stage": 18,
+    "preset": "stable",
+    "ratio": 1.75,
+    "trials": 30,
+    "successes": 14,
+    "failures": 16,
+    "successRate": 0.4666666666666667,
+    "seconds": 52.40999999999969
+  },
+  {
+    "stage": 18,
+    "preset": "strong",
+    "ratio": 2.625,
+    "trials": 30,
+    "successes": 24,
+    "failures": 6,
+    "successRate": 0.8,
+    "seconds": 55.624999999999645
+  },
+  {
+    "stage": 19,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 3,
+    "failures": 27,
+    "successRate": 0.1,
+    "seconds": 28.69999999999988
+  },
+  {
+    "stage": 19,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 3,
+    "failures": 27,
+    "successRate": 0.1,
+    "seconds": 38.304999999999815
+  },
+  {
+    "stage": 19,
+    "preset": "stable",
+    "ratio": 1.75,
+    "trials": 30,
+    "successes": 12,
+    "failures": 18,
+    "successRate": 0.4,
+    "seconds": 47.65499999999972
+  },
+  {
+    "stage": 19,
+    "preset": "strong",
+    "ratio": 2.625,
+    "trials": 30,
+    "successes": 24,
+    "failures": 6,
+    "successRate": 0.8,
+    "seconds": 57.58999999999962
+  },
+  {
+    "stage": 20,
+    "preset": "below",
+    "ratio": 0.99,
+    "trials": 30,
+    "successes": 1,
+    "failures": 29,
+    "successRate": 0.03333333333333333,
+    "seconds": 25.08999999999995
+  },
+  {
+    "stage": 20,
+    "preset": "entry",
+    "ratio": 1,
+    "trials": 30,
+    "successes": 22,
+    "failures": 8,
+    "successRate": 0.7333333333333333,
+    "seconds": 70.32499999999992
+  },
+  {
+    "stage": 20,
+    "preset": "stable",
+    "ratio": 1.75,
+    "trials": 30,
+    "successes": 28,
+    "failures": 2,
+    "successRate": 0.9333333333333333,
+    "seconds": 72.28499999999988
+  },
+  {
+    "stage": 20,
+    "preset": "strong",
+    "ratio": 2.625,
+    "trials": 30,
+    "successes": 30,
+    "failures": 0,
+    "successRate": 1,
+    "seconds": 71.27499999999984
+  }
+]

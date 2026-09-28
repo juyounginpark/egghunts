@@ -71,7 +71,7 @@ export class SceneryCreatures{
      c.targetX=c.x;c.targetZ=c.z;c.wait=.6;
     }else if(c.wait>0)c.wait=Math.max(0,c.wait-dt);
     else{
-     let tx=c.targetX-c.x,tz=c.targetZ-c.z,l=Math.hypot(tx,tz);
+     const tx=c.targetX-c.x,tz=c.targetZ-c.z,l=Math.hypot(tx,tz);
      if(l<.08){
       const a=this.random(c)*Math.PI*2,r=.7+this.random(c)*1.1;
       c.targetX=c.homeX+Math.cos(a)*r;c.targetZ=c.homeZ+Math.sin(a)*r;c.wait=.8+this.random(c)*1.8;

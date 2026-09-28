@@ -1,5 +1,5 @@
 // Manual multiplayer visual regression: two browsers, real room engine, seeded inventories.
-/* global structuredClone */
+
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
 import {chromium} from 'playwright';

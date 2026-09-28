@@ -1,11 +1,10 @@
 import {contains,type Hazard} from './hazards';
-import {ROUTE,STAGE_ENVIRONMENT_IDS,LEGACY_STAGE_ENVIRONMENT_IDS} from './stage-data';
-import {reorderStages} from './stage-order';
+import {STAGE_ENVIRONMENT_IDS,LEGACY_STAGE_ENVIRONMENT_IDS} from './stage-data';
 import {routeProgress} from './exploration-route';
 
 export type DragonClue={avoided:string[];carried:string[];escaped:string[];depth:boolean;sides:number;quiet:number;returned:boolean;claimed:boolean};
 export type DragonRule={hint:string;condition:string;avoid:string[];carry?:string[];escape?:string[];depth?:boolean;sides?:boolean;quiet?:number;returnEgg?:boolean};
-const oldDragonRules:DragonRule[]=[
+export const oldDragonRules:DragonRule[]=[
  {hint:'건초 바람을 비켜 간 씨앗이 둥지로 돌아오면 풍차가 돈다.',condition:'굴러오는 건초 회피 후 초원 알을 기지에 보관',avoid:['hay'],returnEgg:true},
  {hint:'기차가 지나간 길 너머, 태엽 성의 가장 깊은 곳.',condition:'태엽 기차 회피 + 왕국 길 80% 지점 도달',avoid:['train'],depth:true},
  {hint:'알을 젖지 않게 지킨 뒤 두 물가의 소리를 들어 보자.',condition:'산호 바다 알 운반 중 먹물 회피 + 위험 구간 좌우 방문',avoid:[],carry:['ink'],sides:true},

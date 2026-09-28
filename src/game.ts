@@ -1,7 +1,7 @@
+import {OVERHAUL,upgradeBaseSpeed,progressionSpeedValue,productionUpgradeMultiplier,petIncomeValue,incomeValue,trainingProgressAfter,offlineSeconds,tapDamageValue,autoDamageValue,stageReward,walkingSpeedValue,stableRecoveryRatio,collectionEligible} from './balance';
 import {ULTRA_SECRET} from './ultra-secret';
 import {WEIGHT_BALANCE,ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
-import {softenGrowth} from './growth-curve';
 import {freshPads} from './speed-pads';
 import {isStageEggVariant,normalEggSelection,randomNormalEggVariant} from './egg-variants';
 import type {Mob} from './mobs';
@@ -14,7 +14,7 @@ import {firstEggTarget} from './tutorial';
 import {WEEKLY_EVENT} from './data';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
-import {ECONOMY,recommendedIncome,growthCost,EGG_HEALTH,eggMaxHp,equippedPetMultiplier} from './data';
+import {growthCost,EGG_HEALTH,eggMaxHp,equippedPetMultiplier} from './data';
 import {
   BALANCE,
   COUPONS,
@@ -31,24 +31,24 @@ import {
   rollEgg,
   type Upgrade,
 } from "./data";
-import {newProgression,validateProgression,awardXP,levelHP,levelSpeed,reducedDamage,type Progression} from "./progression";
+import {newProgression,validateProgression,awardXP,levelHP,reducedDamage,type Progression} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
 import {farmGym,CAMPFIRE,CAMP_SEATS} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
 import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianPursuitSpeed,stageDamage,type HazardDefinition} from "./stage-data";
-export type Egg = Weighted & { id: string; type: number; hp: number; hpVersion?:2|3|4; distance: number; stageId?:number; variant?:number; special?:boolean };
+export type Egg = Weighted & { id: string; type: number; hp: number; hpVersion?:2|3|4|5; distance: number; stageId?:number; variant?:number; special?:boolean };
 // Version each egg because stored, carried and shared-room eggs have separate lifetimes.
 export function migrateEggHealth(eggs:(Egg|null|undefined)[]){
   for(const egg of eggs){
     ensureEggWeight(egg);
-    if(!egg||egg.hpVersion===4)continue;
-    if((egg.hpVersion!==undefined&&egg.hpVersion!==2&&egg.hpVersion!==3)||!EGGS[egg.type]||!Number.isFinite(egg.hp)||egg.hp<0)throw Error('Invalid egg health');
+    if(!egg||egg.hpVersion===5)continue;
+    if((egg.hpVersion!==undefined&&egg.hpVersion!==2&&egg.hpVersion!==3&&egg.hpVersion!==4)||!EGGS[egg.type]||!Number.isFinite(egg.hp)||egg.hp<0)throw Error('Invalid egg health');
     const def=EGGS[egg.type];
-    const oldMax=egg.hpVersion===3?eggMaxHp(egg):Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6))/(egg.hpVersion===2?1:10);
+    const oldMax=egg.hpVersion===4||egg.hpVersion===3?eggMaxHp(egg):Math.round(EGG_HEALTH.legacyRegionBase[def.region]*(1+def.tier*.6))/(egg.hpVersion===2?1:10);
     if(egg.hp>oldMax+Number.EPSILON*oldMax*8)throw Error('Invalid legacy egg health');
-    const max=eggMaxHp({...egg,hpVersion:4});
-    egg.hp=max===oldMax?Math.min(max,egg.hp):Math.min(1,egg.hp/oldMax)*max;egg.hpVersion=4;
+    const max=eggMaxHp({...egg,hpVersion:5});
+    egg.hp=max===oldMax?Math.min(max,egg.hp):Math.min(1,egg.hp/oldMax)*max;egg.hpVersion=5;
   }
 }
 export type WorldEgg = Egg & {
@@ -79,7 +79,8 @@ export type Boss = {
 export type Save = {
   explorationVersion?:1|2|3|4|5;
   openedShortcuts?:number[];
-  balanceVersion?:1;
+  balanceVersion?:1|2;
+  trainingProgress?:number;legacyTrainingSpeed?:number;highestStage?:number;adRewards?:{day:number;count:number};
   balanceAdjustment?:BalanceAdjustment;
   weekly?:WeeklyProgress;
   redeemedCoupons?:string[];
@@ -120,6 +121,7 @@ export type Save = {
   best: number;
   lastSavedAt: number;
   productionAt?: number;
+  productionActiveAt?: number;
   expedition: {
     deadline: number;
     x: number;
@@ -133,7 +135,7 @@ export type Save = {
 };
 export function freshSave(now: number): Save {
   return {
-    balanceVersion:1,
+    balanceVersion:2,trainingProgress:0,highestStage:1,
     routeVersion:3,
     version: 1,
     stageOrderVersion:2,
@@ -290,8 +292,8 @@ export class GameState {
   get route(){if(!this.routeCache.length||this.routeStart!==this.progression.stage){this.routeStart=this.progression.stage;this.routeCache=routeSegments(this.routeStart);}return this.routeCache;}
   get stage(){return STAGES[routeStage(this.progression.stage,this.z)-1];}
   get recommendedSpeed(){
-    const chaser=this.carried?this.bosses.find(b=>b.target===this.carried!.id&&(b.mode==='chase'||b.mode==='waking')):undefined;
-    return recommendedRouteSpeed(0,chaser?.stageId??this.stage.id);
+    const egg=this.carried??this.near;
+    return egg?this.eggRequiredSpeed(egg):recommendedRouteSpeed(0,this.stage.id)*stableRecoveryRatio(this.stage.id);
   }
   get stageOffset(){return (this.stage.id-this.progression.stage)*ROUTE.length;}
   get stageStep(){return routeStep(this.z,this.stageOffset,this.stage.id===20?ROUTE.finalLength:ROUTE.length);}
@@ -305,6 +307,7 @@ export class GameState {
     const visited=this.save.visitedStages??=[];
     const first=!visited.includes(id);
     if(first)visited.push(id);
+    this.save.highestStage=Math.max(this.save.highestStage??1,id);
     if(this.announcedStage===id)return;
     this.announcedStage=id;this.hazards.reset(id);
     if(!this.isAtBase){this.emit('region_enter',{stage:id,first:first?1:0});if(id>4)this.unlockHealth();}
@@ -313,7 +316,7 @@ export class GameState {
   get defenses(){return this.save.active.map(id=>PET_DEFENSE[id]??{});}
   defense(key:'maxHP'|'damageReduction'|'firstHitReduction'|'statusReduction'|'lowHPSpeed'|'returnXPBonus'){return this.defenses.reduce((n,d)=>n+(d[key]??0),0);}
   selectStage(id:number){
-    if(!this.isAtBase||this.carried||!STAGES[id-1]||!Number.isInteger(id))return false;
+    if(!this.isAtBase||this.carried||!STAGES[id-1]||!Number.isInteger(id)||!this.canEnterStage(id))return false;
     this.progression.stage=id;this.hazards.reset(id);this.resetBosses();this.spawn();this.revision++;
     if(id>PROGRESSION.unlockStage)this.unlockHealth();return true;
   }
@@ -405,17 +408,26 @@ export class GameState {
     this.mapCollision.opened=this.openedShortcuts;
     const width=this.z+z>=BALANCE.baseMinZ?BALANCE.baseMapX:BALANCE.mapX;
     const targetX=Math.max(-width,Math.min(width,this.x+x)),targetZ=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,this.z+z));
-    const position=this.mapCollision.move(this.x,this.z,targetX-this.x,targetZ-this.z,this.progression.stage);
+    // Forward travel respects progression; retreat from a legacy deep-stage save remains possible.
+    let allowedZ=targetZ;
+    if(targetZ<this.z){
+      const next=this.route.find(segment=>segment.stage>this.stage.id&&!this.canEnterStage(segment.stage));
+      if(next){
+        allowedZ=Math.max(targetZ,-next.start+.01);
+        if(allowedZ>targetZ)this.message=`${next.stage}스테이지 진입 속도 ${formatNumber(recommendedRouteSpeed(0,next.stage))} · 현재 ${formatNumber(this.progressionSpeed)}`;
+      }
+    }
+    const position=this.mapCollision.move(this.x,this.z,targetX-this.x,allowedZ-this.z,this.progression.stage);
     this.x=Math.max(-width,Math.min(width,position.x));this.z=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,position.z));this.syncStage();
   }
   get nearStore(){return Math.hypot(this.x-BALANCE.storeX,this.z-BALANCE.storeZ)<BALANCE.storeRadius;}
   hasDiscoveredPet(id:number){return !!this.save.mongles[id]||!!this.save.obtainedPets?.includes(id);}
-  eggSellPrice(type:number){return EGGS[type]?Math.floor(EGGS[type].reward*BALANCE.eggSellRatio):0;}
-  petSellPrice(id:number){const pet=MONGLES[id];return pet?BALANCE.petSellPrices[pet.tier]*(pet.region+1):0;}
+  eggSellPrice(egg:number|{type:number;stageId?:number}){const e=typeof egg==='number'?{type:egg}:egg;return EGGS[e.type]?stageReward(e.stageId??EGGS[e.type].region*4+1,OVERHAUL.rewardMinutes.saleEgg,EGGS[e.type].tier):0;}
+  petSellPrice(id:number){const pet=MONGLES[id];return pet?stageReward(Math.max(1,pet.stageId),OVERHAUL.rewardMinutes.salePet,pet.tier):0;}
   sellEgg(id:string){
     if(!this.isAtBase||this.death)return 0;
     const egg=this.save.eggs.find(e=>e.id===id);if(!egg)return 0;
-    const price=this.eggSellPrice(egg.type);this.save.eggs=this.save.eggs.filter(e=>e.id!==id);
+    const price=this.eggSellPrice(egg);this.save.eggs=this.save.eggs.filter(e=>e.id!==id);
     if(this.save.selected===id){this.save.selected=this.save.eggs[0]?.id??null;this.autoClock=0;}
     this.save.dust=add(this.save.dust,price);this.revision++;this.emit('egg_sold',{type:egg.type,price});return price;
   }
@@ -429,7 +441,7 @@ export class GameState {
   get mountId(){const id=this.save.mountPet;if((this.mountPetLot?.weightG??0)<WEIGHT_BALANCE.mountMinimumGrams)return null;return typeof id==='number'&&Number.isInteger(id)&&MONGLES[id]&&(this.save.mongles[id]??0)>this.save.active.filter(p=>p===id).length?id:null;}
   get equippedPetIds(){return this.mountId===null?this.save.active:[...this.save.active,this.mountId];}
   equippedCount(id:number){return this.save.active.filter(p=>p===id).length+Number(this.mountId===id);}
-  mountBonus(id:number){return Math.max(0,(MONGLES[id]?.speedMultiplier??1)-1)*BALANCE.mountSpeedBonusRate;}
+  mountBonus(id:number){return Math.min(OVERHAUL.mountBonusCap,Math.max(0,(MONGLES[id]?.speedMultiplier??1)-1)*BALANCE.mountSpeedBonusRate);}
   get mountSpeedMultiplier(){return 1+(this.mountId===null?0:this.mountBonus(this.mountId));}
   get riding(){return this.mountId!==null&&!this.death&&!this.training&&this.seat===null&&this.now()>=this.knockedUntil&&this.knockback.remaining<=0&&!this.launch;}
   equipMount(id:number){
@@ -557,17 +569,15 @@ export class GameState {
   private trainingClock=0;
   private trainingGain=0;
   get movementMultiplier(){return TRAILS[this.save.equippedTrail??0].multiplier*this.speedMultiplier;}
-  private get trainingBaseSpeed(){return BALANCE.speed*ECONOMY.speedGrowth**this.save.upgrades.speed*this.movementMultiplier*levelSpeed(this.level);}
-  private get trainingRawBonus(){return (this.save.trainingSpeed??0)*this.movementMultiplier*levelSpeed(this.level);}
+  get trainingSpeedBonus(){return upgradeBaseSpeed(this.save.upgrades.speed)*OVERHAUL.trainingCap*(this.save.trainingProgress??0);}
   get effectiveTrainingRate(){
-    const before=this.trainingBaseSpeed+this.trainingRawBonus;
-    return softenGrowth(before+this.trainingRate*this.movementMultiplier*levelSpeed(this.level),ECONOMY.softThreshold)-softenGrowth(before,ECONOMY.softThreshold);
+    const progress=this.save.trainingProgress??0;
+    return this.progressionSpeed/(1+OVERHAUL.trainingCap*progress)*OVERHAUL.trainingCap*(trainingProgressAfter(progress,1,this.save.upgrades.training)-progress);
   }
-  get trainingSpeedBonus(){return softenGrowth(this.trainingBaseSpeed+this.trainingRawBonus,ECONOMY.softThreshold)-softenGrowth(this.trainingBaseSpeed,ECONOMY.softThreshold);}
   resultWeight: Weighted | null = null;
   returnReward: Weighted & { type: number; distance: number; stageId?:number;variant?:number;special?:boolean } | null = null;
   get nearGym() { return Math.hypot(this.x-this.gym.x,this.z-this.gym.z)<BALANCE.gymRadius; }
-  get trainingRate() { return BALANCE.trainingPerSecond + BALANCE.trainingPerLevel*this.save.upgrades.training; }
+  get trainingRate() { return (1+this.save.upgrades.training*OVERHAUL.trainingRatePerLevel)/OVERHAUL.trainingSeconds; }
   toggleTraining(){
     if(!this.isAtBase||this.carried||this.death||this.launch||this.knockback.remaining>0||this.now()<this.knockedUntil)return false;
     this.standUp();this.training=!this.training;
@@ -576,30 +586,25 @@ export class GameState {
     this.message=this.training?'운동 중 · 조이스틱으로 이동하면 운동을 마쳐요.':'운동을 마쳤어요.';
     this.revision++;return true;
   }
-  get growthStage(){return Math.min(20,this.save.upgrades.speed+1);}
-  get productionMultiplier(){
-    const middle=ECONOMY.middleUpgrades.reduce((n,k)=>n+this.save.upgrades[k],0);
-    return ECONOMY.middleMultiplier**(middle-4*Math.min(19,this.save.upgrades.speed));
-  }
-  petIncomeStageMultiplier(id:number){const p=MONGLES[id];return 1+.02*((p.stageId||BALANCE.petIncomeLegacyStageMultipliers[p.region])-1);}
-  private rawPetIncome(id:number){return recommendedIncome(this.growthStage)*ECONOMY.tierProduction[MONGLES[id].tier]/4*this.petIncomeStageMultiplier(id)*this.productionMultiplier;}
-  petIncomeAmount(id:number){
-    const raw=this.save.active.reduce((sum,pet)=>sum+this.rawPetIncome(pet),0);
-    const individual=this.rawPetIncome(id);
-    // Equipped pets share one team soft limit; equipping more never lowers team income.
-    return (this.save.active.includes(id)&&raw>0?individual*softenGrowth(raw,ECONOMY.softThreshold)/raw:softenGrowth(individual,ECONOMY.softThreshold))*BALANCE.petIncomeSeconds;
-  }
+  get growthStage(){return this.save.highestStage??1;}
+  get productionMultiplier(){return productionUpgradeMultiplier(this.save.upgrades);}
+  petIncomeStageMultiplier(id:number){return OVERHAUL.stageIncomeGrowth**(Math.max(1,MONGLES[id].stageId)-1);}
+  petIncomeAmount(id:number){const p=MONGLES[id];return incomeValue(petIncomeValue(Math.max(1,p.stageId),p.tier)*this.productionMultiplier)*BALANCE.petIncomeSeconds;}
   get petIncomePerCycle(){return this.save.active.reduce((sum,id)=>sum+this.petIncomeAmount(id),0);}
   get incomePerSecond(){return this.petIncomePerCycle/BALANCE.petIncomeSeconds;}
   offlineReward:Money=0;
-  settleProduction(at:number){
+  settleProduction(at:number,active=true){
     const previous=this.save.productionAt??this.save.lastSavedAt;
+    const anchor=this.save.productionActiveAt??previous;
     const elapsed=Math.min(BALANCE.offlineCap,Math.max(0,(at-previous)/1000));
-    this.tickPetIncome(elapsed);
+    // Integrate one continuous absence, even while another room member polls.
+    this.tickPetIncome(Math.max(0,offlineSeconds((at-anchor)/1000)-offlineSeconds((previous-anchor)/1000)));
     // Room time advances even with no movement requests from this player.
     // Use the same persisted watermark as income so reconnects cannot replay it.
     if(this.roomManaged)this.damage(elapsed*this.dps);
     this.save.productionAt=Math.max(previous,at);
+    if(active)this.save.productionActiveAt=Math.max(previous,at);
+    else this.save.productionActiveAt=anchor;
   }
   private tickPetIncome(dt:number){
     if(!Number.isFinite(dt)||dt<=0)return;
@@ -737,42 +742,35 @@ export class GameState {
   get clickMultiplier() { return equippedPetMultiplier(this.save.active,'clickMultiplier'); }
   get autoMultiplier() { return equippedPetMultiplier(this.save.active,'autoMultiplier'); }
   get speedMultiplier() { return equippedPetMultiplier(this.save.active,'speedMultiplier'); }
-  get movementSpeed() {
-    const stat=this.unmountedSpeed;
-    const walking=this.isAtBase?BALANCE.baseWalkSpeed:Math.min(BALANCE.maxMovementSpeed,stat<=2?stat:2+Math.log2(stat/2));
-    return walking*this.mountSpeedMultiplier*(this.carried?BALANCE.carryingMovementMultiplier:1);
+  get progressionSpeed(){return progressionSpeedValue(upgradeBaseSpeed(this.save.upgrades.speed),this.save.trainingProgress??0,this.save.equippedTrail??0,this.speedMultiplier,this.level);}
+  get movementSpeed(){
+    const base=this.isAtBase?BALANCE.baseWalkSpeed:walkingSpeedValue(this.progressionSpeed);
+    const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1);
+    return base*TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
   }
   speedPad=freshPads();
-  private beforeCarrySpeed(speed:number,multiplier:number){
-    const mount=this.mountSpeedMultiplier,t=ECONOMY.softThreshold,s=speed/mount;
-    return (s<=t?softenGrowth(s/multiplier,t):s-t*Math.log10(multiplier))*mount;
+  eggRequiredSpeed(egg:WorldEgg){const stage=egg.stageId??this.stage.id;return recommendedRouteSpeed(0,stage)*stableRecoveryRatio(stage)*(.88/carryMultiplier(egg,this.save.upgrades.carry));}
+  get unloadedSpeed(){return this.progressionSpeed;}
+  meetsEggSpeed(egg:WorldEgg){return this.progressionSpeed+1e-9>=this.eggRequiredSpeed(egg);}
+  canEnterStage(stage:number){return this.progressionSpeed>=recommendedRouteSpeed(0,stage);}
+  get expeditionWarning(){
+    if(this.isAtBase||this.isNight)return '';
+    const next=this.route.find(segment=>segment.stage===this.stage.id+1);
+    if(next&&!this.canEnterStage(next.stage)&&Math.abs(this.z+next.start)<.6)return `${next.stage}스테이지 진입 속도 ${formatNumber(recommendedRouteSpeed(0,next.stage))} · 현재 ${formatNumber(this.progressionSpeed)}`;
+    const egg=this.carried??this.near;
+    const speed=this.movementSpeed*(egg&&!this.carried?carryMultiplier(egg,this.save.upgrades.carry):1);
+    const estimate=Math.max(0,-this.z+BALANCE.baseMinZ)*1.25/Math.max(.1,speed)+8+(egg&&!this.carried?BALANCE.rareEggPickupSeconds[EGGS[egg.type].tier]:0);
+    return this.nightRemaining<estimate?'밤이 가까워요! 새 알을 줍기보다 기지로 돌아가세요.':'';
   }
-  eggRequiredSpeed(egg:WorldEgg){return this.beforeCarrySpeed(recommendedRouteSpeed(0,egg.stageId??this.stage.id),carryMultiplier(egg,this.save.upgrades.carry));}
-  get unloadedSpeed(){return this.carried?this.beforeCarrySpeed(this.speed,carryMultiplier(this.carried,this.save.upgrades.carry)):this.speed;}
-  meetsEggSpeed(egg:WorldEgg){return this.unloadedSpeed+1e-9>=this.eggRequiredSpeed(egg);}
-  get speed(){return this.unmountedSpeed*this.mountSpeedMultiplier;}
-  get unmountedSpeed() {
-    return softenGrowth(
-      this.movementMultiplier * levelSpeed(this.level) * (this.hp/this.maxHp<=PROGRESSION.lowHP?1+this.defense('lowHPSpeed'):1) * (this.slowRemaining>0?this.slowMultiplier:1) * (this.effects.magnet>0?.8:1) *
-      (BALANCE.speed *
-      (ECONOMY.speedGrowth ** this.save.upgrades.speed) + (this.save.trainingSpeed ?? 0)) *
-      (this.carried
-        ? carryMultiplier(this.carried,this.save.upgrades.carry)
-        : 1)
-    ,ECONOMY.softThreshold);
-  }
+  get speed(){return this.progressionSpeed;}
+  get unmountedSpeed(){return this.progressionSpeed;}
   get duration() {
     return (
       BALANCE.duration +
       BALANCE.timePerLevel * this.save.upgrades.time
     );
   }
-  get dps() {
-    return softenGrowth(
-      (BALANCE.baseAutoDamage + BALANCE.autoDamagePerLevel * this.save.upgrades.damage) * ECONOMY.hatchGrowth**this.save.upgrades.damage *
-        (BALANCE.baseAutoRate + BALANCE.autoRatePerLevel * this.save.upgrades.rate) * this.autoMultiplier
-    ,ECONOMY.softThreshold);
-  }
+  get dps(){return autoDamageValue(this.save.upgrades.damage,this.save.upgrades.rate,this.autoMultiplier);}
   get remaining() {
     return this.deadline
       ? Math.max(0, (this.deadline - this.now()) / 1000)
@@ -826,7 +824,7 @@ export class GameState {
           id: `${boss.stage}-${slot}-${this.now()}-${this.random()}`,
           type,
           hp: eggMaxHp({type,stageId:boss.stage}),
-          hpVersion:4 as const,
+          hpVersion:5 as const,
           ...rollEggWeight({type,stageId:boss.stage,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:variants[slot]},this.random),
           distance: Math.abs(z),
           x,
@@ -844,7 +842,7 @@ export class GameState {
     const secretRoll=this.random(),ultra=secretRoll<ULTRA_SECRET.chance,dragon=!ultra&&secretRoll<ULTRA_SECRET.chance+BALANCE.secretDragonEggChance;
     const choice=rare.findIndex(r=>(roll-=r.chance)<0),tier=ultra||dragon?6:FINAL_GUARDIAN.minimumEggTier+(choice<0?rare.length-1:choice);
     const type=tier*REGIONS.length+REGIONS.length-1,z=specialEggAnchor().z-this.route.at(-1)!.offset;
-    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:4,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:randomNormalEggVariant(this.random),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
+    this.world.push({id:`final-${this.now()}-${this.random()}`,type,hp:eggMaxHp({type,stageId:20}),hpVersion:5,distance:-z,x:0,z,homeX:0,homeZ:z,region:4,stageId:20,variant:ultra?ULTRA_SECRET.eggVariant:dragon?5:randomNormalEggVariant(this.random),guardian:this.bosses.length-1,special:true,secured:false,expires:this.now()+BALANCE.nightInterval});
     Object.assign(this.world.at(-1)!,rollEggWeight(this.world.at(-1)!,this.random));
   }
   get nightRemaining() {
@@ -922,7 +920,7 @@ export class GameState {
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
         const underRecommended=!!this.carried&&!this.meetsEggSpeed(this.carried);
         const knockback=Math.min(ROUTE.bossMaxKnockback,Math.max(underRecommended?BOSS_MOVEMENT.underqualifiedKnockback:0,guardianSpeed(b.stageId??1)*ROUTE.bossKnockbackPerSpeed));
-        const d={damage:stageDamage(b.stageId??1,b.final?3:this.stageStep),damagePercent:0,knockback,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
+        const d={damage:stageDamage(b.stageId??1,b.final?3:this.stageStep),damagePercent:.04,knockback,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
         this.applyHazard({definition:d,origin:{x:b.x,z:b.z}} as Hazard,true);
         b.mode='return';b.target=null;
       }
@@ -999,7 +997,7 @@ export class GameState {
     for(let left=dt;left>1e-9&&!this.death;left-=PROGRESSION.simulationStep)this.tickStep(Math.min(left,PROGRESSION.simulationStep));
   }
   private tickStep(dt:number){
-    if(!this.roomManaged){this.tickPetIncome(dt);this.save.productionAt=this.now();}
+    if(!this.roomManaged){this.tickPetIncome(dt);this.save.productionAt=this.now();this.save.productionActiveAt=this.now();}
     this.syncStage();
     if(this.knockback.remaining>0){const step=Math.min(dt,this.knockback.remaining);this.push(this.knockback.x*step,this.knockback.z*step);this.knockback.remaining-=step;}
     this.hp=Math.min(this.hp,this.maxHp);
@@ -1011,14 +1009,15 @@ export class GameState {
       if(near&&!this.progression.seenEggs.includes(near.type)){this.progression.seenEggs.push(near.type);this.progression.pendingXP+=PROGRESSION.discoveryXP;this.revision++;this.emit('egg_discovered',{type:near.type});}
       const reached=Math.floor(this.distance/PROGRESSION.distanceStep),old=Math.floor(this.progression.distanceRecord/PROGRESSION.distanceStep);
       if(reached>old){this.progression.pendingXP+=(reached-old)*PROGRESSION.distanceXP;this.progression.distanceRecord=this.distance;this.revision++;}
-      this.hazards.tick(dt,this.stage.id,{x:this.x,z:this.z,vx:this.velocity.x,vz:this.velocity.z,facing:this.facing,carrying:!!this.carried,metal:!!this.carried&&[2,17].includes(this.stage.id),moving:Math.hypot(this.velocity.x,this.velocity.z)>.01,stageOffset:this.stageOffset,guardianAwake:this.pursuing>=0&&Math.hypot(this.bosses[this.pursuing].x-this.x,this.bosses[this.pursuing].z-this.z)<12,guardianStage:this.bosses[this.pursuing]?.stageId,guardianOffset:((this.bosses[this.pursuing]?.stageId??this.stage.id)-this.progression.stage)*ROUTE.length},h=>this.applyHazard(h),(x,z)=>this.push(x,z),(key,seconds)=>{if(key in this.effects)this.effects[key as keyof typeof this.effects]=seconds;},!!this.carried&&EGGS[this.carried.type].tier===6,this.roomManaged?undefined:this.now());
+      this.hazards.tick(dt,this.stage.id,{x:this.x,z:this.z,vx:this.velocity.x,vz:this.velocity.z,facing:this.facing,carrying:!!this.carried,metal:!!this.carried&&[2,17].includes(this.stage.id),moving:Math.hypot(this.velocity.x,this.velocity.z)>.01,stageOffset:this.stageOffset,guardianAwake:this.pursuing>=0&&Math.hypot(this.bosses[this.pursuing].x-this.x,this.bosses[this.pursuing].z-this.z)<12,guardianStage:this.bosses[this.pursuing]?.stageId,guardianOffset:((this.bosses[this.pursuing]?.stageId??this.stage.id)-this.progression.stage)*ROUTE.length},h=>this.applyHazard(h),(x,z)=>this.push(x,z),(key,seconds)=>{if(key in this.effects)this.effects[key as keyof typeof this.effects]=seconds;},!!this.carried&&EGGS[this.carried.type].tier===6,this.now());
       const clue=this.save.dragonClues![this.stage.id]??=newDragonClue();
       observeDragon(clue,this.dragonWatch,this.stage.id,dt,{x:this.x,z:this.z,offset:this.stageOffset,hit:Number.isFinite(this.hitAt)?this.hitAt:0,egg:this.carried?.stageId===this.stage.id?this.carried.id:null,moving:Math.hypot(this.velocity.x,this.velocity.z)>.01},this.hazards.attacks);
     }else {this.hazards.reset();this.dragonWatch={stage:0,observed:{}};}
     for(const drop of [...this.dustDrops])if(Math.hypot(drop.x-this.x,drop.z-this.z)<1){this.save.dust=add(this.save.dust,drop.amount);this.dustDrops=this.dustDrops.filter(d=>d!==drop);this.revision++;}
     if (this.training && this.nearGym) {
-      this.save.trainingSpeed = (this.save.trainingSpeed ?? 0) + this.trainingRate*dt;
-      this.trainingClock+=dt;this.trainingGain+=this.effectiveTrainingRate*dt;
+      const before=this.progressionSpeed;
+      this.save.trainingProgress=trainingProgressAfter(this.save.trainingProgress??0,dt,this.save.upgrades.training);
+      this.trainingClock+=dt;this.trainingGain+=this.progressionSpeed-before;
       while(this.trainingClock+1e-9>=1){
         const amount=this.trainingGain/this.trainingClock;
         this.emit('training_gain',{amount});this.trainingClock=Math.max(0,this.trainingClock-1);this.trainingGain=Math.max(0,this.trainingGain-amount);
@@ -1101,9 +1100,7 @@ export class GameState {
   pickup(egg:WorldEgg){
       if(this.carried||this.knockback.remaining>0||this.death||this.now()<this.knockedUntil)return;
       ensureEggWeight(egg);
-      // Judge the displayed stat before carrying penalties. This rule is shared
-      // by local play and authoritative room commands, including concealed players.
-      const underqualified=!this.meetsEggSpeed(egg);
+      // Pickup remains available below the recommended recovery stat.
       this.carried = egg;
       this.emit("egg_pickup", {type: this.carried.type});
       this.world = this.world.filter((e) => e !== this.carried);
@@ -1112,14 +1109,6 @@ export class GameState {
       this.carried.stageId??=this.stage.id;
       this.carried.guardian??=Math.max(0,this.carried.stageId-this.progression.stage);
       const boss = this.bosses[this.carried.guardian];
-      if(underqualified){
-        this.hp=0;this.hitAt=this.now();
-        this.hitSource={x:boss?.x??egg.x,z:boss?.z??egg.z,at:this.hitAt};
-        this.die();this.restoreEgg(egg,region);
-        if(boss?.loot?.id===egg.id)boss.loot=null;
-        this.message='권장속도가 부족해 보스에게 즉시 제압당했어요!';
-        return;
-      }
       if(!boss){this.revision++;return;}
       // Recovered eggs remain in the world and can be stolen during the return trip.
       boss.loot = null;
@@ -1130,7 +1119,7 @@ export class GameState {
       this.message = sleeping?`보스가 깨어나는 중이에요! ${ROUTE.bossWakeSeconds}초 뒤 추격해요.`:'알을 들었어요. 기지로 돌아가세요!';
     this.revision++;
   }
-  get tapDamage(){return softenGrowth((BALANCE.baseTap+BALANCE.tapPerLevel*this.save.upgrades.tap)*this.clickMultiplier,ECONOMY.softThreshold);}
+  get tapDamage(){return tapDamageValue(this.save.upgrades.tap,this.clickMultiplier);}
   tap() {
     if (!this.selected || this.selected.hp === 0 || this.result !== null || this.now() - this.lastTap < BALANCE.tapInterval) return false;
     this.lastTap = this.now();
@@ -1149,12 +1138,8 @@ export class GameState {
     const e = this.save.eggs.find(egg => egg.id === id);
     if (!this.isAtBase || this.death || this.result !== null || !e || e.hp !== 0) return false;
     if (e.hp === 0) {
-      const pool = MONGLES.map((m, i) => ({ ...m, index: i })).filter(
-        (m) => e.type===WEEKLY_EVENT.eggType?m.index===WEEKLY_EVENT.petId:m.index!==WEEKLY_EVENT.petId&&m.tier === EGGS[e.type].tier && (e.stageId?m.stageId===e.stageId&&(e.variant===ULTRA_SECRET.eggVariant?m.species===30:e.variant===5?m.species===10:m.species!==10&&m.species!==30):m.stageId===0&&m.region===EGGS[e.type].region),
-      );
-      const m =
-        pool[Math.min(pool.length - 1, Math.floor(this.random() * pool.length))]
-          .index;
+      const pool = MONGLES.flatMap((m,i)=>(e.type===WEEKLY_EVENT.eggType?i===WEEKLY_EVENT.petId:i!==WEEKLY_EVENT.petId&&m.tier===EGGS[e.type].tier&&(e.stageId?m.stageId===e.stageId&&(e.variant===ULTRA_SECRET.eggVariant?m.species===30:e.variant===5?m.species===10:m.species!==10&&m.species!==30):m.stageId===0&&m.region===EGGS[e.type].region))?[i]:[]);
+      const m = pool[Math.min(pool.length-1,Math.floor(this.random()*pool.length))];
       this.emit("mongle_obtained", {mongle: m});
       if(!this.progression.hatchedPets.includes(m)){this.progression.hatchedPets.push(m);this.gainXP(PROGRESSION.hatchXP);}
       ensureEggWeight(e);
@@ -1163,12 +1148,12 @@ export class GameState {
       this.save.obtainedPets??=[];if(!this.save.obtainedPets.includes(m))this.save.obtainedPets.push(m);
       if (!this.save.active.includes(m) && this.save.active.length < BALANCE.maxCompanions)
         {this.save.active.push(m);(this.save.activeLots??=[]).push(hatched.key);}
-      this.save.dust=add(this.save.dust,EGGS[e.type].reward);
+      this.save.dust=add(this.save.dust,stageReward(e.stageId??1,OVERHAUL.rewardMinutes.egg,EGGS[e.type].tier));
       this.save.eggs = this.save.eggs.filter((v) => v.id !== e.id);
       this.save.selected = null;
       this.result = m;
       this.resultWeight={weightG:e.weightG,standardWeightG:e.standardWeightG};
-      this.message = `${MONGLES[m].name} 탄생! 별가루 +${formatNumber(EGGS[e.type].reward)}`;
+      this.message = `${MONGLES[m].name} 탄생! 별가루 +${formatNumber(stageReward(e.stageId??1,OVERHAUL.rewardMinutes.egg,EGGS[e.type].tier))}`;
       this.revision++;
     }
     return true;
@@ -1181,16 +1166,19 @@ export class GameState {
     if(!this.isAtBase||this.death)return 'RETURN_TO_BASE';
     if(this.result!==null)return 'COUPON_HATCH_PENDING';
     if(this.save.eggs.length>=BALANCE.inventory)return 'COUPON_INVENTORY_FULL';
-    const stageId=1+Math.floor(this.random()*STAGES.length),variant=randomNormalEggVariant(this.random);
-    const type=COUPONS[code].tier*REGIONS.length+Math.floor((stageId-1)/4),id=`coupon-${code}`;
-    const egg:Egg={id,type,stageId,variant,hp:eggMaxHp({type,stageId}),hpVersion:4,distance:0};
+    const stageId=1,variant=randomNormalEggVariant(this.random);
+    const type=2*REGIONS.length,id=`coupon-${code}`;
+    const egg:Egg={id,type,stageId,variant,hp:eggMaxHp({type,stageId}),hpVersion:5,distance:0};
     Object.assign(egg,rollEggWeight(egg,this.random));
     this.save.eggs.push(egg);this.save.selected??=id;
     if(!this.save.discovered.includes(type))this.save.discovered.push(type);
     (this.save.redeemedCoupons??=[]).push(code);
-    this.message=`쿠폰 사용 완료 · ${STAGES[stageId-1].name} SS급 알 1개를 받았어요!`;
+    this.message=`쿠폰 사용 완료 · ${STAGES[stageId-1].name} A급 시작 알 1개를 받았어요!`;
     this.revision++;this.emit('coupon_redeemed',{code,stage:stageId});return null;
   }
+  weeklyReward(day:number){return stageReward(this.growthStage,OVERHAUL.weeklyMinutes[day]);}
+  get adReward(){return stageReward(this.growthStage,OVERHAUL.rewardMinutes.ad);}
+  claimAdReward(){const day=weeklyDay(this.now());const state=this.save.adRewards??={day,count:0};if(state.day!==day){state.day=day;state.count=0;}if(state.count>=OVERHAUL.adDailyLimit)return 0;state.count++;this.save.dust=add(this.save.dust,this.adReward);this.revision++;return this.adReward;}
   get canClaimWeekly(){return weeklyDay(this.now())>(this.save.weekly?.lastDay??-1);}
   claimWeekly(){
     if(!this.isAtBase||this.death){this.message='농장으로 돌아오면 받을 수 있어요';return false;}
@@ -1199,10 +1187,10 @@ export class GameState {
     const index=this.weeklyIndex;
     if(index===6&&this.save.eggs.length>=BALANCE.inventory){this.message='알 보관함 한 칸을 비워 주세요';return false;}
     const day=weeklyDay(this.now()),claimed=this.save.weekly?.claimed??0;
-    this.save.dust=add(this.save.dust,WEEKLY_EVENT.rewards[index]);
+    this.save.dust=add(this.save.dust,this.weeklyReward(index));
     if(index===6){
       const id=`weekly-${claimed+1}-${day}`,type=WEEKLY_EVENT.eggType,pet=WEEKLY_EVENT.petId;
-      this.save.eggs.push({id,type,hp:eggMaxHp({type}),hpVersion:4,distance:0,...rollEggWeight({type},this.random)});
+      this.save.eggs.push({id,type,hp:eggMaxHp({type}),hpVersion:5,distance:0,...rollEggWeight({type},this.random)});
       this.save.selected??=id;
       if(!this.save.discovered.includes(type))this.save.discovered.push(type);
       addPetLot(this.save,pet,rollEggWeight({type},this.random));
@@ -1215,11 +1203,10 @@ export class GameState {
   }
   offline(seconds: number) {
     if(!Number.isFinite(seconds)||seconds<=0)return 0;
-    const elapsed=Math.min(BALANCE.offlineCap,seconds),before=this.save.dust;
-    this.tickPetIncome(elapsed);
-    this.damage(elapsed*this.dps);
+    const elapsed=Math.min(BALANCE.offlineCap,Math.max(0,(this.now()-(this.save.productionAt??this.save.lastSavedAt))/1000)),before=this.save.dust;
+    this.settleProduction(this.now());
+    if(!this.roomManaged)this.damage(elapsed*this.dps);
     this.offlineReward=subtract(this.save.dust,before);
-    this.save.productionAt=this.now();
     return this.offlineReward;
   }
   buyTrail(id: number) {
@@ -1236,7 +1223,7 @@ export class GameState {
     this.revision++;
     return true;
   }
-  discoveryReward(id: number) { const pet=MONGLES[id];return pet?BALANCE.discoveryRewards[pet.tier]*(pet.region+1):0; }
+  discoveryReward(id: number) { const pet=MONGLES[id];return pet?stageReward(Math.max(1,pet.stageId),OVERHAUL.rewardMinutes.discovery,pet.tier):0; }
   claimPet(id: number) {
     if (!MONGLES[id] || !this.hasDiscoveredPet(id) || this.save.claimedPets?.includes(id)) return 0;
     const reward=this.discoveryReward(id);
@@ -1250,16 +1237,16 @@ export class GameState {
   }
   claimCollection() {
     if (this.save.claimedCollection || MONGLES.some((m,i)=>i<100&&m.stageId===0&&!this.hasDiscoveredPet(i))) return 0;
-    this.save.claimedCollection=true;this.save.dust=add(this.save.dust,BALANCE.fullCollectionReward);this.revision++;return BALANCE.fullCollectionReward;
+    this.save.claimedCollection=true;this.save.dust=add(this.save.dust,stageReward(this.growthStage,OVERHAUL.rewardMinutes.collection));this.revision++;return stageReward(this.growthStage,OVERHAUL.rewardMinutes.collection);
   }
   claimStage(stage:number){
-    if(!Number.isInteger(stage)||!STAGES[stage-1]||this.save.claimedStages?.includes(stage)||MONGLES.some((m,i)=>m.stageId===stage&&!this.hasDiscoveredPet(i)))return 0;
+    if(!Number.isInteger(stage)||!STAGES[stage-1]||this.save.claimedStages?.includes(stage)||MONGLES.some((m,i)=>m.stageId===stage&&collectionEligible(m)&&!this.hasDiscoveredPet(i)))return 0;
     const reward=STAGE_COLLECTION_REWARDS[stage-1];
     (this.save.claimedStages??=[]).push(stage);this.save.dust=add(this.save.dust,reward);this.revision++;return reward;
   }
   claimStageCollection(){
-    if(this.save.claimedStageCollection||MONGLES.some((m,i)=>m.stageId>0&&!this.hasDiscoveredPet(i)))return 0;
-    this.save.claimedStageCollection=true;this.save.dust=add(this.save.dust,BALANCE.fullCollectionReward);this.revision++;return BALANCE.fullCollectionReward;
+    if(this.save.claimedStageCollection||MONGLES.some((m,i)=>m.stageId>0&&collectionEligible(m)&&!this.hasDiscoveredPet(i)))return 0;
+    this.save.claimedStageCollection=true;this.save.dust=add(this.save.dust,stageReward(20,OVERHAUL.rewardMinutes.collection));this.revision++;return stageReward(20,OVERHAUL.rewardMinutes.collection);
   }
   cost(k: Upgrade) {
     return growthCost(k,this.save.upgrades[k]);

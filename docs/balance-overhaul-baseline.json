@@ -1,0 +1,183 @@
+{
+  "commit": "1845e54",
+  "docs": {
+    "balance-guide.md": {
+      "characters": 7298,
+      "lines": 133
+    },
+    "balance-reference.md": {
+      "characters": 76532,
+      "lines": 1248
+    },
+    "balance-pets.csv": {
+      "characters": 60807,
+      "lines": 723
+    },
+    "balance-tempo-map.md": {
+      "characters": 4273,
+      "lines": 90
+    }
+  },
+  "prices": [
+    {
+      "level": 1,
+      "speed": 150,
+      "middle": 42
+    },
+    {
+      "level": 2,
+      "speed": 2479,
+      "middle": 111
+    },
+    {
+      "level": 3,
+      "speed": 7455,
+      "middle": 334
+    },
+    {
+      "level": 4,
+      "speed": 50287,
+      "middle": 2256
+    },
+    {
+      "level": 5,
+      "speed": 456422,
+      "middle": 20480
+    },
+    {
+      "level": 6,
+      "speed": 401372,
+      "middle": 18010
+    },
+    {
+      "level": 7,
+      "speed": 1113209,
+      "middle": 49951
+    },
+    {
+      "level": 8,
+      "speed": 4674103,
+      "middle": 209735
+    },
+    {
+      "level": 9,
+      "speed": 13204693,
+      "middle": 592518
+    },
+    {
+      "level": 10,
+      "speed": 70592667,
+      "middle": 3167619
+    },
+    {
+      "level": 11,
+      "speed": 21667974,
+      "middle": 972280
+    },
+    {
+      "level": 12,
+      "speed": 94392952,
+      "middle": 4235581
+    },
+    {
+      "level": 13,
+      "speed": 183776360,
+      "middle": 8246375
+    },
+    {
+      "level": 14,
+      "speed": 211272296,
+      "middle": 9480167
+    },
+    {
+      "level": 15,
+      "speed": 698294322,
+      "middle": 31333719
+    },
+    {
+      "level": 16,
+      "speed": 125508161,
+      "middle": 5631776
+    },
+    {
+      "level": 17,
+      "speed": 330656413,
+      "middle": 14837146
+    },
+    {
+      "level": 18,
+      "speed": 541110303,
+      "middle": 24280590
+    },
+    {
+      "level": 19,
+      "speed": 587206431,
+      "middle": 26349006
+    },
+    {
+      "level": 20,
+      "speed": 1277355355,
+      "middle": 57317227
+    }
+  ],
+  "reversals": [
+    {
+      "level": 6,
+      "previous": 456422,
+      "next": 401372
+    },
+    {
+      "level": 11,
+      "previous": 70592667,
+      "next": 21667974
+    },
+    {
+      "level": 16,
+      "previous": 698294322,
+      "next": 125508161
+    }
+  ],
+  "strategies": [
+    {
+      "strategy": "speed",
+      "productionMultiplier": 0.000012623878871685146,
+      "income": 0.389595588067022,
+      "speed": 1223.590709228741
+    },
+    {
+      "strategy": "production",
+      "productionMultiplier": 143429.71589035055,
+      "income": 4031.700401545177,
+      "speed": 2
+    },
+    {
+      "strategy": "balanced",
+      "productionMultiplier": 1.8106393599999995,
+      "income": 2747.253168267148,
+      "speed": 1223.590709228741
+    }
+  ],
+  "maxWithoutTraining": 3862.7931837675724,
+  "maxWithDayTraining": 5365.630465896393,
+  "stage20Requirement": 50000,
+  "dayTrainingRaw": 18144,
+  "speedUpgradeRaw": 1673.3651085056938,
+  "carrying": {
+    "unloaded": 2,
+    "carrying": 4,
+    "ratio": 2
+  },
+  "pets": {
+    "count": 721,
+    "duplicateIds": [],
+    "duplicateNames": [],
+    "maxTap": 9776,
+    "maxAuto": 8501,
+    "maxSpeed": 5
+  },
+  "baselineChecks": {
+    "build": "passed (includes tsc)",
+    "lint": "31 pre-existing errors",
+    "unit": "failed before changes: legacy test loader cannot resolve ultra-secret"
+  }
+}

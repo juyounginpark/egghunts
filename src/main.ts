@@ -2,7 +2,7 @@ import {weightText} from './weight';
 import {eggMaxHp,COUPON_ERRORS} from './data';
 import {advanceTutorial,tutorialHint} from './tutorial';
 import {weeklyDay} from './weekly';
-import {add,exactMoney,compare} from './money';
+import {exactMoney,compare} from './money';
 import "./style.css";
 import {cycleClock} from "./cycle-clock";
 import {petReveal} from './pet-reveal';
@@ -230,7 +230,7 @@ async function action(preparedId?:string) {
     }
     if(!game.carried&&targetEgg?.id.startsWith('net-')){
       claiming=true;
-      try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:eggMaxHp(egg),hpVersion:4,distance:Math.abs(egg.z),expires:game.nightAt});}
+      try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:eggMaxHp(egg),hpVersion:5,distance:Math.abs(egg.z),expires:game.nightAt});}
       catch(err){toast(String(err));}finally{claiming=false;}return;
     }
     if(!game.carried&&!game.near&&!game.nearGym){if(world.swingBat(game.now())){feedback('swing');}return;}
@@ -379,7 +379,7 @@ function updateHud() {
   $("shell").classList.remove("wind");
   document.querySelector("nav")!.hidden = exploring;
   $("inventory").hidden = tab !== "hatchery";
-  $("hint").hidden = tab!=="explore" || (exploring && game.pursuing < 0 && !game.launch);
+  $("hint").hidden = tab!=="explore" || (exploring && game.pursuing < 0 && !game.launch&&!game.expeditionWarning);
   $("speed-hud").hidden = tab!=="explore";
   $("region").textContent =
     !exploring ? "달잠 농장" : game.stage.name;
@@ -415,7 +415,7 @@ function updateHud() {
   $("timer-fill").style.width = `${Math.min(100,game.speed/game.recommendedSpeed*100)}%`;
   $("expedition").classList.remove("urgent");
   $("hint").textContent =
-    game.pursuing >= 0
+    game.expeditionWarning ? game.expeditionWarning : game.pursuing >= 0
       ? "알을 들고 귀환하세요 · ! 표시의 장애물을 피하세요"
       : game.message;
   $("carry-chip").hidden = !game.carried || tab !== "explore";
@@ -655,13 +655,13 @@ document.addEventListener("click", async (e) => {
     virtualAdPurpose=b.id==='revive-ad'?'revive':'currency';
     virtualAd=new VirtualAd(()=>game.now());paused=true;input.reset();
     $("modal").hidden=false;
-    $("modal").innerHTML=`<section class="virtual-ad-card" role="dialog" aria-modal="true" aria-label="가상 광고"><button id="virtual-ad-close" aria-label="광고 닫고 보상 받기" hidden>닫기 ×</button><span class="tag">TEST AD</span><h1>이것은 가상 광고입니다.</h1><p>실제 광고가 아닌 보상 흐름 테스트입니다.</p><strong id="ad-count">10</strong><p>잠시 후 오른쪽 위에 닫기 버튼이 나타나요.</p><small>${virtualAdPurpose==='revive'?'완료 보상 · HP 전부 회복하고 부활':`완료 보상 · 별가루 ${BALANCE.virtualAdReward}개`}</small></section>`;
+    $("modal").innerHTML=`<section class="virtual-ad-card" role="dialog" aria-modal="true" aria-label="가상 광고"><button id="virtual-ad-close" aria-label="광고 닫고 보상 받기" hidden>닫기 ×</button><span class="tag">TEST AD</span><h1>이것은 가상 광고입니다.</h1><p>실제 광고가 아닌 보상 흐름 테스트입니다.</p><strong id="ad-count">10</strong><p>잠시 후 오른쪽 위에 닫기 버튼이 나타나요.</p><small>${virtualAdPurpose==='revive'?'완료 보상 · HP 전부 회복하고 부활':`완료 보상 · 별가루 ${game.adReward}개`}</small></section>`;
     platform.track('virtual_ad_start');return;
   }
   if(b.id==='virtual-ad-close'&&virtualAd){
     const reward=virtualAd.claim();if(!reward)return;
     if(online.active){await remote(virtualAdPurpose==='revive'?'revive':'adClaim');}
-    else if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'밤이 되어 농장으로 돌아왔어요.');}else{game.save.dust=add(game.save.dust,reward);playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
+    else if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'밤이 되어 농장으로 돌아왔어요.');}else{const reward=game.claimAdReward();playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
     game.revision++;virtualAd=null;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';renderPanel();void save();
     platform.track('virtual_ad_reward',{purpose:virtualAdPurpose,amount:virtualAdPurpose==='currency'?reward:0});return;
   }
@@ -671,7 +671,7 @@ document.addEventListener("click", async (e) => {
     const egg=kind==='egg'?game.save.eggs.find(e=>e.id===id):null;
     if(kind==='egg'&&!egg)return;
     pendingSale={kind,id};paused=true;input.reset();$("modal").hidden=false;
-    $("modal").innerHTML=`<section class="death-card"><h1>판매할까요?</h1><p>${egg?eggName(egg):MONGLES[Number(id)].name} ${kind==='pet'?'1마리':'1개'}</p><strong>별가루 +${egg?game.eggSellPrice(egg.type):game.petSellPrice(Number(id))}</strong><p>판매하면 보유 목록에서 빠져요.<br>도감 발견 기록은 유지돼요.</p><button id="confirm-sale" class="primary">판매하기</button><button id="cancel-sale" class="secondary">취소</button></section>`;return;
+    $("modal").innerHTML=`<section class="death-card"><h1>판매할까요?</h1><p>${egg?eggName(egg):MONGLES[Number(id)].name} ${kind==='pet'?'1마리':'1개'}</p><strong>별가루 +${egg?game.eggSellPrice(egg):game.petSellPrice(Number(id))}</strong><p>판매하면 보유 목록에서 빠져요.<br>도감 발견 기록은 유지돼요.</p><button id="confirm-sale" class="primary">판매하기</button><button id="cancel-sale" class="secondary">취소</button></section>`;return;
   }
   if(b.id==='cancel-sale'){pendingSale=null;paused=false;$("modal").hidden=true;return;}
   if(b.id==='confirm-sale'&&pendingSale){
@@ -788,6 +788,7 @@ document.addEventListener("visibilitychange", async () => {
   if (document.hidden) {
     pickupPreparation=null;
     hiddenAt = platform.now();
+    if(game.training){if(online.active)void remote('train');else game.toggleTraining();}
     input.reset();
     void save();
     void audio?.suspend();
@@ -930,7 +931,7 @@ function frame(now: number) {
   void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null,game.progression.stage);
   if(multiplayer.connected){
     game.world=game.world.filter(e=>!e.id.startsWith('net-')||multiplayer.drops.some(d=>d.id===e.id));
-    for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:eggMaxHp(egg),hpVersion:4,distance:Math.abs(egg.z),expires:game.nightAt});
+    for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:eggMaxHp(egg),hpVersion:5,distance:Math.abs(egg.z),expires:game.nightAt});
   }
   world.updatePeers(online.active?online.peers:multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
   world.networkOffset=online.active?online.visualOffset:{x:0,z:0};

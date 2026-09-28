@@ -70,5 +70,5 @@ try{
  await page.screenshot({path:'artifacts/screenshots/peer-effects-crowd.png'});
  await writeFile('artifacts/screenshots/peer-effects.json',JSON.stringify({stats,labels,errors},null,2));
  assert.deepEqual(errors,[]);
- console.log(JSON.stringify({pets:stats.map(({matrices,...p})=>p),crowdLabels:labels,errors}));
+ console.log(JSON.stringify({pets:stats.map(p=>Object.fromEntries(Object.entries(p).filter(([key])=>key!=='matrices'))),crowdLabels:labels,errors}));
 }finally{await browser.close();await server.close();}

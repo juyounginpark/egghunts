@@ -43,7 +43,7 @@ export function objectShape(kind:string,stage:number,animated=false){
  }
  case 'drone':case 'satellite':case 'comet':{
   box(1.3,.7,.6,.7,gold);for(const x of [-1,1]){b(x,1.3,0,1,.12,.8,kind==='comet'?a:dark);b(x,1.38,0,.7,.04,.6,a);}
-  post(0,0,1.2,dark);if(kind==='drone')for(const x of [-1,1])ring(1.5,.3,cream);
+  post(0,0,1.2,dark);if(kind==='drone')for(let i=0;i<2;i++)ring(1.5,.3,cream);
   break;
  }
  case 'sign':case 'specimen':case 'console':{

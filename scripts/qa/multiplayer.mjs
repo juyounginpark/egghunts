@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import {multiplayerServer} from '../multiplayer-server.mjs';
-import {report} from './lib.mjs';
+import {modules,report} from './lib.mjs';
+const m=await modules();const {multiplayerServer}=m;
 let now=1800000010000;
 const server=multiplayerServer(()=>now);await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const url=`http://127.0.0.1:${server.address().port}`;
@@ -25,4 +25,4 @@ try{
  assert.equal((await request('/claim',{id:hit.drops[0].id},b.token)).status,409,'One claimant per dropped egg');
  await request('/logout',{},a.token);assert.equal((await request('/state',{x:0,z:0,rotation:0,appearance:0},a.token)).status,401);
  await report('multiplayer',{passed:11,coverage:['unique guest sessions','missing token rejected','invalid position rejected','two clients share positions and appearance','server time/night','logout invalidates session','bat direction/range','server attack cooldown','knockback/down state','carried egg drop','exclusive dropped egg claim']});console.log('PASS multiplayer: 11 server integration checks');
-}finally{await new Promise(resolve=>server.close(resolve));}
+}finally{await new Promise(resolve=>server.close(resolve));await m.cleanup();}

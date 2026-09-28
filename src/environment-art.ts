@@ -1,4 +1,4 @@
-import type {Block,Motion} from './region-layout';
+import type {Block} from './region-layout';
 import {ENVIRONMENT_ART,zoneIndex} from './environment-art-data';
 import {dioramaZones} from './diorama-zones';
 import {pathX,terrainAt,routeLength} from './exploration-route';

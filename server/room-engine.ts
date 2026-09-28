@@ -80,7 +80,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
   g.hazards.attacks=g.hazards.attacks.filter(h=>!h.environment);
   g.openedShortcuts=room.openedShortcuts;g.openingShortcuts=room.openingShortcuts;
   g.mobs=room.mobs;
-  g.settleProduction(Math.min(now,p.seen+BALANCE.offlineCap*1000));
+  g.settleProduction(Math.min(now,p.seen+BALANCE.offlineCap*1000),m.user_id===user||now-p.seen<=BALANCE.roomInputGraceMs);
   if(m.user_id===user)g.save.productionAt=now;
   games.set(m.user_id,g);
  }
@@ -247,7 +247,7 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
   case 'reviveAd':if(!g.beginReviveAd())throw Error('CANNOT_REVIVE');break;
   case 'revive':g.revive(true);break;
   case 'adStart':atBase();if(p.adAt===undefined)p.adAt=now;break;
-  case 'adClaim':atBase();if(p.adAt===undefined||now-p.adAt<BALANCE.virtualAdDuration)throw Error('WAIT_FOR_AD');g.save.dust=add(g.save.dust,BALANCE.virtualAdReward);delete p.adAt;break;
+  case 'adClaim':atBase();if(p.adAt===undefined||now-p.adAt<BALANCE.virtualAdDuration)throw Error('WAIT_FOR_AD');delete p.adAt;if(!g.claimAdReward())throw Error('AD_DAILY_LIMIT');break;
   case 'result':g.result=null;break;
   case 'reward':g.returnReward=null;break;
   case 'tutorial':g.save.tutorial=5;break;

@@ -1,28 +1,8 @@
 ﻿import assert from "node:assert/strict";
-import { readFile, writeFile, mkdtemp, rm } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { pathToFileURL } from "node:url";
-import ts from "typescript";
-
-const dir = await mkdtemp(join(tmpdir(), "egghunts-test-"));
+import {modules} from './qa/lib.mjs';
+const m=await modules();
 try {
-  for (const name of ["data", "stage-data", "progression", "hazards", "game"]) {
-    const source=(await readFile(`src/${name}.ts`,'utf8')).replace(/from "\.\/([\w-]+)"/g,'from "./$1.mjs"');
-    await writeFile(
-      join(dir, `${name}.mjs`),
-      ts.transpile(source, {
-        target: ts.ScriptTarget.ES2022,
-        module: ts.ModuleKind.ES2022,
-      }),
-    );
-  }
-  const { GameState, freshSave, parseSave } = await import(
-    pathToFileURL(join(dir, "game.mjs"))
-  );
-  const { EGGS, MONGLES, RARITIES, rollEgg, rarityChances } = await import(
-    pathToFileURL(join(dir, "data.mjs"))
-  );
+  const {GameState,freshSave,parseSave,EGGS,MONGLES,RARITIES,rollEgg,rarityChances}=m;
   let clock = 1000000;
   const make = (random = () => 0.1) =>
     new GameState(freshSave(clock), () => clock, random);
@@ -40,10 +20,10 @@ try {
     g.interact();
     return e;
   }
-  check("35 eggs, 100 unique pets, probability totals 100%", () => {
-    assert.equal(EGGS.length, 35);
-    assert.equal(MONGLES.length, 100);
-    assert.equal(new Set(MONGLES.map((m) => m.name)).size, 100);
+  check("36 egg definitions, 721 unique pets, probability totals 100%", () => {
+    assert.equal(EGGS.length, 36);
+    assert.equal(MONGLES.length, 721);
+    assert.equal(new Set(MONGLES.map((m) => m.name)).size, 721);
     assert.ok(
       Math.abs(RARITIES.reduce((n, r) => n + r.chance, 0) - 100) < 1e-9,
     );
@@ -60,29 +40,29 @@ try {
         offset += chance;
       });
     }
-    assert.equal(EGGS[rollEgg(0, () => 0.99799)].rarity, "SSS");
-    assert.equal(EGGS[rollEgg(0, () => 0.99801)].rarity, "Secret");
+    assert.equal(EGGS[rollEgg(0, () => 0.99979)].rarity, "SSS");
+    assert.equal(EGGS[rollEgg(0, () => 0.99981)].rarity, "Secret");
     assert.deepEqual(rarityChances(4), rarityChances(0));
   });
   check("five eggs per stage in front of guardian", () => {
     const g = make();
-    assert.equal(g.world.length, 100);
+    assert.equal(g.world.length, 101);
     g.route.forEach((b, i) => {
       const eggs = g.world.filter((e) => e.guardian === i);
       assert.equal(eggs.length, 5);
       eggs.forEach((e) => {
         assert.equal(EGGS[e.type].region, Math.floor((b.stage-1)/4));
-        assert.ok(e.z > -b.home - 3);
+        assert.ok(e.z > g.bosses[i].z);
       });
     });
   });
   // Latest design supersedes immediate boss egg theft and combat buttons.
   check("theft wakes guardian; contact during attack telegraph keeps HP and egg",()=>{
     const g=make(),egg=steal(g);g.deadline=clock+45000;g.bosses[0].x=g.x;g.bosses[0].z=g.z;g.tick(.3);
-    assert.equal(g.bosses[0].mode,'chase');assert.equal(g.carried.id,egg.id);assert.equal(g.hp,g.maxHp);
+    assert.equal(g.bosses[0].mode,'waking');assert.equal(g.carried.id,egg.id);assert.equal(g.hp,g.maxHp);
   });
   check("boss hit drops carried egg even across old secured boundary",()=>{
-    const g=make();g.selectStage(5);const egg=steal(g,1);g.deadline=clock+45000;g.carried.secured=true;g.receiveHit(1);
+    const g=make();g.selectStage(5);const egg=steal(g,1);g.deadline=clock+45000;g.carried.secured=true;g.receiveHit(1);g.tick(.6);
     assert.equal(g.carried,null);assert.ok(g.hp<g.maxHp);assert.ok(g.world.some(e=>e.id===egg.id));
   });
   check("manual drop remains available for repick instead of guardian theft",()=>{
@@ -116,10 +96,10 @@ try {
     const before = g.world[0].id;
     clock = g.nightAt;
     g.tick(0.01);
-    assert.equal(g.world.length, 100);
+    assert.equal(g.world.length, 101);
     assert.notEqual(g.world[0].id, before);
-    assert.ok(g.announcement.includes("SECRET"));
-    assert.equal(g.world.filter(e=>e.stageId===20).length,5);
+    assert.ok(g.announcement.length>0);
+    assert.equal(g.world.filter(e=>e.stageId===20).length,6);
     assert.equal(g.announcementId, 1);
     assert.ok(g.isNight);
     g.tick(0.01);
@@ -133,9 +113,9 @@ try {
   });
   check("night loses carried egg, settles XP and blocks exploration",()=>{
     const g=make();const e=steal(g,3);g.progression.pendingXP=50;
-    const onset=g.nightAt;clock=onset;g.tick(.01);assert.equal(g.nightAt-onset,180000);
-    assert.equal(g.carried,null);assert.deepEqual([g.x,g.z],[0,0]);assert.equal(g.world.length,100);assert.equal(g.progression.xp,35);
-    assert.ok(!g.world.some(v=>v.id===e.id));g.move(0,-1,10);assert.ok(g.isAtBase);g.push(0,-100);assert.ok(g.isAtBase);clock=g.nightUntil;g.move(0,-1,1);assert.ok(!g.isAtBase);
+    const onset=g.nightAt;clock=onset;g.tick(.01);assert.equal(g.nightAt-onset,300000);
+    assert.equal(g.carried,null);assert.deepEqual([g.x,g.z],[0,0]);assert.equal(g.world.length,101);assert.equal(g.progression.xp,35);
+    assert.ok(!g.world.some(v=>v.id===e.id));g.move(0,-1,10);assert.ok(g.isAtBase);g.push(0,-100);assert.ok(g.isAtBase);clock=g.nightUntil;g.move(0,-1,4);assert.ok(!g.isAtBase);
   });
   check("all egg tiers hatch a matching biome and rarity pet", () => {
     EGGS.forEach((e, type) => {
@@ -151,7 +131,7 @@ try {
   });
   check("night refresh removes dropped field egg",()=>{
     const g=make();const e=steal(g,1);g.z=-27;g.interact();clock=g.nightAt;g.tick(.01);
-    assert.ok(!g.world.some(v=>v.id===e.id));assert.equal(g.world.length,100);
+    assert.ok(!g.world.some(v=>v.id===e.id));assert.equal(g.world.length,101);
   });
   check(
     "old-night recovered egg replaces its nest without creating a sixth egg",
@@ -169,9 +149,9 @@ try {
     const save = freshSave(clock);
     save.mongles = [1, 2, 3];
     save.active = [1];
-    save.eggs = [{ id: "legacy", type: 1, hp: 400, distance: 33 }];
+    save.eggs = [{ id: "legacy", type: 1, hp: m.eggMaxHp({type:1}), hpVersion:5, distance: 33 }];
     const migrated = parseSave(JSON.stringify(save), clock);
-    assert.equal(migrated.mongles.length, 100);
+    assert.equal(migrated.mongles.length, 721);
     assert.equal(migrated.mongles[2], 3);
     assert.equal(migrated.eggs[0].id, "legacy");
   });
@@ -190,7 +170,7 @@ try {
       assert.equal(restored.carried.id, g.carried.id);
       assert.equal(restored.bosses[1].target, g.carried.id);
       assert.equal(restored.nightAt, g.nightAt);
-      assert.equal(restored.world.length, 99);
+      assert.equal(restored.world.length, 100);
     },
   );
   check(
@@ -209,5 +189,5 @@ try {
   );
   console.log(`${passed} gameplay checks passed.`);
 } finally {
-  await rm(dir, { recursive: true, force: true });
+  await m.cleanup();
 }

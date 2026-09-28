@@ -14,7 +14,8 @@ try {
    game.flyaway=null;travel(egg.x,egg.z);game.interact();travel(0,0);
    if(game.save.eggs.length){
      firstEgg??=(now-start)/1000;game.returnReward=null;
-     while(game.selected&&now-start<600000){step();game.tap();}
+     while(game.selected&&game.selected.hp>0&&now-start<600000){step();game.tap();}
+     if(game.selected?.hp===0)game.claimHatch(game.selected.id);
      if(game.result!==null){firstHatch??=(now-start)/1000;game.result=null;cycles++;}
      const order=['damage','speed','rate','carry','tap','training'];
      const key=order[purchases.length%order.length];
@@ -23,7 +24,7 @@ try {
    if(!rows.length||Math.floor((now-start)/60000)>rows.at(-1).minute)rows.push({minute:Math.floor((now-start)/60000),dust:game.save.dust,pets:game.save.mongles.reduce((a,b)=>a+b,0),speed:game.speed.toFixed(2),dps:game.dps});
  }
  assert.ok(firstEgg<60);assert.ok(firstHatch<60);assert.ok(purchases.length>=3);
- const distances=[0,5,10].map(level=>{const g=new GameState(freshSave(now),()=>now,()=>.1);g.save.upgrades.speed=level;return {level,regions:g.route.map((b,i)=>{const outward=g.speed;g.carried={type:Math.floor((b.stage-1)/4)};const carrying=g.speed;g.carried=null;return {region:i,distance:b.home,seconds: +(b.home/outward+b.home/carrying).toFixed(1),recommendedSpeed:m.recommendedRouteSpeed(b.home,b.stage)};})};});
+ const distances=[0,5,10].map(level=>{const g=new GameState(freshSave(now),()=>now,()=>.1);g.save.upgrades.speed=level;g.z=-8;return {level,regions:g.route.map((b,i)=>{const outward=g.movementSpeed;g.carried={type:Math.floor((b.stage-1)/4)};const carrying=g.movementSpeed;g.carried=null;return {region:i,distance:b.home,seconds: +(b.home/outward+b.home/carrying).toFixed(1),recommendedSpeed:m.recommendedRouteSpeed(b.home,b.stage)};})};});
  const hatchTimes=EGGS.map((e,i)=>({type:i,hp:e.hp,reward:e.reward,baseAutoSeconds:e.hp,manual4HzSeconds:+(e.hp/5).toFixed(1),grownAutoSeconds:+(e.hp/451).toFixed(1)}));
  assert.ok(distances[2].regions[3].seconds<distances[0].regions[3].seconds);assert.equal(distances[0].regions.length,20);
  const text=`# Balance simulation\n\nDeterministic active play model, 50ms simulation steps, general-tier rolls; not a prediction of every player's behavior. No ads/payments. First egg ${firstEgg.toFixed(1)}s, first hatch ${firstHatch.toFixed(1)}s, base automatic hit available at 0s. ${cycles} hatches, ${purchases.length} purchases in ten minutes. Boss avoidance/input mistakes change outcomes. Equal rarity odds by latest requirement; later stages pay higher rewards but take longer to hatch. Discovery/trail/gym gains are not counted in this conservative loop.\n\n## First ten minutes\n\n| Minute | Dust | Pets | Speed | DPS |\n|---|---:|---:|---:|---:|\n${rows.map(r=>`|${r.minute}|${r.dust}|${r.pets}|${r.speed}|${r.dps}|`).join('\n')}\n\n## Upgrade purchases\n\n\`\`\`json\n${JSON.stringify(purchases,null,2)}\n\`\`\`\n\n## Roundtrip estimates (without boss/path detours)\n\n\`\`\`json\n${JSON.stringify(distances,null,2)}\n\`\`\`\n\n## Egg hatch times\n\n\`\`\`json\n${JSON.stringify(hatchTimes,null,2)}\n\`\`\`\n\nDamage and rate multiply: damage levels add ${UPGRADES.damage.description}, rate levels add ${UPGRADES.rate.description}; marginal value changes with the other stat. Late automation 451 DPS is an example at both level caps, not a promised ten-minute state. Small-egg farming is useful early; long-term collection rewards grow by rarity and region. Rare failures consume the carried egg, never purchased upgrades or owned pets.\n`;

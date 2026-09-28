@@ -1,19 +1,17 @@
-import { readFile, writeFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
+import { writeFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import ts from 'typescript';
+import {build} from 'esbuild';
 import { chromium } from 'playwright';
 import { createServer, preview } from 'vite';
 export async function modules() {
   const dir=await mkdtemp(join(tmpdir(),'alkong-qa-'));
-  for(const name of ['data','stage-data','stage-eggs','progression','hazards','game','input','platform','virtual-ad','format']) {
-    let source=await readFile(`src/${name}.ts`,'utf8');
-    if(name==='platform') source=source.replace(/import \{[\s\S]*?\} from "@apps-in-toss\/web-framework";/,'const Device={},Environment={},Game={},SafeArea={},Storage={},Analytics={},getUserKeyForGame=()=>{};');
-    source=source.replace(/from "\.\/([\w-]+)"/g,'from "./$1.mjs"');
-    await writeFile(join(dir,`${name}.mjs`),ts.transpile(source,{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}));
-  }
-  const result={};for(const name of ['data','stage-data','stage-eggs','progression','hazards','game','input','platform','virtual-ad','format'])Object.assign(result,await import(pathToFileURL(join(dir,`${name}.mjs`))));
+  const names=['data','balance','weight','stage-data','stage-eggs','progression','hazards','game','input','platform','virtual-ad','format'];
+  const file=join(dir,'runtime.mjs');
+  const built=await build({stdin:{contents:names.map(n=>`export * from './src/${n}.ts';`).join('\n')+"\nexport {multiplayerServer} from './scripts/multiplayer-server.mjs';",resolveDir:process.cwd(),loader:'ts'},bundle:true,platform:'node',format:'esm',write:false,define:{'import.meta.env.BASE_URL':'"/"'},plugins:[{name:'native-test-adapter',setup(b){b.onResolve({filter:/^@apps-in-toss\/web-framework$/},()=>({path:'sdk',namespace:'test'}));b.onLoad({filter:/.*/,namespace:'test'},()=>({contents:'export const Device={},Environment={},Game={},SafeArea={},Storage={},Analytics={},getUserKeyForGame=()=>{};'}));}}]});
+  await writeFile(file,built.outputFiles[0].text);
+  const result={...await import(pathToFileURL(file))};
   result.cleanup=async()=>{if(!resolve(dir).startsWith(resolve(tmpdir())+'\\')&&!resolve(dir).startsWith(resolve(tmpdir())+'/'))throw Error('Unsafe temp cleanup');await rm(dir,{recursive:true,force:true});};
   return result;
 }

@@ -1,5 +1,5 @@
 // Manual only: npm run server:bundle && node scripts/qa/rooms.mjs
-/* global structuredClone, crypto */
+/* global crypto */
 import assert from 'node:assert/strict';
 import {runRoom} from '../../supabase/functions/_shared/room-engine.js';
 const start=1800000030000;

@@ -1,4 +1,5 @@
-import {EGGS,MONGLES,eggCarryMultiplier} from './data';
+import {carryingRatio} from './balance';
+import {EGGS,MONGLES} from './data';
 export const WEIGHT_BALANCE={standardGrams:[250,1000,5000,20000,100000,500000,2000000],normalDeviation:.3,rareChance:.01,rareMin:.4,rareMax:.5,sizeExponent:.5,petVisualScale:.6,petMinSize:.65,mountMinimumGrams:3000};
 export type Weighted={weightG?:number;standardWeightG?:number};
 export type PetLot={key:string;species:number;weightG:number;standardWeightG:number;count:number};
@@ -19,8 +20,7 @@ export function ensureEggWeight(e:({type:number;stageId?:number;variant?:number}
 }
 export function weightSize(w:Weighted){return ((w.weightG??w.standardWeightG??1)/(w.standardWeightG??w.weightG??1))**WEIGHT_BALANCE.sizeExponent;}
 export function carryMultiplier(e:{type:number}&Weighted,level:number){
- const normal=eggCarryMultiplier(e.type,level),ratio=(e.weightG??1)/(e.standardWeightG??e.weightG??1);
- return Math.max(.05,Math.min(1,1-(1-normal)*ratio));
+ return carryingRatio(EGGS[e.type].tier,level,(e.weightG??1)/(e.standardWeightG??e.weightG??1));
 }
 export function weightText(g:number){const unit=g>=1000000?'T':g>=1000?'KG':'G',n=g/(unit==='T'?1000000:unit==='KG'?1000:1);return `${Number(n.toFixed(unit==='G'?0:3))} ${unit}`;}
 export function addPetLot(s:Inventory,species:number,w:Required<Weighted>,count=1){

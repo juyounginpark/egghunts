@@ -1,14 +1,14 @@
+import {OVERHAUL,baselineIncome,upgradePrice,hatchHealth,stageReward,carryingRatio} from './balance';
 import {ULTRA_SECRET_NAMES} from './ultra-secret';
-import {softenGrowth} from './growth-curve';
 import {ROAD_WIDTH_SCALE,STAGES,ROUTE_FAR_Z} from './stage-data';
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 import {EXPANSION_PETS} from './expansion-pet-catalog';
-export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:.012,maxLevelSpeed:1.6,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[20,20,50,120,300,600,1000],damageReductionCap:.5,singleHitCap:1,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
+export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:OVERHAUL.levelSpeedPerLevel,maxLevelSpeed:OVERHAUL.levelSpeedCap,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[100,120,160,240,400,650,1000],damageReductionCap:.5,singleHitCap:.35,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
 export type DefensePassive={maxHP?:number;damageReduction?:number;firstHitReduction?:number;environmentReduction?:Partial<Record<string,number>>;statusReduction?:number;lowHPSpeed?:number;returnXPBonus?:number;lastStand?:boolean};
 // Existing companions keep their click/auto/speed abilities; future rows opt in.
 export const PET_DEFENSE:Partial<Record<number,DefensePassive>>={};
-export const COUPONS:Record<string,{tier:number}>={FREEPET:{tier:4}};
+export const COUPONS:Record<string,{tier:number}>={FREEPET:{tier:2}};
 export const COUPON_ERRORS:Record<string,string>={COUPON_INVALID:'올바른 쿠폰 코드를 입력해 주세요.',COUPON_USED:'이미 사용한 쿠폰이에요.',COUPON_INVENTORY_FULL:'알 보관함 한 칸을 비운 뒤 다시 사용해 주세요.',COUPON_HATCH_PENDING:'부화 결과를 확인한 뒤 사용해 주세요.'};
 export const DAMAGE_OVER_TIME={ticks:6,interval:.15,directionSeconds:1.4};
 export const BALANCE = {
@@ -39,9 +39,9 @@ export const BALANCE = {
   secretDragonScale:6.5,
   baseMapX:14,
   baseWalkSpeed:2,
-  mountSpeedBonusRate:.1,
+  mountSpeedBonusRate:OVERHAUL.mountBonusRate,
   maxMovementSpeed:10,
-  carryingMovementMultiplier:2,
+  carryingMovementMultiplier:1,
   deathChoiceDelay:5000,
   deathChoiceDuration:5000,
   reviveImmunity:3,
@@ -75,10 +75,10 @@ export const BALANCE = {
   timePerLevel: 5,
   baseTap: 3,
   tapPerLevel: 1,
-  baseAutoDamage: 1,
+  baseAutoDamage: OVERHAUL.autoBase,
   autoDamagePerLevel: 1,
   baseAutoRate: 1,
-  autoRatePerLevel: 0.25,
+  autoRatePerLevel: OVERHAUL.ratePerLevel,
   mapX: 6.5*ROAD_WIDTH_SCALE,
   mapNearZ: 22,
   baseMinZ:-4.4,
@@ -99,7 +99,7 @@ export const BALANCE = {
   gymZ: 0.6,
   gymRadius: 1.1,
   discoveryRewards: [1, 1, 2, 5, 10, 25, 100],
-  regionCollectionRewards: [10, 25, 60, 120, 250],
+  regionCollectionRewards: [1,5,9,13,17].map(stage=>stageReward(stage,OVERHAUL.rewardMinutes.stage)),
   fullCollectionReward: 500,
   speed: 2,
   interaction: 1.4,
@@ -121,15 +121,8 @@ export const ECONOMY = {
   middleUpgrades: ['training','damage','rate','health'] as const,
   speedGrowth: 1.4, hatchGrowth: 1.25, softThreshold:1000,
 };
-export function recommendedIncome(stage:number){
-  const n=Math.max(0,Math.min(19,stage-1));
-  return ECONOMY.baseTeamIncome*10**(ECONOMY.incomeLinear*n+ECONOMY.incomeQuadratic*n*n)*1.6**Math.floor(n/5);
-}
-export function growthCost(kind:string,level:number){
-  const stage=Math.min(20,level+1);
-  if(stage===1&&kind==='speed')return 150;
-  return Math.floor(softenGrowth(recommendedIncome(stage),ECONOMY.softThreshold)*ECONOMY.stageSeconds[stage-1]*ECONOMY.stageCostFactors[stage-1]*(kind==='speed'?ECONOMY.speedCostShare:ECONOMY.middleCostShare));
-}
+export const recommendedIncome=baselineIncome;
+export const growthCost=upgradePrice;
 export const REGIONS = [
   {
     name: "풀숲",
@@ -233,7 +226,8 @@ function stageEggHp(stage:number,tier:number,legacy=false){
   const multiplier=!legacy&&stage<=EGG_HEALTH.earlyStageEnd?EGG_HEALTH.earlyTierMultipliers[tier]:1+tier*.6;
   return Math.round(EGG_HEALTH.stageBase[Math.max(0,Math.min(19,stage-1))]*multiplier);
 }
-export function eggMaxHp(egg:{type:number;stageId?:number;hpVersion?:2|3|4}){
+export function eggMaxHp(egg:{type:number;stageId?:number;hpVersion?:2|3|4|5}){
+  if(egg.hpVersion===undefined||egg.hpVersion===5)return hatchHealth(egg.stageId??(EGGS[egg.type].region*4+1),EGGS[egg.type].tier);
   if(egg.type===35)return 32;
   const def=EGGS[egg.type];
   // A client may briefly receive a snapshot from the previous server release.
@@ -248,14 +242,14 @@ export const EGGS = RARITIES.flatMap((r, tier) =>
     rarity: r.name,
     tier,
     region,
-    hp: stageEggHp(region*4+1,tier),
-    weight: 1-Math.min(BALANCE.maxCarrySlow,BALANCE.carrySlowByTier[tier]),
-    reward: Math.round([3, 10, 30, 80, 240][region] * (1 + tier * tier)),
+    hp: hatchHealth(region*4+1,tier),
+    weight: carryingRatio(tier,0,1),
+    reward: stageReward(region*4+1,OVERHAUL.rewardMinutes.egg,tier),
     color: r.color,
   })),
 );
-EGGS.push({name:'칠색 별리본 알',rarity:'S',tier:3,region:0,hp:32,weight:.8,reward:10,color:'#ffc879'});
-export function eggCarryMultiplier(type:number,carryLevel=0){return Math.min(1,EGGS[type].weight*(1+BALANCE.carryPerLevel*carryLevel));}
+EGGS.push({name:'칠색 별리본 알',rarity:'S',tier:3,region:0,hp:hatchHealth(1,3),weight:carryingRatio(3,0,1),reward:stageReward(1,OVERHAUL.rewardMinutes.egg,3),color:'#ffc879'});
+export function eggCarryMultiplier(type:number,carryLevel=0){return carryingRatio(EGGS[type].tier,carryLevel,1);}
 export function eggWeightLabel(type:number,carryLevel=0){
   const base=Math.round((1-EGGS[type].weight)*100),adjusted=Math.round((1-eggCarryMultiplier(type,carryLevel))*100);
   return `무게 감속 ${base}% · 운반 강화 후 ${adjusted}%`;
@@ -371,7 +365,7 @@ export const MONGLES = [...LEGACY_MONGLES, ...[...STAGE_PET_ROWS,...SECRET_DRAGO
     grid:24,scale:pet.slot===10?BALANCE.secretDragonScale:[.45,.7,1.05,1.65,2.4,3.4,4.5][pet.tier],icon:`pet-${100+i}`,
   };
 })];
-export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>10+(i+1)*5);
+export const STAGE_COLLECTION_REWARDS=Array.from({length:20},(_,i)=>stageReward(i+1,OVERHAUL.rewardMinutes.stage));
 MONGLES.push({...MONGLES[0],id:'mongle-320',name:'별리본 루미',description:'일곱 번의 만남을 기억하는 주간 보상 전용 S급 친구',...abilitiesFromEgg({type:WEEKLY_EVENT.eggType},2),tier:3,stageId:0,region:0,species:0,scale:1.1,icon:'pet-320',color:'#ffc879'});
 // Average only the original same-stage/tier candidates. Adding equal-mean candidates
 // preserves expected bonuses under the existing uniform within-tier hatch draw.
@@ -388,6 +382,14 @@ for(const pet of EXPANSION_PETS){
 for(let stage=1;stage<=20;stage++){
  const source=MONGLES.find(p=>p.stageId===stage&&p.species===10)!;
  MONGLES.push({...source,id:`mongle-${700+stage}`,name:ULTRA_SECRET_NAMES[stage-1],description:`${STAGES[stage-1].name} · 0.001%`,species:30,icon:`pet-${700+stage}`});
+}
+// Bounded role bonuses replace HP-sized multipliers without changing permanent IDs.
+for(const pet of MONGLES){
+ const stage=Math.max(1,pet.stageId),tier=pet.tier;
+ pet.clickMultiplier=pet.clickMultiplier>1?1+.08+.025*tier+.005*stage:1;
+ pet.autoMultiplier=pet.autoMultiplier>1?1+.08+.025*tier+.005*stage:1;
+ pet.speedMultiplier=pet.speedMultiplier>1?1+.015+.006*tier+.001*stage:1;
+ pet.effect=`터치 ×${pet.clickMultiplier.toFixed(3)} / 자동 ×${pet.autoMultiplier.toFixed(3)} / 성장 속도 ×${pet.speedMultiplier.toFixed(3)}`;
 }
 /** Add only each pet's bonus; multiplying HP-scaled pets would compound stage growth. */
 export function equippedPetMultiplier(ids:readonly number[],kind:'clickMultiplier'|'autoMultiplier'|'speedMultiplier'){
@@ -406,45 +408,45 @@ export function farmPetIds(owned:readonly number[],active:readonly number[],now:
 }
 export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id===WEEKLY_EVENT.petId||id>=701?'svg':'png'}`;}
 export const UPGRADES = {
-  health: {name:"든든한 체력",description:"최대 HP +20 · 생산 강화 (1K 이후 증가 완화)",icon:"pack",cost:30,growth:1.6},
+  health: {name:"든든한 체력",description:"최대 HP +20 · 팀 생산 +1%p",icon:"pack",cost:30,growth:1.6},
   training: {
     name: "러닝머신 모터",
-    description: "기본 운동량 +0.01 /초 · 생산 강화",
+    description: "운동 효율 +2.5%p · 팀 생산 +1%p · 운동 보너스 최대 30%",
     icon: "gym",
     cost: 45,
     growth: 1.65,
   },
   speed: {
     name: "가벼운 발걸음",
-    description: "기본 스피드 ×1.4 · 1K 이후 증가 완화",
+    description: "영구 성장 속도 증가 · 다음 스테이지에 도전",
     icon: "alkong",
     cost: 25,
     growth: 1.6,
   },
   carry: {
     name: "튼튼한 배낭",
-    description: "운반속도 +8%",
+    description: "알 무게 감속 완화 · 운반 중에는 항상 감속",
     icon: "pack",
     cost: 35,
     growth: 1.7,
   },
   tap: {
     name: "통통 망치",
-    description: "기본 터치 피해 +1 · 1K 이후 증가 완화",
+    description: "터치 피해 +10%",
     icon: "hammer",
     cost: 20,
     growth: 1.5,
   },
   damage: {
     name: "병아리 부리",
-    description: "자동 피해 성장 ×1.25 · 1K 이후 증가 완화",
+    description: "자동 피해 +8% · 팀 생산 +1%p",
     icon: "pet-9",
     cost: 30,
     growth: 1.65,
   },
   rate: {
     name: "태엽 감기",
-    description: "초당 타격 +0.25회 · 생산 강화",
+    description: "초당 타격 +0.03회 · 팀 생산 +1%p",
     icon: "egg-3",
     cost: 50,
     growth: 1.8,
@@ -465,3 +467,5 @@ export const TRAILS = [
   {name:"반딧불 행진", multiplier:1.35, cost:22, color:"#a4f2c4", model:"lantern"},
   {name:"별똥별 질주", multiplier:1.65, cost:65, color:"#c4adff", model:"meteor"},
 ];
+
+TRAILS.forEach((trail,i)=>{trail.multiplier=OVERHAUL.trailMovement[i];trail.cost=i?Math.ceil(baselineIncome(OVERHAUL.trailStages[i])*OVERHAUL.trailWaits[i]):0;});

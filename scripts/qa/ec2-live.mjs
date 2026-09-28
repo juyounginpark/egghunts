@@ -37,7 +37,7 @@ try{
  console.log(JSON.stringify(summary));
 }finally{
  for(const ws of sockets)ws.close();
- for(const s of sessions){try{await post(s,{operation:'leave'});}catch{} }
+ for(const s of sessions){try{await post(s,{operation:'leave'});}catch{/* Server teardown can close the transport first. */} }
  // Let cloud checkpoint drain before deleting only the disposable diagnostic accounts.
  await new Promise(r=>setTimeout(r,6500));
  for(const s of sessions){const res=await fetch(`${auth}/auth/v1/admin/users/${s.user.id}`,{method:'DELETE',headers:{apikey:service,Authorization:`Bearer ${service}`}});if(!res.ok)console.error('Diagnostic account cleanup requires retry');}

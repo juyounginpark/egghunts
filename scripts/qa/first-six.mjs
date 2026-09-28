@@ -28,6 +28,6 @@ try{
  await page.goto(`${session.url}/docs/art/legacy-character-gallery.html`);await page.locator('article img').first().waitFor();await page.screenshot({path:'docs/art/previews/first-six-gallery-desktop.png'});
  await page.locator('[data-pet="2"]').click();await page.locator('dialog[open]').waitFor();await page.locator('[data-angle="2"]').click();await page.locator('#large').evaluate(img=>img.decode());await page.screenshot({path:'docs/art/previews/first-six-viewer.png'});await page.locator('#close').click();
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'docs/art/previews/first-six-gallery-mobile.png'});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
- assert.deepEqual(errors,[]);await writeFile('docs/art/first-six-audit.json',JSON.stringify({models:results.map(({views,strip,poses,...r})=>({...r,animated:true})),errors},null,2)+'\n');
+ assert.deepEqual(errors,[]);await writeFile('docs/art/first-six-audit.json',JSON.stringify({models:results.map(r=>({...Object.fromEntries(Object.entries(r).filter(([key])=>!['views','strip','poses'].includes(key))),animated:true})),errors},null,2)+'\n');
  console.log('PASS six 24-cube rigs, paired anatomy, animated poses and responsive gallery.');
 }finally{await session.close();}

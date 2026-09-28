@@ -1,5 +1,5 @@
 // Manual, user-requested catalogue / server / village compatibility review.
-/* global structuredClone */
+
 import assert from 'node:assert/strict';
 import {readFile,writeFile} from 'node:fs/promises';
 import {readFileSync} from 'node:fs';

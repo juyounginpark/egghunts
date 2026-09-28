@@ -1,5 +1,5 @@
 // Manual regression for authoritative stop compensation and retired player traits.
-/* global structuredClone */
+
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
 const server=await createServer({server:{middlewareMode:true}});

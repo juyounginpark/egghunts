@@ -1,5 +1,5 @@
 // Manual live-room diagnosis. Uses real Supabase auth/game traffic, never ?qa=true.
-/* global PerformanceObserver, AbortSignal */
+/* global PerformanceObserver */
 import {createServer} from 'vite';
 import {chromium} from 'playwright';
 import {mkdir,writeFile} from 'node:fs/promises';

@@ -1,98 +1,67 @@
 # Balance simulation
 
-Deterministic active play model, 50ms simulation steps, general-tier rolls; not a prediction of every player's behavior. No ads/payments. First egg 53.6s, first hatch 56.1s, base automatic hit available at 0s. 20 hatches, 12 purchases in ten minutes. Boss avoidance/input mistakes change outcomes. Equal rarity odds by latest requirement; later stages pay higher rewards but take longer to hatch. Discovery/trail/gym gains are not counted in this conservative loop.
+Deterministic active play model, 50ms simulation steps, general-tier rolls; not a prediction of every player's behavior. No ads/payments. First egg 42.6s, first hatch 43.9s, base automatic hit available at 0s. 13 hatches, 7 purchases in ten minutes. Boss avoidance/input mistakes change outcomes. Equal rarity odds by latest requirement; later stages pay higher rewards but take longer to hatch. Discovery/trail/gym gains are not counted in this conservative loop.
 
 ## First ten minutes
 
 | Minute | Dust | Pets | Speed | DPS |
 |---|---:|---:|---:|---:|
-|0|0|1|3.24|3|
-|1|5|2|3.63|3|
-|2|20|6|3.63|4.5|
-|3|20|6|3.63|4.5|
-|4|35|8|3.63|4.5|
-|5|36|11|4.06|7.5|
-|6|66|12|4.06|7.5|
-|7|7|15|4.06|10|
-|8|37|17|4.06|10|
-|9|67|18|4.06|10|
-|10|53|20|4.06|10|
+|0|196|1|1.40|4|
+|1|444|2|1.40|4|
+|2|486|4|1.41|4.32|
+|4|1005|5|1.41|4.32|
+|5|1046|5|1.41|4.32|
+|6|164|7|3.22|4.4496|
+|7|195|10|3.22|4.4496|
+|8|267|11|3.22|4.4496|
+|9|592|13|3.23|4.805568000000001|
+|10|804|13|3.23|4.805568000000001|
 
 ## Upgrade purchases
 
 ```json
 [
   {
-    "second": 56,
+    "second": 99,
     "upgrade": "damage",
     "level": 1,
-    "dust": 0
+    "dust": 230
   },
   {
-    "second": 67,
+    "second": 344,
     "upgrade": "speed",
     "level": 1,
-    "dust": 5
+    "dust": 423
   },
   {
-    "second": 86,
+    "second": 368,
     "upgrade": "rate",
     "level": 1,
-    "dust": 15
+    "dust": 164
   },
   {
-    "second": 95,
+    "second": 392,
     "upgrade": "carry",
     "level": 1,
-    "dust": 10
-  },
-  {
-    "second": 122,
-    "upgrade": "tap",
-    "level": 1,
-    "dust": 20
-  },
-  {
-    "second": 233,
-    "upgrade": "training",
-    "level": 1,
-    "dust": 5
-  },
-  {
-    "second": 250,
-    "upgrade": "damage",
-    "level": 2,
     "dust": 16
   },
   {
-    "second": 258,
-    "upgrade": "speed",
-    "level": 2,
-    "dust": 6
-  },
-  {
-    "second": 411,
-    "upgrade": "rate",
-    "level": 2,
-    "dust": 6
-  },
-  {
-    "second": 426,
-    "upgrade": "carry",
-    "level": 2,
-    "dust": 7
-  },
-  {
-    "second": 433,
+    "second": 440,
     "upgrade": "tap",
-    "level": 2,
-    "dust": 7
+    "level": 1,
+    "dust": 195
   },
   {
-    "second": 592,
+    "second": 483,
     "upgrade": "training",
+    "level": 1,
+    "dust": 267
+  },
+  {
+    "second": 525,
+    "upgrade": "damage",
     "level": 2,
-    "dust": 23
+    "dust": 75
   }
 ]
 ```
@@ -106,123 +75,123 @@ Deterministic active play model, 50ms simulation steps, general-tier rolls; not 
     "regions": [
       {
         "region": 0,
-        "distance": 14,
-        "seconds": 9.1,
-        "recommendedSpeed": 3.2
+        "distance": 18,
+        "seconds": 8.8,
+        "recommendedSpeed": 1
       },
       {
         "region": 1,
-        "distance": 46,
-        "seconds": 30,
-        "recommendedSpeed": 3.2
+        "distance": 66,
+        "seconds": 32.1,
+        "recommendedSpeed": 3
       },
       {
         "region": 2,
-        "distance": 78,
-        "seconds": 50.9,
-        "recommendedSpeed": 3.9
+        "distance": 114,
+        "seconds": 55.5,
+        "recommendedSpeed": 5
       },
       {
         "region": 3,
-        "distance": 110,
-        "seconds": 71.7,
-        "recommendedSpeed": 5.5
+        "distance": 162,
+        "seconds": 78.8,
+        "recommendedSpeed": 7
       },
       {
         "region": 4,
-        "distance": 142,
-        "seconds": 96,
-        "recommendedSpeed": 7.1
+        "distance": 210,
+        "seconds": 102.2,
+        "recommendedSpeed": 10
       },
       {
         "region": 5,
-        "distance": 174,
-        "seconds": 117.6,
-        "recommendedSpeed": 8.7
+        "distance": 258,
+        "seconds": 125.6,
+        "recommendedSpeed": 15
       },
       {
         "region": 6,
-        "distance": 206,
-        "seconds": 139.2,
-        "recommendedSpeed": 10.3
+        "distance": 306,
+        "seconds": 148.9,
+        "recommendedSpeed": 25
       },
       {
         "region": 7,
-        "distance": 238,
-        "seconds": 160.9,
-        "recommendedSpeed": 11.9
+        "distance": 354,
+        "seconds": 172.3,
+        "recommendedSpeed": 40
       },
       {
         "region": 8,
-        "distance": 270,
-        "seconds": 189.8,
-        "recommendedSpeed": 13.5
+        "distance": 402,
+        "seconds": 195.7,
+        "recommendedSpeed": 65
       },
       {
         "region": 9,
-        "distance": 302,
-        "seconds": 212.3,
-        "recommendedSpeed": 15.1
+        "distance": 450,
+        "seconds": 219,
+        "recommendedSpeed": 100
       },
       {
         "region": 10,
-        "distance": 334,
-        "seconds": 234.8,
-        "recommendedSpeed": 16.7
+        "distance": 498,
+        "seconds": 242.4,
+        "recommendedSpeed": 180
       },
       {
         "region": 11,
-        "distance": 366,
-        "seconds": 257.3,
-        "recommendedSpeed": 18.3
+        "distance": 546,
+        "seconds": 265.7,
+        "recommendedSpeed": 320
       },
       {
         "region": 12,
-        "distance": 398,
-        "seconds": 292.4,
-        "recommendedSpeed": 19.9
+        "distance": 594,
+        "seconds": 289.1,
+        "recommendedSpeed": 600
       },
       {
         "region": 13,
-        "distance": 430,
-        "seconds": 316,
-        "recommendedSpeed": 21.5
+        "distance": 642,
+        "seconds": 312.5,
+        "recommendedSpeed": 1100
       },
       {
         "region": 14,
-        "distance": 462,
-        "seconds": 339.5,
-        "recommendedSpeed": 23.1
+        "distance": 690,
+        "seconds": 335.8,
+        "recommendedSpeed": 2000
       },
       {
         "region": 15,
-        "distance": 494,
-        "seconds": 363,
-        "recommendedSpeed": 24.7
+        "distance": 738,
+        "seconds": 359.2,
+        "recommendedSpeed": 4000
       },
       {
         "region": 16,
-        "distance": 526,
-        "seconds": 406.1,
-        "recommendedSpeed": 26.3
+        "distance": 786,
+        "seconds": 382.6,
+        "recommendedSpeed": 7500
       },
       {
         "region": 17,
-        "distance": 558,
-        "seconds": 430.8,
-        "recommendedSpeed": 27.9
+        "distance": 834,
+        "seconds": 405.9,
+        "recommendedSpeed": 14000
       },
       {
         "region": 18,
-        "distance": 590,
-        "seconds": 455.5,
-        "recommendedSpeed": 29.5
+        "distance": 882,
+        "seconds": 429.3,
+        "recommendedSpeed": 26000
       },
       {
         "region": 19,
-        "distance": 622,
-        "seconds": 480.2,
-        "recommendedSpeed": 31.1
+        "distance": 930,
+        "seconds": 452.6,
+        "recommendedSpeed": 50000
       }
     ]
   },
@@ -231,123 +200,123 @@ Deterministic active play model, 50ms simulation steps, general-tier rolls; not 
     "regions": [
       {
         "region": 0,
-        "distance": 14,
-        "seconds": 5.7,
-        "recommendedSpeed": 3.2
+        "distance": 18,
+        "seconds": 5.2,
+        "recommendedSpeed": 1
       },
       {
         "region": 1,
-        "distance": 46,
-        "seconds": 18.7,
-        "recommendedSpeed": 3.2
+        "distance": 66,
+        "seconds": 18.9,
+        "recommendedSpeed": 3
       },
       {
         "region": 2,
-        "distance": 78,
-        "seconds": 31.8,
-        "recommendedSpeed": 3.9
+        "distance": 114,
+        "seconds": 32.7,
+        "recommendedSpeed": 5
       },
       {
         "region": 3,
-        "distance": 110,
-        "seconds": 44.8,
-        "recommendedSpeed": 5.5
+        "distance": 162,
+        "seconds": 46.4,
+        "recommendedSpeed": 7
       },
       {
         "region": 4,
-        "distance": 142,
-        "seconds": 60,
-        "recommendedSpeed": 7.1
+        "distance": 210,
+        "seconds": 60.2,
+        "recommendedSpeed": 10
       },
       {
         "region": 5,
-        "distance": 174,
-        "seconds": 73.5,
-        "recommendedSpeed": 8.7
+        "distance": 258,
+        "seconds": 73.9,
+        "recommendedSpeed": 15
       },
       {
         "region": 6,
-        "distance": 206,
-        "seconds": 87,
-        "recommendedSpeed": 10.3
+        "distance": 306,
+        "seconds": 87.6,
+        "recommendedSpeed": 25
       },
       {
         "region": 7,
-        "distance": 238,
-        "seconds": 100.5,
-        "recommendedSpeed": 11.9
+        "distance": 354,
+        "seconds": 101.4,
+        "recommendedSpeed": 40
       },
       {
         "region": 8,
-        "distance": 270,
-        "seconds": 118.7,
-        "recommendedSpeed": 13.5
+        "distance": 402,
+        "seconds": 115.1,
+        "recommendedSpeed": 65
       },
       {
         "region": 9,
-        "distance": 302,
-        "seconds": 132.7,
-        "recommendedSpeed": 15.1
+        "distance": 450,
+        "seconds": 128.9,
+        "recommendedSpeed": 100
       },
       {
         "region": 10,
-        "distance": 334,
-        "seconds": 146.8,
-        "recommendedSpeed": 16.7
+        "distance": 498,
+        "seconds": 142.6,
+        "recommendedSpeed": 180
       },
       {
         "region": 11,
-        "distance": 366,
-        "seconds": 160.8,
-        "recommendedSpeed": 18.3
+        "distance": 546,
+        "seconds": 156.4,
+        "recommendedSpeed": 320
       },
       {
         "region": 12,
-        "distance": 398,
-        "seconds": 182.8,
-        "recommendedSpeed": 19.9
+        "distance": 594,
+        "seconds": 170.1,
+        "recommendedSpeed": 600
       },
       {
         "region": 13,
-        "distance": 430,
-        "seconds": 197.5,
-        "recommendedSpeed": 21.5
+        "distance": 642,
+        "seconds": 183.9,
+        "recommendedSpeed": 1100
       },
       {
         "region": 14,
-        "distance": 462,
-        "seconds": 212.2,
-        "recommendedSpeed": 23.1
+        "distance": 690,
+        "seconds": 197.6,
+        "recommendedSpeed": 2000
       },
       {
         "region": 15,
-        "distance": 494,
-        "seconds": 226.9,
-        "recommendedSpeed": 24.7
+        "distance": 738,
+        "seconds": 211.4,
+        "recommendedSpeed": 4000
       },
       {
         "region": 16,
-        "distance": 526,
-        "seconds": 253.8,
-        "recommendedSpeed": 26.3
+        "distance": 786,
+        "seconds": 225.1,
+        "recommendedSpeed": 7500
       },
       {
         "region": 17,
-        "distance": 558,
-        "seconds": 269.3,
-        "recommendedSpeed": 27.9
+        "distance": 834,
+        "seconds": 238.9,
+        "recommendedSpeed": 14000
       },
       {
         "region": 18,
-        "distance": 590,
-        "seconds": 284.7,
-        "recommendedSpeed": 29.5
+        "distance": 882,
+        "seconds": 252.6,
+        "recommendedSpeed": 26000
       },
       {
         "region": 19,
-        "distance": 622,
-        "seconds": 300.1,
-        "recommendedSpeed": 31.1
+        "distance": 930,
+        "seconds": 266.4,
+        "recommendedSpeed": 50000
       }
     ]
   },
@@ -356,123 +325,123 @@ Deterministic active play model, 50ms simulation steps, general-tier rolls; not 
     "regions": [
       {
         "region": 0,
-        "distance": 14,
-        "seconds": 4.2,
-        "recommendedSpeed": 3.2
+        "distance": 18,
+        "seconds": 3.4,
+        "recommendedSpeed": 1
       },
       {
         "region": 1,
-        "distance": 46,
-        "seconds": 13.6,
-        "recommendedSpeed": 3.2
+        "distance": 66,
+        "seconds": 12.5,
+        "recommendedSpeed": 3
       },
       {
         "region": 2,
-        "distance": 78,
-        "seconds": 23.1,
-        "recommendedSpeed": 3.9
+        "distance": 114,
+        "seconds": 21.5,
+        "recommendedSpeed": 5
       },
       {
         "region": 3,
-        "distance": 110,
-        "seconds": 32.6,
-        "recommendedSpeed": 5.5
+        "distance": 162,
+        "seconds": 30.6,
+        "recommendedSpeed": 7
       },
       {
         "region": 4,
-        "distance": 142,
-        "seconds": 43.6,
-        "recommendedSpeed": 7.1
+        "distance": 210,
+        "seconds": 39.6,
+        "recommendedSpeed": 10
       },
       {
         "region": 5,
-        "distance": 174,
-        "seconds": 53.5,
-        "recommendedSpeed": 8.7
+        "distance": 258,
+        "seconds": 48.7,
+        "recommendedSpeed": 15
       },
       {
         "region": 6,
-        "distance": 206,
-        "seconds": 63.3,
-        "recommendedSpeed": 10.3
+        "distance": 306,
+        "seconds": 57.8,
+        "recommendedSpeed": 25
       },
       {
         "region": 7,
-        "distance": 238,
-        "seconds": 73.1,
-        "recommendedSpeed": 11.9
+        "distance": 354,
+        "seconds": 66.8,
+        "recommendedSpeed": 40
       },
       {
         "region": 8,
-        "distance": 270,
-        "seconds": 86.3,
-        "recommendedSpeed": 13.5
+        "distance": 402,
+        "seconds": 75.9,
+        "recommendedSpeed": 65
       },
       {
         "region": 9,
-        "distance": 302,
-        "seconds": 96.5,
-        "recommendedSpeed": 15.1
+        "distance": 450,
+        "seconds": 84.9,
+        "recommendedSpeed": 100
       },
       {
         "region": 10,
-        "distance": 334,
-        "seconds": 106.7,
-        "recommendedSpeed": 16.7
+        "distance": 498,
+        "seconds": 94,
+        "recommendedSpeed": 180
       },
       {
         "region": 11,
-        "distance": 366,
-        "seconds": 117,
-        "recommendedSpeed": 18.3
+        "distance": 546,
+        "seconds": 103.1,
+        "recommendedSpeed": 320
       },
       {
         "region": 12,
-        "distance": 398,
-        "seconds": 132.9,
-        "recommendedSpeed": 19.9
+        "distance": 594,
+        "seconds": 112.1,
+        "recommendedSpeed": 600
       },
       {
         "region": 13,
-        "distance": 430,
-        "seconds": 143.6,
-        "recommendedSpeed": 21.5
+        "distance": 642,
+        "seconds": 121.2,
+        "recommendedSpeed": 1100
       },
       {
         "region": 14,
-        "distance": 462,
-        "seconds": 154.3,
-        "recommendedSpeed": 23.1
+        "distance": 690,
+        "seconds": 130.2,
+        "recommendedSpeed": 2000
       },
       {
         "region": 15,
-        "distance": 494,
-        "seconds": 165,
-        "recommendedSpeed": 24.7
+        "distance": 738,
+        "seconds": 139.3,
+        "recommendedSpeed": 4000
       },
       {
         "region": 16,
-        "distance": 526,
-        "seconds": 184.6,
-        "recommendedSpeed": 26.3
+        "distance": 786,
+        "seconds": 148.4,
+        "recommendedSpeed": 7500
       },
       {
         "region": 17,
-        "distance": 558,
-        "seconds": 195.8,
-        "recommendedSpeed": 27.9
+        "distance": 834,
+        "seconds": 157.4,
+        "recommendedSpeed": 14000
       },
       {
         "region": 18,
-        "distance": 590,
-        "seconds": 207.1,
-        "recommendedSpeed": 29.5
+        "distance": 882,
+        "seconds": 166.5,
+        "recommendedSpeed": 26000
       },
       {
         "region": 19,
-        "distance": 622,
-        "seconds": 218.3,
-        "recommendedSpeed": 31.1
+        "distance": 930,
+        "seconds": 175.5,
+        "recommendedSpeed": 50000
       }
     ]
   }
@@ -485,285 +454,293 @@ Deterministic active play model, 50ms simulation steps, general-tier rolls; not 
 [
   {
     "type": 0,
-    "hp": 30,
-    "reward": 30,
-    "baseAutoSeconds": 30,
-    "manual4HzSeconds": 6,
+    "hp": 51,
+    "reward": 196,
+    "baseAutoSeconds": 51,
+    "manual4HzSeconds": 10.2,
     "grownAutoSeconds": 0.1
   },
   {
     "type": 1,
-    "hp": 400,
-    "reward": 100,
-    "baseAutoSeconds": 400,
-    "manual4HzSeconds": 80,
-    "grownAutoSeconds": 0.9
+    "hp": 76,
+    "reward": 1136,
+    "baseAutoSeconds": 76,
+    "manual4HzSeconds": 15.2,
+    "grownAutoSeconds": 0.2
   },
   {
     "type": 2,
-    "hp": 1500,
-    "reward": 300,
-    "baseAutoSeconds": 1500,
-    "manual4HzSeconds": 300,
-    "grownAutoSeconds": 3.3
+    "hp": 113,
+    "reward": 6559,
+    "baseAutoSeconds": 113,
+    "manual4HzSeconds": 22.6,
+    "grownAutoSeconds": 0.3
   },
   {
     "type": 3,
-    "hp": 7500,
-    "reward": 800,
-    "baseAutoSeconds": 7500,
-    "manual4HzSeconds": 1500,
-    "grownAutoSeconds": 16.6
+    "hp": 167,
+    "reward": 37859,
+    "baseAutoSeconds": 167,
+    "manual4HzSeconds": 33.4,
+    "grownAutoSeconds": 0.4
   },
   {
     "type": 4,
-    "hp": 40000,
-    "reward": 2400,
-    "baseAutoSeconds": 40000,
-    "manual4HzSeconds": 8000,
-    "grownAutoSeconds": 88.7
+    "hp": 246,
+    "reward": 218523,
+    "baseAutoSeconds": 246,
+    "manual4HzSeconds": 49.2,
+    "grownAutoSeconds": 0.5
   },
   {
     "type": 5,
-    "hp": 48,
-    "reward": 60,
-    "baseAutoSeconds": 48,
-    "manual4HzSeconds": 9.6,
-    "grownAutoSeconds": 0.1
+    "hp": 82,
+    "reward": 216,
+    "baseAutoSeconds": 82,
+    "manual4HzSeconds": 16.4,
+    "grownAutoSeconds": 0.2
   },
   {
     "type": 6,
-    "hp": 640,
-    "reward": 200,
-    "baseAutoSeconds": 640,
-    "manual4HzSeconds": 128,
-    "grownAutoSeconds": 1.4
+    "hp": 122,
+    "reward": 1250,
+    "baseAutoSeconds": 122,
+    "manual4HzSeconds": 24.4,
+    "grownAutoSeconds": 0.3
   },
   {
     "type": 7,
-    "hp": 2400,
-    "reward": 600,
-    "baseAutoSeconds": 2400,
-    "manual4HzSeconds": 480,
-    "grownAutoSeconds": 5.3
+    "hp": 181,
+    "reward": 7215,
+    "baseAutoSeconds": 181,
+    "manual4HzSeconds": 36.2,
+    "grownAutoSeconds": 0.4
   },
   {
     "type": 8,
-    "hp": 12000,
-    "reward": 1600,
-    "baseAutoSeconds": 12000,
-    "manual4HzSeconds": 2400,
-    "grownAutoSeconds": 26.6
+    "hp": 267,
+    "reward": 41645,
+    "baseAutoSeconds": 267,
+    "manual4HzSeconds": 53.4,
+    "grownAutoSeconds": 0.6
   },
   {
     "type": 9,
-    "hp": 64000,
-    "reward": 4800,
-    "baseAutoSeconds": 64000,
-    "manual4HzSeconds": 12800,
-    "grownAutoSeconds": 141.9
+    "hp": 393,
+    "reward": 240375,
+    "baseAutoSeconds": 393,
+    "manual4HzSeconds": 78.6,
+    "grownAutoSeconds": 0.9
   },
   {
     "type": 10,
-    "hp": 66,
-    "reward": 150,
-    "baseAutoSeconds": 66,
-    "manual4HzSeconds": 13.2,
-    "grownAutoSeconds": 0.1
+    "hp": 122,
+    "reward": 246,
+    "baseAutoSeconds": 122,
+    "manual4HzSeconds": 24.4,
+    "grownAutoSeconds": 0.3
   },
   {
     "type": 11,
-    "hp": 880,
-    "reward": 500,
-    "baseAutoSeconds": 880,
-    "manual4HzSeconds": 176,
-    "grownAutoSeconds": 2
+    "hp": 183,
+    "reward": 1420,
+    "baseAutoSeconds": 183,
+    "manual4HzSeconds": 36.6,
+    "grownAutoSeconds": 0.4
   },
   {
     "type": 12,
-    "hp": 3300,
-    "reward": 1500,
-    "baseAutoSeconds": 3300,
-    "manual4HzSeconds": 660,
-    "grownAutoSeconds": 7.3
+    "hp": 271,
+    "reward": 8198,
+    "baseAutoSeconds": 271,
+    "manual4HzSeconds": 54.2,
+    "grownAutoSeconds": 0.6
   },
   {
     "type": 13,
-    "hp": 16500,
-    "reward": 4000,
-    "baseAutoSeconds": 16500,
-    "manual4HzSeconds": 3300,
-    "grownAutoSeconds": 36.6
+    "hp": 401,
+    "reward": 47323,
+    "baseAutoSeconds": 401,
+    "manual4HzSeconds": 80.2,
+    "grownAutoSeconds": 0.9
   },
   {
     "type": 14,
-    "hp": 88000,
-    "reward": 12000,
-    "baseAutoSeconds": 88000,
-    "manual4HzSeconds": 17600,
-    "grownAutoSeconds": 195.1
+    "hp": 590,
+    "reward": 273154,
+    "baseAutoSeconds": 590,
+    "manual4HzSeconds": 118,
+    "grownAutoSeconds": 1.3
   },
   {
     "type": 15,
-    "hp": 84,
-    "reward": 300,
-    "baseAutoSeconds": 84,
-    "manual4HzSeconds": 16.8,
-    "grownAutoSeconds": 0.2
+    "hp": 224,
+    "reward": 285,
+    "baseAutoSeconds": 224,
+    "manual4HzSeconds": 44.8,
+    "grownAutoSeconds": 0.5
   },
   {
     "type": 16,
-    "hp": 1120,
-    "reward": 1000,
-    "baseAutoSeconds": 1120,
-    "manual4HzSeconds": 224,
-    "grownAutoSeconds": 2.5
+    "hp": 335,
+    "reward": 1647,
+    "baseAutoSeconds": 335,
+    "manual4HzSeconds": 67,
+    "grownAutoSeconds": 0.7
   },
   {
     "type": 17,
-    "hp": 4200,
-    "reward": 3000,
-    "baseAutoSeconds": 4200,
-    "manual4HzSeconds": 840,
-    "grownAutoSeconds": 9.3
+    "hp": 497,
+    "reward": 9510,
+    "baseAutoSeconds": 497,
+    "manual4HzSeconds": 99.4,
+    "grownAutoSeconds": 1.1
   },
   {
     "type": 18,
-    "hp": 21000,
-    "reward": 8000,
-    "baseAutoSeconds": 21000,
-    "manual4HzSeconds": 4200,
-    "grownAutoSeconds": 46.6
+    "hp": 734,
+    "reward": 54895,
+    "baseAutoSeconds": 734,
+    "manual4HzSeconds": 146.8,
+    "grownAutoSeconds": 1.6
   },
   {
     "type": 19,
-    "hp": 112000,
-    "reward": 24000,
-    "baseAutoSeconds": 112000,
-    "manual4HzSeconds": 22400,
-    "grownAutoSeconds": 248.3
+    "hp": 1081,
+    "reward": 316858,
+    "baseAutoSeconds": 1081,
+    "manual4HzSeconds": 216.2,
+    "grownAutoSeconds": 2.4
   },
   {
     "type": 20,
-    "hp": 102,
-    "reward": 510,
-    "baseAutoSeconds": 102,
-    "manual4HzSeconds": 20.4,
-    "grownAutoSeconds": 0.2
+    "hp": 367,
+    "reward": 354,
+    "baseAutoSeconds": 367,
+    "manual4HzSeconds": 73.4,
+    "grownAutoSeconds": 0.8
   },
   {
     "type": 21,
-    "hp": 1360,
-    "reward": 1700,
-    "baseAutoSeconds": 1360,
-    "manual4HzSeconds": 272,
-    "grownAutoSeconds": 3
+    "hp": 548,
+    "reward": 2045,
+    "baseAutoSeconds": 548,
+    "manual4HzSeconds": 109.6,
+    "grownAutoSeconds": 1.2
   },
   {
     "type": 22,
-    "hp": 5100,
-    "reward": 5100,
-    "baseAutoSeconds": 5100,
-    "manual4HzSeconds": 1020,
-    "grownAutoSeconds": 11.3
+    "hp": 813,
+    "reward": 11806,
+    "baseAutoSeconds": 813,
+    "manual4HzSeconds": 162.6,
+    "grownAutoSeconds": 1.8
   },
   {
     "type": 23,
-    "hp": 25500,
-    "reward": 13600,
-    "baseAutoSeconds": 25500,
-    "manual4HzSeconds": 5100,
-    "grownAutoSeconds": 56.5
+    "hp": 1202,
+    "reward": 68146,
+    "baseAutoSeconds": 1202,
+    "manual4HzSeconds": 240.4,
+    "grownAutoSeconds": 2.7
   },
   {
     "type": 24,
-    "hp": 136000,
-    "reward": 40800,
-    "baseAutoSeconds": 136000,
-    "manual4HzSeconds": 27200,
-    "grownAutoSeconds": 301.6
+    "hp": 1769,
+    "reward": 393341,
+    "baseAutoSeconds": 1769,
+    "manual4HzSeconds": 353.8,
+    "grownAutoSeconds": 3.9
   },
   {
     "type": 25,
-    "hp": 120,
-    "reward": 780,
-    "baseAutoSeconds": 120,
-    "manual4HzSeconds": 24,
-    "grownAutoSeconds": 0.3
+    "hp": 663,
+    "reward": 433,
+    "baseAutoSeconds": 663,
+    "manual4HzSeconds": 132.6,
+    "grownAutoSeconds": 1.5
   },
   {
     "type": 26,
-    "hp": 1600,
-    "reward": 2600,
-    "baseAutoSeconds": 1600,
-    "manual4HzSeconds": 320,
-    "grownAutoSeconds": 3.5
+    "hp": 989,
+    "reward": 2500,
+    "baseAutoSeconds": 989,
+    "manual4HzSeconds": 197.8,
+    "grownAutoSeconds": 2.2
   },
   {
     "type": 27,
-    "hp": 6000,
-    "reward": 7800,
-    "baseAutoSeconds": 6000,
-    "manual4HzSeconds": 1200,
-    "grownAutoSeconds": 13.3
+    "hp": 1468,
+    "reward": 14430,
+    "baseAutoSeconds": 1468,
+    "manual4HzSeconds": 293.6,
+    "grownAutoSeconds": 3.3
   },
   {
     "type": 28,
-    "hp": 30000,
-    "reward": 20800,
-    "baseAutoSeconds": 30000,
-    "manual4HzSeconds": 6000,
-    "grownAutoSeconds": 66.5
+    "hp": 2170,
+    "reward": 83290,
+    "baseAutoSeconds": 2170,
+    "manual4HzSeconds": 434,
+    "grownAutoSeconds": 4.8
   },
   {
     "type": 29,
-    "hp": 160000,
-    "reward": 62400,
-    "baseAutoSeconds": 160000,
-    "manual4HzSeconds": 32000,
-    "grownAutoSeconds": 354.8
+    "hp": 3195,
+    "reward": 480751,
+    "baseAutoSeconds": 3195,
+    "manual4HzSeconds": 639,
+    "grownAutoSeconds": 7.1
   },
   {
     "type": 30,
-    "hp": 138,
-    "reward": 1110,
-    "baseAutoSeconds": 138,
-    "manual4HzSeconds": 27.6,
-    "grownAutoSeconds": 0.3
+    "hp": 1377,
+    "reward": 511,
+    "baseAutoSeconds": 1377,
+    "manual4HzSeconds": 275.4,
+    "grownAutoSeconds": 3.1
   },
   {
     "type": 31,
-    "hp": 1840,
-    "reward": 3700,
-    "baseAutoSeconds": 1840,
-    "manual4HzSeconds": 368,
-    "grownAutoSeconds": 4.1
+    "hp": 2055,
+    "reward": 2954,
+    "baseAutoSeconds": 2055,
+    "manual4HzSeconds": 411,
+    "grownAutoSeconds": 4.6
   },
   {
     "type": 32,
-    "hp": 6900,
-    "reward": 11100,
-    "baseAutoSeconds": 6900,
-    "manual4HzSeconds": 1380,
-    "grownAutoSeconds": 15.3
+    "hp": 3050,
+    "reward": 17053,
+    "baseAutoSeconds": 3050,
+    "manual4HzSeconds": 610,
+    "grownAutoSeconds": 6.8
   },
   {
     "type": 33,
-    "hp": 34500,
-    "reward": 29600,
-    "baseAutoSeconds": 34500,
-    "manual4HzSeconds": 6900,
-    "grownAutoSeconds": 76.5
+    "hp": 4507,
+    "reward": 98433,
+    "baseAutoSeconds": 4507,
+    "manual4HzSeconds": 901.4,
+    "grownAutoSeconds": 10
   },
   {
     "type": 34,
-    "hp": 184000,
-    "reward": 88800,
-    "baseAutoSeconds": 184000,
-    "manual4HzSeconds": 36800,
-    "grownAutoSeconds": 408
+    "hp": 6635,
+    "reward": 568160,
+    "baseAutoSeconds": 6635,
+    "manual4HzSeconds": 1327,
+    "grownAutoSeconds": 14.7
+  },
+  {
+    "type": 35,
+    "hp": 224,
+    "reward": 285,
+    "baseAutoSeconds": 224,
+    "manual4HzSeconds": 44.8,
+    "grownAutoSeconds": 0.5
   }
 ]
 ```
 
-Damage and rate multiply: damage levels add 자동 타격 피해 +2, rate levels add 초당 타격 +0.5회; marginal value changes with the other stat. Late automation 451 DPS is an example at both level caps, not a promised ten-minute state. Small-egg farming is useful early; long-term collection rewards grow by rarity and region. Rare failures consume the carried egg, never purchased upgrades or owned pets.
+Damage and rate multiply: damage levels add 자동 피해 +8% · 팀 생산 +1%p, rate levels add 초당 타격 +0.03회 · 팀 생산 +1%p; marginal value changes with the other stat. Late automation 451 DPS is an example at both level caps, not a promised ten-minute state. Small-egg farming is useful early; long-term collection rewards grow by rarity and region. Rare failures consume the carried egg, never purchased upgrades or owned pets.

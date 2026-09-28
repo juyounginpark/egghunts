@@ -64,7 +64,7 @@ export function tickMobs(mobs:Mob[],players:Map<string,GameState>,now:number,dt:
   if(m.hp<=0)continue;
   if(m.phase==='hit'){move(m.knockX*dt,m.knockZ*dt);m.knockX*=Math.exp(-dt*8);m.knockZ*=Math.exp(-dt*8);if(age>=B.hitRecovery)setPhase(m,'return',now);continue;}
   let target=m.target?players.get(m.target):undefined;
-  if(target&&(target.death||target.isAtBase||Math.hypot(m.x-m.homeX,m.z-m.homeZ)>B.leash||!mobSight(g,m,target))){m.target=null;target=undefined;setPhase(m,'return',now);}
+  if(target&&(target.death||target.isAtBase||Math.hypot(m.x-m.homeX,m.z-m.homeZ)>B.leash||!mobSight(g,m,target))){m.target=null;setPhase(m,'return',now);}
   if(m.phase==='return'){
    const dx=m.homeX-m.x,dz=m.homeZ-m.z,l=Math.hypot(dx,dz);if(l<.15)setPhase(m,'idle',now);else move(dx/l*Math.min(l,dt*1.8),dz/l*Math.min(l,dt*1.8));continue;
   }
@@ -85,7 +85,7 @@ export function tickMobs(mobs:Mob[],players:Map<string,GameState>,now:number,dt:
    if(d.kind==='dash')move(dx/len*dt*3,dz/len*dt*3);
    for(const [id,p] of alive){
     if(m.hit.includes(id)||!mobSight(g,m,p))continue;
-    let contact=false;
+    let contact;
     if(d.kind==='projectile'){
      const projectiles=mobProjectiles(m,now),previous=mobProjectiles(m,now-dt*1000);
      contact=projectiles.some((q,i)=>{

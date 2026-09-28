@@ -1,5 +1,5 @@
 import {isUltraPet} from './ultra-secret';
-﻿import * as T from "three";
+import * as T from "three";
 import { RARITIES, MONGLES } from "./data";
 import {eggDesignAppearance,stageEggCells,type EggAppearance} from "./stage-eggs";
 import {EGG_EFFECT_FAMILIES,designNest} from './egg-design';
