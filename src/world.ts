@@ -186,11 +186,12 @@ export class World {
       const fresh=frameAt-avatar.userData.receivedAt<1200;
       const speed=dt>0&&!snap?Math.hypot(avatar.position.x-beforeX,avatar.position.z-beforeZ)/dt:0;
       const seated=!down&&peer.seat!==undefined&&peer.seat!==null&&!!CAMP_SEATS[peer.seat];
+      const training=!!peer.training&&!down&&!seated&&fresh;
       if(seated){const seat=CAMP_SEATS[peer.seat!];avatar.position.x=seat.x;avatar.position.z=seat.z;}
-      const walking=!seated&&!down&&fresh&&speed>.08;
-      const mountLift=this.mounts.update(avatar,peer.mountPet??null,!!peer.riding&&!down&&!seated,frameAt/1000,walking,this.reducedMotion.matches,weightSize(peer.mountWeight??{}));
+      const walking=!seated&&!down&&fresh&&(training||speed>.08);
+      const mountLift=this.mounts.update(avatar,peer.mountPet??null,!!peer.riding&&!down&&!seated&&!training,frameAt/1000,walking,this.reducedMotion.matches,weightSize(peer.mountWeight??{}));
       avatar.userData.walkBlend=(avatar.userData.walkBlend??0)+((walking?1:0)-(avatar.userData.walkBlend??0))*(1-Math.exp(-dt*16));
-      avatar.userData.walkPhase=(avatar.userData.walkPhase??0)+dt*9*Math.min(1.6,Math.max(.6,speed/1.6));
+      avatar.userData.walkPhase=(avatar.userData.walkPhase??0)+dt*9*(training?1:Math.min(1.6,Math.max(.6,speed/1.6)));
       const rig=avatar.getObjectByName('peer-rig')!,stride=Math.sin(avatar.userData.walkPhase)*avatar.userData.walkBlend;
       rig.position.y=down||seated||mountLift>0?0:Math.abs(stride)*.07;
       for(const side of ['left','right']){
@@ -199,8 +200,9 @@ export class World {
         if(arm)arm.rotation.x=down?-.35:seated?-.5:peer.carried!==null?-2.4:-stride*.3*sign;
       }
       const flight=(frameAt-(avatar.userData.hitReceived??-Infinity))/(BALANCE.batFlightSeconds*1000);
-      avatar.position.y=mountLift+explorationHeight(avatar.position.x,avatar.position.z,this.routeStart)+(seated?CAMPFIRE.sittingHeight:down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0);
-      avatar.rotation.y+=Math.atan2(Math.sin(peer.rotation-avatar.rotation.y),Math.cos(peer.rotation-avatar.rotation.y))*blend;
+      avatar.position.y=mountLift+explorationHeight(avatar.position.x,avatar.position.z,this.routeStart)+(seated?CAMPFIRE.sittingHeight:training?.2+Math.abs(Math.sin(frameAt/1000*14))*.05:down&&flight>=0&&flight<1?Math.sin(flight*Math.PI)*.65:0);
+      const facing=training&&peer.slot!==undefined?farmPlot(peer.slot).rotation+Math.PI:peer.rotation;
+      avatar.rotation.y+=Math.atan2(Math.sin(facing-avatar.rotation.y),Math.cos(facing-avatar.rotation.y))*blend;
       avatar.rotation.z+=( (down?Math.PI/2:0)-avatar.rotation.z)*blend;
       this.animateBat(avatar,frameAt-(avatar.userData.swingReceived??-Infinity));
       const eggKey=peer.carried===null?null:`${peer.egg?.id??''}:${peer.carried}:${peer.egg?.stageId??''}:${peer.egg?.variant??''}`;
@@ -745,7 +747,10 @@ export class World {
       this.hatchModel.scale.set(base*(1+squash*.5+pulse),base*(1-squash+pulse),base*(1+squash*.5+pulse));
       this.hatchModel.rotation.z = this.reducedMotion.matches?0:Math.sin(hitAge*22)*kick*.045+(progress>=.3&&shownResult===null?Math.sin(time*3)*.01:0);
       this.hatchModel.position.x=0;
-      this.hatchModel.rotation.y = birthEgg&&!this.reducedMotion.matches&&birthAge>=0 ? -.25+Math.sin(birthAge*14)*.04 : isReward ? time*.35 : isHatch ? -.25 : 0;
+      const revealing=!!this.birth&&Number.isFinite(birthAge)&&birthAge>=0&&!this.reducedMotion.matches;
+      const spin= birthAge<1.05 ? 6*Math.PI*Math.pow(Math.max(0,birthAge)/1.05,2)
+        : 6*Math.PI+2*Math.PI*(1-Math.pow(1-Math.min(1,(birthAge-1.05)/1.65),3));
+      this.hatchModel.rotation.y = revealing ? -.25+spin : isReward ? time*.35 : isHatch ? -.25 : 0;
       this.hatchModel.position.y =
         this.reducedMotion.matches?0:shownResult !== null ? Math.abs(Math.sin(time*3))*.12 : Math.max(0,Math.sin(hitAge*12))*kick*.12;
     }

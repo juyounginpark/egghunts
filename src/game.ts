@@ -1,5 +1,6 @@
 import {OVERHAUL,upgradeBaseSpeed,progressionSpeedValue,productionUpgradeMultiplier,petIncomeValue,incomeValue,trainingProgressAfter,offlineSeconds,tapDamageValue,autoDamageValue,stageReward,walkingSpeedValue,stableRecoveryRatio,collectionEligible} from './balance';
 import {ULTRA_SECRET} from './ultra-secret';
+import {rainStrength} from './weather';
 import {WEIGHT_BALANCE,ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {freshPads} from './speed-pads';
@@ -36,7 +37,7 @@ import {HazardManager,type Hazard} from "./hazards";
 import {farmGym,CAMPFIRE,CAMP_SEATS} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
 import {MapCollision,villageMapColliders} from './map-collision';
-import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianPursuitSpeed,stageDamage,type HazardDefinition} from "./stage-data";
+import {STAGES,HAZARD_BALANCE,ROUTE,FINAL_GUARDIAN,BOSS_MOVEMENT,NIGHT_BOSS_SPEED_MULTIPLIER,routeStep,routeSegments,routeStage,recommendedRouteSpeed,guardianSpeed,guardianPursuitSpeed,stageDamage,type HazardDefinition} from "./stage-data";
 export type Egg = Weighted & { id: string; type: number; hp: number; hpVersion?:2|3|4|5; distance: number; stageId?:number; variant?:number; special?:boolean };
 // Version each egg because stored, carried and shared-room eggs have separate lifetimes.
 export function migrateEggHealth(eggs:(Egg|null|undefined)[]){
@@ -525,6 +526,7 @@ export class GameState {
   mobs:Mob[]=[];
   environmentTime:number|null=null;
   receiveBat(dx:number,dz:number){
+    if(this.training)return false;
     const now=this.now();if(this.death||now<this.knockedUntil)return false;
     this.standUp();
     if(this.carried){const egg=this.carried;egg.x=this.x;egg.z=this.z;this.world.push(egg);this.carried=null;this.emit('egg_drop',{type:egg.type,reason:'player_hit'});}
@@ -533,7 +535,7 @@ export class GameState {
     this.knockedUntil=now+BALANCE.knockdownMs;this.hitAt=now;this.training=false;this.launch=null;this.revision++;return true;
   }
   pvpHit(hit:{x:number;z:number;until:number}){
-    if(this.death)return;
+    if(this.death||this.training)return;
     if(this.carried)this.emit('egg_drop',{type:this.carried.type,reason:'player_hit'});
     this.carried=null;this.launch=null;this.training=false;this.seat=null;this.x=hit.x;this.z=hit.z;this.knockedUntil=hit.until;
     this.message="배트에 맞아 넘어졌어요! 들고 있던 알을 떨어뜨렸어요.";this.revision++;
@@ -745,7 +747,7 @@ export class GameState {
   get progressionSpeed(){return progressionSpeedValue(upgradeBaseSpeed(this.save.upgrades.speed),this.save.trainingProgress??0,this.save.equippedTrail??0,this.speedMultiplier,this.level);}
   get movementSpeed(){
     const base=this.isAtBase?BALANCE.baseWalkSpeed:walkingSpeedValue(this.progressionSpeed);
-    const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1)*(this.isNormalNight?BALANCE.nightMoveMultiplier:1);
+    const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1)*(this.isNormalNight?BALANCE.nightMoveMultiplier:1)*(this.isRaining?BALANCE.rainMoveMultiplier:1);
     return base*TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
   }
   speedPad=freshPads();
@@ -853,6 +855,7 @@ export class GameState {
     return this.now() < this.nightUntil;
   }
   get isNormalNight(){return !this.isNight&&this.now()>=this.nightAt-BALANCE.normalNightDuration;}
+  get isRaining(){return rainStrength(this.now())>0;}
   get pursuing() {
     return this.bosses.findIndex((b) => b.mode === "chase");
   }
@@ -916,7 +919,7 @@ export class GameState {
       // A rush ends outside contact range even after a delayed/large server tick.
       // Normal close pursuit resumes on the next tick, rather than overshooting.
       const rush=b.mode==='chase'&&l>reach+BOSS_MOVEMENT.catchupTargetGap;
-      const step=Math.min(rush?l-reach-BOSS_MOVEMENT.catchupTargetGap:l,speed*activeDt);
+      const step=Math.min(rush?l-reach-BOSS_MOVEMENT.catchupTargetGap:l,speed*(this.isNormalNight?NIGHT_BOSS_SPEED_MULTIPLIER:1)*activeDt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){

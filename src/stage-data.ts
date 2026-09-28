@@ -2,6 +2,7 @@ import {reorderStages,OLD_TO_STAGE} from './stage-order';
 import {walkingSpeedValue,stableRecoveryRatio} from './balance';
 import {routePoint} from './exploration-route';
 export const ROAD_WIDTH_SCALE=2;
+export const NIGHT_BOSS_SPEED_MULTIPLIER=1.2;
 export const BRUSH_TERRAIN={progress:[.22,.51,.79],offset:3.5,radius:1.55,opacity:.5};
 export const WATER_TERRAIN={
  stages:[1,3,4,5,6,7,8,9,10,11,13,15,16,17,20],doublePools:[1,3,8,9,15,20],

@@ -115,7 +115,7 @@ tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}mo
 topHud.append(tutorial);
 const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='events';topHud.append(weeklyEntry);
 let renderedWeeklyDay=-1;
-$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤이 깊어 나가지 못해요.<br>날이 밝으면 다시 출발해요.</p><small>낮 4분 · 밤 3분 · 깊은 밤 15초</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
+$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤이 깊어 나가지 못해요.<br>날이 밝으면 다시 출발해요.</p><small>낮 6분 · 밤 3분 · 깊은 밤 15초</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
 $("action").insertAdjacentHTML('beforebegin',`<button id="train-now" class="secondary" aria-label="운동하기" title="운동하기" hidden><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><span class="sr-only">운동하기</span></button>`);
 bottomHud.id = "bottom-hud";
@@ -371,8 +371,8 @@ function updateHud() {
   $("night-sky").classList.toggle('visible',phase.night&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||game.seat!==null||!!game.carried||!!game.death||!!game.returnReward;
-  $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:phase.normalNight?'밤 · 이동 −30%':'';
-  $('speed-help').hidden=!game.training&&!phase.normalNight;
+  $('speed-help').textContent=game.training?`+${num(game.effectiveTrainingRate,3)}/초`:phase.normalNight&&game.isRaining?'밤·비 · 이동 −37%':phase.normalNight?'밤 · 이동 −30%':game.isRaining?'비 · 이동 −10%':'';
+  $('speed-help').hidden=!game.training&&!phase.normalNight&&!game.isRaining;
   const hint=tutorialHint(game,tab);
   $("tutorial").hidden=!hint || !!game.returnReward || game.result!==null || !!game.death || paused;
   $("tutorial-title").textContent=hint?`${hint.step}/5 · ${hint.title}`:'';
@@ -1020,7 +1020,7 @@ function frame(now: number) {
   alertEl.hidden=!(presenting&&!!waking);
   if(presenting&&chaser&&gap<12&&now-lastBossStep>850-pressure*250){playSound('boss-step',chaser.stageId);lastBossStep=now;}
   audio.music(game.save.settings.sound&&presenting?(pursued?'chase':'calm'):'silent',pressure);
-  void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null,game.progression.stage);
+  void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null,game.progression.stage,game.training);
   if(multiplayer.connected){
     game.world=game.world.filter(e=>!e.id.startsWith('net-')||multiplayer.drops.some(d=>d.id===e.id));
     for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:eggMaxHp(egg),hpVersion:5,distance:Math.abs(egg.z),expires:game.nightAt});

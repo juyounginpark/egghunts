@@ -99,12 +99,13 @@ export class RegionGuardian {
     if(part.name==='crown'||part.name==='tail')part.rotation.y=reduced?0:Math.sin(time*(.6+stage*.025))*.055*(sleeping?.4:1);
    });
    const eyes=character.getObjectByName('eyes');if(eyes)eyes.scale.y=sleeping?.12+.88*rise:1;
-   character.traverse(o=>{if(o.name==='anger-rim')o.visible=rise>.05;});
+   const nightAnger=game.isNormalNight&&rise>.05;
+   character.traverse(o=>{if(o.name==='anger-rim'){o.visible=rise>.05;o.scale.setScalar(nightAnger?1.09:1.055);}});
    // Sleeping Zs become a red anger mark as the guardian wakes.
    const glyph=(xx:number,yy:number,w:number,h:number,c:number)=>{this.dummy.position.set(x+xx*scale,yy*scale,z);this.dummy.rotation.set(0,0,0);this.dummy.scale.set(w*scale,h*scale,.1*scale);this.dummy.updateMatrix();this.mesh.setMatrixAt(index,this.dummy.matrix);this.mesh.setColorAt(index++,this.color.setHex(c));};
    if(state.final){glyph(0,3.8,1.8,.18,0xffd36b);for(const xx of [-.7,0,.7])glyph(xx,4,.18,.45,0xffd36b);}
    if(sleeping&&rise<.5){for(let j=0;j<2;j++){const xx=.7+j*.35,yy=2.9+j*.4+(reduced?0:Math.sin(time+j)*.08);glyph(xx,yy,.3,.06,0xe9edd6);glyph(xx,yy+.22,.3,.06,0xe9edd6);for(let k=0;k<3;k++)glyph(xx-.1+k*.1,yy+.05+k*.06,.09,.07,0xe9edd6);}}
-   else if(chasing){for(const xx of [-.32,0,.32]){glyph(xx,3.5,.16,.5,0xff6658);glyph(xx,3.1,.16,.13,0xff6658);}}
+   else if(chasing){for(const xx of [-.32,0,.32]){glyph(xx,3.5,nightAnger?.22:.16,nightAnger?.75:.5,nightAnger?0xff3028:0xff6658);glyph(xx,3.1,.16,.13,0xff6658);}}
    if(chasing&&!reduced){
     const effect=(xx:number,yy:number,zz:number,w:number,h:number,d:number,color:number)=>{
      this.dummy.position.set(xx,yy,zz);this.dummy.rotation.set(0,angle,0);this.dummy.scale.set(w,h,d);this.dummy.updateMatrix();
@@ -115,10 +116,10 @@ export class RegionGuardian {
      const radius=(.6+age*5)*scale;
      for(let j=0;j<20;j++){const a=j*Math.PI/10;effect(x+Math.sin(a)*radius,.12,z+Math.cos(a)*radius,.38*scale,.12*scale,.38*scale,j%2?0xff643c:0xffca6a);}
     }
-    const dustCount=game.save.settings.quality==='low'?4:10;
+    const dustCount=game.save.settings.quality==='low'?4:nightAnger?14:10;
     for(let j=0;j<dustCount;j++){
      const phase=(time*1.7+j/dustCount)%1,back=(.8+phase*2.8)*scale,side=(j%2?1:-1)*(.5+phase*.6)*scale,size=(1-phase)*.3*scale;
-     effect(x-sn*back+cs*side,(.12+phase*.45)*scale,z-cs*back-sn*side,size,size*.7,size*(j%3===0?3:1),j%3===0?0xff9155:0xe4bd8a);
+     effect(x-sn*back+cs*side,(.12+phase*.45)*scale,z-cs*back-sn*side,size,size*.7,size*(j%3===0?3:1),nightAnger?(j%2?0xff5735:0xffb04e):j%3===0?0xff9155:0xe4bd8a);
     }
    }
   }

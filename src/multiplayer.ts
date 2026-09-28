@@ -1,5 +1,5 @@
 export type ChatMessage={id:string;text:string;at:number};
-export type Peer={activePetWeights?:import('./weight').Weighted[];petWeights?:import('./weight').Weighted[];mountWeight?:import('./weight').Weighted;id:string;mountPet?:number|null;riding?:boolean;seat?:number|null;at?:number;speed?:number;name:string;level?:number;isGuest?:boolean;x:number;z:number;rotation:number;appearance:number;downUntil:number;attackAt:number;hitAt?:number;velocity?:{x:number;z:number};carried:number|null;slot?:number;pets?:number[];farmEggs?:Pick<import('./game').Egg,'id'|'type'|'stageId'|'variant'|'special'|'weightG'|'standardWeightG'>[];activePets?:number[];egg?:import('./game').WorldEgg|null;chat?:ChatMessage|null};
+export type Peer={training?:boolean;activePetWeights?:import('./weight').Weighted[];petWeights?:import('./weight').Weighted[];mountWeight?:import('./weight').Weighted;id:string;mountPet?:number|null;riding?:boolean;seat?:number|null;at?:number;speed?:number;name:string;level?:number;isGuest?:boolean;x:number;z:number;rotation:number;appearance:number;downUntil:number;attackAt:number;hitAt?:number;velocity?:{x:number;z:number};carried:number|null;slot?:number;pets?:number[];farmEggs?:Pick<import('./game').Egg,'id'|'type'|'stageId'|'variant'|'special'|'weightG'|'standardWeightG'>[];activePets?:number[];egg?:import('./game').WorldEgg|null;chat?:ChatMessage|null};
 export type NetworkEgg={id:string;type:number;x:number;z:number};
 export class Multiplayer {
   peers:Peer[]=[];
@@ -32,11 +32,11 @@ export class Multiplayer {
     const r=await fetch(`${this.url}/claim`,{method:'POST',headers:{Authorization:`Bearer ${this.token}`,'Content-Type':'application/json'},body:JSON.stringify({id}),signal:AbortSignal.timeout(3000)});
     if(!r.ok)throw Error('다른 친구가 먼저 집었거나 너무 멀어요.');return r.json();
   }
-  async update(x:number,z:number,rotation:number,appearance:number,carried:number|null,stageStart=1){
+  async update(x:number,z:number,rotation:number,appearance:number,carried:number|null,stageStart=1,training=false){
     if(!this.connected||this.busy||performance.now()-this.lastSent<100)return;
     this.busy=true;this.lastSent=performance.now();
     try{
-      const response=await fetch(`${this.url}/state`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${this.token}`},body:JSON.stringify({x,z,rotation,appearance,carried,stageStart}),signal:AbortSignal.timeout(3000)});
+      const response=await fetch(`${this.url}/state`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${this.token}`},body:JSON.stringify({x,z,rotation,appearance,carried,stageStart,training}),signal:AbortSignal.timeout(3000)});
       if(!response.ok)throw Error('연결 종료');
       const state=await response.json();this.peers=state.players;this.drops=state.drops;this.syncClock(state.serverTime);
       if(state.hit&&state.hit.id!==this.lastHit){this.lastHit=state.hit.id;this.onHit(state.hit);}

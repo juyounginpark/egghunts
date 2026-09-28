@@ -177,7 +177,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  for(const p of Object.values(room.players))if(p.chat&&now-p.chat.at>=BALANCE.chatDurationMs)delete p.chat;
  const peers=[...games].filter(([id,g])=>id!==user&&!g.concealed).map(([id,g])=>({
   id,at:now,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
-  speed:g.speed,seat:g.seat,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,chat:room.players[id].chat??null,
+  speed:g.speed,seat:g.seat,training:g.training,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,chat:room.players[id].chat??null,
   activePets:g.save.active.filter(id=>g.save.mongles[id]>0).slice(0,BALANCE.maxCompanions),
   mountPet:g.mountId,riding:g.riding,mountWeight:g.mountPetLot,activePetWeights:g.activePetLots,petWeights:g.farmPetLots(),
   pets:g.farmPetLots().map(l=>l.species),

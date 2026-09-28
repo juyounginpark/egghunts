@@ -19,6 +19,9 @@ export class SceneryCreatures{
  private stages=new Map<number,StageScene>();
  private start=0;
  private lastSwing=-Infinity;
+ private sleepMarks=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:0xe5eef5}),300);
+ private marker=new T.Object3D();
+ constructor(){this.sleepMarks.frustumCulled=false;this.sleepMarks.count=0;this.group.add(this.sleepMarks);}
  private random(c:Creature){c.seed=(Math.imul(c.seed,1664525)+1013904223)>>>0;return c.seed/4294967296;}
  private async populate(scene:StageScene){
   scene.loading=true;
@@ -42,11 +45,12 @@ export class SceneryCreatures{
  update(game:GameState,dt:number,time:number,visible:boolean,swingAt:number,reduced:boolean){
   this.group.visible=visible&&!game.isAtBase;
   if(this.start!==game.progression.stage){
-   this.group.clear();this.stages.clear();this.start=game.progression.stage;this.lastSwing=swingAt;
+   this.group.clear();this.group.add(this.sleepMarks);this.stages.clear();this.start=game.progression.stage;this.lastSwing=swingAt;
   }
   const hit=Number.isFinite(swingAt)&&swingAt!==this.lastSwing&&game.now()-swingAt>=0&&game.now()-swingAt<350;
   this.lastSwing=swingAt;
   if(!this.group.visible)return;
+  const night=game.isNormalNight||game.isNight;let sleepCount=0;
   const localZ=game.z+game.stageOffset,active=[game.stage.id];
   if(localZ>-21&&game.stage.id>this.start)active.push(game.stage.id-1);
   if(localZ<-6-routeLength(game.stage.id)+15&&game.stage.id<20)active.push(game.stage.id+1);
@@ -69,6 +73,8 @@ export class SceneryCreatures{
      const shove=Math.max(0,Math.min(before,2.1)-Math.max(c.down,1.92))/.18;
      c.x+=c.recoilX*shove;c.z+=c.recoilZ*shove;
      c.targetX=c.x;c.targetZ=c.z;c.wait=.6;
+    }else if(night){
+     roll=Math.PI/2;c.targetX=c.x;c.targetZ=c.z;c.wait=.6;
     }else if(c.wait>0)c.wait=Math.max(0,c.wait-dt);
     else{
      const tx=c.targetX-c.x,tz=c.targetZ-c.z,l=Math.hypot(tx,tz);
@@ -88,9 +94,22 @@ export class SceneryCreatures{
     const hop=!reduced&&walking?Math.abs(Math.sin(c.phase))*.035:0;
     c.root.position.set(c.x,c.ground+c.center+(c.side-c.center)*Math.abs(Math.sin(roll))+hop,c.z-offset);
     c.root.rotation.z=roll;
-    animatePet(c.model,c.id,time+c.id*.17,walking,reduced||c.down>0);
+    animatePet(c.model,c.id,time+c.id*.17,walking,reduced||c.down>0||night);
+    if(night&&c.down<=0){
+     const eyes=c.model.getObjectByName('eyes');if(eyes)eyes.scale.y*=.12;
+     // Shared voxel Z glyphs make sleep readable without per-creature DOM or textures.
+     for(let j=0;j<2;j++){
+      const x=c.x+.35+j*.3,y=c.root.position.y+c.side+.35+j*.3;
+      const mark=(dx:number,dy:number,w:number,h:number)=>{
+       this.marker.position.set(x+dx,y+dy,c.z-offset);this.marker.rotation.set(0,0,0);this.marker.scale.set(w,h,.035);this.marker.updateMatrix();this.sleepMarks.setMatrixAt(sleepCount++,this.marker.matrix);
+      };
+      mark(0,0,.22,.04);mark(0,.18,.22,.04);
+      for(let k=0;k<3;k++)mark(-.08+k*.08,.04+k*.05,.07,.055);
+     }
+    }
     if(walking&&!reduced)for(const [i,leg] of c.legs.entries())if(leg)leg.rotation.x+=Math.sin(c.phase+i*Math.PI)*.22;
    }
   }
+  this.sleepMarks.count=sleepCount;this.sleepMarks.instanceMatrix.needsUpdate=true;
  }
 }

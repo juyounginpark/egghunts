@@ -34,10 +34,10 @@ export function multiplayerServer(clock=Date.now) {
       if(!self){send(401,{error:'Sign in again'});return;}
       if(req.url==='/logout'){sessions.delete(token);send(200,{});return;}
       if(req.url==='/attack'){
-        if(now-self.attackAt<BALANCE.batCooldown||now<self.downUntil){send(429,{error:'Cooldown'});return;}
+        if(self.training||now-self.attackAt<BALANCE.batCooldown||now<self.downUntil){send(429,{error:'Cooldown'});return;}
         self.attackAt=now;let hits=0;
         for(const target of sessions.values()){
-          if(concealedAt(target.x,target.z,target.stageStart??1))continue;
+          if(target.training||concealedAt(target.x,target.z,target.stageStart??1))continue;
           const dx=target.x-self.x,dz=target.z-self.z,d=Math.hypot(dx,dz);
           if(target===self||now-target.lastSeen>5000||now<target.downUntil||d>BALANCE.batRange||(d>.01&&(dx*Math.sin(self.rotation)+dz*Math.cos(self.rotation))/d<.15))continue;
           if(target.carried!==null){const id=`net-${randomBytes(8).toString('hex')}`;drops.set(id,{id,type:target.carried,x:target.x,z:target.z,at:now});target.carried=null;}
@@ -58,10 +58,11 @@ export function multiplayerServer(clock=Date.now) {
       if(![data.x,data.z,data.rotation].every(Number.isFinite)||Math.abs(data.x)>BALANCE.mapX||data.z<BALANCE.mapFarZ||data.z>BALANCE.mapNearZ||![0,1,2].includes(data.appearance)){send(400,{error:'Invalid position'});return;}
       if(data.carried!==undefined&&data.carried!==null&&(!Number.isInteger(data.carried)||!EGGS[data.carried])){send(400,{error:'Invalid egg'});return;}
       if(now>=self.downUntil)Object.assign(self,{x:data.x,z:data.z,carried:data.carried??null});
+      self.training=data.training===true&&now>=self.downUntil&&self.z>=BALANCE.baseMinZ&&self.carried===null;
       Object.assign(self,{rotation:data.rotation,appearance:data.appearance,lastSeen:now,lastUpdate:now});
       for(const [id,egg] of drops)if(now-egg.at>BALANCE.nightInterval)drops.delete(id);
       if(Number.isInteger(data.stageStart)&&data.stageStart>=1&&data.stageStart<=20)self.stageStart=data.stageStart;
-      send(200,{serverTime:now,hit:self.hit,drops:[...drops.values()],players:[...sessions.values()].filter(s=>s.id!==self.id&&now-s.lastSeen<5000&&!concealedAt(s.x,s.z,s.stageStart??1)).map(({id,name,x,z,rotation,appearance,downUntil,attackAt,carried})=>({id,name,x,z,rotation,appearance,downUntil,attackAt,carried}))});
+      send(200,{serverTime:now,hit:self.hit,drops:[...drops.values()],players:[...sessions.values()].filter(s=>s.id!==self.id&&now-s.lastSeen<5000&&!concealedAt(s.x,s.z,s.stageStart??1)).map(({id,name,x,z,rotation,appearance,downUntil,attackAt,carried,training})=>({id,name,x,z,rotation,appearance,downUntil,attackAt,carried,training}))});
     }catch{send(400,{error:'Invalid request'});}
   });
 }

@@ -1,6 +1,6 @@
 import {BALANCE} from './data';
 
-/** Shared wall-clock weather: reconnecting never rerolls a shower. Cosmetic only. */
+/** Shared wall-clock weather for visuals and movement; reconnecting never rerolls. */
 export function rainStrength(now:number){
  const window=Math.floor(now/BALANCE.rainInterval);
  const hash=(seed:number)=>{const n=Math.sin(seed*127.1+311.7)*43758.5453;return n-Math.floor(n);};
