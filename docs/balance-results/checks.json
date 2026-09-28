@@ -1,0 +1,55 @@
+{
+  "invariants": {
+    "passed": [
+      "economic simulator matches actual game formulas across 100 seeded loadouts",
+      "all 721 catalog IDs, names, lots and tier probability boundaries",
+      "all 20 levels have positive monotone prices independent of equipment",
+      "50K reachable without rare pets; a single Secret cannot skip four stages",
+      "carrying every tier, weight and carry level always slows movement",
+      "training is bounded and cannot accrue beyond completion",
+      "legacy migration preserves wallet, weighted lots, history and archived training; idempotent",
+      "offline payout 8h/24h/48h/7d is capped, diminished and settled once",
+      "coupons remain starter scoped, ads capped and duplicate claims pay zero",
+      "offline efficiency cannot be reset by other players polling the room",
+      "entry excludes carry/status/mount; stages enforce progression and allow retreat",
+      "continuous positive physical, income and combat curves near 1K",
+      "normal collection excludes Secret and SS tiers; legacy ownership is intact",
+      "general hits cannot one-shot; same-stage reference dies after 4–6 hits"
+    ]
+  },
+  "server": {
+    "passed": [
+      "shared purchase price",
+      "forged wallet rejected",
+      "starter coupon once",
+      "daily ad cap",
+      "v1 migration preserves exact wallet/lots/claims",
+      "idempotent reconnect"
+    ]
+  },
+  "ui": {
+    "viewport": {
+      "width": 1080,
+      "height": 1920
+    },
+    "passed": [
+      "1080x1920 upgrade purchase and large wallet display",
+      "separate movement and progression trail labels",
+      "three collection groups span panel width",
+      "weekly reward table",
+      "exercise finishes and does not accumulate beyond cap",
+      "egg pickup retains progression display"
+    ],
+    "errors": []
+  },
+  "production-ui": {
+    "viewport": {
+      "width": 1080,
+      "height": 1920
+    },
+    "passed": [
+      "production boots, QA hook excluded, shop assets and collection render"
+    ],
+    "errors": []
+  }
+}

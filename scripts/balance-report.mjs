@@ -12,9 +12,9 @@ const days=v=>Number.isFinite(v)?f(v/86400):'미도달';
 const table=(head,rows)=>[head,head.map(()=>'---'),...rows].map(r=>`| ${r.join(' | ')} |`).join('\n');
 const qs=q=>['P10','P50','P90'].map(k=>days(q[k])).join(' / ');
 const targets={5:'10~20분',8:'1~2시간',10:'4~8시간',13:'1~2일',15:'4~6일',17:'10~14일',18:'16~20일',19:'24~28일',20:'30~40일'};
-const tests=[];
+const tests=[],checkEvidence={};
 for(const name of ['invariants','server','ui','production-ui']){
- try{tests.push([name,(await json(`artifacts/balance-overhaul/${name}.json`)).passed.join('; ')]);}catch{tests.push([name,'결과 파일 없음 — 통과로 간주하지 않음']);}
+ try{const result=await json(`artifacts/balance-overhaul/${name}.json`);checkEvidence[name]=result;tests.push([name,result.passed.join('; ')]);}catch{tests.push([name,'결과 파일 없음 — 통과로 간주하지 않음']);}
 }
 const upgrades=Object.keys(m.UPGRADES).flatMap(kind=>Array.from({length:20},(_,level)=>{
  const q=quantiles(normalAccounts.map(a=>a.upgrades[`${kind}-${level+1}`]));
@@ -116,4 +116,5 @@ await writeFile('docs/balance-overhaul-report.md',contents.join('\n\n')+'\n');
 await mkdir('docs/balance-results',{recursive:true});
 await writeFile('docs/balance-results/simulation.json',JSON.stringify(simulation,null,2)+'\n');
 await writeFile('docs/balance-results/chase.json',JSON.stringify(chase,null,2)+'\n');
+await writeFile('docs/balance-results/checks.json',JSON.stringify(checkEvidence,null,2)+'\n');
 console.log('Wrote report, 10K aggregate results and chase evidence.');

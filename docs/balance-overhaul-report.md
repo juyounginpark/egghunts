@@ -402,7 +402,7 @@
 | invariants | economic simulator matches actual game formulas across 100 seeded loadouts; all 721 catalog IDs, names, lots and tier probability boundaries; all 20 levels have positive monotone prices independent of equipment; 50K reachable without rare pets; a single Secret cannot skip four stages; carrying every tier, weight and carry level always slows movement; training is bounded and cannot accrue beyond completion; legacy migration preserves wallet, weighted lots, history and archived training; idempotent; offline payout 8h/24h/48h/7d is capped, diminished and settled once; coupons remain starter scoped, ads capped and duplicate claims pay zero; offline efficiency cannot be reset by other players polling the room; entry excludes carry/status/mount; stages enforce progression and allow retreat; continuous positive physical, income and combat curves near 1K; normal collection excludes Secret and SS tiers; legacy ownership is intact; general hits cannot one-shot; same-stage reference dies after 4–6 hits |
 | server | shared purchase price; forged wallet rejected; starter coupon once; daily ad cap; v1 migration preserves exact wallet/lots/claims; idempotent reconnect |
 | ui | 1080x1920 upgrade purchase and large wallet display; separate movement and progression trail labels; three collection groups span panel width; weekly reward table; exercise finishes and does not accumulate beyond cap; egg pickup retains progression display |
-| production-ui | 결과 파일 없음 — 통과로 간주하지 않음 |
+| production-ui | production boots, QA hook excluded, shop assets and collection render |
 
 생성 JS 주요 세 청크 gzip 합 약 305.8 kB(약 298.6 KiB)이며 300 KiB 예산에 가깝다. 동적 펫 애니메이션·SDK와 모델을 포함한 실제 초기 전송량, draw calls, 모바일 FPS는 이 수치로 대체하지 않는다.
 
