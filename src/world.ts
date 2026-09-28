@@ -7,7 +7,7 @@ import {BRUSH_TERRAIN} from './stage-data';
 import {SceneryCreatures} from './scenery-creatures';
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS, crackStage,DAMAGE_OVER_TIME } from "./data";
+import { EGGS, RARITIES, BALANCE, MONGLES, TRAILS,DAMAGE_OVER_TIME } from "./data";
 import { eggVisual, petVisual, animateEgg,nestVisual } from "./visuals";
 import type { Egg, GameState } from "./game";
 import { voxelModel as model, loadVoxels } from "./voxel";
@@ -240,6 +240,8 @@ export class World {
   private low = false;
   private hudMeasureAt = -1;
   private viewportOffset = 0;
+  private hatchSpace = 240;
+  private hatchZoom = 1.4;
   private eggModels: T.Group[] = [];
   private stageEggModels=new Map<string,T.Group>();
   private eggModel(egg:Pick<Egg,'type'|'stageId'|'variant'|'weightG'|'standardWeightG'>){
@@ -266,7 +268,6 @@ export class World {
   private highlight: T.Mesh;
   private sun: T.DirectionalLight;
   private hatchModel: T.Group | null = null;
-  private crack = new T.Group();
   private companions = new T.Group();
   private companionKey = "";
   private flying = new T.Group();
@@ -432,8 +433,7 @@ export class World {
     const pedestal = model("pedestal");
     pedestal.scale.set(2.5, 1, 2.5);
     pedestal.position.y = -0.2;
-    this.crack.scale.setScalar(BALANCE.eggPresentationScale);
-    this.hatch.add(pedestal, this.crack,this.hatchBurst);
+    this.hatch.add(pedestal,this.hatchBurst);
     this.hatch.visible = false;
   }
   quality(low: boolean) {
@@ -472,7 +472,10 @@ export class World {
     this.hatchModel = m ?? null;
     if (m) {
       m.scale.setScalar((result !== null ? 2*WEIGHT_BALANCE.petVisualScale : 2.5*BALANCE.eggPresentationScale)*weightSize(appearance??{}));
+      m.userData.hatchScale=m.scale.x;
       this.hatch.add(m);
+      const size=new T.Box3().setFromObject(m).getSize(new T.Vector3());
+      m.userData.hatchExtent=Math.max(.1,size.y*.85+(size.x+size.z)*.4);
     }
   }
   shakeHatch(){this.hitAt=performance.now();}
@@ -483,14 +486,14 @@ export class World {
     const rect=touch.getBoundingClientRect(),host=this.host.getBoundingClientRect();
     const effect=document.createElement('div');effect.className='hatch-hit-feedback';effect.setAttribute('aria-hidden','true');
     effect.style.left=`${(point?.x??rect.left+rect.width/2)-host.left}px`;effect.style.top=`${(point?.y??rect.top+rect.height*.35)-host.top}px`;
-    const number=document.createElement('b');number.textContent=`−${amount<.01?'<0.01':formatNumber(amount)}`;effect.append(number);
-    if(!this.reducedMotion.matches)for(let i=0;i<6;i++){
-      const spark=document.createElement('i'),angle=i*Math.PI/3;
-      spark.style.setProperty('--dx',`${Math.cos(angle)*45}px`);spark.style.setProperty('--dy',`${Math.sin(angle)*35}px`);effect.append(spark);
+    const ripple=document.createElement('span');ripple.className='hatch-ripple';effect.append(ripple);
+    if(!this.reducedMotion.matches)for(let i=0;i<3;i++){
+      const spark=document.createElement('i'),angle=i*Math.PI*2/3;
+      spark.style.setProperty('--dx',`${Math.cos(angle)*22}px`);spark.style.setProperty('--dy',`${Math.sin(angle)*22}px`);effect.append(spark);
     }
-    const active=this.host.querySelectorAll('.hatch-hit-feedback');if(active.length>=8)active[0].remove();
+    const active=this.host.querySelectorAll('.hatch-hit-feedback');if(active.length>=5)active[0].remove();
     this.host.append(effect);
-    const motion=effect.animate([{opacity:1,transform:'translate(-50%,-50%) scale(1.12)'},{opacity:0,transform:`translate(-50%,${this.reducedMotion.matches?'-50%':'-140%'}) scale(1)`}],{duration:650,easing:'ease-out'});
+    const motion=effect.animate([{opacity:.9,transform:'translate(-50%,-50%) scale(.65)'},{opacity:0,transform:`translate(-50%,-50%) scale(${this.reducedMotion.matches?'.65':'1.2'})`}],{duration:420,easing:'ease-out'});
     motion.onfinish=()=>effect.remove();
   }
   async revealHatch(id:number,egg:Pick<Egg,'type'|'stageId'|'variant'|'weightG'|'standardWeightG'>,onBirth:()=>void){
@@ -533,6 +536,7 @@ export class World {
         const top=game.returnReward?host.height*.12:document.getElementById('top-hud')!.getBoundingClientRect().bottom-host.top;
         const bottom=document.getElementById('bottom-hud')!;
         const end=game.returnReward?document.getElementById('reward-copy')!.getBoundingClientRect().top-host.top:bottom.hidden?host.height*.8:bottom.getBoundingClientRect().top-host.top-36;
+        this.hatchSpace=Math.max(80,end-top-36);
         this.viewportOffset=host.height/2-(top+end)/2;
       }else this.viewportOffset = -host.height * .05;
       this.camera.setViewOffset(
@@ -724,35 +728,22 @@ export class World {
     this.hatchBurst.update(birthAge,this.birth?MONGLES[this.birth.id].tier:0,this.reducedMotion.matches,this.low);
     if(this.birth&&birthAge>=1.05&&this.birth.onBirth){this.birth.onBirth();this.birth.onBirth=undefined;}
     if(this.birth&&birthAge>=2.7)this.birth.done();
-    this.crack.visible = isHatch && !!game.selected && game.result===null && !isReward;
-    const stage = game.selected ? crackStage(game.selected.hp, eggMaxHp(game.selected)) : 0;
-    if (this.crack.userData.stage !== stage) {
-      this.crack.userData.stage = stage;
-      for (const child of [...this.crack.children]) {
-        (child as T.Mesh).geometry.dispose();
-        this.crack.remove(child);
-      }
-      for (let i = 0; i < stage * 3; i++) {
-        const m = new T.Mesh(
-          new T.BoxGeometry(0.07, 0.17, 0.045),
-          new T.MeshBasicMaterial({ color: stage === 3 ? 0xffdf72 : 0x736957 }),
-        );
-        m.position.set(Math.sin(i * 2) * 0.28, 0.4 + i * 0.11, 0.84);
-        m.rotation.z = i % 2 ? 0.5 : -0.5;
-        this.crack.add(m);
-      }
-    }
     if (this.hatchModel) {
       animateEgg(this.hatchModel, time, this.low);
       if(shownResult!==null){animatePet(this.hatchModel,shownResult,time,false,this.reducedMotion.matches);this.hatchModel.userData.greetingAt??=time;greetPet(this.hatchModel,shownResult,time-this.hatchModel.userData.greetingAt,this.reducedMotion.matches);}
       this.hatchModel.visible = !!game.selected || game.result !== null || isReward;
       const hitAge=(performance.now()-this.hitAt)/1000;
-      const kick = Math.max(0, 1 - hitAge / .36);
-      this.hatchModel.rotation.z = this.reducedMotion.matches?0:Math.sin(hitAge * 48) * kick * 0.23;
-      this.hatchModel.position.x=this.reducedMotion.matches?0:Math.sin(hitAge*48)*kick*.1;
-      this.hatchModel.rotation.y = birthEgg&&!this.reducedMotion.matches&&birthAge>=0 ? birthAge*birthAge*30 : isReward ? time*.8 : isHatch ? -0.25 : 0;
+      const kick = shownResult===null&&hitAge>=0?Math.max(0,1-hitAge/.38):0;
+      const progress=game.selected?1-game.selected.hp/eggMaxHp(game.selected):0;
+      const pulse=!this.reducedMotion.matches&&shownResult===null&&progress>=.9?Math.sin(time*7)*.018:0;
+      const squash=this.reducedMotion.matches?0:Math.sin(hitAge*18)*kick*.1;
+      const base=this.hatchModel.userData.hatchScale as number;
+      this.hatchModel.scale.set(base*(1+squash*.5+pulse),base*(1-squash+pulse),base*(1+squash*.5+pulse));
+      this.hatchModel.rotation.z = this.reducedMotion.matches?0:Math.sin(hitAge*22)*kick*.045+(progress>=.3&&shownResult===null?Math.sin(time*3)*.01:0);
+      this.hatchModel.position.x=0;
+      this.hatchModel.rotation.y = birthEgg&&!this.reducedMotion.matches&&birthAge>=0 ? -.25+Math.sin(birthAge*14)*.04 : isReward ? time*.35 : isHatch ? -.25 : 0;
       this.hatchModel.position.y =
-        shownResult !== null ? Math.abs(Math.sin(time * 3)) * 0.2 : 0;
+        this.reducedMotion.matches?0:shownResult !== null ? Math.abs(Math.sin(time*3))*.12 : Math.max(0,Math.sin(hitAge*12))*kick*.12;
     }
     const target = isHatch
       ? new T.Vector3(0, 1, 0)
@@ -766,7 +757,12 @@ export class World {
       this.camera.position.y+=Math.sin(time*47+1)*strength*.65;
     }
     // Picking up an egg or showing a contextual button must not zoom the map.
-    this.camera.zoom = isHatch ? 1.4 : .78;
+    if(isHatch&&this.hatchModel){
+      const extent=this.hatchModel.userData.hatchExtent as number;
+      const fit=Math.min(1.4,this.hatchSpace*17/(Math.max(1,this.host.clientHeight)*extent));
+      this.hatchZoom=T.MathUtils.lerp(this.hatchZoom,fit,1-Math.exp(-dt*10));
+    }
+    this.camera.zoom = isHatch ? this.hatchZoom : .78;
     this.camera.updateProjectionMatrix();
     this.camera.updateMatrixWorld();this.positionHatchTouch();
     const guide=document.getElementById('first-egg-arrow');
