@@ -1,5 +1,11 @@
 # 구현 작업 계획
 
+## 권장속도 미달 운반 감속 (2026-09-29)
+
+- 공통 GameState.eggSpeedPenalty에서 carried와 meetsEggSpeed를 사용하여 표시 권장속도와 동일한 기준으로 ×0.2를 적용한다. 서버/클라이언트 이동 계산 및 HUD에 연결한다.
+- 알 운반이 끝나면 자동 해제한다. 기존 추격·습득 동작은 유지한다. 자동 QA·검증용 빌드는 실행하지 않고 운영 서버 배포용 번들만 생성한다.
+- 운영 서버 배포 후 서비스 active. 백업: `/opt/egghunts/backups/night-weather-20260929T052255Z`.
+
 ## 펫 개요·무게 능력·크기별 탑승 (2026-09-29)
 
 - OFF_PATH_SPEED_MULTIPLIER=.95, PLAYER_CHASE_SPEED_MULTIPLIER=1.7. 자신의 carried.id와 보스 target을 비교하여 추격 가속을 적용하고 HUD에 표시한다.

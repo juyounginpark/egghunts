@@ -5,6 +5,7 @@ export const ROAD_WIDTH_SCALE=2;
 export const NIGHT_BOSS_SPEED_MULTIPLIER=1.2;
 export const OFF_PATH_SPEED_MULTIPLIER=.95;
 export const PLAYER_CHASE_SPEED_MULTIPLIER=1.7;
+export const UNDER_RECOMMENDED_EGG_SPEED_MULTIPLIER=.2;
 export const EGG_REPLENISH={threshold:2,minDelay:10000,maxDelay:60000,placeSeconds:1.2};
 export const BRUSH_TERRAIN={progress:[.22,.51,.79],offset:3.5,radius:1.55,opacity:.5};
 export const WATER_TERRAIN={
