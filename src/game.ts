@@ -1,8 +1,8 @@
 import {OVERHAUL,upgradeBaseSpeed,progressionSpeedValue,productionUpgradeMultiplier,petIncomeValue,incomeValue,trainingProgressAfter,offlineSeconds,tapDamageValue,autoDamageValue,stageReward,walkingSpeedValue,stableRecoveryRatio,collectionEligible} from './balance';
 import {ULTRA_SECRET} from './ultra-secret';
-import {EGG_REPLENISH,OFF_PATH_SPEED_MULTIPLIER} from './stage-data';
+import {EGG_REPLENISH,OFF_PATH_SPEED_MULTIPLIER,PLAYER_CHASE_SPEED_MULTIPLIER} from './stage-data';
 import {rainStrength,windStrength} from './weather';
-import {WEIGHT_BALANCE,ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
+import {weightedPetStats,petWeightRatio,ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
 import {freshPads} from './speed-pads';
 import {isStageEggVariant,normalEggSelection,randomNormalEggVariant} from './egg-variants';
@@ -16,7 +16,7 @@ import {firstEggTarget,migrateTutorial,TUTORIAL_STEPS} from './tutorial';
 import {WEEKLY_EVENT} from './data';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
-import {growthCost,EGG_HEALTH,eggMaxHp,equippedPetMultiplier} from './data';
+import {growthCost,EGG_HEALTH,eggMaxHp} from './data';
 import {
   BALANCE,
   COUPONS,
@@ -447,10 +447,10 @@ export class GameState {
     if(chosen)return this.sellPetLot(chosen.key);
     return 0;
   }
-  get mountId(){const id=this.save.mountPet;if((this.mountPetLot?.weightG??0)<WEIGHT_BALANCE.mountMinimumGrams)return null;return typeof id==='number'&&Number.isInteger(id)&&MONGLES[id]&&(this.save.mongles[id]??0)>this.save.active.filter(p=>p===id).length?id:null;}
+  get mountId(){const id=this.save.mountPet;return this.mountPetLot&&typeof id==='number'&&Number.isInteger(id)&&MONGLES[id]&&(this.save.mongles[id]??0)>this.save.active.filter(p=>p===id).length?id:null;}
   get equippedPetIds(){return this.mountId===null?this.save.active:[...this.save.active,this.mountId];}
   equippedCount(id:number){return this.save.active.filter(p=>p===id).length+Number(this.mountId===id);}
-  mountBonus(id:number){return Math.min(OVERHAUL.mountBonusCap,Math.max(0,(MONGLES[id]?.speedMultiplier??1)-1)*BALANCE.mountSpeedBonusRate);}
+  mountBonus(id:number,w:Weighted=this.mountPetLot?.species===id?this.mountPetLot:{} ){return Math.min(OVERHAUL.mountBonusCap,Math.max(0,weightedPetStats(id,w).speedMultiplier-1)*BALANCE.mountSpeedBonusRate);}
   get mountSpeedMultiplier(){return 1+(this.mountId===null?0:this.mountBonus(this.mountId));}
   get riding(){return this.mountId!==null&&!this.death&&!this.training&&this.seat===null&&this.now()>=this.knockedUntil&&this.knockback.remaining<=0&&!this.launch;}
   equipMount(id:number){
@@ -488,7 +488,7 @@ export class GameState {
   }
   unequipPetSlot(slot:number){if(!this.isAtBase||this.death||!Number.isInteger(slot)||slot<0||slot>=this.save.active.length)return false;this.save.active.splice(slot,1);this.save.activeLots?.splice(slot,1);this.revision++;return true;}
   equipMountLot(key:string){
-    const lot=this.save.petLots?.find(l=>l.key===key);if(!this.isAtBase||this.death||!lot||lot.count<=0||lot.weightG<WEIGHT_BALANCE.mountMinimumGrams||this.save.mountLot===key)return false;
+    const lot=this.save.petLots?.find(l=>l.key===key);if(!this.isAtBase||this.death||!lot||lot.count<=0||this.save.mountLot===key)return false;
     if(this.lotAvailable(key)<=0){const slot=this.save.activeLots?.lastIndexOf(key)??-1;if(slot<0)return false;this.unequipPetSlot(slot);}
     this.save.mountPet=lot.species;this.save.mountLot=key;this.revision++;return true;
   }
@@ -600,7 +600,7 @@ export class GameState {
   get productionMultiplier(){return productionUpgradeMultiplier(this.save.upgrades);}
   petIncomeStageMultiplier(id:number){return OVERHAUL.stageIncomeGrowth**(Math.max(1,MONGLES[id].stageId)-1);}
   petIncomeAmount(id:number){const p=MONGLES[id];return incomeValue(petIncomeValue(Math.max(1,p.stageId),p.tier)*this.productionMultiplier)*BALANCE.petIncomeSeconds;}
-  get petIncomePerCycle(){return this.save.active.reduce((sum,id)=>sum+this.petIncomeAmount(id),0);}
+  get petIncomePerCycle(){return this.activePetLots.reduce((sum,l)=>sum+this.petIncomeAmount(l.species)*petWeightRatio(l),0);}
   get incomePerSecond(){return this.petIncomePerCycle/BALANCE.petIncomeSeconds;}
   offlineReward:Money=0;
   settleProduction(at:number,active=true){
@@ -750,18 +750,20 @@ export class GameState {
   get selected() {
     return this.save.eggs.find((e) => e.id === this.save.selected);
   }
-  get clickMultiplier() { return equippedPetMultiplier(this.save.active,'clickMultiplier'); }
-  get autoMultiplier() { return equippedPetMultiplier(this.save.active,'autoMultiplier'); }
-  get speedMultiplier() { return equippedPetMultiplier(this.save.active,'speedMultiplier'); }
+  private weightedMultiplier(kind:'clickMultiplier'|'autoMultiplier'|'speedMultiplier'){return 1+this.activePetLots.reduce((sum,l)=>sum+weightedPetStats(l.species,l)[kind]-1,0);}
+  get clickMultiplier() { return this.weightedMultiplier('clickMultiplier'); }
+  get autoMultiplier() { return this.weightedMultiplier('autoMultiplier'); }
+  get speedMultiplier() { return this.weightedMultiplier('speedMultiplier'); }
   get progressionSpeed(){return progressionSpeedValue(upgradeBaseSpeed(this.save.upgrades.speed),this.save.trainingProgress??0,this.save.equippedTrail??0,this.speedMultiplier,this.level);}
   get offPath(){
     return !this.isAtBase&&!terrainAt(this.stage.id,this.x,this.z+this.stageOffset).onPath;
   }
   get pathSpeedMultiplier(){return this.offPath?OFF_PATH_SPEED_MULTIPLIER:1;}
+  get chaseSpeedMultiplier(){return !this.isAtBase&&this.carried&&this.bosses.some(b=>b.mode==='chase'&&b.target===this.carried!.id)?PLAYER_CHASE_SPEED_MULTIPLIER:1;}
   get movementSpeed(){
     const base=this.isAtBase?BALANCE.baseWalkSpeed:walkingSpeedValue(this.progressionSpeed);
     const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1)*(this.isNormalNight?BALANCE.nightMoveMultiplier:1)*(this.isRaining?BALANCE.rainMoveMultiplier:1)*(this.isWindy?BALANCE.windMoveMultiplier:1);
-    return base*TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*this.pathSpeedMultiplier*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
+    return base*TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*this.pathSpeedMultiplier*this.chaseSpeedMultiplier*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
   }
   speedPad=freshPads();
   eggRequiredSpeed(egg:WorldEgg){const stage=egg.stageId??this.stage.id;return recommendedRouteSpeed(0,stage)*stableRecoveryRatio(stage)*(.88/carryMultiplier(egg,this.save.upgrades.carry));}

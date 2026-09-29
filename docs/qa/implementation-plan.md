@@ -1,5 +1,13 @@
 # 구현 작업 계획
 
+## 펫 개요·무게 능력·크기별 탑승 (2026-09-29)
+
+- OFF_PATH_SPEED_MULTIPLIER=.95, PLAYER_CHASE_SPEED_MULTIPLIER=1.7. 자신의 carried.id와 보스 target을 비교하여 추격 가속을 적용하고 HUD에 표시한다.
+- weightedPetStats/ petWeightRatio를 동행 능력·생산·탑승·보관소 표시/정렬에 연결한다. 저장 데이터는 변경하지 않는다.
+- 3kg 장착/복원 제한을 제거한다. MountView에서 아우라를 제외한 물리 모델 높이와 플레이어 rig 높이를 비교해 작은 펫은 머리 위, 큰 펫은 기존 좌석 높이를 사용한다.
+- 보관소 개요·카드 아이콘 및 도감 레이아웃을 변경한다. 자동 QA·검증용 빌드는 요청에 따라 실행하지 않는다. 운영 서버용 번들만 생성하여 배포한다.
+- 운영 서버 배포 후 서비스 active. 기존 서버·저장 백업: `/opt/egghunts/backups/night-weather-20260929T051702Z`.
+
 ## 길 밖 이동속도 감소 (2026-09-29)
 
 - terrainAt.onPath를 reliefCell.trail과 연결하여 화면에 보이는 길 경계를 그대로 사용한다.

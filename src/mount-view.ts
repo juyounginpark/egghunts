@@ -4,7 +4,7 @@ import * as T from 'three';
 import {loadVoxels,voxelModel} from './voxel';
 import {animatePet} from './pet-animation';
 
-type Mount={id:number;size:number;root:T.Group;model?:T.Group;surfaces:T.Mesh[];lift:number;loading:boolean;retryAt:number};
+type Mount={id:number;size:number;root:T.Group;model?:T.Group;surfaces:T.Mesh[];lift:number;headTop?:number;loading:boolean;retryAt:number};
 /** The rider and mount share one transform, including concealment and peer visibility. */
 export class MountView{
  private mounts=new WeakMap<T.Group,Mount>();
@@ -12,6 +12,7 @@ export class MountView{
  private transform=new T.Matrix4();
  private surface=new T.Box3();
  private updateSeat(entry:Mount){
+  if(entry.headTop!==undefined){entry.lift=0;entry.root.position.y=entry.headTop+.04;return;}
   // Measure animated physical parts in mount-local space, never world Y or aura bounds.
   entry.root.updateWorldMatrix(true,true);
   this.inverse.copy(entry.root.matrixWorld).invert();
@@ -32,13 +33,22 @@ export class MountView{
   entry.loading=true;
   try{
    await loadVoxels([`pet-${entry.id}`]);
+   if(!entry.root.parent)return;
    const model=voxelModel(`pet-${entry.id}`,true);
    const bounds=new T.Box3().setFromObject(model),center=bounds.getCenter(new T.Vector3());
    model.traverse(part=>{if(part instanceof T.Mesh){part.geometry.computeBoundingBox();entry.surfaces.push(part);}});
    addPetAura(model,entry.id);
    const scale=petDisplayScale(entry.id,entry.size,model.userData);
    model.scale.setScalar(scale);model.position.set(-center.x*scale,-bounds.min.y*scale,-center.z*scale);model.updateMatrixWorld(true);
-   entry.model=model;entry.root.add(model);this.updateSeat(entry);
+   entry.model=model;entry.root.add(model);
+   const avatar=entry.root.parent!,rig=avatar.getObjectByName('player-rig')??avatar.getObjectByName('peer-rig');
+   if(rig){
+    avatar.updateWorldMatrix(true,true);this.inverse.copy(avatar.matrixWorld).invert();
+    const avatarBounds=new T.Box3();
+    rig.traverse(part=>{if(part instanceof T.Mesh){part.geometry.computeBoundingBox();this.transform.multiplyMatrices(this.inverse,part.matrixWorld);avatarBounds.union(this.surface.copy(part.geometry.boundingBox!).applyMatrix4(this.transform));}});
+    if((bounds.max.y-bounds.min.y)*scale<avatarBounds.max.y-avatarBounds.min.y)entry.headTop=avatarBounds.max.y;
+   }
+   this.updateSeat(entry);
   }catch{entry.retryAt=performance.now()+5000;}
   finally{entry.loading=false;}
  }

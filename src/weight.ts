@@ -1,8 +1,13 @@
 import {carryingRatio} from './balance';
 import {EGGS,MONGLES} from './data';
-export const WEIGHT_BALANCE={standardGrams:[250,1000,5000,20000,100000,500000,2000000],normalDeviation:.3,rareChance:.01,rareMin:.4,rareMax:.5,sizeExponent:.5,petVisualScale:.6,petMinSize:.65,mountMinimumGrams:3000};
+export const WEIGHT_BALANCE={standardGrams:[250,1000,5000,20000,100000,500000,2000000],normalDeviation:.3,rareChance:.01,rareMin:.4,rareMax:.5,sizeExponent:.5,petVisualScale:.6,petMinSize:.65,mountMinimumGrams:0};
 export type Weighted={weightG?:number;standardWeightG?:number};
 export type PetLot={key:string;species:number;weightG:number;standardWeightG:number;count:number};
+export function petWeightRatio(w:Weighted){return (w.weightG??w.standardWeightG??1)/(w.standardWeightG??w.weightG??1);}
+export function weightedPetStats(id:number,w:Weighted){
+ const p=MONGLES[id],ratio=petWeightRatio(w);
+ return {clickMultiplier:1+(p.clickMultiplier-1)*ratio,autoMultiplier:1+(p.autoMultiplier-1)*ratio,speedMultiplier:1+(p.speedMultiplier-1)*ratio};
+}
 type Inventory={mongles:number[];active:number[];mountPet?:number|null;petLots?:PetLot[];activeLots?:string[];mountLot?:string|null};
 export function standardEggWeight(e:{type:number;stageId?:number;variant?:number}){
  const base=WEIGHT_BALANCE.standardGrams[EGGS[e.type]?.tier??0];
@@ -45,7 +50,7 @@ export function ensurePetLots(s:Inventory){
  };
  s.activeLots=s.active.map((id,i)=>reserve(id,s.activeLots?.[i]));
  s.mountLot=s.mountPet==null?null:reserve(s.mountPet,s.mountLot)||null;
- if((s.petLots.find(l=>l.key===s.mountLot)?.weightG??0)<WEIGHT_BALANCE.mountMinimumGrams){s.mountPet=null;s.mountLot=null;}
+ if(!s.mountLot){s.mountPet=null;s.mountLot=null;}
 }
 
 /** One physical size for the same pet in every gameplay context. */

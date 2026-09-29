@@ -390,8 +390,8 @@ function updateHud() {
   $("night-sky").classList.toggle('visible',phase.night&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||game.seat!==null||!!game.carried||!!game.death||!!game.returnReward;
-  const weatherTags=[phase.normalNight?'밤':'',game.isRaining?'비':'',game.isWindy?'바람':'',game.offPath?'길 이탈':''].filter(Boolean);
-  const weatherSpeed=(phase.normalNight?BALANCE.nightMoveMultiplier:1)*(game.isRaining?BALANCE.rainMoveMultiplier:1)*(game.isWindy?BALANCE.windMoveMultiplier:1)*game.pathSpeedMultiplier,weatherChange=Math.round((weatherSpeed-1)*1000)/10;
+  const weatherTags=[phase.normalNight?'밤':'',game.isRaining?'비':'',game.isWindy?'바람':'',game.offPath?'잔디':'',game.chaseSpeedMultiplier>1?'추격':''].filter(Boolean);
+  const weatherSpeed=(phase.normalNight?BALANCE.nightMoveMultiplier:1)*(game.isRaining?BALANCE.rainMoveMultiplier:1)*(game.isWindy?BALANCE.windMoveMultiplier:1)*game.pathSpeedMultiplier*game.chaseSpeedMultiplier,weatherChange=Math.round((weatherSpeed-1)*1000)/10;
   $('speed-help').textContent=game.training?((game.save.trainingProgress??0)>=1?'운동 성장 최대':`+${formatTrainingGain(game.effectiveTrainingRate)}/초`):weatherTags.length?`${weatherTags.join('·')} · 이동 ${weatherChange>=0?'+':'−'}${Math.abs(weatherChange)}%`:'';
   $('speed-help').hidden=!game.training&&!weatherTags.length;
   const hint=tutorialHint(game,tab);
