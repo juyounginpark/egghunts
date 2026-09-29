@@ -1,5 +1,5 @@
 import {weightText} from './weight';
-import {petDetailPanel,compactWeight} from './pet-inventory-ui';
+import {petDetailPanel,petLoadoutPanel,compactWeight} from './pet-inventory-ui';
 import {hatchProgress,hatchInfo} from './hatch-ui';
 import {eggMaxHp,COUPON_ERRORS} from './data';
 import {advanceTutorial,tutorialHint,TUTORIAL_STEPS} from './tutorial';
@@ -612,6 +612,7 @@ let petDetailKey:string|null=null;
 function closePetDetail(){
  const key=petDetailKey;petDetailKey=null;paused=false;$('modal').hidden=true;delete $('modal').dataset.petDialog;
  if(key)document.querySelector<HTMLElement>(`#panel [data-pet-lot="${window.CSS.escape(key)}"]`)?.focus();
+ else document.getElementById('open-pet-loadout')?.focus();
 }
 document.addEventListener('keydown',event=>{
  if(!$('modal').dataset.petDialog||$('modal').hidden||document.querySelector('dialog[open]'))return;
@@ -629,7 +630,7 @@ let couponRedeeming=false;
 let pendingPetReplacement:{id:number;active:number[]}|null=null,petReplacing=false;
 document.addEventListener("click", async (e) => {
   const target=e.target as HTMLElement;
-  const b = target.closest<HTMLElement>("button");
+  const b = target.closest<HTMLElement>("button")??target.closest<HTMLElement>('.pet-tile')?.querySelector<HTMLElement>('[data-pet-lot]');
   if (!b || !ready) return;
   if(b.id==='open-egg-bag'){
     if(tab!=='hatchery'||hatchRevealing||game.result!==null||game.returnReward)return;
@@ -671,6 +672,10 @@ document.addEventListener("click", async (e) => {
   if(b.dataset.petPick!==undefined){
     $('panel').dataset.petPick=b.dataset.petPick;renderPanel();
     $('panel').querySelector<HTMLElement>('.pet-list-tools')?.scrollIntoView({block:'nearest'});return;
+  }
+  if(b.id==='open-pet-loadout'){
+    input.reset();online.halt();paused=true;petDetailKey=null;
+    $('modal').dataset.petDialog='true';$('modal').innerHTML=petLoadoutPanel(game);$('modal').hidden=false;$('close-pet-detail').focus();return;
   }
   if(b.dataset.petLot!==undefined){
     const html=petDetailPanel(game,b.dataset.petLot);if(!html)return;
