@@ -11,6 +11,26 @@ export class MountView{
  private inverse=new T.Matrix4();
  private transform=new T.Matrix4();
  private surface=new T.Box3();
+ carryHeight(avatar:T.Group,egg:T.Object3D){
+  const entry=this.mounts.get(avatar);
+  if(!entry?.root.visible||entry.headTop===undefined||!entry.model)return 1.12;
+  entry.root.updateWorldMatrix(true,true);this.inverse.copy(avatar.matrixWorld).invert();
+  let top=1.12;
+  for(const mesh of entry.surfaces){
+   this.transform.multiplyMatrices(this.inverse,mesh.matrixWorld);
+   this.surface.copy(mesh.geometry.boundingBox!).applyMatrix4(this.transform);
+   top=Math.max(top,this.surface.max.y+.06);
+  }
+  if(egg.userData.carryBottom===undefined){
+   egg.updateWorldMatrix(true,true);this.inverse.copy(egg.matrixWorld).invert();let bottom=0;
+   egg.traverse(part=>{if(part instanceof T.Mesh&&part.name!=='sparks'){
+    part.geometry.computeBoundingBox();this.transform.multiplyMatrices(this.inverse,part.matrixWorld);
+    bottom=Math.min(bottom,this.surface.copy(part.geometry.boundingBox!).applyMatrix4(this.transform).min.y);
+   }});
+   egg.userData.carryBottom=bottom;
+  }
+  return top-egg.userData.carryBottom*egg.scale.y;
+ }
  private updateSeat(entry:Mount){
   if(entry.headTop!==undefined){entry.lift=0;entry.root.position.y=entry.headTop+.04;return;}
   // Measure animated physical parts in mount-local space, never world Y or aura bounds.

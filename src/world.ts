@@ -211,7 +211,7 @@ export class World {
         if(peer.carried!==null){const egg=this.eggModel(peer.egg??{type:peer.carried});egg.name='peer-egg';egg.position.y=1.12;egg.scale.setScalar(RARITIES[EGGS[peer.carried].tier].scale*.85*BALANCE.eggVisualScale*weightSize(peer.egg??{}));avatar.add(egg);}
         avatar.userData.egg=eggKey;
       }
-      const held=avatar.getObjectByName('peer-egg');if(held)animateEgg(held,frameAt/1000,this.low);
+      const held=avatar.getObjectByName('peer-egg');if(held){held.position.y=this.mounts.carryHeight(avatar,held);animateEgg(held,frameAt/1000,this.low);}
       this.syncPeerPets(peer,avatar,peerVisible,dt,frameAt/1000);
       if(avatar.userData.appearance!==peer.appearance){this.decorateAvatar(avatar,peer.appearance);avatar.userData.appearance=peer.appearance;}
     }
@@ -729,7 +729,7 @@ export class World {
         this.carry.add(m);
       }
     }
-    this.carry.children.forEach((m) => animateEgg(m, time, this.low));
+    this.carry.children.forEach((m) => {m.position.y=this.mounts.carryHeight(this.player,m);animateEgg(m, time, this.low);});
     this.stealthOpacity(game.concealed);
     const near = game.near;
     this.highlight.visible = false;

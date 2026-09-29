@@ -799,6 +799,8 @@ nav button img { width:28px; height:28px; }
 .pet-ability-descriptions{text-align:left;margin:14px 0;padding:12px;border-radius:12px;background:#eaf0df;color:#506442;font-size:13px;line-height:1.5}
 .pet-ability-descriptions dt{font-weight:700}.pet-ability-descriptions dd{margin:3px 0 12px}.pet-ability-descriptions dd:last-child{margin-bottom:0}
 .pet-tile{cursor:pointer}
+.pet-detail-sheet .pet-sale-link,.pet-detail-sheet [data-confirm-sale="true"]{display:block;width:100%;min-height:44px;margin-top:12px;padding:10px 12px;border:2px solid #a52e2e;border-radius:10px;background:#c83f3f;color:#fff;text-decoration:none;font-weight:700}
+.pet-detail-sheet .pet-sale-link:hover,.pet-detail-sheet [data-confirm-sale="true"]:hover{background:#ac3030}
 .reward-ready{position:relative}.reward-ready::after{content:"";position:absolute;right:5px;top:5px;width:9px;height:9px;border:2px solid #fff9ed;border-radius:50%;background:#e65753;pointer-events:none;z-index:2}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .compact-loadout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:10px;margin:10px 0 14px}

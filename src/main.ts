@@ -979,6 +979,7 @@ function frame(now: number) {
       );
   } else {world.player.userData.moving = false;if(online.active)online.update(0,0);}
   if(online.active)online.reconcile(dt);
+  if(online.active&&!qa)online.tickPersonalBosses(dt);
   if (!qa && !online.active) game.tick(paused ? 0 : dt);
   if(pickupPreparation){
     const p=pickupPreparation;

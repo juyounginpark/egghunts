@@ -1,6 +1,6 @@
 import {OVERHAUL,upgradeBaseSpeed,progressionSpeedValue,productionUpgradeMultiplier,petIncomeValue,incomeValue,trainingProgressAfter,offlineSeconds,tapDamageValue,autoDamageValue,stageReward,walkingSpeedValue,stableRecoveryRatio,collectionEligible} from './balance';
 import {ULTRA_SECRET} from './ultra-secret';
-import {EGG_REPLENISH,OFF_PATH_SPEED_MULTIPLIER,PLAYER_CHASE_SPEED_MULTIPLIER,UNDER_RECOMMENDED_EGG_SPEED_MULTIPLIER} from './stage-data';
+import {PERSONAL_BOSS,EGG_REPLENISH,OFF_PATH_SPEED_MULTIPLIER,PLAYER_CHASE_SPEED_MULTIPLIER,UNDER_RECOMMENDED_EGG_SPEED_MULTIPLIER} from './stage-data';
 import {rainStrength,windStrength} from './weather';
 import {weightedPetStats,petWeightRatio,ensurePetLots,addPetLot,ensureEggWeight,rollEggWeight,carryMultiplier,type PetLot,type Weighted} from './weight';
 import {add,subtract,compare,validMoney,floorMoney,multiply,type Money} from './money';
@@ -401,6 +401,10 @@ export class GameState {
     this.damageTicks=this.damageTicks.filter(p=>p.ticks>0);
   }
   roomManaged=false;
+  personalBosses=false;
+  localBossSimulation=false;
+  bossWakeAt=0;
+  onBossContact:((guardian:number,egg:string,dx:number,dz:number)=>void)|null=null;
   dragonWatch:DragonWatch={stage:0,observed:{}};
   // Keep the legacy command callable but never grant eggs from the catalog.
   claimDragon(_stage:number){return false;}
@@ -643,7 +647,7 @@ export class GameState {
   } | null = null;
   immunity = 0;
   bosses: Boss[] = [];
-  private resetBosses(){
+  resetBosses(){
     this.bosses=this.route.map(r=>{const p=bossAnchor(r.stage);return {x:p.x,z:p.z-r.offset,homeX:p.x,homeZ:p.z-r.offset,stageId:r.stage,mode:'idle',target:null,loot:null};});
     const p=bossAnchor(20,true),z=p.z-this.route.at(-1)!.offset;
     this.bosses.push({x:p.x,z,homeX:p.x,homeZ:z,stageId:20,final:true,mode:'idle',target:null,loot:null});
@@ -759,7 +763,7 @@ export class GameState {
     return !this.isAtBase&&!terrainAt(this.stage.id,this.x,this.z+this.stageOffset).onPath;
   }
   get pathSpeedMultiplier(){return this.offPath?OFF_PATH_SPEED_MULTIPLIER:1;}
-  get chaseSpeedMultiplier(){return !this.isAtBase&&this.carried&&this.bosses.some(b=>b.mode==='chase'&&b.target===this.carried!.id)?PLAYER_CHASE_SPEED_MULTIPLIER:1;}
+  get chaseSpeedMultiplier(){return !this.isAtBase&&this.carried&&!this.concealed&&(this.personalBosses?this.now()>=this.bossWakeAt:this.bosses.some(b=>b.mode==='chase'&&b.target===this.carried!.id))?PLAYER_CHASE_SPEED_MULTIPLIER:1;}
   get eggSpeedPenalty(){return this.carried&&!this.meetsEggSpeed(this.carried)?UNDER_RECOMMENDED_EGG_SPEED_MULTIPLIER:1;}
   get movementSpeed(){
     const base=this.isAtBase?BALANCE.baseWalkSpeed:walkingSpeedValue(this.progressionSpeed);
@@ -944,19 +948,49 @@ export class GameState {
     }
     return true;
   }
+  applyBossContact(guardian:number,dx:number,dz:number){
+    const b=this.bosses[guardian];if(!b||!this.carried||this.carried.guardian!==guardian)return false;
+    const underRecommended=!this.meetsEggSpeed(this.carried);
+    const knockback=Math.min(ROUTE.bossMaxKnockback,Math.max(underRecommended?BOSS_MOVEMENT.underqualifiedKnockback:0,guardianSpeed(b.stageId??1)*ROUTE.bossKnockbackPerSpeed));
+    const length=Math.hypot(dx,dz)||1;
+    const definition={damage:stageDamage(b.stageId??1,b.final?3:this.stageStep),damagePercent:.04,knockback,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
+    return this.applyHazard({definition,origin:{x:this.x-dx/length,z:this.z-dz/length}} as Hazard,true);
+  }
+  // Shared eggs remain server-owned; their maintenance no longer moves a guardian.
+  tickSharedEggs(reserved:WorldEgg[],recoveryAt:Record<string,number>){
+    for(const egg of [...this.world]){
+      if(egg.secured||!this.inEggStage(egg,egg.z)||egg.x===egg.homeX&&egg.z===egg.homeZ){delete recoveryAt[egg.id];continue;}
+      recoveryAt[egg.id]??=this.now()+PERSONAL_BOSS.recoverEggMs;
+      if(this.now()>=recoveryAt[egg.id]){this.restoreEgg(egg,egg.region??0);delete recoveryAt[egg.id];}
+    }
+    for(const id of Object.keys(recoveryAt))if(!this.world.some(e=>e.id===id))delete recoveryAt[id];
+    this.bosses.forEach((b,guardian)=>{
+      if(this.isNight||b.final||this.world.filter(e=>e.stageId===b.stageId).length>EGG_REPLENISH.threshold){delete b.replenishAt;return;}
+      b.replenishAt??=this.now()+EGG_REPLENISH.minDelay+this.random()*(EGG_REPLENISH.maxDelay-EGG_REPLENISH.minDelay);
+      if(this.now()<b.replenishAt)return;
+      const segment=this.route.find(r=>r.stage===b.stageId);if(!segment)return;
+      const occupied=[...this.world,...reserved];
+      const slots=Array.from({length:5},(_,slot)=>({slot,...eggAnchor(segment.stage,slot)})).filter(p=>!occupied.some(e=>e.guardian===guardian&&Math.hypot((e.homeX??e.x)-p.x,(e.homeZ??e.z)-(p.z-segment.offset))<.2));
+      if(!slots.length)return;
+      const spot=slots[Math.min(slots.length-1,Math.floor(this.random()*slots.length))];
+      this.world.push(this.newStageEgg(segment.stage,segment.offset,guardian,spot.slot,randomNormalEggVariant(this.random)));
+      delete b.replenishAt;this.revision++;
+    });
+  }
   tickBosses(dt:number,only?:number,reserved:WorldEgg[]=[]){
     this.bosses.forEach((b,guardian)=>{
       if(only!==undefined&&guardian!==only)return;
-      const ownsEgg=this.carried?.guardian===guardian;
+      const ownsEgg=!this.death&&!this.isNight&&this.carried?.guardian===guardian;
       if(this.concealed&&ownsEgg&&(b.mode==='chase'||b.mode==='waking')){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
       if(!this.concealed&&ownsEgg&&!this.isAtBase&&(b.mode==='idle'||b.mode==='return'&&!b.loot)){
-        const sleeping=b.mode==='idle';b.mode=sleeping?'waking':'chase';b.wakeRemaining=sleeping?ROUTE.bossWakeSeconds:undefined;b.target=this.carried!.id;
+        const remaining=this.personalBosses?Math.max(0,(this.bossWakeAt-this.now())/1000):b.mode==='idle'?ROUTE.bossWakeSeconds:0;
+        b.mode=remaining>0?'waking':'chase';b.wakeRemaining=remaining||undefined;b.target=this.carried!.id;
       }
-      if((b.mode==='chase'||b.mode==='waking')&&this.carried?.id!==b.target){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
-      // The authoritative target owns this simulation step, not the viewing client.
+      if((b.mode==='chase'||b.mode==='waking')&&(!ownsEgg||this.isAtBase||this.carried?.id!==b.target)){b.mode='return';b.target=null;b.wakeRemaining=undefined;}
+      // A personal guardian only targets the egg carried by this client.
       b.lookX=b.mode==='chase'||b.mode==='waking'?this.x:undefined;
       b.lookZ=b.mode==='chase'||b.mode==='waking'?this.z:undefined;
-      if(this.tickEggReplenish(b,guardian,dt,reserved))return;
+      if(!this.localBossSimulation&&this.tickEggReplenish(b,guardian,dt,reserved))return;
       let activeDt=dt;
       if(b.mode==='waking'){
         const remaining=Number.isFinite(b.wakeRemaining)?Math.max(0,Math.min(ROUTE.bossWakeSeconds,b.wakeRemaining!)):ROUTE.bossWakeSeconds;
@@ -969,7 +1003,7 @@ export class GameState {
         this.revision++;
       }
       let recovery:WorldEgg|undefined;
-      if(b.mode!=='chase'){
+      if(b.mode!=='chase'&&!this.localBossSimulation){
         b.loot=this.world.find(e=>e.id===b.loot?.id)??null;
         recovery=b.loot??this.world.find(e=>e.guardian===guardian&&!e.secured&&this.inEggStage(e,e.z)&&(e.x!==e.homeX||e.z!==e.homeZ));
         if(recovery)b.mode='return';
@@ -981,17 +1015,15 @@ export class GameState {
       const reach=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1);
       const escapeSpeed=Math.max(0,(this.velocity.x*dx+this.velocity.z*dz)/(l||1));
       const speed=b.mode==='chase'?guardianPursuitSpeed(b.stageId??1,this.speed,l,escapeSpeed,reach):recovery&&!b.loot?Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(b.stageId??1)*recoveryMultiplier):Math.min(BOSS_MOVEMENT.returnSpeed,guardianSpeed(b.stageId??1));
-      // A rush ends outside contact range even after a delayed/large server tick.
+      // A rush ends outside contact range even after a delayed/large frame.
       // Normal close pursuit resumes on the next tick, rather than overshooting.
-      const rush=b.mode==='chase'&&l>reach+BOSS_MOVEMENT.catchupTargetGap;
-      const step=Math.min(rush?l-reach-BOSS_MOVEMENT.catchupTargetGap:l,speed*(this.isNormalNight?NIGHT_BOSS_SPEED_MULTIPLIER:1)*activeDt);
+      const rush=b.mode==='chase'&&l>reach+PERSONAL_BOSS.catchupDistance;
+      const step=Math.min(rush?l-reach-PERSONAL_BOSS.catchupGap:l,speed*(b.mode==='chase'?PLAYER_CHASE_SPEED_MULTIPLIER:1)*(this.isNormalNight?NIGHT_BOSS_SPEED_MULTIPLIER:1)*activeDt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
-        const underRecommended=!!this.carried&&!this.meetsEggSpeed(this.carried);
-        const knockback=Math.min(ROUTE.bossMaxKnockback,Math.max(underRecommended?BOSS_MOVEMENT.underqualifiedKnockback:0,guardianSpeed(b.stageId??1)*ROUTE.bossKnockbackPerSpeed));
-        const d={damage:stageDamage(b.stageId??1,b.final?3:this.stageStep),damagePercent:.04,knockback,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
-        this.applyHazard({definition:d,origin:{x:b.x,z:b.z}} as Hazard,true);
+        if(this.onBossContact&&this.carried)this.onBossContact(guardian,this.carried.id,this.x-b.x,this.z-b.z);
+        else this.applyBossContact(guardian,this.x-b.x,this.z-b.z);
         b.mode='return';b.target=null;
       }
       if(recovery){
@@ -1181,6 +1213,8 @@ export class GameState {
       this.carried.region = region;
       this.carried.stageId??=this.stage.id;
       this.carried.guardian??=Math.max(0,this.carried.stageId-this.progression.stage);
+      this.bossWakeAt=this.now()+ROUTE.bossWakeSeconds*1000;
+      if(this.personalBosses&&!this.localBossSimulation){this.revision++;return;}
       const boss = this.bosses[this.carried.guardian];
       if(!boss){this.revision++;return;}
       // Recovered eggs remain in the world and can be stolen during the return trip.

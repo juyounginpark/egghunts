@@ -14,7 +14,7 @@ type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
 type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
 type Player={runtime:RuntimeState;input:{x:number;z:number;slow?:boolean};seen:number;receipts:string[];chat?:{id:string;text:string;at:number};guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
-export type Room={stageOrderVersion?:2;routeVersion?:3;explorationVersion?:1|2|3|4|5;openedShortcuts?:number[];openingShortcuts?:Record<number,number>;mobs?:Mob[];at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
+export type Room={personalBossVersion?:1;eggRecoveryAt?:Record<string,number>;stageOrderVersion?:2;routeVersion?:3;explorationVersion?:1|2|3|4|5;openedShortcuts?:number[];openingShortcuts?:Record<number,number>;mobs?:Mob[];at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
 export type RequestInput={id:string;input?:{x:number;z:number;slow?:boolean};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
 export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:string;state:RuntimeState|null}[],user:string,request:RequestInput,now:number,identity?:{guest:boolean}){
@@ -56,6 +56,10 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    if(guardian>=0)egg.guardian=guardian;
   }
  }
+ if(room.personalBossVersion!==1){
+  for(const b of room.bosses){b.x=b.homeX??b.x;b.z=b.homeZ??b.z;b.mode='idle';b.target=null;b.loot=null;delete b.replenishing;delete b.wakeRemaining;delete b.lookX;delete b.lookZ;}
+  room.personalBossVersion=1;
+ }
  // Disconnected players cannot keep an egg or operate an unoccupied plot.
  for(const [id,p] of Object.entries(room.players))if(!members.some(m=>m.user_id===id)){
   const egg=p.runtime.fields.carried as WorldEgg|null;
@@ -76,7 +80,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    p=room.players[m.user_id]={runtime:exportRuntime(g),input:{x:0,z:0},seen:now,receipts:[]};
   }
   const g=new GameState(structuredClone(p.runtime.save),()=>simTime,random,true);
-  restoreRuntime(g,p.runtime,room.world,room.bosses);g.farmSlot=m.slot;g.events=[];
+  restoreRuntime(g,p.runtime,room.world,room.bosses);g.personalBosses=true;g.farmSlot=m.slot;g.events=[];
   g.hazards.attacks=g.hazards.attacks.filter(h=>!h.environment);
   g.openedShortcuts=room.openedShortcuts;g.openingShortcuts=room.openingShortcuts;
   g.mobs=room.mobs;
@@ -126,16 +130,10 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
    room.world=g.world;
    if(p.preparation&&(Math.hypot(g.x-p.preparation.x,g.z-p.preparation.z)>.05||(Number.isFinite(g.hitAt)?g.hitAt:0)!==(p.preparation.hit??0)||g.death||g.carried))delete p.preparation;
   }
-  // Every boss advances exactly once, against the player holding its target egg.
-  for(let index=0;index<room.bosses.length;index++){
-   const boss=room.bosses[index];
-   const candidates=[...games.values()];
-   const owner=candidates.find(g=>g.carried?.id===boss.target)??candidates.find(g=>g.carried?.guardian===index&&!g.concealed)??candidates.find(g=>g.carried?.guardian===index)??self;
-   owner.world=room.world;owner.bosses=room.bosses;owner.tickBosses(dt,index,candidates.flatMap(g=>g.carried?[g.carried]:[]));room.world=owner.world;
-  }
  }
  simTime=now;room.at=now;self.world=room.world;self.bosses=room.bosses;
  self.applyNightEggWeights();
+ self.tickSharedEggs([...games.values()].flatMap(g=>g.carried?[g.carried]:[]),room.eggRecoveryAt??={});room.world=self.world;
  const errors:string[]=[];
  const duplicate=player.receipts.includes(`request:${request.id}`);
  if(!duplicate){
@@ -186,13 +184,20 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  }));
  // Notice IDs start with the authenticated owner's UUID, not the nickname.
  const eggNotices=room.eggNotices.filter(notice=>!notice.id.startsWith(`${user}:`));
- return {room,response:{serverTime:now,runtime:player.runtime,world:room.world,bosses:room.bosses,peers,eggNotices,chat:player.chat??null,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
+ return {room,response:{serverTime:now,personalBosses:true,runtime:player.runtime,world:room.world,bosses:[],peers,eggNotices,chat:player.chat??null,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
 }
 function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
  const integer=()=>{if(!Number.isSafeInteger(c.value)||Number(c.value)<0)throw Error('INVALID_ID');return Number(c.value);};
  const text=()=>{if(typeof c.value!=='string'||c.value.length>160)throw Error('INVALID_ID');return c.value;};
  const atBase=()=>{if(!g.isAtBase||g.death)throw Error('RETURN_TO_BASE');};
  switch(c.kind){
+  case 'bossContact':{
+   const v=c.value as {egg?:string;guardian?:number;dx?:number;dz?:number}|null;
+   if(!v||typeof v.egg!=='string'||!Number.isSafeInteger(v.guardian)||typeof v.dx!=='number'||typeof v.dz!=='number'||!Number.isFinite(v.dx)||!Number.isFinite(v.dz)||Math.abs(v.dx)>1.001||Math.abs(v.dz)>1.001)throw Error('INVALID_COMMAND');
+   // The client owns contact detection, never damage amounts or shared egg ownership.
+   if(g.carried?.id!==v.egg||g.carried.guardian!==v.guardian||g.death||g.isAtBase||g.isNight||g.concealed||now<g.bossWakeAt)break;
+   g.applyBossContact(v.guardian!,v.dx,v.dz);delete p.preparation;break;
+  }
   case 'environmentHit':break; // Ignore in-flight reports from retired obstacle clients.
   case 'sit':{
    atBase();const seat=g.nearSeat;

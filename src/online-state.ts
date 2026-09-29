@@ -9,7 +9,7 @@ import {migrateTutorial} from './tutorial';
 import type {HazardManager} from './hazards';
 
 export type RuntimeState={save:Save;fields:Record<string,unknown>;hazards:ReturnType<HazardManager['snapshot']>};
-const omitted=new Set(['save','world','bosses','hazards','roomSnapshotTime','environmentTime','mapCollision','now','random','events','routeCache','routeStart']);
+const omitted=new Set(['save','world','bosses','hazards','roomSnapshotTime','environmentTime','mapCollision','now','random','events','routeCache','routeStart','localBossSimulation','onBossContact']);
 export function migrateStageRuntime(state:RuntimeState){
  if(state.save.stageOrderVersion===2&&state.save.routeVersion===3)return;
  const oldZ=state.fields.z;

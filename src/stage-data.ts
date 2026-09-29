@@ -156,14 +156,15 @@ export const BOSS_MOVEMENT={qualifiedCatchupGain:2,qualifiedCatchupBlendDistance
 export function guardianSpeed(stage:number){
  return walkingSpeedValue(recommendedRouteSpeed(0,stage)*stableRecoveryRatio(stage))*(stage<=4?.88:stage===20?.76:.84);
 }
-// Recommended stats never gate pickup; falling short makes close pursuit fast.
-export function guardianChaseSpeed(stage:number,playerSpeed:number){
- return playerSpeed<recommendedRouteSpeed(0,stage)?guardianSpeed(stage)*2.5:guardianSpeed(stage);
+// Close pursuit keeps a fixed stage pace, independent of player growth stats.
+export function guardianChaseSpeed(stage:number,_playerSpeed:number){
+ return guardianSpeed(stage);
 }
-/** Qualified pursuit accelerates continuously across the close chase boundary. */
-export function guardianPursuitSpeed(stage:number,playerSpeed:number,_distance:number,_escapeSpeed:number,_reach:number){
- // A fixed stage pace: no acceleration based on network distance or the viewer's velocity.
- return guardianChaseSpeed(stage,playerSpeed);
+/** Distance alone switches personal guardians into catch-up movement. */
+export const PERSONAL_BOSS={catchupDistance:12,catchupGap:5,catchupSpeed:90,catchupGain:8,recoverEggMs:12000};
+export function guardianPursuitSpeed(stage:number,_playerSpeed:number,distance:number,_escapeSpeed:number,reach:number){
+ const base=guardianChaseSpeed(stage,_playerSpeed);
+ return distance>reach+PERSONAL_BOSS.catchupDistance?Math.max(base,Math.min(BOSS_MOVEMENT.catchupMaxSpeed,PERSONAL_BOSS.catchupSpeed+(distance-reach-PERSONAL_BOSS.catchupDistance)*PERSONAL_BOSS.catchupGain)):base;
 }
 export const STAGE_REQUIRED_SPEED=[1,3,5,7,10,15,25,40,65,100,180,320,600,1100,2000,4000,7500,14000,26000,50000] as const;
 export function recommendedRouteSpeed(_depth:number,stage:number){return STAGE_REQUIRED_SPEED[Math.max(0,Math.min(19,stage-1))];}

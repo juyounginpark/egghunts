@@ -15,7 +15,7 @@ const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_
 // Login remains on Supabase; all room operations must use the same game host.
 const GAME_URL=import.meta.env.VITE_GAME_SERVER_URL||`${SUPABASE_URL}/functions/v1/game`;
 const HOSTED_EDGE=!import.meta.env.VITE_GAME_SERVER_URL;
-type Snapshot={serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];chat?:ChatMessage|null;eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
+type Snapshot={personalBosses?:boolean;serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];chat?:ChatMessage|null;eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={...COUPON_ERRORS,CANNOT_EQUIP:'빈 착용 칸과 남은 펫 수량을 확인해 주세요.',WEEKLY_INVENTORY_FULL:'알 보관함 한 칸을 비워 주세요.',WEEKLY_UNAVAILABLE:'오늘 보상을 이미 받았거나 수령할 수 없는 상태예요.',EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
 Object.assign(errorText,{SEAT_OCCUPIED:'이미 다른 탐험가가 앉아 있어요.',SEAT_UNAVAILABLE:'빈 통나무 의자 가까이에서 앉아 주세요.'});
@@ -38,6 +38,12 @@ export class OnlineGame{
  private lastInput={x:0,z:0,slow:false};
  private inputAt=0;
  private receivedAt=0;
+ private bossContactPending=false;
+ tickPersonalBosses(dt:number){
+  const g=this.game;
+  if(!this.active||!g?.localBossSimulation||this.bossContactPending||performance.now()-this.receivedAt>BALANCE.roomInputGraceMs)return;
+  g.tickBosses(dt);
+ }
  private lastSent=0;
  private retryAt=0;
  private lastError='';
@@ -249,7 +255,18 @@ export class OnlineGame{
   this.receivedAt=performance.now();
   if(this.game){
    const g=this.game,settings=g.save.settings,offset=this.visualOffset,old={x:g.x+offset.x,z:g.z+offset.z,death:!!g.death,training:g.training,night:g.isNight,hit:g.hitAt,slot:g.farmSlot,facing:g.facing,velocity:g.velocity};
-   restoreRuntime(g,state.runtime,state.world,state.bosses,false);g.save.settings=settings;g.events.push(...state.events);
+   const personal=state.personalBosses===true,localBosses=g.bosses,oldNight=g.nightAt,wasLocal=g.localBossSimulation,oldEgg=g.carried?.id;
+   restoreRuntime(g,state.runtime,state.world,personal?localBosses:state.bosses,false);g.save.settings=settings;g.events.push(...state.events);
+   g.localBossSimulation=personal;
+   if(personal){
+    if(!wasLocal||oldNight!==g.nightAt)g.resetBosses();
+    if(oldEgg&&oldEgg!==g.carried?.id&&g.isAtBase)g.resetBosses();
+    g.onBossContact=(guardian,egg,dx,dz)=>{
+     if(this.bossContactPending)return;
+     this.bossContactPending=true;const length=Math.hypot(dx,dz)||1;
+     void this.send('bossContact',{guardian,egg,dx:dx/length,dz:dz/length}).catch(()=>{}).finally(()=>{this.bossContactPending=false;});
+    };
+   }else g.onBossContact=null;
    g.roomSnapshotTime=state.serverTime/1000;
    const stable=old.death===!!g.death&&old.training===g.training&&old.night===g.isNight&&old.hit===g.hitAt&&old.slot===g.farmSlot&&!g.launch&&!g.knockback.remaining;
    if(stable&&!g.death&&!g.training&&g.now()>=g.knockedUntil){

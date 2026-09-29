@@ -32,7 +32,7 @@ export class RegionGuardian {
    if(chasing&&this.modes[k]!=='chase')this.wakeAt[k]=time;
    this.modes[k]=state.mode;
    let sample=this.samples.get(k);
-   const serverAt=game.roomSnapshotTime||time;
+   const serverAt=game.localBossSimulation?time:game.roomSnapshotTime||time;
    const gap=sample?Math.max(0,serverAt-sample.serverAt):0;
    const teleported=sample&&sample.state!==state&&Math.hypot(sample.state.x-state.x,sample.state.z-state.z)>Math.max(30,BOSS_MOVEMENT.catchupMaxSpeed*gap*1.5+2);
    const returnedHome=state.mode==='idle'&&sample?.state.mode!=='idle'&&state.x===state.homeX&&state.z===state.homeZ;
@@ -41,15 +41,15 @@ export class RegionGuardian {
    if(!sample||sample.serverAt!==serverAt||reset){
     sample={state,stage,at:time,serverAt};
     this.samples.set(k,sample);
-    if(game.roomManaged)this.motion[k].sample(state.x,state.z,game.roomSnapshotTime||time,time,state.mode==='chase'||state.mode==='return');
+    if(game.roomManaged&&!game.localBossSimulation)this.motion[k].sample(state.x,state.z,game.roomSnapshotTime||time,time,state.mode==='chase'||state.mode==='return');
    }
    const sampleAge=Math.max(0,time-sample.at);
-   const waking=state.mode==='waking',wakeRemaining=Math.max(0,(state.wakeRemaining??ROUTE.bossWakeSeconds)-(game.roomManaged?Math.min(sampleAge,.5):0));
+   const waking=state.mode==='waking',wakeRemaining=Math.max(0,(state.wakeRemaining??ROUTE.bossWakeSeconds)-((game.roomManaged&&!game.localBossSimulation)?Math.min(sampleAge,.5):0));
    const wakeProgress=waking?Math.max(0,Math.min(1,1-wakeRemaining/ROUTE.bossWakeSeconds)):chasing?1:0;
    const rise=wakeProgress*wakeProgress*(3-2*wakeProgress);
    const scale=ROUTE.bossBaseScale*(state.final?FINAL_GUARDIAN.scale:1)*(1+(ROUTE.bossAngryScale-1)*rise);
    const tx=state.x,tz=state.z;
-   const displayed=game.roomManaged?this.motion[k].position(dt,time):{x:tx,z:tz};
+   const displayed=(game.roomManaged&&!game.localBossSimulation)?this.motion[k].position(dt,time):{x:tx,z:tz};
    const moveX=displayed.x-root.x,moveZ=displayed.z-root.z;
    root.x=displayed.x;root.z=displayed.z;
    const z=root.z;if(Math.abs(z-game.z)>(state.final?40:23))continue;
