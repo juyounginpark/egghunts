@@ -3,7 +3,7 @@ import {MountView} from './mount-view';
 import {eggMaxHp} from './data';
 import {explorationHeight} from './exploration-route';
 import {concealedAt} from './brush';
-import {BRUSH_TERRAIN,recommendedRouteSpeed,EGG_REPLENISH} from './stage-data';
+import {BRUSH_TERRAIN,recommendedRouteSpeed,EGG_REPLENISH,ROUTE,FINAL_GUARDIAN} from './stage-data';
 import {SceneryCreatures} from './scenery-creatures';
 import * as T from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
@@ -773,9 +773,11 @@ export class World {
       this.hatchModel.position.y =
         this.reducedMotion.matches?0:shownResult !== null ? Math.abs(Math.sin(time*3))*.12 : Math.max(0,Math.sin(hitAge*12))*kick*.12+Math.abs(Math.sin(time*19))*anticipation*.09;
     }
+    const chaser=!isHatch&&mode==='explore'&&!game.death?game.bosses.find(b=>b.mode==='chase'&&b.target===game.carried?.id):undefined;
     const target = isHatch
       ? new T.Vector3(0, 1, 0)
       : new T.Vector3(this.player.position.x, 0.3, game.training?this.player.position.z:game.isAtBase ? Math.max(1,this.player.position.z) : this.player.position.z - 1.4);
+    if(chaser){target.x=(this.player.position.x+chaser.x)/2;target.z=(this.player.position.z+chaser.z)/2;}
     this.focus.lerp(target, 1 - Math.exp(-dt * 6));
     this.camera.position.copy(this.focus).add(new T.Vector3(8, 11, 12));
     this.camera.lookAt(this.focus);
@@ -793,6 +795,20 @@ export class World {
     this.camera.zoom = isHatch ? this.hatchZoom : .78;
     this.camera.updateProjectionMatrix();
     this.camera.updateMatrixWorld();this.positionHatchTouch();
+    if(chaser){
+      // Fit both physical silhouettes, including the final guardian, on narrow screens.
+      const radius=ROUTE.bossBaseScale*ROUTE.bossAngryScale*(chaser.final?FINAL_GUARDIAN.scale:1)*1.2;
+      let extentX=0,extentY=0;
+      for(const body of [{x:chaser.x,z:chaser.z,r:radius,h:radius*2},{x:this.player.position.x,z:this.player.position.z,r:1,h:2}]){
+        const ground=explorationHeight(body.x,body.z,game.progression.stage);
+        for(const x of [-body.r,body.r])for(const z of [-body.r,body.r])for(const y of [0,body.h]){
+          const p=new T.Vector3(body.x+x,ground+y,body.z+z).project(this.camera);
+          extentX=Math.max(extentX,Math.abs(p.x));extentY=Math.max(extentY,Math.abs(p.y));
+        }
+      }
+      this.camera.zoom*=Math.min(1,.8/Math.max(.01,extentX),.6/Math.max(.01,extentY));
+      this.camera.updateProjectionMatrix();
+    }
     const guide=document.getElementById('first-egg-arrow');
     const guideEgg=mode==='explore'&&!isHatch&&document.getElementById('modal')!.hidden?firstEggTarget(game):undefined;
     if(guide){

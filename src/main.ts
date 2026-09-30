@@ -103,7 +103,7 @@ hudPlace.append($('expedition'));
 hudContext.append(speedHud,hudPlace);
 const roomHUD=new RoomHUD(hudPlace,$('world'));
 topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="hazard-cue" role="status" hidden></div>');
-$("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="플레이어 체력" aria-valuemin="0" hidden><div class="health-track"><i id="hp-fill"></i></div></div>');
+$("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="생명 하트" aria-valuemin="0" hidden><span class="life-heart" aria-hidden="true">&#9829;</span><span class="life-heart" aria-hidden="true">&#9829;</span></div>');
 $("shell").insertAdjacentHTML('beforeend','<div id="region-banner" role="status" aria-live="polite" hidden><img id="region-banner-art" alt=""/><strong id="region-banner-name"></strong><img id="region-banner-object" alt=""/></div><div id="health-edge"></div><div id="ink-effect" hidden></div><div id="level-burst" hidden></div>');
 topHud.insertBefore($("region-banner"),hudContext);
 $("region-banner").insertAdjacentHTML('beforeend',`<span id="region-banner-speed" class="recommended-speed">${uiIcon('speed')}<b></b></span>`);
@@ -117,7 +117,7 @@ tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}mo
 topHud.append(tutorial);
 const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='events';topHud.append(weeklyEntry);
 let renderedWeeklyDay=-1;
-$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤이 깊어 나가지 못해요.<br>날이 밝으면 다시 출발해요.</p><small>낮 6분 · 밤 3분 · 깊은 밤 15초</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
+$("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤이 깊어 나가지 못해요.<br>날이 밝으면 다시 출발해요.</p><small>낮 3분 · 밤 2분 (마지막 15초는 깊은 밤)</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
 $("action").insertAdjacentHTML('beforebegin',`<button id="train-now" class="secondary" aria-label="운동하기" title="운동하기" hidden><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><span class="sr-only">운동하기</span></button>`);
 bottomHud.id = "bottom-hud";
@@ -339,7 +339,7 @@ function updateHud() {
   $("health-hud").setAttribute('aria-valuenow',String(Math.ceil(game.hp)));
   $("health-hud").setAttribute('aria-valuemax',String(game.maxHp));
   $("health-hud").setAttribute('aria-valuetext',`${Math.ceil(game.hp)} / ${game.maxHp}${hpRatio<=PROGRESSION.lowHP?' · 위험':''}`);
-  $("hp-fill").style.width=`${hpRatio*100}%`;
+  $('health-hud').querySelectorAll<HTMLElement>('.life-heart').forEach((heart,index)=>heart.classList.toggle('empty',index>=game.hp));
   $("health-hud").dataset.state=hpRatio<=PROGRESSION.lowHP?'danger':hpRatio<=PROGRESSION.warningHP?'warning':'safe';
   $("xp-value").textContent=`LV.${game.level} · ${num(game.progression.xp)} / ${num(game.progression.requiredXP)} XP · 귀환 +${num(game.progression.pendingXP)}`;
   $("xp-value").hidden=!outside;

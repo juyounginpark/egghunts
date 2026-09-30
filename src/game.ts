@@ -20,7 +20,6 @@ import {growthCost,EGG_HEALTH,eggMaxHp} from './data';
 import {
   BALANCE,
   COUPONS,
-  DAMAGE_OVER_TIME,
   STAGE_COLLECTION_REWARDS,
   PROGRESSION,
   PET_DEFENSE,
@@ -33,7 +32,7 @@ import {
   rollEgg,
   type Upgrade,
 } from "./data";
-import {newProgression,validateProgression,awardXP,levelHP,reducedDamage,type Progression} from "./progression";
+import {newProgression,validateProgression,awardXP,type Progression} from "./progression";
 import {HazardManager,type Hazard} from "./hazards";
 import {farmGym,CAMPFIRE,CAMP_SEATS} from './village';
 import {DRAGON_RULES,newDragonClue,observeDragon,validateDragonClues,type DragonClue,type DragonWatch} from './dragon-discovery';
@@ -330,7 +329,7 @@ export class GameState {
     if(id>PROGRESSION.unlockStage)this.unlockHealth();return true;
   }
   unlockHealth(){if(!this.progression.healthUnlocked){this.progression.healthUnlocked=true;this.emit('health_unlocked');this.revision++;}}
-  gainXP(amount:number){const gained=awardXP(this.progression,amount);if(gained){this.hp=this.maxHp;this.levelUpAt=this.now();this.revivedAt=this.now();this.emit('level_up',{level:this.level,count:gained});}this.revision++;return gained;}
+  gainXP(amount:number){const gained=awardXP(this.progression,amount);if(gained){if(this.isAtBase)this.hp=this.maxHp;this.levelUpAt=this.now();this.revivedAt=this.now();this.emit('level_up',{level:this.level,count:gained});}this.revision++;return gained;}
   settleXP(success:boolean){const xp=Math.floor(this.progression.pendingXP*(success?1+this.defense('returnXPBonus'):PROGRESSION.failureKeep));this.progression.pendingXP=0;this.gainXP(xp);this.emit('xp_settled',{xp,success:success?1:0});return xp;}
   failExpedition(reason:string){
     if(!this.deadline&&!this.carried&&!this.death&&this.isAtBase)return false;
@@ -347,19 +346,18 @@ export class GameState {
   applyHazard(h:Hazard,bossContact=false){
     if(this.concealed)return false;
     const d=h.definition;if(this.death||(this.immunity>0&&!bossContact)||this.isAtBase)return false;
-    const reduction=this.defense('damageReduction')+this.defenses.reduce((n,p)=>n+(p.environmentReduction?.[d.id]??0),0)+(!this.progression.firstHitUsed?this.defense('firstHitReduction'):0);
-    const damage=this.immunity>0?0:reducedDamage(d.damage,d.damagePercent,this.maxHp,reduction);
+    const damage=bossContact?1:this.immunity>0?0:d.damage>0||d.damagePercent>0?1:0;
     if(d.id?.startsWith('explore-')||d.id?.startsWith('mob-')){
       if(damage<=0)return false;
       this.hp=Math.max(0,this.hp-damage);this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();this.sinceHit=0;this.progression.firstHitUsed=true;
       this.hitSource={...h.origin,at:this.now()};this.unlockHealth();
       this.emit('player_hit',{damage,hp:this.hp,stage:this.stage.id,attackId:h.serial,source:d.id});this.revision++;
-      if(this.hp<=0){if(this.defenses.some(v=>v.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}else this.die();}
+      if(this.hp<=0)this.die();
       return true;
     }
     this.progression.firstHitUsed=true;this.sinceHit=0;this.immunity=PROGRESSION.hitImmunity;this.hitAt=this.now();
     if(damage>0){
-      this.damageTicks.push({remaining:damage,ticks:DAMAGE_OVER_TIME.ticks,until:DAMAGE_OVER_TIME.interval});
+      this.hp=Math.max(0,this.hp-damage);
       this.hitSource={x:h.origin.x,z:h.origin.z,at:this.now()};
     }
     const overlap=Math.hypot(this.x-h.origin.x,this.z-h.origin.z)<.001;
@@ -378,28 +376,11 @@ export class GameState {
     if(d.effect==='ice')this.push(0,1);
     if(d.effect==='dust'){const amount=compare(this.save.dust,HAZARD_BALANCE.dustDrop)<0?Number(this.save.dust):HAZARD_BALANCE.dustDrop;this.save.dust=subtract(this.save.dust,amount);if(amount)this.dustDrops.push({x:this.x+.8,z:this.z,amount});}
     this.emit('player_hit',{damage,hp:this.hp,stage:this.stage.id});this.revision++;
+    if(this.hp<=0)this.die();
     return true;
   }
   damageTicks:{remaining:number;ticks:number;until:number}[]=[];
   hitSource:{x:number;z:number;at:number}|null=null;
-  private tickDamage(dt:number){
-    if(this.isAtBase||this.death){this.damageTicks=[];return;}
-    for(const pending of this.damageTicks){
-      pending.until-=dt;
-      while(pending.until<=1e-9&&pending.ticks>0){
-        const amount=pending.remaining/pending.ticks;
-        pending.remaining-=amount;pending.ticks--;pending.until+=DAMAGE_OVER_TIME.interval;
-        this.hp=Math.max(0,this.hp-amount);this.revision++;
-        if(this.hp<=0){
-          this.damageTicks=[];
-          if(this.defenses.some(d=>d.lastStand)&&!this.progression.lastStandUsed){this.progression.lastStandUsed=true;this.hp=1;}
-          else this.die();
-          return;
-        }
-      }
-    }
-    this.damageTicks=this.damageTicks.filter(p=>p.ticks>0);
-  }
   roomManaged=false;
   personalBosses=false;
   localBossSimulation=false;
@@ -554,7 +535,12 @@ export class GameState {
   }
   hp=BALANCE.baseHp;
   sinceHit=0;
-  get maxHp(){return levelHP(this.level)+this.save.upgrades.health*BALANCE.hpPerLevel+this.defense('maxHP');}
+  get maxHp(){return BALANCE.baseHp;}
+  restorePlayerHealth(value:number,previousMax=this.progression.maxHP){
+    const max=Number.isFinite(previousMax)&&previousMax>0?previousMax:100;
+    this.hp=this.death?0:Math.max(0,Math.min(this.maxHp,Math.ceil(value*this.maxHp/max)));
+    this.damageTicks=[];
+  }
   bossDamage(region:number){return stageDamage(this.bosses[region]?.stageId??this.stage.id,this.stageStep);}
   receiveHit(region:number){
     const d={damage:this.bossDamage(region),damagePercent:0,knockback:PROGRESSION.hitKnockback,slowMultiplier:PROGRESSION.hitSlow,slowDuration:PROGRESSION.hitSlowDuration,effect:'hit'} as HazardDefinition;
@@ -689,7 +675,7 @@ export class GameState {
       if(save.expedition&&save.expedition.z<BALANCE.baseMinZ)save.expedition.z-=offset;
     }
 
-    this.hp=Math.min(this.maxHp,save.progression.hp);this.immunity=save.progression.immunity;this.slowRemaining=save.progression.slowRemaining;this.slowMultiplier=save.progression.slowMultiplier;
+    this.restorePlayerHealth(save.progression.hp);this.immunity=save.progression.immunity;this.slowRemaining=save.progression.slowRemaining;this.slowMultiplier=save.progression.slowMultiplier;
     const cycle = Math.floor(this.now()/BALANCE.nightInterval)*BALANCE.nightInterval;
     this.nightAt = cycle + BALANCE.nightInterval;
     this.nightUntil = this.now()-cycle < BALANCE.nightDuration ? cycle+BALANCE.nightDuration : 0;
@@ -735,9 +721,9 @@ export class GameState {
       this.deadline = save.expedition.deadline;
       this.carried = save.expedition.carried;
       this.message = "진행 중이던 원정으로 돌아왔어요";
-      this.hp=Number.isFinite(save.expedition.hp)?Math.max(0,Math.min(this.maxHp,save.expedition.hp!)):this.maxHp;
+      this.restorePlayerHealth(Number.isFinite(save.expedition.hp)?save.expedition.hp!:save.progression.maxHP);
       this.sinceHit=Number.isFinite(save.expedition.sinceHit)?Math.max(0,save.expedition.sinceHit!):0;
-      this.damageTicks=(Array.isArray(save.expedition.damageTicks)?save.expedition.damageTicks:[]).filter(p=>p&&Number.isFinite(p.remaining)&&p.remaining>0&&Number.isInteger(p.ticks)&&p.ticks>0&&p.ticks<=DAMAGE_OVER_TIME.ticks&&Number.isFinite(p.until)&&p.until>=0&&p.until<=DAMAGE_OVER_TIME.interval).slice(0,16).map(p=>({...p}));
+      this.damageTicks=[];
     }
     if(save.routeVersion!==3&&this.carried){
       this.carried.stageId??=this.progression.stage;this.carried.guardian=this.carried.stageId-this.progression.stage;
@@ -1011,8 +997,12 @@ export class GameState {
       const tx=b.mode==='chase'?this.x:recovery?(b.loot?recovery.homeX??0:recovery.x):b.homeX??0;
       const tz=b.mode==='chase'?this.z:recovery?(b.loot?recovery.homeZ??b.homeZ??-17:recovery.z):b.homeZ??-17;
       const recoveryMultiplier=recovery?ROUTE.bossRecoverySpeedMultiplier:1;
-      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz);
       const reach=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1);
+      if(b.mode==='chase'){
+        const distance=Math.hypot(tx-b.x,tz-b.z),limit=reach+PERSONAL_BOSS.maxGap;
+        if(distance>limit){b.x=tx+(b.x-tx)*limit/distance;b.z=tz+(b.z-tz)*limit/distance;}
+      }
+      const dx=tx-b.x,dz=tz-b.z,l=Math.hypot(dx,dz);
       const escapeSpeed=Math.max(0,(this.velocity.x*dx+this.velocity.z*dz)/(l||1));
       const speed=b.mode==='chase'?guardianPursuitSpeed(b.stageId??1,this.speed,l,escapeSpeed,reach):recovery&&!b.loot?Math.min(BOSS_MOVEMENT.maxSpeed,guardianSpeed(b.stageId??1)*recoveryMultiplier):Math.min(BOSS_MOVEMENT.returnSpeed,guardianSpeed(b.stageId??1));
       // A rush ends outside contact range even after a delayed/large frame.
@@ -1104,7 +1094,7 @@ export class GameState {
     this.syncStage();
     if(this.knockback.remaining>0){const step=Math.min(dt,this.knockback.remaining);this.push(this.knockback.x*step,this.knockback.z*step);this.knockback.remaining-=step;}
     this.hp=Math.min(this.hp,this.maxHp);
-    this.tickDamage(dt);if(this.death)return;
+    if(this.death)return;
     this.immunity=Math.max(0,this.immunity-dt);this.slowRemaining=Math.max(0,this.slowRemaining-dt);this.sinceHit+=dt;
     for(const key of Object.keys(this.effects) as (keyof typeof this.effects)[])this.effects[key]=Math.max(0,this.effects[key]-dt);
     if(!this.isAtBase){

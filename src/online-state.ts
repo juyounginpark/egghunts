@@ -47,6 +47,6 @@ export function restoreRuntime(game:GameState,state:RuntimeState,world:WorldEgg[
  if(game.save.progression)delete game.save.progression.traits;
  ensurePetLots(game.save);
  for(const egg of [...game.save.eggs,...world,game.carried])ensureEggWeight(egg);
- game.hp=Math.min(game.hp,game.maxHp);
+ game.restorePlayerHealth(game.hp);
  game.roomManaged=true;
 }

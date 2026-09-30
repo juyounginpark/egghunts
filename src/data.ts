@@ -4,7 +4,7 @@ import {ROAD_WIDTH_SCALE,STAGES,ROUTE_FAR_Z} from './stage-data';
 import {STAGE_PET_ROWS} from './stage-pet-catalog';
 import {SECRET_DRAGON_ROWS} from './secret-dragon-catalog';
 import {EXPANSION_PETS} from './expansion-pet-catalog';
-export const PROGRESSION={baseHP:100,hpPerLevel:5,hpMilestone:10,hpMilestoneBonus:20,xpBase:100,xpExponent:1.35,speedPerLevel:OVERHAUL.levelSpeedPerLevel,maxLevelSpeed:OVERHAUL.levelSpeedCap,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[100,120,160,240,400,650,1000],damageReductionCap:.5,singleHitCap:.35,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
+export const PROGRESSION={baseHP:2,hpPerLevel:0,hpMilestone:10,hpMilestoneBonus:0,xpBase:100,xpExponent:1.35,speedPerLevel:OVERHAUL.levelSpeedPerLevel,maxLevelSpeed:OVERHAUL.levelSpeedCap,hitImmunity:1,hitSlow:.8,hitSlowDuration:.5,hitKnockback:.5,failureKeep:.7,discoveryXP:30,hatchXP:100,distanceStep:10,distanceXP:2,returnXP:[100,120,160,240,400,650,1000],damageReductionCap:.5,singleHitCap:.35,lowHP:.3,warningHP:.5,carryTelegraphBonus:.2,unlockStage:4,simulationStep:1/60};
 export type DefensePassive={maxHP?:number;damageReduction?:number;firstHitReduction?:number;environmentReduction?:Partial<Record<string,number>>;statusReduction?:number;lowHPSpeed?:number;returnXPBonus?:number;lastStand?:boolean};
 // Existing companions keep their click/auto/speed abilities; future rows opt in.
 export const PET_DEFENSE:Partial<Record<number,DefensePassive>>={};
@@ -48,8 +48,8 @@ export const BALANCE = {
   deathChoiceDuration:5000,
   reviveImmunity:3,
   reviveMinimumTime:10,
-  baseHp:100,
-  hpPerLevel:20,
+  baseHp:2,
+  hpPerLevel:0,
   regenDelay:3,
   regenRatioPerSecond:.04,
   attackWindup:.65,
@@ -86,10 +86,10 @@ export const BALANCE = {
   baseMinZ:-4.4,
   mapFarZ: ROUTE_FAR_Z,
   // Cycle starts with the reset window, then daylight, then explorable night.
-  nightInterval: 555000,
+  nightInterval: 300000,
   nightDuration: 15000,
-  normalNightDuration: 180000,
-  nightMoveMultiplier: .7,
+  normalNightDuration: 105000,
+  nightMoveMultiplier: .85,
   rainInterval: 180000,
   rainChance: .4,
   rainDuration: 35000,
@@ -422,7 +422,7 @@ export function farmPetIds(owned:readonly number[],active:readonly number[],now:
 }
 export function petIcon(id:number){return `${import.meta.env.BASE_URL}models/pet-${id}.${id===WEEKLY_EVENT.petId||id>=701?'svg':'png'}`;}
 export const UPGRADES = {
-  health: {name:"든든한 체력",description:"최대 HP +20 · 팀 생산 +1%p",icon:"pack",cost:30,growth:1.6},
+  health: {name:"든든한 지원",description:"팀 생산 +1%p · 생명은 하트 2개",icon:"pack",cost:30,growth:1.6},
   training: {
     name: "러닝머신 모터",
     description: "운동 효율 +2.5%p · 팀 생산 +1%p · 운동 보너스 최대 30%",
