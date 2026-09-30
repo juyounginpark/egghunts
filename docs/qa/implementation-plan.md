@@ -1,5 +1,10 @@
 # 구현 작업 계획
 
+## 접힌 HUD 속도 숨김 (2026-09-30)
+
+- compact 상태에서 speed-hud만 숨긴다. 같은 speed-stack의 상태 아이콘은 유지한다. 펼침 시 기존 속도 패널이 다시 표시된다.
+- 자동 QA·빌드·화면 검증·운영 배포는 실행하지 않았다.
+
 ## 보스 추격 거리·배율 완화 (2026-09-30)
 
 - PERSONAL_BOSS에 보스 전용 chaseMultiplier=1.4를 두고 tickBosses의 추격 이동에 적용한다. 플레이어의 PLAYER_CHASE_SPEED_MULTIPLIER=1.7은 유지한다.

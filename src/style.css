@@ -678,6 +678,7 @@ nav button img { width:28px; height:28px; }
 #shell #top-hud.compact > :not(#main-hud):not(#hud-context):not(#region-banner):not(#tutorial) { display:none!important; }
 #top-hud.compact #hud-context { display:flex; grid-column:1/-1; }
 #top-hud.compact #hud-context .hud-place { display:none; }
+#top-hud.compact #hud-context #speed-stack #speed-hud { display:none; }
 #speed-hud .speed-heading::before { content:'속도'; font-size:11px; }
 #speed-hud #day-clock::before { content:'권장'; font-size:11px; }
 #shell #top-hud.compact #main-hud { display:block; justify-self:start; width:64px; height:64px; min-height:0; padding:0; overflow:hidden; box-sizing:border-box; }
