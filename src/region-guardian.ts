@@ -29,6 +29,9 @@ export class RegionGuardian {
   let index=0,effectIndex=0;const dt=Math.max(0,Math.min(.1,time-this.lastTime)),reduced=this.reducedMotion.matches;this.lastTime=time;
   for(let k=0;k<game.bosses.length;k++){
    const state=game.bosses[k],stage=state.stageId??game.stage.id,chasing=state.mode==='chase',sleeping=state.mode==='idle'||state.mode==='waking',root=this.roots[k];
+   const attackAge=state.attack?(game.now()-state.attack.at)/1000:Infinity;
+   const attacking=attackAge>=0&&attackAge<.45;
+   const strike=attacking?Math.sin(Math.PI*(.5+.5*attackAge/.45)):0;
    if(chasing&&this.modes[k]!=='chase')this.wakeAt[k]=time;
    this.modes[k]=state.mode;
    let sample=this.samples.get(k);
@@ -45,7 +48,7 @@ export class RegionGuardian {
    }
    const sampleAge=Math.max(0,time-sample.at);
    const waking=state.mode==='waking',wakeRemaining=Math.max(0,(state.wakeRemaining??ROUTE.bossWakeSeconds)-((game.roomManaged&&!game.localBossSimulation)?Math.min(sampleAge,.5):0));
-   const wakeProgress=waking?Math.max(0,Math.min(1,1-wakeRemaining/ROUTE.bossWakeSeconds)):chasing?1:0;
+   const wakeProgress=waking?Math.max(0,Math.min(1,1-wakeRemaining/ROUTE.bossWakeSeconds)):chasing||attacking?1:0;
    const rise=wakeProgress*wakeProgress*(3-2*wakeProgress);
    const scale=ROUTE.bossBaseScale*(state.final?FINAL_GUARDIAN.scale:1)*(1+(ROUTE.bossAngryScale-1)*rise);
    const tx=state.x,tz=state.z;
@@ -56,7 +59,8 @@ export class RegionGuardian {
 
 
    const x=root.x,hover=[3,5,6,7,12,15,19,20].includes(stage);
-   const u=chasing?Math.min(1,(state.windup??0)/ROUTE.bossWindup):0;
+   const reach=ROUTE.bossReach*ROUTE.bossAngryScale*(state.final?FINAL_GUARDIAN.scale:1);
+   const u=chasing?Math.max(0,Math.min(1,1-(Math.hypot(game.x-state.x,game.z-state.z)-reach)/2)):0;
    const charge=u*u*(3-2*u),breath=reduced?0:Math.sin(time*1.5+k)*.035;
    this.gait[k]+=dt*(sleeping?.7:chasing?11:1.8);
    const stretch=waking&&!reduced?Math.sin(wakeProgress*Math.PI):0;
@@ -69,6 +73,7 @@ export class RegionGuardian {
     target=Math.hypot(dx,dz)>.001?Math.atan2(dx,dz):Number.isFinite(this.headings[k])?this.headings[k]:0;
    }
    if(!Number.isFinite(this.headings[k]))this.headings[k]=target;
+   if(attacking){target=state.attack!.angle;this.headings[k]=target;}
    const delta=Math.atan2(Math.sin(target-this.headings[k]),Math.cos(target-this.headings[k]));
    this.headings[k]+=delta*(1-Math.exp(-dt*(waking?rise*4:state.mode==='return'?12:4)));
    const angle=this.headings[k],cs=Math.cos(angle),sn=Math.sin(angle);
@@ -88,7 +93,7 @@ export class RegionGuardian {
    this.groundHeights[k]=reset||!Number.isFinite(this.groundHeights[k])?ground:this.groundHeights[k]+(ground-this.groundHeights[k])*(1-Math.exp(-dt*14));
    character.position.y+=this.groundHeights[k];
    const placing=state.replenishing?Math.min(1,state.replenishing.placing/EGG_REPLENISH.placeSeconds):0;
-   character.rotation.set(-charge*.1+(reduced?0:Math.sin(placing*Math.PI)*.22),angle,0);
+   character.rotation.set(reduced?0:-charge*.16+strike*.35+Math.sin(placing*Math.PI)*.22,angle,0);
    character.scale.set(2.8*scale,2.8*scale*(sleeping?.78+.22*rise:1),2.8*scale);
    character.traverse(part=>{
     if(!(part instanceof T.Group))return;
@@ -97,6 +102,7 @@ export class RegionGuardian {
     part.rotation.x=limb&&!reduced?Math.sin(stride+side)*(.08+.22*rise):0;
     if(waking&&limb)part.rotation.x=/_(arm|wing)$/.test(part.name)?-stretch*.65:stretch*.1;
     if(state.replenishing&&/_(arm|wing)$/.test(part.name))part.rotation.x=-.65+placing*.5;
+    if(!reduced&&/_(arm|wing)$/.test(part.name)&&(charge>0||attacking))part.rotation.x=-charge*1.9-strike*.85;
     if(part.name==='head')part.rotation.x=-charge*.15+stretch*.22;
     if(part.name==='crown'||part.name==='tail')part.rotation.y=reduced?0:Math.sin(time*(.6+stage*.025))*.055*(sleeping?.4:1);
    });

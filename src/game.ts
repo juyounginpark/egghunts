@@ -70,6 +70,7 @@ export type Boss = {
   homeZ?:number;
   homeX?:number;
   windup?: number;
+  attack?:{at:number;angle:number};
   wakeRemaining?: number;
   lookX?:number;
   lookZ?:number;
@@ -1012,6 +1013,7 @@ export class GameState {
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){
+        b.attack={at:this.now(),angle:Math.atan2(this.x-b.x,this.z-b.z)};
         if(this.onBossContact&&this.carried)this.onBossContact(guardian,this.carried.id,this.x-b.x,this.z-b.z);
         else this.applyBossContact(guardian,this.x-b.x,this.z-b.z);
         b.mode='return';b.target=null;
