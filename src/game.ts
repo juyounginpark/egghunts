@@ -752,10 +752,13 @@ export class GameState {
   get pathSpeedMultiplier(){return this.offPath?OFF_PATH_SPEED_MULTIPLIER:1;}
   get chaseSpeedMultiplier(){return !this.isAtBase&&this.carried&&!this.concealed&&(this.personalBosses?this.now()>=this.bossWakeAt:this.bosses.some(b=>b.mode==='chase'&&b.target===this.carried!.id))?PLAYER_CHASE_SPEED_MULTIPLIER:1;}
   get eggSpeedPenalty(){return this.carried&&!this.meetsEggSpeed(this.carried)?UNDER_RECOMMENDED_EGG_SPEED_MULTIPLIER:1;}
+  get movementEffectMultiplier(){
+    const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1)*(this.isNormalNight?BALANCE.nightMoveMultiplier:1)*(this.isRaining?BALANCE.rainMoveMultiplier:1)*(this.isWindy?BALANCE.windMoveMultiplier:1);
+    return TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*this.pathSpeedMultiplier*this.chaseSpeedMultiplier*this.eggSpeedPenalty*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
+  }
   get movementSpeed(){
     const base=this.isAtBase?BALANCE.baseWalkSpeed:walkingSpeedValue(this.progressionSpeed);
-    const status=(this.slowRemaining>0?this.slowMultiplier:1)*(this.effects.magnet>0?.8:1)*(this.isNormalNight?BALANCE.nightMoveMultiplier:1)*(this.isRaining?BALANCE.rainMoveMultiplier:1)*(this.isWindy?BALANCE.windMoveMultiplier:1);
-    return base*TRAILS[this.save.equippedTrail??0].multiplier*this.mountSpeedMultiplier*status*this.pathSpeedMultiplier*this.chaseSpeedMultiplier*this.eggSpeedPenalty*(this.carried?carryMultiplier(this.carried,this.save.upgrades.carry):1);
+    return base*this.movementEffectMultiplier;
   }
   speedPad=freshPads();
   eggRequiredSpeed(egg:WorldEgg){const stage=egg.stageId??this.stage.id;return recommendedRouteSpeed(0,stage)*stableRecoveryRatio(stage)*(.88/carryMultiplier(egg,this.save.upgrades.carry));}

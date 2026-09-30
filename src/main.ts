@@ -1,5 +1,6 @@
 import {weightText} from './weight';
 import {activeStatusEffects} from './status-effects-ui';
+import {SpeedVignette} from './speed-vignette';
 import {petDetailPanel,petLoadoutPanel,compactWeight} from './pet-inventory-ui';
 import {hatchProgress,hatchInfo} from './hatch-ui';
 import {eggMaxHp,COUPON_ERRORS} from './data';
@@ -58,6 +59,7 @@ app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const eggNotices=new EggNotices($("shell"));
+const speedVignette=new SpeedVignette($('shell'));
 $('world').insertAdjacentHTML('beforeend',`<button id="hatch-touch" hidden aria-label="알 두드리기"><span>알을 톡톡 두드려 부화시키세요</span></button>`);
 $('world').insertAdjacentHTML('beforeend','<div id="first-egg-arrow" hidden><span>작은 알부터!</span><b>↓</b></div>');
 $('action').insertAdjacentHTML('beforeend','<small id="action-weight" hidden></small>');
@@ -101,10 +103,11 @@ hudContext.id='hud-context';
 topHud.append(hudContext);
 const statusEffects=document.createElement('div');
 statusEffects.id='status-effects';statusEffects.setAttribute('role','group');statusEffects.setAttribute('aria-label','적용 중인 버프와 디버프');
-topHud.insertBefore(statusEffects,hudContext);
+const speedStack=document.createElement('div');speedStack.id='speed-stack';
+speedStack.append(speedHud,statusEffects);
 const hudPlace=document.createElement('div');hudPlace.className='hud-place';
 hudPlace.append($('expedition'));
-hudContext.append(speedHud,hudPlace);
+hudContext.append(speedStack,hudPlace);
 const roomHUD=new RoomHUD(hudPlace,$('world'));
 topHud.insertAdjacentHTML('beforeend','<small id="xp-value"></small><div id="hazard-cue" role="status" hidden></div>');
 $("world").insertAdjacentHTML('beforeend','<div id="health-hud" role="progressbar" aria-label="생명 하트" aria-valuemin="0" hidden><span class="life-heart" aria-hidden="true">&#9829;</span><span class="life-heart" aria-hidden="true">&#9829;</span></div>');
@@ -313,6 +316,7 @@ function renderPanel() {
   }
 }
 function updateHud() {
+  speedVignette.update(game,tab==='explore');
   const effects=activeStatusEffects(game);
   statusEffects.hidden=tab!=='explore'||effects.length===0;
   const effectsHTML=effects.map(effect=>`<button class="status-effect ${effect.buff?'buff':'debuff'}" data-status-effect="${effect.id}" aria-label="${effect.name} · ${effect.buff?'버프':'디버프'} 설명" title="${effect.name}"><span aria-hidden="true">${effect.icon}</span><small>${effect.name}</small></button>`).join('');
