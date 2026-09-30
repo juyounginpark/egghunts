@@ -5,7 +5,7 @@ import type {Peer} from './multiplayer';
 import {BALANCE,COUPON_ERRORS} from './data';
 import {playerName} from './player-identity';
 import type {EggNotice} from './egg-notices';
-import {restoreSnapshotSections} from './snapshot-stream';
+import {restoreSnapshotSections,restoreSnapshotSectionsV2} from './snapshot-stream';
 import type {ChatMessage} from './multiplayer';
 import {explorationSurface} from './exploration-route';
 import {IdlePresence} from './idle-presence';
@@ -15,7 +15,7 @@ const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_
 // Login remains on Supabase; all room operations must use the same game host.
 const GAME_URL=import.meta.env.VITE_GAME_SERVER_URL||`${SUPABASE_URL}/functions/v1/game`;
 const HOSTED_EDGE=!import.meta.env.VITE_GAME_SERVER_URL;
-type Snapshot={personalBosses?:boolean;serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];chat?:ChatMessage|null;eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
+type Snapshot={streamVersion?:number;personalBosses?:boolean;serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];chat?:ChatMessage|null;eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={...COUPON_ERRORS,CANNOT_EQUIP:'빈 착용 칸과 남은 펫 수량을 확인해 주세요.',WEEKLY_INVENTORY_FULL:'알 보관함 한 칸을 비워 주세요.',WEEKLY_UNAVAILABLE:'오늘 보상을 이미 받았거나 수령할 수 없는 상태예요.',EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
 Object.assign(errorText,{SEAT_OCCUPIED:'이미 다른 탐험가가 앉아 있어요.',SEAT_UNAVAILABLE:'빈 통나무 의자 가까이에서 앉아 주세요.'});
@@ -70,6 +70,7 @@ export class OnlineGame{
   const socket=new WebSocket(GAME_URL.replace(/^http/,'ws'));
   if(warm){this.warmSocket=socket;this.warmReady=false;}else this.socket=socket;
   const baseline=new Map<string,unknown>();
+  let baselineFormat='';
   const opened=window.setTimeout(()=>{if(socket.readyState===WebSocket.CONNECTING||socket===this.warmSocket&&!this.warmReady)socket.close();},5000);
   socket.onopen=()=>{
    if(warm)socket.send(JSON.stringify({token:this.accessToken,hello:true}));
@@ -79,7 +80,9 @@ export class OnlineGame{
    try{const message=JSON.parse(event.data);
     if(message.ready===true&&socket===this.warmSocket){clearTimeout(opened);this.warmReady=true;return;}
     const request=this.socketRequest;if(socket!==this.socket||!request||request.id!==message.id)return;
-    const body=message.format==='sections-v1'?restoreSnapshotSections(message.body,baseline):message.body;
+    const format=message.format??'';
+    if(message.status===200&&format!==baselineFormat){baseline.clear();baselineFormat=format;}
+    const body=message.format==='sections-v2'?restoreSnapshotSectionsV2(message.body,baseline):message.format==='sections-v1'?restoreSnapshotSections(message.body,baseline):message.body;
     clearTimeout(request.timer);this.socketRequest=null;
     request.resolve(new Response(JSON.stringify(body),{status:message.status,headers:{'Content-Type':'application/json','Server-Timing':message.timing??''}}));
    }catch{socket.close();}
@@ -120,7 +123,7 @@ export class OnlineGame{
     try{return await new Promise<Response>((resolve,reject)=>{
      const timer=window.setTimeout(()=>{this.socket?.close();reject(Error('STREAM_TIMEOUT'));},5000);
      this.socketRequest={id:request.id,resolve,reject:()=>reject(Error('STREAM_CLOSED')),timer};
-     this.socket!.send(JSON.stringify({token,request,stream:1}));
+     this.socket!.send(JSON.stringify({token,request,stream:this.latest?.streamVersion===2?2:1}));
     });}catch{/* Replay the same request ID through HTTP; rewards remain idempotent. */}
    }
   }

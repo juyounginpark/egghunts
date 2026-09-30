@@ -14,8 +14,15 @@ export class HostStore {
    CREATE TABLE IF NOT EXISTS rooms(id TEXT PRIMARY KEY,state TEXT NOT NULL,members TEXT NOT NULL);`);
   this.db.prepare('INSERT OR IGNORE INTO metadata VALUES (?,?)').run('owner',randomUUID());
   this.owner=this.db.prepare('SELECT value FROM metadata WHERE key=?').get('owner').value;
+  // Reuse hot-path statements; keep the same durable transaction per response.
+  this.readProfile=this.db.prepare('SELECT state,revision FROM profiles WHERE user=?');
+  this.writeProfile=this.db.prepare(`INSERT INTO profiles(user,state,revision) VALUES(?,?,1)
+   ON CONFLICT(user) DO UPDATE SET state=excluded.state,revision=profiles.revision+1
+   WHERE profiles.state<>excluded.state`);
+  this.writeRoom=this.db.prepare('INSERT OR REPLACE INTO rooms VALUES(?,?,?)');
+  this.deleteRoom=this.db.prepare('DELETE FROM rooms WHERE id=?');
  }
- profile(user){const row=this.db.prepare('SELECT state,revision FROM profiles WHERE user=?').get(user);return row?JSON.parse(row.state):null;}
+ profile(user){const row=this.readProfile.get(user);return row?JSON.parse(row.state):null;}
  metadata(key){return this.db.prepare('SELECT value FROM metadata WHERE key=?').get(key)?.value;}
  setMetadata(key,value){this.db.prepare('INSERT OR REPLACE INTO metadata VALUES(?,?)').run(key,String(value));}
  seed(user,state,revision=0){this.db.prepare('INSERT OR IGNORE INTO profiles(user,state,revision,synced) VALUES(?,?,?,?)').run(user,JSON.stringify(state),revision,revision);}
@@ -23,11 +30,10 @@ export class HostStore {
  commit(room){
   this.db.exec('BEGIN IMMEDIATE');
   try{
-   for(const [id,p]of Object.entries(room.state?.players??{}))this.db.prepare(`INSERT INTO profiles(user,state,revision) VALUES(?,?,1)
-    ON CONFLICT(user) DO UPDATE SET state=excluded.state,revision=profiles.revision+1`).run(id,JSON.stringify(p.runtime));
+   for(const [id,p]of Object.entries(room.state?.players??{}))this.writeProfile.run(id,JSON.stringify(p.runtime));
    // Empty rooms retain the current day's egg draw until their cycle expires.
-   if(room.state)this.db.prepare('INSERT OR REPLACE INTO rooms VALUES(?,?,?)').run(room.id,JSON.stringify(room.state),JSON.stringify(room.members));
-   else this.db.prepare('DELETE FROM rooms WHERE id=?').run(room.id);
+   if(room.state)this.writeRoom.run(room.id,JSON.stringify(room.state),JSON.stringify(room.members));
+   else this.deleteRoom.run(room.id);
    this.db.exec('COMMIT');
   }catch(e){this.db.exec('ROLLBACK');throw e;}
  }

@@ -1,5 +1,13 @@
 # 구현 작업 계획
 
+## 라이브 서비스 통신·저장 최적화 (2026-09-30)
+
+- 목표 동접 100~300명, 월 예산 미정. 운영 준비와 남은 병목은 [live-service-capacity.md](live-service-capacity.md)에 기록한다.
+- sections-v1의 runtime.save/fields 전체 재전송을 sections-v2의 개별 키 전송으로 바꾼다. 초깃값·삭제 목록·reset을 전송하며 클라이언트가 전체 상태를 복원한다. EC2가 streamVersion=2를 알린 경우에만 사용하여 프런트 선배포가 기존 서버의 전체 스냅샷 전송을 유발하지 않게 한다. Edge는 v1 유지.
+- SQLite의 profile 읽기/쓰기와 room 쓰기/삭제 prepared statement를 재사용한다. 동일한 profile JSON은 revision을 올리지 않아 불필요한 Supabase 체크포인트를 만들지 않는다. WAL FULL 트랜잭션과 방 저장은 유지한다.
+- 1분 단위 응답 payload 바이트·응답 수·현재 방/인원 집계를 journald에 기록한다. 월 한도 80%/95% 경고를 추가한다. 외부 알림 연동은 아직 없으며 실제 AWS 청구량 측정과 구분한다.
+- 수동 회귀 검사 scripts/qa/snapshot-delta.mjs를 추가하고 기존 ec2-host 검사에 v1→v2 협상·후속 변경 전송을 추가한다. 자동 검사·빌드·부하 테스트·운영 서버 배포는 실행하지 않았다. 기존 제한 4방·10GiB와 서버 사양은 변경하지 않았다.
+
 ## 첫 튜토리얼 두 엄지 가이드 (2026-09-30)
 
 - tutorial.ts의 인라인 SVG 손 그림을 실제 controls의 좌우 버튼에 맞춰 표시한다. 손 그림 불투명도는 58%이며 클릭·드래그를 가로채지 않는다. 첫 안내는 두 엄지 조작 설명으로 바꾼다.

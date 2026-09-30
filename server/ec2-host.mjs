@@ -3,6 +3,7 @@ import {randomUUID,createHash} from 'node:crypto';
 import {WebSocketServer,WebSocket} from 'ws';
 import {HostStore} from './ec2-store.mjs';
 import {runRoom,snapshotSections} from './room-engine.ts';
+import {snapshotSectionsV2} from '../src/snapshot-stream';
 import {BALANCE} from '../src/data';
 import {IdlePresence} from '../src/idle-presence';
 
@@ -19,16 +20,25 @@ let active=false,cloudSeen=0,stopping=false,cloudBusy=false;
 const maxRooms=Number(process.env.GAME_MAX_ROOMS??4);
 let transferMonth=store.metadata('transferMonth')??'',transferBytes=Number(store.metadata('transferBytes')??0);
 const transferLimit=Number(process.env.GAME_MONTHLY_PAYLOAD_MB??10240)*1024*1024;
+let trafficAt=Date.now(),trafficBytes=0,trafficResponses=0,budgetWarning=0;
+function recordTransfer(bytes){transferBytes+=bytes;trafficBytes+=bytes;trafficResponses++;}
+function reportTraffic(){
+ const now=Date.now(),level=transferBytes>=transferLimit*.95?95:transferBytes>=transferLimit*.8?80:0;
+ if(level>budgetWarning){budgetWarning=level;console.warn(JSON.stringify({event:'transfer-budget-warning',percent:level,usedBytes:transferBytes,limitBytes:transferLimit}));}
+ if(now-trafficAt<60000)return;
+ console.info(JSON.stringify({event:'game-traffic',seconds:Math.round((now-trafficAt)/1000),payloadBytes:trafficBytes,responses:trafficResponses,rooms:rooms.size,players:membership.size,monthUsedBytes:transferBytes,monthLimitBytes:transferLimit}));
+ trafficAt=now;trafficBytes=0;trafficResponses=0;
+}
 function transferAvailable(bytes=0){
  const month=new Date().toISOString().slice(0,7);
- if(month!==transferMonth){transferMonth=month;transferBytes=0;}
+ if(month!==transferMonth){transferMonth=month;transferBytes=0;budgetWarning=0;}
  return transferBytes+bytes<=transferLimit;
 }
 const ready=()=>active&&!stopping&&Date.now()-cloudSeen<60000&&transferAvailable();
 function socketSend(socket,packet){
  const text=JSON.stringify(packet),bytes=Buffer.byteLength(text);
  if(socket.bufferedAmount>262144||!transferAvailable(bytes)){socket.close(1008,'Capacity limit');return;}
- transferBytes+=bytes;socket.send(text);
+ recordTransfer(bytes);socket.send(text);
 }
 const known=new Set(['SIGN_IN','ROOM_EXPIRED','IDLE_TIMEOUT','SERVER_NOT_READY','SERVER_FULL','RATE_LIMIT','INVALID_REQUEST','INVALID_INPUT','INVALID_COMMAND','INVALID_OPERATION']);
 const buckets=new Map(),negative=new Map();
@@ -50,6 +60,7 @@ async function cloud(path,body){
 async function checkpoint(){
  if(cloudBusy)return;cloudBusy=true;
  try{
+  transferAvailable();reportTraffic();
   store.setMetadata('transferMonth',transferMonth);store.setMetadata('transferBytes',transferBytes);
   const [backend]=await cloud('/rest/v1/game_backend?select=mode,owner&id=eq.true');
   active=backend?.mode==='ec2'&&backend.owner===store.owner;
@@ -162,13 +173,13 @@ async function operate(identity,request){
  next.state=result.room;
  store.commit(next);rooms.set(next.id,next);membership.set(user,next.id);
  if(observeIdle(user,result.response.runtime.fields,now)){expireIdle(user);throw Error('IDLE_TIMEOUT');}
- return result.response;
+ return {...result.response,streamVersion:2};
 }
 function cors(origin){return {'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin',...(origins.has(origin)?{'Access-Control-Allow-Origin':origin}:{}),'Access-Control-Allow-Headers':'authorization,apikey,content-type','Access-Control-Allow-Methods':'POST,OPTIONS','Access-Control-Expose-Headers':'Server-Timing'};}
 function failure(e){const message=known.has(e.message)?e.message:'SERVER_NOT_READY';return {status:message==='SIGN_IN'?401:message==='SERVER_NOT_READY'?503:409,body:{error:message}};}
 const server=createServer(async(req,res)=>{
  const started=performance.now(),origin=req.headers.origin??'';
- const send=(status,body)=>{let text=JSON.stringify(body);const bytes=Buffer.byteLength(text);if(status===200&&req.method==='POST'){if(!transferAvailable(bytes)){status=503;text=JSON.stringify({error:'SERVER_NOT_READY'});}else transferBytes+=bytes;}res.writeHead(status,{...cors(origin),'Server-Timing':`total;dur=${(performance.now()-started).toFixed(1)}`});res.end(text);};
+ const send=(status,body)=>{let text=JSON.stringify(body);const bytes=Buffer.byteLength(text);if(status===200&&req.method==='POST'){if(!transferAvailable(bytes)){status=503;text=JSON.stringify({error:'SERVER_NOT_READY'});}else recordTransfer(bytes);}res.writeHead(status,{...cors(origin),'Server-Timing':`total;dur=${(performance.now()-started).toFixed(1)}`});res.end(text);};
  if(origin&&!origins.has(origin))return send(403,{error:'ORIGIN_NOT_ALLOWED'});
  if(req.method==='GET'&&(req.url==='/healthz'||req.url==='/readyz'))return send(req.url==='/readyz'&&!ready()?503:200,{service:'egghunts',ready:ready()});
  if(req.url!=='/game')return send(404,{error:'NOT_FOUND'});
@@ -190,7 +201,7 @@ server.on('upgrade',(req,socket,head)=>{
  wss.handleUpgrade(req,socket,head,ws=>wss.emit('connection',ws,remoteIP(req)));
 });
 wss.on('connection',(socket,ip)=>{
- let busy=false,user=null,baselineToken='',alive=true;
+ let busy=false,user=null,baselineToken='',baselineFormat=0,alive=true;
  const baseline=new Map(),deadline=setTimeout(()=>socket.close(1008,'Authentication required'),5000);
  socket.on('error',()=>{});socket.on('pong',()=>{alive=true;});
  const heartbeat=setInterval(()=>{if(!alive)return socket.terminate();alive=false;socket.ping();},10000);
@@ -208,8 +219,9 @@ wss.on('connection',(socket,ip)=>{
    if(packet.hello===true){socketSend(socket,{ready:true});return;}
    if(packet.request?.operation!=='update')throw Error('INVALID_OPERATION');
    id=packet.request.id;const body=await operate(identity,packet.request);
-   if(packet.token!==baselineToken){baseline.clear();baselineToken=packet.token;}
-   if(socket.readyState===WebSocket.OPEN)socketSend(socket,{id,status:200,body:packet.stream===1?snapshotSections(body,baseline):body,format:packet.stream===1?'sections-v1':undefined,timing:`total;dur=${(performance.now()-started).toFixed(1)}`});
+   const format=packet.stream===2?2:packet.stream===1?1:0;
+   if(packet.token!==baselineToken||format!==baselineFormat){baseline.clear();baselineToken=packet.token;baselineFormat=format;}
+   if(socket.readyState===WebSocket.OPEN)socketSend(socket,{id,status:200,body:format===2?snapshotSectionsV2(body,baseline):format===1?snapshotSections(body,baseline):body,format:format?`sections-v${format}`:undefined,timing:`total;dur=${(performance.now()-started).toFixed(1)}`});
   }catch(e){const {status,body}=failure(e);if(socket.readyState===WebSocket.OPEN){socketSend(socket,{id,status,body});if(status===401)socket.close(1008,'Authentication required');}}
   finally{busy=false;}
  });

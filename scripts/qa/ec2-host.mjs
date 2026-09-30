@@ -39,7 +39,13 @@ try{
  for(let i=1;i<5;i++){await new Promise(r=>setTimeout(r,150));const b=await request(tokens[i],command('join'));assert.equal(b.status,200);assert.equal(b.body.slot,i);assert.deepEqual(b.body.world.map(e=>e.id),a.body.world.map(e=>e.id));}
  const full=await request(tokens[5],command('join'));assert.equal(full.body.error,'SERVER_FULL');
  const ws=new WebSocket('ws://127.0.0.1:4346/game');await once(ws,'open');
- const packet={token:tokens[0],request:command('update'),stream:1};ws.send(JSON.stringify(packet));const [data]=await once(ws,'message');const update=JSON.parse(data);assert.equal(update.status,200);assert.equal(update.format,'sections-v1');assert.equal(update.body.count,5);ws.close();
+ const packet={token:tokens[0],request:command('update'),stream:1};ws.send(JSON.stringify(packet));const [data]=await once(ws,'message');const update=JSON.parse(data);assert.equal(update.status,200);assert.equal(update.format,'sections-v1');assert.equal(update.body.count,5);assert.equal(update.body.streamVersion,2);
+ await new Promise(r=>setTimeout(r,200));
+ ws.send(JSON.stringify({...packet,request:command('update'),stream:2}));
+ const compact=JSON.parse((await once(ws,'message'))[0]);assert.equal(compact.status,200);assert.equal(compact.format,'sections-v2');assert.equal(compact.body.reset,true);assert.ok(Array.isArray(compact.body.set['runtime.save.mongles']));
+ await new Promise(r=>setTimeout(r,200));
+ ws.send(JSON.stringify({...packet,request:command('update'),stream:2}));
+ const delta=JSON.parse((await once(ws,'message'))[0]);assert.equal(delta.status,200);assert.equal(delta.body.reset,false);assert.equal(Object.hasOwn(delta.body.set,'runtime.save.mongles'),false);ws.close();
  await new Promise(r=>setTimeout(r,200));const bad=await request('invalid',command('update'));assert.equal(bad.status,401);const before=authCalls;await request('invalid',command('update'));assert.equal(authCalls,before);
  await new Promise(r=>setTimeout(r,200));assert.equal((await request(tokens[4],{operation:'leave'})).status,200);
  await new Promise(r=>setTimeout(r,200));assert.equal((await request(tokens[0],command('update'))).body.count,4);
