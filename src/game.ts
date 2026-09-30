@@ -1012,7 +1012,7 @@ export class GameState {
       // A rush ends outside contact range even after a delayed/large frame.
       // Normal close pursuit resumes on the next tick, rather than overshooting.
       const rush=b.mode==='chase'&&l>reach+PERSONAL_BOSS.catchupDistance;
-      const step=Math.min(rush?l-reach-PERSONAL_BOSS.catchupGap:l,speed*(b.mode==='chase'?PLAYER_CHASE_SPEED_MULTIPLIER:1)*(this.isNormalNight?NIGHT_BOSS_SPEED_MULTIPLIER:1)*activeDt);
+      const step=Math.min(rush?l-reach-PERSONAL_BOSS.catchupGap:l,speed*(b.mode==='chase'?PERSONAL_BOSS.chaseMultiplier:1)*(this.isNormalNight?NIGHT_BOSS_SPEED_MULTIPLIER:1)*activeDt);
       if(l>1.8||b.mode==='return'){b.x+=dx/(l||1)*step;b.z+=dz/(l||1)*step;}
       b.windup=undefined;
       if(b.mode==='chase'&&!this.isAtBase&&Math.hypot(this.x-b.x,this.z-b.z)<=ROUTE.bossReach*ROUTE.bossAngryScale*(b.final?FINAL_GUARDIAN.scale:1)){

@@ -1,5 +1,11 @@
 # 구현 작업 계획
 
+## 보스 추격 거리·배율 완화 (2026-09-30)
+
+- PERSONAL_BOSS에 보스 전용 chaseMultiplier=1.4를 두고 tickBosses의 추격 이동에 적용한다. 플레이어의 PLAYER_CHASE_SPEED_MULTIPLIER=1.7은 유지한다.
+- maxGap 4→6, catchupDistance 2→4, catchupGap 1→3으로 접근 거리를 각각 2만큼 늘린다. 즉시 위치 보정은 남아 있으며 보정 후 더 먼 거리에서 추격한다. 접촉·피해 판정은 유지한다.
+- 자동 QA·검증 빌드·플레이 검증·운영 배포는 실행하지 않았다.
+
 ## 이동 버프·디버프 비네트 (2026-09-30)
 
 - GameState.movementEffectMultiplier로 기존 이동 계산의 장착·날씨·지형·추격·운반·일시 감속 곱연산을 공유한다. 속도 수치를 바꾸지 않고 비네트에 동일 배율을 사용한다.

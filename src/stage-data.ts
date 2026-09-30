@@ -161,7 +161,7 @@ export function guardianChaseSpeed(stage:number,_playerSpeed:number){
  return guardianSpeed(stage);
 }
 /** Distance alone switches personal guardians into catch-up movement. */
-export const PERSONAL_BOSS={catchupDistance:2,catchupGap:1,maxGap:4,catchupSpeed:90,catchupGain:8,recoverEggMs:12000};
+export const PERSONAL_BOSS={chaseMultiplier:1.4,catchupDistance:4,catchupGap:3,maxGap:6,catchupSpeed:90,catchupGain:8,recoverEggMs:12000};
 export function guardianPursuitSpeed(stage:number,_playerSpeed:number,distance:number,_escapeSpeed:number,reach:number){
  const base=guardianChaseSpeed(stage,_playerSpeed);
  return distance>reach+PERSONAL_BOSS.catchupDistance?Math.max(base,Math.min(BOSS_MOVEMENT.catchupMaxSpeed,PERSONAL_BOSS.catchupSpeed+(distance-reach-PERSONAL_BOSS.catchupDistance)*PERSONAL_BOSS.catchupGain)):base;
