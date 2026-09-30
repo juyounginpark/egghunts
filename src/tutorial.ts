@@ -13,6 +13,11 @@ export function firstEggTarget(game:GameState){
 }
 
 export const TUTORIAL_STEPS=6;
+// Lightweight vector hands sit over the real controls without intercepting input.
+export function thumbGuideHTML(){
+ const hand=`<svg viewBox="0 0 96 120" fill="none" aria-hidden="true"><g class="guide-hand"><path d="M4 116V80c0-13 5-23 14-31l15-14 2-15c1-9 5-14 12-14 8 0 12 6 11 15l-2 29 15 7c8 4 12 11 12 20v39Z" fill="#fff4d7" stroke="#52664a" stroke-width="3" stroke-linejoin="round"/><path d="M37 22c0-5 3-9 9-9s9 4 9 9l-1 8H36Z" fill="#e4cba6"/><path d="m56 50-7 17c-3 8-9 13-17 15M66 69l-3 17M75 76l-2 14" stroke="#9c916e" stroke-width="2" stroke-linecap="round"/></g><circle cx="46" cy="22" r="17" stroke="#fff9e8" stroke-width="2" stroke-dasharray="3 4"/></svg>`;
+ return `<div id="thumb-guide" role="img" aria-label="양손 엄지로 조작해요. 왼쪽 엄지로 조이스틱을 밀어 이동하고, 오른쪽 엄지로 행동 버튼을 눌러요." hidden><div class="thumb-guide-left"><span>왼손 · 이동</span>${hand}</div><div class="thumb-guide-right"><span>오른손 · 행동</span>${hand}</div></div>`;
+}
 export function migrateTutorial(save:Pick<Save,'tutorial'|'tutorialVersion'>){
   if(save.tutorialVersion===2)return;
   if(save.tutorial===5)save.tutorial=TUTORIAL_STEPS;
@@ -29,6 +34,7 @@ export function advanceTutorial(step:number,event:string){
 export function tutorialHint(game:GameState,tab:string){
   const step=game.save.tutorial??0;
   if(step>=TUTORIAL_STEPS)return null;
+  if(step===0&&tab==='explore'&&game.isAtBase&&!game.isNight)return {step:1,title:'두 엄지로 조작해요',copy:'왼손은 밀어서 이동 · 오른손은 눌러서 행동',target:'#joystick'};
   if(game.isNight&&step<3)return {step:1,title:'아침을 기다려요',copy:'해가 뜨면 농장문이 열려요',target:'#cycle-clock'};
   if(step<3){
     if(game.carried)return {step:3,title:'농장으로 돌아오기',copy:'↓ 알을 들고 아래쪽 농장으로',target:'#joystick'};

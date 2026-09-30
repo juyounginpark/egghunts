@@ -4,7 +4,7 @@ import {SpeedVignette} from './speed-vignette';
 import {petDetailPanel,petLoadoutPanel,compactWeight} from './pet-inventory-ui';
 import {hatchProgress,hatchInfo} from './hatch-ui';
 import {eggMaxHp,COUPON_ERRORS} from './data';
-import {advanceTutorial,tutorialHint,TUTORIAL_STEPS} from './tutorial';
+import {advanceTutorial,tutorialHint,TUTORIAL_STEPS,thumbGuideHTML} from './tutorial';
 import {IdlePresence} from './idle-presence';
 import {formatTrainingGain} from './format';
 import {weeklyDay} from './weekly';
@@ -60,6 +60,7 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const eggNotices=new EggNotices($("shell"));
 const speedVignette=new SpeedVignette($('shell'));
+$('controls').insertAdjacentHTML('beforeend',thumbGuideHTML());
 $('world').insertAdjacentHTML('beforeend',`<button id="hatch-touch" hidden aria-label="알 두드리기"><span>알을 톡톡 두드려 부화시키세요</span></button>`);
 $('world').insertAdjacentHTML('beforeend','<div id="first-egg-arrow" hidden><span>작은 알부터!</span><b>↓</b></div>');
 $('action').insertAdjacentHTML('beforeend','<small id="action-weight" hidden></small>');
@@ -316,6 +317,7 @@ function renderPanel() {
   }
 }
 function updateHud() {
+  $('thumb-guide').hidden=(game.save.tutorial??0)!==0||tab!=='explore'||!game.isAtBase||game.isNight||!!game.death||!!game.returnReward||game.result!==null||paused||!$('modal').hidden;
   speedVignette.update(game,tab==='explore');
   const effects=activeStatusEffects(game);
   statusEffects.hidden=tab!=='explore'||effects.length===0;
