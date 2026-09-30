@@ -1,4 +1,5 @@
 import {weightText} from './weight';
+import {activeStatusEffects} from './status-effects-ui';
 import {petDetailPanel,petLoadoutPanel,compactWeight} from './pet-inventory-ui';
 import {hatchProgress,hatchInfo} from './hatch-ui';
 import {eggMaxHp,COUPON_ERRORS} from './data';
@@ -98,6 +99,9 @@ speedHud.innerHTML = `<div class="speed-heading">${uiIcon('speed')}<strong id="s
 const hudContext=document.createElement('div');
 hudContext.id='hud-context';
 topHud.append(hudContext);
+const statusEffects=document.createElement('div');
+statusEffects.id='status-effects';statusEffects.setAttribute('role','group');statusEffects.setAttribute('aria-label','적용 중인 버프와 디버프');
+topHud.insertBefore(statusEffects,hudContext);
 const hudPlace=document.createElement('div');hudPlace.className='hud-place';
 hudPlace.append($('expedition'));
 hudContext.append(speedHud,hudPlace);
@@ -309,6 +313,10 @@ function renderPanel() {
   }
 }
 function updateHud() {
+  const effects=activeStatusEffects(game);
+  statusEffects.hidden=tab!=='explore'||effects.length===0;
+  const effectsHTML=effects.map(effect=>`<button class="status-effect ${effect.buff?'buff':'debuff'}" data-status-effect="${effect.id}" aria-label="${effect.name} · ${effect.buff?'버프':'디버프'} 설명" title="${effect.name}"><span aria-hidden="true">${effect.icon}</span><small>${effect.name}</small></button>`).join('');
+  if(statusEffects.dataset.html!==effectsHTML){statusEffects.dataset.html=effectsHTML;statusEffects.innerHTML=effectsHTML;}
   weeklyEntry.hidden=!game.isAtBase||tab!=='explore'||!!game.returnReward||game.result!==null;
   weeklyEntry.textContent='\uD83C\uDF81';
   weeklyEntry.classList.toggle('reward-ready',game.canClaimWeekly);
@@ -632,6 +640,12 @@ document.addEventListener("click", async (e) => {
   const target=e.target as HTMLElement;
   const b = target.closest<HTMLElement>("button")??target.closest<HTMLElement>('.pet-tile')?.querySelector<HTMLElement>('[data-pet-lot]');
   if (!b || !ready) return;
+  if(b.dataset.statusEffect){
+    const effect=activeStatusEffects(game).find(effect=>effect.id===b.dataset.statusEffect);
+    toast(effect?`${effect.name}\n${effect.description}`:'효과가 해제되었어요.');return;
+  }
+  if(b.id==='pet-view-toggle'){$('panel').dataset.petView=$('panel').dataset.petView==='tiles'?'cards':'tiles';renderPanel();return;}
+  if(b.id==='pet-sort-reverse'){$('panel').dataset.petReverse=String($('panel').dataset.petReverse!=='true');renderPanel();return;}
   if(b.id==='open-egg-bag'){
     if(tab!=='hatchery'||hatchRevealing||game.result!==null||game.returnReward)return;
     input.reset();online.halt();renderEggQueue();if(!eggBag.open)eggBag.showModal();b.setAttribute('aria-expanded','true');return;

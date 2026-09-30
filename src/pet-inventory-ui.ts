@@ -30,12 +30,14 @@ export function petDetailPanel(game:GameState,key:string){
 }
 export function petInventoryPanel(game:GameState){
  const panel=document.getElementById('panel'),selected=panel?.dataset.petSort??'recent',picking=panel?.dataset.petPick==='mount';
+ const tiled=panel?.dataset.petView==='tiles',reversed=panel?.dataset.petReverse==='true';
  const all=(game.save.petLots??[]).filter(l=>l.count>0),order=new Map(all.map((l,i)=>[l.key,i]));
  const lots=all.slice().sort((a,b)=>{
   const value=(l:typeof a)=>selected==='recent'?order.get(l.key)!:selected==='weight'?l.weightG:selected==='rarity'?MONGLES[l.species].tier:selected==='speed'?weightedPetStats(l.species,l).speedMultiplier:selected==='stage'?MONGLES[l.species].stageId:selected==='count'?l.count:selected==='tap'?weightedPetStats(l.species,l).clickMultiplier:selected==='auto'?weightedPetStats(l.species,l).autoMultiplier:selected==='income'?game.petIncomeAmount(l.species)*petWeightRatio(l):Number(game.lotAvailable(l.key)<l.count);
   return selected==='name'?MONGLES[a.species].name.localeCompare(MONGLES[b.species].name,'ko'):value(b)-value(a)||a.species-b.species||b.weightG-a.weightG;
  });
  const mount=game.mountPetLot;
+ if(reversed)lots.reverse();
  const reward=collectionRewardReady(game);
  const slots=Array.from({length:BALANCE.maxCompanions},(_,slot)=>{
   const l=game.activePetLots[slot];
@@ -43,9 +45,9 @@ export function petInventoryPanel(game:GameState){
  }).join('');
  return `<div class="pet-inventory-heading"><h1>펫 <small>${num(game.petCount)} / ${num(game.petCapacity)}</small></h1><div class="pet-heading-actions"><button id="open-pet-loadout" class="secondary pet-effects-button" aria-label="장착 효과" aria-haspopup="dialog">${uiIcon('auto')}<span>효과</span></button><button data-tab="collection" class="secondary collection-icon-button ${reward?'reward-ready':''}" aria-label="도감${reward?' · 받을 보상 있음':''}">${uiIcon('book')}</button></div></div>
  <section class="pet-loadout compact-loadout" aria-label="장착한 펫">${slots}<button class="pet-slot mount-slot ${mount?'':'empty'}" ${mount?'id="unequip-mount" aria-label="탑승 해제"':'data-pet-pick="mount" aria-label="탑승 펫 선택"'}><small>탑승</small>${mount?`<img src="${petIcon(mount.species)}" alt=""/><span class="slot-remove">×</span>`:'<b>＋</b>'}</button></section>
- <div class="pet-list-tools"><select id="pet-sort" aria-label="펫 정렬">${Object.entries({recent:'최근 획득',equipped:'장착 우선',weight:'무게',rarity:'등급',speed:'성장 속도',stage:'스테이지',count:'수량',name:'이름',tap:'두드리기',auto:'자동 부화',income:'생산'}).map(([k,v])=>`<option value="${k}" ${selected===k?'selected':''}>${v}</option>`).join('')}</select></div>
+ <div class="pet-list-tools"><button id="pet-view-toggle" class="secondary" aria-pressed="${tiled}" aria-label="타일 보기">${tiled?'▤ 카드':'▦ 타일'}</button><button id="pet-sort-reverse" class="secondary" aria-pressed="${reversed}" aria-label="정렬 역순">${reversed?'↑ 역순':'↓ 기본순'}</button><select id="pet-sort" aria-label="펫 정렬">${Object.entries({recent:'최근 획득',equipped:'장착 우선',weight:'무게',rarity:'등급',speed:'성장 속도',stage:'스테이지',count:'수량',name:'이름',tap:'두드리기',auto:'자동 부화',income:'생산'}).map(([k,v])=>`<option value="${k}" ${selected===k?'selected':''}>${v}</option>`).join('')}</select></div>
  ${picking?'<div class="pet-pick-notice">탑승 <button class="secondary" data-pet-pick="" aria-label="탑승 필터 해제">×</button></div>':''}
- <div class="pet-inventory-grid" aria-label="보유 펫">${lots.map(l=>{
+ <div class="pet-inventory-grid ${tiled?'tile-view':''}" aria-label="보유 펫">${lots.map(l=>{
   const p=MONGLES[l.species],free=game.lotAvailable(l.key),mounted=game.save.mountLot===l.key,slot=game.activePetLots.findIndex(a=>a.key===l.key);
   const ride=true;
   const follow=free>0?`<button class="${picking?'secondary':'primary'}" data-lot-action="equip" data-lot="${l.key}">${game.save.active.length>=BALANCE.maxCompanions?'동행 교체':'동행'}</button>`:slot>=0?`<button class="secondary" data-lot-action="unequip" data-slot="${slot}">동행 해제</button>`:'';
