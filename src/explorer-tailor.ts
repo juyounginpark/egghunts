@@ -4,11 +4,15 @@ import {ExplorerGeometry} from './explorer-geometry';
 export function explorerHair(g:ExplorerGeometry,style:number,hat:number,hair:string,accent:string){
  const b=g.box.bind(g),covered=[1,2,3,4,5,6,11].includes(hat);
  if(hat===11)style=12;
+ // Continuous scalp under the silhouette. Previously the crown and lower locks
+ // were separated, exposing a skin stripe and an almost bald rear view.
+ b(0,3.8,-4.55,style===12?10.1:10.6,5.8,style===12?.45:1.3,hair);
+ for(const s of [-1,1])b(s*5,5.2,-.45,style===12?.4:1.15,2.6,8.1,hair);
  const crown=(height:number,width=10.6)=>{b(0,6.8,0,width,covered?1.2:height,9.6,hair);if(!covered&&height>1.6)b(0,7.2+height/2,0,width-2,.6,7.6,hair);};
  const fringe=(x:number,w:number,y=5.8,h=1.3)=>b(x,y,4.55,w,h,1.15,hair);
  // Long locks stay outside the shoulder/pack corridor; no sheet down the back.
  const locks=(bottom:number,width:number)=>{for(const s of [-1,1]){
-  const jaw=Math.max(.8,bottom);b(s*5.1,(5.6+jaw)/2,-.6,width,5.6-jaw,7.4,hair);
+  const jaw=Math.max(.8,bottom);b(s*5.1,(6.6+jaw)/2,-.6,width,6.6-jaw,7.4,hair);
   if(bottom<.8)b(s*4.9,(.8+bottom)/2,-4.8,Math.min(width,1.5),.8-bottom,1.2,hair);
  }};
  switch(style){

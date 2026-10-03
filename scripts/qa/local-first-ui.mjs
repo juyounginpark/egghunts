@@ -53,8 +53,8 @@ try{
   await a.locator('#hud-toggle').click();
   await a.locator('#room-progress').click();assert.equal(await a.locator('#room-progress').getAttribute('aria-expanded'),'true');
   await a.locator('#room-progress').click();
-  assert.equal(await a.evaluate(()=>window.__localFirst.session.ai.bots.length),2);
-  assert.equal(await a.evaluate(()=>new Set(window.__localFirst.session.ai.initialSnapshots.map(b=>b.action)).size),2);
+  const population=await a.evaluate(()=>window.__localFirst.session.ai.bots.length);assert.ok(population>=2&&population<=4);
+  assert.equal(await a.evaluate(()=>new Set(window.__localFirst.session.ai.initialSnapshots.map(b=>b.action)).size),population);
   const result=await a.evaluate(()=>{const {game:g}=window.__localFirst;g.save.tutorial=6;g.move(0,-1,.1);const moved=g.z<0;
    const egg=g.world[0];g.x=egg.x;g.z=egg.z;g.pickup(egg);const pickup=!!g.carried;g.applyBossContact(egg.guardian??0,1,0);const boss=g.hp===1&&!g.carried;
    g.x=g.z=0;g.save.eggs=[{...egg,id:'ui-local-hatch',hp:0}];g.save.selected='ui-local-hatch';const hatch=g.claimHatch('ui-local-hatch');g.result=null;g.save.dust=100000;const upgrade=g.upgrade('speed');return {moved,pickup,boss,hatch,upgrade,room:g.roomManaged};});
@@ -82,7 +82,7 @@ try{
   await b.locator('#friend-close').click();
   await a.waitForFunction(()=>window.__localFirst.session.peers.some(p=>p.kind==='human'));
   assert.ok(await b.evaluate(()=>window.__localFirst.session.peers.length<=3));
-  await a.evaluate(()=>{window.__localFirst.game.x=3;window.__localFirst.game.z=-8;});
+  await a.evaluate(()=>{const g=window.__localFirst.game;g.nightUntil=0;g.nightAt=g.now()+600000;g.deadline=g.now()+600000;g.returnReward=null;g.death=null;g.training=false;g.seat=null;g.x=3;g.z=-8;});
   await b.waitForFunction(()=>window.__localFirst.multiplayer.peers.some(p=>p.x===3&&p.z===-8));
   try{await b.waitForFunction(()=>[...window.__localFirst.world.peers.values()].some(p=>Math.abs(p.position.x-3)<.2&&Math.abs(p.position.z+8)<.2),{},{timeout:15000});}catch(e){console.log(await b.evaluate(()=>({peers:window.__localFirst.multiplayer.peers,rendered:[...window.__localFirst.world.peers].map(([id,p])=>({id,x:p.position.x,z:p.position.z,motion:p.userData.motion}))})));throw e;}
   assert.equal(await a.locator('#emote-picker').isVisible(),false);await a.locator('#emote-toggle').click();await a.locator('[data-emote="hello"]').click();assert.equal(await a.locator('#emote-picker').isVisible(),false);

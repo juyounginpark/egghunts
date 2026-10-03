@@ -908,7 +908,7 @@ nav button img { width:28px; height:28px; }
 
 /* Three levels: minimal clock, compact summary, on-demand explorer details. */
 #shell #top-hud { gap:6px; }
-#shell #top-hud #main-hud { display:grid; grid-template-columns:minmax(82px,1fr) minmax(48px,auto) 44px; grid-template-rows:40px auto; gap:0 2px; width:100%; height:auto; min-height:0; padding:3px 6px 5px; border:var(--hud-border); border-radius:10px; background:var(--paper); box-shadow:var(--hud-shadow); }
+#shell #top-hud #main-hud { display:grid; grid-template-columns:minmax(82px,1fr) minmax(48px,auto) 44px; grid-template-rows:44px auto; gap:0 2px; width:100%; height:auto; min-height:0; padding:3px 6px 5px; border:var(--hud-border); border-radius:10px; background:var(--paper); box-shadow:var(--hud-shadow); }
 #shell #main-hud .hud-player { gap:4px; }
 #shell #main-hud .hud-avatar { width:22px; height:28px; }
 #shell #main-hud .hud-level { flex:1; }

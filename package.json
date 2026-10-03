@@ -30,7 +30,9 @@
     "qa:local-first": "node scripts/qa/local-first.mjs && node scripts/qa/local-first-ui.mjs",
     "qa:mobile-hud": "node scripts/qa/mobile-hud.mjs",
     "qa:explorer-profile": "node scripts/qa/explorer-profile.mjs",
-    "build:pages": "npm run build -- --base=/egghunts/"
+    "build:pages": "npm run build -- --base=/egghunts/",
+    "qa:entry-sequence": "node scripts/qa/entry-sequence.mjs",
+    "qa:explorer-rework": "node scripts/qa/explorer-rework.mjs"
   },
   "dependencies": {
     "@apps-in-toss/web-framework": "3.5.0",

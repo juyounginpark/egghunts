@@ -17,9 +17,9 @@ try{
  const env={actors:()=>[humanEntity.pose(),...(ai?.bots.map(b=>b.entity.pose())??[])],visible:()=>false,collect:()=>false,attack:(actor,id)=>{const victim=ai.bots.find(b=>b.entity.id===id)?.entity;if(!victim)return;attacks.push({actor:actor.id,target:id});victim.game.receiveBat(victim.game.x-actor.game.x,victim.game.z-actor.game.z);}};
  ai=new AISession(()=>human,env,random.next);
  await test('A/B: prepared snapshots have varied actions, locations, ages, timers and actual engines',()=>{
-  assert.equal(ai.bots.length,2);assert.equal(new Set(ai.bots.map(b=>b.action)).size,2);assert.equal(new Set(ai.bots.map(b=>b.nextDecisionAt)).size,2);
-  assert.equal(new Set(ai.bots.map(b=>b.entity.game.x+':'+b.entity.game.z)).size,2);
-  assert.equal(new Set(ai.bots.map(b=>b.entity.game.save.playerName)).size,2);
+  assert.ok(ai.bots.length>=2&&ai.bots.length<=4);assert.equal(new Set(ai.bots.map(b=>b.action)).size,ai.bots.length);assert.equal(new Set(ai.bots.map(b=>b.nextDecisionAt)).size,ai.bots.length);
+  assert.equal(new Set(ai.bots.map(b=>b.entity.game.x+':'+b.entity.game.z)).size,ai.bots.length);
+  assert.equal(new Set(ai.bots.map(b=>b.entity.game.save.playerName)).size,ai.bots.length);
   assert.ok(ai.bots.every(b=>now-b.joinedAt>=30000&&now-b.joinedAt<=900000&&b.entity.game instanceof GameState&&b.entity.game.petCount>0));
   assert.ok(ai.bots.some(b=>b.entity.game.carried));assert.ok(ai.bots.some(b=>b.entity.game.training));
  });
@@ -32,18 +32,25 @@ try{
   console.log(JSON.stringify({actions:[...actions],events:[...events],errors,decisions,attacks:attacks.length}));
  });
  await test('AI-to-AI attacks use shared bat knockback and drop the victim egg',()=>{
+  // Turnover in the preceding soak may legitimately leave fewer than two actors.
+  ai=new AISession(()=>human,env,random.next);
   const attacker=ai.bots[0],victim=ai.bots[1];attacker.entity.game.x=0;attacker.entity.game.z=-12;attacker.entity.game.carried=null;attacker.entity.game.facing={x:1,z:0};
   victim.entity.game.training=false;victim.entity.game.death=null;victim.entity.game.knockedUntil=0;victim.entity.game.x=1;victim.entity.game.z=-12;victim.entity.game.pickup(victim.entity.game.world[0]);
   env.attack(attacker.entity,victim.entity.id);assert.equal(victim.entity.game.carried,null);assert.ok(victim.entity.game.knockedUntil>now);assert.ok(attacks.length>0);
  });
  await test('D: initial grace and asynchronous turnover preserve offscreen entrances',()=>{
   const initial=ai.bots.map(b=>b.entity.id);ai.bots[0].plannedLeaveAt=now-10000;ai.bots[0].nextDecisionAt=now;ai.bots[0].entity.game.x=ai.bots[0].entity.game.z=0;
-  now+=50;ai.update(.05);assert.ok(!ai.bots.some(b=>b.entity.id===initial[0]));
-  for(let i=0;i<1000;i++){now+=50;ai.update(.05);}assert.ok(ai.bots.some(b=>!initial.includes(b.entity.id)));assert.ok(ai.bots.length<=3);
+  now+=50;ai.update(.05);assert.ok(ai.bots.some(b=>b.entity.id===initial[0]),'initial grace keeps an ordinary departing actor');
+  now+=45000;ai.bots[0].entity.game.x=ai.bots[0].entity.game.z=0;ai.update(.05);assert.ok(!ai.bots.some(b=>b.entity.id===initial[0]));
+  for(let i=0;i<1000;i++){now+=50;ai.update(.05);}assert.ok(ai.bots.some(b=>!initial.includes(b.entity.id)));assert.ok(ai.bots.length<=4);
  });
  await test('F: handover preserves identity, seed, carried egg, position, health and decision phase',()=>{
   const snapshot=ai.checkpoint(),copy=new AISession(()=>human,env,random.next);copy.restore(snapshot);
   for(let i=0;i<snapshot.length;i++){const a=snapshot[i],b=copy.checkpoint()[i];assert.equal(b.id,a.id);assert.equal(b.seed,a.seed);assert.equal(b.x,a.x);assert.equal(b.z,a.z);assert.equal(b.health,a.health);assert.equal(b.carryingEgg?.id,a.carryingEgg?.id);assert.equal(b.decisionIn,a.decisionIn);}
+ });
+ await test('handover leaves a quiet interval before filling vacant AI slots',()=>{
+  const copy=new AISession(()=>human,env,random.next);now+=60000;copy.restore([]);copy.update(.05);assert.equal(copy.bots.length,0);
+  now+=11000;copy.update(.05);assert.equal(copy.bots.length,0);
  });
  await test('presence excludes inventory and rejects foreign AI hosts and overlapping slots',()=>{
   const room=new PresenceRoom();room.join('a',{x:0,z:0,dust:999,inventory:[1]});room.join('b',{x:0,z:0});assert.equal(room.players.get('a').dust,undefined);assert.equal(room.players.get('a').inventory,undefined);
@@ -75,7 +82,7 @@ try{
  });
  await test('AI starts in the selected dimension instead of placing all actors at the base',()=>{
   const save=freshSave(now);const ref=new GameState(save,()=>now,random.next);ref.progression.stage=7;ref.save.highestStage=7;
-  const world=new AISession(()=>ref,env,random.next);assert.ok(world.bots.every(b=>b.entity.game.progression.stage===7));assert.equal(new Set(world.initialSnapshots.map(b=>b.x+':'+b.z)).size,2);
+  const world=new AISession(()=>ref,env,random.next);assert.ok(world.bots.every(b=>b.entity.game.progression.stage===7));assert.equal(new Set(world.initialSnapshots.map(b=>b.x+':'+b.z)).size,world.bots.length);
  });
 
  await test('local combat transfers a real weighted egg once through the shared player controller',async()=>{

@@ -927,7 +927,7 @@ document.addEventListener("visibilitychange", async () => {
     }
   }
 });
-document.addEventListener("visibilitychange",()=>{if(ready){if(document.hidden&&multiplayer.isHost)multiplayer.sendAI(session.ai.bots.map(b=>b.entity.pose()),session.ai.checkpoint());multiplayer.availability(!document.hidden);}});
+document.addEventListener("visibilitychange",()=>{if(ready){if(document.hidden&&multiplayer.isHost){const slots=[multiplayer.slot,...multiplayer.peers.filter(p=>p.kind==='human').map(p=>p.slot??0)];const bots=session.ai.bots.filter(b=>!slots.includes(b.entity.game.farmSlot));multiplayer.sendAI(bots.map(b=>b.entity.pose()),session.ai.checkpoint().filter(s=>bots.some(b=>b.entity.id===s.id)));}multiplayer.availability(!document.hidden);}});
 window.addEventListener("pagehide", () => {
   if (ready) {cloud.flush();void save();}
 });

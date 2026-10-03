@@ -1,6 +1,6 @@
 import {AISession,type AIEnvironment,type AICheckpoint} from './ai-session';
 import {PlayerEntity,HumanController} from './player-entity';
-import {BALANCE} from './data';
+import {BALANCE,AI_WORLD} from './data';
 import type {GameState,WorldEgg} from './game';
 import type {Peer} from './multiplayer';
 import type {PresenceClient,FriendPacket} from './presence-client';
@@ -57,10 +57,11 @@ export class LocalSession{
   this.human.entity.game=this.game();this.multiplayer.update(this.human.entity.pose());
   if(!this.multiplayer.connected||this.multiplayer.isHost){
    const humanSlots=this.multiplayer.connected?[this.multiplayer.slot,...this.multiplayer.peers.filter(p=>p.kind==='human').map(p=>p.slot??0)]:[0];
-   const signature=humanSlots.join(',');if(signature!==this.lastHumanSignature){this.lastHumanSignature=signature;this.lastCheckpoint=-Infinity;}this.ai.update(dt,humanSlots);
+   const signature=humanSlots.join(',');if(signature!==this.lastHumanSignature){this.lastHumanSignature=signature;this.lastCheckpoint=-Infinity;}this.ai.update(dt,humanSlots,this.multiplayer.connected?AI_WORLD.reservedHumanSlots:0);
    if(this.multiplayer.isHost&&performance.now()-this.lastAI>=500){
     const signature=this.ai.bots.map(b=>b.entity.id+':'+(b.entity.game.carried?.id??'')).join('|');const snapshots=signature!==this.botSignature||performance.now()-this.lastCheckpoint>=5000?this.ai.checkpoint():undefined;this.botSignature=signature;
-    this.multiplayer.sendAI(this.ai.bots.filter(b=>!humanSlots.includes(b.entity.game.farmSlot)).map(b=>({...b.entity.pose(),action:b.action})),snapshots);
+    const bots=this.ai.bots.filter(b=>!humanSlots.includes(b.entity.game.farmSlot));
+    this.multiplayer.sendAI(bots.map(b=>({...b.entity.pose(),action:b.action})),snapshots?.filter(s=>bots.some(b=>b.entity.id===s.id)));
     this.lastAI=performance.now();if(snapshots)this.lastCheckpoint=this.lastAI;
    }
   }

@@ -190,7 +190,10 @@ export class AISession{
  private nextPopulationAt=0;private targetPopulation:number=AI_WORLD.targetPopulation;
  bots:AIController[]=[];readonly initialSnapshots:AICheckpoint[];private nextJoinAt=0;private startedAt:number;private usedNames=new Set<string>();
  constructor(private reference:()=>GameState,private env:AIEnvironment,private random=()=>Math.random()){
-  this.startedAt=reference().now();const actions:AIAction[]=['RETURN_BASE','EXERCISE','SEARCH_EGG','REST'];for(let i=0;i<AI_WORLD.initialPopulation;i++)this.add(i+1,actions[i%actions.length]);this.initialSnapshots=this.checkpoint();
+  this.startedAt=reference().now();
+  const count=AI_WORLD.initialPopulation+Math.min(AI_WORLD.initialMaximum-AI_WORLD.initialPopulation,Math.floor(this.random()*(AI_WORLD.initialMaximum-AI_WORLD.initialPopulation+1)));
+  this.targetPopulation=count;this.nextPopulationAt=this.startedAt+AI_WORLD.populationCheckMs;
+  const actions:AIAction[]=['RETURN_BASE','EXERCISE','SEARCH_EGG','REST'];for(let i=0;i<count;i++)this.add(i+1,actions[i%actions.length]);this.initialSnapshots=this.checkpoint();
  }
  private add(slot:number,action:AIAction,checkpoint?:AICheckpoint){
   const bot=new AIController(checkpoint?.seed??Math.floor(this.random()*0xffffffff),slot,this.reference(),this.env,action,checkpoint);
@@ -205,10 +208,10 @@ export class AISession{
   this.usedNames.add(bot.entity.game.save.playerName!);
   this.bots.push(bot);return bot;
  }
- restore(snapshots:AICheckpoint[]){this.bots=[];for(const s of snapshots.slice(0,AI_WORLD.maximumPopulation))this.add(s.slot,s.action,s);}
+ restore(snapshots:AICheckpoint[]){this.bots=[];for(const s of snapshots.slice(0,AI_WORLD.maximumPopulation))this.add(s.slot,s.action,s);this.nextJoinAt=this.reference().now()+12000+this.random()*25000;}
  checkpoint(){return this.bots.map(b=>b.checkpoint());}
- update(dt:number,humanSlots:number[]=[0]){
-  const now=this.reference().now(),capacity=Math.max(0,Math.min(AI_WORLD.maximumPopulation,AI_WORLD.maxParticipants-humanSlots.length-AI_WORLD.reservedHumanSlots));
+ update(dt:number,humanSlots:number[]=[0],reservedSlots=0){
+  const now=this.reference().now(),capacity=Math.max(0,Math.min(AI_WORLD.maximumPopulation,AI_WORLD.maxParticipants-humanSlots.length-reservedSlots));
   if(now>=this.nextPopulationAt){this.targetPopulation=now>this.startedAt+AI_WORLD.populationCheckMs&&this.random()<AI_WORLD.rareExtraChance?AI_WORLD.maximumPopulation:AI_WORLD.targetPopulation;this.nextPopulationAt=now+AI_WORLD.populationCheckMs*(1+this.random());}
   for(const bot of this.bots){bot.update(dt);if(humanSlots.includes(bot.entity.game.farmSlot))bot.leaveSoon=true;}
   const excess=Math.max(0,this.bots.length-capacity);if(excess)this.bots.slice(-excess).forEach(b=>{b.leaveSoon=true;b.plannedLeaveAt=Math.min(b.plannedLeaveAt,now+1500);});

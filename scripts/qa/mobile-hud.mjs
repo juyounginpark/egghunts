@@ -3,7 +3,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import {createServer} from 'vite';
 import {chromium} from 'playwright';
 const root='artifacts/test-results/mobile-hud';await mkdir(root,{recursive:true});
-const server=await createServer({server:{host:'127.0.0.1',port:4358,strictPort:true},plugins:[{name:'mobile-hud-access',enforce:'pre',transform(code,id){if(id.replaceAll('\\','/').endsWith('/src/main.ts'))return code+'\nObject.assign(window,{__mobile:{get game(){return game},get input(){return input},get session(){return session},get world(){return world},multiplayer,cloud}});';}}]});
+const server=await createServer({cacheDir:'node_modules/.vite-mobile-hud',server:{host:'127.0.0.1',port:4358,strictPort:true},plugins:[{name:'mobile-hud-access',enforce:'pre',transform(code,id){if(id.replaceAll('\\','/').endsWith('/src/main.ts'))return code+'\nObject.assign(window,{__mobile:{get game(){return game},get input(){return input},get session(){return session},get world(){return world},multiplayer,cloud}});';}}]});
 await server.listen();const browser=await chromium.launch({channel:process.env.CI?undefined:'msedge',headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
 const page=await ctx.newPage(),errors=[],results=[];page.on('pageerror',e=>errors.push(e.message));
@@ -24,10 +24,15 @@ try{
  await page.getByRole('tab',{name:'가방',exact:true}).click();assert.equal(await page.locator('#explorer-editor').getAttribute('data-view'),'back');await page.locator('[data-step="1"]').click();await shot('02-customize');
  const preview=await page.locator('.explorer-preview').boundingBox();await page.mouse.move(preview.x+preview.width/2,preview.y+80);await page.mouse.down();await page.mouse.move(preview.x+preview.width/2+80,preview.y+80,{steps:8});await page.mouse.up();
  await page.locator('#entry-next').click();await page.locator('.explorer-preview canvas').waitFor();await shot('03-preview');await page.locator('#entry-next').click();await page.locator('#loading').waitFor({state:'hidden',timeout:60000});
- assert.equal(await page.evaluate(()=>window.__mobile.game.save.explorerAppearance.hairId),'hair-6');assert.equal(await page.evaluate(()=>window.__mobile.multiplayer.connected),false);assert.equal(await page.evaluate(()=>window.__mobile.session.ai.bots.length),2);
+ assert.equal(await page.evaluate(()=>window.__mobile.game.save.explorerAppearance.hairId),'hair-6');assert.equal(await page.evaluate(()=>window.__mobile.multiplayer.connected),false);const population=await page.evaluate(()=>window.__mobile.session.ai.bots.length);assert.ok(population>=2&&population<=4);
  assert.equal(await page.locator('#room-progress').isVisible(),false);await page.waitForTimeout(350);const collapsed=await box('main-hud');assert.equal(collapsed.width,collapsed.height);
+ await page.evaluate(()=>{window.__mobile.game.immunity=30;window.__mobile.game.slowRemaining=30;window.__mobile.game.slowMultiplier=.8;});
+ await page.locator('[data-status-effect="immunity"]').waitFor({state:'visible'});await page.locator('[data-status-effect="slow"]').waitFor({state:'visible'});
+ assert.equal(await page.locator('#hud-toggle').textContent(),'');
+ const icon=await page.locator('[data-status-effect="slow"] span').boundingBox(),iconButton=await page.locator('[data-status-effect="slow"]').boundingBox();assert.ok(Math.abs(icon.x+icon.width/2-iconButton.x-iconButton.width/2)<1&&Math.abs(icon.y+icon.height/2-iconButton.y-iconButton.height/2)<1);
  assert.equal(await page.evaluate(()=>window.__mobile.world.player.getObjectByName('head').children[0].userData.explorerOwned),true);await shot('04-collapsed');
  const before=await box('joystick'),action=await box('action');await page.locator('#hud-toggle').click();await page.waitForTimeout(220);
+ assert.equal(await page.locator('#speed-help').isVisible(),false);assert.equal(await page.locator('#day-clock').evaluate(el=>getComputedStyle(el,'::before').content),'none');
  const pad=await box('joystick'),emoteButton=await box('emote-toggle');await page.mouse.move(pad.x+pad.width/2,pad.y+pad.height/2);await page.mouse.down();await page.mouse.move(emoteButton.x+emoteButton.width/2,emoteButton.y+emoteButton.height/2,{steps:8});await page.mouse.up();assert.equal(await page.locator('#emote-picker').isVisible(),false);
  assert.deepEqual(await box('joystick'),before);assert.deepEqual(await box('action'),action);assert.equal(await page.locator('#room-progress').getAttribute('aria-expanded'),'false');
  for(const [width,height] of [[320,568],[360,800],[390,844],[430,932]]){
@@ -44,7 +49,7 @@ try{
   results.push({width,height,hud,input});
  }
  await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{document.documentElement.style.setProperty('--safe-top','47px');document.documentElement.style.setProperty('--safe-bottom','34px');});await page.waitForTimeout(200);assert.ok((await box('main-hud')).y>=47);await shot('safe-area');
- await page.locator('#settings').click();await page.locator('#customize-explorer').click();await page.locator('.explorer-wardrobe canvas').waitFor();await page.getByRole('tab',{name:'옷',exact:true}).click();for(let i=0;i<7;i++)await page.locator('[data-step="1"]').click();await page.locator('#wardrobe-save').click();assert.equal(await page.evaluate(()=>window.__mobile.game.save.explorerAppearance.outfitId),'outfit-7');
+ await page.locator('#settings').click();await page.locator('#customize-explorer').click();await page.locator('.explorer-wardrobe canvas').waitFor();await page.getByRole('tab',{name:'옷',exact:true}).click();for(let i=0;i<7;i++)await page.locator('.explorer-wardrobe [data-step="1"]').click();await page.locator('#wardrobe-save').click();assert.equal(await page.evaluate(()=>window.__mobile.game.save.explorerAppearance.outfitId),'outfit-7');
  await page.locator('#resume').click();await page.evaluate(()=>window.__mobile.cloud.persist());await page.reload();await page.locator('#start-local').waitFor({timeout:60000});assert.equal(await page.locator('#guest-start').count(),0);await page.locator('#start-local').click();await page.locator('#loading').waitFor({state:'hidden',timeout:60000});assert.equal(await page.evaluate(()=>window.__mobile.game.save.explorerAppearance.outfitId),'outfit-7');
  assert.deepEqual(errors,[]);await writeFile(`${root}/results.json`,JSON.stringify({results,errors,onboarding:true,persistence:true,device:'Chromium touch/mobile emulation; not physical iOS/Toss'},null,2));console.log('PASS onboarding, appearance persistence, compact HUD, 4 mobile sizes, panels, controls and safe area');
-}finally{await browser.close();await server.close();}
+}catch(error){await shot('failure');await writeFile(`${root}/failure.json`,JSON.stringify({error:String(error),errors,body:await page.locator('body').innerText()},null,2));throw error;}finally{await browser.close();await server.close();}

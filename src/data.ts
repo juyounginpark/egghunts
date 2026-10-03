@@ -489,4 +489,4 @@ export const TRAILS = [
 TRAILS.forEach((trail,i)=>{trail.multiplier=OVERHAUL.trailMovement[i];trail.cost=i?Math.ceil(baselineIncome(OVERHAUL.trailStages[i])*OVERHAUL.trailWaits[i]):0;});
 
 // Local simulated adventurers share the five existing farm slots.
-export const AI_WORLD={initialPopulation:2,targetPopulation:2,minimumPopulation:0,maximumPopulation:3,rareExtraChance:.05,populationCheckMs:180000,reservedHumanSlots:1,maxParticipants:5,initialGraceMs:45000,fullSimulationDistance:40};
+export const AI_WORLD={initialPopulation:2,initialMaximum:4,targetPopulation:2,minimumPopulation:0,maximumPopulation:4,rareExtraChance:.05,populationCheckMs:180000,reservedHumanSlots:1,maxParticipants:5,initialGraceMs:45000,fullSimulationDistance:40};
