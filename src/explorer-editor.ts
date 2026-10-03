@@ -2,6 +2,7 @@ import * as T from 'three';
 import {loadVoxels,voxelModel} from './voxel';
 import {applyExplorerAppearance,disposeExplorerAppearance} from './explorer-model';
 import {explorerRoom} from './explorer-room';
+import {loadingIndicator} from './loading-ui';
 import {appearanceOptions,normalizeAppearance,randomAppearance,type ExplorerAppearance,type AppearanceKey} from './explorer-appearance';
 
 export const EXPLORER_STEPS=['얼굴','머리','옷','장식'] as const;
@@ -29,7 +30,8 @@ export class ExplorerEditor{
  private initial:ExplorerAppearance;
  constructor(private root:HTMLElement,value:unknown,private changed:(a:ExplorerAppearance)=>void=()=>{},private config:Options={}){
   this.appearance=normalizeAppearance(value);this.initial={...this.appearance};root.classList.add('explorer-editor');root.classList.toggle('staged-editor',!!config.staged);
-  root.innerHTML='<div class="explorer-preview" aria-label="탐험가 준비실 3D 미리보기"><span class="preview-loading">준비실을 열고 있어요…</span></div><small class="preview-help">좌우로 드래그해 돌려보세요</small><div class="explorer-tabs" role="tablist" aria-label="꾸미기 단계"></div><div class="explorer-subtabs" role="tablist" aria-label="세부 항목"></div><div class="explorer-options" role="tabpanel"></div><button type="button" class="secondary explorer-random">전체 랜덤</button><small class="explorer-note">외형은 나중에 기지의 옷장에서 언제든 바꿀 수 있어요.</small>';
+  root.innerHTML='<div class="explorer-preview" aria-label="탐험가 준비실 3D 미리보기"><span class="preview-loading"></span></div><small class="preview-help">좌우로 드래그해 돌려보세요</small><div class="explorer-tabs" role="tablist" aria-label="꾸미기 단계"></div><div class="explorer-subtabs" role="tablist" aria-label="세부 항목"></div><div class="explorer-options" role="tabpanel"></div><button type="button" class="secondary explorer-random">전체 랜덤</button><small class="explorer-note">외형은 나중에 기지의 옷장에서 언제든 바꿀 수 있어요.</small>';
+  root.querySelector('.preview-loading')!.innerHTML=loadingIndicator;
   for(const category of EXPLORER_STEPS){const b=document.createElement('button');b.type='button';b.role='tab';b.textContent=category;b.onclick=()=>this.go(category);root.querySelector('.explorer-tabs')!.append(b);}
   root.querySelector<HTMLButtonElement>('.explorer-random')!.onclick=()=>{
    const host=root.querySelector('.explorer-preview')!;
@@ -74,7 +76,7 @@ export class ExplorerEditor{
   const type=this.preview?'body':this.key==='backpackId'?'back':this.key==='faceAccessoryId'||this.category==='얼굴'?'face':this.key==='headAccessoryId'||this.category==='머리'?'hair':this.key==='neckAccessoryId'?'neck':'body';
   this.from={...this.current};this.target={...views[type]};this.transitionAt=performance.now();
   this.angleTarget=this.target.angle;
-  this.root.querySelector('.preview-help')!.textContent=type==='face'?'얼굴을 가까이 살펴보세요':type==='back'?'등을 돌려 가방을 보여드릴게요':'좌우로 드래그해 돌려보세요';
+  this.root.querySelector('.preview-help')!.textContent='드래그하여 회전';
   this.root.dataset.view=type;
  }
  private async init(host:HTMLElement){

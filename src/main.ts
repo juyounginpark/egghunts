@@ -38,6 +38,7 @@ import {RoomHUD} from './room-hud';
 import {LocalSession} from './local-session';
 import {FriendsUI} from './friends-ui';
 import {StartScreen} from './start-screen';
+import {loadingIndicator} from './loading-ui';
 import { VirtualAd } from "./virtual-ad";
 import { formatNumber as num } from "./format";
 import { uiIcon } from './ui-icons';
@@ -59,7 +60,7 @@ app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></
   )
   .join(
     "",
-  )}</nav><section id="panel" hidden></section><div id="modal" hidden></div><div id="toast" role="status" hidden></div><div id="loading"><img class="loading-egg" src="${import.meta.env.BASE_URL}models/egg-0.png" alt="" /><h1>알콩 원정대</h1><p>작은 모험을 준비하는 중…</p></div></main>`;
+  )}</nav><section id="panel" hidden></section><div id="modal" hidden></div><div id="toast" role="status" hidden></div><div id="loading"><h1>알콩 원정대</h1>${loadingIndicator}</div></main>`;
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const eggNotices=new EggNotices($("shell"));
@@ -80,7 +81,7 @@ function setHudCompact(compact:boolean){
   topHud.classList.toggle('compact',compact);
   $('hud-toggle').setAttribute('aria-expanded',String(!compact));
   $('hud-toggle').setAttribute('aria-label',compact?'HUD 펼치기':'HUD 접기');
-  $('hud-toggle').textContent=compact?'⌄':'⌃';
+  $('hud-toggle').textContent='';
   if(compact)document.dispatchEvent(new Event('hud-collapse'));
   if(topHud.isConnected&&!matchMedia('(prefers-reduced-motion: reduce)').matches)topHud.animate([{opacity:.75,transform:'translateY(-3px)'},{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'ease-out'});
 }
@@ -91,7 +92,7 @@ const hudObserver=new ResizeObserver(()=>{
 });
 hudObserver.observe($('main-hud'));hudObserver.observe(topHud);
 $('main-hud').append($('settings'));
-$('main-hud').insertAdjacentHTML('beforeend','<button id="hud-toggle" type="button" aria-controls="hud-context" aria-label="HUD 펼치기" aria-expanded="false">⌄</button>');
+$('main-hud').insertAdjacentHTML('beforeend','<button id="hud-toggle" type="button" aria-controls="hud-context" aria-label="HUD 펼치기" aria-expanded="false"></button>');
 const incomeLabel=$('dust').parentElement!.querySelector('small')!;
 incomeLabel.id='income-rate';incomeLabel.setAttribute('aria-label','초당 별가루 생산량');
 $('cycle-clock').insertBefore(incomeLabel,$('cycle-track'));
@@ -134,7 +135,7 @@ $("shell").insertAdjacentHTML('beforeend','<div id="boss-pressure" aria-hidden="
 $("world").insertAdjacentHTML('beforeend','<div id="night-sky" aria-hidden="true"><span>☾</span></div>');
 const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
- tutorial.hidden = true;
+tutorial.hidden = true;
 tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">×</button>`;
 topHud.append(tutorial);
 const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='events';hudPlace.append(weeklyEntry);
@@ -400,11 +401,8 @@ function updateHud() {
   $("night-sky").classList.toggle('visible',phase.night&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||game.seat!==null||!!game.carried||!!game.death||!!game.returnReward;
-  const weatherTags=[phase.normalNight?'☾':'',game.isRaining?'☔':'',game.isWindy?'바람':'',game.offPath?'잔디':'',game.chaseSpeedMultiplier>1?'추격':'',game.eggSpeedPenalty<1?'무게':''].filter(Boolean);
-  const weatherSpeed=(phase.normalNight?BALANCE.nightMoveMultiplier:1)*(game.isRaining?BALANCE.rainMoveMultiplier:1)*(game.isWindy?BALANCE.windMoveMultiplier:1)*game.pathSpeedMultiplier*game.chaseSpeedMultiplier*game.eggSpeedPenalty,weatherChange=Math.round((weatherSpeed-1)*1000)/10;
-  $('speed-help').textContent=game.training?((game.save.trainingProgress??0)>=1?'운동 성장 최대':`+${formatTrainingGain(game.effectiveTrainingRate)}/초`):weatherTags.length?`${weatherTags.join('·')} ${weatherChange>=0?'+':'−'}${Math.abs(weatherChange)}%`:'';
-  $('speed-help').hidden=!game.training&&!weatherTags.length;
-  $('speed-help').title=`이동 속도 ${weatherChange>=0?'+':''}${weatherChange}%`;
+  $('speed-help').textContent=game.training?((game.save.trainingProgress??0)>=1?'운동 성장 최대':`+${formatTrainingGain(game.effectiveTrainingRate)}/초`):'';
+  $('speed-help').hidden=!game.training;
   const hint=tutorialVisible?tutorialHint(game,tab):null;
   $("tutorial").hidden=!hint || !!game.returnReward || game.result!==null || !!game.death || paused;
   $("tutorial-title").textContent=hint?`${hint.step}/${TUTORIAL_STEPS} · ${hint.title}`:'';
@@ -966,16 +964,18 @@ async function start(state:Save) {
 }
 async function boot(){
   try{
+    $('loading').innerHTML=`<h1>알콩 원정대</h1>${loadingIndicator}`;
     const state=await cloud.load(()=>platform.load(),!!qa);
     if(qa){await start(state);return;}
     let prepared:Promise<void>|undefined;
     game=new GameState(state,()=>platform.now());
-    if(location.hash.includes('access_token='))await cloud.initialize();
+    await cloud.initialize();
     new StartScreen($('loading'),{profile:()=>game.save,sendCode:email=>cloud.sendLoginCode(email),verifyCode:(email,code)=>cloud.verifyLoginCode(email,code)},async choice=>{
       selectedPlayerName=choice.name;
       game.save.playerName=choice.name;game.save.explorerAppearance=choice.appearance;game.save.explorerCreatedAt=choice.createdAt;
       await (prepared??=start(game.save));
       await cloud.persist();
+      await cloud.sync();
       lastNow=performance.now();
     },choice=>{
       // StartScreen has finished fading out; peers are already prepared and rendered.
