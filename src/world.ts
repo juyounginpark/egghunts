@@ -42,6 +42,7 @@ export class World {
   private routeStart=1;
   networkOffset={x:0,z:0};
   chasePressure=0;
+  private returnSpeedZoom=1;
   private reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   readonly mapColliders:MapCollider[]=[];
   hazardsView=new HazardView();
@@ -786,7 +787,12 @@ export class World {
       this.camera.position.x+=Math.sin(time*39)*strength;
       this.camera.position.y+=Math.sin(time*47+1)*strength*.65;
     }
-    // Picking up an egg or showing a contextual button must not zoom the map.
+    // Return acceleration widens the view only while moving; pickup alone does not.
+    const returnBoost=!isHatch&&mode==='explore'&&moving&&!game.isAtBase&&!this.reducedMotion.matches
+      ?Math.min(1,Math.max(0,(game.chaseSpeedMultiplier-1)/.7)):0;
+    const returnZoomTarget=1/(1+.25*returnBoost);
+    this.returnSpeedZoom=isHatch||mode!=='explore'||this.reducedMotion.matches?1
+      :T.MathUtils.lerp(this.returnSpeedZoom,returnZoomTarget,1-Math.exp(-dt*4));
     if(isHatch&&this.hatchModel){
       const extent=this.hatchModel.userData.hatchExtent as number;
       const fit=Math.min(1.4,this.hatchSpace*17/(Math.max(1,this.host.clientHeight)*extent));
@@ -809,6 +815,7 @@ export class World {
       this.camera.zoom*=Math.min(1,.8/Math.max(.01,extentX),.6/Math.max(.01,extentY));
       this.camera.updateProjectionMatrix();
     }
+    if(!isHatch){this.camera.zoom*=this.returnSpeedZoom;this.camera.updateProjectionMatrix();}
     const guide=document.getElementById('first-egg-arrow');
     const guideEgg=mode==='explore'&&!isHatch&&document.getElementById('modal')!.hidden?firstEggTarget(game):undefined;
     if(guide){
