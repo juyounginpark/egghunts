@@ -1,5 +1,13 @@
 # 구현 작업 계획
 
+## 로컬 AI 모험가와 친구 코드 방 (2026-10-03)
+
+- 공통 PlayerEntity와 기존 GameState를 사용해 로컬 AI, utility/personality/human error와 시작 전 snapshot을 구현한다.
+- 일반 시작의 presence 로그인 제거, 자연 입퇴장·화면 밖 입장·여섯 emote, 텍스트 chat 제거를 적용한다.
+- 친구 코드 방은 다섯 슬롯을 예약하고 human 입장 전에 AI를 정리한다. 클라이언트 AI host/epoch/체크포인트 인계와 500ms 표시 변경분을 중계한다. 서버는 GameState나 SQLite 게임 저장을 사용하지 않는다.
+- 사용자 요청의 빌드/typecheck/lint와 AI 5분 시뮬레이션, 실제 WebSocket/브라우저 시나리오 A~G를 검증한다. 알려진 기존 QA 세 실패를 별도로 기록한다.
+- 운영 EC2/Pages/Supabase 배포는 아직 하지 않았다. 정확한 파일·검증·제약과 운영 전환 순서는 [결과 문서](../simulated-players-architecture.md)를 따른다.
+
 ## 로컬 퍼스트 전환 (2026-10-03)
 
 - Phase 1~3: main.ts에서 authoritative 온라인 분기를 제거하고 기존 GameState를 로컬 엔진으로 사용한다. PresenceClient 상태는 별도로 유지한다. 이동·보스·일반 알·부화·재화·오프라인 생산은 서버 요청 없이 처리한다.

@@ -566,18 +566,8 @@ nav button img { width:28px; height:28px; }
 .player-nameplate { overflow:visible; left:0; top:0; background:#fff9e8; will-change:transform; backface-visibility:hidden; text-shadow:none; transition:none; }
 .player-nameplate.self { background:#f8edcc; }
 .player-caption { display:block; max-width:198px; overflow:hidden; text-overflow:ellipsis; }
-.player-chat { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); width:max-content; max-width:min(220px,65vw); padding:8px 10px; white-space:normal; overflow-wrap:anywhere; background:#fff9e8; border:2px solid #68724d; border-radius:8px; box-shadow:2px 3px 0 #52664a55; font-size:13px; line-height:1.4; }
-.player-chat::after { content:''; position:absolute; bottom:-7px; left:calc(50% - 5px); width:9px; height:9px; background:#fff9e8; border-right:2px solid #68724d; border-bottom:2px solid #68724d; transform:rotate(45deg); }
-#room-chat { grid-column:2; justify-self:start; }
-#room-chat-log { position:absolute; left:0; bottom:76px; width:min(230px,65vw); max-height:min(140px,20dvh); overflow-y:auto; overscroll-behavior:contain; touch-action:pan-y; padding:7px 9px; border-radius:6px; color:#fff9e8; background:#253a36b8; font-size:11px; line-height:1.5; overflow-wrap:anywhere; scrollbar-width:thin; }
-#room-chat-log>div+div { margin-top:4px; }
-#room-chat-log b { color:#ffe1a0; }
-#room-chat-log[data-empty="true"]::before { content:'같은 방의 채팅이 여기에 표시돼요'; color:#eee9d6; }
-#room-chat.composing #room-chat-log { bottom:144px; }
-#room-chat>.icon-btn { width:44px; height:44px; border-radius:8px; display:grid; place-items:center; }
-#room-chat form { position:absolute; bottom:76px; left:0; right:0; display:flex; gap:6px; padding:8px; background:#fff9e8; border:var(--hud-border); border-radius:var(--hud-radius); box-shadow:var(--hud-shadow); }
-#room-chat input { flex:1; min-width:0; height:44px; font-size:16px; color:#39482d; background:#fffdf3; border:1px solid #68724d; border-radius:4px; padding:0 8px; }
-#room-chat form button { width:44px; height:44px; flex-shrink:0; font-size:22px; border-radius:8px; }
+.player-emote { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); width:max-content; max-width:min(220px,65vw); padding:8px 10px; white-space:normal; overflow-wrap:anywhere; background:#fff9e8; border:2px solid #68724d; border-radius:8px; box-shadow:2px 3px 0 #52664a55; font-size:13px; line-height:1.4; }
+.player-emote::after { content:''; position:absolute; bottom:-7px; left:calc(50% - 5px); width:9px; height:9px; background:#fff9e8; border-right:2px solid #68724d; border-bottom:2px solid #68724d; transform:rotate(45deg); }
 #joystick[data-slow] { border-color:#b28d3f; background:#f5e3a8; }
 #joystick[data-slow] #knob { display:grid; place-items:center; background:#ffe79e; font-size:16px; font-weight:900; }
 
@@ -853,3 +843,14 @@ nav button img { width:28px; height:28px; }
 .pet-card-stats .ui-icon{width:12px;height:12px}
 
 @media(prefers-reduced-motion:reduce){.hatch-hit-feedback i{animation:none}#shell #egg-health .track i{transition:none}}
+
+#friends-dock { position:absolute; right:12px; bottom:calc(145px + var(--safe-bottom,0px)); z-index:20; display:grid; gap:5px; max-width:210px; }
+#friends-dock[hidden] { display:none; }
+#friends-dock small { font-size:11px; background:#fff9e8; border-radius:5px; max-width:210px; }
+.emote-buttons { display:flex; gap:3px; }
+.emote-buttons button { width:30px; height:32px; padding:0; font-size:20px; background:#fff9e8; }
+#friends-dialog { max-width:min(360px,90vw); padding:20px; border:3px solid #68724d; border-radius:12px; background:#fff9e8; }
+#friends-dialog::backdrop { background:#16291788; }
+#friends-dialog button { display:block; margin:10px auto; min-width:160px; }
+#friend-code { width:110px; text-transform:uppercase; }
+.player-emote { font-size:24px; padding:3px 8px; }

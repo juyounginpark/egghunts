@@ -1,86 +1,48 @@
-import type {Peer,ChatMessage} from './multiplayer';
-import type {GameState} from './game';
-import {PRESENCE,type MultiplayerConnection,type SharedEvent} from './presence-config';
+import type {Peer} from './multiplayer';
+import {RemotePlayerController} from './player-entity';
+import {PRESENCE,type MultiplayerConnection} from './presence-config';
+import type {AICheckpoint} from './ai-session';
+export type FriendPacket={type:string;[key:string]:unknown};
 export class PresenceClient{
- peers:Peer[]=[];
- chat:ChatMessage|null=null;
- sharedEvents:SharedEvent[]=[];
- connection:MultiplayerConnection='disconnected';
- private socket:WebSocket|null=null;
- private enabled=false;
- private retryAt=0;
- private lastSent=0;
- private lastState='';
- private lastMove=false;
- private lastRotation=0;
- private lastRiding=false;
- private lastX=0;
- private lastZ=0;
- private force=false;
- private current:Peer|null=null;
- private attackAt=0;
- private heartbeat:number|undefined;
- private lastReceived=0;
+ private controllers=new Map<string,RemotePlayerController>();
+ peers:Peer[]=[];connection:MultiplayerConnection='disconnected';id='self';slot=0;code='';hostId='';epoch=0;
+ onPacket:(p:FriendPacket)=>void=()=>{};
+ private socket:WebSocket|null=null;private enabled=false;private retryAt=0;private lastSent=0;private lastState='';private current:Peer|null=null;private heartbeat:number|undefined;private lastReceived=0;private mode:'create'|'join'='create';private recover=false;private aiStates=new Map<string,Peer>();
  readonly url=(import.meta.env.VITE_PRESENCE_URL||import.meta.env.VITE_GAME_SERVER_URL||'').replace(/\/game\/?$/,'/presence').replace(/^http/,'ws');
  constructor(private token:()=>string|null,private notify:(message:string)=>void){}
+ private setPeers(poses:Peer[]){const next=new Map<string,RemotePlayerController>();for(const pose of poses){const controller=this.controllers.get(pose.id)??new RemotePlayerController(pose);controller.update(pose);next.set(pose.id,controller);}this.controllers=next;this.peers=[...next.values()].map(c=>c.pose);}
  get connected(){return this.connection==='connected';}
- async login(){this.enabled=true;this.retryAt=0;this.connect();}
- async logout(){this.enabled=false;clearInterval(this.heartbeat);this.socket?.close();this.socket=null;this.connection='disconnected';this.peers=[];this.chat=null;this.sharedEvents=[];}
+ get isHost(){return this.connected&&this.hostId===this.id;}
+ login(code?:string){if(!this.url){this.notify('친구 서버 주소가 아직 설정되지 않았어요. 혼자 모험은 계속할 수 있어요.');return;}this.recover=false;this.mode=code?'join':'create';this.code=code?.trim().toUpperCase()??'';this.enabled=true;this.retryAt=0;this.connect();}
+ logout(){this.enabled=false;clearInterval(this.heartbeat);const socket=this.socket;this.socket=null;socket?.close();this.connection='disconnected';this.setPeers([]);this.id='self';this.hostId='';this.code='';this.onPacket({type:'offline'});}
+ send(packet:object){if(this.connected&&this.socket?.readyState===WebSocket.OPEN)this.socket.send(JSON.stringify(packet));}
  private connect(){
-  if(!this.enabled||!this.url||this.socket||performance.now()<this.retryAt)return;
-  this.connection=this.connection==='disconnected'?'connecting':'reconnecting';
-  const socket=new WebSocket(this.url);this.socket=socket;
-  this.lastReceived=performance.now();
-  socket.onopen=()=>socket.send(JSON.stringify({type:'join',token:this.token(),state:this.current}));
+  if(!this.enabled||!this.url||this.socket||performance.now()<this.retryAt)return;this.connection=this.connection==='disconnected'?'connecting':'reconnecting';
+  const socket=new WebSocket(this.url);this.socket=socket;this.lastReceived=performance.now();
+  socket.onopen=()=>socket.send(JSON.stringify({type:'join',mode:this.mode,code:this.code,recover:this.recover,token:this.token(),state:this.current}));
   socket.onmessage=e=>{
-   this.lastReceived=performance.now();
-   try{
+   this.lastReceived=performance.now();try{
     const p=JSON.parse(e.data);
-    if(p.type==='welcome'){this.connection='connected';this.peers=p.players.map((peer:Peer,index:number)=>({...peer,slot:index+1}));this.force=true;this.sharedEvents=p.sharedEvents??[];}
-    if(p.type==='peer'){const index=this.peers.findIndex(v=>v.id===p.player.id);if(index<0){const slot=[1,2,3,4].find(n=>!this.peers.some(peer=>peer.slot===n));this.peers.push({...p.player,slot});}else this.peers[index]={...this.peers[index],...p.player,slot:this.peers[index].slot};this.force=p.joined===true;}
-    if(p.type==='leave')this.peers=this.peers.filter(v=>v.id!==p.id);
-    if(p.type==='chat'){if(p.self)this.chat=p.message;else{const peer=this.peers.find(v=>v.id===p.playerId);if(peer)peer.chat=p.message;}}
-    if(p.type==='shared')this.sharedEvents=p.events;
-    if(p.type==='error')this.notify(p.message??'친구 연결을 확인해 주세요.');
-   }catch{/* Invalid relay packets never change the game. */}
+    if(p.type==='welcome'){this.connection='connected';this.recover=true;this.id=p.id;this.slot=p.slot;this.code=p.code;this.mode='join';this.hostId=p.hostId;this.epoch=p.epoch;this.setPeers(p.players);this.lastState='';}
+    if(p.type==='host'){if(this.epoch!==p.epoch)this.aiStates.clear();this.hostId=p.hostId;this.epoch=p.epoch;}
+    if(p.type==='peer'){const index=this.peers.findIndex(v=>v.id===p.player.id);if(index<0)this.setPeers([...this.peers,p.player]);else this.setPeers(this.peers.map((v,i)=>i===index?{...v,...p.player}:v));}
+    if(p.type==='ai'){const old=new Map(this.peers.map(v=>[v.id,v]));this.setPeers([...this.peers.filter(v=>v.kind!=='simulated'),...p.players.map((v:Peer)=>({...old.get(v.id),...v}))]);}
+    if(p.type==='leave')this.setPeers(this.peers.filter(v=>v.id!==p.id));
+    if(p.type==='error'){this.notify(({ROOM_NOT_FOUND:'방을 찾을 수 없어요. 새 방을 만들거나 코드를 확인해 주세요.',ROOM_FULL:'친구 다섯 명이 이미 함께하고 있어요.',HOST_CHANGED:'AI 호스트를 바꾸고 있어요.'} as Record<string,string>)[p.message]??p.message);if(['ROOM_NOT_FOUND','ROOM_FULL','ROOM_CODE_REQUIRED','SIGN_IN','AUTH_NOT_CONFIGURED'].includes(p.message)){this.logout();return;}}
+    this.onPacket(p);
+   }catch{/* Malformed relay packets cannot replace a save. */}
   };
-  socket.onerror=()=>socket.close();
-  socket.onclose=()=>{
-   if(this.socket!==socket)return;clearInterval(this.heartbeat);this.socket=null;this.peers=[];this.sharedEvents=[];this.chat=null;
-   this.connection=this.enabled?'reconnecting':'disconnected';this.retryAt=performance.now()+PRESENCE.reconnectMs;
-  };
-  clearInterval(this.heartbeat);
-  this.heartbeat=window.setInterval(()=>{
-   if(performance.now()-this.lastReceived>30000){socket.close();return;}
-   if(socket.readyState===WebSocket.OPEN)socket.send('{"type":"ping"}');
-  },PRESENCE.heartbeatMs);
+  socket.onerror=()=>socket.close();socket.onclose=()=>{if(this.socket!==socket)return;clearInterval(this.heartbeat);this.socket=null;this.setPeers([]);this.hostId='';this.connection=this.enabled?'reconnecting':'disconnected';this.retryAt=performance.now()+PRESENCE.reconnectMs;this.onPacket({type:'offline'});};
+  clearInterval(this.heartbeat);this.heartbeat=window.setInterval(()=>{if(performance.now()-this.lastReceived>30000){socket.close();return;}if(socket.readyState===WebSocket.OPEN)socket.send('{"type":"ping"}');},PRESENCE.heartbeatMs);
  }
- update(game:GameState,rotation:number){
-  const active=game.activePetLots;
-  this.current={id:'',name:game.save.playerName??'탐험가',x:game.x,z:game.z,rotation,appearance:game.save.appearance??0,level:game.level,
-   carried:game.carried?.type??null,downUntil:game.knockedUntil,attackAt:this.attackAt,training:game.training,seat:game.seat,mountPet:game.mountId,riding:game.riding,
-   activePets:active.map(l=>l.species),activePetWeights:active.map(l=>({weightG:l.weightG,standardWeightG:l.standardWeightG})),
-   mountWeight:game.mountPetLot?{weightG:game.mountPetLot.weightG,standardWeightG:game.mountPetLot.standardWeightG}:undefined,
-   velocity:{...game.velocity},at:game.now(),speed:game.speed};
-  this.connect();if(!this.connected||this.socket?.readyState!==WebSocket.OPEN)return;
-  // A lone player sends no gameplay state. A new peer triggers an immediate refresh.
-  if(!this.peers.length&&!this.force)return;
-  const moving=Math.hypot(game.velocity.x,game.velocity.z)>.01;
-  const turn=Math.abs(Math.atan2(Math.sin(rotation-this.lastRotation),Math.cos(rotation-this.lastRotation)));
-  const immediate=this.force||moving!==this.lastMove||turn>Math.PI/3||game.riding!==this.lastRiding||Math.hypot(game.x-this.lastX,game.z-this.lastZ)>12;
-  if(!this.force&&performance.now()-this.lastSent<100)return;
-  if(!immediate&&performance.now()-this.lastSent<PRESENCE.updateMs)return;
-  const state=JSON.stringify({...this.current,at:0});
-  if(state===this.lastState&&!immediate)return;
-  const previous=this.lastState?JSON.parse(this.lastState):{};
-  const delta=this.force?this.current:Object.fromEntries(Object.entries(this.current).filter(([key,value])=>key==='at'||JSON.stringify(previous[key])!==JSON.stringify(value)));
-  this.socket.send(JSON.stringify({type:'position',state:delta}));this.lastState=state;this.lastSent=performance.now();
-  this.force=false;this.lastMove=moving;this.lastRotation=rotation;this.lastRiding=game.riding;this.lastX=game.x;this.lastZ=game.z;
+ update(pose:Peer){
+  this.current=pose;this.connect();if(!this.connected)return;
+  const state=JSON.stringify({...pose,at:0}),previous=this.lastState?JSON.parse(this.lastState):{};
+  const moving=Math.hypot(pose.velocity?.x??0,pose.velocity?.z??0)>.01,wasMoving=Math.hypot(previous.velocity?.x??0,previous.velocity?.z??0)>.01;
+  const immediate=!this.lastState||moving!==wasMoving||pose.emote?.at!==previous.emote?.at||pose.riding!==previous.riding||Math.hypot(pose.x-(previous.x??pose.x),pose.z-(previous.z??pose.z))>12;
+  if(performance.now()-this.lastSent<(immediate?100:PRESENCE.updateMs)||state===this.lastState)return;
+  const delta=Object.fromEntries(Object.entries(pose).filter(([k,v])=>k==='at'||JSON.stringify(previous[k])!==JSON.stringify(v)));this.send({type:'position',state:delta});this.lastState=state;this.lastSent=performance.now();
  }
- async sendChat(text:string){
-  if(!this.connected||!text.trim())return false;
-  this.socket!.send(JSON.stringify({type:'chat',text}));return true;
- }
- swing(at:number){this.attackAt=at;}
- claimShared(id:string){if(!this.connected)throw Error('공유 이벤트에 연결되지 않았어요.');this.socket!.send(JSON.stringify({type:'claimShared',id}));}
+ sendAI(players:Peer[],snapshots?:AICheckpoint[]){const delta=players.map(p=>{const old=this.aiStates.get(p.id);return Object.fromEntries(Object.entries(p).filter(([k,v])=>k==='id'||k==='slot'||k==='at'||!old||JSON.stringify(old[k as keyof Peer])!==JSON.stringify(v)));});this.aiStates=new Map(players.map(p=>[p.id,p]));this.send({type:'ai',epoch:this.epoch,players:delta,snapshots});}
+ availability(available:boolean){this.send({type:'availability',available});}
 }

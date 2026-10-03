@@ -25,7 +25,9 @@ export class GuardianMotion{
   // Keep the playback clock running during packet gaps. The old last.at + .1
   // clamp repeatedly stopped and restarted the boss whenever the buffer emptied.
   const error=desired-(this.clock+dt);
-  this.clock+=dt+Math.max(-dt*.25,Math.min(dt*.25,error));
+  // A suspended tab or a slow frame must not leave playback seconds behind.
+  if(error>1)this.clock=desired;
+  else this.clock+=dt+Math.max(-dt*.25,Math.min(dt*.25,error));
   const first=this.points[0];
   let a=first,b=last;
   for(let i=1;i<this.points.length;i++){a=this.points[i-1];b=this.points[i];if(b.at>=this.clock)break;}

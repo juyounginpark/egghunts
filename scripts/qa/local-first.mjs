@@ -1,9 +1,6 @@
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
 import {PresenceRoom} from '../../server/presence-room.mjs';
-import {presenceServer} from '../../server/presence-host.mjs';
-import {WebSocket} from 'ws';
-import {once} from 'node:events';
 import {report,modules} from './lib.mjs';
 const vite=await createServer({server:{middlewareMode:true}});
 const memory=new Map();globalThis.localStorage={getItem:k=>memory.get(k)??null,setItem:(k,v)=>memory.set(k,v)};
@@ -71,20 +68,11 @@ try{
  await test('secure actions fail closed until a verification provider exists',async()=>{
   const secure=new SecureEconomy();await assert.rejects(secure.execute('coupon','FREEPET'));await assert.rejects(secure.submitLeaderboardScore('distance',100));
  });
- await test('presence room never owns game progress, enforces seats/chat/shared claim bounds',()=>{
-  const r=new PresenceRoom('r');r.join('a',{x:1,z:2,seat:0});r.join('b',{x:2,z:3});assert.throws(()=>r.update('b',{seat:0}));
-  assert.equal(r.chat('a','hello').text,'hello');assert.throws(()=>r.chat('a','again'));
+ await test('friend presence excludes progression, protects shared claims and has no text chat',()=>{
+  const r=new PresenceRoom('r');r.join('a',{x:1,z:2,seat:0});r.join('b',{x:2,z:3});r.update('b',{seat:0});assert.equal(r.players.get('b').seat,null);
+  assert.equal(typeof r.chat,'undefined');
   r.publish({id:'event',kind:'event',expiresAt:Date.now()+10000,payload:{}});assert.equal(r.claim('a','event').claimedBy,'a');assert.throws(()=>r.claim('b','event'));
   r.update('a',{x:4,z:5,dust:9000,eggs:[1],pets:[9]});assert.equal(r.players.get('a').dust,undefined);assert.equal(r.players.get('a').eggs,undefined);
- });
- await test('real WebSocket relay joins, relays position/chat, disconnects and accepts recovery',async()=>{
-  const host=presenceServer();host.http.listen(0,'127.0.0.1');await once(host.http,'listening');
-  const url=`ws://127.0.0.1:${host.http.address().port}/presence`,sockets=[];
-  const connect=async()=>{const ws=new WebSocket(url);sockets.push(ws);await once(ws,'open');const next=once(ws,'message');ws.send(JSON.stringify({type:'join',state:{x:0,z:0}}));assert.equal(JSON.parse((await next)[0]).type,'welcome');return ws;};
-  try{const a=await connect(),b=await connect();await new Promise(r=>setTimeout(r,10));let next=once(b,'message');a.send(JSON.stringify({type:'position',state:{x:8,z:-10,rotation:1}}));assert.equal(JSON.parse((await next)[0]).player.x,8);
-   next=once(b,'message');a.send(JSON.stringify({type:'chat',text:'relay hello'}));assert.equal(JSON.parse((await next)[0]).message.text,'relay hello');
-   next=once(b,'message');a.close();assert.equal(JSON.parse((await next)[0]).type,'leave');await connect();assert.equal(host.rooms.size,1);
-  }finally{for(const ws of sockets)ws.terminate();await host.close();}
  });
  await report('local-first',{passed:results.length,results});
 }finally{await vite.close();}

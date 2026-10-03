@@ -26,6 +26,7 @@
     "verify": "npm run qa:full && npm run build && node scripts/qa/e2e.mjs --production",
     "server:multiplayer": "node scripts/presence-server.mjs",
     "server:legacy-multiplayer": "node scripts/multiplayer-server.mjs",
+    "qa:simulated-players": "node scripts/qa/simulated-players.mjs && node scripts/qa/local-first-ui.mjs",
     "qa:local-first": "node scripts/qa/local-first.mjs && node scripts/qa/local-first-ui.mjs",
     "build:pages": "npm run build -- --base=/egghunts/"
   },

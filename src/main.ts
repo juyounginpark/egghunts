@@ -33,7 +33,8 @@ import {PresenceClient} from './presence-client';
 import {CloudSave} from './cloud-save';
 import {SecureEconomy} from './secure-economy';
 import {RoomHUD} from './room-hud';
-import {RoomChat} from './room-chat';
+import {LocalSession} from './local-session';
+import {FriendsUI} from './friends-ui';
 import { VirtualAd } from "./virtual-ad";
 import { formatNumber as num } from "./format";
 import { uiIcon } from './ui-icons';
@@ -156,7 +157,8 @@ const cloud=new CloudSave(()=>game.snapshot(),state=>{
   game=next;lastRevision=-1;if(ready){renderEggQueue();updateHud();}
 },toast);
 const multiplayer=new PresenceClient(()=>cloud.token(),message=>{if(message==='SEAT_OCCUPIED')game.seat=null;toast(message);});
-const roomChat=new RoomChat($('controls'),()=>{input?.reset();game.velocity={x:0,z:0};},text=>multiplayer.sendChat(text));
+let session:LocalSession;
+const friendsUI=new FriendsUI($('shell'),multiplayer,id=>session?.emote(id),()=>{input?.reset();if(game)game.velocity={x:0,z:0};});
 
 const qa = import.meta.env.DEV && new URLSearchParams(location.search).get("qa") === "true" ? await import("./qa") : null;
 if (qa) { platform.now = qa.now; platform.key="alkong:v1:qa"; }
@@ -225,7 +227,7 @@ async function action(preparedId?:string) {
   } else if (tab === "explore") {
     if(game.nearShortcut){game.openShortcut();updateHud();return;}
     if(!game.carried&&game.nearSeat>=0){
-      if(multiplayer.peers.some(peer=>peer.seat===game.nearSeat)){toast('다른 탐험가가 앉아 있어요.');return;}
+      if(session.peers.some(peer=>peer.seat===game.nearSeat)){toast('다른 탐험가가 앉아 있어요.');return;}
       input.reset();game.velocity={x:0,z:0};
       game.toggleSeat();void save();
       updateHud();return;
@@ -243,8 +245,9 @@ async function action(preparedId?:string) {
         return;
       }
     }
+    if(!game.carried&&session.collect())return;
     if(!game.carried&&!game.near&&game.nearStore){setTab('store');return;}
-    if(!game.carried&&!game.near&&!game.nearGym){if(world.swingBat(game.now())){multiplayer.swing(game.now());feedback('swing');}return;}
+    if(!game.carried&&!game.near&&!game.nearGym){if(world.swingBat(game.now())){session.attack(session.human.entity);feedback('swing');}return;}
     if(preparedEgg)game.pickup(preparedEgg);else game.interact();
     feedback(null);
     platform.track("egg_interact", { carrying: game.carried ? 1 : 0 });
@@ -555,7 +558,7 @@ function showSettings() {
   $("modal").hidden = false;
   $("modal").innerHTML =
     `<div class="settings-card"><span class="tag">TAKE A LITTLE BREAK</span><h1>잠깐 쉬어가요</h1><p>진행 상황은 자동으로 저장돼요. 탐험 제한시간은 없어요.</p><fieldset class="sound-settings"><legend>사운드</legend><label for="volume-setting">전체 볼륨 <output id="volume-value" for="volume-setting">${Math.round((game.save.settings.volume??1)*100)}%</output></label><input id="volume-setting" type="range" min="0" max="100" step="1" value="${Math.round((game.save.settings.volume??1)*100)}" aria-label="배경음악과 효과음 볼륨"/><label for="sound-setting">음소거 <input id="sound-setting" type="checkbox" ${!game.save.settings.sound ? "checked" : ""}></label><small>배경음악 · 효과음에 함께 적용</small></fieldset><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
-  $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label><p>${platform.native?"토스 게임 로그인 연결됨":"브라우저 · 기기 저장"}</p><button id="multiplayer-connect" class="secondary">${multiplayer.connected?"친구 연결 종료":"친구와 걷기"}</button><small>같은 서버에서 이동 공유 · 알과 수집은 각자 진행</small>`);
+  $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label><p>${platform.native?"토스 게임 로그인 연결됨":"브라우저 · 기기 저장"}</p><small>친구 방은 오른쪽 아래 친구와 플레이에서 만들 수 있어요.</small>`);
   const accountLink=document.createElement('section');$('resume').before(accountLink);cloud.mountAccount(accountLink);
   $('resume').insertAdjacentHTML('beforebegin','<label>탐험가 이름<input id="player-name-setting" maxlength="10" autocomplete="nickname"></label>');
   ($('player-name-setting') as HTMLInputElement).value=game.save.playerName??'탐험가';
@@ -763,9 +766,6 @@ document.addEventListener("click", async (e) => {
   }
   if(b.id==='respawn-base'){game.revive(false);paused=false;$("modal").hidden=true;$("modal").dataset.kind='';void save();return;}
   if(game.death)return;
-  if(b.id==="multiplayer-connect"){
-    try{if(multiplayer.connected)await multiplayer.logout();else await multiplayer.login();showSettings();}catch{toast("서버에 연결하지 못했어요. 로컬 서버 실행 상태를 확인해 주세요.");}
-  }
   if (b.dataset.tab) setTab(b.dataset.tab);
   if (b.dataset.region) { $("panel").dataset.region=b.dataset.region;renderPanel(); }
   if (b.dataset.collectionStage) { $("panel").dataset.collectionStage=b.dataset.collectionStage;renderPanel(); }
@@ -892,6 +892,7 @@ document.addEventListener("visibilitychange", async () => {
     }
   }
 });
+document.addEventListener("visibilitychange",()=>{if(ready){if(document.hidden&&multiplayer.isHost)multiplayer.sendAI(session.ai.bots.map(b=>b.entity.pose()),session.ai.checkpoint());multiplayer.availability(!document.hidden);}});
 window.addEventListener("pagehide", () => {
   if (ready) {cloud.flush();void save();}
 });
@@ -911,7 +912,12 @@ async function start() {
     world.quality(state.settings.quality === "low");
     input = new Input($("joystick"), $("knob"), action, showSettings);
     ready = true;
-    if(!qa){void cloud.initialize();void multiplayer.login();}
+    session=new LocalSession(()=>game,multiplayer,(x,z)=>world.isVisiblePoint(x,z),qa?.random);
+    for(const bot of session.ai.bots)bot.entity.game.mapCollision.setFarm(world.mapColliders);
+    await world.preparePeers(session.peers).catch(err=>{world.assetError=String(err);});
+    world.updatePeers(session.peers,true,game.now());
+    world.render(game,tab,0,performance.now()/1000);
+    if(!qa)void cloud.initialize();
     qa?.attach(game, world, input, setTab, save);
     if (platform.warning) toast(platform.warning);
     renderEggQueue();
@@ -933,9 +939,10 @@ function frame(now: number) {
   const dt = Math.min(0.05, (now - lastNow) / 1000);
   lastNow = now;
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}
-  if (!qa && !paused && !roomChat.active && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
+  if (!qa && !paused && !friendsUI.active && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
     const v = input.vector();
-    game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt,input.slow);
+    session.human.entity.game=game;
+    session.human.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt,input.slow);
     world.player.userData.moving = Math.hypot(v.x, v.y) > 0.1;
     if (world.player.userData.moving)
       world.player.rotation.y = Math.atan2(
@@ -1008,13 +1015,13 @@ function frame(now: number) {
   alertEl.hidden=!(presenting&&!!waking);
   if(presenting&&chaser&&gap<12&&now-lastBossStep>850-pressure*250){playSound('boss-step',chaser.stageId);lastBossStep=now;}
   audio.music(game.save.settings.sound&&presenting?(pursued?'chase':'calm'):'silent',pressure);
-  if(!qa)multiplayer.update(game,world.player.rotation.y);
-  world.updatePeers(multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
+  if(!qa){for(const bot of session.ai.bots)bot.entity.game.mapCollision.setFarm(world.mapColliders);session.update(dt);}
+  world.sharedEggs=session.visibleDrops;
+  world.updatePeers(session.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
   world.networkOffset={x:0,z:0};
   world.render(game, tab, qa ? 1 : dt, qa ? qa.visualTime : now / 1000);
-  roomChat.show(multiplayer.connected&&tab==='explore'&&!paused&&!game.death&&!game.returnReward&&$('modal').hidden);
-  roomChat.update(multiplayer.connected,game.save.playerName??'탐험가',multiplayer.chat,multiplayer.peers);
-  roomHUD.update(game,multiplayer.peers,world,cloud.guest,tab==='explore'&&!game.returnReward,multiplayer.chat);
+  friendsUI.update(tab==='explore'&&!paused&&!game.death&&!game.returnReward&&$('modal').hidden);
+  roomHUD.update(game,session.peers,world,cloud.guest,tab==='explore'&&!game.returnReward,session.human.entity.emote);
   if (now - savedAt > LOCAL_FIRST.localSaveMs) {
     savedAt = now;
     void save();

@@ -1,6 +1,6 @@
 import type {GameState} from './game';
-import type {Peer,ChatMessage} from './multiplayer';
-import {BALANCE} from './data';
+import type {Peer} from './multiplayer';
+import {emoteIcon,EMOTE_DURATION,type Emote} from './emotes';
 import type {World} from './world';
 import {ROUTE_FAR_Z,routeStage,STAGES} from './stage-data';
 import {playerLabel} from './player-identity';
@@ -16,9 +16,9 @@ export class RoomHUD{
   this.progress.id='room-progress';this.progress.setAttribute('aria-label','탐험 진행도');
   this.labels.id='player-labels';place.append(this.progress);worldHost.append(this.labels);
  }
- update(game:GameState,peers:Peer[],world:World,guest:boolean,visible:boolean,chat?:ChatMessage|null){
+ update(game:GameState,peers:Peer[],world:World,guest:boolean,visible:boolean,emote?:Emote|null){
   this.progress.hidden=this.labels.hidden=!visible;if(!visible)return;
-  const players=[{id:'self',name:game.save.playerName??'탐험가',level:game.level,isGuest:guest,slot:game.farmSlot,z:game.z,speed:game.speed,chat},...peers].slice(0,5);
+  const players=[{id:'self',name:game.save.playerName??'탐험가',level:game.level,isGuest:guest,slot:game.farmSlot,z:game.z,speed:game.speed,emote},...peers].slice(0,5);
   for(const [id,entry]of this.rows)if(!players.some(p=>p.id===id)){entry.row.remove();entry.label.remove();entry.farm.remove();this.rows.delete(id);}
   for(const p of players){
    let entry=this.rows.get(p.id);
@@ -27,7 +27,7 @@ export class RoomHUD{
     distance.className='room-location';
     const speed=document.createElement('b');speed.className='room-speed';speed.innerHTML=uiIcon('speed')+'<span></span>';
     const caption=document.createElement('span'),bubble=document.createElement('div');
-    caption.className='player-caption';bubble.className='player-chat';bubble.hidden=true;label.append(bubble,caption);
+    caption.className='player-caption';bubble.className='player-emote';bubble.hidden=true;label.append(bubble,caption);
     const farm=document.createElement('div');farm.className='farm-owner-label';
     row.className='room-progress-row';label.className='player-nameplate';row.append(name,distance,speed);this.progress.append(row);this.labels.append(label,farm);entry={row,name,distance,speed,label,caption,bubble,farm};this.rows.set(p.id,entry);
    }
@@ -36,8 +36,8 @@ export class RoomHUD{
    const text=meters<=4?'기지':`${STAGES[stage-1].name} · ${meters}m`;
    if(entry.name.textContent!==p.name)entry.name.textContent=p.name;
    if(entry.caption.textContent!==label){entry.caption.textContent=label;entry.row.title=label;entry.row.setAttribute('aria-label',label);}
-   entry.bubble.hidden=!p.chat||game.now()-p.chat.at>=BALANCE.chatDurationMs;
-   if(p.chat&&entry.bubble.textContent!==p.chat.text)entry.bubble.textContent=p.chat.text;
+   entry.bubble.hidden=!p.emote||game.now()-p.emote.at>=EMOTE_DURATION;
+   if(p.emote)entry.bubble.textContent=emoteIcon(p.emote.id);
    entry.distance.textContent=text;entry.row.style.setProperty('--progress',`${Math.min(100,meters/-ROUTE_FAR_Z*100)}%`);
    const speedText=p.speed===undefined?'—':formatNumber(p.speed,2);entry.speed.lastElementChild!.textContent=speedText;entry.speed.title=`현재 스피드 ${speedText}`;entry.speed.setAttribute('aria-label',entry.speed.title);
    entry.row.style.setProperty('--player-color',colors[p.slot??0]??colors[0]);entry.label.style.setProperty('--player-color',colors[p.slot??0]??colors[0]);

@@ -153,6 +153,9 @@ export class World {
     hat.name='avatar-accessory';hat.position.set(0,1.05,0);hat.rotation.z=choice===1?.16:0;avatar.add(hat);
     if(old instanceof T.Mesh){old.geometry.dispose();(old.material as T.Material).dispose();}
   }
+  async preparePeers(players:Peer[]){await loadVoxels([...new Set(players.flatMap(p=>[...(p.activePets??[]),...(p.mountPet===null||p.mountPet===undefined?[]:[p.mountPet])]))].map(id=>'pet-'+id));}
+  sharedEggs:import('./game').WorldEgg[]=[];
+  isVisiblePoint(x:number,z:number){const p=new T.Vector3(x,1,z).project(this.camera);return p.z>=-1&&p.z<=1&&Math.abs(p.x)<1.15&&Math.abs(p.y)<1.15;}
   updatePeers(players:Peer[],visible:boolean,now:number){
     const frameAt=performance.now(),dt=Math.min(.1,Math.max(0,(frameAt-this.peerFrameAt)/1000)),blend=1-Math.exp(-dt*12);this.peerFrameAt=frameAt;
     this.roomFarmPets.visible=this.roomFarmEggs.visible=visible&&this.farm.visible;if(this.farm.visible)void this.showRoomFarms(players).catch(err=>{this.assetError=String(err);});
@@ -606,7 +609,7 @@ export class World {
     }
     this.nightBarrier.visible=game.isNight&&!isHatch;
     const carriedByBoss=game.bosses.flatMap(b=>b.replenishing?[b.replenishing.egg]:[]);
-    const renderedEggs=[...game.world,...carriedByBoss];
+    const renderedEggs=[...new Map([...game.world,...this.sharedEggs,...carriedByBoss].map(e=>[e.id,e])).values()];
     const visibleEggs=renderedEggs.filter(e=>Math.abs(e.z-game.z)<24);
     const worldKey = visibleEggs.map((e) => e.id).join("|");
     if (worldKey !== this.lastWorld) {

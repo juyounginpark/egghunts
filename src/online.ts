@@ -8,7 +8,6 @@ import {BALANCE,COUPON_ERRORS} from './data';
 import {playerName} from './player-identity';
 import type {EggNotice} from './egg-notices';
 import {restoreSnapshotSections,restoreSnapshotSectionsV2} from './snapshot-stream';
-import type {ChatMessage} from './multiplayer';
 import {explorationSurface} from './exploration-route';
 import {IdlePresence} from './idle-presence';
 
@@ -17,7 +16,7 @@ const PUBLIC_KEY=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'sb_publishable_
 // Login remains on Supabase; all room operations must use the same game host.
 const GAME_URL=import.meta.env.VITE_GAME_SERVER_URL||`${SUPABASE_URL}/functions/v1/game`;
 const HOSTED_EDGE=!import.meta.env.VITE_GAME_SERVER_URL;
-type Snapshot={streamVersion?:number;personalBosses?:boolean;serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];chat?:ChatMessage|null;eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
+type Snapshot={streamVersion?:number;personalBosses?:boolean;serverTime:number;runtime:RuntimeState;world:WorldEgg[];bosses:Boss[];peers:Peer[];eggNotices?:EggNotice[];isGuest?:boolean;slot:number;count:number;events:GameState['events'];errors:string[];commandResults?:{id:string;error:string|null}[]};
 type Command={id:string;kind:string;value?:unknown};
 const errorText:Record<string,string>={...COUPON_ERRORS,CANNOT_EQUIP:'빈 착용 칸과 남은 펫 수량을 확인해 주세요.',WEEKLY_INVENTORY_FULL:'알 보관함 한 칸을 비워 주세요.',WEEKLY_UNAVAILABLE:'오늘 보상을 이미 받았거나 수령할 수 없는 상태예요.',EGG_UNAVAILABLE:'다른 탐험가가 먼저 가져갔어요.',PREPARE_EGG:'알을 꺼내는 중이에요. 다시 시도해 주세요.',RETURN_TO_BASE:'기지로 돌아오세요.',NOT_OWNED:'내 농장에 보유한 것만 사용할 수 있어요.',ROOM_EXPIRED:'방 연결이 만료됐어요. 다시 방을 찾아주세요.',SERVER_NOT_READY:'서버 준비가 필요해요. 잠시 후 다시 시도해 주세요.',SIGN_IN:'다시 로그인해 주세요.'};
 Object.assign(errorText,{SEAT_OCCUPIED:'이미 다른 탐험가가 앉아 있어요.',SEAT_UNAVAILABLE:'빈 통나무 의자 가까이에서 앉아 주세요.'});
@@ -300,7 +299,7 @@ export class OnlineGame{
     this.visualOffset.x*=scale;this.visualOffset.z*=scale;
    }
   }
-  for(const error of state.errors)this.notify(error==='CHAT_COOLDOWN'?'잠깐 기다렸다 보내주세요.':error==='INVALID_CHAT'?`메시지는 ${BALANCE.chatMaxLength}자 이내로 입력해 주세요.`:errorText[error]??'지금은 사용할 수 없어요.');
+  for(const error of state.errors)this.notify(errorText[error]??'지금은 사용할 수 없어요.');
  }
  send(kind:string,value?:unknown):Promise<boolean>{
   if(this.completions.size>=64)return Promise.reject(Error('연결을 기다리고 있어요. 잠시 후 다시 시도해 주세요.'));

@@ -13,7 +13,7 @@ export {snapshotSections} from '../src/snapshot-stream';
 type Member={user_id:string;slot:number;last_seen:string};
 type Command={id:string;kind:string;value?:unknown};
 type StopPoint={at:number;x:number;z:number;hit:number;egg:string|null;base:boolean};
-type Player={runtime:RuntimeState;input:{x:number;z:number;slow?:boolean};seen:number;receipts:string[];chat?:{id:string;text:string;at:number};guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
+type Player={runtime:RuntimeState;input:{x:number;z:number;slow?:boolean};seen:number;receipts:string[];guest?:boolean;motionStart?:number;motion?:StopPoint[];commandErrors?:{id:string;error:string}[];preparation?:{id:string;at:number;x:number;z:number;hit:number};adAt?:number};
 export type Room={personalBossVersion?:1;eggRecoveryAt?:Record<string,number>;stageOrderVersion?:2;routeVersion?:3;explorationVersion?:1|2|3|4|5;openedShortcuts?:number[];openingShortcuts?:Record<number,number>;mobs?:Mob[];at:number;cycle:number;world:WorldEgg[];bosses:Boss[];players:Record<string,Player>;eggNotices?:EggNotice[]};
 export type RequestInput={id:string;input?:{x:number;z:number;slow?:boolean};inputAt?:number;commands?:Command[]};
 const random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
@@ -173,10 +173,9 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  room.eggNotices=room.eggNotices.slice(-30);
  const events=self.events.splice(0);
  for(const [id,g] of games){g.world=room.world;g.bosses=room.bosses;room.players[id].runtime=exportRuntime(g);}
- for(const p of Object.values(room.players))if(p.chat&&now-p.chat.at>=BALANCE.chatDurationMs)delete p.chat;
  const peers=[...games].filter(([id,g])=>id!==user&&!g.concealed).map(([id,g])=>({
   id,at:now,name:g.save.playerName??`농장 ${g.farmSlot+1}`,level:g.level,isGuest:!!room.players[id].guest,slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,
-  speed:g.speed,seat:g.seat,training:g.training,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,chat:room.players[id].chat??null,
+  speed:g.speed,seat:g.seat,training:g.training,downUntil:g.knockedUntil,attackAt:g.batAt,hitAt:g.hitAt,velocity:g.velocity,carried:g.carried?.type??null,egg:g.carried,
   activePets:g.save.active.filter(id=>g.save.mongles[id]>0).slice(0,BALANCE.maxCompanions),
   mountPet:g.mountId,riding:g.riding,mountWeight:g.mountPetLot,activePetWeights:g.activePetLots,petWeights:g.farmPetLots(),
   pets:g.farmPetLots().map(l=>l.species),
@@ -184,7 +183,7 @@ export function runRoom(previous:Room|null,members:Member[],profiles:{user_id:st
  }));
  // Notice IDs start with the authenticated owner's UUID, not the nickname.
  const eggNotices=room.eggNotices.filter(notice=>!notice.id.startsWith(`${user}:`));
- return {room,response:{serverTime:now,personalBosses:true,runtime:player.runtime,world:room.world,bosses:[],peers,eggNotices,chat:player.chat??null,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
+ return {room,response:{serverTime:now,personalBosses:true,runtime:player.runtime,world:room.world,bosses:[],peers,eggNotices,isGuest:!!player.guest,slot:self.farmSlot,count:members.length,events,errors,commandResults}};
 }
 function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
  const integer=()=>{if(!Number.isSafeInteger(c.value)||Number(c.value)<0)throw Error('INVALID_ID');return Number(c.value);};
@@ -205,13 +204,6 @@ function applyCommand(g:GameState,p:Player,c:Command,now:number,room:Room){
    if(!g.toggleSeat())throw Error('SEAT_UNAVAILABLE');break;
   }
   case 'coupon':{const error=g.redeemCoupon(text());if(error)throw Error(error);break;}
-  case 'chat':{
-   if(typeof c.value!=='string'||c.value.length>BALANCE.chatMaxLength*2)throw Error('INVALID_CHAT');
-   const message=c.value.normalize('NFC').replace(/[\p{Cc}\p{Cf}]/gu,'').trim().replace(/\s+/g,' ');
-   if(!message||Array.from(message).length>BALANCE.chatMaxLength)throw Error('INVALID_CHAT');
-   if(p.chat&&now-p.chat.at<BALANCE.chatCooldownMs)throw Error('CHAT_COOLDOWN');
-   p.chat={id:c.id,text:message,at:now};break;
-  }
   case 'prepare':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');
    p.preparation={id:egg.id,at:now,x:g.x,z:g.z,hit:Number.isFinite(g.hitAt)?g.hitAt:0};break;}
   case 'pickup':{const egg=g.world.find(e=>e.id===text());if(!egg||g.carried||g.death||g.isNight||!g.canReachEgg(egg))throw Error('EGG_UNAVAILABLE');

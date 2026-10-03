@@ -23,9 +23,6 @@ export const BALANCE = {
   roomVisualOffsetMax:.45,
   slowWalkSpeed:2,
   slowHoldMs:450,
-  chatDurationMs:6000,
-  chatCooldownMs:1200,
-  chatMaxLength:80,
   roomStopRewindMs:500,
   virtualAdDuration:10000,
   virtualAdReward:3,
@@ -490,3 +487,6 @@ export const TRAILS = [
 ];
 
 TRAILS.forEach((trail,i)=>{trail.multiplier=OVERHAUL.trailMovement[i];trail.cost=i?Math.ceil(baselineIncome(OVERHAUL.trailStages[i])*OVERHAUL.trailWaits[i]):0;});
+
+// Local simulated adventurers share the five existing farm slots.
+export const AI_WORLD={initialPopulation:4,targetPopulation:4,minimumPopulation:2,maxParticipants:5,initialGraceMs:45000,fullSimulationDistance:40};

@@ -6,7 +6,7 @@ import {createServer as createHTTP} from 'node:http';
 import {presenceServer} from '../../server/presence-host.mjs';
 import {report} from './lib.mjs';
 const reserve=createHTTP();reserve.listen(0,'127.0.0.1');await once(reserve,'listening');const port=reserve.address().port;await new Promise(r=>reserve.close(r));
-const vite=await createServer({cacheDir:'node_modules/.vite-local-first-ui',define:{'import.meta.env.VITE_PRESENCE_URL':JSON.stringify(`ws://127.0.0.1:${port}/presence`)},server:{port:4351,strictPort:true,host:'127.0.0.1'},plugins:[{name:'local-first-test-access',enforce:'pre',transform(code,id){if(id.endsWith('/src/main.ts'))return code+'\nObject.assign(window,{__localFirst:{get game(){return game},get world(){return world},cloud,multiplayer,action,settings:showSettings}});';}}]});
+const vite=await createServer({cacheDir:'node_modules/.vite-local-first-ui',define:{'import.meta.env.VITE_PRESENCE_URL':JSON.stringify(`ws://127.0.0.1:${port}/presence`)},server:{port:4351,strictPort:true,host:'127.0.0.1'},plugins:[{name:'local-first-test-access',enforce:'pre',transform(code,id){if(id.endsWith('/src/main.ts'))return code+'\nObject.assign(window,{__localFirst:{get game(){return game},get world(){return world},cloud,multiplayer,get session(){return session},action,settings:showSettings}});';}}]});
 await vite.listen();const browser=await chromium.launch({channel:process.env.CI?undefined:'msedge',headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 let relay;const results=[],cloudRows=new Map();
 const test=async(name,fn)=>{await fn();results.push(name);console.log('PASS',name);};
@@ -35,6 +35,9 @@ try{
  const aCtx=await context(),a=await aCtx.newPage();await ready(a);
  await test('normal startup with EC2 unavailable: movement, egg, hatch, boss and upgrade',async()=>{
   await a.waitForFunction(()=>window.__localFirst.world.renderer.info.render.frame>0);
+  assert.equal(await a.evaluate(()=>window.__localFirst.multiplayer.connection),'disconnected');
+  assert.equal(await a.evaluate(()=>window.__localFirst.session.ai.bots.length),4);
+  assert.equal(await a.evaluate(()=>new Set(window.__localFirst.session.ai.initialSnapshots.map(b=>b.action)).size),4);
   const result=await a.evaluate(()=>{const {game:g}=window.__localFirst;g.save.tutorial=6;g.move(0,-1,.1);const moved=g.z<0;
    const egg=g.world[0];g.x=egg.x;g.z=egg.z;g.pickup(egg);const pickup=!!g.carried;g.applyBossContact(egg.guardian??0,1,0);const boss=g.hp===1&&!g.carried;
    g.x=g.z=0;g.save.eggs=[{...egg,id:'ui-local-hatch',hp:0}];g.save.selected='ui-local-hatch';const hatch=g.claimHatch('ui-local-hatch');g.result=null;g.save.dust=100000;const upgrade=g.upgrade('speed');return {moved,pickup,boss,hatch,upgrade,room:g.roomManaged};});
@@ -47,15 +50,30 @@ try{
   assert.equal(state.pets,2);assert.equal(state.level,1);assert.ok(Number(state.dust)>=12345);
  });
  const bCtx=await context(),b=await bCtx.newPage();await ready(b);
- await test('relay recovery needs no game restart; two players receive interpolated positions and chat',async()=>{
+ await test('explicit friend codes, human priority, interpolated positions and six shared emotes',async()=>{
   relay=presenceServer({origins:['http://127.0.0.1:4351']});relay.http.listen(port,'127.0.0.1');await once(relay.http,'listening');
-  await a.waitForFunction(()=>window.__localFirst.multiplayer.connected&&window.__localFirst.multiplayer.peers.length===1,{},{timeout:15000});
-  await b.waitForFunction(()=>window.__localFirst.multiplayer.peers.length===1);
+  await a.locator('#friends-open').click();await a.locator('#friend-create').click();
+  try{await a.waitForFunction(()=>window.__localFirst.multiplayer.connected,{},{timeout:15000});}catch(e){console.log(await a.evaluate(()=>({connection:window.__localFirst.multiplayer.connection,url:window.__localFirst.multiplayer.url,toast:document.querySelector('#toast').textContent})));throw e;}
+  const code=await a.evaluate(()=>window.__localFirst.multiplayer.code);
+  await b.locator('#friends-open').click();await b.locator('#friend-code').fill(code);await b.locator('#friend-join').click();
+  await b.waitForFunction(()=>window.__localFirst.multiplayer.connected&&window.__localFirst.multiplayer.peers.some(p=>p.kind==='human'));
+  await a.waitForFunction(()=>window.__localFirst.session.peers.length===4);
+  assert.equal(await b.evaluate(()=>window.__localFirst.session.peers.length),4);
   await a.evaluate(()=>{window.__localFirst.game.x=3;window.__localFirst.game.z=-8;});
   await b.waitForFunction(()=>window.__localFirst.multiplayer.peers.some(p=>p.x===3&&p.z===-8));
-  await b.waitForFunction(()=>[...window.__localFirst.world.peers.values()].some(p=>Math.abs(p.position.x-3)<.2&&Math.abs(p.position.z+8)<.2),{},{timeout:15000});
-  await a.evaluate(()=>window.__localFirst.multiplayer.sendChat('local first chat'));
-  await b.waitForFunction(()=>window.__localFirst.multiplayer.peers.some(p=>p.chat?.text==='local first chat'));
+  try{await b.waitForFunction(()=>[...window.__localFirst.world.peers.values()].some(p=>Math.abs(p.position.x-3)<.2&&Math.abs(p.position.z+8)<.2),{},{timeout:15000});}catch(e){console.log(await b.evaluate(()=>({peers:window.__localFirst.multiplayer.peers,rendered:[...window.__localFirst.world.peers].map(([id,p])=>({id,x:p.position.x,z:p.position.z,motion:p.userData.motion}))})));throw e;}
+  await a.locator('[data-emote="hello"]').click();
+  await b.waitForFunction(()=>window.__localFirst.multiplayer.peers.some(p=>p.emote?.id==='hello'));
+  assert.equal(await a.locator('[data-emote]').count(),6);assert.equal(await a.locator('#room-chat').count(),0);
+ });
+ await test('browser host migration preserves AI identities and continues simulation',async()=>{
+  const ids=await b.evaluate(()=>window.__localFirst.multiplayer.peers.filter(p=>p.kind==='simulated').map(p=>p.id));
+  await a.evaluate(()=>{const f=window.__localFirst;f.multiplayer.sendAI(f.session.ai.bots.map(b=>b.entity.pose()),f.session.ai.checkpoint());f.multiplayer.logout();});
+  await b.waitForFunction(()=>window.__localFirst.multiplayer.isHost);
+  const restored=await b.evaluate(()=>window.__localFirst.session.ai.bots.map(b=>b.entity.id));
+  assert.deepEqual(restored.sort(),ids.sort());
+  const code=await b.evaluate(()=>window.__localFirst.multiplayer.code);await a.evaluate(code=>window.__localFirst.multiplayer.login(code),code);
+  await a.waitForFunction(()=>window.__localFirst.multiplayer.connected);
  });
  await test('relay outage clears peers while local gameplay and saving continue',async()=>{
   await relay.close();relay=null;
