@@ -12,12 +12,12 @@ import {eggName,eggIcon} from "./stage-eggs";
 import type { GameState } from "./game";
 import { formatNumber as num } from "./format";
 import {collectionEligible,stageReward,OVERHAUL} from './balance';
-import {petAbilities} from './pet-stats';
+import {petAbilities,statBadge} from './pet-stats';
 function collectionCard(i:number,slot:number,game:GameState){
  const m=MONGLES[i],found=game.hasDiscoveredPet(i),claimed=game.save.claimedPets?.includes(i);
  if(isUltraPet(i)&&!found)return `<article class="pet-catalog-card secret-pet"><div class="pet-portrait unknown">?</div><small>ULTRA SECRET · 0.001%</small><h3>태초의 시크릿</h3><p>${STAGES[m.stageId-1].name}</p></article>`;
  if((i>=300&&i<320)&&!found)return `<article class="pet-catalog-card secret-pet"><div class="pet-portrait"><img src="${import.meta.env.BASE_URL}models/stage-previews/pet-${i}-silhouette.png" alt="숨겨진 드래곤 실루엣" loading="lazy"/></div><small>SECRET DRAGON</small><h3>숨겨진 수호룡</h3><p>${STAGES[m.stageId-1].name} · 전용 알 ${(BALANCE.secretDragonEggChance*100).toFixed(2)}%</p></article>`;
- return `<article class="pet-catalog-card ${found?(claimed?'':'reward-ready'):'locked'} ${(i>=300&&i<320)?'secret-pet':''}">${found&&!claimed?'<span class="sr-only">받을 보상 있음</span>':''}${found?`<button class="pet-portrait" data-pet-view="${i}" aria-label="${m.name} 크게 보기"><img src="${petIcon(i)}" alt="${m.name}" loading="lazy"/></button>`:'<div class="pet-portrait unknown" aria-label="미발견">?</div>'}<small>NO.${String(slot+1).padStart(2,'0')} · ${RARITIES[m.tier].name}</small><h3>${found?m.name:'???'}</h3>${found?`<div class="stat-badges">${petAbilities(m)}</div><details class="pet-details"><summary>상세</summary><p>${m.description}<br>${m.effect}</p></details><small>보유 ${num(game.save.mongles[i])}</small><button class="small-btn" data-claim-pet="${i}" ${claimed?'disabled':''}>${claimed?'✓':`보상 +${num(game.discoveryReward(i))}`}</button>`:''}</article>`;
+ return `<article class="pet-catalog-card ${found?(claimed?'':'reward-ready'):'locked'} ${(i>=300&&i<320)?'secret-pet':''}">${found&&!claimed?'<span class="sr-only">받을 보상 있음</span>':''}${found?`<button class="pet-portrait" data-pet-view="${i}" aria-label="${m.name} 크게 보기"><img src="${petIcon(i)}" alt="${m.name}" loading="lazy"/></button>`:'<div class="pet-portrait unknown" aria-label="미발견">?</div>'}<small>NO.${String(slot+1).padStart(2,'0')} · ${RARITIES[m.tier].name}</small><h3>${found?m.name:'???'}</h3>${found?`<div class="stat-badges">${petAbilities(m)}${statBadge('dust',`+${num(game.petIncomeAmount(i)/BALANCE.petIncomeSeconds,2)}/초`,'동행 시 별가루 생산')}</div><details class="pet-details"><summary>상세</summary><p>${m.description}<br>${m.effect}</p></details><small>보유 ${num(game.save.mongles[i])}</small><button class="small-btn" data-claim-pet="${i}" ${claimed?'disabled':''}>${claimed?'✓':`보상 +${num(game.discoveryReward(i))}`}</button>`:''}</article>`;
 }
 
 export function panelHTML(tab: string, game: GameState) {

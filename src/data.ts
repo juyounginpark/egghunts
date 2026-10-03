@@ -397,13 +397,19 @@ for(let stage=1;stage<=20;stage++){
  const source=MONGLES.find(p=>p.stageId===stage&&p.species===10)!;
  MONGLES.push({...source,id:`mongle-${700+stage}`,name:ULTRA_SECRET_NAMES[stage-1],description:`${STAGES[stage-1].name} · 0.001%`,species:30,icon:`pet-${700+stage}`});
 }
-// Bounded role bonuses replace HP-sized multipliers without changing permanent IDs.
+// Every pet produces dust and has one hatch role. Riding is a separate bonus.
 for(const pet of MONGLES){
  const stage=Math.max(1,pet.stageId),tier=pet.tier;
- pet.clickMultiplier=pet.clickMultiplier>1?1+.08+.025*tier+.005*stage:1;
- pet.autoMultiplier=pet.autoMultiplier>1?1+.08+.025*tier+.005*stage:1;
- pet.speedMultiplier=pet.speedMultiplier>1?1+.015+.006*tier+.001*stage:1;
- pet.effect=`터치 ×${pet.clickMultiplier.toFixed(3)} / 자동 ×${pet.autoMultiplier.toFixed(3)} / 성장 속도 ×${pet.speedMultiplier.toFixed(3)}`;
+ const role=(pet.species+stage)%2;
+ pet.clickMultiplier=role===0?1+.08+.025*tier+.005*stage:1;
+ pet.autoMultiplier=role===1?1+.08+.025*tier+.005*stage:1;
+ pet.speedMultiplier=1;
+ pet.effect=[['두드리기',pet.clickMultiplier],['자동 부화',pet.autoMultiplier]]
+  .filter(([,value])=>Number(value)>1).map(([label,value])=>`${label} ×${Number(value).toFixed(3)}`).join(' / ')+' / 별가루 생산';
+}
+export function petMountBonus(id:number){
+ const pet=MONGLES[id];
+ return (.015+.006*pet.tier+.001*Math.max(1,pet.stageId))*BALANCE.mountSpeedBonusRate;
 }
 /** Add only each pet's bonus; multiplying HP-scaled pets would compound stage growth. */
 export function equippedPetMultiplier(ids:readonly number[],kind:'clickMultiplier'|'autoMultiplier'|'speedMultiplier'){

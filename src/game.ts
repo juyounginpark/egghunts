@@ -16,7 +16,7 @@ import {firstEggTarget,migrateTutorial,TUTORIAL_STEPS} from './tutorial';
 import {WEEKLY_EVENT} from './data';
 import {migrateStageSave} from './stage-migration';
 import {formatNumber} from './format';
-import {growthCost,EGG_HEALTH,eggMaxHp} from './data';
+import {growthCost,EGG_HEALTH,eggMaxHp,petMountBonus} from './data';
 import {
   BALANCE,
   COUPONS,
@@ -436,7 +436,7 @@ export class GameState {
   get mountId(){const id=this.save.mountPet;return this.mountPetLot&&typeof id==='number'&&Number.isInteger(id)&&MONGLES[id]&&(this.save.mongles[id]??0)>this.save.active.filter(p=>p===id).length?id:null;}
   get equippedPetIds(){return this.mountId===null?this.save.active:[...this.save.active,this.mountId];}
   equippedCount(id:number){return this.save.active.filter(p=>p===id).length+Number(this.mountId===id);}
-  mountBonus(id:number,w:Weighted=this.mountPetLot?.species===id?this.mountPetLot:{} ){return Math.min(OVERHAUL.mountBonusCap,Math.max(0,weightedPetStats(id,w).speedMultiplier-1)*BALANCE.mountSpeedBonusRate);}
+  mountBonus(id:number,w:Weighted=this.mountPetLot?.species===id?this.mountPetLot:{} ){return Math.min(OVERHAUL.mountBonusCap,Math.max(0,petMountBonus(id)*petWeightRatio(w)));}
   get mountSpeedMultiplier(){return 1+(this.mountId===null?0:this.mountBonus(this.mountId));}
   get riding(){return this.mountId!==null&&!this.death&&!this.training&&this.seat===null&&this.now()>=this.knockedUntil&&this.knockback.remaining<=0&&!this.launch;}
   equipMount(id:number){
