@@ -20,7 +20,7 @@
 
 - `npm run build` / `qa:typecheck` / `qa:lint`: 통과. 샌드박스 상위 경로 접근 실패는 권한을 받아 재실행했다.
 - `scripts/qa/simulated-players.mjs`: 스냅샷, 5분 진행, 실수, 전투, 인사 답례/무시, 입퇴장, 슬롯 양보, 호스트 인계 통과.
-- `scripts/qa/local-first-ui.mjs`: 오프라인 플레이/저장, 코드 입장, 이동/이모티콘, 호스트 인계, 장애/복구, Auth/RPC fixture 클라우드 복원 검사.
+- `scripts/qa/local-first-ui.mjs`: 오프라인 플레이/저장, 코드 입장, 이동/이모티콘, 호스트 인계, 장애/복구, Auth/RPC fixture 클라우드 복원과 첫 진입 이메일 코드 로그인 **7개 시나리오 통과**.
 - `qa:explorer-profile`: 선택지 수, 이름 검증, 기존 저장 변환, 외형 저장, 동일 이름, 서버 ID 검증, 위치 delta에서 외형 제외 통과.
 - `qa:mobile-hud`: 새 생성/수정/재접속, 320×568·360×800·390×844·430×932, HUD 접기/펼치기, 탐험가/초대/이모티콘, 버튼 경계, 조작 위치 유지, 조이스틱 drag, 튜토리얼, safe area 47/34px 검사.
 - 화면 결과: `artifacts/test-results/mobile-hud/`. 기존 시각 기준 이미지는 갱신하지 않았다.
@@ -34,3 +34,9 @@
 - 금칙어 검사는 초기 기본 목록이다. 우회 표현 및 운영 신고/제재 체계까지 제공하는 필터는 아니다.
 - 모든 초기 외형은 기본 제공이며 능력치를 바꾸지 않는다. 스테이지/업적/유료 꾸미기와 기지의 물리적 옷장 오브젝트는 후속 콘텐츠다. 현재는 설정의 꾸미기에서 언제든 무료로 바꾼다.
 - JS 전체 chunk gzip 합계에는 기존 Supabase/SDK 등 지연 로딩 chunk도 포함된다. 이번 검증에서 초기 전송량/실기기 성능 예산 충족을 주장하지 않는다.
+
+## 배포 기록
+
+- EC2 `/opt/egghunts/host.mjs`를 교체하고 서비스 `active` 및 `/readyz` 응답을 확인했다. 이전 번들: `/opt/egghunts/backups/explorer-20261003T113542Z/host.mjs`. 환경 설정, 개인 저장, 트래픽 한도 파일은 변경하지 않았다.
+- 공개 WSS의 별도 임시 방에서 친구 입장 시 전체 외형 전달, 이동 시 외형 필드 생략을 확인하고 연결을 닫았다.
+- 클라이언트는 main 푸시로 기존 GitHub Pages 워크플로에 배포한다. 게임: https://juyounginpark.github.io/egghunts/
