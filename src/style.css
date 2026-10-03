@@ -858,17 +858,17 @@ nav button img { width:28px; height:28px; }
 #friends-dialog h2 { margin:0; font-size:20px; }
 #friends-dialog button { box-shadow:none; }
 #friend-close { width:36px; height:36px; padding:0; border:0; background:transparent; font-size:26px; }
-#friend-leave { width:100%; margin:0 0 16px; }
 #friend-form { margin-bottom:16px; }
 #friend-form label { display:block; margin-bottom:6px; font-size:12px; }
-.friend-code-row { display:flex; gap:8px; }
-#friend-code { width:0; min-width:0; flex:1; text-transform:uppercase; letter-spacing:.16em; }
+.friend-code-row { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:stretch; gap:8px; min-width:0; }
+#friends-dialog #friend-code { display:block; width:100%; min-width:0; height:48px; box-sizing:border-box; padding:10px 12px; margin:0; border:1px solid #9daa86; border-radius:8px; background:#fffdf4; color:#293e38; font-size:16px; line-height:1.25; text-transform:uppercase; letter-spacing:.12em; appearance:none; }
+#friend-join { width:auto; min-width:60px; min-height:48px; margin:0; padding:10px 14px; white-space:nowrap; border-radius:8px; }
+#invite-generate { width:100%; min-height:48px; margin:0 0 20px; border-radius:8px; }
 #friends-dialog small { display:block; font-size:11px; opacity:.7; }
 #friends-dialog [role="status"] { margin:0 0 16px; font-weight:700; }
 .cloud-settings { margin:12px 0; text-align:left; }
 .cloud-settings summary { min-height:44px; display:list-item; padding:12px 0; cursor:pointer; font-size:13px; }
 .settings-card #friends-open { width:100%; margin:8px 0 16px; }
-#room-code { grid-column:1 / -1; justify-self:end; padding:2px 4px; min-height:20px; background:transparent; color:#52664a; font-size:10px; letter-spacing:.04em; box-shadow:none; }
 #friend-connection { font-size:12px; margin:0 0 18px; color:#627257; }
 #loading.start-screen { z-index:100; padding:24px; padding-top:calc(24px + var(--safe-top)); padding-bottom:calc(24px + var(--safe-bottom)); overflow-y:auto; background:radial-gradient(ellipse at 50% 20%,#faffed 0,#eaf0d5 65%,#dce8c4 100%); }
 .start-card { width:100%; max-width:300px; margin:auto; }
@@ -884,8 +884,6 @@ nav button img { width:28px; height:28px; }
 #start-options button { width:100%; min-height:50px; border-radius:9px; box-shadow:none; font-size:15px; font-weight:700; }
 #start-local { background:#617f4e; color:#fffdf4; border:1px solid #617f4e; }
 #start-friends { background:#fff9e8; border:1px solid #a6b391; }
-#start-room-code { display:block; margin:24px 0 7px; letter-spacing:.12em; font-size:11px; color:#58694b; }
-.start-note { display:block; color:#7b846d; font-size:10px; }
 #start-status { min-height:104px; display:grid; place-items:center; font-size:15px; font-weight:700; }
 #start-error { font-size:12px; line-height:1.6; color:#9d4f3e; }
 #start-reload { margin:8px 0; padding:10px 16px; background:#fff9e8; border-radius:8px; }
@@ -893,3 +891,8 @@ nav button img { width:28px; height:28px; }
 @keyframes start-bob { 50% { transform:translateY(-7px) rotate(5deg); } }
 @media(prefers-reduced-motion:reduce){.start-screen[aria-busy="true"] .start-mark img{animation:none}}
 .player-emote { font-size:24px; padding:3px 8px; }
+
+#room-progress[role="button"] { cursor:pointer; pointer-events:auto; }
+#room-progress:focus-visible { outline:2px solid #617f4e; outline-offset:3px; }
+.room-progress-heading { display:block; font-size:11px; padding:5px 3px; }
+#room-progress.collapsed .room-progress-row { display:none; }

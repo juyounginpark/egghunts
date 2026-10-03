@@ -6,8 +6,8 @@ import {createRoomCode} from './room-code';
 export type FriendPacket={type:string;[key:string]:unknown};
 export class PresenceClient{
  private controllers=new Map<string,RemotePlayerController>();
- private localCode=createRoomCode();
- peers:Peer[]=[];connection:MultiplayerConnection='disconnected';id='self';slot=0;code=this.localCode;hostId='';epoch=0;
+ private localCode='';
+ peers:Peer[]=[];connection:MultiplayerConnection='disconnected';id='self';slot=0;code='';hostId='';epoch=0;
  onPacket:(p:FriendPacket)=>void=()=>{};
  private socket:WebSocket|null=null;private enabled=false;private retryAt=0;private lastSent=0;private lastState='';private current:Peer|null=null;private heartbeat:number|undefined;private lastReceived=0;private mode:'create'|'join'='create';private recover=false;private aiStates=new Map<string,Peer>();
  readonly url=(import.meta.env.VITE_PRESENCE_URL||import.meta.env.VITE_GAME_SERVER_URL||'').replace(/\/game\/?$/,'/presence').replace(/^http/,'ws');
@@ -15,8 +15,8 @@ export class PresenceClient{
  private setPeers(poses:Peer[]){const next=new Map<string,RemotePlayerController>();for(const pose of poses){const controller=this.controllers.get(pose.id)??new RemotePlayerController(pose);controller.update(pose);next.set(pose.id,controller);}this.controllers=next;this.peers=[...next.values()].map(c=>c.pose);}
  get connected(){return this.connection==='connected';}
  get isHost(){return this.connected&&this.hostId===this.id;}
- login(code?:string){if(!this.url){this.notify('친구 서버 주소가 아직 설정되지 않았어요. 혼자 모험은 계속할 수 있어요.');return;}const destination=code?.trim().toUpperCase();if(this.connected&&(!destination||destination===this.code))return;if(this.socket||this.enabled)this.logout();this.recover=false;this.mode=destination?'join':'create';this.code=destination??this.localCode;this.enabled=true;this.retryAt=0;this.connect();}
- logout(){this.enabled=false;clearInterval(this.heartbeat);const socket=this.socket;this.socket=null;socket?.close();this.connection='disconnected';this.setPeers([]);this.id='self';this.slot=0;this.hostId='';this.code=this.localCode;this.onPacket({type:'offline'});}
+ login(code?:string){if(!this.url){this.notify('친구 연결을 사용할 수 없어요. 잠시 후 다시 시도해 주세요.');return;}const destination=code?.trim().toUpperCase();if(this.connected&&(!destination||destination===this.code))return;if(this.socket||this.enabled)this.logout();this.recover=false;this.mode=destination?'join':'create';if(!destination&&!this.localCode)this.localCode=createRoomCode();this.code=destination??this.localCode;this.enabled=true;this.retryAt=0;this.connect();}
+ logout(){this.enabled=false;clearInterval(this.heartbeat);const socket=this.socket;this.socket=null;socket?.close();this.connection='disconnected';this.setPeers([]);this.id='self';this.slot=0;this.hostId='';this.code='';this.onPacket({type:'offline'});}
  send(packet:object){if(this.connected&&this.socket?.readyState===WebSocket.OPEN)this.socket.send(JSON.stringify(packet));}
  private connect(){
   if(!this.enabled||!this.url||this.socket||performance.now()<this.retryAt)return;this.connection=this.connection==='disconnected'?'connecting':'reconnecting';
@@ -31,7 +31,7 @@ export class PresenceClient{
     if(p.type==='ai'){const old=new Map(this.peers.map(v=>[v.id,v]));this.setPeers([...this.peers.filter(v=>v.kind!=='simulated'),...p.players.map((v:Peer)=>({...old.get(v.id),...v}))]);}
     if(p.type==='leave')this.setPeers(this.peers.filter(v=>v.id!==p.id));
     if(p.type==='error'&&p.message==='ROOM_CODE_TAKEN'){this.logout();this.localCode=createRoomCode();this.login();return;}
-    if(p.type==='error'){this.notify(({ROOM_NOT_FOUND:'친구가 친구랑 플레이로 연결했는지, 방 코드가 맞는지 확인해 주세요.',ROOM_FULL:'친구 다섯 명이 이미 함께하고 있어요.',HOST_CHANGED:'AI 호스트를 바꾸고 있어요.'} as Record<string,string>)[p.message]??p.message);if(['ROOM_NOT_FOUND','ROOM_FULL','ROOM_CODE_REQUIRED','SIGN_IN','AUTH_NOT_CONFIGURED'].includes(p.message)){this.logout();return;}}
+    if(p.type==='error'){this.notify(({ROOM_NOT_FOUND:'친구가 초대 코드를 생성했는지, 받은 코드가 맞는지 확인해 주세요.',ROOM_FULL:'친구 다섯 명이 이미 함께하고 있어요.',HOST_CHANGED:'연결을 이어받고 있어요.'} as Record<string,string>)[p.message]??p.message);if(['ROOM_NOT_FOUND','ROOM_FULL','ROOM_CODE_REQUIRED','SIGN_IN','AUTH_NOT_CONFIGURED'].includes(p.message)){this.logout();return;}}
     this.onPacket(p);
    }catch{/* Malformed relay packets cannot replace a save. */}
   };

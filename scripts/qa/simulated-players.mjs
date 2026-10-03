@@ -17,9 +17,9 @@ try{
  const env={actors:()=>[humanEntity.pose(),...(ai?.bots.map(b=>b.entity.pose())??[])],visible:()=>false,collect:()=>false,attack:(actor,id)=>{const victim=ai.bots.find(b=>b.entity.id===id)?.entity;if(!victim)return;attacks.push({actor:actor.id,target:id});victim.game.receiveBat(victim.game.x-actor.game.x,victim.game.z-actor.game.z);}};
  ai=new AISession(()=>human,env,random.next);
  await test('A/B: prepared snapshots have varied actions, locations, ages, timers and actual engines',()=>{
-  assert.equal(ai.bots.length,4);assert.equal(new Set(ai.bots.map(b=>b.action)).size,4);assert.equal(new Set(ai.bots.map(b=>b.nextDecisionAt)).size,4);
-  assert.equal(new Set(ai.bots.map(b=>b.entity.game.x+':'+b.entity.game.z)).size,4);
-  assert.equal(new Set(ai.bots.map(b=>b.entity.game.save.playerName)).size,4);
+  assert.equal(ai.bots.length,2);assert.equal(new Set(ai.bots.map(b=>b.action)).size,2);assert.equal(new Set(ai.bots.map(b=>b.nextDecisionAt)).size,2);
+  assert.equal(new Set(ai.bots.map(b=>b.entity.game.x+':'+b.entity.game.z)).size,2);
+  assert.equal(new Set(ai.bots.map(b=>b.entity.game.save.playerName)).size,2);
   assert.ok(ai.bots.every(b=>now-b.joinedAt>=30000&&now-b.joinedAt<=900000&&b.entity.game instanceof GameState&&b.entity.game.petCount>0));
   assert.ok(ai.bots.some(b=>b.entity.game.carried));assert.ok(ai.bots.some(b=>b.entity.game.training));
  });
@@ -39,7 +39,7 @@ try{
  await test('D: initial grace and asynchronous turnover preserve offscreen entrances',()=>{
   const initial=ai.bots.map(b=>b.entity.id);ai.bots[0].plannedLeaveAt=now-10000;ai.bots[0].nextDecisionAt=now;ai.bots[0].entity.game.x=ai.bots[0].entity.game.z=0;
   now+=50;ai.update(.05);assert.ok(!ai.bots.some(b=>b.entity.id===initial[0]));
-  for(let i=0;i<1000;i++){now+=50;ai.update(.05);}assert.ok(ai.bots.some(b=>!initial.includes(b.entity.id)));assert.ok(ai.bots.length<=4);
+  for(let i=0;i<1000;i++){now+=50;ai.update(.05);}assert.ok(ai.bots.some(b=>!initial.includes(b.entity.id)));assert.ok(ai.bots.length<=3);
  });
  await test('F: handover preserves identity, seed, carried egg, position, health and decision phase',()=>{
   const snapshot=ai.checkpoint(),copy=new AISession(()=>human,env,random.next);copy.restore(snapshot);
@@ -56,7 +56,7 @@ try{
   const open=async packet=>{const ws=new WebSocket(url);sockets.push(ws);await once(ws,'open');const welcome=wait(ws,p=>p.type==='welcome');ws.send(JSON.stringify({type:'join',...packet,state:{name:'ham123',x:0,z:-12}}));return {ws,welcome:await welcome};};
   try{
    const a=await open({mode:'create'});assert.match(a.welcome.code,/^[A-HJ-NP-Z2-9]{5}$/);
-   const snapshots=ai.checkpoint().slice(0,4).map((s,i)=>({...s,slot:i+1})),poses=snapshots.map(s=>({id:s.id,slot:s.slot,x:s.x,z:s.z,rotation:s.rotation,health:s.health,carried:s.carryingEgg?.type??null}));
+   const snapshots=Array.from({length:4},(_,i)=>({...ai.checkpoint()[0],id:`sim-fixture-${i}`,slot:i+1})),poses=snapshots.map(s=>({id:s.id,slot:s.slot,x:s.x,z:s.z,rotation:s.rotation,health:s.health,carried:s.carryingEgg?.type??null}));
    a.ws.send(JSON.stringify({type:'ai',epoch:a.welcome.epoch,players:poses,snapshots}));await new Promise(r=>setTimeout(r,50));
    const evict=wait(a.ws,p=>p.type==='evict'),b=await open({mode:'join',code:a.welcome.code});await evict;assert.equal(b.welcome.players.length,4);
    const room=server.rooms.get(a.welcome.code);assert.equal(room.humanCount,2);assert.equal(room.bots.size,3);assert.equal(room.players.size,5);
@@ -70,12 +70,12 @@ try{
  await test('simultaneous friend joins reserve distinct slots and displace AI within a few seconds',async()=>{
   const host=presenceServer();host.http.listen(0,'127.0.0.1');await once(host.http,'listening');const sockets=[],url=`ws://127.0.0.1:${host.http.address().port}/presence`;
   const open=async packet=>{const ws=new WebSocket(url);sockets.push(ws);await once(ws,'open');return await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('join timeout')),5000);ws.on('message',raw=>{const p=JSON.parse(raw);if(p.type==='welcome'){clearTimeout(timer);resolve({ws,...p});}if(p.type==='error'){clearTimeout(timer);reject(Error(p.message));}});ws.send(JSON.stringify({type:'join',...packet,state:{x:0,z:0}}));});};
-  try{const a=await open({mode:'create'});const snapshots=ai.checkpoint().slice(0,4).map((s,i)=>({...s,slot:i+1}));a.ws.send(JSON.stringify({type:'ai',epoch:a.epoch,players:snapshots.map(s=>({id:s.id,slot:s.slot,x:s.x,z:s.z})),snapshots}));await new Promise(r=>setTimeout(r,30));const started=Date.now(),friends=await Promise.all(Array.from({length:4},()=>open({mode:'join',code:a.code})));assert.ok(Date.now()-started<4000);assert.equal(new Set([a.slot,...friends.map(p=>p.slot)]).size,5);assert.equal(host.rooms.get(a.code).players.size,5);assert.equal(host.rooms.get(a.code).bots.size,0);
+  try{const a=await open({mode:'create'});const snapshots=Array.from({length:4},(_,i)=>({...ai.checkpoint()[0],id:`sim-fixture-${i}`,slot:i+1}));a.ws.send(JSON.stringify({type:'ai',epoch:a.epoch,players:snapshots.map(s=>({id:s.id,slot:s.slot,x:s.x,z:s.z})),snapshots}));await new Promise(r=>setTimeout(r,30));const started=Date.now(),friends=await Promise.all(Array.from({length:4},()=>open({mode:'join',code:a.code})));assert.ok(Date.now()-started<4000);assert.equal(new Set([a.slot,...friends.map(p=>p.slot)]).size,5);assert.equal(host.rooms.get(a.code).players.size,5);assert.equal(host.rooms.get(a.code).bots.size,0);
   }finally{for(const ws of sockets)ws.terminate();await host.close();}
  });
  await test('AI starts in the selected dimension instead of placing all actors at the base',()=>{
   const save=freshSave(now);const ref=new GameState(save,()=>now,random.next);ref.progression.stage=7;ref.save.highestStage=7;
-  const world=new AISession(()=>ref,env,random.next);assert.ok(world.bots.every(b=>b.entity.game.progression.stage===7));assert.equal(new Set(world.initialSnapshots.map(b=>b.x+':'+b.z)).size,4);
+  const world=new AISession(()=>ref,env,random.next);assert.ok(world.bots.every(b=>b.entity.game.progression.stage===7));assert.equal(new Set(world.initialSnapshots.map(b=>b.x+':'+b.z)).size,2);
  });
 
  await test('local combat transfers a real weighted egg once through the shared player controller',async()=>{

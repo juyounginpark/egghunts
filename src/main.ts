@@ -72,7 +72,7 @@ buildVersion.setAttribute('aria-label',`게임 버전 ${import.meta.env.VITE_BUI
 $("shell").append(buildVersion);
 // Keep HUD rows in normal flow inside two anchored stacks.
 const topHud = document.createElement("div");
-let hudCompact=false,wasExploring=false;
+let hudCompact=true,wasExploring=false;
 function setHudCompact(compact:boolean){
   hudCompact=compact;
   topHud.classList.toggle('compact',compact);
@@ -86,6 +86,7 @@ const hudObserver=new ResizeObserver(()=>{
 });
 hudObserver.observe($('main-hud'));hudObserver.observe(topHud);
 topHud.id = "top-hud";
+setHudCompact(true);
 $("shell").append(topHud);
 for (const el of [
   document.querySelector("header")!,
@@ -158,8 +159,7 @@ const cloud=new CloudSave(()=>game.snapshot(),state=>{
   if(world)next.mapCollision.setFarm(world.mapColliders);
   game=next;lastRevision=-1;if(ready){renderEggQueue();updateHud();}
 },toast);
-let friendEntryError='';
-const multiplayer=new PresenceClient(()=>cloud.token(),message=>{if(!$('loading').hidden)friendEntryError=message;if(message==='SEAT_OCCUPIED')game.seat=null;toast(message);});
+const multiplayer=new PresenceClient(()=>cloud.token(),message=>{if(message==='SEAT_OCCUPIED')game.seat=null;toast(message);});
 let session:LocalSession;
 const friendsUI=new FriendsUI($('shell'),multiplayer,id=>session?.emote(id),()=>{input?.reset();if(game)game.velocity={x:0,z:0};});
 
@@ -941,18 +941,9 @@ async function boot(){
       selectedPlayerName=choice.name;
       await (prepared??=start(state));
       game.save.playerName=choice.name;
-      if(choice.mode==='friends'){
-        if(!multiplayer.url)throw Error('친구 서버에 연결할 수 없어요. 기본 모험은 서버접속으로 시작할 수 있어요.');
-        friendEntryError='';multiplayer.update(session.human.entity.pose());multiplayer.login();
-        const deadline=performance.now()+15000;
-        while(!multiplayer.connected){
-          if(multiplayer.connection==='disconnected'||performance.now()>=deadline){multiplayer.logout();throw Error(friendEntryError||'친구 서버에 연결하지 못했어요. 다시 시도하거나 기본 모험을 시작해 주세요.');}
-          await new Promise(resolve=>setTimeout(resolve,100));
-        }
-      }
       await cloud.persist();
       lastNow=performance.now();
-    },multiplayer.code,choice=>{if(choice.mode==='friends')friendsUI.open();});
+    },choice=>{if(choice.mode==='friends')friendsUI.open();});
   } catch (err) {
     $("loading").innerHTML =
       '<h1>모험을 준비하지 못했어요</h1><p id="startup-error"></p><button class="primary" onclick="location.reload()">다시 시도</button>';

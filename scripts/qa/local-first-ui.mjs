@@ -37,9 +37,14 @@ try{
  await test('normal startup with EC2 unavailable: movement, egg, hatch, boss and upgrade',async()=>{
   await a.waitForFunction(()=>window.__localFirst.world.renderer.info.render.frame>0);
   assert.equal(await a.evaluate(()=>window.__localFirst.multiplayer.connection),'disconnected');
-  assert.match(await a.evaluate(()=>window.__localFirst.multiplayer.code),/^[A-HJ-NP-Z2-9]{6}$/);
-  assert.equal(await a.evaluate(()=>window.__localFirst.session.ai.bots.length),4);
-  assert.equal(await a.evaluate(()=>new Set(window.__localFirst.session.ai.initialSnapshots.map(b=>b.action)).size),4);
+  assert.equal(await a.evaluate(()=>window.__localFirst.multiplayer.code),'');
+  assert.equal(await a.locator('#room-code, #start-room-code, #friend-leave').count(),0);
+  assert.equal(await a.locator('#top-hud').evaluate(el=>el.classList.contains('compact')),true);
+  assert.equal(await a.locator('#room-progress').getAttribute('aria-expanded'),'false');
+  await a.locator('#room-progress').click();assert.equal(await a.locator('#room-progress').getAttribute('aria-expanded'),'true');
+  await a.locator('#room-progress').click();
+  assert.equal(await a.evaluate(()=>window.__localFirst.session.ai.bots.length),2);
+  assert.equal(await a.evaluate(()=>new Set(window.__localFirst.session.ai.initialSnapshots.map(b=>b.action)).size),2);
   const result=await a.evaluate(()=>{const {game:g}=window.__localFirst;g.save.tutorial=6;g.move(0,-1,.1);const moved=g.z<0;
    const egg=g.world[0];g.x=egg.x;g.z=egg.z;g.pickup(egg);const pickup=!!g.carried;g.applyBossContact(egg.guardian??0,1,0);const boss=g.hp===1&&!g.carried;
    g.x=g.z=0;g.save.eggs=[{...egg,id:'ui-local-hatch',hp:0}];g.save.selected='ui-local-hatch';const hatch=g.claimHatch('ui-local-hatch');g.result=null;g.save.dust=100000;const upgrade=g.upgrade('speed');return {moved,pickup,boss,hatch,upgrade,room:g.roomManaged};});
@@ -54,17 +59,19 @@ try{
  const bCtx=await context(),b=await bCtx.newPage();await ready(b);
  await test('explicit friend codes, human priority, interpolated positions and six shared emotes',async()=>{
   relay=presenceServer({origins:['http://127.0.0.1:4351']});relay.http.listen(port,'127.0.0.1');await once(relay.http,'listening');
-  const localCode=await a.evaluate(()=>window.__localFirst.multiplayer.code);
   await a.locator('#settings').click();await a.locator('#friends-open').click();assert.equal(await a.locator('#friend-create').count(),0);
+  assert.equal(await a.evaluate(()=>window.__localFirst.multiplayer.connected),false);
+  const bounds=await a.locator('#friend-code').boundingBox(),row=await a.locator('.friend-code-row').boundingBox();assert.ok(bounds.width>80&&bounds.height>=44&&bounds.x+bounds.width<=row.x+row.width);
+  await a.locator('#invite-generate').click();
   try{await a.waitForFunction(()=>window.__localFirst.multiplayer.connected,{},{timeout:15000});}catch(e){console.log(await a.evaluate(()=>({connection:window.__localFirst.multiplayer.connection,url:window.__localFirst.multiplayer.url,toast:document.querySelector('#toast').textContent})));throw e;}
   const code=await a.evaluate(()=>window.__localFirst.multiplayer.code);
-  assert.equal(code,localCode);
+  assert.match(code,/^[A-HJ-NP-Z2-9]{6}$/);
   await a.locator('#friend-close').click();
   await b.locator('#settings').click();await b.locator('#friends-open').click();assert.equal(await b.locator('#friend-code').getAttribute('placeholder'),null);await b.locator('#friend-code').fill(code);await b.locator('#friend-join').click();
   await b.waitForFunction(()=>window.__localFirst.multiplayer.connected&&window.__localFirst.multiplayer.peers.some(p=>p.kind==='human'));
   await b.locator('#friend-close').click();
-  await a.waitForFunction(()=>window.__localFirst.session.peers.length===4);
-  assert.equal(await b.evaluate(()=>window.__localFirst.session.peers.length),4);
+  await a.waitForFunction(()=>window.__localFirst.session.peers.length===3);
+  assert.equal(await b.evaluate(()=>window.__localFirst.session.peers.length),3);
   await a.evaluate(()=>{window.__localFirst.game.x=3;window.__localFirst.game.z=-8;});
   await b.waitForFunction(()=>window.__localFirst.multiplayer.peers.some(p=>p.x===3&&p.z===-8));
   try{await b.waitForFunction(()=>[...window.__localFirst.world.peers.values()].some(p=>Math.abs(p.position.x-3)<.2&&Math.abs(p.position.z+8)<.2),{},{timeout:15000});}catch(e){console.log(await b.evaluate(()=>({peers:window.__localFirst.multiplayer.peers,rendered:[...window.__localFirst.world.peers].map(([id,p])=>({id,x:p.position.x,z:p.position.z,motion:p.userData.motion}))})));throw e;}
