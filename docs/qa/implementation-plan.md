@@ -1,5 +1,14 @@
 # 구현 작업 계획
 
+## 로컬 퍼스트 전환 (2026-10-03)
+
+- Phase 1~3: main.ts에서 authoritative 온라인 분기를 제거하고 기존 GameState를 로컬 엔진으로 사용한다. PresenceClient 상태는 별도로 유지한다. 이동·보스·일반 알·부화·재화·오프라인 생산은 서버 요청 없이 처리한다.
+- Phase 4: 로컬 저장, 신뢰 시계, 기존 profile 변환, Supabase Auth·CAS 저장과 충돌 선택 UI를 추가한다. SQL 마이그레이션을 작성했으며 운영 DB에는 아직 적용하지 않았다.
+- Phase 5~6: 기본 서버 번들을 메모리 기반 presence-host/presence-room으로 변경하고 기존 서버는 --legacy와 별도 실행 명령으로 보존한다. 500ms 변경분 전송·혼자 있을 때 위치 생략·기존 보간 재사용·재접속을 적용한다.
+- Phase 7: SecureEconomy 검증 인터페이스와 공유 이벤트 API를 분리한다. 실제 결제·광고·쿠폰·랭킹 검증 provider는 미연결 상태이며 로컬 보상으로 대체하지 않는다.
+- 사용자 요청에 따라 빌드·TypeScript·lint와 새 핵심/브라우저 시나리오를 실행한다. 실제 Supabase SQL·토스 실기기·100~300명 부하와 Oracle VM 배포는 별도로 확인한다.
+- 기존 QA의 실패와 변경 전 HEAD 재현 근거, 전체 파일 목록과 안전한 전환 순서는 [결과 문서](../local-first-architecture.md)에 기록한다.
+
 ## 펫 능력 2개와 별도 탑승 효과 (2026-10-03)
 
 - src/data.ts에서 모든 펫을 별가루 생산 + 두드리기/자동 부화 중 하나로 배정하고 speedMultiplier를 1로 고정한다. 부화 속성은 (species + stage) % 2로 교대로 배정한다.

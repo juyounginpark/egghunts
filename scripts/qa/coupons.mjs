@@ -4,7 +4,7 @@ import {createServer} from 'vite';
 const vite=await createServer({server:{middlewareMode:true}});
 try{
  const {GameState,freshSave,parseSave}=await vite.ssrLoadModule('/src/game.ts');
- const {EGGS,BALANCE,eggMaxHp}=await vite.ssrLoadModule('/src/data.ts');
+ const {EGGS,eggMaxHp}=await vite.ssrLoadModule('/src/data.ts');
  const {runRoom}=await vite.ssrLoadModule('/server/room-engine.ts');
  const {exportRuntime}=await vite.ssrLoadModule('/src/online-state.ts');
  const now=Date.UTC(2026,8,27,1);

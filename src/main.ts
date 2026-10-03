@@ -3,9 +3,7 @@ import {activeStatusEffects} from './status-effects-ui';
 import {SpeedVignette} from './speed-vignette';
 import {petDetailPanel,petLoadoutPanel,compactWeight} from './pet-inventory-ui';
 import {hatchProgress,hatchInfo} from './hatch-ui';
-import {eggMaxHp,COUPON_ERRORS} from './data';
 import {advanceTutorial,tutorialHint,TUTORIAL_STEPS,thumbGuideHTML} from './tutorial';
-import {IdlePresence} from './idle-presence';
 import {formatTrainingGain} from './format';
 import {weeklyDay} from './weekly';
 import {exactMoney,compare} from './money';
@@ -15,6 +13,7 @@ import {petReveal} from './pet-reveal';
 import {GameAudio,type GameSound} from './audio';
 import {
   BALANCE,
+  LOCAL_FIRST,
   PROGRESSION,
   EGGS,
   RARITIES,
@@ -25,13 +24,14 @@ import {
 import { ROUTE, FINAL_GUARDIAN, recommendedRouteSpeed } from "./stage-data";
 import {legacyTheme} from './stage-order';
 import {eggName,eggIcon} from "./stage-eggs";
-import { GameState, freshSave } from "./game";
+import { GameState } from "./game";
 import { Platform } from "./platform";
 import { Input } from "./input";
 import { World } from "./world";
 import { panelHTML } from "./panels";
-import { Multiplayer } from "./multiplayer";
-import {OnlineGame} from './online';
+import {PresenceClient} from './presence-client';
+import {CloudSave} from './cloud-save';
+import {SecureEconomy} from './secure-economy';
 import {RoomHUD} from './room-hud';
 import {RoomChat} from './room-chat';
 import { VirtualAd } from "./virtual-ad";
@@ -148,21 +148,15 @@ const expeditionBannerStages=new Set<number>();
 let lastAnnouncement = 0,
   announcementTimer = 0;
 const platform = new Platform();
-const multiplayer=new Multiplayer(time=>{if(!qa)platform.offset=time-Date.now();},toast);
-const online=new OnlineGame(toast,time=>platform.syncServerTime(time));
-let inactive=false;
-online.onInactive=()=>{
-  if(inactive)return;inactive=true;paused=true;input?.reset();
-  game.training=false;game.velocity={x:0,z:0};void multiplayer.logout();
-  audio.music('silent');
-  const dialog=document.createElement('dialog');dialog.className='inactive-dialog';
-  dialog.innerHTML='<h2>미접속 상태예요</h2><p>오랫동안 같은 자리에 있어<br>서버 연결과 방 참여가 종료됐어요.</p><button class="primary">방 퇴장</button>';
-  dialog.addEventListener('cancel',event=>event.preventDefault());
-  dialog.querySelector('button')!.onclick=()=>location.reload();
-  $('shell').append(dialog);dialog.showModal();
-};
-async function remote(kind:string,value?:unknown){try{return await online.send(kind,value);}catch(err){toast(err instanceof Error?err.message:'연결을 확인해 주세요.');return false;}}
-const roomChat=new RoomChat($('controls'),()=>{input?.reset();online.halt();},text=>remote('chat',text));
+const secure=new SecureEconomy();
+const cloud=new CloudSave(()=>game.snapshot(),state=>{
+  const next=new GameState(state,()=>platform.now());
+  next.offline(cloud.clock.offlineSeconds(state.productionAt??state.lastSavedAt,BALANCE.offlineCap));
+  if(world)next.mapCollision.setFarm(world.mapColliders);
+  game=next;lastRevision=-1;if(ready){renderEggQueue();updateHud();}
+},toast);
+const multiplayer=new PresenceClient(()=>cloud.token(),message=>{if(message==='SEAT_OCCUPIED')game.seat=null;toast(message);});
+const roomChat=new RoomChat($('controls'),()=>{input?.reset();game.velocity={x:0,z:0};},text=>multiplayer.sendChat(text));
 
 const qa = import.meta.env.DEV && new URLSearchParams(location.search).get("qa") === "true" ? await import("./qa") : null;
 if (qa) { platform.now = qa.now; platform.key="alkong:v1:qa"; }
@@ -180,12 +174,6 @@ let game: GameState,
   hiddenAt = 0,
   toastTimer = 0;
 const audio=new GameAudio();
-const localPresence=new IdlePresence();
-window.setInterval(()=>{
-  if(ready&&!online.active&&!inactive&&localPresence.update(game.x,game.z,game.training,Date.now())){
-    game.training=false;void save();online.onInactive();
-  }
-},1000);
 function applyAudioSettings(){audio.setVolume(game.save.settings.volume??1,!game.save.settings.sound);}
 let heardHazards=new Set<number>();
 let lastHeartbeat=0;
@@ -211,13 +199,12 @@ function toast(text: string,scope='') {
 }
 async function save() {
   try {
-    if(online.active){localStorage.setItem('alkong:preferences',JSON.stringify(game.save.settings));return;}
-    await platform.save(game.snapshot());
+    await cloud.persist();
   } catch {
     toast("저장하지 못했어요. 저장 공간과 연결을 확인해 주세요.");
   }
 }
-let claiming=false;
+const claiming=false;
 let pickupPreparation:{id:string;remaining:number;duration:number;x:number;z:number;hitAt:number;ready?:boolean}|null=null;
 function warnAboutBoss(){
   const egg=game.near;if(!egg||game.save.bossWarningSeen||!$("modal").hidden)return false;
@@ -232,15 +219,15 @@ async function action(preparedId?:string) {
   const preparedEgg=preparedId?game.world.find(e=>e.id===preparedId):undefined;
   if(preparedId&&(!preparedEgg||!game.canReachEgg(preparedEgg)||game.carried))return;
   if (tab === "hatchery") {
-    if(online.active){void remote('tap');return;}
     if (game.tap()) {
       $("action").dataset.hit = String(game.lastTap);
     }
   } else if (tab === "explore") {
-    if(game.nearShortcut){if(online.active)await remote('shortcut');else game.openShortcut();updateHud();return;}
+    if(game.nearShortcut){game.openShortcut();updateHud();return;}
     if(!game.carried&&game.nearSeat>=0){
-      input.reset();online.halt();
-      if(online.active)await remote('sit');else{game.toggleSeat();void save();}
+      if(multiplayer.peers.some(peer=>peer.seat===game.nearSeat)){toast('다른 탐험가가 앉아 있어요.');return;}
+      input.reset();game.velocity={x:0,z:0};
+      game.toggleSeat();void save();
       updateHud();return;
     }
     const targetEgg=preparedEgg??game.near;
@@ -250,27 +237,14 @@ async function action(preparedId?:string) {
       if(duration>0&&preparedId!==egg.id){
         if(pickupPreparation)return;
         input.reset();
-        online.halt();
-        const preparation={id:egg.id,remaining:duration,duration,x:game.x,z:game.z,hitAt:game.hitAt,ready:!online.active};
+        game.velocity={x:0,z:0};
+        const preparation={id:egg.id,remaining:duration,duration,x:game.x,z:game.z,hitAt:game.hitAt,ready:true};
         pickupPreparation=preparation;feedback('tap');
-        if(online.active){const ok=await remote('prepare',egg.id);if(pickupPreparation===preparation){if(ok)preparation.ready=true;else pickupPreparation=null;}}
         return;
       }
     }
     if(!game.carried&&!game.near&&game.nearStore){setTab('store');return;}
-    if(online.active){
-      if(game.carried)await remote('drop');
-      else if(targetEgg){input.reset();online.halt();await remote('pickup',targetEgg.id);}
-      else if(game.nearGym)await remote('train');
-      else if(!game.knockback.remaining&&world.swingBat(game.now())){feedback('swing');void remote('attack');}
-      return;
-    }
-    if(!game.carried&&targetEgg?.id.startsWith('net-')){
-      claiming=true;
-      try{const egg=await multiplayer.claim(targetEgg.id);game.pickup({...egg,hp:eggMaxHp(egg),hpVersion:5,distance:Math.abs(egg.z),expires:game.nightAt});}
-      catch(err){toast(String(err));}finally{claiming=false;}return;
-    }
-    if(!game.carried&&!game.near&&!game.nearGym){if(world.swingBat(game.now())){feedback('swing');}return;}
+    if(!game.carried&&!game.near&&!game.nearGym){if(world.swingBat(game.now())){multiplayer.swing(game.now());feedback('swing');}return;}
     if(preparedEgg)game.pickup(preparedEgg);else game.interact();
     feedback(null);
     platform.track("egg_interact", { carrying: game.carried ? 1 : 0 });
@@ -328,8 +302,8 @@ function updateHud() {
   weeklyEntry.classList.toggle('reward-ready',game.canClaimWeekly);
   weeklyEntry.setAttribute('aria-label',game.canClaimWeekly?'\uC774\uBCA4\uD2B8 - \uBC1B\uC744 \uBCF4\uC0C1 \uC788\uC74C':'\uC774\uBCA4\uD2B8');
   if((tab==='weekly'||tab==='events')&&renderedWeeklyDay!==weeklyDay(game.now())){renderedWeeklyDay=weeklyDay(game.now());renderPanel();}
-  eggNotices.observeWorld(game,online.latest?.serverTime??game.now());
-  eggNotices.update(online.latest?.eggNotices??[],online.latest?.serverTime??game.now());
+  eggNotices.observeWorld(game,game.now());
+  eggNotices.update([],game.now());
   const outside=tab==='explore'&&!game.isAtBase;
   if(game.isAtBase)expeditionBannerStages.clear();
   if(outside!==wasExploring){setHudCompact(outside);wasExploring=outside;}
@@ -573,24 +547,6 @@ function renderEggQueue() {
     ? `<div class="stat-badges"><span>${game.save.active.length}/${BALANCE.maxCompanions}</span>${game.activePetLots.map(l=>`<span>${MONGLES[l.species].name} ${weightText(l.weightG)}</span>`).join('')}</div>`
     : "알을 부화하면 펫이 함께 걸어요";
 }
-async function onlineButton(b:HTMLElement):Promise<boolean>{
-  const bindings:Record<string,string>={claimStage:'claimStage',claimPet:'claimPet',claimRegion:'claimRegion',trail:'trail',upgrade:'upgrade',egg:'select',companion:'equip',unequip:'unequip'};
-  for(const [attribute,kind] of Object.entries(bindings))if(b.dataset[attribute]!==undefined){
-    const raw=b.dataset[attribute]!;await remote(kind,['upgrade','select'].includes(kind)?raw:Number(raw));return true;
-  }
-  if(b.id==='train-now'){
-    if(tab==='explore'&&!paused&&$("modal").hidden&&!game.returnReward){input.reset();online.halt();await remote('train');}return true;
-  }
-  if(b.id==='confirm-sale'&&pendingSale){await remote(pendingSale.kind==='egg'?'sellEgg':'sellPet',pendingSale.kind==='egg'?pendingSale.id:Number(pendingSale.id));pendingSale=null;paused=false;$("modal").hidden=true;return true;}
-  if(b.id==='boss-warning-ok'){await remote('warning');paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();return true;}
-  if(b.id==='respawn-base'){await remote('return');paused=false;$("modal").hidden=true;$("modal").dataset.kind='';return true;}
-  if(b.id==='result-ok'){await remote('result');lastResult=null;$("modal").hidden=true;setTab('hatchery');return true;}
-  if(b.id==='reward-ok'){await remote('reward');$("return-reward").hidden=true;return true;}
-  const commands:Record<string,string>={'tutorial-skip':'tutorial','claim-stage-all':'claimStageCollection','claim-all':'claimCollection'};
-  if(commands[b.id]){await remote(commands[b.id]);return true;}
-  if(b.id==='multiplayer-connect'){toast(`농장 ${game.farmSlot+1} · ${online.latest?.count??1}/5`);return true;}
-  return false;
-}
 function showSettings() {
   if (!ready || game.result !== null || virtualAd || game.death) return;
   paused = true;
@@ -599,13 +555,14 @@ function showSettings() {
   $("modal").hidden = false;
   $("modal").innerHTML =
     `<div class="settings-card"><span class="tag">TAKE A LITTLE BREAK</span><h1>잠깐 쉬어가요</h1><p>진행 상황은 자동으로 저장돼요. 탐험 제한시간은 없어요.</p><fieldset class="sound-settings"><legend>사운드</legend><label for="volume-setting">전체 볼륨 <output id="volume-value" for="volume-setting">${Math.round((game.save.settings.volume??1)*100)}%</output></label><input id="volume-setting" type="range" min="0" max="100" step="1" value="${Math.round((game.save.settings.volume??1)*100)}" aria-label="배경음악과 효과음 볼륨"/><label for="sound-setting">음소거 <input id="sound-setting" type="checkbox" ${!game.save.settings.sound ? "checked" : ""}></label><small>배경음악 · 효과음에 함께 적용</small></fieldset><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
-  $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label><p>${platform.native?"토스 게임 로그인 연결됨":"브라우저 · 기기 저장"}</p><button id="multiplayer-connect" class="secondary">${multiplayer.connected?"친구 연결 종료":"게스트 로그인 · 친구와 걷기"}</button><small>같은 서버에서 이동 공유 · 알과 수집은 각자 진행</small>`);
-  if(online.active){
-    const accountLink=document.createElement('section');$('resume').before(accountLink);online.mountEmailLink(accountLink);
-    $("resume").insertAdjacentHTML('afterend','<button id="leave-room" class="secondary">방 나가기</button>');
-    const button=$("multiplayer-connect");button.textContent=`${online.latest?.count??1} / 5`;
-    const note=button.nextElementSibling;if(note)note.textContent='';
-    const label=button.previousElementSibling;if(label)label.textContent='Supabase';
+  $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label><p>${platform.native?"토스 게임 로그인 연결됨":"브라우저 · 기기 저장"}</p><button id="multiplayer-connect" class="secondary">${multiplayer.connected?"친구 연결 종료":"친구와 걷기"}</button><small>같은 서버에서 이동 공유 · 알과 수집은 각자 진행</small>`);
+  const accountLink=document.createElement('section');$('resume').before(accountLink);cloud.mountAccount(accountLink);
+  $('resume').insertAdjacentHTML('beforebegin','<label>탐험가 이름<input id="player-name-setting" maxlength="10" autocomplete="nickname"></label>');
+  ($('player-name-setting') as HTMLInputElement).value=game.save.playerName??'탐험가';
+  if(platform.native){
+    const restore=document.createElement('button');restore.className='secondary';restore.textContent='이전 토스 저장 복원';
+    restore.onclick=()=>void(async()=>{try{const legacy=await platform.load();if(!platform.hasLegacyBackup())throw Error('이전 저장을 아직 읽지 못했어요. 잠시 후 다시 시도해 주세요.');await cloud.restoreLegacy(legacy);toast('이전 저장을 복원했어요. 현재 기록은 기기에 백업했어요.');}catch(e){toast(String(e));}})();
+    $('resume').before(restore);
   }
   ($("appearance-setting") as HTMLSelectElement).value=String(game.save.appearance??0);
   $('resume').insertAdjacentHTML('beforebegin','<fieldset class="sound-settings email-link"><legend>쿠폰 코드</legend><form id="coupon-form"><label>쿠폰 코드<input id="coupon-code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="64" required placeholder="코드를 입력하세요"></label><button type="submit" class="secondary">쿠폰 사용</button></form><p id="coupon-status" role="status">쿠폰은 계정당 1회 사용할 수 있어요. 농장에서 입력해 주세요.</p></fieldset>');
@@ -615,8 +572,7 @@ function showSettings() {
     const code=couponInput.value.trim().toUpperCase();if(!code)return;
     couponRedeeming=true;const field=couponForm.closest('fieldset')!;field.disabled=true;couponStatus.textContent='쿠폰 확인 중…';
     try{
-      if(online.active){const ok=await remote('coupon',code);const error=online.latest?.errors.find(value=>value in COUPON_ERRORS||value==='RETURN_TO_BASE');couponStatus.textContent=ok?game.message:error==='RETURN_TO_BASE'?'농장으로 돌아와서 사용해 주세요.':COUPON_ERRORS[error??'']??'쿠폰을 사용할 수 없어요. 연결을 확인하고 다시 시도해 주세요.';if(ok)couponInput.value='';}
-      else {const error=game.redeemCoupon(code);couponStatus.textContent=error?(error==='RETURN_TO_BASE'?'농장으로 돌아와서 사용해 주세요.':COUPON_ERRORS[error]??'쿠폰을 사용할 수 없어요.'):game.message;if(!error){couponInput.value='';void save();}}
+      try{await secure.execute('coupon',code);}catch(err){couponStatus.textContent=err instanceof Error?err.message:'쿠폰 검증을 확인해 주세요.';}
     }finally{couponRedeeming=false;field.disabled=false;}
   };
   $('resume').insertAdjacentHTML('beforebegin',`<fieldset class="sound-settings"><legend>펫 표시</legend><label>내 펫 숨김 <input id="hide-own-pets" type="checkbox" ${game.save.settings.hideOwnPets?'checked':''}></label><label>다른 사람 펫 숨김 <input id="hide-other-pets" type="checkbox" ${game.save.settings.hideOtherPets?'checked':''}></label><small>동행·농장 펫과 이름표만 숨겨요. 능력과 수익은 유지돼요.</small></fieldset>`);
@@ -654,35 +610,33 @@ document.addEventListener("click", async (e) => {
   if(b.id==='pet-sort-reverse'){$('panel').dataset.petReverse=String($('panel').dataset.petReverse!=='true');renderPanel();return;}
   if(b.id==='open-egg-bag'){
     if(tab!=='hatchery'||hatchRevealing||game.result!==null||game.returnReward)return;
-    input.reset();online.halt();renderEggQueue();if(!eggBag.open)eggBag.showModal();b.setAttribute('aria-expanded','true');return;
+    input.reset();game.velocity={x:0,z:0};renderEggQueue();if(!eggBag.open)eggBag.showModal();b.setAttribute('aria-expanded','true');return;
   }
   if(b.id==='close-egg-bag'){eggBag.close();return;}
   if(b.dataset.egg&&eggBag.open){
     if(!game.save.eggs.some(egg=>egg.id===b.dataset.egg))return;
     b.setAttribute('disabled','');
     try{
-      if(online.active){if(!await remote('select',b.dataset.egg))return;}
-      else{game.save.selected=b.dataset.egg;game.revision++;void save();}
+      game.save.selected=b.dataset.egg;game.revision++;void save();
       eggBag.close();renderEggQueue();updateHud();
     }finally{b.removeAttribute('disabled');}return;
   }
   if(b.id==='cycle-clock'){setHudCompact(!hudCompact);return;}
-  if(b.id==='leave-room'){paused=true;input.reset();b.setAttribute('disabled','');await online.leave();location.reload();return;}
   if(b.id==='hatch-touch'||b.id==='claim-hatch'){
     if(tab!=='hatchery'||paused||hatchRevealing||!$('modal').hidden||game.returnReward||game.death)return;
     if(game.selected&&game.selected.hp>0){
       const point={egg:game.selected.id,x:e.clientX,y:e.clientY,at:performance.now()};
       world.shakeHatch();
       if(e.detail>0){hatchTouches.push(point);if(hatchTouches.length>20)hatchTouches.shift();}
-      const ok=online.active?await remote('tap'):game.tap();
+      const ok=game.tap();
       if(!ok){const index=hatchTouches.indexOf(point);if(index>=0)hatchTouches.splice(index,1);}
       return;
     }
     const egg=game.selected;
     if(hatchClaiming||!egg||egg.hp!==0||game.result!==null)return;
     if(game.petStorageFull){toast(`펫 보관함 ${game.petCount}/${game.petCapacity} · 레벨을 올리거나 펫을 판매해 주세요.`);return;}
-    hatchClaiming=true;hatchEgg={...egg};input.reset();online.halt();
-    try{const ok=online.active?await remote('claimHatch',egg.id):game.claimHatch(egg.id);if(!ok)hatchEgg=undefined;else{void save();updateHud();}}
+    hatchClaiming=true;hatchEgg={...egg};input.reset();game.velocity={x:0,z:0};
+    try{const ok=game.claimHatch(egg.id);if(!ok)hatchEgg=undefined;else{void save();updateHud();}}
     catch(err){hatchEgg=undefined;toast(err instanceof Error?err.message:'친구를 만나지 못했어요. 다시 눌러 주세요.');}
     finally{hatchClaiming=false;}
     return;
@@ -694,12 +648,12 @@ document.addEventListener("click", async (e) => {
     $('panel').querySelector<HTMLElement>('.pet-list-tools')?.scrollIntoView({block:'nearest'});return;
   }
   if(b.id==='open-pet-loadout'){
-    input.reset();online.halt();paused=true;petDetailKey=null;
+    input.reset();game.velocity={x:0,z:0};paused=true;petDetailKey=null;
     $('modal').dataset.petDialog='true';$('modal').innerHTML=petLoadoutPanel(game);$('modal').hidden=false;$('close-pet-detail').focus();return;
   }
   if(b.dataset.petLot!==undefined){
     const html=petDetailPanel(game,b.dataset.petLot);if(!html)return;
-    input.reset();online.halt();paused=true;petDetailKey=b.dataset.petLot;
+    input.reset();game.velocity={x:0,z:0};paused=true;petDetailKey=b.dataset.petLot;
     $('modal').dataset.petDialog='true';$('modal').innerHTML=html;$('modal').hidden=false;$('close-pet-detail').focus();return;
   }
   if(b.id==='close-pet-detail'){closePetDetail();return;}
@@ -716,16 +670,15 @@ document.addEventListener("click", async (e) => {
       }
     }
     if(action==='equip'&&slot===undefined&&game.save.active.length>=BALANCE.maxCompanions){
-      input.reset();online.halt();paused=true;
+      input.reset();game.velocity={x:0,z:0};paused=true;
       petDetailKey=key;$('modal').dataset.petDialog='true';
       $('modal').innerHTML=`<section class="death-card"><h1>교체할 동행 펫</h1><div class="pet-slots">${game.activePetLots.map((l,i)=>`<button class="pet-slot" data-lot-action="equip" data-lot="${key}" data-slot="${i}"><img src="${petIcon(l.species)}" alt=""/><b>${MONGLES[l.species].name}</b><small>${weightText(l.weightG)}</small></button>`).join('')}</div><button id="cancel-pet-replacement">취소</button></section>`;
       $('modal').hidden=false;$('modal').querySelector<HTMLElement>('button')?.focus();return;
     }
     b.setAttribute('disabled','');
     try{
-      const command=action==='equip'?'equipPetLot':action==='mount'?'equipMountLot':action==='sell'?'sellPetLot':'unequipPetSlot';
       if(petDetailKey)$('modal').querySelectorAll('button').forEach(button=>button.disabled=true);
-      const ok=online.active?await remote(command,{key,slot}):action==='equip'?game.equipPetLot(key,slot):action==='mount'?game.equipMountLot(key):action==='sell'?game.sellPetLot(key):game.unequipPetSlot(slot??-1);
+      const ok=action==='equip'?game.equipPetLot(key,slot):action==='mount'?game.equipMountLot(key):action==='sell'?game.sellPetLot(key):game.unequipPetSlot(slot??-1);
       if(ok){void save();delete $('panel').dataset.petPick;toast(action==='sell'?'판매했어요.':action==='unequip'?'동행을 해제했어요.':action==='mount'?'함께 달릴 준비가 됐어요!':'함께 다닐 준비가 됐어요!');}
       else toast('상태가 바뀌었어요. 펫을 다시 선택해 주세요.');
     }finally{b.removeAttribute('disabled');renderPanel();closePetDetail();updateHud();}
@@ -737,7 +690,7 @@ document.addEventListener("click", async (e) => {
     try{
       const remove=b.id==='unequip-mount'||!!b.dataset.removeMount,id=Number(b.dataset.mount);
       if(petDetailKey)$('modal').querySelectorAll('button').forEach(button=>button.disabled=true);
-      const ok=online.active?await remote(remove?'unequipMount':'equipMount',remove?undefined:id):remove?game.unequipMount():game.equipMount(id);
+      const ok=remove?game.unequipMount():game.equipMount(id);
       if(ok){toast(remove?'탑승 해제':`${MONGLES[id].name} 탑승 · 이동속도 +${num(game.mountBonus(id)*100,1)}%`);void save();}
     }finally{b.removeAttribute('disabled');renderPanel();if(petDetailKey)closePetDetail();updateHud();}
     return;
@@ -745,7 +698,7 @@ document.addEventListener("click", async (e) => {
   if(b.dataset.companion!==undefined&&game.save.active.length>=BALANCE.maxCompanions){
     const id=Number(b.dataset.companion);
     if(!MONGLES[id]||game.equippedCount(id)>=(game.save.mongles[id]??0)||game.death)return;
-    pendingPetReplacement={id,active:[...game.save.active]};input.reset();online.halt();paused=true;
+    pendingPetReplacement={id,active:[...game.save.active]};input.reset();game.velocity={x:0,z:0};paused=true;
     $('modal').innerHTML=`<section class="death-card" role="dialog" aria-modal="true" aria-labelledby="replace-pet-title"><h1 id="replace-pet-title">교체할 펫 선택</h1><p>${MONGLES[id].name}와 교체할 현재 착용 펫을 골라 주세요.</p><div class="pet-slots">${game.save.active.map((old,slot)=>`<button class="pet-slot" data-replace-pet="${slot}" ${old===id?'disabled':''}><img src="${petIcon(old)}" alt=""/><b>${MONGLES[old].name}</b><small>${RARITIES[MONGLES[old].tier].name} · ${slot+1}번 자리</small><span>${old===id?'같은 펫':'교체'}</span></button>`).join('')}</div><button id="cancel-pet-replacement" class="secondary">취소</button></section>`;
     $('modal').hidden=false;return;
   }
@@ -758,7 +711,7 @@ document.addEventListener("click", async (e) => {
     if(expected===undefined)return;
     petReplacing=true;$('modal').querySelectorAll('button').forEach(button=>button.disabled=true);
     try{
-      const ok=online.active?await remote('replacePet',{id,slot,expected}):game.replacePet(id,slot,expected);
+      const ok=game.replacePet(id,slot,expected);
       if(ok){toast(`${MONGLES[id].name} 착용 완료`);void save();}
       else toast('교체하지 못했어요. 현재 착용 펫을 확인하고 다시 선택해 주세요.');
     }finally{petReplacing=false;pendingPetReplacement=null;paused=false;$('modal').hidden=true;renderPanel();}
@@ -766,15 +719,13 @@ document.addEventListener("click", async (e) => {
   }
   if(b.id==='weekly-claim'){
     if(weeklyClaiming)return;
-    weeklyClaiming=true;b.setAttribute('disabled','');b.textContent='받는 중…';input.reset();online.halt();
+    weeklyClaiming=true;b.setAttribute('disabled','');b.textContent='받는 중…';input.reset();game.velocity={x:0,z:0};
     try{
-      const ok=online.active?await remote('weekly'):game.claimWeekly();
-      if(ok){toast(game.message);void save();}else if(!online.active)toast(game.message);
+      try{await secure.execute('event',{kind:'weekly',day:weeklyDay(game.now())});}catch(err){toast(err instanceof Error?err.message:'이벤트 검증을 확인해 주세요.');}
     }finally{weeklyClaiming=false;delete $('panel').dataset.html;renderPanel();}
     return;
   }
   if(b.dataset.petView!==undefined){input.reset();const {openPetViewer}=await import('./pet-viewer');await openPetViewer(Number(b.dataset.petView));return;}
-  if(online.active&&await onlineButton(b))return;
   if(b.id==='boss-warning-ok'){
     game.save.bossWarningSeen=true;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';input.reset();void save();return;
   }
@@ -784,8 +735,7 @@ document.addEventListener("click", async (e) => {
     return;
   }
   if((b.id==='virtual-ad'||b.id==='revive-ad')&&!virtualAd){
-    if(online.active&&!await remote(b.id==='revive-ad'?'reviveAd':'adStart'))return;
-    if(!online.active&&b.id==='revive-ad'&&!game.beginReviveAd()){game.tick(0);updateHud();return;}
+    if(b.id==='revive-ad'&&!game.beginReviveAd()){game.tick(0);updateHud();return;}
     virtualAdPurpose=b.id==='revive-ad'?'revive':'currency';
     virtualAd=new VirtualAd(()=>game.now());paused=true;input.reset();
     $("modal").hidden=false;
@@ -794,8 +744,7 @@ document.addEventListener("click", async (e) => {
   }
   if(b.id==='virtual-ad-close'&&virtualAd){
     const reward=virtualAd.claim();if(!reward)return;
-    if(online.active){await remote(virtualAdPurpose==='revive'?'revive':'adClaim');}
-    else if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'깊은 밤이 되어 농장으로 돌아왔어요.');}else{const reward=game.claimAdReward();playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
+    if(virtualAdPurpose==='revive'){const revived=game.revive(true);toast(revived?'다시 일어났어요! HP가 전부 회복됐어요.':'깊은 밤이 되어 농장으로 돌아왔어요.');}else{const reward=game.claimAdReward();playSound('upgrade');toast(`별가루 ${num(reward)}개를 받았어요!`);}
     game.revision++;virtualAd=null;paused=false;$("modal").hidden=true;$("modal").dataset.kind='';renderPanel();void save();
     platform.track('virtual_ad_reward',{purpose:virtualAdPurpose,amount:virtualAdPurpose==='currency'?reward:0});return;
   }
@@ -856,12 +805,13 @@ document.addEventListener("click", async (e) => {
     setTab("hatchery");
   }
   if (b.id === "resume") {
+    game.save.playerName=($('player-name-setting') as HTMLInputElement).value.normalize('NFC').replace(/[^\p{L}]/gu,'').slice(0,10)||'탐험가';
     game.save.appearance=Number(($("appearance-setting") as HTMLSelectElement).value);
-    if(online.active)await remote("appearance",game.save.appearance);
     try {
       await platform.syncTime();
-      if (hiddenAt && !online.active) {
-        game.offline((platform.now() - hiddenAt) / 1000);
+      if(platform.trustedTime)cloud.clock.sync(Date.now()+platform.offset);
+      if (hiddenAt) {
+        game.offline(cloud.clock.offlineSeconds(hiddenAt,BALANCE.offlineCap));
         hiddenAt = 0;
       }
     } catch (err) {
@@ -886,7 +836,7 @@ document.addEventListener("click", async (e) => {
   if (b.id === "leaderboard") {
     try {
       await save();
-      await platform.leaderboard(game.save.best);
+      await secure.submitLeaderboardScore('distance',game.save.best);
     } catch (err) {
       toast((err as Error).message);
     }
@@ -922,16 +872,16 @@ document.addEventListener("visibilitychange", async () => {
   if (document.hidden) {
     pickupPreparation=null;
     hiddenAt = platform.now();
-    if(game.training){if(online.active)void remote('train');else game.toggleTraining();}
+    if(game.training)game.toggleTraining();
     input.reset();
-    void save();
+    cloud.flush();void save();
     void audio?.suspend();
   } else {
     syncing = true;
     try {
       await platform.syncTime();
-      if (hiddenAt && !online.active) {
-        game.offline((platform.now() - hiddenAt) / 1000);
+      if (hiddenAt) {
+        game.offline(cloud.clock.offlineSeconds(hiddenAt,BALANCE.offlineCap));
         hiddenAt = 0;
       }
       lastNow = performance.now();
@@ -943,29 +893,25 @@ document.addEventListener("visibilitychange", async () => {
   }
 });
 window.addEventListener("pagehide", () => {
-  if (ready) void save();
+  if (ready) {cloud.flush();void save();}
 });
 async function start() {
   try {
-    await platform.login();
-    if(!qa)await online.enter($("loading"));
-    // Online ownership comes from the server. A stale device-only save must not
-    // block authentication or prevent loading that account's intact server save.
-    const state = online.latest?.runtime.save??await platform.load();
-    game = new GameState(online.active?freshSave(platform.now()):state, () => platform.now(), qa?.random);
-    if(online.active){
-      online.attach(game);
-      try{const preferences=JSON.parse(localStorage.getItem("alkong:preferences")??"null");if(preferences&&typeof preferences.sound==="boolean")game.save.settings={...game.save.settings,...preferences};}catch{/* Ignore invalid device preferences. */}
-    }
+    // Native account/safe-area failures do not prevent local gameplay.
+    if(!qa)void platform.login().then(()=>{if(platform.trustedTime)cloud.clock.sync(Date.now()+platform.offset);}).catch(err=>{platform.warning=String(err);});
+    const state=await cloud.load(()=>platform.load(),!!qa);
+    if(!qa&&platform.trustedTime)cloud.clock.sync(Date.now()+platform.offset);
+    if(!qa)platform.now=()=>cloud.clock.now();
+    game=new GameState(state,()=>platform.now(),qa?.random);
     applyAudioSettings();
-    multiplayer.onHit=()=>{}; // Cooperative movement only; no PvP damage in expedition mode.
-    if(!online.active)game.offline((platform.now() - state.lastSavedAt) / 1000);
+    game.offline(qa?Math.max(0,(platform.now()-state.lastSavedAt)/1000):cloud.clock.offlineSeconds(state.productionAt??state.lastSavedAt,BALANCE.offlineCap));
     world = new World($("world"));
     await world.init();
-    game.mapCollision.setFarm(world.mapColliders);if(!online.active)game.push(0,0);
+    game.mapCollision.setFarm(world.mapColliders);game.push(0,0);
     world.quality(state.settings.quality === "low");
     input = new Input($("joystick"), $("knob"), action, showSettings);
     ready = true;
+    if(!qa){void cloud.initialize();void multiplayer.login();}
     qa?.attach(game, world, input, setTab, save);
     if (platform.warning) toast(platform.warning);
     renderEggQueue();
@@ -983,13 +929,12 @@ async function start() {
 }
 function frame(now: number) {
   requestAnimationFrame(frame);
-  if (document.hidden || syncing || inactive) return;
+  if (document.hidden || syncing) return;
   const dt = Math.min(0.05, (now - lastNow) / 1000);
   lastNow = now;
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}
   if (!qa && !paused && !roomChat.active && !game.death && !game.returnReward && $("modal").hidden && tab === "explore") {
     const v = input.vector();
-    if(online.active)online.update(v.x*.832+v.y*.555,-v.x*.555+v.y*.832,input.slow);
     game.move(v.x * 0.832 + v.y * 0.555, -v.x * 0.555 + v.y * 0.832, dt,input.slow);
     world.player.userData.moving = Math.hypot(v.x, v.y) > 0.1;
     if (world.player.userData.moving)
@@ -997,14 +942,12 @@ function frame(now: number) {
         v.x * 0.832 + v.y * 0.555,
         -v.x * 0.555 + v.y * 0.832,
       );
-  } else {world.player.userData.moving = false;if(online.active)online.update(0,0);}
-  if(online.active)online.reconcile(dt);
-  if(online.active&&!qa)online.tickPersonalBosses(dt);
-  if (!qa && !online.active) game.tick(paused ? 0 : dt);
+  } else {world.player.userData.moving = false;game.velocity={x:0,z:0};}
+  if (!qa) game.tick(paused ? 0 : dt);
   if(pickupPreparation){
     const p=pickupPreparation;
     const target=game.world.find(e=>e.id===p.id);
-    if(paused||tab!=='explore'||game.death||game.carried||game.returnReward||!target||!game.canReachEgg(target)||game.hitAt!==p.hitAt||(online.active?Math.hypot(input.vector().x,input.vector().y)>.1:Math.hypot(game.x-p.x,game.z-p.z)>.05)){pickupPreparation=null;}
+    if(paused||tab!=='explore'||game.death||game.carried||game.returnReward||!target||!game.canReachEgg(target)||game.hitAt!==p.hitAt||Math.hypot(game.x-p.x,game.z-p.z)>.05){pickupPreparation=null;}
     else if(!qa&&p.ready!==false){p.remaining=Math.max(0,p.remaining-dt);if(p.remaining===0){pickupPreparation=null;void action(p.id);}}
   }
   if(!paused&&tab==='explore'&&!game.isAtBase&&!game.carried&&!game.death&&!game.returnReward&&game.near&&!game.save.bossWarningSeen)warnAboutBoss();
@@ -1036,8 +979,9 @@ function frame(now: number) {
       game.save.tutorial=nextStep;platform.track("tutorial_step_complete",{step:nextStep});
     }
     platform.track(event.name, event.params);
-    if(event.name === "expedition_success" && platform.native)
-      void save().then(() => platform.submitScore(game.save.best)).catch(err => toast(String(err)));
+    if(['egg_saved','mongle_obtained','virtual_ad_reward'].includes(event.name)||(event.name==='region_enter'&&event.params?.first===1)){
+      void save();if(!qa)void cloud.sync();
+    }
   }
   if (world.assetError) { toast(world.assetError); world.assetError = ""; }
   updateHud();
@@ -1064,18 +1008,14 @@ function frame(now: number) {
   alertEl.hidden=!(presenting&&!!waking);
   if(presenting&&chaser&&gap<12&&now-lastBossStep>850-pressure*250){playSound('boss-step',chaser.stageId);lastBossStep=now;}
   audio.music(game.save.settings.sound&&presenting?(pursued?'chase':'calm'):'silent',pressure);
-  void multiplayer.update(game.x,game.z,world.player.rotation.y,game.save.appearance??0,game.carried?.type??null,game.progression.stage,game.training);
-  if(multiplayer.connected){
-    game.world=game.world.filter(e=>!e.id.startsWith('net-')||multiplayer.drops.some(d=>d.id===e.id));
-    for(const egg of multiplayer.drops)if(egg.id!==game.carried?.id&&!game.world.some(e=>e.id===egg.id))game.world.push({...egg,hp:eggMaxHp(egg),hpVersion:5,distance:Math.abs(egg.z),expires:game.nightAt});
-  }
-  world.updatePeers(online.active?online.peers:multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
-  world.networkOffset=online.active?online.visualOffset:{x:0,z:0};
+  if(!qa)multiplayer.update(game,world.player.rotation.y);
+  world.updatePeers(multiplayer.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
+  world.networkOffset={x:0,z:0};
   world.render(game, tab, qa ? 1 : dt, qa ? qa.visualTime : now / 1000);
-  roomChat.show(online.active&&tab==='explore'&&!paused&&!game.death&&!game.returnReward&&$('modal').hidden);
-  roomChat.update(online.active,game.save.playerName??'탐험가',online.latest?.chat,online.peers);
-  roomHUD.update(game,online.active?online.peers:multiplayer.peers,world,online.latest?.isGuest??false,tab==='explore'&&!game.returnReward,online.latest?.chat);
-  if (now - savedAt > 5000) {
+  roomChat.show(multiplayer.connected&&tab==='explore'&&!paused&&!game.death&&!game.returnReward&&$('modal').hidden);
+  roomChat.update(multiplayer.connected,game.save.playerName??'탐험가',multiplayer.chat,multiplayer.peers);
+  roomHUD.update(game,multiplayer.peers,world,cloud.guest,tab==='explore'&&!game.returnReward,multiplayer.chat);
+  if (now - savedAt > LOCAL_FIRST.localSaveMs) {
     savedAt = now;
     void save();
   }

@@ -286,6 +286,12 @@ export function parseSave(raw: string | null, now: number): Save {
   return s;
 }
 export class GameState {
+  // Views keep the established Save schema intact while separating domain ownership.
+  get inventory(){return {eggs:this.save.eggs,selected:this.save.selected};}
+  get pets(){return {lots:this.save.petLots,active:this.save.activeLots,mount:this.save.mountLot};}
+  get economy(){return {dust:this.save.dust,upgrades:this.save.upgrades};}
+  get settings(){return this.save.settings;}
+  get runtime(){return {x:this.x,z:this.z,carried:this.carried,death:this.death};}
   roomSnapshotTime=0;
   hazards=new HazardManager();
   slowRemaining=0;slowMultiplier=1;hitAt=-Infinity;levelUpAt=-Infinity;
@@ -1305,10 +1311,14 @@ export class GameState {
     this.emit('weekly_reward',{day:index+1});this.revision++;return true;
   }
   offline(seconds: number) {
-    if(!Number.isFinite(seconds)||seconds<=0)return 0;
-    const elapsed=Math.min(BALANCE.offlineCap,Math.max(0,(this.now()-(this.save.productionAt??this.save.lastSavedAt))/1000)),before=this.save.dust;
-    this.settleProduction(this.now());
-    if(!this.roomManaged)this.damage(elapsed*this.dps);
+    if(!Number.isFinite(seconds))return 0;
+    const elapsed=Math.min(Math.max(0,seconds),BALANCE.offlineCap,Math.max(0,(this.now()-(this.save.productionAt??this.save.lastSavedAt))/1000)),before=this.save.dust;
+    if(this.roomManaged)this.settleProduction(this.now());
+    else {
+      this.tickPetIncome(offlineSeconds(elapsed));this.damage(elapsed*this.dps);
+      // Consume the entire absence, including rejected time, so reload cannot replay it.
+      this.save.productionAt=this.now();this.save.productionActiveAt=this.now();
+    }
     this.offlineReward=subtract(this.save.dust,before);
     return this.offlineReward;
   }

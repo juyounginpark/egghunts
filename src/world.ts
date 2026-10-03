@@ -174,7 +174,7 @@ export class World {
         // At speed 40 even a normal 350ms interpolation gap exceeds 12 units.
         const teleported=previous&&Math.hypot(peer.x-previous.x,peer.z-previous.z)>Math.max(12,BALANCE.maxMovementSpeed*interval*1.5+2);
         if(teleported||down!==avatar.userData.down)motion.reset();
-        motion.sample(peer.x,peer.z,(peer.at??frameAt)/1000,frameAt/1000);avatar.userData.down=down;
+        motion.sample(peer.x,peer.z,(peer.at??frameAt)/1000,frameAt/1000,peer.velocity?Math.hypot(peer.velocity.x,peer.velocity.z)>.01:true);avatar.userData.down=down;
         if(peer.attackAt!==avatar.userData.attackAt&&now-peer.attackAt<1500)avatar.userData.swingReceived=frameAt;
         if(peer.hitAt!==avatar.userData.hitAt&&now<peer.downUntil)avatar.userData.hitReceived=frameAt;
         avatar.userData.snapshot=peer;avatar.userData.receivedAt=frameAt;avatar.userData.attackAt=peer.attackAt;avatar.userData.hitAt=peer.hitAt;

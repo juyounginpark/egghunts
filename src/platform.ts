@@ -23,6 +23,7 @@ export interface PlatformAdapter {
 export class Platform implements PlatformAdapter {
   native = false;
   offset = 0;
+  trustedTime=0;
   private remoteClockReady=false;
   private lastClock=0;
   syncServerTime(time:number){
@@ -33,6 +34,7 @@ export class Platform implements PlatformAdapter {
   }
   key = "alkong:v1:local";
   private writes = Promise.resolve();
+  private identity = Promise.resolve();
   private unsubscribe?: () => void;
   warning = "";
   constructor(private sdk = {Device, Environment, Game, SafeArea, Storage, Analytics, getUserKeyForGame}) {
@@ -41,6 +43,7 @@ export class Platform implements PlatformAdapter {
     } catch {
       /* Browser development fallback. */
     }
+    if(this.native){try{this.key=localStorage.getItem('alkong:legacy-toss-key')??this.key;}catch{/* Storage may be unavailable. */}}
   }
   now() {
     this.lastClock=Math.max(this.lastClock,Date.now()+this.offset);return this.lastClock;
@@ -49,20 +52,24 @@ export class Platform implements PlatformAdapter {
     if (this.native) {
       if (!this.sdk.Environment.getServerTime.isSupported())
         throw new Error("토스 앱을 최신 버전으로 업데이트해 주세요.");
-      const time = await this.sdk.Environment.getServerTime();
+      let timer:ReturnType<typeof setTimeout>|undefined;
+      let time:number|undefined;
+      try{time=await Promise.race([this.sdk.Environment.getServerTime(),new Promise<never>((_resolve,reject)=>{timer=setTimeout(()=>reject(Error('시간 연결 대기 중 · 기기 기록으로 계속해요.')),2000);})]);}finally{clearTimeout(timer);}
       if (typeof time !== "number" || !Number.isFinite(time))
         throw new Error("서버 시간을 확인하지 못했어요. 다시 시도해 주세요.");
       this.offset = time - Date.now();
+      this.trustedTime=time;
     }
   }
   async login() {
     if (!this.native) return;
-    const user = await this.sdk.getUserKeyForGame();
-    if (!user || typeof user === "string" || !("hash" in user))
-      throw new Error(
-        "게임 사용자 연결에 실패했어요. 토스에서 다시 열어주세요.",
-      );
-    this.key = `alkong:v1:${user.hash}`;
+    this.identity=(async()=>{
+      const user = await this.sdk.getUserKeyForGame();
+      if (!user || typeof user === "string" || !("hash" in user))throw new Error("게임 사용자 연결에 실패했어요. 토스에서 다시 열어주세요.");
+      this.key = `alkong:v1:${user.hash}`;
+      try{localStorage.setItem('alkong:legacy-toss-key',this.key);}catch{/* SDK save remains intact. */}
+    })();
+    await this.identity;
     try { await this.syncTime(); } catch (err) { this.warning = (err as Error).message; }
     const apply = (v: ReturnType<typeof SafeArea.get>) => {
       for (const side of ["top", "bottom", "left", "right"] as const)
@@ -77,11 +84,16 @@ export class Platform implements PlatformAdapter {
     } catch { this.warning ||= "Safe Area unavailable; CSS insets retained."; }
   }
   async load() {
-    const raw = this.native
-      ? await this.sdk.Storage.getItem(this.key)
-      : localStorage.getItem(this.key);
+    let raw=localStorage.getItem(this.key);
+    if(this.native){
+      let timer:ReturnType<typeof setTimeout>|undefined;
+      try{
+        raw=await Promise.race([(async()=>{await this.identity;const value=await this.sdk.Storage.getItem(this.key);if(value)localStorage.setItem(this.key,value);return value;})(),new Promise<null>(resolve=>{timer=setTimeout(()=>resolve(null),2000);})])??localStorage.getItem(this.key);
+      }catch{raw=localStorage.getItem(this.key);}finally{clearTimeout(timer);}
+    }
     return parseSave(raw ?? null, this.now());
   }
+  hasLegacyBackup(){return Boolean(localStorage.getItem(this.key));}
   save(data: Save) {
     const value = JSON.stringify(data);
     this.writes = this.writes

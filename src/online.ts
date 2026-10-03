@@ -1,3 +1,5 @@
+// Deprecated: authoritative connection retained only for legacy migration/QA.
+// Local-first main.ts uses CloudSave and PresenceClient instead.
 import type {SupabaseClient} from '@supabase/supabase-js';
 import type {GameState,WorldEgg,Boss} from './game';
 import {restoreRuntime,type RuntimeState} from './online-state';

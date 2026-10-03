@@ -1,3 +1,5 @@
+// Deprecated authoritative host; retained for migration, rollback and legacy QA.
+// The default EC2 bundle uses presence-host.mjs without SQLite.
 import {createServer} from 'node:http';
 import {randomUUID,createHash} from 'node:crypto';
 import {WebSocketServer,WebSocket} from 'ws';

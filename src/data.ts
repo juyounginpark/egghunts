@@ -11,6 +11,7 @@ export const PET_DEFENSE:Partial<Record<number,DefensePassive>>={};
 export const COUPONS:Record<string,{tier:number}>={FREEPET:{tier:2}};
 export const COUPON_ERRORS:Record<string,string>={COUPON_INVALID:'올바른 쿠폰 코드를 입력해 주세요.',COUPON_USED:'이미 사용한 쿠폰이에요.',COUPON_INVENTORY_FULL:'알 보관함 한 칸을 비운 뒤 다시 사용해 주세요.',COUPON_HATCH_PENDING:'부화 결과를 확인한 뒤 사용해 주세요.'};
 export const DAMAGE_OVER_TIME={ticks:6,interval:.15,directionSeconds:1.4};
+export const LOCAL_FIRST={localSaveMs:10000,cloudSaveMs:45000,offlineCapSeconds:12*3600};
 export const BALANCE = {
   startingDust:1000,
   petsPerLevel:10,
@@ -119,7 +120,7 @@ export const BALANCE = {
   returnRadius: 2.2,
   eggsPerLevel:15,
   nightEggWeightMultiplier:1.3,
-  offlineCap: 172800,
+  offlineCap: LOCAL_FIRST.offlineCapSeconds,
   tapInterval: 80,
 };
 // Economy goals are upgrades/readiness, never paid stage admission or date locks.
