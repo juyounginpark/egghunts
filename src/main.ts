@@ -134,6 +134,7 @@ $("shell").insertAdjacentHTML('beforeend','<div id="boss-pressure" aria-hidden="
 $("world").insertAdjacentHTML('beforeend','<div id="night-sky" aria-hidden="true"><span>☾</span></div>');
 const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
+ tutorial.hidden = true;
 tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">×</button>`;
 topHud.append(tutorial);
 const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='events';hudPlace.append(weeklyEntry);
@@ -189,6 +190,8 @@ let game: GameState,
   hiddenAt = 0,
   toastTimer = 0;
 let selectedPlayerName:string|undefined;
+// Reveal the active world before showing first-session guidance.
+let tutorialRevealAt=qa?0:Infinity;
 const audio=new GameAudio();
 function applyAudioSettings(){audio.setVolume(game.save.settings.volume??1,!game.save.settings.sound);}
 let heardHazards=new Set<number>();
@@ -309,7 +312,8 @@ function renderPanel() {
   }
 }
 function updateHud() {
-  $('thumb-guide').hidden=(game.save.tutorial??0)!==0||tab!=='explore'||!game.isAtBase||game.isNight||!!game.death||!!game.returnReward||game.result!==null||paused||!$('modal').hidden;
+  const tutorialVisible=performance.now()>=tutorialRevealAt&&(!!qa||$('loading').hidden)&&!friendsUI.active;
+  $('thumb-guide').hidden=!tutorialVisible||(game.save.tutorial??0)!==0||tab!=='explore'||!game.isAtBase||game.isNight||!!game.death||!!game.returnReward||game.result!==null||paused||!$('modal').hidden;
   speedVignette.update(game,tab==='explore');
   const effects=activeStatusEffects(game);
   statusEffects.hidden=tab!=='explore'||effects.length===0;
@@ -401,7 +405,7 @@ function updateHud() {
   $('speed-help').textContent=game.training?((game.save.trainingProgress??0)>=1?'운동 성장 최대':`+${formatTrainingGain(game.effectiveTrainingRate)}/초`):weatherTags.length?`${weatherTags.join('·')} ${weatherChange>=0?'+':'−'}${Math.abs(weatherChange)}%`:'';
   $('speed-help').hidden=!game.training&&!weatherTags.length;
   $('speed-help').title=`이동 속도 ${weatherChange>=0?'+':''}${weatherChange}%`;
-  const hint=tutorialHint(game,tab);
+  const hint=tutorialVisible?tutorialHint(game,tab):null;
   $("tutorial").hidden=!hint || !!game.returnReward || game.result!==null || !!game.death || paused;
   $("tutorial-title").textContent=hint?`${hint.step}/${TUTORIAL_STEPS} · ${hint.title}`:'';
   $("tutorial-copy").textContent=hint?.copy??'';
@@ -973,7 +977,11 @@ async function boot(){
       await (prepared??=start(game.save));
       await cloud.persist();
       lastNow=performance.now();
-    },choice=>{if(choice.mode==='friends')friendsUI.open();});
+    },choice=>{
+      // StartScreen has finished fading out; peers are already prepared and rendered.
+      tutorialRevealAt=performance.now()+700;
+      if(choice.mode==='friends')friendsUI.open();
+    });
   } catch (err) {
     $("loading").innerHTML =
       '<h1>모험을 준비하지 못했어요</h1><p id="startup-error"></p><button class="primary" onclick="location.reload()">다시 시도</button>';
