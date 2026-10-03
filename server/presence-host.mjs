@@ -1,19 +1,23 @@
 import {createServer} from 'node:http';
 import {randomUUID,randomInt} from 'node:crypto';
+import {isIP} from 'node:net';
 import {WebSocketServer,WebSocket} from 'ws';
 import {PresenceRoom} from './presence-room.mjs';
+import {transferBudget} from './transfer-budget.mjs';
 const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-export function presenceServer({origins=[],maxRooms=Number(process.env.PRESENCE_MAX_ROOMS??60),authenticate=async()=>({id:randomUUID(),guest:true}),path='/presence'}={}){
+export function presenceServer({origins=[],maxRooms=Number(process.env.PRESENCE_MAX_ROOMS??60),authenticate=async()=>({id:randomUUID(),guest:true}),path='/presence',budget=null}={}){
  const rooms=new Map(),members=new Map(),audiences=new Map(),allowed=new Set(origins),connections=new Map(),joiningIds=new Set();
  const http=createServer((req,res)=>{const health=['/healthz','/readyz'].includes(req.url);res.writeHead(health?200:404,{'Content-Type':'application/json'});res.end(JSON.stringify(health?{service:'egghunts-friends',ready:true,rooms:rooms.size,players:members.size}:{error:'NOT_FOUND'}));});
  http.maxConnections=maxRooms*10;http.headersTimeout=10000;
  const wss=new WebSocketServer({noServer:true,maxPayload:32768,perMessageDeflate:false});
- const send=(ws,message)=>{if(ws.readyState!==WebSocket.OPEN)return;if(ws.bufferedAmount>65536){ws.close(1008,'Slow receiver');return;}ws.send(JSON.stringify(message));};
+ const send=(ws,message)=>{if(ws.readyState!==WebSocket.OPEN)return;if(ws.bufferedAmount>65536){ws.close(1008,'Slow receiver');return;}const text=JSON.stringify(message);if(budget&&!budget.charge(Buffer.byteLength(text))){ws.close(1008,'Monthly payload limit');return;}ws.send(text);};
  const broadcast=(room,message,except)=>{for(const ws of audiences.get(room)??[])if(ws!==except)send(ws,message);};
  const hostState=room=>({type:'host',hostId:room.hostId,epoch:room.epoch,snapshots:room.handover(),players:[...room.bots.values()]});
  http.on('upgrade',(req,socket,head)=>{
-  const ip=req.socket.remoteAddress;
-  if(req.url!==path||(allowed.size&&!allowed.has(req.headers.origin))||(connections.get(ip)??0)>=20||wss.clients.size>=maxRooms*10){socket.destroy();return;}
+  const remote=req.socket.remoteAddress,forwarded=req.headers['x-real-ip'];
+  // nginx overwrites X-Real-IP; only a loopback proxy may provide it.
+  const ip=['127.0.0.1','::1','::ffff:127.0.0.1'].includes(remote)&&typeof forwarded==='string'&&isIP(forwarded)?forwarded:remote;
+  if(req.url!==path||(allowed.size&&!allowed.has(req.headers.origin))||(connections.get(ip)??0)>=20||wss.clients.size>=maxRooms*10||(budget&&!budget.available())){socket.destroy();return;}
   wss.handleUpgrade(req,socket,head,ws=>{connections.set(ip,(connections.get(ip)??0)+1);wss.emit('connection',ws,ip);});
  });
  wss.on('connection',(ws,ip)=>{
@@ -59,11 +63,12 @@ export function presenceServer({origins=[],maxRooms=Number(process.env.PRESENCE_
   ws.on('close',()=>{clearTimeout(timeout);clearInterval(lease);connections.set(ip,Math.max(0,(connections.get(ip)??1)-1));if(!connections.get(ip))connections.delete(ip);const m=members.get(ws);if(m){const oldHost=m.room.hostId;m.room.leave(m.id);members.delete(ws);audiences.get(m.room)?.delete(ws);broadcast(m.room,{type:'leave',id:m.id});if(m.room.hostId!==oldHost)broadcast(m.room,hostState(m.room));if(!m.room.humanCount){rooms.delete(m.room.id);audiences.delete(m.room);}}});
  });
  const watchdog=setInterval(()=>{for(const room of rooms.values()){for(const [id,drop]of room.drops)if(drop.expiresAt<Date.now())room.drops.delete(id);if(room.hostId&&room.humanCount>1&&Date.now()-room.aiSeen>8000){room.players.get(room.hostId).available=false;if(room.assignHost())broadcast(room,hostState(room));}}},1000);
- return {http,wss,rooms,close:async()=>{clearInterval(watchdog);for(const ws of wss.clients)ws.terminate();await new Promise(resolve=>http.close(resolve));}};
+ return {http,wss,rooms,close:async()=>{clearInterval(watchdog);for(const ws of wss.clients)ws.terminate();await new Promise(resolve=>http.close(resolve));budget?.close();}};
 }
 export async function startPresenceHost(){
  const supabase=process.env.SUPABASE_URL,key=process.env.SUPABASE_PUBLISHABLE_KEY;
- const host=presenceServer({origins:(process.env.GAME_ALLOWED_ORIGINS??'').split(',').filter(Boolean),authenticate:async token=>{
+ const budget=process.env.PRESENCE_TRANSFER_PATH?transferBudget(process.env.PRESENCE_TRANSFER_PATH,Number(process.env.GAME_MONTHLY_PAYLOAD_MB??10240)*1024*1024):null;
+ const host=presenceServer({budget,origins:(process.env.GAME_ALLOWED_ORIGINS??'').split(',').filter(Boolean),authenticate:async token=>{
   if(!token)return {id:randomUUID(),guest:true};if(!supabase||!key)throw Error('AUTH_NOT_CONFIGURED');
   const response=await fetch(`${supabase}/auth/v1/user`,{headers:{apikey:key,Authorization:`Bearer ${token}`},signal:AbortSignal.timeout(3000)});
   if(!response.ok)throw Error('SIGN_IN');const user=await response.json();return {id:user.id,guest:user.is_anonymous===true};
