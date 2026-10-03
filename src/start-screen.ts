@@ -1,4 +1,4 @@
-import {ExplorerEditor} from './explorer-editor';
+import {ExplorerEditor,EXPLORER_STEPS} from './explorer-editor';
 import {explorerNameError,normalizeAppearance,randomExplorerName,type ExplorerAppearance} from './explorer-appearance';
 import type {Save} from './game';
 export type StartChoice={name:string;mode:'local'|'friends';appearance:ExplorerAppearance;createdAt:number};
@@ -17,6 +17,7 @@ export class StartScreen{
   this.root.innerHTML='<div class="start-card"><h1 id="start-title">알콩원정대</h1><div id="entry-content"></div><p id="start-status" role="status" hidden></p><p id="start-error" role="alert" hidden></p></div>';
   this.root.classList.toggle('creating-explorer',['customize','preview'].includes(this.step));
   const content=this.root.querySelector<HTMLElement>('#entry-content')!;
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)content.animate([{opacity:0},{opacity:1}],{duration:180,easing:'ease-out'});
   const button=(id:string,fn:()=>void)=>content.querySelector<HTMLButtonElement>('#'+id)!.onclick=fn;
   if(this.step==='account'){
    content.innerHTML='<p class="start-subtitle">탐험을 떠나기 전,<br>당신의 탐험가를 준비해볼까요?</p><div id="start-options"><button id="guest-start" class="primary">게스트 시작</button><button id="entry-login" class="secondary">로그인</button></div><small class="explorer-note">진행은 자동 저장되며, 연결되면 클라우드에 보관돼요.</small>';
@@ -34,14 +35,30 @@ export class StartScreen{
    const input=content.querySelector<HTMLInputElement>('#start-name')!;input.value=this.name;
    const valid=()=>{input.value=input.value.normalize('NFC').trim();const legacy=ready&&input.value===this.account.profile().playerName;input.setCustomValidity(legacy?'':explorerNameError(input.value));if(!input.reportValidity())return false;this.name=input.value;return true;};
    input.oninput=()=>input.setCustomValidity('');button('random-name',()=>{input.value=randomExplorerName();input.setCustomValidity('');});
+   if(!ready){
+    const room=document.createElement('div');room.className='entry-name-room preview-only';content.insertBefore(room,content.querySelector('form'));
+    this.editor=new ExplorerEditor(room,this.appearance,()=>{},{staged:true});this.editor.showPreview();
+   }
    content.querySelector<HTMLFormElement>('form')!.onsubmit=e=>{e.preventDefault();if(valid()){if(ready)void this.begin('local');else this.go('customize');}};
    if(ready){button('entry-login',()=>this.go('login'));button('start-friends',()=>{if(valid())void this.begin('friends');});button('entry-customize',()=>{if(valid())this.go('customize');});}else button('entry-back',()=>this.go('account'));
   }else{
-   const preview=this.step==='preview';
-   content.innerHTML=`<h2>${preview?'탐험 준비 완료!':'나만의 탐험가를 만들어보세요!'}</h2><p id="explorer-name-preview"></p><div id="explorer-editor" class="${preview?'preview-only':''}"></div><div class="entry-footer"><button id="entry-back" class="secondary">${preview?'다시 꾸미기':'이름 변경'}</button><button id="entry-next" class="primary">${preview?'탐험 시작!':'완성 미리보기'}</button></div>`;
-   content.querySelector('#explorer-name-preview')!.textContent=this.name;
-   this.editor=new ExplorerEditor(content.querySelector('#explorer-editor')!,this.appearance,a=>{this.appearance=a;});
-   button('entry-back',()=>this.go(preview?'customize':'name'));button('entry-next',()=>preview?void this.begin('local'):this.go('preview'));
+   let stage=this.step==='preview'?4:0;
+   content.innerHTML='<small class="entry-step-count"></small><h2 id="entry-stage-title"></h2><p id="explorer-name-preview"></p><div id="explorer-editor"></div><div class="entry-footer"><button id="entry-back" class="secondary">이름 변경</button><button id="entry-next" class="primary">다음 ›</button></div><button id="entry-finish" class="entry-finish" type="button">이 모습으로 완성 보기</button>';
+   const profile=this.account.profile();
+   this.editor=new ExplorerEditor(content.querySelector('#explorer-editor')!,this.appearance,a=>{this.appearance=a;},{staged:true,stage:profile.highestStage??1});
+   const show=()=>{
+    const preview=stage===4;this.step=preview?'preview':'customize';
+    content.querySelector('#entry-stage-title')!.textContent=preview?'준비됐어!':['얼굴을 골라볼까요?','머리를 골라볼까요?','옷을 입어볼까요?','장식을 더해볼까요?'][stage];
+    content.querySelector('.entry-step-count')!.textContent=preview?'완성':`${stage+1} / 4 · 나만의 탐험가 만들기`;
+    content.querySelector('#explorer-name-preview')!.textContent=preview?`${this.name} · LV.${profile.progression?.level??1} 탐험가`:stage===0?`좋아, ${this.name}! 이제 모습을 골라보자.`:this.name;
+    content.querySelector('#entry-back')!.textContent=preview?'다시 꾸미기':stage===0?'이름 변경':'‹ 이전';
+    content.querySelector('#entry-next')!.textContent=preview?'탐험 시작!':stage===3?'완성 보기':'다음 ›';
+    content.querySelector<HTMLElement>('#entry-finish')!.hidden=preview;
+    if(preview)this.editor!.showPreview();else this.editor!.go(EXPLORER_STEPS[stage]);
+   };
+   button('entry-back',()=>{if(stage===0){this.go('name');return;}stage--;show();});
+   button('entry-next',()=>{if(stage===4){this.editor?.wave();void this.begin('local');}else{stage++;show();}});
+   button('entry-finish',()=>{stage=4;show();});show();
   }
  }
  private async run(fn:()=>Promise<void>){

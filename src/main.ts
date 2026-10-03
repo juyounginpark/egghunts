@@ -240,6 +240,7 @@ async function action(preparedId?:string) {
     }
   } else if (tab === "explore") {
     if(game.nearShortcut){game.openShortcut();updateHud();return;}
+    if(game.nearWardrobe&&!game.carried){openExplorerWardrobe();return;}
     if(!game.carried&&game.nearSeat>=0){
       if(session.peers.some(peer=>peer.seat===game.nearSeat)){toast('다른 탐험가가 앉아 있어요.');return;}
       input.reset();game.velocity={x:0,z:0};
@@ -492,14 +493,14 @@ function updateHud() {
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
   const weightHint=$('action-weight');weightHint.hidden=true;weightHint.textContent='';
-  $('action-label').hidden=!game.carried&&!game.nearShortcut&&((!game.nearGym&&game.nearSeat<0)||!!actionEgg);
-  $('action-icon').hidden=!!game.carried||!!game.nearShortcut;
+  $('action-label').hidden=!game.nearWardrobe&&!game.carried&&!game.nearShortcut&&((!game.nearGym&&game.nearSeat<0)||!!actionEgg);
+  $('action-icon').hidden=!!game.carried||!!game.nearShortcut||game.nearWardrobe;
   const actionModel=game.nearStore?'shop':game.nearGym?'gym':null;
   const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:game.nearSeat>=0?'<span aria-hidden="true">🪵</span>':actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
   if($("action-icon").dataset.icon!==actionIcon){$("action-icon").dataset.icon=actionIcon;$("action-icon").innerHTML=actionIcon;}
   $("action").classList.toggle(
     "available",
-    tab === "hatchery" || !!game.near || !!game.carried || !!game.nearShortcut || game.nearGym || game.nearStore || game.nearSeat>=0,
+    tab === "hatchery" || !!game.near || !!game.carried || !!game.nearShortcut || game.nearGym || game.nearStore || game.nearWardrobe || game.nearSeat>=0,
   );
   ($("action") as HTMLButtonElement).disabled =
     (tab === "hatchery" && (!game.selected || game.selected.hp===0));
@@ -566,13 +567,15 @@ function renderEggQueue() {
     : "알을 부화하면 펫이 함께 걸어요";
 }
 function openExplorerWardrobe(){
+  if(document.querySelector('.explorer-wardrobe')||!game.isAtBase||game.death)return;
+  const wasPaused=paused;paused=true;input.reset();game.velocity={x:0,z:0};friendsUI.closePicker();roomHUD.close();
   const dialog=document.createElement('dialog');dialog.className='explorer-wardrobe';dialog.setAttribute('aria-label','탐험가 꾸미기');
   dialog.innerHTML='<h2>탐험가 꾸미기</h2><div class="wardrobe-editor"></div><div class="entry-footer"><button id="wardrobe-cancel" class="secondary">취소</button><button id="wardrobe-save" class="primary">저장</button></div>';
   $('shell').append(dialog);
-  const editor=new ExplorerEditor(dialog.querySelector('.wardrobe-editor')!,normalizeAppearance(game.save.explorerAppearance,game.save.appearance));
+  const editor=new ExplorerEditor(dialog.querySelector('.wardrobe-editor')!,normalizeAppearance(game.save.explorerAppearance,game.save.appearance),()=>{},{stage:game.save.highestStage??1});
   dialog.querySelector<HTMLButtonElement>('#wardrobe-save')!.onclick=()=>{game.save.explorerAppearance={...editor.appearance};game.save.explorerCreatedAt??=game.now();game.revision++;void save();dialog.close();};
   dialog.querySelector<HTMLButtonElement>('#wardrobe-cancel')!.onclick=()=>dialog.close();
-  dialog.onclose=()=>{editor.dispose();dialog.remove();};dialog.showModal();
+  dialog.onclose=()=>{editor.dispose();dialog.remove();paused=wasPaused;input.reset();};dialog.showModal();
 }
 function showSettings() {
   if (!ready || game.result !== null || virtualAd || game.death) return;

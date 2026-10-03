@@ -42,7 +42,7 @@ export class PresenceClient{
   this.current=pose;this.connect();if(!this.connected)return;
   const state=JSON.stringify({...pose,at:0}),previous=this.lastState?JSON.parse(this.lastState):{};
   const moving=Math.hypot(pose.velocity?.x??0,pose.velocity?.z??0)>.01,wasMoving=Math.hypot(previous.velocity?.x??0,previous.velocity?.z??0)>.01;
-  const immediate=!this.lastState||moving!==wasMoving||pose.emote?.at!==previous.emote?.at||pose.riding!==previous.riding||Math.hypot(pose.x-(previous.x??pose.x),pose.z-(previous.z??pose.z))>12;
+  const immediate=!this.lastState||moving!==wasMoving||JSON.stringify(pose.explorerAppearance)!==JSON.stringify(previous.explorerAppearance)||pose.emote?.at!==previous.emote?.at||pose.riding!==previous.riding||Math.hypot(pose.x-(previous.x??pose.x),pose.z-(previous.z??pose.z))>12;
   if(performance.now()-this.lastSent<(immediate?100:PRESENCE.updateMs)||state===this.lastState)return;
   const delta=Object.fromEntries(Object.entries(pose).filter(([k,v])=>k==='at'||JSON.stringify(previous[k])!==JSON.stringify(v)));this.send({type:'position',state:delta});this.lastState=state;this.lastSent=performance.now();
  }

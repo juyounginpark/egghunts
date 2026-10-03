@@ -1,5 +1,6 @@
 import {OVERHAUL,upgradeBaseSpeed,progressionSpeedValue,productionUpgradeMultiplier,petIncomeValue,incomeValue,trainingProgressAfter,offlineSeconds,tapDamageValue,autoDamageValue,stageReward,walkingSpeedValue,stableRecoveryRatio,collectionEligible} from './balance';
 import {normalizeAppearance,type ExplorerAppearance} from './explorer-appearance';
+import {WARDROBE} from './wardrobe';
 import {ULTRA_SECRET} from './ultra-secret';
 import {PERSONAL_BOSS,EGG_REPLENISH,OFF_PATH_SPEED_MULTIPLIER,PLAYER_CHASE_SPEED_MULTIPLIER,UNDER_RECOMMENDED_EGG_SPEED_MULTIPLIER} from './stage-data';
 import {rainStrength,windStrength} from './weather';
@@ -427,6 +428,7 @@ export class GameState {
     this.x=Math.max(-width,Math.min(width,position.x));this.z=Math.max(this.isNight?BALANCE.baseMinZ:this.farZ,Math.min(BALANCE.mapNearZ,position.z));this.syncStage();
   }
   get nearStore(){return Math.hypot(this.x-BALANCE.storeX,this.z-BALANCE.storeZ)<BALANCE.storeRadius;}
+  get nearWardrobe(){return this.isAtBase&&!this.training&&Math.hypot(this.x-WARDROBE.x,this.z-WARDROBE.z)<WARDROBE.reach;}
   hasDiscoveredPet(id:number){return !!this.save.mongles[id]||!!this.save.obtainedPets?.includes(id);}
   eggSellPrice(egg:number|{type:number;stageId?:number}){const e=typeof egg==='number'?{type:egg}:egg;return EGGS[e.type]?stageReward(e.stageId??EGGS[e.type].region*4+1,OVERHAUL.rewardMinutes.saleEgg,EGGS[e.type].tier):0;}
   petSellPrice(id:number){const pet=MONGLES[id];return pet?stageReward(Math.max(1,pet.stageId),OVERHAUL.rewardMinutes.salePet,pet.tier):0;}
@@ -830,6 +832,7 @@ export class GameState {
   }
   get action() {
     if(this.nearShortcut)return this.nearShortcut.label;
+    if(this.nearWardrobe&&!this.carried)return '탐험가 꾸미기';
     if(!this.carried&&this.nearSeat>=0)return this.seat!==null?'일어나기':'앉기';
     if(this.nearStore&&!this.carried&&!this.near&&!this.training)return "판매하기";
     if (this.nearGym && !this.carried) return this.training ? "운동 내리기" : "운동 시작";

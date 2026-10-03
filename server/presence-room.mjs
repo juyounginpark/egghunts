@@ -19,9 +19,13 @@ export class PresenceRoom{
   if(Math.abs(next.x)>10000||Math.abs(next.z)>10000)throw Error('INVALID_STATE');
   if(typeof state.name==='string')next.name=state.name.normalize('NFC').replace(/[^\p{L}\p{N}_]/gu,'').slice(0,12)||'탐험가';
   if('explorerAppearance' in state){
-   const fields={skinId:['skin',8],faceId:['face',8],hairId:['hair',12],hairColorId:['haircolor',10],outfitId:['outfit',8],accentColorId:['accent',8],accessoryId:['accessory',8],backpackId:['backpack',4]},a=state.explorerAppearance;
+   const fields={skinId:['skin',10],faceId:['face',8],hairId:['hair',18],hairColorId:['haircolor',12],outfitId:['outfit',13],accentColorId:['accent',10],accessoryId:['accessory',8],backpackId:['backpack',8]},a=state.explorerAppearance;
    if(!a||typeof a!=='object'||Object.entries(fields).some(([key,[prefix,count]])=>!Array.from({length:count},(_,i)=>prefix+'-'+i).includes(a[key])))throw Error('INVALID_APPEARANCE');
    next.explorerAppearance=Object.fromEntries(Object.keys(fields).map(k=>[k,a[k]]));
+   // Older clients omit independent facial/accessory slots; preserve compatibility.
+   for(const [key,prefix,count] of [['eyeId','eye',12],['eyebrowId','brow',8],['mouthId','mouth',10],['cheekId','cheek',8],['headAccessoryId','headwear',12],['faceAccessoryId','facewear',8],['neckAccessoryId','neckwear',6]])if(key in a){
+    if(!Array.from({length:count},(_,i)=>prefix+'-'+i).includes(a[key]))throw Error('INVALID_APPEARANCE');next.explorerAppearance[key]=a[key];
+   }
   }
   for(const key of ['training','riding'])if(key in state)next[key]=state[key]===true;
   for(const key of ['carried','mountPet'])if(key in state)next[key]=Number.isInteger(state[key])&&state[key]>=0&&state[key]<(key==='carried'?36:721)?state[key]:null;

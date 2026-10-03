@@ -31,7 +31,7 @@ export class AIController{
   this.personality={aggression:r(),greed:r(),cowardice:r(),curiosity:r(),sociability:r(),skill:.15+r()*.8,patience:r(),riskTolerance:r()};
   const age=30+r()*870,save=freshSave(reference.now());
   save.progression=newProgression();save.progression.stage=reference.progression.stage;save.highestStage=Math.max(reference.progression.stage,reference.save.highestStage??1);
-  save.explorerAppearance=checkpoint?normalizeAppearance(checkpoint.explorerAppearance):randomAppearance(r,this.personality.aggression);
+  save.explorerAppearance=checkpoint?normalizeAppearance(checkpoint.explorerAppearance):randomAppearance(r,this.personality.aggression,save.highestStage);
   save.playerName=checkpoint?.name??AI_NAMES[Math.floor(r()*AI_NAMES.length)];save.appearance=Math.floor(r()*3);save.tutorial=99;save.bossWarningSeen=true;
   save.upgrades={...reference.save.upgrades,speed:Math.max(0,reference.save.upgrades.speed+Math.floor(r()*3)-1)};
   save.trainingProgress=Math.min(.99,Math.max(0,(reference.save.trainingProgress??0)*(.75+r()*.5)+age*.00025));
@@ -195,6 +195,8 @@ export class AISession{
  private add(slot:number,action:AIAction,checkpoint?:AICheckpoint){
   const bot=new AIController(checkpoint?.seed??Math.floor(this.random()*0xffffffff),slot,this.reference(),this.env,action,checkpoint);
   if(!checkpoint){
+   const appearances=new Set(this.bots.map(b=>JSON.stringify(b.entity.game.save.explorerAppearance)));
+   for(let retry=0;retry<3&&appearances.has(JSON.stringify(bot.entity.game.save.explorerAppearance));retry++)bot.entity.game.save.explorerAppearance=randomAppearance(bot.random.next,bot.personality.aggression,bot.entity.game.save.highestStage??1);
    const occupied=new Set([...this.env.actors().map(p=>p.name),...this.bots.map(b=>b.entity.game.save.playerName),this.reference().save.playerName]);
    let pool=AI_NAMES.filter(name=>!occupied.has(name)&&!this.usedNames.has(name));
    if(!pool.length){this.usedNames.clear();pool=AI_NAMES.filter(name=>!occupied.has(name));}

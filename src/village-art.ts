@@ -1,6 +1,7 @@
 import type {Block} from './region-layout';
 import {FARM_PLOTS,farmLocal,VILLAGE,FARM_PEN,CAMPFIRE,CAMP_SEATS} from './village';
 import {ROAD_WIDTH_SCALE} from './stage-data';
+import {villageWardrobeBlocks} from './wardrobe';
 let cached:Block[]|undefined;
 export function circularVillageArt(){
  if(cached)return cached;
@@ -84,5 +85,5 @@ export function circularVillageArt(){
   for(const x of [-.7,.7])local(x,.11,0,.22,.22,.7,0x5c4030);
  }
  for(const side of [-1,1])for(const z of [-1,11]){const x=side*2.5;b(x,.8,z,.16,1.6,.16,wood);b(x,1.7,z,.48,.5,.48,gold);b(x,2,z,.65,.12,.65,0x5a6b50);}
- cached=blocks;return blocks;
+ blocks.push(...villageWardrobeBlocks());cached=blocks;return blocks;
 }

@@ -7,6 +7,7 @@ const server=await createServer({server:{host:'127.0.0.1',port:4358,strictPort:t
 await server.listen();const browser=await chromium.launch({channel:process.env.CI?undefined:'msedge',headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
 const page=await ctx.newPage(),errors=[],results=[];page.on('pageerror',e=>errors.push(e.message));
+await page.route('**/*.supabase.co/**',route=>route.abort());
 const shot=name=>page.screenshot({path:`${root}/${name}.png`});
 const box=async id=>page.locator('#'+id).boundingBox();
 const overlap=(a,b)=>a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;
@@ -14,12 +15,17 @@ try{
  await page.goto('http://127.0.0.1:4358');await page.locator('#guest-start').waitFor({timeout:60000});await shot('01-account');
  await page.locator('#guest-start').click();await page.locator('#start-name').fill('시발');await page.locator('#start-local').click();assert.equal(await page.locator('#explorer-editor').count(),0);
  await page.locator('#start-name').fill('탐험가123456789');await page.locator('#start-local').click();await page.locator('.explorer-preview canvas').waitFor({timeout:30000});
- await page.getByRole('tab',{name:'머리',exact:true}).click();await page.locator('[data-option="hair-6"]').click();await page.locator('[data-option="haircolor-9"]').click();
- await page.getByRole('tab',{name:'장식',exact:true}).click();await page.locator('[data-option="accessory-6"]').click();await shot('02-customize');
+ assert.equal(await page.locator('#explorer-editor').getAttribute('data-view'),'face');
+ await page.getByRole('tab',{name:'눈',exact:true}).click();await page.locator('[data-step="1"]').click();
+ await page.locator('#entry-next').click();assert.equal(await page.locator('#explorer-editor').getAttribute('data-view'),'hair');
+ for(let i=0;i<6;i++)await page.locator('[data-step="1"]').click();await page.getByRole('tab',{name:'색상',exact:true}).click();await page.locator('[data-option="haircolor-9"]').click();
+ await page.locator('#entry-next').click();assert.equal(await page.locator('#explorer-editor').getAttribute('data-view'),'body');
+ await page.locator('#entry-next').click();await page.getByRole('tab',{name:'얼굴',exact:true}).click();await page.locator('[data-step="1"]').click();
+ await page.getByRole('tab',{name:'가방',exact:true}).click();assert.equal(await page.locator('#explorer-editor').getAttribute('data-view'),'back');await page.locator('[data-step="1"]').click();await shot('02-customize');
  const preview=await page.locator('.explorer-preview').boundingBox();await page.mouse.move(preview.x+preview.width/2,preview.y+80);await page.mouse.down();await page.mouse.move(preview.x+preview.width/2+80,preview.y+80,{steps:8});await page.mouse.up();
  await page.locator('#entry-next').click();await page.locator('.explorer-preview canvas').waitFor();await shot('03-preview');await page.locator('#entry-next').click();await page.locator('#loading').waitFor({state:'hidden',timeout:60000});
  assert.equal(await page.evaluate(()=>window.__mobile.game.save.explorerAppearance.hairId),'hair-6');assert.equal(await page.evaluate(()=>window.__mobile.multiplayer.connected),false);assert.equal(await page.evaluate(()=>window.__mobile.session.ai.bots.length),2);
- assert.equal(await page.locator('#room-progress').isVisible(),false);await page.waitForTimeout(350);
+ assert.equal(await page.locator('#room-progress').isVisible(),false);await page.waitForTimeout(350);const collapsed=await box('main-hud');assert.equal(collapsed.width,collapsed.height);
  assert.equal(await page.evaluate(()=>window.__mobile.world.player.getObjectByName('head').children[0].userData.explorerOwned),true);await shot('04-collapsed');
  const before=await box('joystick'),action=await box('action');await page.locator('#hud-toggle').click();await page.waitForTimeout(220);
  const pad=await box('joystick'),emoteButton=await box('emote-toggle');await page.mouse.move(pad.x+pad.width/2,pad.y+pad.height/2);await page.mouse.down();await page.mouse.move(emoteButton.x+emoteButton.width/2,emoteButton.y+emoteButton.height/2,{steps:8});await page.mouse.up();assert.equal(await page.locator('#emote-picker').isVisible(),false);
@@ -38,7 +44,7 @@ try{
   results.push({width,height,hud,input});
  }
  await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{document.documentElement.style.setProperty('--safe-top','47px');document.documentElement.style.setProperty('--safe-bottom','34px');});await page.waitForTimeout(200);assert.ok((await box('main-hud')).y>=47);await shot('safe-area');
- await page.locator('#settings').click();await page.locator('#customize-explorer').click();await page.locator('.explorer-wardrobe canvas').waitFor();await page.getByRole('tab',{name:'옷',exact:true}).click();await page.locator('[data-option="outfit-7"]').click();await page.locator('#wardrobe-save').click();assert.equal(await page.evaluate(()=>window.__mobile.game.save.explorerAppearance.outfitId),'outfit-7');
+ await page.locator('#settings').click();await page.locator('#customize-explorer').click();await page.locator('.explorer-wardrobe canvas').waitFor();await page.getByRole('tab',{name:'옷',exact:true}).click();for(let i=0;i<7;i++)await page.locator('[data-step="1"]').click();await page.locator('#wardrobe-save').click();assert.equal(await page.evaluate(()=>window.__mobile.game.save.explorerAppearance.outfitId),'outfit-7');
  await page.locator('#resume').click();await page.evaluate(()=>window.__mobile.cloud.persist());await page.reload();await page.locator('#start-local').waitFor({timeout:60000});assert.equal(await page.locator('#guest-start').count(),0);await page.locator('#start-local').click();await page.locator('#loading').waitFor({state:'hidden',timeout:60000});assert.equal(await page.evaluate(()=>window.__mobile.game.save.explorerAppearance.outfitId),'outfit-7');
  assert.deepEqual(errors,[]);await writeFile(`${root}/results.json`,JSON.stringify({results,errors,onboarding:true,persistence:true,device:'Chromium touch/mobile emulation; not physical iOS/Toss'},null,2));console.log('PASS onboarding, appearance persistence, compact HUD, 4 mobile sizes, panels, controls and safe area');
 }finally{await browser.close();await server.close();}

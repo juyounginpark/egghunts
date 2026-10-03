@@ -35,7 +35,7 @@ const enterLocal=async page=>{
  assert.equal(await page.locator('#world canvas').count(),0);
  if(await page.locator('#guest-start').count()){
   await page.locator('#guest-start').click();await page.locator('#start-name').fill('모험가7');await page.locator('#start-local').click();
-  await page.locator('#entry-next').click();await page.locator('#entry-next').click();
+  await page.locator('#entry-finish').click();await page.locator('#entry-next').click();
  }else await page.locator('#start-local').click();
  await page.locator('#loading').waitFor({state:'hidden',timeout:60000});
 };
