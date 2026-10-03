@@ -14,9 +14,11 @@
 
 ## 운영 확인
 
-실제 공개 HTTPS 준비 상태, Supabase 익명 인증, cloud save/load, stale revision 충돌 거부, 방 코드 생성·두 사용자 입장, 위치·이모티콘 전달, human host 퇴장 후 인계를 확인했다. 확인용 계정은 일반 사용자 세이브와 분리했다.
+실제 공개 HTTPS 준비 상태, Supabase 익명 인증, cloud save/load, stale revision 충돌 거부, 방 코드 생성·두 사용자 입장, 위치·이모티콘 전달, human host 퇴장 후 인계를 확인했다. 확인용 계정 두 개는 표시를 확인한 뒤 삭제했고 서비스는 `ready=true`, 참가자 0명으로 돌아왔다.
 
-공개 Pages 배포 상태는 운영 전환 후 아래에 기록한다. 전체 QA를 재실행하지 않았으며 구현 단계의 검증 결과와 알려진 기존 테스트 실패는 [기능 보고](../simulated-players-architecture.md)를 따른다.
+Pages 운영 커밋: `3b6e99f8e575ce15c581cb3a7db7d4a2ca1815ee`. [배포 작업 37114244585](https://github.com/juyounginpark/egghunts/actions/runs/37114244585)이 빌드와 게시에 성공했다.
+공개 주소 [알콩 원정대](https://juyounginpark.github.io/egghunts/)의 HTTP 200 및 `index-J4yMCMw-.js`를 확인했다. 실제 공개 번들에 친구 UI, 운영 `/presence` 주소, 로컬 AI, `game_local_save`가 포함되고 기존 채팅 input은 없다.
+전체 QA와 공개 페이지 자동 E2E는 재실행하지 않았다. 토스 실기기 체감·로그인·광고 검증을 완료했다고 보고하지 않는다. 구현 단계의 검증 결과와 알려진 기존 테스트 실패는 [기능 보고](../simulated-players-architecture.md)를 따른다.
 
 ## 복구 주의
 
