@@ -31,9 +31,11 @@ export function presenceServer({origins=[],maxRooms=Number(process.env.PRESENCE_
      busy=true;const identity=await authenticate(packet.token);if(ws.readyState!==WebSocket.OPEN)return;
      const id=identity.id;if(joiningIds.has(id)||[...members.values()].some(m=>m.id===id))throw Error('ACCOUNT_ALREADY_CONNECTED');joiningIds.add(id);pendingId=id;
      let room;if(packet.mode==='create'){
-      if(rooms.size>=maxRooms)throw Error('SERVER_FULL');let code;do{code=Array.from({length:5},()=>alphabet[randomInt(alphabet.length)]).join('');}while(rooms.has(code));room=new PresenceRoom(code);rooms.set(code,room);
+      if(rooms.size>=maxRooms)throw Error('SERVER_FULL');let code;
+      if(packet.code){if(typeof packet.code!=='string'||!/^[A-HJ-NP-Z2-9]{5,6}$/.test(packet.code))throw Error('ROOM_CODE_REQUIRED');code=packet.code;if(rooms.has(code))throw Error('ROOM_CODE_TAKEN');}
+      else do{code=Array.from({length:5},()=>alphabet[randomInt(alphabet.length)]).join('');}while(rooms.has(code));room=new PresenceRoom(code);rooms.set(code,room);
      }else if(packet.mode==='join'&&typeof packet.code==='string')room=rooms.get(packet.code.toUpperCase());else throw Error('ROOM_CODE_REQUIRED');
-     if(!room&&packet.recover===true&&/^[A-HJ-NP-Z2-9]{5}$/.test(packet.code)&&rooms.size<maxRooms){room=new PresenceRoom(packet.code);rooms.set(room.id,room);}if(!room)throw Error('ROOM_NOT_FOUND');if(room.humanCount+room.pendingSlots.size>=5)throw Error('ROOM_FULL');
+     if(!room&&packet.recover===true&&/^[A-HJ-NP-Z2-9]{5,6}$/.test(packet.code)&&rooms.size<maxRooms){room=new PresenceRoom(packet.code);rooms.set(room.id,room);}if(!room)throw Error('ROOM_NOT_FOUND');if(room.humanCount+room.pendingSlots.size>=5)throw Error('ROOM_FULL');
      const slot=[0,1,2,3,4].find(s=>!room.pendingSlots.has(s)&&![...room.players.values()].some(p=>p.kind==='human'&&p.slot===s));room.pendingSlots.add(slot);pendingRoom=room;pendingSlot=slot;const bot=[...room.bots.values()].find(p=>p.slot===slot);
      if(bot){broadcast(room,{type:'evict',id:bot.id,deadline:Date.now()+1500});await new Promise(resolve=>setTimeout(resolve,1500));if(ws.readyState!==WebSocket.OPEN)return;}
      const {player,evicted}=room.join(id,packet.state,identity.guest,slot);if(evicted)broadcast(room,{type:'leave',id:evicted.id});

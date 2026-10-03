@@ -30,12 +30,14 @@ const context=async()=>{
   await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(body)});
  });return ctx;
 };
-const ready=async page=>{const errors=[];page.on('pageerror',e=>errors.push(e.message));try{await page.goto('http://127.0.0.1:4351');await page.locator('#loading').waitFor({state:'hidden',timeout:60000});await page.waitForFunction(()=>window.__localFirst?.game);}catch(e){console.error('Browser startup errors',errors);throw e;}};
+const enterLocal=async page=>{await page.locator('#start-name').waitFor({state:'visible',timeout:60000});assert.equal(await page.locator('#world canvas').count(),0);if(!await page.locator('#start-name').inputValue())await page.locator('#start-name').fill('모험가7');await page.locator('#start-local').click();await page.locator('#loading').waitFor({state:'hidden',timeout:60000});};
+const ready=async page=>{const errors=[];page.on('pageerror',e=>errors.push(e.message));try{await page.goto('http://127.0.0.1:4351');await enterLocal(page);await page.waitForFunction(()=>window.__localFirst?.game);}catch(e){console.error('Browser startup errors',errors);throw e;}};
 try{
  const aCtx=await context(),a=await aCtx.newPage();await ready(a);
  await test('normal startup with EC2 unavailable: movement, egg, hatch, boss and upgrade',async()=>{
   await a.waitForFunction(()=>window.__localFirst.world.renderer.info.render.frame>0);
   assert.equal(await a.evaluate(()=>window.__localFirst.multiplayer.connection),'disconnected');
+  assert.match(await a.evaluate(()=>window.__localFirst.multiplayer.code),/^[A-HJ-NP-Z2-9]{6}$/);
   assert.equal(await a.evaluate(()=>window.__localFirst.session.ai.bots.length),4);
   assert.equal(await a.evaluate(()=>new Set(window.__localFirst.session.ai.initialSnapshots.map(b=>b.action)).size),4);
   const result=await a.evaluate(()=>{const {game:g}=window.__localFirst;g.save.tutorial=6;g.move(0,-1,.1);const moved=g.z<0;
@@ -45,16 +47,18 @@ try{
  });
  await test('IndexedDB/local fallback persists exact progression through refresh',async()=>{
   await a.evaluate(async()=>{const f=window.__localFirst;f.game.save.dust=12345;f.game.save.mongles[3]=2;await f.cloud.persist();});
-  await a.reload();await a.locator('#loading').waitFor({state:'hidden',timeout:60000});
+  await a.reload();await enterLocal(a);
   const state=await a.evaluate(()=>({dust:window.__localFirst.game.save.dust,pets:window.__localFirst.game.save.mongles[3],level:window.__localFirst.game.save.upgrades.speed}));
   assert.equal(state.pets,2);assert.equal(state.level,1);assert.ok(Number(state.dust)>=12345);
  });
  const bCtx=await context(),b=await bCtx.newPage();await ready(b);
  await test('explicit friend codes, human priority, interpolated positions and six shared emotes',async()=>{
   relay=presenceServer({origins:['http://127.0.0.1:4351']});relay.http.listen(port,'127.0.0.1');await once(relay.http,'listening');
-  await a.locator('#settings').click();await a.locator('#friends-open').click();await a.locator('#friend-create').click();
+  const localCode=await a.evaluate(()=>window.__localFirst.multiplayer.code);
+  await a.locator('#settings').click();await a.locator('#friends-open').click();assert.equal(await a.locator('#friend-create').count(),0);
   try{await a.waitForFunction(()=>window.__localFirst.multiplayer.connected,{},{timeout:15000});}catch(e){console.log(await a.evaluate(()=>({connection:window.__localFirst.multiplayer.connection,url:window.__localFirst.multiplayer.url,toast:document.querySelector('#toast').textContent})));throw e;}
   const code=await a.evaluate(()=>window.__localFirst.multiplayer.code);
+  assert.equal(code,localCode);
   await a.locator('#friend-close').click();
   await b.locator('#settings').click();await b.locator('#friends-open').click();assert.equal(await b.locator('#friend-code').getAttribute('placeholder'),null);await b.locator('#friend-code').fill(code);await b.locator('#friend-join').click();
   await b.waitForFunction(()=>window.__localFirst.multiplayer.connected&&window.__localFirst.multiplayer.peers.some(p=>p.kind==='human'));

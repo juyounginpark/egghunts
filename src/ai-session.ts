@@ -21,6 +21,8 @@ export class AIController{
  action:AIAction;targetId:string|null=null;nextDecisionAt:number;emoteCooldown:number;idleUntil=0;joinedAt:number;plannedLeaveAt:number;leaveSoon=false;
  private target={x:0,z:0};private slowTime=0;private previous={x:0,z:0};private stuck=0;private pickupAt=0;
  private threat:{id:string;until:number}|null=null;private socialAt=0;private greeted=false;private attackReadyAt=0;
+ private seenEmotes=new Map<string,number>();private nextEmoteScan=0;
+ private reply:{target:string;id:EmoteId;at:number;until:number;sent:boolean}|null=null;
  readonly recentEvents:{name:string;at:number}[]=[];
  errors=0;decisions=0;interactions=0;
  constructor(public seed:number,slot:number,reference:GameState,private env:AIEnvironment,initial:AIAction='SEARCH_EGG',checkpoint?:AICheckpoint){
@@ -41,7 +43,7 @@ export class AIController{
   const game=new GameState(save,reference.now,r);game.farmSlot=slot;const stageStart=checkpoint?.stageStart??reference.progression.stage;if(game.progression.stage!==stageStart){game.progression.stage=stageStart;game.resetBosses();game.spawn();}
   game.progression.level=Math.max(1,checkpoint?.level??reference.level+Math.floor(r()*5)-2);game.progression.requiredXP=requiredXP(game.level);
   this.entity=new PlayerEntity(checkpoint?.id??`sim-${seed>>>0}`,'simulated',game);
-  const now=game.now();this.joinedAt=now-age*1000;this.socialAt=now+6000+r()*14000;
+  const now=game.now();this.joinedAt=now-age*1000;this.socialAt=now+6000+r()*14000;this.nextEmoteScan=now+r()*400;
   const roll=r(),duration=roll<.12?120+r()*60:roll>.88?480+r()*420:180+(r()+r())*.5*300;
   this.plannedLeaveAt=now+Math.max(AI_WORLD.initialGraceMs,duration*1000);
   this.action=initial;this.nextDecisionAt=now+300+r()*4700;this.emoteCooldown=now+10000+r()*20000;
@@ -67,9 +69,33 @@ export class AIController{
  }
  emote(id:EmoteId,important=false){const now=this.entity.game.now();if(now<this.emoteCooldown||this.random.next()>(important?.5:.15)*this.personality.sociability)return;this.entity.emote={id,at:now};this.emoteCooldown=now+10000+this.random.next()*20000;}
  attackedBy(id:string){
+  this.reply=null;
   const now=this.entity.game.now();this.threat={id,until:now+6000+this.random.next()*5000};
   this.idleUntil=now+180+(1-this.personality.skill)*850+this.random.next()*350;
   this.nextDecisionAt=this.idleUntil;this.emote(this.personality.cowardice>.6?'surprise':'angry',true);
+ }
+ private reactToEmotes(now:number){
+  const g=this.entity.game,peers=this.env.actors(),r=this.random.next;
+  const danger=g.pursuing>=0||g.knockedUntil>now||['CHASE_PLAYER','ESCAPE','LEAVE'].includes(this.action)||!!(this.threat&&this.threat.until>now)||peers.some(p=>p.id!==this.entity.id&&p.action==='CHASE_PLAYER'&&Math.hypot(p.x-g.x,p.z-g.z)<10);
+  if(danger)this.reply=null;
+  if(now>=this.nextEmoteScan){
+   this.nextEmoteScan=now+250+r()*200;
+   for(const peer of peers){
+    const e=peer.emote;if(peer.id===this.entity.id||!e||this.seenEmotes.get(peer.id)===e.at)continue;
+    this.seenEmotes.set(peer.id,e.at);
+    if(this.seenEmotes.size>32)this.seenEmotes.delete(this.seenEmotes.keys().next().value!);
+    if(danger||this.reply||now<this.emoteCooldown||now-e.at>2500||Math.hypot(peer.x-g.x,peer.z-g.z)>8||r()>.3+this.personality.sociability*.5)continue;
+    const at=now+250+(1-this.personality.skill)*650+r()*500;
+    this.reply={target:peer.id,id:e.id==='angry'?'surprise':e.id,at,until:at+1000+r()*1000,sent:false};
+   }
+  }
+  const reply=this.reply;if(!reply||now<reply.at)return false;
+  const peer=peers.find(p=>p.id===reply.target);
+  if(!peer||now>reply.until||Math.hypot(peer.x-g.x,peer.z-g.z)>10){this.reply=null;this.nextDecisionAt=now;return false;}
+  const dx=peer.x-g.x,dz=peer.z-g.z,distance=Math.hypot(dx,dz);
+  if(g.training)g.toggleTraining();g.velocity={x:0,z:0};if(distance>.05)g.facing={x:dx/distance,z:dz/distance};
+  if(!reply.sent){reply.sent=true;this.entity.emote={id:reply.id,at:now};this.emoteCooldown=now+10000+r()*20000;this.socialAt=now+15000;this.interactions++;}
+  return true;
  }
  private choose(){
   const g=this.entity.game,r=this.random.next,p=this.personality;this.decisions++;
@@ -112,6 +138,7 @@ export class AIController{
   if(g.death){if(g.death.remaining<=0)g.revive(false);return;}
   if(g.returnReward){g.returnReward=null;this.emote('love',true);this.nextDecisionAt=now+500+r()*1800;}
   if(g.result!==null)g.result=null;if(g.selected?.hp===0)g.claimHatch(g.selected.id);
+  if(this.reactToEmotes(now))return;
   if(g.isAtBase&&g.selected&&r()<dt*.8)g.tap();if(now>=this.nextDecisionAt)this.choose();
   if(this.action==='CHASE_PLAYER'){
    const victim=this.env.actors().find(a=>a.id===this.targetId);

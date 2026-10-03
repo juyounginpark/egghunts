@@ -24,7 +24,7 @@ import {
 import { ROUTE, FINAL_GUARDIAN, recommendedRouteSpeed } from "./stage-data";
 import {legacyTheme} from './stage-order';
 import {eggName,eggIcon} from "./stage-eggs";
-import { GameState } from "./game";
+import { GameState,type Save } from "./game";
 import { Platform } from "./platform";
 import { Input } from "./input";
 import { World } from "./world";
@@ -35,6 +35,7 @@ import {SecureEconomy} from './secure-economy';
 import {RoomHUD} from './room-hud';
 import {LocalSession} from './local-session';
 import {FriendsUI} from './friends-ui';
+import {StartScreen} from './start-screen';
 import { VirtualAd } from "./virtual-ad";
 import { formatNumber as num } from "./format";
 import { uiIcon } from './ui-icons';
@@ -152,11 +153,13 @@ const platform = new Platform();
 const secure=new SecureEconomy();
 const cloud=new CloudSave(()=>game.snapshot(),state=>{
   const next=new GameState(state,()=>platform.now());
+  if(selectedPlayerName)next.save.playerName=selectedPlayerName;
   next.offline(cloud.clock.offlineSeconds(state.productionAt??state.lastSavedAt,BALANCE.offlineCap));
   if(world)next.mapCollision.setFarm(world.mapColliders);
   game=next;lastRevision=-1;if(ready){renderEggQueue();updateHud();}
 },toast);
-const multiplayer=new PresenceClient(()=>cloud.token(),message=>{if(message==='SEAT_OCCUPIED')game.seat=null;toast(message);});
+let friendEntryError='';
+const multiplayer=new PresenceClient(()=>cloud.token(),message=>{if(!$('loading').hidden)friendEntryError=message;if(message==='SEAT_OCCUPIED')game.seat=null;toast(message);});
 let session:LocalSession;
 const friendsUI=new FriendsUI($('shell'),multiplayer,id=>session?.emote(id),()=>{input?.reset();if(game)game.velocity={x:0,z:0};});
 
@@ -175,6 +178,7 @@ let game: GameState,
   lastNow = 0,
   hiddenAt = 0,
   toastTimer = 0;
+let selectedPlayerName:string|undefined;
 const audio=new GameAudio();
 function applyAudioSettings(){audio.setVolume(game.save.settings.volume??1,!game.save.settings.sound);}
 let heardHazards=new Set<number>();
@@ -806,7 +810,7 @@ document.addEventListener("click", async (e) => {
     setTab("hatchery");
   }
   if (b.id === "resume") {
-    game.save.playerName=($('player-name-setting') as HTMLInputElement).value.normalize('NFC').replace(/[^\p{L}]/gu,'').slice(0,10)||'탐험가';
+    selectedPlayerName=game.save.playerName=($('player-name-setting') as HTMLInputElement).value.normalize('NFC').replace(/[^\p{L}\p{N}_]/gu,'').slice(0,10)||'탐험가';
     game.save.appearance=Number(($("appearance-setting") as HTMLSelectElement).value);
     try {
       await platform.syncTime();
@@ -897,14 +901,13 @@ document.addEventListener("visibilitychange",()=>{if(ready){if(document.hidden&&
 window.addEventListener("pagehide", () => {
   if (ready) {cloud.flush();void save();}
 });
-async function start() {
-  try {
+async function start(state:Save) {
     // Native account/safe-area failures do not prevent local gameplay.
     if(!qa)void platform.login().then(()=>{if(platform.trustedTime)cloud.clock.sync(Date.now()+platform.offset);}).catch(err=>{platform.warning=String(err);});
-    const state=await cloud.load(()=>platform.load(),!!qa);
     if(!qa&&platform.trustedTime)cloud.clock.sync(Date.now()+platform.offset);
     if(!qa)platform.now=()=>cloud.clock.now();
     game=new GameState(state,()=>platform.now(),qa?.random);
+    if(selectedPlayerName)game.save.playerName=selectedPlayerName;
     applyAudioSettings();
     game.offline(qa?Math.max(0,(platform.now()-state.lastSavedAt)/1000):cloud.clock.offlineSeconds(state.productionAt??state.lastSavedAt,BALANCE.offlineCap));
     world = new World($("world"));
@@ -912,22 +915,44 @@ async function start() {
     game.mapCollision.setFarm(world.mapColliders);game.push(0,0);
     world.quality(state.settings.quality === "low");
     input = new Input($("joystick"), $("knob"), action, showSettings);
-    ready = true;
     session=new LocalSession(()=>game,multiplayer,(x,z)=>world.isVisiblePoint(x,z),qa?.random);
     for(const bot of session.ai.bots)bot.entity.game.mapCollision.setFarm(world.mapColliders);
     await world.preparePeers(session.peers).catch(err=>{world.assetError=String(err);});
     world.updatePeers(session.peers,true,game.now());
     world.render(game,tab,0,performance.now()/1000);
+    ready=true;
     if(!qa)void cloud.initialize();
     qa?.attach(game, world, input, setTab, save);
     if (platform.warning) toast(platform.warning);
     renderEggQueue();
     updateHud();
-    $("loading").hidden = true;
+    if(qa)$("loading").hidden = true;
     if(compare(game.offlineReward,0)>0)toast(`오프라인 생산 +${num(game.offlineReward)} · 강화에서 지금 살 수 있는 목표를 확인하세요`);
     platform.track("game_start");
     lastNow = performance.now();
     requestAnimationFrame(frame);
+}
+async function boot(){
+  try{
+    const state=await cloud.load(()=>platform.load(),!!qa);
+    if(qa){await start(state);return;}
+    let prepared:Promise<void>|undefined;
+    new StartScreen($('loading'),state.playerName??'',async choice=>{
+      selectedPlayerName=choice.name;
+      await (prepared??=start(state));
+      game.save.playerName=choice.name;
+      if(choice.mode==='friends'){
+        if(!multiplayer.url)throw Error('친구 서버에 연결할 수 없어요. 기본 모험은 서버접속으로 시작할 수 있어요.');
+        friendEntryError='';multiplayer.update(session.human.entity.pose());multiplayer.login();
+        const deadline=performance.now()+15000;
+        while(!multiplayer.connected){
+          if(multiplayer.connection==='disconnected'||performance.now()>=deadline){multiplayer.logout();throw Error(friendEntryError||'친구 서버에 연결하지 못했어요. 다시 시도하거나 기본 모험을 시작해 주세요.');}
+          await new Promise(resolve=>setTimeout(resolve,100));
+        }
+      }
+      await cloud.persist();
+      lastNow=performance.now();
+    },multiplayer.code,choice=>{if(choice.mode==='friends')friendsUI.open();});
   } catch (err) {
     $("loading").innerHTML =
       '<h1>모험을 준비하지 못했어요</h1><p id="startup-error"></p><button class="primary" onclick="location.reload()">다시 시도</button>';
@@ -936,7 +961,7 @@ async function start() {
 }
 function frame(now: number) {
   requestAnimationFrame(frame);
-  if (document.hidden || syncing) return;
+  if (document.hidden || syncing || !$('loading').hidden) {lastNow=now;return;}
   const dt = Math.min(0.05, (now - lastNow) / 1000);
   lastNow = now;
   if(virtualAd){$("ad-count").textContent=virtualAd.remaining?`${virtualAd.remaining}초`:'시청 완료';$("virtual-ad-close").hidden=virtualAd.remaining>0;}
@@ -1028,4 +1053,4 @@ function frame(now: number) {
     void save();
   }
 }
-void start();
+void boot();

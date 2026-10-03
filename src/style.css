@@ -858,7 +858,7 @@ nav button img { width:28px; height:28px; }
 #friends-dialog h2 { margin:0; font-size:20px; }
 #friends-dialog button { box-shadow:none; }
 #friend-close { width:36px; height:36px; padding:0; border:0; background:transparent; font-size:26px; }
-#friend-create,#friend-leave { width:100%; margin:0 0 16px; }
+#friend-leave { width:100%; margin:0 0 16px; }
 #friend-form { margin-bottom:16px; }
 #friend-form label { display:block; margin-bottom:6px; font-size:12px; }
 .friend-code-row { display:flex; gap:8px; }
@@ -868,4 +868,28 @@ nav button img { width:28px; height:28px; }
 .cloud-settings { margin:12px 0; text-align:left; }
 .cloud-settings summary { min-height:44px; display:list-item; padding:12px 0; cursor:pointer; font-size:13px; }
 .settings-card #friends-open { width:100%; margin:8px 0 16px; }
+#room-code { grid-column:1 / -1; justify-self:end; padding:2px 4px; min-height:20px; background:transparent; color:#52664a; font-size:10px; letter-spacing:.04em; box-shadow:none; }
+#friend-connection { font-size:12px; margin:0 0 18px; color:#627257; }
+#loading.start-screen { z-index:100; padding:24px; padding-top:calc(24px + var(--safe-top)); padding-bottom:calc(24px + var(--safe-bottom)); overflow-y:auto; background:radial-gradient(ellipse at 50% 20%,#faffed 0,#eaf0d5 65%,#dce8c4 100%); }
+.start-card { width:100%; max-width:300px; margin:auto; }
+.start-mark { width:104px; height:104px; display:grid; place-items:center; margin:0 auto 18px; border-radius:50%; background:#fff9e8b3; }
+.start-mark img { width:76px; height:76px; filter:drop-shadow(0 5px 0 #52664a18); }
+#start-title { margin:0; font-size:clamp(30px,8vw,40px); letter-spacing:-.06em; color:#385039; }
+.start-subtitle { margin:10px 0 30px; font-size:13px; color:#708060; }
+#start-form { text-align:left; }
+#start-form label { display:block; margin-bottom:8px; font-size:13px; font-weight:700; }
+#start-name { width:100%; min-height:48px; border:1px solid #9daa86; border-radius:9px; padding:10px 12px; background:#fffdf4; color:#293e38; outline-offset:3px; }
+#start-name-help { display:block; margin:6px 0 22px; color:#7b846d; font-size:10px; }
+#start-options { display:grid; gap:10px; }
+#start-options button { width:100%; min-height:50px; border-radius:9px; box-shadow:none; font-size:15px; font-weight:700; }
+#start-local { background:#617f4e; color:#fffdf4; border:1px solid #617f4e; }
+#start-friends { background:#fff9e8; border:1px solid #a6b391; }
+#start-room-code { display:block; margin:24px 0 7px; letter-spacing:.12em; font-size:11px; color:#58694b; }
+.start-note { display:block; color:#7b846d; font-size:10px; }
+#start-status { min-height:104px; display:grid; place-items:center; font-size:15px; font-weight:700; }
+#start-error { font-size:12px; line-height:1.6; color:#9d4f3e; }
+#start-reload { margin:8px 0; padding:10px 16px; background:#fff9e8; border-radius:8px; }
+.start-screen[aria-busy="true"] .start-mark img { animation:start-bob 1s ease-in-out infinite; }
+@keyframes start-bob { 50% { transform:translateY(-7px) rotate(5deg); } }
+@media(prefers-reduced-motion:reduce){.start-screen[aria-busy="true"] .start-mark img{animation:none}}
 .player-emote { font-size:24px; padding:3px 8px; }

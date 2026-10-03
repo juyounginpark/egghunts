@@ -103,5 +103,17 @@ try{
   assert.equal(bot.entity.emote?.id,'hello');assert.ok(engine.facing.x>0);assert.equal(engine.velocity.x,0);
   bot.attackedBy(local.human.entity.id);assert.ok(bot.nextDecisionAt>clock);assert.ok(bot.nextDecisionAt<clock+2000);
  });
+ await test('AI can skip a greeting once, answer a new greeting after a delay, and ignore combat distractions',async()=>{
+  const {LocalSession}=await vite.ssrLoadModule('/src/local-session.ts');
+  let clock=1800000060000;const g=new GameState(freshSave(clock),()=>clock,()=>.5);
+  const client={connected:false,isHost:false,peers:[],update(){},send(){},onPacket(){}};
+  const local=new LocalSession(()=>g,client,()=>false,new AIRandom(654).next),bot=local.ai.bots[1],engine=bot.entity.game;
+  g.x=2;g.z=0;engine.x=0;engine.z=0;engine.carried=null;engine.training=false;engine.death=null;engine.returnReward=null;engine.knockedUntil=0;
+  bot.action='REST';bot.nextDecisionAt=clock+100000;bot.emoteCooldown=0;bot.personality.sociability=1;bot.random.next=()=>.99;
+  local.human.entity.emote={id:'hello',at:clock};for(let i=0;i<15;i++){clock+=50;bot.update(.05);}assert.equal(bot.entity.emote,null);
+  bot.random.next=()=>.1;for(let i=0;i<10;i++){clock+=50;bot.update(.05);}assert.equal(bot.entity.emote,null);
+  local.human.entity.emote={id:'hello',at:clock};for(let i=0;i<30;i++){clock+=50;bot.update(.05);}assert.equal(bot.entity.emote?.id,'hello');assert.ok(engine.facing.x>0);assert.equal(engine.velocity.x,0);
+  bot.entity.emote=null;bot.emoteCooldown=0;bot.action='CHASE_PLAYER';bot.targetId=local.human.entity.id;local.human.entity.emote={id:'love',at:clock};clock+=500;bot.update(.05);assert.equal(bot.entity.emote,null);
+ });
  await report('simulated-players',{passed:results.length,results,simulationSeconds:300});
 }finally{await vite.close();}
