@@ -1,3 +1,5 @@
+import {applyExplorerAppearance,disposeExplorerAppearance} from './explorer-model';
+import {normalizeAppearance,type ExplorerAppearance} from './explorer-appearance';
 import {weightSize,weightText,WEIGHT_BALANCE,petDisplayScale,type Weighted} from './weight';
 import {MountView} from './mount-view';
 import {eggMaxHp} from './data';
@@ -135,7 +137,7 @@ export class World {
     this.clearPetInstances(this.roomFarmPets);
     for(const p of entries)this.roomFarmPets.add(this.farmPet(p.id,p.slot,p.i,p.weight));
   }
-  private appearance=-1;
+  private appearance='';
   private batGeometry=new T.BoxGeometry(.13,.13,1.25);
   private batMaterial=new T.MeshLambertMaterial({color:0xc48c55});
   private swungAt=-Infinity;
@@ -147,11 +149,9 @@ export class World {
     bat.visible=age>=0&&age<350;
     if(bat.visible){const angle=-1.3+age/350*2.6;bat.position.set(Math.sin(angle)*.65,.65,Math.cos(angle)*.65);bat.rotation.y=angle;}
   }
-  private decorateAvatar(avatar:T.Object3D,choice:number){
-    const old=avatar.getObjectByName('avatar-accessory');if(old)avatar.remove(old);
-    const hat=new T.Mesh(new T.BoxGeometry(.65,.16,.6),dioramaMaterial({color:[0x99c76b,0xffb677,0x83cdf0][choice]},true));
-    hat.name='avatar-accessory';hat.position.set(0,1.05,0);hat.rotation.z=choice===1?.16:0;avatar.add(hat);
-    if(old instanceof T.Mesh){old.geometry.dispose();(old.material as T.Material).dispose();}
+  private decorateAvatar(avatar:T.Object3D,choice:number,appearance?:ExplorerAppearance){
+    const old=avatar.getObjectByName('avatar-accessory');if(old){old.removeFromParent();if(old instanceof T.Mesh){old.geometry.dispose();(old.material as T.Material).dispose();}}
+    const rig=avatar.getObjectByName('player-rig')??avatar.getObjectByName('peer-rig');if(rig)applyExplorerAppearance(rig,normalizeAppearance(appearance,choice));
   }
   async preparePeers(players:Peer[]){await loadVoxels([...new Set(players.flatMap(p=>[...(p.activePets??[]),...(p.mountPet===null||p.mountPet===undefined?[]:[p.mountPet])]))].map(id=>'pet-'+id));}
   sharedEggs:import('./game').WorldEgg[]=[];
@@ -162,7 +162,7 @@ export class World {
     for(const [id,avatar] of this.peers)if(!players.some(p=>p.id===id)){
       const accessory=avatar.getObjectByName('avatar-accessory') as T.Mesh;
       if(accessory){accessory.geometry.dispose();(accessory.material as T.Material).dispose();}
-      this.clearPetInstances(avatar);this.scene.remove(avatar);this.peers.delete(id);
+      disposeExplorerAppearance(avatar);this.clearPetInstances(avatar);this.scene.remove(avatar);this.peers.delete(id);
       const pets=this.peerPets.get(id);if(pets){this.clearPetInstances(pets.group);this.scene.remove(pets.group);this.peerPets.delete(id);}
     }
     for(const peer of players){
@@ -217,7 +217,7 @@ export class World {
       }
       const held=avatar.getObjectByName('peer-egg');if(held){held.position.y=this.mounts.carryHeight(avatar,held);animateEgg(held,frameAt/1000,this.low);}
       this.syncPeerPets(peer,avatar,peerVisible,dt,frameAt/1000);
-      if(avatar.userData.appearance!==peer.appearance){this.decorateAvatar(avatar,peer.appearance);avatar.userData.appearance=peer.appearance;}
+      const appearanceKey=JSON.stringify(peer.explorerAppearance??peer.appearance);if(avatar.userData.appearance!==appearanceKey){this.decorateAvatar(avatar,peer.appearance,peer.explorerAppearance);avatar.userData.appearance=appearanceKey;}
     }
   }
   terrain = new T.Group();
@@ -540,7 +540,7 @@ export class World {
   render(game: GameState, mode: string, dt: number, time: number) {
     this.routeStart=game.progression.stage;
     this.animateBat(this.player,game.now()-this.swungAt);
-    if(this.appearance!==(game.save.appearance??0)){this.appearance=game.save.appearance??0;this.decorateAvatar(this.player,this.appearance);}
+    const appearanceKey=JSON.stringify(game.save.explorerAppearance??game.save.appearance??0);if(this.appearance!==appearanceKey){this.appearance=appearanceKey;this.decorateAvatar(this.player,game.save.appearance??0,game.save.explorerAppearance);}
     if (time - this.hudMeasureAt > 0.3 || this.hudMeasureAt < 0) {
       this.hudMeasureAt = time;
       const host = this.host.getBoundingClientRect();

@@ -1,3 +1,4 @@
+import {APPEARANCE_OPTIONS} from './explorer-appearance';
 import type {GameState} from './game';
 import type {Peer} from './multiplayer';
 import {emoteIcon,EMOTE_DURATION,type Emote} from './emotes';
@@ -21,12 +22,16 @@ export class RoomHUD{
   const toggle=()=>{this.collapsed=!this.collapsed;this.progress.classList.toggle('collapsed',this.collapsed);this.progress.setAttribute('aria-expanded',String(!this.collapsed));};
   this.progress.classList.add('collapsed');this.progress.setAttribute('aria-expanded','false');
   this.progress.onclick=toggle;this.progress.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}};
+  document.addEventListener('pointerdown',e=>{if(!this.progress.contains(e.target as Node))this.close();});
+  document.addEventListener('hud-collapse',()=>this.close());
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')this.close();});
   this.labels.id='player-labels';place.append(this.progress);worldHost.append(this.labels);
  }
+ close(){this.collapsed=true;this.progress.classList.add('collapsed');this.progress.setAttribute('aria-expanded','false');}
  update(game:GameState,peers:Peer[],world:World,guest:boolean,visible:boolean,emote?:Emote|null){
   this.progress.hidden=this.labels.hidden=!visible;if(!visible)return;
-  const players=[{id:'self',name:game.save.playerName??'탐험가',level:game.level,isGuest:guest,slot:game.farmSlot,z:game.z,speed:game.speed,emote},...peers].slice(0,5);
-  this.heading.textContent=`참가자 ${players.length}명 ${this.collapsed?'▾':'▴'}`;
+  const players=[{id:'self',name:game.save.playerName??'탐험가',level:game.level,isGuest:guest,slot:game.farmSlot,explorerAppearance:game.save.explorerAppearance,z:game.z,speed:game.speed,emote},...peers].slice(0,5);
+  this.heading.textContent=`탐험가 ${players.length} ${this.collapsed?'▾':'▴'}`;
   this.progress.setAttribute('aria-label',`참가자 ${players.length}명 · ${this.collapsed?'펼치기':'접기'}`);
   for(const [id,entry]of this.rows)if(!players.some(p=>p.id===id)){entry.row.remove();entry.label.remove();entry.farm.remove();this.rows.delete(id);}
   for(const p of players){
@@ -46,15 +51,16 @@ export class RoomHUD{
    if(entry.name.textContent!==p.name)entry.name.textContent=p.name;
    if(entry.caption.textContent!==label){entry.caption.textContent=label;entry.row.title=label;entry.row.setAttribute('aria-label',label);}
    entry.bubble.hidden=!p.emote||game.now()-p.emote.at>=EMOTE_DURATION;
+   entry.bubble.style.opacity=String(p.emote?Math.max(0,Math.min(1,(EMOTE_DURATION-(game.now()-p.emote.at))/350)):0);
    if(p.emote)entry.bubble.textContent=emoteIcon(p.emote.id);
    entry.distance.textContent=text;entry.row.style.setProperty('--progress',`${Math.min(100,meters/-ROUTE_FAR_Z*100)}%`);
    const speedText=p.speed===undefined?'—':formatNumber(p.speed,2);entry.speed.lastElementChild!.textContent=speedText;entry.speed.title=`현재 스피드 ${speedText}`;entry.speed.setAttribute('aria-label',entry.speed.title);
-   entry.row.style.setProperty('--player-color',colors[p.slot??0]??colors[0]);entry.label.style.setProperty('--player-color',colors[p.slot??0]??colors[0]);
+   entry.row.style.setProperty('--player-color',APPEARANCE_OPTIONS.accentColorId.find(c=>c.id===p.explorerAppearance?.accentColorId)?.color??colors[p.slot??0]??colors[0]);entry.label.style.setProperty('--player-color',APPEARANCE_OPTIONS.accentColorId.find(c=>c.id===p.explorerAppearance?.accentColorId)?.color??colors[p.slot??0]??colors[0]);
    entry.row.classList.toggle('self',p.id==='self');entry.label.classList.toggle('self',p.id==='self');
    const farmText=`${p.name}의 농장${p.id==='self'?' (내 농장)':''}`;
    if(entry.farm.textContent!==farmText)entry.farm.textContent=farmText;
    entry.farm.classList.toggle('self',p.id==='self');
-   entry.farm.style.setProperty('--player-color',colors[p.slot??0]??colors[0]);
+   entry.farm.style.setProperty('--player-color',APPEARANCE_OPTIONS.accentColorId.find(c=>c.id===p.explorerAppearance?.accentColorId)?.color??colors[p.slot??0]??colors[0]);
    const farmAnchor=p.slot===undefined?null:world.farmAnchor(p.slot);entry.farm.hidden=!farmAnchor;
    if(farmAnchor)entry.farm.style.transform=`translate3d(${Math.round(farmAnchor.x)}px,${Math.round(farmAnchor.y)}px,0) translate(-50%,-100%)`;
    const anchor=world.playerAnchor(p.id==='self'?undefined:p.id);entry.label.hidden=!anchor;

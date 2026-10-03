@@ -15,7 +15,7 @@ export class PlayerEntity{
  pose():Peer{
   if(this.remotePose)return this.remotePose;
   const g=this.game,weight=(w:{weightG:number;standardWeightG:number})=>({weightG:w.weightG,standardWeightG:w.standardWeightG});
-  return {id:this.id,kind:this.kind==='simulated'?'simulated':'human',name:g.save.playerName??'탐험가',slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,level:g.level,health:g.hp,maxHealth:g.maxHp,carried:g.carried?.type??null,downUntil:g.knockedUntil,hitAt:Number.isFinite(g.hitAt)?g.hitAt:0,attackAt:g.batAt,training:g.training,seat:g.seat,activePets:g.activePetLots.map(l=>l.species),activePetWeights:g.activePetLots.map(weight),mountPet:g.mountId,mountWeight:g.mountPetLot?weight(g.mountPetLot):undefined,riding:g.riding,speed:g.speed,velocity:{...g.velocity},at:g.now(),emote:this.emote&&g.now()-this.emote.at<EMOTE_DURATION?this.emote:null};
+  return {id:this.id,kind:this.kind==='simulated'?'simulated':'human',name:g.save.playerName??'탐험가',slot:g.farmSlot,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),appearance:g.save.appearance??0,explorerAppearance:g.save.explorerAppearance,level:g.level,health:g.hp,maxHealth:g.maxHp,carried:g.carried?.type??null,downUntil:g.knockedUntil,hitAt:Number.isFinite(g.hitAt)?g.hitAt:0,attackAt:g.batAt,training:g.training,seat:g.seat,activePets:g.activePetLots.map(l=>l.species),activePetWeights:g.activePetLots.map(weight),mountPet:g.mountId,mountWeight:g.mountPetLot?weight(g.mountPetLot):undefined,riding:g.riding,speed:g.speed,velocity:{...g.velocity},at:g.now(),emote:this.emote&&g.now()-this.emote.at<EMOTE_DURATION?this.emote:null};
  }
 }
 export class HumanController{

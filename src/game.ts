@@ -1,4 +1,5 @@
 import {OVERHAUL,upgradeBaseSpeed,progressionSpeedValue,productionUpgradeMultiplier,petIncomeValue,incomeValue,trainingProgressAfter,offlineSeconds,tapDamageValue,autoDamageValue,stageReward,walkingSpeedValue,stableRecoveryRatio,collectionEligible} from './balance';
+import {normalizeAppearance,type ExplorerAppearance} from './explorer-appearance';
 import {ULTRA_SECRET} from './ultra-secret';
 import {PERSONAL_BOSS,EGG_REPLENISH,OFF_PATH_SPEED_MULTIPLIER,PLAYER_CHASE_SPEED_MULTIPLIER,UNDER_RECOMMENDED_EGG_SPEED_MULTIPLIER} from './stage-data';
 import {rainStrength,windStrength} from './weather';
@@ -99,6 +100,8 @@ export type Save = {
   death?:{x:number;z:number;at:number;remaining:number}|null;
   version: 1;
   appearance?: number;
+  explorerAppearance?:ExplorerAppearance;
+  explorerCreatedAt?:number;
   obtainedPets?:number[];
   trails?: number[];
   equippedTrail?: number;
@@ -195,6 +198,8 @@ export function parseSave(raw: string | null, now: number): Save {
   if(s.death&&(![s.death.x,s.death.z,s.death.at,s.death.remaining].every(Number.isFinite)||s.death.remaining<0||Math.abs(s.death.x)>BALANCE.baseMapX||s.death.z<BALANCE.mapFarZ||s.death.z>BALANCE.mapNearZ))throw new Error("Invalid death state");
   s.appearance ??= 0;
   if(![0,1,2].includes(s.appearance))throw new Error("Invalid appearance");
+  s.explorerAppearance=normalizeAppearance(s.explorerAppearance,s.appearance);
+  if(!Number.isFinite(s.explorerCreatedAt)||s.explorerCreatedAt!<0)s.explorerCreatedAt=s.playerName?Math.max(0,s.lastSavedAt):undefined;
   s.tutorial ??= s.mongles?.some(Boolean) ? 5 : 0;
   migrateTutorial(s);
   s.claimedPets ??= []; s.claimedRegions ??= []; s.claimedCollection ??= false;

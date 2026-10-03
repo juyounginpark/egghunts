@@ -1,3 +1,5 @@
+import {ExplorerEditor} from './explorer-editor';
+import {explorerNameError,normalizeAppearance} from './explorer-appearance';
 import {weightText} from './weight';
 import {activeStatusEffects} from './status-effects-ui';
 import {SpeedVignette} from './speed-vignette';
@@ -48,7 +50,7 @@ let weeklyClaiming=false;
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
-app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header id="main-hud" aria-label="탐험가 정보"><div class="hud-player"><img class="hud-avatar" src="${import.meta.env.BASE_URL}models/alkong.png" alt="탐험가"/><div class="hud-level"><strong id="level">LV.1</strong><div id="xp-track" role="progressbar" aria-label="경험치" aria-valuemin="0"><i id="xp-fill"></i></div></div></div><button id="cycle-clock" type="button" aria-live="off" aria-expanded="true" title="상단 정보 간소화"><span id="cycle-phase"></span><span id="cycle-label"></span><strong id="cycle-remaining"></strong><span id="cycle-track" aria-hidden="true"><i id="cycle-fill"></i></span></button><div class="hud-wallet"><div class="dust"><span aria-hidden="true">${uiIcon('dust')}</span><b id="dust">0</b><small>별가루</small></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></div></header><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
+app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header id="main-hud" aria-label="탐험가 정보"><div class="hud-player"><img class="hud-avatar" src="${import.meta.env.BASE_URL}models/alkong.png" alt="탐험가"/><div class="hud-level"><strong id="level">LV.1</strong><div id="xp-track" role="progressbar" aria-label="경험치" aria-valuemin="0"><i id="xp-fill"></i></div></div></div><div id="cycle-clock" aria-live="off"><span id="cycle-phase"></span><span id="cycle-label"></span><strong id="cycle-remaining"></strong><span id="cycle-track" aria-hidden="true"><i id="cycle-fill"></i></span></div><div class="hud-wallet"><div class="dust"><span aria-hidden="true">${uiIcon('dust')}</span><b id="dust">0</b><small>별가루</small></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></div></header><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
   icons,
 )
   .map(
@@ -76,8 +78,11 @@ let hudCompact=true,wasExploring=false;
 function setHudCompact(compact:boolean){
   hudCompact=compact;
   topHud.classList.toggle('compact',compact);
-  $('cycle-clock').setAttribute('aria-expanded',String(!compact));
-  $('cycle-clock').title=compact?'상단 정보 펼치기':'상단 정보 간소화';
+  $('hud-toggle').setAttribute('aria-expanded',String(!compact));
+  $('hud-toggle').setAttribute('aria-label',compact?'HUD 펼치기':'HUD 접기');
+  $('hud-toggle').textContent=compact?'⌄':'⌃';
+  if(compact)document.dispatchEvent(new Event('hud-collapse'));
+  if(topHud.isConnected&&!matchMedia('(prefers-reduced-motion: reduce)').matches)topHud.animate([{opacity:.75,transform:'translateY(-3px)'},{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'ease-out'});
 }
 const hudObserver=new ResizeObserver(()=>{
   const bottom=$('main-hud').getBoundingClientRect().bottom-$('shell').getBoundingClientRect().top;
@@ -85,6 +90,11 @@ const hudObserver=new ResizeObserver(()=>{
   $('shell').style.setProperty('--top-hud-bottom',`${topHud.getBoundingClientRect().bottom-$('shell').getBoundingClientRect().top}px`);
 });
 hudObserver.observe($('main-hud'));hudObserver.observe(topHud);
+$('main-hud').append($('settings'));
+$('main-hud').insertAdjacentHTML('beforeend','<button id="hud-toggle" type="button" aria-controls="hud-context" aria-label="HUD 펼치기" aria-expanded="false">⌄</button>');
+const incomeLabel=$('dust').parentElement!.querySelector('small')!;
+incomeLabel.id='income-rate';incomeLabel.setAttribute('aria-label','초당 별가루 생산량');
+$('cycle-clock').insertBefore(incomeLabel,$('cycle-track'));
 topHud.id = "top-hud";
 setHudCompact(true);
 $("shell").append(topHud);
@@ -101,7 +111,7 @@ announcement.setAttribute("role", "status");
 topHud.append(announcement);
 const speedHud = document.createElement("div");
 speedHud.id = "speed-hud";
-speedHud.innerHTML = `<div class="speed-heading">${uiIcon('speed')}<strong id="speed-value"></strong></div><small id="speed-help">운동으로 증가</small><span id="day-clock"></span>`;
+speedHud.innerHTML = `<div class="speed-heading">${uiIcon('speed')}<strong id="speed-value"></strong></div><div class="speed-meta"><small id="speed-help">운동으로 증가</small><span id="day-clock"></span></div>`;
 const hudContext=document.createElement('div');
 hudContext.id='hud-context';
 topHud.append(hudContext);
@@ -126,7 +136,7 @@ const tutorial = document.createElement("div");
 tutorial.id = "tutorial";
 tutorial.innerHTML = `<img id="tutorial-icon" src="${import.meta.env.BASE_URL}models/egg-0.png" alt=""/><div><b id="tutorial-title"></b><p id="tutorial-copy"></p></div><button id="tutorial-skip" aria-label="튜토리얼 건너뛰기">×</button>`;
 topHud.append(tutorial);
-const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='events';topHud.append(weeklyEntry);
+const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry';weeklyEntry.dataset.tab='events';hudPlace.append(weeklyEntry);
 let renderedWeeklyDay=-1;
 $("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤이 깊어 나가지 못해요.<br>날이 밝으면 다시 출발해요.</p><small>낮 3분 · 밤 2분 (마지막 15초는 깊은 밤)</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
@@ -381,14 +391,15 @@ function updateHud() {
     toast(phase.normalNight?'곧 깊은 밤이 와요! 기지로 돌아가세요.':'곧 밤이 와요! 이동속도 30% 감소','night');
     if(!matchMedia('(prefers-reduced-motion: reduce)').matches)$('cycle-remaining').animate([{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});
   }
-  clock.setAttribute('aria-label',`${phase.night?'밤':'낮'} · ${$('cycle-label').textContent} ${phase.text} · ${hudCompact?'상단 정보 펼치기':'상단 정보 간소화'}`);
+  clock.setAttribute('aria-label',`${phase.night?'밤':'낮'} · ${$('cycle-label').textContent} ${phase.text}`);
   $("night-sky").classList.toggle('visible',phase.night&&tab==='explore');
   $("speed-hud").classList.toggle("training", game.training);
   $("train-now").hidden=tab!=='explore'||!game.isAtBase||game.nearGym||game.training||game.seat!==null||!!game.carried||!!game.death||!!game.returnReward;
-  const weatherTags=[phase.normalNight?'밤':'',game.isRaining?'비':'',game.isWindy?'바람':'',game.offPath?'잔디':'',game.chaseSpeedMultiplier>1?'추격':'',game.eggSpeedPenalty<1?'권장속도 미달':''].filter(Boolean);
+  const weatherTags=[phase.normalNight?'☾':'',game.isRaining?'☔':'',game.isWindy?'바람':'',game.offPath?'잔디':'',game.chaseSpeedMultiplier>1?'추격':'',game.eggSpeedPenalty<1?'무게':''].filter(Boolean);
   const weatherSpeed=(phase.normalNight?BALANCE.nightMoveMultiplier:1)*(game.isRaining?BALANCE.rainMoveMultiplier:1)*(game.isWindy?BALANCE.windMoveMultiplier:1)*game.pathSpeedMultiplier*game.chaseSpeedMultiplier*game.eggSpeedPenalty,weatherChange=Math.round((weatherSpeed-1)*1000)/10;
-  $('speed-help').textContent=game.training?((game.save.trainingProgress??0)>=1?'운동 성장 최대':`+${formatTrainingGain(game.effectiveTrainingRate)}/초`):weatherTags.length?`${weatherTags.join('·')} · 이동 ${weatherChange>=0?'+':'−'}${Math.abs(weatherChange)}%`:'';
+  $('speed-help').textContent=game.training?((game.save.trainingProgress??0)>=1?'운동 성장 최대':`+${formatTrainingGain(game.effectiveTrainingRate)}/초`):weatherTags.length?`${weatherTags.join('·')} ${weatherChange>=0?'+':'−'}${Math.abs(weatherChange)}%`:'';
   $('speed-help').hidden=!game.training&&!weatherTags.length;
+  $('speed-help').title=`이동 속도 ${weatherChange>=0?'+':''}${weatherChange}%`;
   const hint=tutorialHint(game,tab);
   $("tutorial").hidden=!hint || !!game.returnReward || game.result!==null || !!game.death || paused;
   $("tutorial-title").textContent=hint?`${hint.step}/${TUTORIAL_STEPS} · ${hint.title}`:'';
@@ -454,7 +465,7 @@ function updateHud() {
     $("dust").textContent = num(game.save.dust);
   $('dust').classList.toggle('long-number',$('dust').textContent!.length>8);
   $('dust').parentElement!.title=`별가루 ${exactMoney(game.save.dust)}`;
-  $('dust').parentElement!.querySelector('small')!.textContent=`${num(game.incomePerSecond)}/초`;
+  $('income-rate').textContent=`${num(game.incomePerSecond)}/초`;
   $("timer").textContent = num(game.recommendedSpeed,1);
   $("timer-label").textContent = "권장 속도";
   $("timer-fill").style.width = `${Math.min(100,game.speed/game.recommendedSpeed*100)}%`;
@@ -554,25 +565,35 @@ function renderEggQueue() {
     ? `<div class="stat-badges"><span>${game.save.active.length}/${BALANCE.maxCompanions}</span>${game.activePetLots.map(l=>`<span>${MONGLES[l.species].name} ${weightText(l.weightG)}</span>`).join('')}</div>`
     : "알을 부화하면 펫이 함께 걸어요";
 }
+function openExplorerWardrobe(){
+  const dialog=document.createElement('dialog');dialog.className='explorer-wardrobe';dialog.setAttribute('aria-label','탐험가 꾸미기');
+  dialog.innerHTML='<h2>탐험가 꾸미기</h2><div class="wardrobe-editor"></div><div class="entry-footer"><button id="wardrobe-cancel" class="secondary">취소</button><button id="wardrobe-save" class="primary">저장</button></div>';
+  $('shell').append(dialog);
+  const editor=new ExplorerEditor(dialog.querySelector('.wardrobe-editor')!,normalizeAppearance(game.save.explorerAppearance,game.save.appearance));
+  dialog.querySelector<HTMLButtonElement>('#wardrobe-save')!.onclick=()=>{game.save.explorerAppearance={...editor.appearance};game.save.explorerCreatedAt??=game.now();game.revision++;void save();dialog.close();};
+  dialog.querySelector<HTMLButtonElement>('#wardrobe-cancel')!.onclick=()=>dialog.close();
+  dialog.onclose=()=>{editor.dispose();dialog.remove();};dialog.showModal();
+}
 function showSettings() {
   if (!ready || game.result !== null || virtualAd || game.death) return;
   paused = true;
+  roomHUD.close();friendsUI.closePicker();
   input.reset();
   void save();
   $("modal").hidden = false;
   $("modal").innerHTML =
     `<div class="settings-card"><h1>설정</h1><p>진행 상황은 자동 저장돼요.</p><button id="friends-open" class="secondary">친구와 플레이</button><fieldset class="sound-settings"><legend>사운드</legend><label for="volume-setting">전체 볼륨 <output id="volume-value" for="volume-setting">${Math.round((game.save.settings.volume??1)*100)}%</output></label><input id="volume-setting" type="range" min="0" max="100" step="1" value="${Math.round((game.save.settings.volume??1)*100)}" aria-label="배경음악과 효과음 볼륨"/><label for="sound-setting">음소거 <input id="sound-setting" type="checkbox" ${!game.save.settings.sound ? "checked" : ""}></label><small>배경음악 · 효과음에 함께 적용</small></fieldset><label>햅틱 <input id="haptic-setting" type="checkbox" ${game.save.settings.haptic ? "checked" : ""}></label><label>그래픽 <select id="quality-setting"><option value="high" ${game.save.settings.quality === "high" ? "selected" : ""}>기본 · 그림자 켜기</option><option value="low" ${game.save.settings.quality === "low" ? "selected" : ""}>가볍게 · 그림자 끄기</option></select></label><button id="leaderboard" class="secondary">최장 원정 순위 · ${num(game.save.best)}m</button><button id="resume" class="primary">모험 계속하기</button></div>`;
   $('friends-open').onclick=()=>{paused=false;$('modal').hidden=true;friendsUI.open();};
-  $("resume").insertAdjacentHTML("beforebegin",`<label>탐험가 모자 <select id="appearance-setting"><option value="0">새싹 초록</option><option value="1">노을 주황</option><option value="2">하늘 파랑</option></select></label>`);
+  $('resume').insertAdjacentHTML('beforebegin','<button id="customize-explorer" class="secondary">탐험가 꾸미기</button>');
+  $('customize-explorer').onclick=()=>openExplorerWardrobe();
   const accountLink=document.createElement('section');$('resume').before(accountLink);cloud.mountAccount(accountLink);
-  $('resume').insertAdjacentHTML('beforebegin','<label>탐험가 이름<input id="player-name-setting" maxlength="10" autocomplete="nickname"></label>');
+  $('resume').insertAdjacentHTML('beforebegin','<label>탐험가 이름<input id="player-name-setting" maxlength="12" autocomplete="nickname"></label>');
   ($('player-name-setting') as HTMLInputElement).value=game.save.playerName??'탐험가';
   if(platform.native){
     const restore=document.createElement('button');restore.className='secondary';restore.textContent='이전 토스 저장 복원';
     restore.onclick=()=>void(async()=>{try{const legacy=await platform.load();if(!platform.hasLegacyBackup())throw Error('이전 저장을 아직 읽지 못했어요. 잠시 후 다시 시도해 주세요.');await cloud.restoreLegacy(legacy);toast('이전 저장을 복원했어요. 현재 기록은 기기에 백업했어요.');}catch(e){toast(String(e));}})();
     $('resume').before(restore);
   }
-  ($("appearance-setting") as HTMLSelectElement).value=String(game.save.appearance??0);
   $('resume').insertAdjacentHTML('beforebegin','<fieldset class="sound-settings email-link"><legend>쿠폰 코드</legend><form id="coupon-form"><label>쿠폰 코드<input id="coupon-code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="64" required placeholder="코드를 입력하세요"></label><button type="submit" class="secondary">쿠폰 사용</button></form><p id="coupon-status" role="status">쿠폰은 계정당 1회 사용할 수 있어요. 농장에서 입력해 주세요.</p></fieldset>');
   const couponForm=$('coupon-form') as HTMLFormElement,couponInput=$('coupon-code') as HTMLInputElement,couponStatus=$('coupon-status');
   couponForm.onsubmit=async event=>{
@@ -629,7 +650,7 @@ document.addEventListener("click", async (e) => {
       eggBag.close();renderEggQueue();updateHud();
     }finally{b.removeAttribute('disabled');}return;
   }
-  if(b.id==='cycle-clock'){setHudCompact(!hudCompact);return;}
+  if(b.id==='hud-toggle'){setHudCompact(!hudCompact);return;}
   if(b.id==='hatch-touch'||b.id==='claim-hatch'){
     if(tab!=='hatchery'||paused||hatchRevealing||!$('modal').hidden||game.returnReward||game.death)return;
     if(game.selected&&game.selected.hp>0){
@@ -810,8 +831,10 @@ document.addEventListener("click", async (e) => {
     setTab("hatchery");
   }
   if (b.id === "resume") {
-    selectedPlayerName=game.save.playerName=($('player-name-setting') as HTMLInputElement).value.normalize('NFC').replace(/[^\p{L}\p{N}_]/gu,'').slice(0,10)||'탐험가';
-    game.save.appearance=Number(($("appearance-setting") as HTMLSelectElement).value);
+    const nameInput=$('player-name-setting') as HTMLInputElement,name=nameInput.value.normalize('NFC').trim();
+    nameInput.setCustomValidity(name===game.save.playerName?'':explorerNameError(name));
+    if(!nameInput.reportValidity())return;
+    selectedPlayerName=game.save.playerName=name;
     try {
       await platform.syncTime();
       if(platform.trustedTime)cloud.clock.sync(Date.now()+platform.offset);
@@ -937,10 +960,12 @@ async function boot(){
     const state=await cloud.load(()=>platform.load(),!!qa);
     if(qa){await start(state);return;}
     let prepared:Promise<void>|undefined;
-    new StartScreen($('loading'),state.playerName??'',async choice=>{
+    game=new GameState(state,()=>platform.now());
+    if(location.hash.includes('access_token='))await cloud.initialize();
+    new StartScreen($('loading'),{profile:()=>game.save,sendCode:email=>cloud.sendLoginCode(email),verifyCode:(email,code)=>cloud.verifyLoginCode(email,code)},async choice=>{
       selectedPlayerName=choice.name;
-      await (prepared??=start(state));
-      game.save.playerName=choice.name;
+      game.save.playerName=choice.name;game.save.explorerAppearance=choice.appearance;game.save.explorerCreatedAt=choice.createdAt;
+      await (prepared??=start(game.save));
       await cloud.persist();
       lastNow=performance.now();
     },choice=>{if(choice.mode==='friends')friendsUI.open();});
@@ -1037,6 +1062,7 @@ function frame(now: number) {
   world.updatePeers(session.peers,tab==="explore"&&!game.returnReward&&game.result===null,game.now());
   world.networkOffset={x:0,z:0};
   world.render(game, tab, qa ? 1 : dt, qa ? qa.visualTime : now / 1000);
+  if(paused||tab!=='explore'||!$('modal').hidden||friendsUI.active)roomHUD.close();
   friendsUI.update(tab==='explore'&&!paused&&!game.death&&!game.returnReward&&$('modal').hidden);
   roomHUD.update(game,session.peers,world,cloud.guest,tab==='explore'&&!game.returnReward,session.human.entity.emote);
   if (now - savedAt > LOCAL_FIRST.localSaveMs) {

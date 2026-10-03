@@ -1,3 +1,4 @@
+import {randomAppearance,normalizeAppearance,type ExplorerAppearance} from './explorer-appearance';
 import {GameState,freshSave,type WorldEgg,type Save} from './game';
 import {PlayerEntity} from './player-entity';
 import {AI_WORLD,BALANCE,MONGLES,EGGS} from './data';
@@ -10,7 +11,7 @@ import {AI_NAMES} from './ai-names';
 export {AI_NAMES} from './ai-names';
 export type AIAction='SEARCH_EGG'|'RETURN_BASE'|'EXERCISE'|'REST'|'WANDER'|'CHASE_PLAYER'|'SOCIALIZE'|'ESCAPE'|'IDLE'|'LEAVE';
 export type AIPersonality={aggression:number;greed:number;cowardice:number;curiosity:number;sociability:number;skill:number;patience:number;riskTolerance:number};
-export type AICheckpoint={id:string;seed:number;randomState:number;slot:number;name:string;sessionAge:number;remaining:number;action:AIAction;x:number;z:number;rotation:number;health:number;carryingEgg:WorldEgg|null;targetId:string|null;decisionIn:number;emoteIn:number;idleIn:number;level:number;trainingProgress:number;activePets:number[];mountPet:number|null;emote:import('./emotes').Emote|null;leaveSoon:boolean;stageStart:number;highestStage:number;target:{x:number;z:number};targetEgg:WorldEgg|null;upgrades:Save['upgrades'];trainingSpeed:number;petLots:PetLot[];hatch:{eggs:Save['eggs'];selected:string|null}};
+export type AICheckpoint={explorerAppearance?:ExplorerAppearance;id:string;seed:number;randomState:number;slot:number;name:string;sessionAge:number;remaining:number;action:AIAction;x:number;z:number;rotation:number;health:number;carryingEgg:WorldEgg|null;targetId:string|null;decisionIn:number;emoteIn:number;idleIn:number;level:number;trainingProgress:number;activePets:number[];mountPet:number|null;emote:import('./emotes').Emote|null;leaveSoon:boolean;stageStart:number;highestStage:number;target:{x:number;z:number};targetEgg:WorldEgg|null;upgrades:Save['upgrades'];trainingSpeed:number;petLots:PetLot[];hatch:{eggs:Save['eggs'];selected:string|null}};
 export class AIRandom{
  constructor(public state:number){}
  next=()=>{this.state=(this.state+0x6D2B79F5)|0;let t=this.state;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};
@@ -30,6 +31,7 @@ export class AIController{
   this.personality={aggression:r(),greed:r(),cowardice:r(),curiosity:r(),sociability:r(),skill:.15+r()*.8,patience:r(),riskTolerance:r()};
   const age=30+r()*870,save=freshSave(reference.now());
   save.progression=newProgression();save.progression.stage=reference.progression.stage;save.highestStage=Math.max(reference.progression.stage,reference.save.highestStage??1);
+  save.explorerAppearance=checkpoint?normalizeAppearance(checkpoint.explorerAppearance):randomAppearance(r,this.personality.aggression);
   save.playerName=checkpoint?.name??AI_NAMES[Math.floor(r()*AI_NAMES.length)];save.appearance=Math.floor(r()*3);save.tutorial=99;save.bossWarningSeen=true;
   save.upgrades={...reference.save.upgrades,speed:Math.max(0,reference.save.upgrades.speed+Math.floor(r()*3)-1)};
   save.trainingProgress=Math.min(.99,Math.max(0,(reference.save.trainingProgress??0)*(.75+r()*.5)+age*.00025));
@@ -65,7 +67,7 @@ export class AIController{
   g.training=s.action==='EXERCISE'&&g.nearGym&&!g.carried;
  }
  checkpoint():AICheckpoint{
-  const g=this.entity.game,now=g.now();return {id:this.entity.id,seed:this.seed,randomState:this.random.state,slot:g.farmSlot,name:g.save.playerName!,sessionAge:now-this.joinedAt,remaining:Math.max(0,this.plannedLeaveAt-now),action:this.action,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),health:g.hp,carryingEgg:g.carried?{...g.carried}:null,targetId:this.targetId,decisionIn:Math.max(0,this.nextDecisionAt-now),emoteIn:Math.max(0,this.emoteCooldown-now),idleIn:Math.max(0,this.idleUntil-now),level:g.level,trainingProgress:g.save.trainingProgress??0,activePets:[...g.save.active],mountPet:g.mountId,emote:this.entity.emote,leaveSoon:this.leaveSoon,stageStart:g.progression.stage,highestStage:g.save.highestStage??1,target:{...this.target},targetEgg:g.world.find(e=>e.id===this.targetId)??null,upgrades:{...g.save.upgrades},trainingSpeed:g.save.trainingSpeed??0,petLots:(g.save.petLots??[]).filter(l=>l.count>0&&[...(g.save.activeLots??[]),g.save.mountLot].includes(l.key)).map(l=>({...l})),hatch:{eggs:structuredClone(g.save.eggs),selected:g.save.selected}};
+  const g=this.entity.game,now=g.now();return {explorerAppearance:g.save.explorerAppearance,id:this.entity.id,seed:this.seed,randomState:this.random.state,slot:g.farmSlot,name:g.save.playerName!,sessionAge:now-this.joinedAt,remaining:Math.max(0,this.plannedLeaveAt-now),action:this.action,x:g.x,z:g.z,rotation:Math.atan2(g.facing.x,g.facing.z),health:g.hp,carryingEgg:g.carried?{...g.carried}:null,targetId:this.targetId,decisionIn:Math.max(0,this.nextDecisionAt-now),emoteIn:Math.max(0,this.emoteCooldown-now),idleIn:Math.max(0,this.idleUntil-now),level:g.level,trainingProgress:g.save.trainingProgress??0,activePets:[...g.save.active],mountPet:g.mountId,emote:this.entity.emote,leaveSoon:this.leaveSoon,stageStart:g.progression.stage,highestStage:g.save.highestStage??1,target:{...this.target},targetEgg:g.world.find(e=>e.id===this.targetId)??null,upgrades:{...g.save.upgrades},trainingSpeed:g.save.trainingSpeed??0,petLots:(g.save.petLots??[]).filter(l=>l.count>0&&[...(g.save.activeLots??[]),g.save.mountLot].includes(l.key)).map(l=>({...l})),hatch:{eggs:structuredClone(g.save.eggs),selected:g.save.selected}};
  }
  emote(id:EmoteId,important=false){const now=this.entity.game.now();if(now<this.emoteCooldown||this.random.next()>(important?.5:.15)*this.personality.sociability)return;this.entity.emote={id,at:now};this.emoteCooldown=now+10000+this.random.next()*20000;}
  attackedBy(id:string){

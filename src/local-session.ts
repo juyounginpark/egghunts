@@ -16,7 +16,7 @@ export class LocalSession{
  }
  get peers():Peer[]{return this.multiplayer.connected?this.multiplayer.isHost?[...this.multiplayer.peers.filter(p=>p.kind!=='simulated'),...(this.ai?.bots??[]).map(b=>({...b.entity.pose(),action:b.action}))]:this.multiplayer.peers:(this.ai?.bots??[]).map(b=>({...b.entity.pose(),action:b.action}));}
  private localActor(id:string){return this.human.entity.id===id?this.human.entity:this.ai.bots.find(b=>b.entity.id===id)?.entity;}
- emote(id:EmoteId){const now=this.game().now();if(now-(this.human.entity.emote?.at??0)<1000)return;this.human.entity.emote={id,at:now};}
+ emote(id:EmoteId){const now=this.game().now();if(now-(this.human.entity.emote?.at??0)<1800)return;this.human.entity.emote={id,at:now};}
  attack(actor:PlayerEntity,targetId?:string){
   const g=actor.game,now=g.now();if(g.death||g.carried||g.training||now<g.knockedUntil||now-g.batAt<BALANCE.batCooldown)return;
   g.batAt=now;

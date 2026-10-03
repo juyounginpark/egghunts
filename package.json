@@ -28,6 +28,8 @@
     "server:legacy-multiplayer": "node scripts/multiplayer-server.mjs",
     "qa:simulated-players": "node scripts/qa/simulated-players.mjs && node scripts/qa/local-first-ui.mjs",
     "qa:local-first": "node scripts/qa/local-first.mjs && node scripts/qa/local-first-ui.mjs",
+    "qa:mobile-hud": "node scripts/qa/mobile-hud.mjs",
+    "qa:explorer-profile": "node scripts/qa/explorer-profile.mjs",
     "build:pages": "npm run build -- --base=/egghunts/"
   },
   "dependencies": {

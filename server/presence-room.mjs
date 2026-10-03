@@ -17,7 +17,12 @@ export class PresenceRoom{
   const old=this.players.get(id);if(!old||!state||typeof state!=='object')throw Error('INVALID_STATE');const next={...old};
   for(const key of ['x','z','rotation','appearance','level','speed','health','maxHealth','downUntil','hitAt','attackAt'])if(key in state){if(!Number.isFinite(state[key])||Math.abs(state[key])>1e14)throw Error('INVALID_STATE');next[key]=state[key];}
   if(Math.abs(next.x)>10000||Math.abs(next.z)>10000)throw Error('INVALID_STATE');
-  if(typeof state.name==='string')next.name=state.name.normalize('NFC').replace(/[^\p{L}\p{N}_]/gu,'').slice(0,10)||'탐험가';
+  if(typeof state.name==='string')next.name=state.name.normalize('NFC').replace(/[^\p{L}\p{N}_]/gu,'').slice(0,12)||'탐험가';
+  if('explorerAppearance' in state){
+   const fields={skinId:['skin',8],faceId:['face',8],hairId:['hair',12],hairColorId:['haircolor',10],outfitId:['outfit',8],accentColorId:['accent',8],accessoryId:['accessory',8],backpackId:['backpack',4]},a=state.explorerAppearance;
+   if(!a||typeof a!=='object'||Object.entries(fields).some(([key,[prefix,count]])=>!Array.from({length:count},(_,i)=>prefix+'-'+i).includes(a[key])))throw Error('INVALID_APPEARANCE');
+   next.explorerAppearance=Object.fromEntries(Object.keys(fields).map(k=>[k,a[k]]));
+  }
   for(const key of ['training','riding'])if(key in state)next[key]=state[key]===true;
   for(const key of ['carried','mountPet'])if(key in state)next[key]=Number.isInteger(state[key])&&state[key]>=0&&state[key]<(key==='carried'?36:721)?state[key]:null;
   if('seat' in state)next.seat=Number.isInteger(state.seat)&&state.seat>=0&&state.seat<4?state.seat:null;

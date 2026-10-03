@@ -1,28 +1,57 @@
-export type StartChoice={name:string;mode:'local'|'friends'};
+import {ExplorerEditor} from './explorer-editor';
+import {explorerNameError,normalizeAppearance,randomExplorerName,type ExplorerAppearance} from './explorer-appearance';
+import type {Save} from './game';
+export type StartChoice={name:string;mode:'local'|'friends';appearance:ExplorerAppearance;createdAt:number};
+type EntryAccount={profile:()=>Save;sendCode:(email:string)=>Promise<void>;verifyCode:(email:string,code:string)=>Promise<void>};
 
-/** The world and its pre-simulated actors are prepared behind this entry scene. */
+/** New profiles are created before the world is exposed; returning saves skip onboarding. */
 export class StartScreen{
- private busy=false;
- constructor(private root:HTMLElement,name:string,private enter:(choice:StartChoice)=>Promise<void>,private entered:(choice:StartChoice)=>void=()=>{}){
-  root.classList.add('start-screen');root.setAttribute('aria-labelledby','start-title');
-  root.innerHTML=`<div class="start-card"><div class="start-mark" aria-hidden="true"><img src="${import.meta.env.BASE_URL}models/egg-0.png" alt="" /></div><h1 id="start-title">알콩원정대</h1><p class="start-subtitle">작은 알에서 시작되는 모험</p><form id="start-form"><label for="start-name">이름</label><input id="start-name" maxlength="10" autocomplete="nickname" spellcheck="false" required aria-describedby="start-name-help"><small id="start-name-help">한글·영문·숫자·밑줄, 최대 10자</small><div id="start-options"><button id="start-local" type="submit" class="primary">서버접속</button><button id="start-friends" type="button" class="secondary">친구랑 플레이</button></div></form><p id="start-status" role="status" hidden></p><p id="start-error" role="alert" hidden></p><button id="start-reload" type="button" hidden>새로고침</button></div>`;
-  const form=root.querySelector<HTMLFormElement>('#start-form')!,input=root.querySelector<HTMLInputElement>('#start-name')!;
-  input.value=name;
-  const validName=()=>{input.value=input.value.normalize('NFC').trim();input.setCustomValidity(/^[\p{L}\p{N}_]{1,10}$/u.test(input.value)?'':'이름을 1~10자로 입력해 주세요.');return input.reportValidity();};
-  input.oninput=()=>input.setCustomValidity('');
-  form.onsubmit=e=>{e.preventDefault();if(validName())void this.begin({name:input.value,mode:'local'});};
-  root.querySelector<HTMLButtonElement>('#start-friends')!.onclick=()=>{if(validName())void this.begin({name:input.value,mode:'friends'});};
-  root.querySelector<HTMLButtonElement>('#start-reload')!.onclick=()=>location.reload();
+ private busy=false;private editor:ExplorerEditor|null=null;private name='';private appearance:ExplorerAppearance;private step='account';private email='';
+ constructor(private root:HTMLElement,private account:EntryAccount,private enter:(choice:StartChoice)=>Promise<void>,private entered:(choice:StartChoice)=>void=()=>{}){
+  const save=account.profile();this.name=save.playerName??'';this.appearance=normalizeAppearance(save.explorerAppearance,save.appearance);
+  this.step=save.explorerCreatedAt?'ready':'account';root.classList.add('start-screen');root.setAttribute('aria-labelledby','start-title');this.render();
  }
- private async begin(choice:StartChoice){
-  if(this.busy)return;this.busy=true;
-  const form=this.root.querySelector<HTMLFormElement>('form')!,status=this.root.querySelector<HTMLElement>('#start-status')!,error=this.root.querySelector<HTMLElement>('#start-error')!,reload=this.root.querySelector<HTMLElement>('#start-reload')!;
-  form.hidden=true;error.hidden=reload.hidden=true;status.hidden=false;status.textContent='서버 접속중…';this.root.setAttribute('aria-busy','true');
-  try{
-   await Promise.all([this.enter(choice),new Promise(resolve=>setTimeout(resolve,700))]);
-   this.root.hidden=true;this.entered(choice);
-  }catch(reason){
-   error.textContent=reason instanceof Error?reason.message:'모험을 준비하지 못했어요. 다시 시도해 주세요.';error.hidden=false;reload.hidden=false;form.hidden=false;status.hidden=true;
-  }finally{this.busy=false;this.root.removeAttribute('aria-busy');}
+ private go(step:string){this.step=step;this.render();}
+ private render(){
+  this.editor?.dispose();this.editor=null;
+  this.root.innerHTML='<div class="start-card"><h1 id="start-title">알콩원정대</h1><div id="entry-content"></div><p id="start-status" role="status" hidden></p><p id="start-error" role="alert" hidden></p></div>';
+  this.root.classList.toggle('creating-explorer',['customize','preview'].includes(this.step));
+  const content=this.root.querySelector<HTMLElement>('#entry-content')!;
+  const button=(id:string,fn:()=>void)=>content.querySelector<HTMLButtonElement>('#'+id)!.onclick=fn;
+  if(this.step==='account'){
+   content.innerHTML='<p class="start-subtitle">탐험을 떠나기 전,<br>당신의 탐험가를 준비해볼까요?</p><div id="start-options"><button id="guest-start" class="primary">게스트 시작</button><button id="entry-login" class="secondary">로그인</button></div><small class="explorer-note">게스트는 이 기기에 저장돼요.</small>';
+   button('guest-start',()=>this.go('name'));button('entry-login',()=>this.go('login'));
+  }else if(this.step==='login'){
+   content.innerHTML='<h2>이메일 로그인</h2><form id="entry-auth"><label for="entry-email">이메일</label><input id="entry-email" type="email" autocomplete="email" required><button class="primary" type="submit">로그인 메일 받기</button></form><button id="entry-back" class="secondary">뒤로</button>';
+   const email=content.querySelector<HTMLInputElement>('input')!;email.value=this.email;
+   content.querySelector<HTMLFormElement>('form')!.onsubmit=e=>{e.preventDefault();void this.run(async()=>{this.email=email.value.trim();await this.account.sendCode(this.email);this.go('verify');});};button('entry-back',()=>this.go('account'));
+  }else if(this.step==='verify'){
+   content.innerHTML='<h2>인증 코드를 입력해 주세요</h2><p class="start-subtitle">이메일의 로그인 링크를 열어 주세요. 인증 코드가 함께 왔다면 여기 입력해도 됩니다.</p><form id="entry-auth"><label for="entry-code">인증 코드</label><input id="entry-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}" maxlength="8" required><button type="submit" class="primary">로그인</button></form><button id="entry-back" class="secondary">다른 이메일 사용</button>';
+   content.querySelector<HTMLFormElement>('form')!.onsubmit=e=>{e.preventDefault();const code=content.querySelector<HTMLInputElement>('input')!.value;void this.run(async()=>{await this.account.verifyCode(this.email,code);const s=this.account.profile();this.name=s.playerName??'';this.appearance=normalizeAppearance(s.explorerAppearance,s.appearance);this.go(s.explorerCreatedAt?'ready':'name');});};button('entry-back',()=>this.go('login'));
+  }else if(this.step==='name'||this.step==='ready'){
+   const ready=this.step==='ready';
+   content.innerHTML=`<h2>${ready?'다시 만나 반가워요!':'당신의 탐험가는 어떤 이름인가요?'}</h2><form id="start-form"><label class="sr-only" for="start-name">탐험가 이름</label><input id="start-name" maxlength="12" autocomplete="nickname" spellcheck="false" required aria-describedby="start-name-help"><small id="start-name-help">한글·영문·숫자 2~12자 · 같은 이름도 괜찮아요</small><button id="random-name" type="button" class="secondary">랜덤 이름</button><div id="start-options"><button id="start-local" type="submit" class="primary">${ready?'탐험 시작':'다음 >'}</button>${ready?'<button id="start-friends" type="button" class="secondary">친구랑 플레이</button><button id="entry-customize" type="button" class="secondary">탐험가 꾸미기</button>':''}</div></form>${ready?'':'<button id="entry-back" class="secondary">뒤로</button>'}`;
+   const input=content.querySelector<HTMLInputElement>('#start-name')!;input.value=this.name;
+   const valid=()=>{input.value=input.value.normalize('NFC').trim();const legacy=ready&&input.value===this.account.profile().playerName;input.setCustomValidity(legacy?'':explorerNameError(input.value));if(!input.reportValidity())return false;this.name=input.value;return true;};
+   input.oninput=()=>input.setCustomValidity('');button('random-name',()=>{input.value=randomExplorerName();input.setCustomValidity('');});
+   content.querySelector<HTMLFormElement>('form')!.onsubmit=e=>{e.preventDefault();if(valid()){if(ready)void this.begin('local');else this.go('customize');}};
+   if(ready){button('start-friends',()=>{if(valid())void this.begin('friends');});button('entry-customize',()=>{if(valid())this.go('customize');});}else button('entry-back',()=>this.go('account'));
+  }else{
+   const preview=this.step==='preview';
+   content.innerHTML=`<h2>${preview?'탐험 준비 완료!':'나만의 탐험가를 만들어보세요!'}</h2><p id="explorer-name-preview"></p><div id="explorer-editor" class="${preview?'preview-only':''}"></div><div class="entry-footer"><button id="entry-back" class="secondary">${preview?'다시 꾸미기':'이름 변경'}</button><button id="entry-next" class="primary">${preview?'탐험 시작!':'완성 미리보기'}</button></div>`;
+   content.querySelector('#explorer-name-preview')!.textContent=this.name;
+   this.editor=new ExplorerEditor(content.querySelector('#explorer-editor')!,this.appearance,a=>{this.appearance=a;});
+   button('entry-back',()=>this.go(preview?'customize':'name'));button('entry-next',()=>preview?void this.begin('local'):this.go('preview'));
+  }
+ }
+ private async run(fn:()=>Promise<void>){
+  if(this.busy)return;this.busy=true;this.root.setAttribute('aria-busy','true');this.root.querySelectorAll<HTMLButtonElement>('button').forEach(b=>b.disabled=true);
+  const error=this.root.querySelector<HTMLElement>('#start-error')!;error.hidden=true;
+  try{await fn();}catch(reason){const target=this.root.querySelector<HTMLElement>('#start-error')!;target.textContent=reason instanceof Error?reason.message:'연결하지 못했어요. 다시 시도해 주세요.';target.hidden=false;}
+  finally{this.busy=false;this.root.removeAttribute('aria-busy');this.root.querySelectorAll<HTMLButtonElement>('button').forEach(b=>b.disabled=false);}
+ }
+ private async begin(mode:'local'|'friends'){
+  const choice={name:this.name,mode,appearance:this.appearance,createdAt:this.account.profile().explorerCreatedAt??Date.now()};
+  await this.run(async()=>{const status=this.root.querySelector<HTMLElement>('#start-status')!;status.hidden=false;status.textContent='서버 접속중…';try{await Promise.all([this.enter(choice),new Promise(r=>setTimeout(r,700))]);this.editor?.dispose();this.root.hidden=true;this.entered(choice);}finally{status.hidden=true;}});
  }
 }

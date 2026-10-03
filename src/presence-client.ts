@@ -31,7 +31,7 @@ export class PresenceClient{
     if(p.type==='ai'){const old=new Map(this.peers.map(v=>[v.id,v]));this.setPeers([...this.peers.filter(v=>v.kind!=='simulated'),...p.players.map((v:Peer)=>({...old.get(v.id),...v}))]);}
     if(p.type==='leave')this.setPeers(this.peers.filter(v=>v.id!==p.id));
     if(p.type==='error'&&p.message==='ROOM_CODE_TAKEN'){this.logout();this.localCode=createRoomCode();this.login();return;}
-    if(p.type==='error'){this.notify(({ROOM_NOT_FOUND:'친구가 초대 코드를 생성했는지, 받은 코드가 맞는지 확인해 주세요.',ROOM_FULL:'친구 다섯 명이 이미 함께하고 있어요.',HOST_CHANGED:'연결을 이어받고 있어요.'} as Record<string,string>)[p.message]??p.message);if(['ROOM_NOT_FOUND','ROOM_FULL','ROOM_CODE_REQUIRED','SIGN_IN','AUTH_NOT_CONFIGURED'].includes(p.message)){this.logout();return;}}
+    if(p.type==='error'){this.notify(({ROOM_NOT_FOUND:'친구가 초대 코드를 생성했는지, 받은 코드가 맞는지 확인해 주세요.',ROOM_FULL:'친구 다섯 명이 이미 함께하고 있어요.',HOST_CHANGED:'연결을 이어받고 있어요.'} as Record<string,string>)[p.message]??'친구 연결 요청을 처리하지 못했어요.');if(['ROOM_NOT_FOUND','ROOM_FULL','ROOM_CODE_REQUIRED','SIGN_IN','AUTH_NOT_CONFIGURED'].includes(p.message)){this.logout();return;}}
     this.onPacket(p);
    }catch{/* Malformed relay packets cannot replace a save. */}
   };

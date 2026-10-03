@@ -44,7 +44,9 @@ export class CloudSave{
   this.generation++;this.store.mirror(this.key,this.record);
   void this.persist();void this.sync();
  }
- async initialize(){
+ private initializing:Promise<void>|null=null;
+ initialize(){return this.initializing??=this.initializeClient();}
+ private async initializeClient(){
   try{
    const {createClient}=await import('@supabase/supabase-js');
    this.client=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'},global:{fetch:(url,init)=>fetch(url,{...init,signal:AbortSignal.timeout(8000)})}});
@@ -53,6 +55,16 @@ export class CloudSave{
    if(this.session)await this.loadAccount();
   }catch(e){this.failure(e);}
   this.timer??=window.setInterval(()=>void this.sync(),LOCAL_FIRST.cloudSaveMs);
+ }
+ async sendLoginCode(email:string){
+  await this.initialize();if(!this.client)throw Error('인증 서버에 연결하지 못했어요. 게스트로 시작할 수 있어요.');
+  const {error}=await this.client.auth.signInWithOtp({email,options:{emailRedirectTo:new URL(import.meta.env.BASE_URL,location.origin).href}});if(error)throw error;
+ }
+ async verifyLoginCode(email:string,token:string){
+  if(!this.client)throw Error('인증 코드를 먼저 받아 주세요.');
+  const {data,error}=await this.client.auth.verifyOtp({email,token,type:'email'});if(error)throw error;
+  this.session=data.session;await this.loadAccount();
+  if(this.conflict)await this.useCloud();
  }
  private failure(error:unknown){this.status='기기 저장 · 클라우드 연결 대기';console.warn('Cloud save',error);}
  private async rpc(name:string,args:Record<string,unknown>={}){
