@@ -31,7 +31,7 @@ export class RoomHUD{
  update(game:GameState,peers:Peer[],world:World,guest:boolean,visible:boolean,emote?:Emote|null){
   this.progress.hidden=this.labels.hidden=!visible;if(!visible)return;
   const players=[{id:'self',name:game.save.playerName??'탐험가',level:game.level,isGuest:guest,slot:game.farmSlot,explorerAppearance:game.save.explorerAppearance,z:game.z,speed:game.speed,emote},...peers].slice(0,5);
-  this.heading.textContent=`탐험가 ${players.length} ${this.collapsed?'▾':'▴'}`;
+  this.heading.textContent=this.collapsed?`👥\n${players.length}`:`👥 ${players.length}`;
   this.progress.setAttribute('aria-label',`참가자 ${players.length}명 · ${this.collapsed?'펼치기':'접기'}`);
   for(const [id,entry]of this.rows)if(!players.some(p=>p.id===id)){entry.row.remove();entry.label.remove();entry.farm.remove();this.rows.delete(id);}
   for(const p of players){

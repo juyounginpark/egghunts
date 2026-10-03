@@ -45,16 +45,29 @@ export class CloudSave{
   void this.persist();void this.sync();
  }
  private initializing:Promise<void>|null=null;
- initialize(){return this.initializing??=this.initializeClient();}
+ initialize(){
+  if(!this.timer){
+   this.timer=window.setInterval(()=>void this.sync(),LOCAL_FIRST.cloudSaveMs);
+   window.addEventListener('online',()=>void this.sync());
+  }
+  if(this.session&&this.record.accountId===this.session.user.id)return Promise.resolve();
+  return this.initializing??=this.initializeClient().finally(()=>{this.initializing=null;});
+ }
  private async initializeClient(){
   try{
-   const {createClient}=await import('@supabase/supabase-js');
-   this.client=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'},global:{fetch:(url,init)=>fetch(url,{...init,signal:AbortSignal.timeout(8000)})}});
-   this.client.auth.onAuthStateChange((_event,session)=>{this.session=session;if(session)setTimeout(()=>void this.loadAccount().catch(e=>this.failure(e)),0);});
-   const {data}=await this.client.auth.getSession();this.session=data.session;
+   if(!this.client){
+    const {createClient}=await import('@supabase/supabase-js');
+    this.client=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'},global:{fetch:(url,init)=>fetch(url,{...init,signal:AbortSignal.timeout(8000)})}});
+    this.client.auth.onAuthStateChange((event,session)=>{this.session=session;if(session&&!this.initializing&&event==='SIGNED_IN'&&this.record.accountId!==session.user.id)setTimeout(()=>void this.loadAccount().catch(e=>this.failure(e)),0);});
+   }
+   const {data,error}=await this.client.auth.getSession();if(error)throw error;this.session=data.session;
+   if(!this.session){
+    // Never replace an existing account with a new guest after authentication loss.
+    if(this.record.accountId){this.status='기기 저장 · 기존 계정 로그인 필요';return;}
+    const result=await this.client.auth.signInAnonymously();if(result.error)throw result.error;this.session=result.data.session;
+   }
    if(this.session)await this.loadAccount();
   }catch(e){this.failure(e);}
-  this.timer??=window.setInterval(()=>void this.sync(),LOCAL_FIRST.cloudSaveMs);
  }
  async sendLoginCode(email:string){
   await this.initialize();if(!this.client)throw Error('인증 서버에 연결하지 못했어요. 게스트로 시작할 수 있어요.');
@@ -122,7 +135,10 @@ export class CloudSave{
   this.apply(migrateLegacyProfile(profile,this.clock.now()));this.record.dirty=true;
   await this.persist();this.status='기존 저장 복원됨';
  }
- async sync(){
+ private syncPending:Promise<void>|null=null;
+ sync(){return this.syncPending??=this.doSync().finally(()=>{this.syncPending=null;});}
+ private async doSync(){
+  if(!this.session||this.record.accountId!==this.session.user.id)await this.initialize();
   if(this.busy||this.conflict||!this.session||this.record.accountId!==this.session.user.id)return;
   this.busy=true;
   try{
@@ -137,12 +153,33 @@ export class CloudSave{
    await this.store.write(this.key,this.record);this.status='클라우드 저장됨';
   }catch(e){this.failure(e);}finally{this.busy=false;}
  }
+ async claimWeekly(){
+  await this.sync();
+  if(this.conflict)throw Error('설정에서 사용할 진행 저장을 먼저 선택해 주세요.');
+  if(!this.session||this.record.accountId!==this.session.user.id||this.record.dirty)throw Error('진행 저장 서버에 다시 연결하고 있어요. 잠시 후 보상을 다시 받아 주세요.');
+  if(this.busy)throw Error('진행 저장 중이에요. 잠시 후 다시 받아 주세요.');
+  this.busy=true;
+  try{
+   const result=await this.rpc('game_local_claim_weekly',{p_revision:this.record.revision});
+   if(result.conflict){this.conflict=result.profile;this.status='클라우드 저장 충돌 · 설정에서 선택';throw Error(this.status);}
+   if(result.error==='EGG_CAPACITY')throw Error('알 보관함 한 칸을 비워 주세요.');
+   if(!result.profile)throw Error('보상 결과를 확인하지 못했어요. 잠시 후 다시 받아 주세요.');
+   await this.useCloud(result.profile);
+   return result.alreadyClaimed?'오늘 보상은 이미 받았어요.':'이벤트 보상을 받았어요!';
+  }catch(error){
+   // A response can be lost after the transaction commits. Reconcile its revision
+   // before allowing another upload, preserving both copies on conflict.
+   if(!this.conflict)try{await this.loadAccount();}catch{this.status='기기 저장 · 보상 결과 연결 대기';}
+   throw error;
+  }finally{this.busy=false;}
+ }
  mountAccount(host:HTMLElement){
   host.innerHTML='<details class="cloud-settings"><summary>클라우드 저장</summary><fieldset class="sound-settings"><legend class="sr-only">클라우드 저장</legend><p role="status"></p><button type="button" data-account="guest" class="secondary">게스트 계정 연결</button><button type="button" data-account="sync" class="secondary">지금 저장</button><button type="button" data-account="cloud" class="secondary" hidden>클라우드 저장 선택</button><button type="button" data-account="local" class="secondary" hidden>현재 기기 저장 선택</button></fieldset></details>';
   const status=host.querySelector('p')!;host.querySelector('details')!.open=!!this.conflict;
   const update=()=>{status.textContent=this.status;host.querySelectorAll<HTMLButtonElement>('[data-account="cloud"],[data-account="local"]').forEach(b=>b.hidden=!this.conflict);};update();
   const run=async(fn:()=>Promise<unknown>)=>{try{await fn();}catch(e){status.textContent=e instanceof Error?e.message:'계정 연결 실패';return;}update();};
-  host.querySelector<HTMLButtonElement>('[data-account="guest"]')!.onclick=()=>void run(async()=>{if(!this.client)await this.initialize();if(!this.client)throw Error('인증 연결 실패');const {error}=await this.client.auth.signInAnonymously();if(error)throw error;await this.loadAccount();});
+  const reconnect=host.querySelector<HTMLButtonElement>('[data-account="guest"]')!;
+  reconnect.textContent='저장 연결 다시 시도';reconnect.onclick=()=>void run(()=>this.sync());
   host.querySelector<HTMLButtonElement>('[data-account="sync"]')!.onclick=()=>void run(()=>this.sync());
   host.querySelector<HTMLButtonElement>('[data-account="cloud"]')!.onclick=()=>void run(()=>this.useCloud());
   host.querySelector<HTMLButtonElement>('[data-account="local"]')!.onclick=()=>void run(()=>this.keepLocal());

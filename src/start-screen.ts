@@ -19,7 +19,7 @@ export class StartScreen{
   const content=this.root.querySelector<HTMLElement>('#entry-content')!;
   const button=(id:string,fn:()=>void)=>content.querySelector<HTMLButtonElement>('#'+id)!.onclick=fn;
   if(this.step==='account'){
-   content.innerHTML='<p class="start-subtitle">탐험을 떠나기 전,<br>당신의 탐험가를 준비해볼까요?</p><div id="start-options"><button id="guest-start" class="primary">게스트 시작</button><button id="entry-login" class="secondary">로그인</button></div><small class="explorer-note">게스트는 이 기기에 저장돼요.</small>';
+   content.innerHTML='<p class="start-subtitle">탐험을 떠나기 전,<br>당신의 탐험가를 준비해볼까요?</p><div id="start-options"><button id="guest-start" class="primary">게스트 시작</button><button id="entry-login" class="secondary">로그인</button></div><small class="explorer-note">진행은 자동 저장되며, 연결되면 클라우드에 보관돼요.</small>';
    button('guest-start',()=>this.go('name'));button('entry-login',()=>this.go('login'));
   }else if(this.step==='login'){
    content.innerHTML='<h2>이메일 로그인</h2><form id="entry-auth"><label for="entry-email">이메일</label><input id="entry-email" type="email" autocomplete="email" required><button class="primary" type="submit">로그인 메일 받기</button></form><button id="entry-back" class="secondary">뒤로</button>';
