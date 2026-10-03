@@ -52,17 +52,19 @@ try{
  const bCtx=await context(),b=await bCtx.newPage();await ready(b);
  await test('explicit friend codes, human priority, interpolated positions and six shared emotes',async()=>{
   relay=presenceServer({origins:['http://127.0.0.1:4351']});relay.http.listen(port,'127.0.0.1');await once(relay.http,'listening');
-  await a.locator('#friends-open').click();await a.locator('#friend-create').click();
+  await a.locator('#settings').click();await a.locator('#friends-open').click();await a.locator('#friend-create').click();
   try{await a.waitForFunction(()=>window.__localFirst.multiplayer.connected,{},{timeout:15000});}catch(e){console.log(await a.evaluate(()=>({connection:window.__localFirst.multiplayer.connection,url:window.__localFirst.multiplayer.url,toast:document.querySelector('#toast').textContent})));throw e;}
   const code=await a.evaluate(()=>window.__localFirst.multiplayer.code);
-  await b.locator('#friends-open').click();await b.locator('#friend-code').fill(code);await b.locator('#friend-join').click();
+  await a.locator('#friend-close').click();
+  await b.locator('#settings').click();await b.locator('#friends-open').click();assert.equal(await b.locator('#friend-code').getAttribute('placeholder'),null);await b.locator('#friend-code').fill(code);await b.locator('#friend-join').click();
   await b.waitForFunction(()=>window.__localFirst.multiplayer.connected&&window.__localFirst.multiplayer.peers.some(p=>p.kind==='human'));
+  await b.locator('#friend-close').click();
   await a.waitForFunction(()=>window.__localFirst.session.peers.length===4);
   assert.equal(await b.evaluate(()=>window.__localFirst.session.peers.length),4);
   await a.evaluate(()=>{window.__localFirst.game.x=3;window.__localFirst.game.z=-8;});
   await b.waitForFunction(()=>window.__localFirst.multiplayer.peers.some(p=>p.x===3&&p.z===-8));
   try{await b.waitForFunction(()=>[...window.__localFirst.world.peers.values()].some(p=>Math.abs(p.position.x-3)<.2&&Math.abs(p.position.z+8)<.2),{},{timeout:15000});}catch(e){console.log(await b.evaluate(()=>({peers:window.__localFirst.multiplayer.peers,rendered:[...window.__localFirst.world.peers].map(([id,p])=>({id,x:p.position.x,z:p.position.z,motion:p.userData.motion}))})));throw e;}
-  await a.locator('[data-emote="hello"]').click();
+  assert.equal(await a.locator('#emote-picker').isVisible(),false);await a.locator('#emote-toggle').click();await a.locator('[data-emote="hello"]').click();assert.equal(await a.locator('#emote-picker').isVisible(),false);
   await b.waitForFunction(()=>window.__localFirst.multiplayer.peers.some(p=>p.emote?.id==='hello'));
   assert.equal(await a.locator('[data-emote]').count(),6);assert.equal(await a.locator('#room-chat').count(),0);
  });
@@ -83,7 +85,7 @@ try{
   relay=presenceServer({origins:['http://127.0.0.1:4351']});relay.http.listen(port,'127.0.0.1');await once(relay.http,'listening');await a.waitForFunction(()=>window.__localFirst.multiplayer.connected,{},{timeout:15000});
  });
  await test('anonymous Supabase login and revisioned cloud save load in another browser',async()=>{
-  await a.evaluate(()=>window.__localFirst.settings());await a.locator('[data-account="guest"]').click();
+  await a.evaluate(()=>window.__localFirst.settings());assert.equal(await a.locator('input[type="email"]').count(),0);await a.locator('.cloud-settings summary').click();await a.locator('[data-account="guest"]').click();
   await a.waitForFunction(()=>window.__localFirst.cloud.record.accountId!==null);
   await a.evaluate(()=>window.__localFirst.cloud.sync());assert.ok(cloudRows.get(user.id)?.revision>0);
   const cCtx=await context();await cCtx.addInitScript(session=>localStorage.setItem('sb-leblcdiqsyxqzwlsnkio-auth-token',JSON.stringify(session)),session);
@@ -91,6 +93,6 @@ try{
   assert.equal(await c.evaluate(()=>window.__localFirst.game.save.mongles[3]),2);
   await cCtx.close();
  });
- await report('local-first-ui',{passed:results.length,results,cloudValidation:'fixture RPC; production SQL migration not applied'});
+ await report('local-first-ui',{passed:results.length,results,cloudValidation:'fixture RPC; production deployment checks documented separately'});
  await aCtx.close();await bCtx.close();
 }finally{if(relay)await relay.close();await browser.close();await vite.close();}

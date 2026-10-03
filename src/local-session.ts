@@ -14,7 +14,7 @@ export class LocalSession{
   const env:AIEnvironment={actors:()=>[this.human.entity.pose(),...this.peers],attack:(a,t)=>this.attack(a,t),collect:a=>this.collect(a),visible};
   this.ai=new AISession(game,env,random);multiplayer.onPacket=p=>this.packet(p);
  }
- get peers():Peer[]{return this.multiplayer.connected?this.multiplayer.isHost?[...this.multiplayer.peers.filter(p=>p.kind!=='simulated'),...this.ai.bots.map(b=>({...b.entity.pose(),action:b.action}))]:this.multiplayer.peers:this.ai.bots.map(b=>({...b.entity.pose(),action:b.action}));}
+ get peers():Peer[]{return this.multiplayer.connected?this.multiplayer.isHost?[...this.multiplayer.peers.filter(p=>p.kind!=='simulated'),...(this.ai?.bots??[]).map(b=>({...b.entity.pose(),action:b.action}))]:this.multiplayer.peers:(this.ai?.bots??[]).map(b=>({...b.entity.pose(),action:b.action}));}
  private localActor(id:string){return this.human.entity.id===id?this.human.entity:this.ai.bots.find(b=>b.entity.id===id)?.entity;}
  emote(id:EmoteId){const now=this.game().now();if(now-(this.human.entity.emote?.at??0)<1000)return;this.human.entity.emote={id,at:now};}
  attack(actor:PlayerEntity,targetId?:string){
@@ -35,7 +35,7 @@ export class LocalSession{
   if(egg){if(target.kind!=='human')g.world=g.world.filter(e=>e.id!==egg.id);const dropped={...egg,x:g.x,z:g.z};
    if(this.multiplayer.connected)this.multiplayer.send({type:'drop',actor:targetId,egg:dropped});this.drops.set(egg.id,{actor:targetId,egg:dropped,expiresAt:g.now()+60000});
   }
-  this.ai.bots.find(b=>b.entity.id===targetId)?.emote('angry',true);
+  this.ai.bots.find(b=>b.entity.id===targetId)?.attackedBy(actorId);
  }
  collect(actor=this.human.entity){
   const g=actor.game;if(g.carried||g.death||g.now()<g.knockedUntil)return false;

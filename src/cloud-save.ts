@@ -126,16 +126,10 @@ export class CloudSave{
   }catch(e){this.failure(e);}finally{this.busy=false;}
  }
  mountAccount(host:HTMLElement){
-  host.innerHTML='<fieldset class="sound-settings"><legend>계정·클라우드 저장</legend><p role="status"></p><form><label>이메일<input type="email" required autocomplete="email"></label><button type="submit" class="secondary">로그인 메일 받기</button></form><button type="button" data-account="guest" class="secondary">게스트 계정 연결</button><button type="button" data-account="sync" class="secondary">지금 클라우드 저장</button><button type="button" data-account="cloud" class="secondary" hidden>클라우드 저장 선택</button><button type="button" data-account="local" class="secondary" hidden>현재 기기 저장 선택</button><small>계정 변경 전 기록과 충돌한 기록은 기기에 백업해요. 클라우드 연결 실패 중에도 게임을 계속할 수 있어요.</small></fieldset>';
-  const status=host.querySelector('p')!,form=host.querySelector('form')!;
+  host.innerHTML='<details class="cloud-settings"><summary>클라우드 저장</summary><fieldset class="sound-settings"><legend class="sr-only">클라우드 저장</legend><p role="status"></p><button type="button" data-account="guest" class="secondary">게스트 계정 연결</button><button type="button" data-account="sync" class="secondary">지금 저장</button><button type="button" data-account="cloud" class="secondary" hidden>클라우드 저장 선택</button><button type="button" data-account="local" class="secondary" hidden>현재 기기 저장 선택</button></fieldset></details>';
+  const status=host.querySelector('p')!;host.querySelector('details')!.open=!!this.conflict;
   const update=()=>{status.textContent=this.status;host.querySelectorAll<HTMLButtonElement>('[data-account="cloud"],[data-account="local"]').forEach(b=>b.hidden=!this.conflict);};update();
   const run=async(fn:()=>Promise<unknown>)=>{try{await fn();}catch(e){status.textContent=e instanceof Error?e.message:'계정 연결 실패';return;}update();};
-  form.onsubmit=e=>{e.preventDefault();void run(async()=>{
-   if(!this.client)await this.initialize();if(!this.client)throw Error('인증 연결을 확인해 주세요.');
-   const email=form.querySelector('input')!.value;
-   const {error}=this.session?.user.is_anonymous?await this.client.auth.updateUser({email}):await this.client.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+import.meta.env.BASE_URL}});
-   if(error)throw error;this.status='이메일의 인증 링크를 눌러 주세요.';
-  });};
   host.querySelector<HTMLButtonElement>('[data-account="guest"]')!.onclick=()=>void run(async()=>{if(!this.client)await this.initialize();if(!this.client)throw Error('인증 연결 실패');const {error}=await this.client.auth.signInAnonymously();if(error)throw error;await this.loadAccount();});
   host.querySelector<HTMLButtonElement>('[data-account="sync"]')!.onclick=()=>void run(()=>this.sync());
   host.querySelector<HTMLButtonElement>('[data-account="cloud"]')!.onclick=()=>void run(()=>this.useCloud());

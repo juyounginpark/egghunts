@@ -844,13 +844,28 @@ nav button img { width:28px; height:28px; }
 
 @media(prefers-reduced-motion:reduce){.hatch-hit-feedback i{animation:none}#shell #egg-health .track i{transition:none}}
 
-#friends-dock { position:absolute; right:12px; bottom:calc(145px + var(--safe-bottom,0px)); z-index:20; display:grid; gap:5px; max-width:210px; }
-#friends-dock[hidden] { display:none; }
-#friends-dock small { font-size:11px; background:#fff9e8; border-radius:5px; max-width:210px; }
-.emote-buttons { display:flex; gap:3px; }
-.emote-buttons button { width:30px; height:32px; padding:0; font-size:20px; background:#fff9e8; }
-#friends-dialog { max-width:min(360px,90vw); padding:20px; border:3px solid #68724d; border-radius:12px; background:#fff9e8; }
+#emote-dock { position:relative; grid-column:2; justify-self:start; width:44px; z-index:20; }
+#emote-dock[hidden],.emote-buttons[hidden],#friends-dialog [hidden] { display:none; }
+#emote-toggle { display:grid; place-items:center; width:44px; height:44px; padding:10px; border:1px solid #68724d; border-radius:8px; background:#fff9e8ed; box-shadow:none; }
+#emote-toggle svg { width:24px; height:24px; }
+#emote-toggle[aria-expanded="true"] { background:#dde9cb; }
+.emote-buttons { position:absolute; bottom:calc(100% + 12px); left:0; display:grid; grid-template-columns:repeat(3,44px); gap:4px; padding:8px; border:1px solid #68724d66; border-radius:12px; background:#fff9e8; box-shadow:0 4px 16px #24331c25; }
+.emote-buttons button { width:44px; height:44px; padding:0; font-size:24px; border:0; border-radius:8px; background:transparent; box-shadow:none; }
+.emote-buttons button:hover,.emote-buttons button:focus-visible { background:#e6edda; }
+#friends-dialog { width:min(320px,calc(100vw - 40px)); box-sizing:border-box; padding:20px; border:1px solid #68724d; border-radius:14px; background:#fff9e8; }
 #friends-dialog::backdrop { background:#16291788; }
-#friends-dialog button { display:block; margin:10px auto; min-width:160px; }
-#friend-code { width:110px; text-transform:uppercase; }
+#friends-dialog header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px; }
+#friends-dialog h2 { margin:0; font-size:20px; }
+#friends-dialog button { box-shadow:none; }
+#friend-close { width:36px; height:36px; padding:0; border:0; background:transparent; font-size:26px; }
+#friend-create,#friend-leave { width:100%; margin:0 0 16px; }
+#friend-form { margin-bottom:16px; }
+#friend-form label { display:block; margin-bottom:6px; font-size:12px; }
+.friend-code-row { display:flex; gap:8px; }
+#friend-code { width:0; min-width:0; flex:1; text-transform:uppercase; letter-spacing:.16em; }
+#friends-dialog small { display:block; font-size:11px; opacity:.7; }
+#friends-dialog [role="status"] { margin:0 0 16px; font-weight:700; }
+.cloud-settings { margin:12px 0; text-align:left; }
+.cloud-settings summary { min-height:44px; display:list-item; padding:12px 0; cursor:pointer; font-size:13px; }
+.settings-card #friends-open { width:100%; margin:8px 0 16px; }
 .player-emote { font-size:24px; padding:3px 8px; }

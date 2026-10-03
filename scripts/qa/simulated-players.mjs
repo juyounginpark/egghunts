@@ -9,7 +9,8 @@ import {report} from './lib.mjs';
 const vite=await createServer({cacheDir:'node_modules/.vite-ai-unit',server:{middlewareMode:true}});
 const results=[],test=async(name,fn)=>{await fn();results.push(name);console.log('PASS',name);};
 try{
- const {GameState,freshSave}=await vite.ssrLoadModule('/src/game.ts'),{AISession,AIRandom}=await vite.ssrLoadModule('/src/ai-session.ts'),{PlayerEntity}=await vite.ssrLoadModule('/src/player-entity.ts');
+ const {GameState,freshSave}=await vite.ssrLoadModule('/src/game.ts'),{AISession,AIRandom,AI_NAMES}=await vite.ssrLoadModule('/src/ai-session.ts'),{PlayerEntity}=await vite.ssrLoadModule('/src/player-entity.ts');
+ await test('1,000 distinct names fit the shared display format',()=>{assert.equal(AI_NAMES.length,1000);assert.equal(new Set(AI_NAMES).size,1000);assert.ok(AI_NAMES.every(name=>name.length<=10&&/^[\p{L}\p{N}_]+$/u.test(name)));});
  let now=1800000060000;const human=new GameState(freshSave(now),()=>now,()=>.1);human.save.tutorial=6;
  const random=new AIRandom(1234),humanEntity=new PlayerEntity('self','human',human);
  let ai;const attacks=[];
@@ -18,6 +19,7 @@ try{
  await test('A/B: prepared snapshots have varied actions, locations, ages, timers and actual engines',()=>{
   assert.equal(ai.bots.length,4);assert.equal(new Set(ai.bots.map(b=>b.action)).size,4);assert.equal(new Set(ai.bots.map(b=>b.nextDecisionAt)).size,4);
   assert.equal(new Set(ai.bots.map(b=>b.entity.game.x+':'+b.entity.game.z)).size,4);
+  assert.equal(new Set(ai.bots.map(b=>b.entity.game.save.playerName)).size,4);
   assert.ok(ai.bots.every(b=>now-b.joinedAt>=30000&&now-b.joinedAt<=900000&&b.entity.game instanceof GameState&&b.entity.game.petCount>0));
   assert.ok(ai.bots.some(b=>b.entity.game.carried));assert.ok(ai.bots.some(b=>b.entity.game.training));
  });
@@ -84,6 +86,22 @@ try{
   victim.game.x=1;victim.game.z=-12;victim.game.training=false;victim.game.death=null;victim.game.knockedUntil=0;const egg=victim.game.carried??victim.game.world[0];if(!victim.game.carried)victim.game.pickup(egg);
   local.attack(local.human.entity,victim.id);assert.equal(victim.game.carried,null);assert.equal(local.visibleDrops.length,1);
   assert.ok(local.collect(local.human.entity));assert.equal(human.carried.id,egg.id);assert.equal(human.carried.weightG,egg.weightG);assert.equal(local.visibleDrops.length,0);assert.equal(local.collect(victim),false);human.knockedUntil=0;victim.game.x=-1;victim.game.z=-12;victim.game.facing={x:1,z:0};victim.game.knockedUntil=0;victim.game.batAt=0;local.attack(victim,'self');assert.equal(human.carried,null);assert.ok(human.snapshot().world.some(e=>e.id===egg.id));human.carried=null;
+ });
+ await test('AI faces a nearby player before a real delayed bat swing and can greet another actor',async()=>{
+  const {LocalSession}=await vite.ssrLoadModule('/src/local-session.ts');
+  let clock=1800000060000;const g=new GameState(freshSave(clock),()=>clock,()=>.5);
+  const client={connected:false,isHost:false,peers:[],update(){},send(){},onPacket(){}};
+  const local=new LocalSession(()=>g,client,()=>false,new AIRandom(654).next),bot=local.ai.bots[1],engine=bot.entity.game;
+  g.x=1;g.z=-12;g.knockedUntil=0;g.carried=null;g.training=false;
+  engine.x=0;engine.z=-12;engine.carried=null;engine.training=false;engine.death=null;engine.returnReward=null;engine.knockedUntil=0;engine.batAt=0;engine.facing={x:-1,z:0};
+  bot.action='CHASE_PLAYER';bot.targetId=local.human.entity.id;bot.nextDecisionAt=clock+10000;bot.idleUntil=0;bot.random.next=()=>.5;
+  bot.update(.05);assert.equal(engine.batAt,0);
+  for(let i=0;i<40&&!engine.batAt;i++){clock+=50;engine.x=0;engine.z=-12;bot.update(.05);}
+  assert.ok(engine.batAt>0);assert.ok(g.knockedUntil>clock);assert.ok(engine.facing.x>0);
+  engine.x=0;engine.z=-12;g.x=2;g.z=-12;g.knockedUntil=0;
+  bot.action='SOCIALIZE';bot.targetId=local.human.entity.id;bot.nextDecisionAt=clock+10000;bot.emoteCooldown=0;bot.personality.sociability=1;bot.random.next=()=>.1;clock+=50;bot.update(.05);
+  assert.equal(bot.entity.emote?.id,'hello');assert.ok(engine.facing.x>0);assert.equal(engine.velocity.x,0);
+  bot.attackedBy(local.human.entity.id);assert.ok(bot.nextDecisionAt>clock);assert.ok(bot.nextDecisionAt<clock+2000);
  });
  await report('simulated-players',{passed:results.length,results,simulationSeconds:300});
 }finally{await vite.close();}
