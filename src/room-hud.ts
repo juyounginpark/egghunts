@@ -14,11 +14,14 @@ export class RoomHUD{
  private labels=document.createElement('div');
  private collapsed=true;
  private heading=document.createElement('span');
+ private count=document.createElement('b');
  private rows=new Map<string,{row:HTMLElement;name:HTMLElement;distance:HTMLElement;speed:HTMLElement;label:HTMLElement;caption:HTMLElement;bubble:HTMLElement;farm:HTMLElement}>();
  constructor(place:HTMLElement,worldHost:HTMLElement){
   this.progress.id='room-progress';this.progress.setAttribute('aria-label','탐험 진행도');
   this.progress.setAttribute('role','button');this.progress.tabIndex=0;
   this.heading.className='room-progress-heading';this.progress.append(this.heading);
+  const portrait=document.createElement('img');portrait.src=`${import.meta.env.BASE_URL}models/alkong.png`;portrait.alt='';
+  this.heading.append(portrait,this.count);
   const toggle=()=>{this.collapsed=!this.collapsed;this.progress.classList.toggle('collapsed',this.collapsed);this.progress.setAttribute('aria-expanded',String(!this.collapsed));};
   this.progress.classList.add('collapsed');this.progress.setAttribute('aria-expanded','false');
   this.progress.onclick=toggle;this.progress.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}};
@@ -31,7 +34,7 @@ export class RoomHUD{
  update(game:GameState,peers:Peer[],world:World,guest:boolean,visible:boolean,emote?:Emote|null){
   this.progress.hidden=this.labels.hidden=!visible;if(!visible)return;
   const players=[{id:'self',name:game.save.playerName??'탐험가',level:game.level,isGuest:guest,slot:game.farmSlot,explorerAppearance:game.save.explorerAppearance,z:game.z,speed:game.speed,emote},...peers].slice(0,5);
-  this.heading.textContent=this.collapsed?`👥\n${players.length}`:`👥 ${players.length}`;
+  this.count.textContent=String(players.length);
   this.progress.setAttribute('aria-label',`참가자 ${players.length}명 · ${this.collapsed?'펼치기':'접기'}`);
   for(const [id,entry]of this.rows)if(!players.some(p=>p.id===id)){entry.row.remove();entry.label.remove();entry.farm.remove();this.rows.delete(id);}
   for(const p of players){

@@ -932,27 +932,23 @@ nav button img { width:28px; height:28px; }
 #shell #hud-context .hud-place { max-width:44%; gap:5px; }
 #room-progress { width:160px; background:var(--paper); padding:3px 5px; }
 #room-progress.collapsed { width:64px; min-width:64px; height:64px; padding:0; box-sizing:border-box; }
-#room-progress.collapsed .room-progress-heading { height:100%; min-height:0; box-sizing:border-box; display:grid; place-content:center; white-space:pre-line; text-align:center; font-size:19px; line-height:24px; padding:0; }
+#room-progress.collapsed .room-progress-heading { height:100%; min-height:0; display:flex; flex-direction:column; justify-content:center; gap:0; padding:0; }
+.room-progress-heading img { width:30px; height:30px; object-fit:contain; image-rendering:pixelated; }
+.room-progress-heading > b { font-size:14px; line-height:18px; }
 .room-progress-heading { min-height:36px; display:flex; align-items:center; justify-content:space-between; padding:3px; }
-#weekly-entry { width:44px; height:44px; min-height:44px; font-size:21px; align-self:flex-end; padding:0; box-shadow:1px 2px 0 #46533b20; }
+#weekly-entry { width:40px; height:40px; min-height:40px; font-size:21px; align-self:flex-end; padding:0; box-shadow:1px 2px 0 #46533b20; }
 #weekly-entry.reward-ready::after { width:7px; height:7px; border-width:1px; }
 #shell #top-hud.compact { grid-template-columns:1fr; }
-#shell #top-hud.compact #main-hud { display:grid; grid-template-columns:1fr; grid-template-rows:1fr; width:64px; height:64px; box-sizing:border-box; padding:0; overflow:hidden; }
+#shell #top-hud.compact #main-hud { display:grid; grid-template-columns:62px 44px; grid-template-rows:44px; width:110px; height:48px; padding:0; overflow:visible; }
 #shell #top-hud.compact #main-hud .hud-player,#shell #top-hud.compact #main-hud .hud-wallet,#shell #top-hud.compact #main-hud #settings { display:none; }
-#shell #top-hud.compact #hud-toggle { grid-column:1; grid-row:1; width:100%; height:100%; z-index:1; font-size:0; cursor:pointer; }
-#shell #top-hud.compact #main-hud #cycle-clock { grid-column:1; grid-row:1; grid-template-columns:1fr; grid-template-rows:auto auto; justify-items:center; align-content:center; gap:3px; height:100%; padding:3px; background:none; pointer-events:none; }
+#shell #top-hud.compact #hud-toggle { grid-column:2; grid-row:1; }
+#shell #top-hud.compact #main-hud #cycle-clock { grid-column:1; grid-row:1; grid-template-columns:1fr; grid-template-rows:auto auto; justify-items:center; gap:0; height:44px; padding:3px; background:none; }
 #shell #top-hud.compact #main-hud #cycle-phase { font-size:17px; }
 #shell #top-hud.compact #main-hud #cycle-remaining { font-size:12px; }
 #shell #top-hud.compact #main-hud #cycle-label,#shell #top-hud.compact #main-hud #cycle-track,#shell #top-hud.compact #main-hud #income-rate,#shell #top-hud.compact #hud-context,#shell #top-hud.compact #region-banner { display:none!important; }
 #invite-actions { display:flex; gap:8px; }
 #invite-actions button { flex:1; min-width:0; min-height:44px; margin:0; padding:8px; font-size:12px; }
 #emote-toggle { border:var(--hud-border); box-shadow:var(--hud-shadow); background:var(--paper); }
-#shell #settings,#emote-toggle { font-size:24px; }
-#train-now > span[aria-hidden],#action-icon { font-size:28px; }
-#open-egg-bag { font-size:28px; }
-#shell > nav { justify-content:space-around; align-items:center; }
-#shell > nav button { flex:0 0 auto; width:clamp(44px,12vw,56px); height:clamp(44px,12vw,56px); aspect-ratio:1; padding:0; border:var(--hud-border); background:var(--paper); box-shadow:var(--hud-shadow); font-size:26px; }
-#shell > nav button.active { background:#dfe9bd; border-color:#6b8454; }
 .emote-buttons { animation:hud-panel-in 180ms ease-out; }
 @keyframes hud-panel-in { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
 @media(prefers-reduced-motion:reduce){.emote-buttons{animation:none}}

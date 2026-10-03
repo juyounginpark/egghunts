@@ -49,13 +49,13 @@ let hatchRevealing=false;
 let weeklyClaiming=false;
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
-const icons = { explore: "🏡", hatchery: "🥚", pets: "🐾", upgrade: "🔨", shop: "🛍️" };
+const icons = { explore: "barn", hatchery: "egg-0", pets: "pet-0", upgrade: "hammer", shop: "shop" };
 app.innerHTML = `<main id="shell"><div id="world"></div><div class="vignette"></div><header id="main-hud" aria-label="탐험가 정보"><div class="hud-player"><img class="hud-avatar" src="${import.meta.env.BASE_URL}models/alkong.png" alt="탐험가"/><div class="hud-level"><strong id="level">LV.1</strong><div id="xp-track" role="progressbar" aria-label="경험치" aria-valuemin="0"><i id="xp-fill"></i></div></div></div><div id="cycle-clock" aria-live="off"><span id="cycle-phase"></span><span id="cycle-label"></span><strong id="cycle-remaining"></strong><span id="cycle-track" aria-hidden="true"><i id="cycle-fill"></i></span></div><div class="hud-wallet"><div class="dust"><span aria-hidden="true">${uiIcon('dust')}</span><b id="dust">0</b><small>별가루</small></div><button id="settings" class="icon-btn" aria-label="설정">${uiIcon('settings')}</button></div></header><section id="expedition"><div class="timer-top"><span id="timer-label">오늘은 어떤 알을 만날까요?</span><strong id="timer">00:45</strong></div><div class="track"><i id="timer-fill"></i></div><div class="region"><span class="tag">EXPEDITION 01</span><h1 id="region">햇살 가득 풀숲</h1><p id="region-sub">작은 발견이 시작되는 곳</p></div></section><section id="hatch-info" hidden><span class="tag">A LITTLE MIRACLE</span><h1>몽글몽글 부화실</h1><p>작은 알 속에 누가 숨어 있을까요?</p><div id="egg-health"></div></section><div id="world-label">BASE CAMP <span>우리의 작은 기지</span></div><div id="hint" role="status">모험을 준비하고 있어요…</div><div id="carry-chip" hidden></div><div id="controls"><div class="joystick-wrap"><div id="joystick" role="group" aria-label="이동 조이스틱"><span class="axis-y">⌃</span><div id="knob"></div></div><small>살짝 밀어서 이동</small></div><button id="action"><span id="action-icon">${uiIcon('bat')}</span><strong id="action-label">탐색</strong></button></div><div id="risk">● <span>기지 · 안전한 곳</span></div><nav>${Object.entries(
   icons,
 )
   .map(
     ([k, v], i) =>
-      `<button data-tab="${k}" aria-label="${["농장", "부화실", "펫", "강화", "상점"][i]}" title="${["농장", "부화실", "펫", "강화", "상점"][i]}" class="${i === 0 ? "active" : ""}"><span aria-hidden="true">${v}</span></button>`,
+      `<button data-tab="${k}" aria-label="${["농장", "부화실", "펫", "강화", "상점"][i]}" title="${["농장", "부화실", "펫", "강화", "상점"][i]}" class="${i === 0 ? "active" : ""}"><img src="${import.meta.env.BASE_URL}models/${v}.png" alt="" /><span class="sr-only">${["농장", "부화실", "펫", "강화", "상점"][i]}</span></button>`,
   )
   .join(
     "",
@@ -80,7 +80,7 @@ function setHudCompact(compact:boolean){
   topHud.classList.toggle('compact',compact);
   $('hud-toggle').setAttribute('aria-expanded',String(!compact));
   $('hud-toggle').setAttribute('aria-label',compact?'HUD 펼치기':'HUD 접기');
-  $('hud-toggle').textContent=compact?'':'🙈';
+  $('hud-toggle').textContent=compact?'⌄':'⌃';
   if(compact)document.dispatchEvent(new Event('hud-collapse'));
   if(topHud.isConnected&&!matchMedia('(prefers-reduced-motion: reduce)').matches)topHud.animate([{opacity:.75,transform:'translateY(-3px)'},{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'ease-out'});
 }
@@ -91,7 +91,6 @@ const hudObserver=new ResizeObserver(()=>{
 });
 hudObserver.observe($('main-hud'));hudObserver.observe(topHud);
 $('main-hud').append($('settings'));
-$('settings').textContent='⚙️';
 $('main-hud').insertAdjacentHTML('beforeend','<button id="hud-toggle" type="button" aria-controls="hud-context" aria-label="HUD 펼치기" aria-expanded="false">⌄</button>');
 const incomeLabel=$('dust').parentElement!.querySelector('small')!;
 incomeLabel.id='income-rate';incomeLabel.setAttribute('aria-label','초당 별가루 생산량');
@@ -141,7 +140,7 @@ const weeklyEntry=document.createElement('button');weeklyEntry.id='weekly-entry'
 let renderedWeeklyDay=-1;
 $("shell").insertAdjacentHTML("beforeend", '<div id="night-curtain" hidden><div class="night-card"><span>☾</span><h2>농장이 잠드는 시간</h2><strong id="night-count">15</strong><p>밤이 깊어 나가지 못해요.<br>날이 밝으면 다시 출발해요.</p><small>낮 3분 · 밤 2분 (마지막 15초는 깊은 밤)</small></div></div><div id="return-reward" hidden><div id="reward-copy"><span class="tag">SAFE & SOUND</span><h1>알을 얻었어요!</h1><p id="reward-name"></p></div><button id="reward-ok" class="primary">농장에 보관했어요 · 확인</button></div>');
 const bottomHud = document.createElement("div");
-$("action").insertAdjacentHTML('beforebegin','<button id="train-now" class="secondary" aria-label="운동하기" title="운동하기" hidden><span aria-hidden="true">💪</span></button>');
+$("action").insertAdjacentHTML('beforebegin',`<button id="train-now" class="secondary" aria-label="운동하기" title="운동하기" hidden><img src="${import.meta.env.BASE_URL}models/gym.png" alt=""/><span class="sr-only">운동하기</span></button>`);
 bottomHud.id = "bottom-hud";
 $("shell").append(bottomHud);
 const inventory = document.createElement("section");
@@ -154,7 +153,7 @@ const eggBag=document.createElement('dialog');
 eggBag.id='egg-bag';eggBag.setAttribute('aria-labelledby','egg-bag-title');
 eggBag.innerHTML='<div class="bag-heading"><h2 id="egg-bag-title">알 가방</h2><button id="close-egg-bag" aria-label="알 가방 닫기">×</button></div>';
 eggBag.append(inventory);$('shell').append(eggBag);
-$('shell').insertAdjacentHTML('beforeend','<button id="open-egg-bag" hidden aria-label="알 가방 열기" aria-haspopup="dialog" aria-controls="egg-bag" aria-expanded="false"><span aria-hidden="true">🎒</span><small id="egg-bag-count">0</small></button>');
+$('shell').insertAdjacentHTML('beforeend',`<button id="open-egg-bag" hidden aria-label="알 가방 열기" aria-haspopup="dialog" aria-controls="egg-bag" aria-expanded="false"><img src="${import.meta.env.BASE_URL}models/pack.png" alt=""/><small id="egg-bag-count">0</small></button>`);
 eggBag.addEventListener('close',()=>{$('open-egg-bag').setAttribute('aria-expanded','false');});
 bottomHud.insertBefore(tutorial,$('controls'));
 let bannerStage=0,bannerUntil=0;
@@ -493,10 +492,10 @@ function updateHud() {
   const preparingEggId=pickupPreparation?.id;
   const actionEgg=tab==='explore'?(game.carried??(preparingEggId?game.world.find(e=>e.id===preparingEggId):game.near)):null;
   const weightHint=$('action-weight');weightHint.hidden=true;weightHint.textContent='';
-  $('action-label').hidden=true;
-  $('action-icon').hidden=false;
-  const actionEmoji=game.carried?'📥':game.nearShortcut?'🚀':actionEgg?'🥚':game.nearSeat>=0?'🪑':game.nearStore?'🛍️':game.nearGym?'💪':'🏏';
-  const actionIcon=`<span aria-hidden="true">${actionEmoji}</span>`;
+  $('action-label').hidden=!game.carried&&!game.nearShortcut&&((!game.nearGym&&game.nearSeat<0)||!!actionEgg);
+  $('action-icon').hidden=!!game.carried||!!game.nearShortcut;
+  const actionModel=game.nearStore?'shop':game.nearGym?'gym':null;
+  const actionIcon=actionEgg?`<img src="${eggIcon(actionEgg)}" alt=""/>`:game.nearSeat>=0?'<span aria-hidden="true">🪵</span>':actionModel?`<img src="${import.meta.env.BASE_URL}models/${actionModel}.png" alt=""/>`:uiIcon('bat');
   if($("action-icon").dataset.icon!==actionIcon){$("action-icon").dataset.icon=actionIcon;$("action-icon").innerHTML=actionIcon;}
   $("action").classList.toggle(
     "available",

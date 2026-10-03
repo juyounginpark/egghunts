@@ -8,7 +8,7 @@ export class FriendsUI{
  private pickerTimer:number|undefined;
  constructor(place:HTMLElement,private client:PresenceClient,emote:(id:EmoteId)=>void,private reset:()=>void){
   this.dock.id='emote-dock';
-  this.dock.innerHTML='<button id="emote-toggle" type="button" aria-label="이모티콘" aria-expanded="false" aria-controls="emote-picker"><span aria-hidden="true">💬</span></button><div id="emote-picker" class="emote-buttons" role="group" aria-label="이모티콘 선택" hidden></div>';
+  this.dock.innerHTML='<button id="emote-toggle" type="button" aria-label="이모티콘" aria-expanded="false" aria-controls="emote-picker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 3v-3H3V6a2 2 0 0 1 2-2Z"/><path d="M8 10h.01M12 10h.01M16 10h.01" stroke-linecap="round" stroke-width="3"/></svg></button><div id="emote-picker" class="emote-buttons" role="group" aria-label="이모티콘 선택" hidden></div>';
   place.querySelector('#controls')!.append(this.dock);
   this.toggle=this.dock.querySelector('button')!;this.picker=this.dock.querySelector<HTMLElement>('.emote-buttons')!;
   for(const e of EMOTES){const b=document.createElement('button');b.type='button';b.textContent=e.icon;b.title=e.label;b.setAttribute('aria-label',e.label);b.dataset.emote=e.id;b.onclick=()=>{emote(e.id);this.setPicker(false);this.toggle.focus();};this.picker.append(b);}
